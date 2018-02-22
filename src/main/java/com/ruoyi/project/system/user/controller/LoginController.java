@@ -4,9 +4,14 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.ruoyi.common.tools.StringTools;
+import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.framework.core.controller.BaseController;
 import com.ruoyi.framework.core.domain.R;
 
@@ -15,10 +20,19 @@ import com.ruoyi.framework.core.domain.R;
  * 
  * @author yangzz
  */
-@RestController
+// @RestController
+@Controller
 public class LoginController extends BaseController
 {
-    @RequestMapping("/login")
+
+    @GetMapping("/login")
+    String login()
+    {
+        return "login";
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
     R ajaxLogin(String username, String password)
     {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -37,5 +51,12 @@ public class LoginController extends BaseController
             }
             return R.error(msg);
         }
+    }
+
+    @GetMapping("/logout")
+    String logout()
+    {
+        ShiroUtils.logout();
+        return "redirect:/login";
     }
 }

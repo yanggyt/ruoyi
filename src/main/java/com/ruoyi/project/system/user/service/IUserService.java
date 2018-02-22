@@ -7,7 +7,7 @@ import com.ruoyi.project.system.user.domain.User;
 /**
  * 用户 业务层
  * 
- * @author y
+ * @author yangzz
  */
 public interface IUserService
 {

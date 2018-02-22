@@ -3,7 +3,7 @@ package com.ruoyi.project.shiro.exception;
 /**
  * 用户锁定异常类
  * 
- * @author y
+ * @author yangzz
  */
 public class UserBlockedException extends UserException
 {

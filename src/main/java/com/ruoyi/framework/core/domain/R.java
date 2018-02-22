@@ -3,6 +3,11 @@ package com.ruoyi.framework.core.domain;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 返回数据通用处理
+ * 
+ * @author yangzz
+ */
 public class R extends HashMap<String, Object>
 {
     private static final long serialVersionUID = 1L;

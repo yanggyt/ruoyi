@@ -5,7 +5,7 @@ import com.ruoyi.project.shiro.exception.base.BaseException;
 /**
  * 用户信息异常类
  * 
- * @author y
+ * @author yangzz
  */
 public class UserException extends BaseException
 {

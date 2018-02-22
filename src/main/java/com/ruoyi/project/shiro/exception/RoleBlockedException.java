@@ -3,7 +3,7 @@ package com.ruoyi.project.shiro.exception;
 /**
  * 角色锁定异常类
  * 
- * @author y
+ * @author yangzz
  */
 public class RoleBlockedException extends UserException
 {

@@ -3,7 +3,7 @@ package com.ruoyi.project.shiro.exception;
 /**
  * 用户错误次数异常类
  * 
- * @author y
+ * @author yangzz
  */
 public class UserPasswordRetryLimitExceedException extends UserException
 {

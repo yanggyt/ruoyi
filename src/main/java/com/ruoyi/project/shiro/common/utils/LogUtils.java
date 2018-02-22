@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * 处理并记录日志文件
  * 
- * @author y
+ * @author yangzz
  */
 public class LogUtils
 {

@@ -14,7 +14,7 @@ import com.ruoyi.project.system.user.domain.User;
 /**
  * 通用Session处理方法
  * 
- * @author y
+ * @author yangzz
  */
 public class SessionUtils
 {

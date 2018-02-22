@@ -10,10 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.utils.TableDataInfo;
+import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.framework.core.controller.BaseController;
 import com.ruoyi.project.system.user.domain.User;
 import com.ruoyi.project.system.user.service.IUserService;
 
+/**
+ * 用户信息
+ * 
+ * @author yangzz
+ */
 @Controller
 @RequestMapping("/system/user")
 public class UserController extends BaseController
@@ -39,10 +45,5 @@ public class UserController extends BaseController
         return prefix + "/test";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login()
-    {
-        return "login";
-    }
 
 }

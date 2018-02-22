@@ -3,7 +3,7 @@ package com.ruoyi.project.shiro.exception;
 /**
  * 用户不存在异常类
  * 
- * @author y
+ * @author yangzz
  */
 public class UserNotExistsException extends UserException
 {

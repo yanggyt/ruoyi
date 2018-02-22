@@ -3,7 +3,7 @@ package com.ruoyi.project.shiro.common;
 /**
  * 用户常量信息
  * 
- * @author y
+ * @author yangzz
  */
 public class UserConstants
 {

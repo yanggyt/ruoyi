@@ -7,7 +7,7 @@ import com.ruoyi.project.shiro.common.utils.MessageUtils;
 /**
  * 基础异常
  * 
- * @author y
+ * @author yangzz
  */
 public class BaseException extends RuntimeException
 {
