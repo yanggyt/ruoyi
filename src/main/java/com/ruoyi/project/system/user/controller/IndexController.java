@@ -2,6 +2,7 @@ package com.ruoyi.project.system.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.ruoyi.framework.core.controller.BaseController;
 import com.ruoyi.project.system.user.domain.User;
@@ -21,16 +22,17 @@ public class IndexController extends BaseController
 
     // 系统首页
     @RequestMapping("/index")
-    public String index() throws Exception
+    public String index(Model model) throws Exception
     {
         // 取身份信息
-        User currentUser = getUser();
+        User user = getUser();
 
         // 根据用户id取出菜单
         //List<Permission> permissions = userService.findPermsListByUserId(currentUser.getUserName());
 
         // 通过model传到页面
         //session.setAttribute("permissions", TreeUtil.getChildPerms(permissions, 0));
+        model.addAttribute("username", user.getUserName());
         return "index";
     }
     
