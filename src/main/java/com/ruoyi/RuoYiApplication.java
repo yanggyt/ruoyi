@@ -12,8 +12,6 @@ public class RuoYiApplication
 
     public static void main(String[] args)
     {
-        // http://localhost/system/user/getUserlist.action
-        // http://localhost/system/user/login
         SpringApplication.run(RuoYiApplication.class, args);
     }
 

@@ -15,7 +15,7 @@ public class BaseController
         return ShiroUtils.getUser();
     }
 
-    public Integer getUserId()
+    public Long getUserId()
     {
         return getUser().getUserId();
     }

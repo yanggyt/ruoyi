@@ -11,9 +11,9 @@ public class User implements Serializable
 {
     private static final long serialVersionUID = 1L;
     // 用户ID
-    private Integer userId;
+    private Long userId;
     // 部门ID
-    private Integer deptId;
+    private Long deptId;
     // 登录名
     private String loginName;
     // 用户名称
@@ -39,7 +39,7 @@ public class User implements Serializable
     {
     }
 
-    public User(Integer userId, String loginName, String password)
+    public User(Long userId, String loginName, String password)
     {
         super();
         this.userId = userId;
@@ -47,22 +47,22 @@ public class User implements Serializable
         this.password = password;
     }
 
-    public Integer getUserId()
+    public Long getUserId()
     {
         return userId;
     }
 
-    public void setUserId(Integer userId)
+    public void setUserId(Long userId)
     {
         this.userId = userId;
     }
 
-    public Integer getDeptId()
+    public Long getDeptId()
     {
         return deptId;
     }
 
-    public void setDeptId(Integer deptId)
+    public void setDeptId(Long deptId)
     {
         this.deptId = deptId;
     }
@@ -168,12 +168,20 @@ public class User implements Serializable
     }
 
     @Override
-    public String toString()
-    {
-        return "{\"userId\":\"" + userId + "\",\"deptId\":\"" + deptId + "\",\"loginName\":\"" + loginName
-                + "\",\"userName\":\"" + userName + "\",\"email\":\"" + email + "\",\"phonenumber\":\"" + phonenumber
-                + "\",\"password\":\"" + password + "\",\"salt\":\"" + salt + "\",\"status\":\"" + status
-                + "\",\"refuseDes\":\"" + refuseDes + "\",\"createTime\":\"" + createTime + "\",\"roleName\":\""
-                + roleName + "\"}  ";
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", deptId=" + deptId +
+                ", loginName='" + loginName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", phonenumber=" + phonenumber +
+                ", password='" + password + '\'' +
+                ", salt=" + salt +
+                ", status=" + status +
+                ", refuseDes=" + refuseDes +
+                ", createTime=" + createTime +
+                ", roleName=" + roleName +
+                '}';
     }
 }
