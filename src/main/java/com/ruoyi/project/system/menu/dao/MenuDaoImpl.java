@@ -21,12 +21,12 @@ public class MenuDaoImpl extends DynamicObjectBaseDao implements IMenuDao
      * @return 菜单列表
      */
     @Override
-    public List<Menu> findMenusByUserId(Long userId)
+    public List<Menu> selectMenusByUserId(Long userId)
     {
         List<Menu> permsList = null;
         try
         {
-            permsList = this.findForList("SystemMenuMapper.findMenusByUserId", userId);
+            permsList = this.findForList("SystemMenuMapper.selectMenusByUserId", userId);
         }
         catch (Exception e)
         {
@@ -42,12 +42,12 @@ public class MenuDaoImpl extends DynamicObjectBaseDao implements IMenuDao
      * @return 菜单列表
      */
     @Override
-    public List<String> findPermsByUserId(Long userId)
+    public List<String> selectPermsByUserId(Long userId)
     {
         List<String> permsList = null;
         try
         {
-            permsList = this.findForList("SystemMenuMapper.findPermsByUserId", userId);
+            permsList = this.findForList("SystemMenuMapper.selectPermsByUserId", userId);
         }
         catch (Exception e)
         {
@@ -62,12 +62,12 @@ public class MenuDaoImpl extends DynamicObjectBaseDao implements IMenuDao
      * @return 权限列表
      */
     @Override
-    public List<Menu> findAllPerms()
+    public List<Menu> selectPermsAll()
     {
         List<Menu> permsList = null;
         try
         {
-            permsList = this.findForList("SystemMenuMapper.findAllPerms");
+            permsList = this.findForList("SystemMenuMapper.selectPermsAll");
         }
         catch (Exception e)
         {

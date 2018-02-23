@@ -104,7 +104,7 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/logout", "logout");
         // 系统权限列表
         MenuServiceImpl menuService = SpringUtils.getBean(MenuServiceImpl.class);
-        filterChainDefinitionMap.putAll(menuService.findAllPerms());
+        filterChainDefinitionMap.putAll(menuService.selectPermsAll());
         // 所有请求需要认证
         filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

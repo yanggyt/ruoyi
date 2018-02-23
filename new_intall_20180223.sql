@@ -49,8 +49,8 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-用户信息表数据
 -- ----------------------------
-insert into sys_user values('1', '1', 'admin', '阳宗专', 'yzz_ivy@163.com', '1517911213', '172eee54aa664e9dd0536b063796e54e', '', 0, '维护中', '2018-01-01');
-insert into sys_user values('2', '1', 'eptok', '银盛通信', 'ys@eptok.com', '15220051213', '172eee54aa664e9dd0536b063796e54e', '', 3, '黑名单', '2018-01-01');
+insert into sys_user values('1', '1', 'admin', '阳宗专', 'yzz_ivy@163.com', '15017911213', '172eee54aa664e9dd0536b063796e54e', '', 0, '维护中', '2018-01-01');
+insert into sys_user values('2', '1', 'ry',    '阳若依', 'ry@163.com',      '15220051213', '2f59d63eddd54f3977d6fe25aec8b2bc', '', 1, '锁定中', '2018-01-01');
 
 
 
@@ -234,14 +234,14 @@ insert into sys_code values('system-operlog-status', '1', '失败', '', '', '2')
 -- ----------------------------
 drop table if exists sys_logininfor;
 create table sys_logininfor (
-  info_id 		int(11) 	 not null auto_increment comment '在线登录ID',
-  opername 		varchar(50)  default '' 			 comment '用户账号',
+  info_id 		int(11) 	 not null auto_increment comment '访问ID',
+  login_name 	varchar(50)  default '' 			 comment '登录名',
   status 		int(1) 		 default 0 			 	 comment '登录状态 0成功 1失败',
   ipaddr 		varchar(50)  default '' 			 comment '登录IP地址',
   browser  		varchar(50)  default '' 			 comment '浏览器类型',
   os      		varchar(50)  default '' 			 comment '操作系统',
   msg      		varchar(255) default '' 			 comment '提示消息',
-  logondate 	varchar(30)  default null			 comment '访问时间',
+  logondate 	timestamp    default current_timestamp comment '访问时间',
   primary key (info_id)
 ) engine=innodb auto_increment=100 default charset=utf8;
 

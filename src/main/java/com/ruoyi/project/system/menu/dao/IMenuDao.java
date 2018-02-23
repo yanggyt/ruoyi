@@ -17,7 +17,7 @@ public interface IMenuDao
      * @param userId 用户ID
      * @return 菜单列表
      */
-    public List<Menu> findMenusByUserId(Long userId);
+    public List<Menu> selectMenusByUserId(Long userId);
 
     /**
      * 根据用户ID查询权限
@@ -25,13 +25,13 @@ public interface IMenuDao
      * @param userId 用户ID
      * @return 权限列表
      */
-    public List<String> findPermsByUserId(Long userId);
+    public List<String> selectPermsByUserId(Long userId);
 
     /**
      * 查询系统所有权限
      * 
      * @return 权限列表
      */
-    public List<Menu> findAllPerms();
+    public List<Menu> selectPermsAll();
 
 }

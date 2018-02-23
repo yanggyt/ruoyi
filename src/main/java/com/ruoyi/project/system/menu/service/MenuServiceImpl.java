@@ -36,9 +36,9 @@ public class MenuServiceImpl implements IMenuService
      * @return 菜单列表
      */
     @Override
-    public List<Menu> findMenusByUserId(Long userId)
+    public List<Menu> selectMenusByUserId(Long userId)
     {
-        List<Menu> menus = menuDao.findMenusByUserId(userId);
+        List<Menu> menus = menuDao.selectMenusByUserId(userId);
         return TreeUtil.getChildPerms(menus, 0);
     }
 
@@ -49,9 +49,9 @@ public class MenuServiceImpl implements IMenuService
      * @return 权限列表
      */
     @Override
-    public Set<String> findPermsByUserId(Long userId)
+    public Set<String> selectPermsByUserId(Long userId)
     {
-        List<String> perms = menuDao.findPermsByUserId(userId);
+        List<String> perms = menuDao.selectPermsByUserId(userId);
         Set<String> permsSet = new HashSet<>();
         for (String perm : perms)
         {
@@ -69,10 +69,10 @@ public class MenuServiceImpl implements IMenuService
      * @return 权限列表
      */
     @Override
-    public LinkedHashMap<String, String> findAllPerms()
+    public LinkedHashMap<String, String> selectPermsAll()
     {
         LinkedHashMap<String, String> section = new LinkedHashMap<>();
-        List<Menu> permissions = menuDao.findAllPerms();
+        List<Menu> permissions = menuDao.selectPermsAll();
         if (StringTools.isNotEmpty(permissions))
         {
             for (Menu menu : permissions)

@@ -3,13 +3,16 @@ package com.ruoyi.project.shiro.realm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import com.ruoyi.framework.constant.CommonConstant;
 import com.ruoyi.project.shiro.common.UserConstants;
+import com.ruoyi.project.shiro.common.utils.MessageUtils;
 import com.ruoyi.project.shiro.exception.UserBlockedException;
 import com.ruoyi.project.shiro.exception.UserNotExistsException;
 import com.ruoyi.project.shiro.exception.UserPasswordNotMatchException;
 import com.ruoyi.project.shiro.service.PasswordService;
 import com.ruoyi.project.system.user.domain.User;
 import com.ruoyi.project.system.user.service.IUserService;
+import com.ruoyi.project.util.SystemLogUtils;
 
 /**
  * 登录校验方法
@@ -33,12 +36,14 @@ public class LoginService
         // 用户名或密码为空 错误
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
         {
+            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error"));
             throw new UserNotExistsException();
         }
         // 密码如果不在指定范围内 错误
         if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
                 || password.length() > UserConstants.PASSWORD_MAX_LENGTH)
         {
+            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.password.not.match"));
             throw new UserPasswordNotMatchException();
         }
 
@@ -46,6 +51,7 @@ public class LoginService
         if (username.length() < UserConstants.USERNAME_MIN_LENGTH
                 || username.length() > UserConstants.USERNAME_MAX_LENGTH)
         {
+            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.password.not.match"));
             throw new UserPasswordNotMatchException();
         }
 
@@ -54,6 +60,7 @@ public class LoginService
 
         if (user == null)
         {
+            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.not.exists"));
             throw new UserNotExistsException();
         }
 
@@ -61,8 +68,11 @@ public class LoginService
 
         if (UserConstants.BLOCKED.equals(user.getStatus()))
         {
+            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.blocked", user.getRefuseDes()));
             throw new UserBlockedException(user.getRefuseDes());
         }
+        
+        SystemLogUtils.log(username, CommonConstant.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));
         return user;
     }
 

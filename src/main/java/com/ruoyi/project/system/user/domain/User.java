@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class User implements Serializable
 {
     private static final long serialVersionUID = 1L;
+
     // 用户ID
     private Long userId;
     // 部门ID
@@ -170,9 +171,11 @@ public class User implements Serializable
     @Override
     public String toString()
     {
-        return "User{" + "userId=" + userId + ", deptId=" + deptId + ", loginName='" + loginName + '\'' + ", userName='"
-                + userName + '\'' + ", email='" + email + '\'' + ", phonenumber=" + phonenumber + ", password='"
-                + password + '\'' + ", salt=" + salt + ", status=" + status + ", refuseDes=" + refuseDes
-                + ", createTime=" + createTime + ", roleName=" + roleName + '}';
+        return "{\"userId\":\"" + userId + "\",\"deptId\":\"" + deptId + "\",\"loginName\":\"" + loginName
+                + "\",\"userName\":\"" + userName + "\",\"email\":\"" + email + "\",\"phonenumber\":\"" + phonenumber
+                + "\",\"password\":\"" + password + "\",\"salt\":\"" + salt + "\",\"status\":\"" + status
+                + "\",\"refuseDes\":\"" + refuseDes + "\",\"createTime\":\"" + createTime + "\",\"roleName\":\""
+                + roleName + "\"}  ";
     }
+
 }

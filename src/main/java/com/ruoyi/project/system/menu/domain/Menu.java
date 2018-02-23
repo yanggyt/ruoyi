@@ -12,6 +12,7 @@ import java.util.List;
 public class Menu implements Serializable
 {
     private static final long serialVersionUID = 1L;
+
     // 菜单ID
     private Integer menuId;
     // 菜单名称
@@ -182,21 +183,12 @@ public class Menu implements Serializable
     }
 
     @Override
-    public String toString() {
-        return "Menu{" +
-                "menuId=" + menuId +
-                ", menuName=" + menuName +
-                ", parentId='" + parentId + '\'' +
-                ", orderNum='" + orderNum + '\'' +
-                ", url='" + url + '\'' +
-                ", menuType=" + menuType +
-                ", visible='" + visible + '\'' +
-                ", perms=" + perms +
-                ", icon=" + icon +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", updateBy=" + updateBy +
-                ", remark=" + remark +
-                '}';
+    public String toString()
+    {
+        return "{\"menuId\":\"" + menuId + "\",\"menuName\":\"" + menuName + "\",\"parentId\":\"" + parentId
+                + "\",\"orderNum\":\"" + orderNum + "\",\"url\":\"" + url + "\",\"menuType\":\"" + menuType
+                + "\",\"visible\":\"" + visible + "\",\"perms\":\"" + perms + "\",\"icon\":\"" + icon
+                + "\",\"createTime\":\"" + createTime + "\",\"updateTime\":\"" + updateTime + "\",\"updateBy\":\""
+                + updateBy + "\",\"remark\":\"" + remark + "\",\"children\":\"" + children + "\"}  ";
     }
 }

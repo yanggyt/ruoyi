@@ -28,7 +28,7 @@ public class IndexController extends BaseController
         // 取身份信息
         User user = getUser();
         // 根据用户id取出菜单
-        List<Menu> menus = menuService.findMenusByUserId(user.getUserId());
+        List<Menu> menus = menuService.selectMenusByUserId(user.getUserId());
         model.addAttribute("menus", menus);
         model.addAttribute("user", user);
         return "index";

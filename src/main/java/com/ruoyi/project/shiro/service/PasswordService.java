@@ -7,10 +7,12 @@ import org.apache.shiro.cache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import com.ruoyi.framework.constant.CommonConstant;
 import com.ruoyi.project.shiro.common.utils.Md5Utils;
 import com.ruoyi.project.shiro.exception.UserPasswordNotMatchException;
 import com.ruoyi.project.shiro.exception.UserPasswordRetryLimitExceedException;
 import com.ruoyi.project.system.user.domain.User;
+import com.ruoyi.project.util.SystemLogUtils;
 
 /**
  * 登录密码方法
@@ -37,28 +39,30 @@ public class PasswordService
 
     public void validate(User user, String password)
     {
-        String username = user.getUserName();
+        String loginName = user.getLoginName();
 
-        AtomicInteger retryCount = loginRecordCache.get(username);
+        AtomicInteger retryCount = loginRecordCache.get(loginName);
 
         if (retryCount == null)
         {
             retryCount = new AtomicInteger(0);
-            loginRecordCache.put(username, retryCount);
+            loginRecordCache.put(loginName, retryCount);
         }
         if (retryCount.incrementAndGet() > Integer.valueOf(maxRetryCount).intValue())
         {
+            SystemLogUtils.log(loginName, CommonConstant.LOGIN_FAIL, "密码输入错误次数太多禁止登录,最大{}次!", maxRetryCount);
             throw new UserPasswordRetryLimitExceedException(Integer.valueOf(maxRetryCount).intValue());
         }
 
         if (!matches(user, password))
         {
-            loginRecordCache.put(username, retryCount);
+            SystemLogUtils.log(loginName, CommonConstant.LOGIN_FAIL, "密码错误!密码:{},重试计数:{}", password, retryCount);
+            loginRecordCache.put(loginName, retryCount);
             throw new UserPasswordNotMatchException();
         }
         else
         {
-            clearLoginRecordCache(username);
+            clearLoginRecordCache(loginName);
         }
     }
 

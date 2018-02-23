@@ -1,18 +1,14 @@
 package com.ruoyi.framework.core.dao;
 
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.ruoyi.project.shiro.exception.base.DaoException;
-import com.ruoyi.project.shiro.realm.UserRealm;
 
 /**
  * 数据DAO层通用数据处理
@@ -21,7 +17,7 @@ import com.ruoyi.project.shiro.realm.UserRealm;
  */
 public class DynamicObjectBaseDao
 {
-    private static final Logger log = LoggerFactory.getLogger(UserRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(DynamicObjectBaseDao.class);
 
     @Resource(name = "sqlSessionTemplate")
     private SqlSessionTemplate sqlSessionTemplate;

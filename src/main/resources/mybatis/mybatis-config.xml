@@ -3,17 +3,10 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
 	<settings>
 		<setting name="cacheEnabled" value="true" /><!-- 全局映射器启用缓存 -->
 		<setting name="useGeneratedKeys" value="true" />
 		<setting name="defaultExecutorType" value="REUSE" />
 		<setting name="logImpl" value="SLF4J"/>
 	</settings>
-
-	<typeAliases>
-		<typeAlias type="com.ruoyi.project.system.user.domain.User" alias="User"/>
-		<typeAlias type="com.ruoyi.project.system.menu.domain.Menu" alias="Menu"/>
-	</typeAliases>
-	
 </configuration>
