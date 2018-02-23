@@ -1,17 +1,14 @@
 package com.ruoyi.project.system.user.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import com.ruoyi.framework.core.controller.BaseController;
 import com.ruoyi.project.system.menu.domain.Menu;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.user.domain.User;
-import com.ruoyi.project.system.user.service.IUserService;
 
 /**
  * 首页 业务处理
@@ -21,16 +18,12 @@ import com.ruoyi.project.system.user.service.IUserService;
 @Controller
 public class IndexController extends BaseController
 {
-
-    @Autowired
-    private IUserService userService;
-
     @Autowired
     private IMenuService menuService;
 
     // 系统首页
-    @RequestMapping("/index")
-    public String index(Model model) throws Exception
+    @GetMapping("/index")
+    public String index(Model model)
     {
         // 取身份信息
         User user = getUser();
@@ -42,8 +35,8 @@ public class IndexController extends BaseController
     }
 
     // 系统介绍
-    @RequestMapping("/main")
-    public String main() throws Exception
+    @GetMapping("/main")
+    public String main()
     {
         return "main";
     }

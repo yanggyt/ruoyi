@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.tools.StringTools;
-import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.framework.core.controller.BaseController;
 import com.ruoyi.framework.core.domain.R;
 
@@ -24,14 +23,14 @@ public class LoginController extends BaseController
 {
 
     @GetMapping("/login")
-    String login()
+    public String login()
     {
         return "login";
     }
 
     @PostMapping("/login")
     @ResponseBody
-    R ajaxLogin(String username, String password)
+    public R ajaxLogin(String username, String password)
     {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
@@ -51,10 +50,9 @@ public class LoginController extends BaseController
         }
     }
 
-    @GetMapping("/logout")
-    String logout()
+    @GetMapping("/unauth")
+    public String unauth()
     {
-        ShiroUtils.logout();
-        return "redirect:/login";
+        return "/error/unauth";
     }
 }

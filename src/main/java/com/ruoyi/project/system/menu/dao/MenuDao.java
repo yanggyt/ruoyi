@@ -15,7 +15,7 @@ public class MenuDao extends DynamicObjectBaseDao implements IMenuDao
 {
 
     /**
-     * 根据用户ID查询权限表
+     * 根据用户ID查询菜单
      * 
      * @param userId 用户ID
      * @return 菜单列表
@@ -27,6 +27,47 @@ public class MenuDao extends DynamicObjectBaseDao implements IMenuDao
         try
         {
             permsList = (List<Menu>) this.findForList("SystemMenuMapper.findMenusByUserId", userId);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return permsList;
+    }
+
+    /**
+     * 根据用户ID查询权限
+     * 
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> findPermsByUserId(Long userId)
+    {
+        List<String> permsList = null;
+        try
+        {
+            permsList = (List<String>) this.findForList("SystemMenuMapper.findPermsByUserId", userId);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return permsList;
+    }
+
+    /**
+     * 查询系统所有权限
+     * 
+     * @return 权限列表
+     */
+    @SuppressWarnings("unchecked")
+    public List<Menu> findAllPerms()
+    {
+        List<Menu> permsList = null;
+        try
+        {
+            permsList = (List<Menu>) this.findForList("SystemMenuMapper.findAllPerms");
         }
         catch (Exception e)
         {

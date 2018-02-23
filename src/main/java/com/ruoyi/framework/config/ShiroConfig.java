@@ -8,12 +8,15 @@ import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.project.shiro.realm.UserRealm;
+import com.ruoyi.project.system.menu.service.MenuService;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 
 /**
@@ -24,14 +27,22 @@ import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 @Configuration
 public class ShiroConfig
 {
+    public static final String PREMISSION_STRING = "perms[\"{0}\"]";
+
+    /**
+     * 缓存管理器 使用Ehcache实现
+     */
     @Bean
     public EhCacheManager getEhCacheManager()
     {
         EhCacheManager em = new EhCacheManager();
-        em.setCacheManagerConfigFile("classpath:config/ehcache.xml");
+        em.setCacheManagerConfigFile("classpath:ehcache/ehcache-shiro.xml");
         return em;
     }
 
+    /**
+     * 自定义Realm
+     */
     @Bean
     UserRealm userRealm(EhCacheManager cacheManager)
     {
@@ -40,6 +51,9 @@ public class ShiroConfig
         return userRealm;
     }
 
+    /**
+     * 会话管理器
+     */
     @Bean
     SessionDAO sessionDAO()
     {
@@ -47,6 +61,9 @@ public class ShiroConfig
         return sessionDAO;
     }
 
+    /**
+     * 安全管理器
+     */
     @Bean
     SecurityManager securityManager(UserRealm userRealm)
     {
@@ -56,39 +73,56 @@ public class ShiroConfig
         return manager;
     }
 
+    /**
+     * Shiro过滤器配置
+     */
     @Bean
     ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager)
     {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        // Shiro的核心安全接口,这个属性是必须的
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-//        shiroFilterFactoryBean.setLoginUrl("/login");
-//        shiroFilterFactoryBean.setSuccessUrl("/index");
-//        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        // 身份认证失败，则跳转到登录页面的配置
+        shiroFilterFactoryBean.setLoginUrl("/login");
+        // 权限认证失败，则跳转到指定页面
+        shiroFilterFactoryBean.setUnauthorizedUrl("/unauth");
+        // 注销成功，则跳转到指定页面
+        LogoutFilter logoutFilter = new LogoutFilter();
+        logoutFilter.setRedirectUrl("/login");
+        // Shiro连接约束配置，即过滤链的定义
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-//        filterChainDefinitionMap.put("/css/**", "anon");
-//        filterChainDefinitionMap.put("/js/**", "anon");
-//        filterChainDefinitionMap.put("/fonts/**", "anon");
-//        filterChainDefinitionMap.put("/img/**", "anon");
-//        filterChainDefinitionMap.put("/docs/**", "anon");
-//        filterChainDefinitionMap.put("/druid/**", "anon");
-//        filterChainDefinitionMap.put("/upload/**", "anon");
-//        filterChainDefinitionMap.put("/files/**", "anon");
-//        filterChainDefinitionMap.put("/logout", "logout");
-//        filterChainDefinitionMap.put("/", "anon");
-//        filterChainDefinitionMap.put("/blog", "anon");
-//        filterChainDefinitionMap.put("/blog/open/**", "anon");
-//        filterChainDefinitionMap.put("/**", "authc");
-
+        // 对静态资源设置匿名访问
+        filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/docs/**", "anon");
+        filterChainDefinitionMap.put("/fonts/**", "anon");
+        filterChainDefinitionMap.put("/img/**", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/druid/**", "anon");
+        // 不需要拦截的访问
+        filterChainDefinitionMap.put("/login", "anon");
+        // 退出 logout地址，shiro去清除session
+        filterChainDefinitionMap.put("/logout", "logout");
+        // 系统权限列表
+        MenuService menuService = SpringUtils.getBean(MenuService.class);
+        filterChainDefinitionMap.putAll(menuService.findAllPerms());
+        // 所有请求需要认证
+        filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
+    /**
+     * 保证实现了Shiro内部lifecycle函数的bean执行
+     */
     @Bean("lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor()
     {
         return new LifecycleBeanPostProcessor();
     }
 
+    /**
+     * 开启Shiro代理
+     */
     @Bean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator()
     {
@@ -97,12 +131,18 @@ public class ShiroConfig
         return proxyCreator;
     }
 
+    /**
+     * thymeleaf模板引擎和shiro框架的整合
+     */
     @Bean
     public ShiroDialect shiroDialect()
     {
         return new ShiroDialect();
     }
 
+    /**
+     * 开启Shiro注解通知器
+     */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(
             @Qualifier("securityManager") SecurityManager securityManager)

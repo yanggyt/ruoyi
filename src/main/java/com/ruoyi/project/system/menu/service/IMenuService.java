@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.menu.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import com.ruoyi.project.system.menu.domain.Menu;
 
 /**
@@ -12,11 +14,26 @@ public interface IMenuService
 {
 
     /**
-     * 根据用户ID查询权限表
+     * 根据用户ID查询菜单
      * 
      * @param userId 用户ID
      * @return 菜单列表
      */
     public List<Menu> findMenusByUserId(Long userId);
+
+    /**
+     * 根据用户ID查询权限
+     * 
+     * @param userId 用户ID
+     * @return 权限列表
+     */
+    public Set<String> findPermsByUserId(Long userId);
+
+    /**
+     * 查询系统所有权限
+     * 
+     * @return 权限列表
+     */
+    public Map<String, String> findAllPerms();
 
 }

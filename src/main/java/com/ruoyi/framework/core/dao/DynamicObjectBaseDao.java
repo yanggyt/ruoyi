@@ -129,7 +129,20 @@ public class DynamicObjectBaseDao
     }
 
     /**
-     * 查找对象
+     * 查找对象 - 无条件
+     * 
+     * @param str
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+    public Object findForList(String str) throws Exception
+    {
+        return sqlSessionTemplate.selectList(str);
+    }
+
+    /**
+     * 查找对象 - 有条件
      * 
      * @param str
      * @param obj
