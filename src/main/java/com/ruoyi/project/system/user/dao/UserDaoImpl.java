@@ -14,7 +14,7 @@ import com.ruoyi.project.system.user.domain.User;
  * @author yangzz
  */
 @Repository("userDao")
-public class UserDao extends DynamicObjectBaseDao implements IUserDao
+public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
 {
 
     /**
@@ -23,21 +23,19 @@ public class UserDao extends DynamicObjectBaseDao implements IUserDao
      * @param page 分页对象
      * @return 用户对象信息
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public List<User> pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
-
         List<User> userPageInfo = null;
         try
         {
-            userPageInfo = (List<User>) this.findForList("SystemUserMapper.queryUserListByCond", pageUtilEntity);
+            userPageInfo = this.findForList("SystemUserMapper.queryUserListByCond", pageUtilEntity);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
         return userPageInfo;
-
     }
 
     /**
@@ -46,9 +44,10 @@ public class UserDao extends DynamicObjectBaseDao implements IUserDao
      * @param userName 用户名
      * @return 用户对象信息
      */
+    @Override
     public User findByUserName(String username)
     {
-        return (User) this.findForObject("SystemUserMapper.findByUserName", username);
+        return this.findForObject("SystemUserMapper.findByUserName", username);
     }
 
 }

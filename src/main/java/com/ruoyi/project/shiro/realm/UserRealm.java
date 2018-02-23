@@ -36,7 +36,7 @@ import com.ruoyi.project.system.user.domain.User;
 public class UserRealm extends AuthorizingRealm
 {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginService.class);
+    private static final Logger log = LoggerFactory.getLogger(UserRealm.class);
 
     @Autowired
     private IMenuService menuService;

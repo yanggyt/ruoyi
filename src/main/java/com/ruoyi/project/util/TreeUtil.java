@@ -45,7 +45,8 @@ public class TreeUtil
      */
     private static void recursionFn(List<Menu> list, Menu t)
     {
-        List<Menu> childList = getChildList(list, t);// 得到子节点列表
+        // 得到子节点列表
+        List<Menu> childList = getChildList(list, t);
         t.setChildren(childList);
         for (Menu tChild : childList)
         {
@@ -91,7 +92,9 @@ public class TreeUtil
     public List<Menu> getChildPerms(List<Menu> list, int typeId, String prefix)
     {
         if (list == null)
+        {
             return null;
+        }
         for (Iterator<Menu> iterator = list.iterator(); iterator.hasNext();)
         {
             Menu node = (Menu) iterator.next();
@@ -110,9 +113,11 @@ public class TreeUtil
 
     private void recursionFn(List<Menu> list, Menu node, String p)
     {
-        List<Menu> childList = getChildList(list, node);// 得到子节点列表
+        // 得到子节点列表
+        List<Menu> childList = getChildList(list, node);
         if (hasChild(list, node))
-        {// 判断是否有子节点
+        {
+            // 判断是否有子节点
             returnList.add(node);
             Iterator<Menu> it = childList.iterator();
             while (it.hasNext())

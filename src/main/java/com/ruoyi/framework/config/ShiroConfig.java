@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.project.shiro.realm.UserRealm;
-import com.ruoyi.project.system.menu.service.MenuService;
+import com.ruoyi.project.system.menu.service.MenuServiceImpl;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 
 /**
@@ -103,7 +103,7 @@ public class ShiroConfig
         // 退出 logout地址，shiro去清除session
         filterChainDefinitionMap.put("/logout", "logout");
         // 系统权限列表
-        MenuService menuService = SpringUtils.getBean(MenuService.class);
+        MenuServiceImpl menuService = SpringUtils.getBean(MenuServiceImpl.class);
         filterChainDefinitionMap.putAll(menuService.findAllPerms());
         // 所有请求需要认证
         filterChainDefinitionMap.put("/**", "authc");

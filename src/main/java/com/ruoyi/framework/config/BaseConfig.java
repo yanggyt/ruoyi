@@ -5,6 +5,11 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+/**
+ * 通用配置
+ * 
+ * @author yangzz
+ */
 @Configuration
 public class BaseConfig extends WebMvcConfigurerAdapter
 {

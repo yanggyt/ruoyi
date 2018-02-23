@@ -8,13 +8,13 @@ package com.ruoyi.project.shiro.common;
 public class UserConstants
 {
     /** 正常状态 */
-    public static final String normal = "0";
+    public static final String NORMAL = "0";
 
     /** 封禁状态 */
-    public static final String blocked = "1";
+    public static final String BLOCKED = "1";
 
     /** 异常状态 */
-    public static final String exception = "1";
+    public static final String EXCEPTION = "1";
 
     /** 名称是否唯一的返回结果码 */
     public final static String NAME_UNIQUE = "0";

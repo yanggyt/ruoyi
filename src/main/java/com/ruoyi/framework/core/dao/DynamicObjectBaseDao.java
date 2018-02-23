@@ -1,11 +1,18 @@
 package com.ruoyi.framework.core.dao;
 
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ruoyi.project.shiro.exception.base.DaoException;
+import com.ruoyi.project.shiro.realm.UserRealm;
 
 /**
  * 数据DAO层通用数据处理
@@ -14,6 +21,7 @@ import org.mybatis.spring.SqlSessionTemplate;
  */
 public class DynamicObjectBaseDao
 {
+    private static final Logger log = LoggerFactory.getLogger(UserRealm.class);
 
     @Resource(name = "sqlSessionTemplate")
     private SqlSessionTemplate sqlSessionTemplate;
@@ -28,7 +36,17 @@ public class DynamicObjectBaseDao
      */
     public int save(String str, Object obj)
     {
-        return sqlSessionTemplate.insert(str, obj);
+        int rows;
+        try
+        {
+            rows = sqlSessionTemplate.insert(str, obj);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+            throw new DaoException("插入失败");
+        }
+        return rows;
     }
 
     /**
@@ -41,7 +59,17 @@ public class DynamicObjectBaseDao
      */
     public int batchSave(String str, List<?> objs)
     {
-        return sqlSessionTemplate.insert(str, objs);
+        int rows;
+        try
+        {
+            rows = sqlSessionTemplate.insert(str, objs);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+            throw new DaoException("批量更新失败");
+        }
+        return rows;
     }
 
     /**
@@ -54,7 +82,17 @@ public class DynamicObjectBaseDao
      */
     public int update(String str, Object obj)
     {
-        return sqlSessionTemplate.update(str, obj);
+        int rows;
+        try
+        {
+            rows = sqlSessionTemplate.update(str, obj);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+            throw new DaoException("修改失败");
+        }
+        return rows;
     }
 
     /**
@@ -97,9 +135,19 @@ public class DynamicObjectBaseDao
      * @return
      * @throws Exception
      */
-    public Object batchDelete(String str, List<?> objs) throws Exception
+    public int batchDelete(String str, List<?> objs) throws Exception
     {
-        return sqlSessionTemplate.delete(str, objs);
+        int rows;
+        try
+        {
+            rows = sqlSessionTemplate.update(str, objs);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+            throw new DaoException("批量删除失败");
+        }
+        return rows;
     }
 
     /**
@@ -110,22 +158,42 @@ public class DynamicObjectBaseDao
      * @return
      * @throws Exception
      */
-    public Object delete(String str, Object obj)
+    public int delete(String str, Object obj)
     {
-        return sqlSessionTemplate.delete(str, obj);
+        int rows;
+        try
+        {
+            rows = sqlSessionTemplate.delete(str, obj);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+            throw new DaoException("删除失败");
+        }
+        return rows;
     }
 
     /**
-     * 查找对象
+     * 查找单条对象
      * 
      * @param str
      * @param obj
      * @return
      * @throws Exception
      */
-    public Object findForObject(String str, Object obj)
+    public <T> T findForObject(String str, Object obj)
     {
-        return sqlSessionTemplate.selectOne(str, obj);
+        T t;
+        try
+        {
+            t = sqlSessionTemplate.selectOne(str, obj);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+            throw new DaoException("查找单条对象失败");
+        }
+        return t;
     }
 
     /**
@@ -136,9 +204,19 @@ public class DynamicObjectBaseDao
      * @return
      * @throws Exception
      */
-    public Object findForList(String str) throws Exception
+    public <E> List<E> findForList(String str) throws Exception
     {
-        return sqlSessionTemplate.selectList(str);
+        List<E> list;
+        try
+        {
+            list = sqlSessionTemplate.selectList(str);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+            throw new DaoException("查找所有对象-无条件。失败");
+        }
+        return list;
     }
 
     /**
@@ -149,9 +227,19 @@ public class DynamicObjectBaseDao
      * @return
      * @throws Exception
      */
-    public Object findForList(String str, Object obj) throws Exception
+    public <E> List<E> findForList(String str, Object obj)
     {
-        return sqlSessionTemplate.selectList(str, obj);
+        List<E> list;
+        try
+        {
+            list = sqlSessionTemplate.selectList(str, obj);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+            throw new DaoException("查找所有对象-有条件。失败");
+        }
+        return list;
     }
 
     public Object findForMap(String str, Object obj, String key, String value) throws Exception

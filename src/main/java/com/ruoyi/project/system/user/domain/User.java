@@ -32,8 +32,8 @@ public class User implements Serializable
     private String refuseDes;
     // 创建时间
     private String createTime;
-
-    private String roleName; // 角色临时字段
+    // 角色临时字段
+    private String roleName;
 
     public User()
     {
@@ -168,20 +168,11 @@ public class User implements Serializable
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", deptId=" + deptId +
-                ", loginName='" + loginName + '\'' +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", phonenumber=" + phonenumber +
-                ", password='" + password + '\'' +
-                ", salt=" + salt +
-                ", status=" + status +
-                ", refuseDes=" + refuseDes +
-                ", createTime=" + createTime +
-                ", roleName=" + roleName +
-                '}';
+    public String toString()
+    {
+        return "User{" + "userId=" + userId + ", deptId=" + deptId + ", loginName='" + loginName + '\'' + ", userName='"
+                + userName + '\'' + ", email='" + email + '\'' + ", phonenumber=" + phonenumber + ", password='"
+                + password + '\'' + ", salt=" + salt + ", status=" + status + ", refuseDes=" + refuseDes
+                + ", createTime=" + createTime + ", roleName=" + roleName + '}';
     }
 }

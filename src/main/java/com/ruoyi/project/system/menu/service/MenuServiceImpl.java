@@ -22,7 +22,7 @@ import com.ruoyi.project.util.TreeUtil;
  * @author yangzz
  */
 @Service("menuService")
-public class MenuService implements IMenuService
+public class MenuServiceImpl implements IMenuService
 {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 

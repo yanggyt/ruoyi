@@ -59,7 +59,7 @@ public class LoginService
 
         passwordService.validate(user, password);
 
-        if (UserConstants.blocked.equals(user.getStatus()))
+        if (UserConstants.BLOCKED.equals(user.getStatus()))
         {
             throw new UserBlockedException(user.getRefuseDes());
         }

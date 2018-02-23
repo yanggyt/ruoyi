@@ -13,7 +13,7 @@ import com.ruoyi.project.system.user.domain.User;
  * @author yangzz
  */
 @Service("userService")
-public class UserService implements IUserService
+public class UserServiceImpl implements IUserService
 {
 
     @Autowired
@@ -26,6 +26,7 @@ public class UserService implements IUserService
      * 
      * @return 用户信息集合信息
      */
+    @Override
     public List<User> pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
         return userDao.pageInfoQuery(pageUtilEntity);
@@ -37,6 +38,7 @@ public class UserService implements IUserService
      * @param userName 用户名
      * @return 用户对象信息
      */
+    @Override
     public User findByUserName(String userName)
     {
         return userDao.findByUserName(userName);
