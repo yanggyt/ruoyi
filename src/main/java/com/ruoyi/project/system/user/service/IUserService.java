@@ -26,5 +26,5 @@ public interface IUserService
      * @param userName 用户名
      * @return 用户对象信息
      */
-    public User findByUserName(String userName);
+    public User selectByUserName(String userName);
 }

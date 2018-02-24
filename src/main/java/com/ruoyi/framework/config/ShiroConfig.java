@@ -1,22 +1,27 @@
 package com.ruoyi.framework.config;
 
 import java.util.LinkedHashMap;
+
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
-import org.apache.shiro.session.mgt.eis.SessionDAO;
+import org.apache.shiro.session.mgt.SessionFactory;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.project.shiro.realm.UserRealm;
+import com.ruoyi.project.shiro.session.OnlineSessionDAO;
+import com.ruoyi.project.shiro.session.OnlineSessionFactory;
 import com.ruoyi.project.system.menu.service.MenuServiceImpl;
+
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 
 /**
@@ -52,13 +57,39 @@ public class ShiroConfig
     }
 
     /**
+     * 自定义sessionDAO会话
+     */
+    @Bean
+    OnlineSessionDAO sessionDAO()
+    {
+        OnlineSessionDAO sessionDAO = new OnlineSessionDAO();
+        return sessionDAO;
+    }
+
+    /**
+     * 自定义sessionFactory会话
+     */
+    @Bean
+    SessionFactory sessionFactory()
+    {
+        OnlineSessionFactory sessionFactory = new OnlineSessionFactory();
+        return sessionFactory;
+    }
+
+    /**
      * 会话管理器
      */
     @Bean
-    SessionDAO sessionDAO()
+    public DefaultWebSessionManager configWebSessionManager()
     {
-        MemorySessionDAO sessionDAO = new MemorySessionDAO();
-        return sessionDAO;
+        DefaultWebSessionManager manager = new DefaultWebSessionManager();
+        manager.setCacheManager(getEhCacheManager());// 加入缓存管理器
+        manager.setSessionDAO(sessionDAO());// 设置SessionDao
+        manager.setDeleteInvalidSessions(true);// 删除过期的session
+        manager.setGlobalSessionTimeout(sessionDAO().getExpireTime());// 设置全局session超时时间
+        manager.setSessionValidationSchedulerEnabled(true);// 是否定时检查session
+        manager.setSessionFactory(sessionFactory());
+        return manager;
     }
 
     /**
@@ -67,10 +98,14 @@ public class ShiroConfig
     @Bean
     SecurityManager securityManager(UserRealm userRealm)
     {
-        DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
-        manager.setRealm(userRealm);
-        manager.setCacheManager(getEhCacheManager());
-        return manager;
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        // 设置realm.
+        securityManager.setRealm(userRealm);
+        // 注入缓存管理器;
+        securityManager.setCacheManager(getEhCacheManager());
+        // session管理器
+        securityManager.setSessionManager(configWebSessionManager());
+        return securityManager;
     }
 
     /**

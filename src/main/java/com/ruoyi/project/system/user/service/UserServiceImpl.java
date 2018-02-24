@@ -39,9 +39,9 @@ public class UserServiceImpl implements IUserService
      * @return 用户对象信息
      */
     @Override
-    public User findByUserName(String userName)
+    public User selectByUserName(String userName)
     {
-        return userDao.findByUserName(userName);
+        return userDao.selectByUserName(userName);
     }
 
 }

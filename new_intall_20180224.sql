@@ -247,6 +247,28 @@ create table sys_logininfor (
 
 insert into sys_logininfor values(1, 'admin', 0 , '127.0.0.1', 'Chrome 45', 'Windows 7', '登录成功' ,'2018-01-01');
 
+-- ----------------------------
+-- 10、在线用户
+-- ----------------------------
+drop table if exists sys_user_online;
+create table sys_user_online (
+  sessionId 	    varchar(100) default ''              	comment '用户会话id',
+  user_id 		    int(11)      default 0                  comment '用户ID',
+  login_name 	    varchar(50)  default '' 		 	 	comment '登录名',
+  ipaddr 		    varchar(50)  default '' 			 	comment '登录IP地址',
+  browser  		    varchar(50)  default '' 			 	comment '浏览器类型',
+  os      		    varchar(50)  default '' 			 	comment '操作系统',
+  status      	    varchar(10)  default '' 			 	comment '在线状态',
+  start_timestsamp 	timestamp    default current_timestamp  comment 'session创建时间',
+  last_access_time  timestamp    default current_timestamp  comment 'session最后访问时间',
+  timeout 	        int(5) 		 default 0 			 	 	comment '超时时间',
+  onlineSession     varchar(50)  default '' 			 	comment '备份的当前用户会话',
+  primary key (sessionId)
+) engine=innodb default charset=utf8;
+
+insert into sys_user_online(sessionId, user_id, login_name, ipaddr, browser, os, status) 
+values('c3b252c3-2229-4be4-a5f7-7aba4b0c314c', 1, 'admin', '127.0.0.1', 'Chrome 45', 'Windows 7', 'on_line');
+
 -- 用户部门表
 SELECT * FROM sys_dept;
 
@@ -273,3 +295,6 @@ SELECT * FROM sys_code;
 
 -- 系统访问日志情况信息
 SELECT * FROM sys_logininfor;
+
+-- 在线用户信息
+SELECT * FROM sys_user_online;

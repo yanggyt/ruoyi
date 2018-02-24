@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from sys_user
 	</select>
 	
-	<select id="findByUserName" parameterType="String" resultMap="UserResult">
+	<select id="selectByUserName" parameterType="String" resultMap="UserResult">
 		SELECT  u.user_id, u.dept_id, u.login_name, u.user_name, u.email, u.phonenumber, u.password, u.salt, u.status, u.refuse_des, u.create_time,
        		    d.dept_id, d.parent_id, d.dept_name, d.order_num, d.status as dept_status,
        		    r.role_id, r.role_name, r.status as role_status, r.remark

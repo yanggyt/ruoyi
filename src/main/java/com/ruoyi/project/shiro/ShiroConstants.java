@@ -41,4 +41,14 @@ public interface ShiroConstants
      * 编码格式
      */
     public static String ENCODING = "UTF-8";
+
+    /**
+     * 当前在线会话
+     */
+    public String ONLINE_SESSION = "online_session";
+
+    /**
+     * 仅清空本地缓存 不情况数据库的
+     */
+    public String ONLY_CLEAR_CACHE = "online_session_only_clear_cache";
 }
