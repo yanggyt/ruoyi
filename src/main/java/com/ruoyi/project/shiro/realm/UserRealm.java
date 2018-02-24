@@ -20,11 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ruoyi.common.tools.StringTools;
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.project.shiro.exception.JCaptchaException;
-import com.ruoyi.project.shiro.exception.RoleBlockedException;
-import com.ruoyi.project.shiro.exception.UserBlockedException;
-import com.ruoyi.project.shiro.exception.UserNotExistsException;
-import com.ruoyi.project.shiro.exception.UserPasswordNotMatchException;
-import com.ruoyi.project.shiro.exception.UserPasswordRetryLimitExceedException;
+import com.ruoyi.project.shiro.exception.user.RoleBlockedException;
+import com.ruoyi.project.shiro.exception.user.UserBlockedException;
+import com.ruoyi.project.shiro.exception.user.UserNotExistsException;
+import com.ruoyi.project.shiro.exception.user.UserPasswordNotMatchException;
+import com.ruoyi.project.shiro.exception.user.UserPasswordRetryLimitExceedException;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.user.domain.User;
 

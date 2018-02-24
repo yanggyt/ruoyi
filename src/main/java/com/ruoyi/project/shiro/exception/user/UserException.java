@@ -1,4 +1,4 @@
-package com.ruoyi.project.shiro.exception;
+package com.ruoyi.project.shiro.exception.user;
 
 import com.ruoyi.project.shiro.exception.base.BaseException;
 

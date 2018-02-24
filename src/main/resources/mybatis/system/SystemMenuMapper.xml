@@ -4,8 +4,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="SystemMenuMapper">
 
-	<resultMap type="menu" id="MenuResult">
-		<result property="menuId"         column="menu_id"        />
+	<resultMap type="Menu" id="MenuResult">
+		<id     property="menuId"         column="menu_id"        />
 		<result property="menuName"       column="menu_name"      />
 		<result property="parentId"       column="parent_id"      />
 		<result property="orderNum"       column="order_num"      />

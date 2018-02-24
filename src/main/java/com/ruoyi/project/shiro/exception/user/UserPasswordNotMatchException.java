@@ -1,4 +1,4 @@
-package com.ruoyi.project.shiro.exception;
+package com.ruoyi.project.shiro.exception.user;
 
 /**
  * 用户密码不正确或不符合规范异常类

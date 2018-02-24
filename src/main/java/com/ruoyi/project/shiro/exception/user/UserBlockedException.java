@@ -1,4 +1,4 @@
-package com.ruoyi.project.shiro.exception;
+package com.ruoyi.project.shiro.exception.user;
 
 /**
  * 用户锁定异常类

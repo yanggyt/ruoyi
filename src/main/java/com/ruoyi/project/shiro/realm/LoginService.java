@@ -3,12 +3,14 @@ package com.ruoyi.project.shiro.realm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
 import com.ruoyi.framework.constant.CommonConstant;
-import com.ruoyi.project.shiro.common.UserConstants;
+import com.ruoyi.project.shiro.common.Constants;
 import com.ruoyi.project.shiro.common.utils.MessageUtils;
-import com.ruoyi.project.shiro.exception.UserBlockedException;
-import com.ruoyi.project.shiro.exception.UserNotExistsException;
-import com.ruoyi.project.shiro.exception.UserPasswordNotMatchException;
+import com.ruoyi.project.shiro.exception.user.RoleBlockedException;
+import com.ruoyi.project.shiro.exception.user.UserBlockedException;
+import com.ruoyi.project.shiro.exception.user.UserNotExistsException;
+import com.ruoyi.project.shiro.exception.user.UserPasswordNotMatchException;
 import com.ruoyi.project.shiro.service.PasswordService;
 import com.ruoyi.project.system.user.domain.User;
 import com.ruoyi.project.system.user.service.IUserService;
@@ -36,20 +38,20 @@ public class LoginService
         // 用户名或密码为空 错误
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
         {
-            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error"));
+            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("not.null"));
             throw new UserNotExistsException();
         }
         // 密码如果不在指定范围内 错误
-        if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
-                || password.length() > UserConstants.PASSWORD_MAX_LENGTH)
+        if (password.length() < Constants.PASSWORD_MIN_LENGTH
+                || password.length() > Constants.PASSWORD_MAX_LENGTH)
         {
             SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.password.not.match"));
             throw new UserPasswordNotMatchException();
         }
 
         // 用户名不在指定范围内 错误
-        if (username.length() < UserConstants.USERNAME_MIN_LENGTH
-                || username.length() > UserConstants.USERNAME_MAX_LENGTH)
+        if (username.length() < Constants.USERNAME_MIN_LENGTH
+                || username.length() > Constants.USERNAME_MAX_LENGTH)
         {
             SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.password.not.match"));
             throw new UserPasswordNotMatchException();
@@ -66,10 +68,16 @@ public class LoginService
 
         passwordService.validate(user, password);
 
-        if (UserConstants.BLOCKED.equals(user.getStatus()))
+        if (Constants.USER_BLOCKED.equals(user.getStatus()))
         {
             SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.blocked", user.getRefuseDes()));
             throw new UserBlockedException(user.getRefuseDes());
+        }
+        
+        if (Constants.ROLE_BLOCKED.equals(user.getRole().getStatus()))
+        {
+            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("role.blocked", user.getRole().getRemark()));
+            throw new RoleBlockedException(user.getRole().getRemark());
         }
         
         SystemLogUtils.log(username, CommonConstant.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));

@@ -1,5 +1,7 @@
 package com.ruoyi.project.shiro.exception;
 
+import com.ruoyi.project.shiro.exception.user.UserException;
+
 /**
  * 验证码错误异常类
  * 

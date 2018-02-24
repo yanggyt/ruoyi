@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.ruoyi.framework.constant.CommonConstant;
 import com.ruoyi.project.shiro.common.utils.Md5Utils;
-import com.ruoyi.project.shiro.exception.UserPasswordNotMatchException;
-import com.ruoyi.project.shiro.exception.UserPasswordRetryLimitExceedException;
+import com.ruoyi.project.shiro.common.utils.MessageUtils;
+import com.ruoyi.project.shiro.exception.user.UserPasswordNotMatchException;
+import com.ruoyi.project.shiro.exception.user.UserPasswordRetryLimitExceedException;
 import com.ruoyi.project.system.user.domain.User;
 import com.ruoyi.project.util.SystemLogUtils;
 
@@ -50,13 +51,13 @@ public class PasswordService
         }
         if (retryCount.incrementAndGet() > Integer.valueOf(maxRetryCount).intValue())
         {
-            SystemLogUtils.log(loginName, CommonConstant.LOGIN_FAIL, "密码输入错误次数太多禁止登录,最大{}次!", maxRetryCount);
+            SystemLogUtils.log(loginName, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount));
             throw new UserPasswordRetryLimitExceedException(Integer.valueOf(maxRetryCount).intValue());
         }
 
         if (!matches(user, password))
         {
-            SystemLogUtils.log(loginName, CommonConstant.LOGIN_FAIL, "密码错误!密码:{},重试计数:{}", password, retryCount);
+            SystemLogUtils.log(loginName, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.count", retryCount, password));
             loginRecordCache.put(loginName, retryCount);
             throw new UserPasswordNotMatchException();
         }

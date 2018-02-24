@@ -1,7 +1,7 @@
-package com.ruoyi.project.shiro.exception;
+package com.ruoyi.project.shiro.exception.user;
 
 /**
- * 用户错误次数异常类
+ * 用户错误最大次数异常类
  * 
  * @author yangzz
  */

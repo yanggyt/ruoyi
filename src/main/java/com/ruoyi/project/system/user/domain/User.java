@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.user.domain;
 
 import java.io.Serializable;
+import com.ruoyi.project.system.dept.domain.Dept;
+import com.ruoyi.project.system.role.domain.Role;
 
 /**
  * 用户对象 sys_user
@@ -33,8 +35,10 @@ public class User implements Serializable
     private String refuseDes;
     // 创建时间
     private String createTime;
-    // 角色临时字段
-    private String roleName;
+    // 部门对象
+    private Dept dept;
+    // 角色对象
+    private Role role;
 
     public User()
     {
@@ -158,14 +162,24 @@ public class User implements Serializable
         this.createTime = createTime;
     }
 
-    public String getRoleName()
+    public Dept getDept()
     {
-        return roleName;
+        return dept;
     }
 
-    public void setRoleName(String roleName)
+    public void setDept(Dept dept)
     {
-        this.roleName = roleName;
+        this.dept = dept;
+    }
+
+    public Role getRole()
+    {
+        return role;
+    }
+
+    public void setRole(Role role)
+    {
+        this.role = role;
     }
 
     @Override
@@ -174,8 +188,7 @@ public class User implements Serializable
         return "{\"userId\":\"" + userId + "\",\"deptId\":\"" + deptId + "\",\"loginName\":\"" + loginName
                 + "\",\"userName\":\"" + userName + "\",\"email\":\"" + email + "\",\"phonenumber\":\"" + phonenumber
                 + "\",\"password\":\"" + password + "\",\"salt\":\"" + salt + "\",\"status\":\"" + status
-                + "\",\"refuseDes\":\"" + refuseDes + "\",\"createTime\":\"" + createTime + "\",\"roleName\":\""
-                + roleName + "\"}  ";
+                + "\",\"refuseDes\":\"" + refuseDes + "\",\"createTime\":\"" + createTime + "\"}  ";
     }
 
 }
