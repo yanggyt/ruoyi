@@ -1,5 +1,7 @@
 package com.ruoyi.project.system.online.dao;
 
+import java.util.List;
+
 import com.ruoyi.project.system.online.domain.UserOnline;
 
 public interface IUserOnlineDao
@@ -26,4 +28,11 @@ public interface IUserOnlineDao
      * @param online 会话信息
      */
     public int saveByOnline(UserOnline online);
+
+    /**
+     * 查询会话集合
+     * 
+     * @param online 会话信息
+     */
+    public List<UserOnline> selectUserOnlines();
 }

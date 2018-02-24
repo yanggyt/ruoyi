@@ -47,9 +47,6 @@ public class OnlineSession extends SimpleSession
         }
     }
 
-    // sessionId
-    private String id;
-
     // 当前登录的用户Id
     private String userId;
 
@@ -76,16 +73,6 @@ public class OnlineSession extends SimpleSession
     public OnlineSession(String host)
     {
         super(host);
-    }
-
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setId(String id)
-    {
-        this.id = id;
     }
 
     public String getUserId()

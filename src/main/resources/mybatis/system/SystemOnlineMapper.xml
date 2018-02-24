@@ -19,7 +19,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<resultMap type="OnlineSession" id="OnlineSessionResult">
-		<id     property="id"                column="sessionId"         />
 		<result property="userId"            column="user_id"           />
 		<result property="loginName"         column="login_name"        />
 		<result property="host"              column="ipaddr"            />
@@ -29,18 +28,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="selectByOnlineId" parameterType="String" resultMap="UserOnlineResult">
-		SELECT  *
-		FROM sys_user_online
-		WHERE sessionId = #{sessionId}
+		select  *
+		from sys_user_online
+		where sessionid = #{sessionid}
 	</select>
 
-	<insert id="insertLogininfor" parameterType="UserOnline">
-		replace into sys_user_online(sessionId, user_id, login_name, ipaddr, browser, os, STATUS) 
-        values (#{sessionId}, #{user_id}, #{login_name}, #{host}, #{browser}, #{os}, #{STATUS})
+	<insert id="saveByOnline" parameterType="UserOnline">
+		replace into sys_user_online(sessionId, user_id, login_name, ipaddr, browser, os, status, start_timestsamp, last_access_time, timeout) 
+        values (#{sessionId}, #{userId}, #{loginName}, #{host}, #{browser}, #{os}, #{status}, #{startTimestamp}, #{lastAccessTime}, #{timeout})
 	</insert>
 	
  	<delete id="deleteByOnlineId" parameterType="String">
  		delete from sys_user_online where sessionId = #{sessionId}
  	</delete>
+ 	
+ 	<select id="selectUserOnlines" resultMap="UserOnlineResult">
+		select * from sys_user_online
+	</select>
 
 </mapper> 

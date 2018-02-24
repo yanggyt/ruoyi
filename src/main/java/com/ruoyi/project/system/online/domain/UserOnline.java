@@ -3,6 +3,8 @@ package com.ruoyi.project.system.online.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.ruoyi.common.utils.security.ShiroUtils;
+
 /**
  * 当前在线会话 sys_user_online
  * 
@@ -159,8 +161,8 @@ public class UserOnline implements Serializable
     {
         UserOnline online = new UserOnline();
         online.setSessionId(String.valueOf(session.getId()));
-        online.setUserId(session.getUserId());
-        online.setLoginName(session.getLoginName());
+        online.setUserId(ShiroUtils.getUser().getUserId() + "");
+        online.setLoginName(ShiroUtils.getUser().getLoginName());
         online.setStartTimestamp(session.getStartTimestamp());
         online.setLastAccessTime(session.getLastAccessTime());
         online.setTimeout(session.getTimeout());

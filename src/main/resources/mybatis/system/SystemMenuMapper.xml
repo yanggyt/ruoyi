@@ -38,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectPermsAll" resultMap="MenuResult">
-		select * from sys_menu m
+		select * from sys_menu
 	</select>
 	
 </mapper> 

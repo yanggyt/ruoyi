@@ -1,8 +1,8 @@
 package com.ruoyi.project.util;
 
-import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.framework.constant.CommonConstant;
 import com.ruoyi.project.shiro.common.utils.LogUtils;
@@ -33,7 +33,7 @@ public class SystemLogUtils
     public static void log(String username, String status, String msg, Object... args)
     {
         StringBuilder s = new StringBuilder();
-        s.append(LogUtils.getBlock(getIp()));
+        s.append(LogUtils.getBlock(ShiroUtils.getIp()));
         s.append(LogUtils.getBlock(username));
         s.append(LogUtils.getBlock(status));
         s.append(LogUtils.getBlock(msg));
@@ -50,11 +50,6 @@ public class SystemLogUtils
         }
     }
 
-    public static Object getIp()
-    {
-        return SecurityUtils.getSubject().getSession().getHost();
-    }
-
     public static void saveOpLog(String username, String message, String status)
     {
         UserAgent userAgent = UserAgent.parseUserAgentString(HttpContextUtils.getHttpServletRequest().getHeader("User-Agent"));
@@ -66,7 +61,7 @@ public class SystemLogUtils
         Logininfor logininfor = new Logininfor();
         logininfor.setLoginName(username);
         logininfor.setStatus(status);
-        logininfor.setIpaddr(String.valueOf(getIp()));
+        logininfor.setIpaddr(ShiroUtils.getIp());
         logininfor.setBrowser(browser);
         logininfor.setOs(os);
         logininfor.setMsg(message);

@@ -2,6 +2,7 @@ package com.ruoyi.common.utils.security;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+
 import com.ruoyi.project.system.user.domain.User;
 
 /**
@@ -11,6 +12,7 @@ import com.ruoyi.project.system.user.domain.User;
  */
 public class ShiroUtils
 {
+
     public static Subject getSubjct()
     {
         return SecurityUtils.getSubject();
@@ -29,5 +31,15 @@ public class ShiroUtils
     public static Long getUserId()
     {
         return getUser().getUserId().longValue();
+    }
+
+    public static String getIp()
+    {
+        return getSubjct().getSession().getHost();
+    }
+
+    public static String getSessionId()
+    {
+        return String.valueOf(getSubjct().getSession().getId());
     }
 }

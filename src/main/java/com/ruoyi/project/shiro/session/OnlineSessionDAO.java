@@ -1,11 +1,8 @@
 package com.ruoyi.project.shiro.session;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
@@ -20,13 +17,15 @@ import com.ruoyi.project.util.HttpContextUtils;
  */
 public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
 {
-    // Session超时时间，单位为毫秒
-    private long expireTime = 120000;
+    /**
+     * Session超时时间，单位为毫秒（默认3分钟）
+     */
+    private long expireTime = 3 * 60 * 1000;
 
     /**
-     * 同步session到数据库的周期 单位为毫秒（默认5分钟）
+     * 同步session到数据库的周期 单位为毫秒（默认1分钟）
      */
-    private long dbSyncPeriod = 5 * 60 * 1000;
+    private long dbSyncPeriod = 1 * 60 * 1000;
 
     /**
      * 上次同步数据库的时间戳
@@ -89,13 +88,12 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
             return;
         }
         System.out.println("==============update url=================" + uri);
-        if (session == null || session.getId() == null)
+        if (session == null)
         {
             return;
         }
 
-        Session session1 = doReadSession(session.getId());
-        OnlineSession onlineSession = (OnlineSession) session1;
+        OnlineSession onlineSession = (OnlineSession) session;
 
         Date lastSyncTimestamp = (Date) session.getAttribute(LAST_SYNC_DB_TIMESTAMP);
         if (lastSyncTimestamp != null)
@@ -103,7 +101,8 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
             boolean needSync = true;
             long deltaTime = session.getLastAccessTime().getTime() - lastSyncTimestamp.getTime();
             if (deltaTime < dbSyncPeriod)
-            { // 时间差不足 无需同步
+            {
+                // 时间差不足 无需同步
                 needSync = false;
             }
             boolean isGuest = session.getId() == null;
@@ -136,22 +135,13 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     protected void doDelete(Session session)
     {
         System.out.println("===============delete================");
-        if (null == session)
+        OnlineSession onlineSession = (OnlineSession) session;
+        if (null == onlineSession)
         {
             return;
         }
-        String sessionId = String.valueOf(session.getId());
+        String sessionId = String.valueOf(onlineSession.getId());
         onlineService.deleteByOnlineId(sessionId);
-    }
-
-    /**
-     * 获取当前所有活跃用户
-     */
-    @Override
-    public Collection<Session> getActiveSessions()
-    {
-        System.out.println("==============getActiveSessions=================");
-        return null;
     }
 
     public long getExpireTime()
@@ -173,7 +163,7 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     {
         boolean linkFlag = false;
         // 如果是登录请求，则不更新SESSION
-        if (StringUtils.endsWithAny(uri, new String[] { "/login", "/", "/favicon.ico" }))
+        if (StringUtils.endsWithAny(uri, new String[] { "/login", "/logout", "/index", "/", "/favicon.ico" }))
         {
             linkFlag = true;
         }

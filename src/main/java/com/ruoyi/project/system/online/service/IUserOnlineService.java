@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.online.service;
 
+import java.util.List;
 import com.ruoyi.project.system.online.domain.UserOnline;
 
 public interface IUserOnlineService
@@ -26,4 +27,18 @@ public interface IUserOnlineService
      * @param online 会话信息
      */
     public void saveByOnline(UserOnline online);
+
+    /**
+     * 查询会话集合
+     * 
+     * @param online 会话信息
+     */
+    public List<UserOnline> selectUserOnlines();
+
+    /**
+     * 读取Session信息
+     * 
+     * @param sessionId 会话ID
+     */
+    public void forceLogout(String sessionId);
 }

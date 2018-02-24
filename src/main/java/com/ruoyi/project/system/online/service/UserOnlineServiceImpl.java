@@ -1,7 +1,10 @@
 package com.ruoyi.project.system.online.service;
 
+import java.util.List;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.ruoyi.project.shiro.session.OnlineSessionDAO;
 import com.ruoyi.project.system.online.dao.IUserOnlineDao;
 import com.ruoyi.project.system.online.domain.UserOnline;
 
@@ -10,6 +13,9 @@ public class UserOnlineServiceImpl implements IUserOnlineService
 {
     @Autowired
     private IUserOnlineDao userOnlineDao;
+
+    @Autowired
+    private OnlineSessionDAO onlineSessionDAO;
 
     /**
      * 通过会话序号查询信息
@@ -44,6 +50,32 @@ public class UserOnlineServiceImpl implements IUserOnlineService
      */
     public void saveByOnline(UserOnline online)
     {
+        userOnlineDao.saveByOnline(online);
+    }
 
+    /**
+     * 查询会话集合
+     * 
+     * @param online 会话信息
+     */
+    public List<UserOnline> selectUserOnlines()
+    {
+        return userOnlineDao.selectUserOnlines();
+    }
+
+    /**
+     * 读取Session信息
+     * 
+     * @param sessionId 会话ID
+     */
+    public void forceLogout(String sessionId)
+    {
+        Session session = onlineSessionDAO.readSession(sessionId);
+        if (session == null)
+        {
+            return;
+        }
+        session.setTimeout(0);
+        userOnlineDao.deleteByOnlineId(sessionId);
     }
 }
