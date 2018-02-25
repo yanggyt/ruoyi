@@ -14,13 +14,15 @@ import com.ruoyi.project.util.HttpContextUtils;
 
 /**
  * 针对自定义的ShiroSession的db操作
+ * 
+ * @author yangzz
  */
 public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
 {
     /**
-     * Session超时时间，单位为毫秒（默认3分钟）
+     * Session超时时间，单位为毫秒（默认30分钟）
      */
-    private long expireTime = 3 * 60 * 1000;
+    private long expireTime = 30 * 60 * 1000;
 
     /**
      * 同步session到数据库的周期 单位为毫秒（默认1分钟）
@@ -58,14 +60,7 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     @Override
     protected Session doReadSession(Serializable sessionId)
     {
-        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-        String uri = request.getServletPath();
-        // 如果是静态文件，则不更新SESSION
-        if (checkStaticLink(uri))
-        {
-            return null;
-        }
-        System.out.println("==============doReadSession url=================" + uri);
+        System.out.println("==============doReadSession url=================");
         UserOnline userOnline = onlineService.selectByOnlineId(String.valueOf(sessionId));
         if (userOnline == null)
         {
@@ -153,6 +148,11 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
         // 如果是登录请求，则不更新SESSION
         if (StringUtils.startsWithAny(uri,
                 new String[] { "/monitor/online/forceLogout", "/login", "/logout", "/index", "/favicon.ico" }))
+        {
+            linkFlag = true;
+        }
+        // 如果是登录请求，则不更新SESSION
+        if (StringUtils.endsWithAny(uri, new String[] { "/" }))
         {
             linkFlag = true;
         }

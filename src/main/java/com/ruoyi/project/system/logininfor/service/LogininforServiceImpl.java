@@ -22,6 +22,7 @@ public class LogininforServiceImpl implements ILogininforService
      * 
      * @param logininfor 访问日志对象
      */
+    @Override
     public void insertLogininfor(Logininfor logininfor)
     {
         logininforDao.insertLogininfor(logininfor);

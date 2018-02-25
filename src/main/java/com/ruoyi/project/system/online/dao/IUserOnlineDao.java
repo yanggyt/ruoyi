@@ -1,7 +1,6 @@
 package com.ruoyi.project.system.online.dao;
 
 import java.util.List;
-
 import com.ruoyi.project.system.online.domain.UserOnline;
 
 public interface IUserOnlineDao
@@ -35,4 +34,12 @@ public interface IUserOnlineDao
      * @param online 会话信息
      */
     public List<UserOnline> selectUserOnlines();
+    
+    
+    /**
+     * 查询过期会话集合
+     * 
+     * @param lastAccessTime 过期时间
+     */
+    public List<UserOnline> selectByOnlineExpired(String lastAccessTime);
 }

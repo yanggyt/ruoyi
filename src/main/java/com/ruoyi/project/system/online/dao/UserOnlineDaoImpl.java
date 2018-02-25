@@ -26,6 +26,7 @@ public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnli
      * @param sessionId 会话ID
      * @return 在线用户信息
      */
+    @Override
     public int deleteByOnlineId(String sessionId)
     {
         return this.delete("SystemOnlineMapper.deleteByOnlineId", sessionId);
@@ -36,6 +37,7 @@ public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnli
      * 
      * @param online 会话信息
      */
+    @Override
     public int saveByOnline(UserOnline online)
     {
         return this.save("SystemOnlineMapper.saveByOnline", online);
@@ -46,12 +48,33 @@ public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnli
      * 
      * @param online 会话信息
      */
+    @Override
     public List<UserOnline> selectUserOnlines()
     {
         List<UserOnline> userOnlineList = null;
         try
         {
             userOnlineList = this.findForList("SystemOnlineMapper.selectUserOnlines");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return userOnlineList;
+    }
+
+    /**
+     * 查询过期会话集合
+     * 
+     * @param lastAccessTime 过期时间
+     */
+    @Override
+    public List<UserOnline> selectByOnlineExpired(String lastAccessTime)
+    {
+        List<UserOnline> userOnlineList = null;
+        try
+        {
+            userOnlineList = this.findForList("SystemOnlineMapper.selectByOnlineExpired", lastAccessTime);
         }
         catch (Exception e)
         {

@@ -44,5 +44,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<select id="selectUserOnlines" resultMap="UserOnlineResult">
 		select * from sys_user_online
 	</select>
+	
+	<select id="selectByOnlineExpired" parameterType="String" resultMap="UserOnlineResult">
+		SELECT * FROM sys_user_online o 
+		WHERE o.last_access_time <![CDATA[ <= ]]> #{lastAccessTime} ORDER BY o.last_access_time ASC
+	</select>
 
 </mapper> 

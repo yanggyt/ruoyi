@@ -1,4 +1,4 @@
-package com.ruoyi.project.shiro.web;
+package com.ruoyi.project.shiro.web.filter.online;
 
 import java.io.IOException;
 import javax.servlet.ServletRequest;
@@ -13,6 +13,7 @@ import com.ruoyi.project.shiro.ShiroConstants;
 import com.ruoyi.project.shiro.session.OnlineSessionDAO;
 import com.ruoyi.project.system.online.domain.OnlineSession;
 import com.ruoyi.project.system.user.domain.User;
+
 
 public class OnlineSessionFilter extends AccessControlFilter
 {
@@ -86,6 +87,7 @@ public class OnlineSessionFilter extends AccessControlFilter
     }
 
     // 跳转到登录页
+    @Override
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException
     {
         String loginUrl = getForceLogoutUrl();

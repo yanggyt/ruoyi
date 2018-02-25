@@ -1,4 +1,4 @@
-package com.ruoyi.project.shiro.web.sync;
+package com.ruoyi.project.shiro.web.filter.sync;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -8,6 +8,11 @@ import com.ruoyi.project.shiro.ShiroConstants;
 import com.ruoyi.project.shiro.session.OnlineSessionDAO;
 import com.ruoyi.project.system.online.domain.OnlineSession;
 
+/**
+ * 同步Session数据到Db
+ * 
+ * @author yangzz
+ */
 public class SyncOnlineSessionFilter extends PathMatchingFilter
 {
     @Autowired

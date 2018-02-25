@@ -37,11 +37,13 @@ public class OnlineSession extends SimpleSession
     // 属性是否改变 优化session数据同步
     private transient boolean attributeChanged = false;
 
+    @Override
     public String getHost()
     {
         return host;
     }
 
+    @Override
     public void setHost(String host)
     {
         this.host = host;
