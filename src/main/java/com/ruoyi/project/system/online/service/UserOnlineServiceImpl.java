@@ -75,7 +75,7 @@ public class UserOnlineServiceImpl implements IUserOnlineService
         {
             return;
         }
-        session.setTimeout(0);
+        session.setTimeout(1000);
         userOnlineDao.deleteByOnlineId(sessionId);
     }
 }

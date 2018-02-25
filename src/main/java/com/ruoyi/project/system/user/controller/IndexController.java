@@ -35,7 +35,7 @@ public class IndexController extends BaseController
     }
 
     // 系统介绍
-    @GetMapping("/main")
+    @GetMapping("/system/main")
     public String main()
     {
         return "main";

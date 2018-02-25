@@ -110,10 +110,10 @@ insert into sys_menu values('4', '角色管理', '1', '2', '/system/role/roleLis
 insert into sys_menu values('5', '菜单管理', '1', '3', '/system/menu/menuList',       'C', '0', 'system:menu:list',    '#', '2018-01-01', '', 'system', '菜单管理菜单');
 insert into sys_menu values('6', '操作日志', '1', '4', '/system/operlog/operlogList', 'C', '0', 'system:operlog:list', '#', '2018-01-01', '', 'system', '操作日志菜单');
 insert into sys_menu values('7', '登录日志', '1', '5', '/system/userlog/userlogList', 'C', '0', 'system:userlog:list', '#', '2018-01-01', '', 'system', '登录日志菜单');
-insert into sys_menu values('8', '在线用户', '2', '1', '/monitor/userOnline',         'C', '0', 'monitor:userOnline', '#', '2018-01-01', '', 'system', '在线用户菜单');
+insert into sys_menu values('8', '在线用户', '2', '1', '/monitor/online',             'C', '0', 'monitor:online',      '#', '2018-01-01', '', 'system', '在线用户菜单');
 insert into sys_menu values('9', '数据监控', '2', '2', '/monitor/druid/index.html',   'C', '0', 'monitor:druid:list',  '#', '2018-01-01', '', 'system', '数据监控菜单');
 --- 三级用户按钮
-insert into sys_menu values('10',  '用户新增', '3', '1', '/system/user/add',       'F', '0', 'sys:user:add',       '#', '2018-01-01', '', 'system', '用户管理新增按钮');
+insert into sys_menu values('10', '用户新增', '3', '1', '/system/user/add',       'F', '0', 'sys:user:add',       '#', '2018-01-01', '', 'system', '用户管理新增按钮');
 insert into sys_menu values('11', '用户修改', '3', '2', '/system/user/update',    'F', '0', 'sys:user:update',    '#', '2018-01-01', '', 'system', '用户管理修改按钮');
 insert into sys_menu values('12', '用户删除', '3', '3', '/system/user/delete',    'F', '0', 'sys:user:delete',    '#', '2018-01-01', '', 'system', '用户管理删除按钮');
 insert into sys_menu values('13', '用户查询', '3', '4', '/system/user/select',    'F', '0', 'sys:user:select',    '#', '2018-01-01', '', 'system', '用户管理查询按钮');
@@ -254,22 +254,22 @@ insert into sys_logininfor values(1, 'admin', 0 , '127.0.0.1', 'Chrome 45', 'Win
 -- ----------------------------
 drop table if exists sys_user_online;
 create table sys_user_online (
-  sessionId 	    varchar(100) default ''              	comment '用户会话id',
-  user_id 		    int(11)      default 0                  comment '用户ID',
-  login_name 	    varchar(50)  default '' 		 	 	comment '登录名',
+  sessionId 	    varchar(50)  default ''              	comment '用户会话id',
+  login_name 	    varchar(50)  default '' 		 	 	comment '登录名称',
+  dept_name 		varchar(50)  default '' 		 	 	comment '部门名称',
+  role_name 		varchar(50)  default '' 		 	 	comment '角色名称',
   ipaddr 		    varchar(50)  default '' 			 	comment '登录IP地址',
   browser  		    varchar(50)  default '' 			 	comment '浏览器类型',
   os      		    varchar(50)  default '' 			 	comment '操作系统',
-  status      	    varchar(10)  default '' 			 	comment '在线状态',
+  status      	    varchar(10)  default '' 			 	comment '在线状态on_line在线off_line离线',
   start_timestsamp 	timestamp    default current_timestamp  comment 'session创建时间',
   last_access_time  timestamp    default current_timestamp  comment 'session最后访问时间',
-  timeout 	        int(5) 		 default 0 			 	 	comment '超时时间',
-  onlineSession     varchar(50)  default '' 			 	comment '备份的当前用户会话',
+  expireTime 	    int(5) 		 default 0 			 	    comment '超时时间，单位为分钟',
   primary key (sessionId)
 ) engine=innodb default charset=utf8;
 
-insert into sys_user_online(sessionId, user_id, login_name, ipaddr, browser, os, status) 
-values('c3b252c3-2229-4be4-a5f7-7aba4b0c314c', 1, 'admin', '127.0.0.1', 'Chrome 45', 'Windows 7', 'on_line');
+insert into sys_user_online(sessionId, login_name, dept_name, login_name, ipaddr, browser, os, status) 
+values('c3b252c3-2229-4be4-a5f7-7aba4b0c314c', 'admin', '开发部', '管理员', '127.0.0.1', 'Chrome 45', 'Windows 7');
 
 -- 用户部门表
 SELECT * FROM sys_dept;

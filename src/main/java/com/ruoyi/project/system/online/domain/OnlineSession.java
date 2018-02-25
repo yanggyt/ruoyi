@@ -1,8 +1,5 @@
 package com.ruoyi.project.system.online.domain;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import org.apache.shiro.session.mgt.SimpleSession;
 
 /**
@@ -11,47 +8,19 @@ import org.apache.shiro.session.mgt.SimpleSession;
 public class OnlineSession extends SimpleSession
 {
 
-    // Serialization reminder:
-    // You _MUST_ change this number if you introduce a change to this class
-    // that is NOT serialization backwards compatible. Serialization-compatible
-    // changes do not require a change to this number. If you need to generate
-    // a new number in this case, use the JDK's 'serialver' program to generate
-    // it.
-    private static final long serialVersionUID = -7125642695178165650L;
-    static int bitIndexCounter = 0;
-    private static final int USER_ID_BIT_MASK = 1 << bitIndexCounter++;
-    private static final int USER_AGENT_BIT_MASK = 1 << bitIndexCounter++;
-    private static final int STATUS_BIT_MASK = 1 << bitIndexCounter++;
-    private static final int USERNAME_BIT_MASK = 1 << bitIndexCounter++;
-    // private static final int REMEMBER_ME_BIT_MASK = 1 << bitIndexCounter++;
+    private static final long serialVersionUID = 1L;
 
-    public static enum OnlineStatus
-    {
-        on_line("在线"), hidden("隐身"), force_logout("强制退出");
-        private final String info;
+    // 用户ID
+    private Long userId;
 
-        private OnlineStatus(String info)
-        {
-            this.info = info;
-        }
-
-        public String getInfo()
-        {
-            return info;
-        }
-
-        @Override
-        public String toString()
-        {
-            return super.toString();
-        }
-    }
-
-    // 当前登录的用户Id
-    private String userId;
-
-    // 登录名
+    // 用户名称
     private String loginName;
+
+    // 部门名称
+    private String deptName;
+
+    // 角色名称
+    private String roleName;
 
     // 登录IP地址
     private String host;
@@ -65,35 +34,8 @@ public class OnlineSession extends SimpleSession
     // 在线状态
     private OnlineStatus status = OnlineStatus.on_line;
 
-    public OnlineSession()
-    {
-        super();
-    }
-
-    public OnlineSession(String host)
-    {
-        super(host);
-    }
-
-    public String getUserId()
-    {
-        return userId;
-    }
-
-    public void setUserId(String userId)
-    {
-        this.userId = userId;
-    }
-
-    public String getLoginName()
-    {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName)
-    {
-        this.loginName = loginName;
-    }
+    // 属性是否改变 优化session数据同步
+    private transient boolean attributeChanged = false;
 
     public String getHost()
     {
@@ -125,6 +67,46 @@ public class OnlineSession extends SimpleSession
         this.os = os;
     }
 
+    public Long getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(Long userId)
+    {
+        this.userId = userId;
+    }
+
+    public String getLoginName()
+    {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName)
+    {
+        this.loginName = loginName;
+    }
+
+    public String getDeptName()
+    {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName)
+    {
+        this.deptName = deptName;
+    }
+
+    public String getRoleName()
+    {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName)
+    {
+        this.roleName = roleName;
+    }
+
     public OnlineStatus getStatus()
     {
         return status;
@@ -134,11 +116,6 @@ public class OnlineSession extends SimpleSession
     {
         this.status = status;
     }
-
-    /**
-     * 属性是否改变 优化session数据同步
-     */
-    private transient boolean attributeChanged = false;
 
     public void markAttributeChanged()
     {
@@ -167,101 +144,20 @@ public class OnlineSession extends SimpleSession
         return super.removeAttribute(key);
     }
 
-    /**
-     * Serializes this object to the specified output stream for JDK Serialization.
-     *
-     * @param out output stream used for Object serialization.
-     * @throws java.io.IOException if any of this object's fields cannot be written to the stream.
-     * @since 1.0
-     */
-    private void writeObject(ObjectOutputStream out) throws IOException
+    public static enum OnlineStatus
     {
-        out.defaultWriteObject();
-        short alteredFieldsBitMask = getAlteredFieldsBitMask();
-        out.writeShort(alteredFieldsBitMask);
-        if (userId != null)
+        on_line("在线"), off_line("离线");
+        private final String info;
+
+        private OnlineStatus(String info)
         {
-            out.writeObject(userId);
-        }
-        if (browser != null)
-        {
-            out.writeObject(browser);
-        }
-        if (status != null)
-        {
-            out.writeObject(status);
+            this.info = info;
         }
 
-        if (loginName != null)
+        public String getInfo()
         {
-            out.writeObject(loginName);
+            return info;
         }
     }
 
-    /**
-     * Reconstitutes this object based on the specified InputStream for JDK Serialization.
-     *
-     * @param in the input stream to use for reading data to populate this object.
-     * @throws IOException if the input stream cannot be used.
-     * @throws ClassNotFoundException if a required class needed for instantiation is not available in the present JVM
-     * @since 1.0
-     */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-    {
-        in.defaultReadObject();
-        short bitMask = in.readShort();
-
-        if (isFieldPresent(bitMask, USER_ID_BIT_MASK))
-        {
-            this.userId = (String) in.readObject();
-        }
-        if (isFieldPresent(bitMask, USER_AGENT_BIT_MASK))
-        {
-            this.browser = (String) in.readObject();
-        }
-        if (isFieldPresent(bitMask, STATUS_BIT_MASK))
-        {
-            this.status = (OnlineStatus) in.readObject();
-        }
-        if (isFieldPresent(bitMask, USERNAME_BIT_MASK))
-        {
-            this.loginName = (String) in.readObject();
-        }
-    }
-
-    /**
-     * Returns a bit mask used during serialization indicating which fields have been serialized. Fields that have been
-     * altered (not null and/or not retaining the class defaults) will be serialized and have 1 in their respective
-     * index, fields that are null and/or retain class default values have 0.
-     *
-     * @return a bit mask used during serialization indicating which fields have been serialized.
-     * @since 1.0
-     */
-    private short getAlteredFieldsBitMask()
-    {
-        int bitMask = 0;
-        bitMask = userId != null ? bitMask | USER_ID_BIT_MASK : bitMask;
-        bitMask = browser != null ? bitMask | USER_AGENT_BIT_MASK : bitMask;
-        bitMask = status != null ? bitMask | STATUS_BIT_MASK : bitMask;
-        bitMask = loginName != null ? bitMask | USERNAME_BIT_MASK : bitMask;
-        return (short) bitMask;
-    }
-
-    /**
-     * Returns {@code true} if the given {@code bitMask} argument indicates that the specified field has been serialized
-     * and therefore should be read during deserialization, {@code false} otherwise.
-     *
-     * @param bitMask the aggregate bitmask for all fields that have been serialized. Individual bits represent the
-     *            fields that have been serialized. A bit set to 1 means that corresponding field has been serialized, 0
-     *            means it hasn't been serialized.
-     * @param fieldBitMask the field bit mask constant identifying which bit to inspect (corresponds to a class
-     *            attribute).
-     * @return {@code true} if the given {@code bitMask} argument indicates that the specified field has been serialized
-     *         and therefore should be read during deserialization, {@code false} otherwise.
-     * @since 1.0
-     */
-    private static boolean isFieldPresent(short bitMask, int fieldBitMask)
-    {
-        return (bitMask & fieldBitMask) != 0;
-    }
 }

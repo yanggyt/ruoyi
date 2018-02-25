@@ -2,8 +2,7 @@ package com.ruoyi.project.system.online.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import com.ruoyi.common.utils.security.ShiroUtils;
+import com.ruoyi.project.system.online.domain.OnlineSession.OnlineStatus;
 
 /**
  * 当前在线会话 sys_user_online
@@ -17,14 +16,17 @@ public class UserOnline implements Serializable
     // 用户会话id
     private String sessionId;
 
-    // 当前登录的用户Id
-    private String userId;
+    // 部门名称
+    private String deptName;
 
-    // 登录名
+    // 登录名称
     private String loginName;
 
+    // 角色名称
+    private String roleName;
+
     // 登录IP地址
-    private String host;
+    private String ipaddr;
 
     // 浏览器类型
     private String browser;
@@ -32,17 +34,17 @@ public class UserOnline implements Serializable
     // 操作系统
     private String os;
 
-    // 在线状态
-    private OnlineSession.OnlineStatus status = OnlineSession.OnlineStatus.on_line;
-
-    // 在线状态
+    // session创建时间
     private Date startTimestamp;
 
     // session最后访问时间
     private Date lastAccessTime;
 
-    // 超时时间
-    private Long timeout;
+    // 超时时间，单位为分钟
+    private Long expireTime;
+
+    // 在线状态
+    private OnlineStatus status = OnlineStatus.on_line;
 
     // 备份的当前用户会话
     private OnlineSession session;
@@ -57,14 +59,14 @@ public class UserOnline implements Serializable
         this.sessionId = sessionId;
     }
 
-    public String getUserId()
+    public String getDeptName()
     {
-        return userId;
+        return deptName;
     }
 
-    public void setUserId(String userId)
+    public void setDeptName(String deptName)
     {
-        this.userId = userId;
+        this.deptName = deptName;
     }
 
     public String getLoginName()
@@ -77,14 +79,24 @@ public class UserOnline implements Serializable
         this.loginName = loginName;
     }
 
-    public String getHost()
+    public String getRoleName()
     {
-        return host;
+        return roleName;
     }
 
-    public void setHost(String host)
+    public void setRoleName(String roleName)
     {
-        this.host = host;
+        this.roleName = roleName;
+    }
+
+    public String getIpaddr()
+    {
+        return ipaddr;
+    }
+
+    public void setIpaddr(String ipaddr)
+    {
+        this.ipaddr = ipaddr;
     }
 
     public String getBrowser()
@@ -107,16 +119,6 @@ public class UserOnline implements Serializable
         this.os = os;
     }
 
-    public OnlineSession.OnlineStatus getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus(OnlineSession.OnlineStatus status)
-    {
-        this.status = status;
-    }
-
     public Date getStartTimestamp()
     {
         return startTimestamp;
@@ -137,14 +139,24 @@ public class UserOnline implements Serializable
         this.lastAccessTime = lastAccessTime;
     }
 
-    public Long getTimeout()
+    public Long getExpireTime()
     {
-        return timeout;
+        return expireTime;
     }
 
-    public void setTimeout(Long timeout)
+    public void setExpireTime(Long expireTime)
     {
-        this.timeout = timeout;
+        this.expireTime = expireTime;
+    }
+
+    public OnlineStatus getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(OnlineStatus status)
+    {
+        this.status = status;
     }
 
     public OnlineSession getSession()
@@ -157,20 +169,24 @@ public class UserOnline implements Serializable
         this.session = session;
     }
 
+    /**
+     * 设置session对象
+     */
     public static final UserOnline fromOnlineSession(OnlineSession session)
     {
         UserOnline online = new UserOnline();
         online.setSessionId(String.valueOf(session.getId()));
-        online.setUserId(ShiroUtils.getUser().getUserId() + "");
-        online.setLoginName(ShiroUtils.getUser().getLoginName());
+        online.setDeptName(session.getDeptName());
+        online.setLoginName(session.getLoginName());
+        online.setRoleName(session.getRoleName());
         online.setStartTimestamp(session.getStartTimestamp());
         online.setLastAccessTime(session.getLastAccessTime());
-        online.setTimeout(session.getTimeout());
-        online.setHost(session.getHost());
+        online.setExpireTime(session.getTimeout());
+        online.setIpaddr(session.getHost());
         online.setBrowser(session.getBrowser());
         online.setOs(session.getOs());
+        online.setStatus(session.getStatus());
         online.setSession(session);
-
         return online;
     }
 

@@ -1,6 +1,9 @@
 package com.ruoyi.framework.config;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.servlet.Filter;
 
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
@@ -20,6 +23,8 @@ import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.project.shiro.realm.UserRealm;
 import com.ruoyi.project.shiro.session.OnlineSessionDAO;
 import com.ruoyi.project.shiro.session.OnlineSessionFactory;
+import com.ruoyi.project.shiro.web.OnlineSessionFilter;
+import com.ruoyi.project.shiro.web.sync.SyncOnlineSessionFilter;
 import com.ruoyi.project.system.menu.service.MenuServiceImpl;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
@@ -140,10 +145,41 @@ public class ShiroConfig
         // 系统权限列表
         MenuServiceImpl menuService = SpringUtils.getBean(MenuServiceImpl.class);
         filterChainDefinitionMap.putAll(menuService.selectPermsAll());
+
+        Map<String, Filter> filters = new LinkedHashMap<>();
+        filters.put("onlineSession", onlineSessionFilter());
+        filters.put("syncOnlineSession", syncOnlineSessionFilter());
+        shiroFilterFactoryBean.setFilters(filters);
+
         // 所有请求需要认证
         filterChainDefinitionMap.put("/**", "authc");
+        // 系统请求记录当前会话
+        filterChainDefinitionMap.put("/system/**", "onlineSession,syncOnlineSession");
+        filterChainDefinitionMap.put("/monitor/**", "onlineSession,syncOnlineSession");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
         return shiroFilterFactoryBean;
+    }
+
+    /**
+     * 自定义在线用户处理过滤器
+     */
+    @Bean
+    OnlineSessionFilter onlineSessionFilter()
+    {
+        OnlineSessionFilter onlineSessionFilter = new OnlineSessionFilter();
+        onlineSessionFilter.setLoginUrl("/login");
+        return onlineSessionFilter;
+    }
+
+    /**
+     * 自定义在线用户同步过滤器
+     */
+    @Bean
+    SyncOnlineSessionFilter syncOnlineSessionFilter()
+    {
+        SyncOnlineSessionFilter syncOnlineSessionFilter = new SyncOnlineSessionFilter();
+        return syncOnlineSessionFilter;
     }
 
     /**

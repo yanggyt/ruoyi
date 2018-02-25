@@ -77,35 +77,22 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     /**
      * 更新会话；如更新会话最后访问时间/停止会话/设置超时时间/设置移除属性等会调用
      */
-    @Override
-    protected void doUpdate(Session session)
+    public void syncToDb(OnlineSession onlineSession)
     {
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         String uri = request.getServletPath();
-        // 如果是静态文件，则不更新SESSION
-        if (checkStaticLink(uri))
-        {
-            return;
-        }
-        System.out.println("==============update url=================" + uri);
-        if (session == null)
-        {
-            return;
-        }
-
-        OnlineSession onlineSession = (OnlineSession) session;
-
-        Date lastSyncTimestamp = (Date) session.getAttribute(LAST_SYNC_DB_TIMESTAMP);
+        System.out.println("===============update================" + uri);
+        Date lastSyncTimestamp = (Date) onlineSession.getAttribute(LAST_SYNC_DB_TIMESTAMP);
         if (lastSyncTimestamp != null)
         {
             boolean needSync = true;
-            long deltaTime = session.getLastAccessTime().getTime() - lastSyncTimestamp.getTime();
+            long deltaTime = onlineSession.getLastAccessTime().getTime() - lastSyncTimestamp.getTime();
             if (deltaTime < dbSyncPeriod)
             {
                 // 时间差不足 无需同步
                 needSync = false;
             }
-            boolean isGuest = session.getId() == null;
+            boolean isGuest = onlineSession.getUserId() == null || onlineSession.getUserId() == 0L;
 
             // 如果不是游客 且session 数据变更了 同步
             if (isGuest == false && onlineSession.isAttributeChanged())
@@ -118,8 +105,7 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
                 return;
             }
         }
-        session.setAttribute(LAST_SYNC_DB_TIMESTAMP, session.getLastAccessTime());
-        // session.setTimeout(expireTime);
+        onlineSession.setAttribute(LAST_SYNC_DB_TIMESTAMP, onlineSession.getLastAccessTime());
         // 更新完后 重置标识
         if (onlineSession.isAttributeChanged())
         {
@@ -134,14 +120,16 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     @Override
     protected void doDelete(Session session)
     {
-        System.out.println("===============delete================");
+        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
+        String uri = request.getServletPath();
+        System.out.println("===============delete================" + uri);
         OnlineSession onlineSession = (OnlineSession) session;
         if (null == onlineSession)
         {
             return;
         }
-        String sessionId = String.valueOf(onlineSession.getId());
-        onlineService.deleteByOnlineId(sessionId);
+        onlineSession.setStatus(OnlineSession.OnlineStatus.off_line);
+        onlineService.deleteByOnlineId(String.valueOf(onlineSession.getId()));
     }
 
     public long getExpireTime()
@@ -163,7 +151,8 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     {
         boolean linkFlag = false;
         // 如果是登录请求，则不更新SESSION
-        if (StringUtils.endsWithAny(uri, new String[] { "/login", "/logout", "/index", "/", "/favicon.ico" }))
+        if (StringUtils.startsWithAny(uri,
+                new String[] { "/monitor/online/forceLogout", "/login", "/logout", "/index", "/favicon.ico" }))
         {
             linkFlag = true;
         }

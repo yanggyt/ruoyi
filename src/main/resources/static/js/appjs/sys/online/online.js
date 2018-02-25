@@ -1,4 +1,4 @@
-var prefix = "/sys/online"
+var prefix = "/monitor/online"
 $(function() {
 	load();
 });
@@ -47,28 +47,32 @@ function load() {
 									checkbox : true
 								},
 								{
-									field : 'id', // 列字段名
-									title : '序号' // 列标题
+									field : 'sessionId', // 列字段名
+									title : '会话编号' // 列标题
 								},
 								{
-									field : 'username',
-									title : '用户名'
+									field : 'loginName',
+									title : '登录名称'
 								},
 								{
-									field : 'host',
+									field : 'deptName',
+									title : '部门名称'
+								},
+								{
+									field : 'roleName',
+									title : '角色名称'
+								},
+								{
+									field : 'ipaddr',
 									title : '主机'
 								},
 								{
-									field : 'startTimestamp',
-									title : '登录时间'
+									field : 'browser',
+									title : '浏览器'
 								},
 								{
-									field : 'lastAccessTime',
-									title : '最后访问时间'
-								},
-								{
-									field : 'timeout',
-									title : '过期时间'
+									field : 'os',
+									title : '操作系统'
 								},
 								{
 									field : 'status',
@@ -83,12 +87,20 @@ function load() {
 									}
 								},
 								{
+									field : 'startTimestamp',
+									title : '登录时间'
+								},
+								{
+									field : 'lastAccessTime',
+									title : '最后访问时间'
+								},
+								{
 									title : '操作',
 									field : 'id',
 									align : 'center',
 									formatter : function(value, row, index) {
-										var d = '<a class="btn btn-warning btn-sm" href="#" title="删除"  mce_href="#" onclick="forceLogout(\''
-												+ row.id
+										var d = '<a class="btn btn-warning btn-sm" href="#" title="删除" onclick="forceLogout(\''
+												+ row.sessionId
 												+ '\')"><i class="fa fa-remove"></i></a> ';
 										return d;
 									}
