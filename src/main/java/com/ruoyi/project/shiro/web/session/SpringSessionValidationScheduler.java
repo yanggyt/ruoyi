@@ -3,24 +3,21 @@ package com.ruoyi.project.shiro.web.session;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.SessionValidationScheduler;
 import org.apache.shiro.session.mgt.ValidatingSessionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 自定义任务调度器完成
  * 
  * @author yangzz
  */
+@Slf4j
 public class SpringSessionValidationScheduler implements SessionValidationScheduler
 {
 
     public static final long DEFAULT_SESSION_VALIDATION_INTERVAL = DefaultSessionManager.DEFAULT_SESSION_VALIDATION_INTERVAL;
-
-    private static final Logger log = LoggerFactory.getLogger(SpringSessionValidationScheduler.class);
 
     /**
      * 定时器，用于处理超时的挂起请求，也用于连接断开时的重连。

@@ -6,19 +6,17 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ruoyi.project.shiro.exception.base.DaoException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 数据DAO层通用数据处理
  * 
  * @author yangzz
  */
+@Slf4j
 public class DynamicObjectBaseDao
 {
-    private static final Logger log = LoggerFactory.getLogger(DynamicObjectBaseDao.class);
-
     @Resource(name = "sqlSessionTemplate")
     private SqlSessionTemplate sqlSessionTemplate;
 

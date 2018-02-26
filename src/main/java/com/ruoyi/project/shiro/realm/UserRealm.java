@@ -14,8 +14,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ruoyi.common.tools.StringTools;
 import com.ruoyi.common.utils.security.ShiroUtils;
@@ -27,16 +25,16 @@ import com.ruoyi.project.shiro.exception.user.UserPasswordNotMatchException;
 import com.ruoyi.project.shiro.exception.user.UserPasswordRetryLimitExceedException;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.user.domain.User;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 自定义Realm 处理登录 权限
  * 
  * @author yangzz
  */
+@Slf4j
 public class UserRealm extends AuthorizingRealm
 {
-
-    private static final Logger log = LoggerFactory.getLogger(UserRealm.class);
 
     @Autowired
     private IMenuService menuService;

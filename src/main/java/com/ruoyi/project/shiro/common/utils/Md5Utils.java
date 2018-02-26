@@ -1,7 +1,6 @@
 package com.ruoyi.project.shiro.common.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import java.security.MessageDigest;
 
 /**
@@ -9,9 +8,9 @@ import java.security.MessageDigest;
  * 
  * @author yangzz
  */
+@Slf4j
 public class Md5Utils
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Md5Utils.class);
 
     private static byte[] md5(String s)
     {
@@ -26,7 +25,7 @@ public class Md5Utils
         }
         catch (Exception e)
         {
-            LOGGER.error("MD5 Error...", e);
+            log.error("MD5 Error...", e);
         }
         return null;
     }
@@ -59,7 +58,7 @@ public class Md5Utils
         }
         catch (Exception e)
         {
-            LOGGER.error("not supported charset...{}", e);
+            log.error("not supported charset...{}", e);
             return s;
         }
     }

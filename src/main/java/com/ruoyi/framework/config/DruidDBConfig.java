@@ -1,18 +1,17 @@
 package com.ruoyi.framework.config;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.support.http.StatViewServlet;
-import com.alibaba.druid.support.http.WebStatFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import javax.sql.DataSource;
-import java.sql.SQLException;
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 数据库信息配置加载
@@ -20,10 +19,9 @@ import java.sql.SQLException;
  * @author yangzz
  */
 @Configuration
+@Slf4j
 public class DruidDBConfig
 {
-    private Logger logger = LoggerFactory.getLogger(DruidDBConfig.class);
-    
     @Value("${spring.datasource.url}")
     private String dbUrl;
 
@@ -108,7 +106,7 @@ public class DruidDBConfig
         }
         catch (SQLException e)
         {
-            logger.error("druid configuration initialization filter", e);
+            log.error("druid configuration initialization filter", e);
         }
         datasource.setConnectionProperties(connectionProperties);
 

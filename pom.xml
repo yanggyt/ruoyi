@@ -135,6 +135,12 @@
 			<artifactId>UserAgentUtils</artifactId>
 			<version>1.19</version>
 		</dependency>
+		<!--lombok依赖-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+        </dependency>
 		<!-- quartz -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
