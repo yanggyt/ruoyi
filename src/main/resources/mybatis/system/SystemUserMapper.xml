@@ -17,7 +17,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="refuseDes"    column="refuse_des"   />
 		<result property="createTime"   column="create_time"  />
 		<association property="dept"    column="dept_id" javaType="Dept" resultMap="deptResult"/>
-		<association property="role"    column="role_id" javaType="Role" resultMap="roleResult"/>
 	</resultMap>
 	
 	<resultMap id="deptResult" type="Dept">
@@ -28,30 +27,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="status"   column="dept_status" />
 	</resultMap>
 	
-	<resultMap id="roleResult" type="Role">
-		<id     property="roleId"     column="role_id"      />
-		<result property="roleName"   column="role_name"    />
-		<result property="status"     column="role_status"  />
-		<result property="createTime" column="create_time"  />
-		<result property="updateTime" column="update_time"  />
-		<result property="updateBy"   column="update_by"    />
-		<result property="remark"     column="remark"       />
-	</resultMap>
-	
-	
-
 	<select id="queryUserListByCond" parameterType="User" resultMap="UserResult">
 		select * from sys_user
 	</select>
 	
 	<select id="selectByUserName" parameterType="String" resultMap="UserResult">
 		select  u.user_id, u.dept_id, u.login_name, u.user_name, u.email, u.phonenumber, u.password, u.salt, u.status, u.refuse_des, u.create_time,
-       		    d.dept_id, d.parent_id, d.dept_name, d.order_num, d.status as dept_status,
-       		    r.role_id, r.role_name, r.status as role_status, r.remark
+       		    d.dept_id, d.parent_id, d.dept_name, d.order_num, d.status as dept_status
 		from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
-			 left join sys_role r on ur.role_id = r.role_id
 		where u.login_name = #{username}
 	</select>
 

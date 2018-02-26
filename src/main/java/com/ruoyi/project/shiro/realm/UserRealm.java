@@ -1,6 +1,5 @@
 package com.ruoyi.project.shiro.realm;
 
-import java.util.Set;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -15,7 +14,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.ruoyi.common.tools.StringTools;
+
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.project.shiro.exception.JCaptchaException;
 import com.ruoyi.project.shiro.exception.user.RoleBlockedException;
@@ -24,7 +23,9 @@ import com.ruoyi.project.shiro.exception.user.UserNotExistsException;
 import com.ruoyi.project.shiro.exception.user.UserPasswordNotMatchException;
 import com.ruoyi.project.shiro.exception.user.UserPasswordRetryLimitExceedException;
 import com.ruoyi.project.system.menu.service.IMenuService;
+import com.ruoyi.project.system.role.service.IRoleService;
 import com.ruoyi.project.system.user.domain.User;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -38,6 +39,9 @@ public class UserRealm extends AuthorizingRealm
 
     @Autowired
     private IMenuService menuService;
+    
+    @Autowired
+    private IRoleService roleService;
 
     @Autowired
     private LoginService loginService;
@@ -49,13 +53,11 @@ public class UserRealm extends AuthorizingRealm
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0)
     {
         Long userId = ShiroUtils.getUserId();
-        Set<String> perms = menuService.selectPermsByUserId(userId);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        if (StringTools.isNotEmpty(perms))
-        {
-            // // 权限加入AuthorizationInfo认证对象
-            info.setStringPermissions(perms);
-        }
+        // 角色加入AuthorizationInfo认证对象
+        info.setRoles(roleService.selectRolesByUserId(userId));
+        // 权限加入AuthorizationInfo认证对象
+        info.setStringPermissions(menuService.selectPermsByUserId(userId));
         return info;
     }
 

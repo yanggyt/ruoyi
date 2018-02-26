@@ -8,28 +8,29 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.project.shiro.ShiroConstants;
 import com.ruoyi.project.shiro.session.OnlineSessionDAO;
 import com.ruoyi.project.system.online.domain.OnlineSession;
 import com.ruoyi.project.system.user.domain.User;
 
-
+/**
+ * 自定义访问控制
+ * @author yangzz
+ *
+ */
 public class OnlineSessionFilter extends AccessControlFilter
 {
 
     /**
      * 强制退出后重定向的地址
      */
-    private String forceLogoutUrl = "/login";
+    @Value("${shiro.user.loginUrl}")
+    private String loginUrl;
 
     @Autowired
     private OnlineSessionDAO onlineSessionDAO;
-
-    public String getForceLogoutUrl()
-    {
-        return forceLogoutUrl;
-    }
 
     /**
      * 表示是否允许访问；mappedValue就是[urls]配置中拦截器参数部分，如果允许访问返回true，否则false；
@@ -58,7 +59,6 @@ public class OnlineSessionFilter extends AccessControlFilter
                     onlineSession.setUserId(user.getUserId());
                     onlineSession.setLoginName(user.getLoginName());
                     onlineSession.setDeptName(user.getDept().getDeptName());
-                    onlineSession.setRoleName(user.getRole().getRoleName());
                     onlineSession.markAttributeChanged();
                 }
             }
@@ -90,7 +90,6 @@ public class OnlineSessionFilter extends AccessControlFilter
     @Override
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException
     {
-        String loginUrl = getForceLogoutUrl();
         WebUtils.issueRedirect(request, response, loginUrl);
     }
 

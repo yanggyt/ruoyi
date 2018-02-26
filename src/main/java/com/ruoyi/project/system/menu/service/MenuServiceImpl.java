@@ -17,7 +17,7 @@ import com.ruoyi.project.system.menu.domain.Menu;
 import com.ruoyi.project.util.TreeUtil;
 
 /**
- * 用户 业务层处理
+ * 菜单 业务层处理
  * 
  * @author yangzz
  */

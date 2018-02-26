@@ -42,7 +42,15 @@ public class ShiroConfig
     // 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
     @Value("${shiro.session.validationInterval}")
     private int validationInterval;
-    
+
+    // 登录地址
+    @Value("${shiro.user.loginUrl}")
+    private String loginUrl;
+
+    // 权限认证失败地址
+    @Value("${shiro.user.unauthorizedUrl}")
+    private String unauthorizedUrl;
+
     @Autowired
     private IMenuService menuService;
 
@@ -174,12 +182,12 @@ public class ShiroConfig
         // Shiro的核心安全接口,这个属性是必须的
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 身份认证失败，则跳转到登录页面的配置
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setLoginUrl(loginUrl);
         // 权限认证失败，则跳转到指定页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/unauth");
+        shiroFilterFactoryBean.setUnauthorizedUrl(unauthorizedUrl);
         // 注销成功，则跳转到指定页面
         LogoutFilter logoutFilter = new LogoutFilter();
-        logoutFilter.setRedirectUrl("/login");
+        logoutFilter.setRedirectUrl(loginUrl);
         // Shiro连接约束配置，即过滤链的定义
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 对静态资源设置匿名访问
@@ -219,7 +227,7 @@ public class ShiroConfig
     public OnlineSessionFilter onlineSessionFilter()
     {
         OnlineSessionFilter onlineSessionFilter = new OnlineSessionFilter();
-        onlineSessionFilter.setLoginUrl("/login");
+        onlineSessionFilter.setLoginUrl(loginUrl);
         return onlineSessionFilter;
     }
 

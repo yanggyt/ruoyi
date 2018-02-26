@@ -3,7 +3,6 @@ package com.ruoyi.project.shiro.realm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
 import com.ruoyi.framework.constant.CommonConstant;
 import com.ruoyi.project.shiro.common.Constants;
 import com.ruoyi.project.shiro.common.utils.MessageUtils;
@@ -72,12 +71,6 @@ public class LoginService
         {
             SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("user.blocked", user.getRefuseDes()));
             throw new UserBlockedException(user.getRefuseDes());
-        }
-        
-        if (Constants.ROLE_BLOCKED.equals(user.getRole().getStatus()))
-        {
-            SystemLogUtils.log(username, CommonConstant.LOGIN_FAIL, MessageUtils.message("role.blocked", user.getRole().getRemark()));
-            throw new RoleBlockedException(user.getRole().getRemark());
         }
         
         SystemLogUtils.log(username, CommonConstant.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));

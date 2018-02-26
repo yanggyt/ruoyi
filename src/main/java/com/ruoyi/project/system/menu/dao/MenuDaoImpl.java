@@ -6,7 +6,7 @@ import com.ruoyi.framework.core.dao.DynamicObjectBaseDao;
 import com.ruoyi.project.system.menu.domain.Menu;
 
 /**
- * 用户 数据层处理
+ * 菜单 数据层处理
  * 
  * @author yangzz
  */

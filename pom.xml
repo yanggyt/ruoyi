@@ -9,8 +9,8 @@
 	<packaging>jar</packaging>
 
 	<name>RuoYi</name>
-	<description>云管理系统</description>
-
+	<description>若依管理系统</description>
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -22,160 +22,141 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<shiro.version>1.3.2</shiro.version>
+		<thymeleaf-extras-shiro.version>1.2.1</thymeleaf-extras-shiro.version>
+		<mybatis-spring-boot-starter.version>1.1.1</mybatis-spring-boot-starter.version>
+		<fastjson.version>1.2.31</fastjson.version>
+		<druid.version>1.0.28</druid.version>		
+		<commons.lang3.version>3.6</commons.lang3.version>			
+		<bitwalker.version>1.19</bitwalker.version>
+		<lombok.version>1.16.18</lombok.version>
 		<mybatisplus-spring-boot-starter.version>1.0.4</mybatisplus-spring-boot-starter.version>
 		<velocity.version>1.7</velocity.version>
 	</properties>
 
 	<dependencies>
+		
+		<!-- SpringBoot 核心包 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
+		<!-- SpringBoot 测试 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- SpringBoot 拦截器 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-		<!--web -->
+		
+		<!-- SpringBoot Web容器 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		<!-- SpringBoot集成thymeleaf模板 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+		
+		<!-- thymeleaf网页解析 -->
 		<dependency>
 			<groupId>net.sourceforge.nekohtml</groupId>
 			<artifactId>nekohtml</artifactId>
 		</dependency>
-		<!--mybatis -->
+
+		<!-- Mysql驱动包 -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+		
+		<!-- SpringBoot集成mybatis框架 -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>1.1.1</version>
+			<version>${mybatis-spring-boot-starter.version}</version>
 		</dependency>
-		<!--druid -->
+		
+		<!--阿里数据库连接池 -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.0.28</version>
+			<version>${druid.version}</version>
 		</dependency>
-		<!--commons -->
+		
+		<!--常用工具类 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.6</version>
+			<version>${commons.lang3.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<version>1.10</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.5</version>
-		</dependency>
-		<!--shiro -->
+				
+		<!--Shiro核心框架 -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
-			<version>1.3.2</version>
+			<version>${shiro.version}</version>
 		</dependency>
+		
+		<!-- Shiro使用Srping框架 -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-spring</artifactId>
-			<version>1.3.2</version>
+			<version>${shiro.version}</version>
 		</dependency>
-		<!-- shiro ehcache -->
+		
+		<!-- Shiro使用EhCache缓存框架 -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-ehcache</artifactId>
-			<version>1.3.2</version>
+			<version>${shiro.version}</version>
 		</dependency>
+		
+		<!-- thymeleaf模板引擎和shiro框架的整合 -->
 		<dependency>
 			<groupId>com.github.theborakompanioni</groupId>
 			<artifactId>thymeleaf-extras-shiro</artifactId>
-			<version>1.2.1</version>
+			<version>${thymeleaf-extras-shiro.version}</version>
 		</dependency>
-		<!-- utils -->
+		
+		<!-- 阿里JSON解析器 -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.31</version>
+			<version>${fastjson.version}</version>
 		</dependency>
-		<!--velocity代码生成使用模板 -->
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity</artifactId>
-			<version>1.7</version>
-		</dependency>
-		<!-- ehchache -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-cache</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-		</dependency>
+		
 		<!-- 解析客户端操作系统、浏览器等 -->
 		<dependency>
 			<groupId>eu.bitwalker</groupId>
 			<artifactId>UserAgentUtils</artifactId>
-			<version>1.19</version>
+			<version>${bitwalker.version}</version>
 		</dependency>
-		<!--lombok依赖-->
+		
+		<!-- 注解POJO -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.18</version>
+            <version>${lombok.version}</version>
         </dependency>
-		<!-- quartz -->
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		
+		<!--Spring框架基本的核心工具-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>4.4</version>
-		</dependency>
-		
+		 
 	</dependencies>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -187,6 +168,7 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 	<repositories>
 		<repository>
 			<id>public</id>
@@ -197,6 +179,7 @@
 			</releases>
 		</repository>
 	</repositories>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>public</id>
@@ -210,4 +193,5 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	
 </project>

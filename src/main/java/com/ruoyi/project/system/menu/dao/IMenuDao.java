@@ -4,7 +4,7 @@ import java.util.List;
 import com.ruoyi.project.system.menu.domain.Menu;
 
 /**
- * 角色表 数据层
+ * 菜单表 数据层
  * 
  * @author yangzz
  */

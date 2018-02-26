@@ -2,13 +2,13 @@ package com.ruoyi.project.shiro.session;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import com.ruoyi.project.system.online.domain.OnlineSession;
 import com.ruoyi.project.system.online.domain.UserOnline;
 import com.ruoyi.project.system.online.service.IUserOnlineService;

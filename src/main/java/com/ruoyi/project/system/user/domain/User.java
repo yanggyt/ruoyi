@@ -1,7 +1,6 @@
 package com.ruoyi.project.system.user.domain;
 
 import com.ruoyi.project.system.dept.domain.Dept;
-import com.ruoyi.project.system.role.domain.Role;
 import lombok.Data;
 
 /**
@@ -36,7 +35,5 @@ public class User
     private String createTime;
     // 部门对象
     private Dept dept;
-    // 角色对象
-    private Role role;
 
 }

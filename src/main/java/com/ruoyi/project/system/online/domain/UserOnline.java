@@ -21,9 +21,6 @@ public class UserOnline
     // 登录名称
     private String loginName;
 
-    // 角色名称
-    private String roleName;
-
     // 登录IP地址
     private String ipaddr;
 
@@ -57,7 +54,6 @@ public class UserOnline
         online.setSessionId(String.valueOf(session.getId()));
         online.setDeptName(session.getDeptName());
         online.setLoginName(session.getLoginName());
-        online.setRoleName(session.getRoleName());
         online.setStartTimestamp(session.getStartTimestamp());
         online.setLastAccessTime(session.getLastAccessTime());
         online.setExpireTime(session.getTimeout());

@@ -19,9 +19,6 @@ public class OnlineSession extends SimpleSession
     // 部门名称
     private String deptName;
 
-    // 角色名称
-    private String roleName;
-
     // 登录IP地址
     private String host;
 
@@ -97,16 +94,6 @@ public class OnlineSession extends SimpleSession
     public void setDeptName(String deptName)
     {
         this.deptName = deptName;
-    }
-
-    public String getRoleName()
-    {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName)
-    {
-        this.roleName = roleName;
     }
 
     public OnlineStatus getStatus()
