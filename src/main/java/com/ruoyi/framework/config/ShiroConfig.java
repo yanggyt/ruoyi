@@ -5,17 +5,16 @@ import java.util.Map;
 import javax.servlet.Filter;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.project.shiro.realm.UserRealm;
 import com.ruoyi.project.shiro.session.OnlineSessionDAO;
 import com.ruoyi.project.shiro.session.OnlineSessionFactory;
@@ -23,8 +22,7 @@ import com.ruoyi.project.shiro.web.filter.online.OnlineSessionFilter;
 import com.ruoyi.project.shiro.web.filter.sync.SyncOnlineSessionFilter;
 import com.ruoyi.project.shiro.web.session.OnlineWebSessionManager;
 import com.ruoyi.project.shiro.web.session.SpringSessionValidationScheduler;
-import com.ruoyi.project.system.menu.service.MenuServiceImpl;
-
+import com.ruoyi.project.system.menu.service.IMenuService;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 
 /**
@@ -39,15 +37,14 @@ public class ShiroConfig
 
     // Session超时时间，单位为毫秒（默认30分钟）
     @Value("${shiro.session.expireTime}")
-    private String expireTime;
+    private int expireTime;
 
-    // 同步session到数据库的周期 单位为毫秒（默认1分钟）
-    @Value("${shiro.session.dbSyncPeriod}")
-    private String dbSyncPeriod;
-
-    // 相隔多久检查一次session的有效性，单位毫秒，默认就是30分钟
+    // 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
     @Value("${shiro.session.validationInterval}")
-    private String validationInterval;
+    private int validationInterval;
+    
+    @Autowired
+    private IMenuService menuService;
 
     /**
      * 缓存管理器 使用Ehcache实现
@@ -64,7 +61,7 @@ public class ShiroConfig
      * 自定义Realm
      */
     @Bean
-    UserRealm userRealm(EhCacheManager cacheManager)
+    public UserRealm userRealm(EhCacheManager cacheManager)
     {
         UserRealm userRealm = new UserRealm();
         userRealm.setCacheManager(cacheManager);
@@ -75,7 +72,7 @@ public class ShiroConfig
      * 自定义sessionDAO会话
      */
     @Bean
-    OnlineSessionDAO sessionDAO()
+    public OnlineSessionDAO sessionDAO()
     {
         OnlineSessionDAO sessionDAO = new OnlineSessionDAO();
         return sessionDAO;
@@ -85,7 +82,7 @@ public class ShiroConfig
      * 自定义sessionFactory会话
      */
     @Bean
-    OnlineSessionFactory sessionFactory()
+    public OnlineSessionFactory sessionFactory()
     {
         OnlineSessionFactory sessionFactory = new OnlineSessionFactory();
         return sessionFactory;
@@ -95,11 +92,11 @@ public class ShiroConfig
      * 自定义sessionFactory调度器
      */
     @Bean
-    SpringSessionValidationScheduler sessionValidationScheduler()
+    public SpringSessionValidationScheduler sessionValidationScheduler()
     {
         SpringSessionValidationScheduler sessionValidationScheduler = new SpringSessionValidationScheduler();
-        // 相隔多久检查一次session的有效性，单位毫秒，默认就是60分钟
-        sessionValidationScheduler.setSessionValidationInterval(60 * 60 * 1000);
+        // 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
+        sessionValidationScheduler.setSessionValidationInterval(validationInterval * 60 * 1000);
         // 设置会话验证调度器进行会话验证时的会话管理器
         sessionValidationScheduler.setSessionManager(sessionValidationManager());
         return sessionValidationScheduler;
@@ -117,7 +114,7 @@ public class ShiroConfig
         // 删除过期的session
         manager.setDeleteInvalidSessions(true);
         // 设置全局session超时时间
-        manager.setGlobalSessionTimeout(sessionDAO().getExpireTime());
+        manager.setGlobalSessionTimeout(expireTime * 60 * 1000);
         // 是否定时检查session
         manager.setSessionValidationSchedulerEnabled(true);
         // 自定义SessionDao
@@ -139,7 +136,7 @@ public class ShiroConfig
         // 删除过期的session
         manager.setDeleteInvalidSessions(true);
         // 设置全局session超时时间
-        manager.setGlobalSessionTimeout(sessionDAO().getExpireTime());
+        manager.setGlobalSessionTimeout(expireTime * 60 * 1000);
         // 定义要使用的无效的Session定时调度器
         manager.setSessionValidationScheduler(sessionValidationScheduler());
         // 是否定时检查session
@@ -155,7 +152,7 @@ public class ShiroConfig
      * 安全管理器
      */
     @Bean
-    SecurityManager securityManager(UserRealm userRealm)
+    public SecurityManager securityManager(UserRealm userRealm)
     {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
@@ -171,7 +168,7 @@ public class ShiroConfig
      * Shiro过滤器配置
      */
     @Bean
-    ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager)
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager)
     {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         // Shiro的核心安全接口,这个属性是必须的
@@ -197,7 +194,6 @@ public class ShiroConfig
         // 退出 logout地址，shiro去清除session
         filterChainDefinitionMap.put("/logout", "logout");
         // 系统权限列表
-        MenuServiceImpl menuService = SpringUtils.getBean(MenuServiceImpl.class);
         filterChainDefinitionMap.putAll(menuService.selectPermsAll());
 
         Map<String, Filter> filters = new LinkedHashMap<>();
@@ -208,6 +204,7 @@ public class ShiroConfig
         // 所有请求需要认证
         filterChainDefinitionMap.put("/**", "authc");
         // 系统请求记录当前会话
+        filterChainDefinitionMap.put("/main", "onlineSession,syncOnlineSession");
         filterChainDefinitionMap.put("/system/**", "onlineSession,syncOnlineSession");
         filterChainDefinitionMap.put("/monitor/**", "onlineSession,syncOnlineSession");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -219,7 +216,7 @@ public class ShiroConfig
      * 自定义在线用户处理过滤器
      */
     @Bean
-    OnlineSessionFilter onlineSessionFilter()
+    public OnlineSessionFilter onlineSessionFilter()
     {
         OnlineSessionFilter onlineSessionFilter = new OnlineSessionFilter();
         onlineSessionFilter.setLoginUrl("/login");
@@ -230,19 +227,10 @@ public class ShiroConfig
      * 自定义在线用户同步过滤器
      */
     @Bean
-    SyncOnlineSessionFilter syncOnlineSessionFilter()
+    public SyncOnlineSessionFilter syncOnlineSessionFilter()
     {
         SyncOnlineSessionFilter syncOnlineSessionFilter = new SyncOnlineSessionFilter();
         return syncOnlineSessionFilter;
-    }
-
-    /**
-     * 保证实现了Shiro内部lifecycle函数的bean执行
-     */
-    @Bean("lifecycleBeanPostProcessor")
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor()
-    {
-        return new LifecycleBeanPostProcessor();
     }
 
     /**

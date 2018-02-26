@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import com.ruoyi.project.system.online.domain.OnlineSession;
 import com.ruoyi.project.system.online.domain.UserOnline;
 import com.ruoyi.project.system.online.service.IUserOnlineService;
@@ -20,14 +22,10 @@ import com.ruoyi.project.util.HttpContextUtils;
 public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
 {
     /**
-     * Session超时时间，单位为毫秒（默认30分钟）
-     */
-    private long expireTime = 30 * 60 * 1000;
-
-    /**
      * 同步session到数据库的周期 单位为毫秒（默认1分钟）
      */
-    private long dbSyncPeriod = 1 * 60 * 1000;
+    @Value("${shiro.session.dbSyncPeriod}")
+    private int dbSyncPeriod;
 
     /**
      * 上次同步数据库的时间戳
@@ -48,7 +46,6 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     public OnlineSessionDAO(long expireTime)
     {
         super();
-        this.expireTime = expireTime;
     }
 
     /**
@@ -82,7 +79,7 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
         {
             boolean needSync = true;
             long deltaTime = onlineSession.getLastAccessTime().getTime() - lastSyncTimestamp.getTime();
-            if (deltaTime < dbSyncPeriod)
+            if (deltaTime < dbSyncPeriod * 60 * 1000)
             {
                 // 时间差不足 无需同步
                 needSync = false;
@@ -125,16 +122,6 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
         }
         onlineSession.setStatus(OnlineSession.OnlineStatus.off_line);
         onlineService.deleteByOnlineId(String.valueOf(onlineSession.getId()));
-    }
-
-    public long getExpireTime()
-    {
-        return expireTime;
-    }
-
-    public void setExpireTime(long expireTime)
-    {
-        this.expireTime = expireTime;
     }
 
     /**
