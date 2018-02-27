@@ -7,23 +7,22 @@ package com.ruoyi.common.constant;
  */
 public class UserConstants
 {
-    /** 用户正常状态 */
-    public static final String USER_NORMAL = "0";
+
+    /** 正常状态 */
+    public static final int NORMAL = 0;
+
+    /** 异常状态 */
+    public static final int EXCEPTION = 1;
 
     /** 用户封禁状态 */
     public static final String USER_BLOCKED = "1";
 
-    /** 角色正常状态 */
-    public static final String ROLE_NORMAL = "0";
-
     /** 角色封禁状态 */
     public static final String ROLE_BLOCKED = "1";
 
-    /** 异常状态 */
-    public static final String EXCEPTION = "1";
-
     /** 名称是否唯一的返回结果码 */
     public final static String NAME_UNIQUE = "0";
+    
     public final static String NAME_NOT_UNIQUE = "1";
 
     /**

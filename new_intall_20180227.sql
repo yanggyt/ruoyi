@@ -1,5 +1,5 @@
 -- ----------------------------
--- 1、创建部门表
+-- 1、部门表
 -- ----------------------------
 drop table if exists sys_dept;
 create table sys_dept (
@@ -28,7 +28,7 @@ insert into sys_dept values('10', '3', '市场二部', '2', '0');
 
 
 -- ----------------------------
--- 2、创建用户信息表
+-- 2、用户信息表
 -- ----------------------------
 drop table if exists sys_user;
 create table sys_user (
@@ -55,7 +55,7 @@ insert into sys_user values('2', '1', 'ry',    '阳若依', 'ry@163.com',      '
 
 
 -- ----------------------------
--- 3、创建角色信息表
+-- 3、角色信息表
 -- ----------------------------
 drop table if exists sys_role;
 create table sys_role (
@@ -79,7 +79,7 @@ insert into sys_role values('2', '普通角色', 'common', 0, '2018-01-01', '', 
 
 
 -- ----------------------------
--- 4、创建菜单权限表
+-- 4、菜单权限表
 -- ----------------------------
 drop table if exists sys_menu;
 create table sys_menu (
@@ -136,7 +136,7 @@ insert into sys_menu values('25', '登录日志查询', '4', '5', '/system/userl
 
 
 -- ----------------------------
--- 5、创建用户和角色关联表  用户N-1角色
+-- 5、用户和角色关联表  用户N-1角色
 -- ----------------------------
 drop table if exists sys_user_role;
 create table sys_user_role (
@@ -154,7 +154,7 @@ insert into sys_user_role values ('2', '2');
 
 
 -- ----------------------------
--- 6、创建角色和菜单关联表  角色1-N菜单
+-- 6、角色和菜单关联表  角色1-N菜单
 -- ----------------------------
 drop table if exists sys_role_menu;
 create table sys_role_menu (
@@ -178,26 +178,29 @@ insert into sys_role_menu values ('1', '9');
 
 
 -- ----------------------------
--- 7、创建操作日志管理表
+-- 7、操作日志记录
 -- ----------------------------
-drop table if exists oper_log;
-create table oper_log (
-  operid 			int(11) 		not null auto_increment comment '日志主键',
-  opername 			varchar(50) 	default '' 				comment '操作员名称',  
-  opertime 			varchar(30) 	default null			comment '操作时间',
-  opertype 			varchar(50) 	default ''				comment '操作类型',
-  opertparam 		varchar(255) 	default '' 				comment '操作参数',
-  opertip 			varchar(30) 	default '' 				comment '执行地址',
-  operturl 			varchar(255) 	default '' 				comment '请求URL',
-  status 			varchar(3) 		default '' 				comment '状态0正常 1错误',
-  message 			varchar(255) 	default '' 				comment '错误消息',
-  primary key (operid)
+drop table if exists sys_oper_log;
+create table sys_oper_log (
+  oper_id 			int(11) 		not null auto_increment    comment '日志主键',
+  title             varchar(50)     default ''                 comment '功能请求',
+  action            varchar(50)     default ''                 comment '模块标题',
+  channel           varchar(50)     default ''                 comment '来源渠道',
+  login_name 	    varchar(50)     default '' 		 	 	   comment '登录名称',
+  dept_name 		varchar(50)     default '' 		 	 	   comment '部门名称',
+  opert_url 		varchar(255) 	default '' 				   comment '请求URL',
+  opert_ip 			varchar(30) 	default '' 				   comment '操作地址',
+  oper_param 		varchar(255) 	default '' 				   comment '请求参数',
+  status 			int(1) 		    default 0				   comment '状态0正常 1异常',
+  error_msg 		varchar(255) 	default '' 				   comment '错误消息',
+  oper_time 		timestamp       default current_timestamp  comment '操作时间',
+  primary key (oper_id)
 ) engine=innodb auto_increment=100 default charset=utf8;
 
-insert into oper_log values(1, 'admin', '2018-01-01', '系统管理-启用/停用-用户', 'delete.do?id=1', '127.0.0.1', 'system/changeUserStatus', '0', '');
+insert into sys_oper_log values(1, '监控管理', '在线用户-踢出用户', 'web', 'admin', '研发部门', 'delete.do?id=1', '127.0.0.1', 'JSON参数', 0, '错误描述', '2018-01-01');
 
 -- ----------------------------
--- 8、创建数据字典表
+-- 8、数据字典表
 -- ----------------------------
 drop table if exists sys_code;
 create table sys_code (
@@ -233,17 +236,17 @@ insert into sys_code values('system-operlog-status', '1', '失败', '', '', '2')
 
 
 -- ----------------------------
--- 9、系统访问日志情况信息
+-- 9、系统访问记录
 -- ----------------------------
 drop table if exists sys_logininfor;
 create table sys_logininfor (
-  info_id 		int(11) 	 not null auto_increment comment '访问ID',
-  login_name 	varchar(50)  default '' 			 comment '登录名',
-  status 		int(1) 		 default 0 			 	 comment '登录状态 0成功 1失败',
-  ipaddr 		varchar(50)  default '' 			 comment '登录IP地址',
-  browser  		varchar(50)  default '' 			 comment '浏览器类型',
-  os      		varchar(50)  default '' 			 comment '操作系统',
-  msg      		varchar(255) default '' 			 comment '提示消息',
+  info_id 		int(11) 	 not null auto_increment   comment '访问ID',
+  login_name 	varchar(50)  default '' 			   comment '登录名',
+  status 		int(1) 		 default 0 			 	   comment '登录状态 0成功 1失败',
+  ipaddr 		varchar(50)  default '' 			   comment '登录IP地址',
+  browser  		varchar(50)  default '' 			   comment '浏览器类型',
+  os      		varchar(50)  default '' 			   comment '操作系统',
+  msg      		varchar(255) default '' 			   comment '提示消息',
   logondate 	timestamp    default current_timestamp comment '访问时间',
   primary key (info_id)
 ) engine=innodb auto_increment=100 default charset=utf8;
@@ -251,7 +254,7 @@ create table sys_logininfor (
 insert into sys_logininfor values(1, 'admin', 0 , '127.0.0.1', 'Chrome 45', 'Windows 7', '登录成功' ,'2018-01-01');
 
 -- ----------------------------
--- 10、在线用户
+-- 10、在线用户记录
 -- ----------------------------
 drop table if exists sys_user_online;
 create table sys_user_online (

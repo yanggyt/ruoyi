@@ -1,4 +1,4 @@
-package com.ruoyi.framework.core.dao;
+package com.ruoyi.framework.web.dao;
 
 import java.util.List;
 import javax.annotation.Resource;

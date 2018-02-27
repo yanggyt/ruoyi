@@ -1,4 +1,4 @@
-package com.ruoyi.framework.page;
+package com.ruoyi.framework.web.page;
 
 import java.util.Map;
 import com.ruoyi.common.utils.StringUtils;

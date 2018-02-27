@@ -2,7 +2,8 @@ package com.ruoyi.project.monitor.online.dao;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
-import com.ruoyi.framework.core.dao.DynamicObjectBaseDao;
+
+import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
 @Repository("userOnlineDao")

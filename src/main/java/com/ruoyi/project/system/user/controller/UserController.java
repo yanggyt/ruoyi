@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ruoyi.framework.core.controller.BaseController;
-import com.ruoyi.framework.page.TableDataInfo;
+import com.ruoyi.framework.web.controller.BaseController;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.user.domain.User;
 import com.ruoyi.project.system.user.service.IUserService;
 

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.core.controller.BaseController;
-import com.ruoyi.framework.core.domain.R;
+import com.ruoyi.framework.web.controller.BaseController;
+import com.ruoyi.framework.web.domain.R;
 
 /**
  * 登录验证

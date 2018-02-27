@@ -1,4 +1,4 @@
-package com.ruoyi.framework.core.controller;
+package com.ruoyi.framework.web.controller;
 
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.project.system.user.domain.User;

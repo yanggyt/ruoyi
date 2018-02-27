@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.ruoyi.framework.core.dao.DynamicObjectBaseDao;
-import com.ruoyi.framework.page.PageUtilEntity;
+import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
+import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.project.system.user.domain.User;
 
 /**

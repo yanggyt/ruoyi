@@ -50,7 +50,6 @@ public class OnlineSessionFactory implements SessionFactory
                 String browser = userAgent.getBrowser().getName();
                 session.setHost(IpUtils.getIpAddr(request));
                 session.setBrowser(browser);
-                session.setHost(request.getLocalAddr() + ":" + request.getLocalPort());
                 session.setOs(os);
             }
         }

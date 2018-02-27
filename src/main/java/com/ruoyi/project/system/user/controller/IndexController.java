@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.ruoyi.framework.core.controller.BaseController;
+
+import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.project.system.menu.domain.Menu;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.user.domain.User;

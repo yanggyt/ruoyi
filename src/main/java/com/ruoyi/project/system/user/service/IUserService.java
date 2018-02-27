@@ -2,7 +2,7 @@ package com.ruoyi.project.system.user.service;
 
 import java.util.List;
 
-import com.ruoyi.framework.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.project.system.user.domain.User;
 
 /**

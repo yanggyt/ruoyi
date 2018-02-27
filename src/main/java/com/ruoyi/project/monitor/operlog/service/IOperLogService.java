@@ -1,0 +1,18 @@
+package com.ruoyi.project.monitor.operlog.service;
+
+import com.ruoyi.project.monitor.operlog.domain.OperLog;
+
+/**
+ * 操作日志 服务层
+ * 
+ * @author yangzz
+ */
+public interface IOperLogService
+{
+    /**
+     * 新增操作日志
+     * 
+     * @param operLog 系统日志对象
+     */
+    public void insertOperlog(OperLog operLog);
+}
