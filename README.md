@@ -2,10 +2,12 @@
 
 理解：你若不离不弃，我必生死相依。
 
-平台简介
+## 平台简介
+
 若依是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的开源Java EE快速开发平台。
 
-内置功能
+## 内置功能
+
 1.用户管理：用户是系统操作者，该功能主要完成系统用户配置。
 2.部门管理：配置系统组织机构（公司、部门、小组），树结构展现，可随意调整上下级。
 3.菜单管理：配置系统菜单，操作权限，按钮权限标识等。
@@ -24,23 +26,32 @@
 6.提供常用工具类封装，日志、缓存、验证、字典、部门等数据。
 7.兼容目前最流行浏览器（IE7+、Chrome、Firefox）也支持。
 
+## 技术选型
+
 1、后端
 
-核心框架：Spring Boot
-安全框架：Apache Shiro
-模板引擎：Thymeleaf
-持久层框架：MyBatis
-数据库连接池：Alibaba Druid
-缓存框架：Ehcache 、Redis
-日志管理：SLF4J
-工具类：Apache Commons、Jackson
+* 核心框架：Spring Boot
+* 安全框架：Apache Shiro 
+* 模板引擎：Thymeleaf
+* 持久层框架：MyBatis
+* 数据库连接池：Alibaba Druid 
+* 缓存框架：Ehcache 、Redis
+* 日志管理：SLF4J 
+* 工具类：Apache Commons、Jackson 
+
 2、前端
 
-JS框架：jQuery
-客户端验证：JQuery Validation
-富文本在线编辑：summernote
-数据表格：bootstrapTable
-弹出层：layer
-树结构控件：jsTree
+* JS框架：jQuery
+* 客户端验证：JQuery Validation 
+* 富文本在线编辑：summernote
+* 数据表格：bootstrapTable
+* 弹出层：layer
+* 树结构控件：jsTree
+
+4、平台
+
+* 服务器中间件：SpringBoot内置
+* 数据库支持：目前仅提供MySql数据库的支持，但不限于数据库
+* 开发环境：Java、Eclipse Java EE 、Maven 、Git
 
 QQ交流群：1389287
