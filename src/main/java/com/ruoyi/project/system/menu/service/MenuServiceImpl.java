@@ -6,15 +6,12 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ruoyi.common.tools.StringTools;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.TreeUtils;
 import com.ruoyi.project.system.menu.dao.IMenuDao;
 import com.ruoyi.project.system.menu.domain.Menu;
-import com.ruoyi.project.util.TreeUtil;
 
 /**
  * 菜单 业务层处理
@@ -39,7 +36,7 @@ public class MenuServiceImpl implements IMenuService
     public List<Menu> selectMenusByUserId(Long userId)
     {
         List<Menu> menus = menuDao.selectMenusByUserId(userId);
-        return TreeUtil.getChildPerms(menus, 0);
+        return TreeUtils.getChildPerms(menus, 0);
     }
 
     /**
@@ -55,7 +52,7 @@ public class MenuServiceImpl implements IMenuService
         Set<String> permsSet = new HashSet<>();
         for (String perm : perms)
         {
-            if (StringUtils.isNotBlank(perm))
+            if (StringUtils.isNotEmpty(perm))
             {
                 permsSet.addAll(Arrays.asList(perm.trim().split(",")));
             }
@@ -73,7 +70,7 @@ public class MenuServiceImpl implements IMenuService
     {
         LinkedHashMap<String, String> section = new LinkedHashMap<>();
         List<Menu> permissions = menuDao.selectPermsAll();
-        if (StringTools.isNotEmpty(permissions))
+        if (StringUtils.isNotEmpty(permissions))
         {
             for (Menu menu : permissions)
             {

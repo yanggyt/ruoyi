@@ -15,13 +15,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.ruoyi.project.shiro.realm.UserRealm;
-import com.ruoyi.project.shiro.session.OnlineSessionDAO;
-import com.ruoyi.project.shiro.session.OnlineSessionFactory;
-import com.ruoyi.project.shiro.web.filter.online.OnlineSessionFilter;
-import com.ruoyi.project.shiro.web.filter.sync.SyncOnlineSessionFilter;
-import com.ruoyi.project.shiro.web.session.OnlineWebSessionManager;
-import com.ruoyi.project.shiro.web.session.SpringSessionValidationScheduler;
+
+import com.ruoyi.framework.shiro.realm.UserRealm;
+import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
+import com.ruoyi.framework.shiro.session.OnlineSessionFactory;
+import com.ruoyi.framework.shiro.web.filter.online.OnlineSessionFilter;
+import com.ruoyi.framework.shiro.web.filter.sync.SyncOnlineSessionFilter;
+import com.ruoyi.framework.shiro.web.session.OnlineWebSessionManager;
+import com.ruoyi.framework.shiro.web.session.SpringSessionValidationScheduler;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 

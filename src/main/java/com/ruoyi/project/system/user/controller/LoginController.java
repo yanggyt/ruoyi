@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.ruoyi.common.tools.StringTools;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.core.controller.BaseController;
 import com.ruoyi.framework.core.domain.R;
 
@@ -42,7 +42,7 @@ public class LoginController extends BaseController
         catch (AuthenticationException e)
         {
             String msg = "用户或密码错误";
-            if (StringTools.isNotEmpty(e.getMessage()))
+            if (StringUtils.isNotEmpty(e.getMessage()))
             {
                 msg = e.getMessage();
             }

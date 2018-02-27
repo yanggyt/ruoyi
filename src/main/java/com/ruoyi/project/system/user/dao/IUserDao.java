@@ -1,7 +1,8 @@
 package com.ruoyi.project.system.user.dao;
 
 import java.util.List;
-import com.ruoyi.common.utils.PageUtilEntity;
+
+import com.ruoyi.framework.page.PageUtilEntity;
 import com.ruoyi.project.system.user.domain.User;
 
 /**

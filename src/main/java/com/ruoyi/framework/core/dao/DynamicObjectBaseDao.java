@@ -6,7 +6,9 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
-import com.ruoyi.project.shiro.exception.base.DaoException;
+
+import com.ruoyi.common.exception.base.DaoException;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
