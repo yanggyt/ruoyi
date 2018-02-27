@@ -14,6 +14,8 @@ public class Role
     private Long roleId;
     // 角色名
     private String roleName;
+    // 角色权限
+    private String roleKey;
     // 角色状态:0正常,1禁用
     private String status;
     // 创建时间

@@ -26,8 +26,8 @@ function load() {
 						pageNumber : 1, // 如果设置了分布，首页页码
 						// search : true, // 是否显示搜索框
 						showColumns : false, // 是否显示内容下拉框（选择显示的列）
-						sidePagination : "client", // 设置在哪里进行分页，可选值为"client" 或者
-						// "server"
+						sidePagination : "client", // 设置在哪里进行分页，可选值为"client" 或者 "server"
+						cache : false,
 						queryParams : function(params) {
 							return {
 								// 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
@@ -57,10 +57,6 @@ function load() {
 								{
 									field : 'deptName',
 									title : '部门名称'
-								},
-								{
-									field : 'roleName',
-									title : '角色名称'
 								},
 								{
 									field : 'ipaddr',

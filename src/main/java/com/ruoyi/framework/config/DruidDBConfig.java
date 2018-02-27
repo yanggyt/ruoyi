@@ -14,7 +14,7 @@ import com.alibaba.druid.support.http.WebStatFilter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 数据库信息配置加载
+ * Druid数据库信息配置加载
  * 
  * @author yangzz
  */
@@ -119,12 +119,8 @@ public class DruidDBConfig
         ServletRegistrationBean reg = new ServletRegistrationBean();
         reg.setServlet(new StatViewServlet());
         // 白名单
-        reg.addUrlMappings("/druid/*");
+        reg.addUrlMappings("/monitor/druid/*");
         reg.addInitParameter("allow", "");
-        // 黑名单
-        // reg.addInitParameter("deny","");
-        // reg.addInitParameter("loginUsername", "admin");
-        // reg.addInitParameter("loginPassword", "admin");
         return reg;
     }
 
@@ -134,7 +130,7 @@ public class DruidDBConfig
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setFilter(new WebStatFilter());
         filterRegistrationBean.addUrlPatterns("/*");
-        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/monitor/druid/*");
         filterRegistrationBean.addInitParameter("profileEnable", "true");
         filterRegistrationBean.addInitParameter("principalCookieName", "USER_COOKIE");
         filterRegistrationBean.addInitParameter("principalSessionName", "USER_SESSION");
