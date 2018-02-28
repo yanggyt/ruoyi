@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
+import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.project.monitor.online.dao.IUserOnlineDao;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
@@ -87,12 +88,12 @@ public class UserOnlineServiceImpl implements IUserOnlineService
     /**
      * 查询会话集合
      * 
-     * @param online 会话信息
+     * @param pageUtilEntity 分页参数
      */
     @Override
-    public List<UserOnline> selectUserOnlines()
+    public List<UserOnline> pageInfoQueryUserOnline(PageUtilEntity pageUtilEntity)
     {
-        return userOnlineDao.selectUserOnlines();
+        return userOnlineDao.pageInfoQuery(pageUtilEntity);
     }
 
     /**

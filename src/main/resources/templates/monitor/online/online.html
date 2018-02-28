@@ -5,13 +5,14 @@
 <head th:include="include :: header"></head>
 <body class="gray-bg">
 	<div class="wrapper wrapper-content">
-		
         <div class="btn-group hidden-xs" id="tableToolbar" role="group">
-            <button type="button" class="btn btn-outline btn-default">
-                <i class="glyphicon glyphicon-plus" onclick="addTest();"></i>
+        	<!--
+            <button type="button" class="btn btn-outline btn-default" th:onclick="'javascript:addTest()'">
+                <i class="glyphicon glyphicon-plus""></i>
             </button>
-            <button type="button" class="btn btn-outline btn-default">
-                <i class="glyphicon glyphicon-trash" onclick="batDelTest();"></i>
+             -->
+            <button type="button" class="btn btn-outline btn-default" th:onclick="'javascript:batchForceLogout()'">
+                <i class="glyphicon glyphicon-trash""></i>
             </button>
         </div>
         
@@ -23,6 +24,6 @@
 	<!-- 	<a shiro:hasPermission="system:user:list" href="#">测试菜单</a>	 -->
     <!-- 	<a shiro:hasRole="admin" href="#">测试角色</a>    -->
 	<div th:include="include :: footer"></div>
-	<script type="text/javascript" src="/js/appjs/monitor/online/online.js"></script>
+	<script type="text/javascript" src="/ruoyi/monitor/online/online.js"></script>
 </body>
 </html>

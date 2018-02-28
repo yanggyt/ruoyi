@@ -2,6 +2,7 @@ package com.ruoyi.project.monitor.online.dao;
 
 import java.util.List;
 
+import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
 /**
@@ -38,10 +39,10 @@ public interface IUserOnlineDao
     /**
      * 查询会话集合
      * 
-     * @param online 会话信息
+     * @param pageUtilEntity 分页参数
      * @return 会话集合
      */
-    public List<UserOnline> selectUserOnlines();
+    public List<UserOnline> pageInfoQuery(PageUtilEntity pageUtilEntity);
 
     /**
      * 查询过期会话集合

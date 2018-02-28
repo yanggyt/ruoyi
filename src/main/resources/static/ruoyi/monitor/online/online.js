@@ -63,34 +63,42 @@ $(function() {
 });
 
 function forceLogout(id) {
-    layer.confirm('确定要强制选中用户下线吗？', {
-        btn: ['确定', '取消']
-    },
-    function() {
+	layer.confirm("确定要强制选中用户下线吗？",{icon: 3, title:'提示'},function(index){
         $.ajax({
             url: prefix + "/forceLogout/" + id,
             type: "post",
-            data: {
-                'id': id
-            },
+            data: { 'id': id },
             success: function(r) {
                 if (r.code == 0) {
-                    layer.msg(r.msg);
+                	layer.msg(r.msg, { icon: 1, time: 1000 });
                     refresh();
                 } else {
-                    layer.msg(r.msg);
+                	layer.alert(r.msg, {icon: 2, title:"系统提示"});
                 }
             }
         });
     })
 }
 
-function addTest()
-{
-	alert("addTest");
-}
-
-function batDelTest()
-{
-	alert("batDelTest");
+function batchForceLogout() {
+	var rows = getIdSelections("sessionId");
+	if (rows.length == 0) {
+		layer.msg("请选择要删除的数据");
+		return;
+	}
+	layer.confirm("确认要删除选中的" + rows.length + "条数据吗?",{icon: 3, title:'提示'},function(index){
+		$.ajax({
+		    type: 'POST',
+		    data: { "ids": rows },
+		    url: prefix + '/batchForceLogout',
+		    success: function(r) {
+		        if (r.code == 0) {
+		        	layer.msg(r.msg, { icon: 1, time: 1000 });
+		            refresh();
+		        } else {
+		        	layer.alert(r.msg, {icon: 2, title:"系统提示"});
+		        }
+		    }
+		});
+	});
 }

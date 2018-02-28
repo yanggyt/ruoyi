@@ -1,3 +1,6 @@
+// 自定义分页处理 ruoyi
+
+// 初始化表格
 function initTable(_columns, _url) {
     $('.bootstrap-table').bootstrapTable({
         method: 'GET',
@@ -30,6 +33,14 @@ function initTable(_columns, _url) {
     });
 }
 
+// 刷新
 function refresh() {
     $('.bootstrap-table').bootstrapTable('refresh');
+}
+
+// 获取选中数组
+function getIdSelections(_id) {
+    return $.map($('.bootstrap-table').bootstrapTable('getSelections'), function (row) {
+        return row[_id]
+    });
 }

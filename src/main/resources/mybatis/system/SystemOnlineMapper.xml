@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		delete from sys_user_online where sessionId = #{sessionId}
  	</delete>
  	
- 	<select id="selectUserOnlines" resultMap="UserOnlineResult">
+ 	<select id="pageInfoQueryUserOnline" parameterType="PageUtilEntity" resultMap="UserOnlineResult">
 		select * from sys_user_online
 	</select>
 	

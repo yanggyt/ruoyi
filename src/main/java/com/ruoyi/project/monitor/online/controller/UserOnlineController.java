@@ -4,18 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.JSON;
+import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.online.domain.OnlineSession;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
@@ -46,39 +46,36 @@ public class UserOnlineController extends BaseController
 
     @GetMapping("/list")
     @ResponseBody
-    public TableDataInfo list(Model model)
+    public TableDataInfo list()
     {
-        List<UserOnline> list = userOnlineService.selectUserOnlines();
-        TableDataInfo tableDataInfo = new TableDataInfo(list, 111);
+        PageUtilEntity pageUtilEntity = this.getPageUtilEntity();
+        List<UserOnline> list = userOnlineService.pageInfoQueryUserOnline(pageUtilEntity);
+        TableDataInfo tableDataInfo = new TableDataInfo(list, pageUtilEntity.getTotalResult());
         return tableDataInfo;
     }
 
-    @GetMapping("/forceLogout")
+    @Log(title = "监控管理", action = "在线用户-批量踢出用户")
+    @PostMapping("/batchForceLogout")
     @ResponseBody
-    public JSON forceLogout(@RequestParam(value = "ids") String[] ids)
+    public JSON batchForceLogout(@RequestParam("ids[]") String[] ids)
     {
-        try
+        for (String sessionId : ids)
         {
-            for (String sessionId : ids)
+            UserOnline online = userOnlineService.selectByOnlineId(sessionId);
+            if (online == null)
             {
-                UserOnline online = userOnlineService.selectByOnlineId(sessionId);
-                if (online == null)
-                {
-                    continue;
-                }
-                userOnlineService.forceLogout(sessionId);
+                return JSON.error("用户已下线");
             }
-            return JSON.ok();
-        }
-        catch (Exception e)
-        {
-            String msg = "未知错误";
-            if (StringUtils.isNotEmpty(e.getMessage()))
+            OnlineSession onlineSession = (OnlineSession) onlineSessionDAO.readSession(online.getSessionId());
+            if (onlineSession == null)
             {
-                msg = e.getMessage();
+                return JSON.error("用户已下线");
             }
-            return JSON.error(msg);
+            onlineSession.setStatus(OnlineSession.OnlineStatus.off_line);
+            online.setStatus(OnlineSession.OnlineStatus.off_line);
+            userOnlineService.saveByOnline(online);
         }
+        return JSON.ok();
     }
 
     @Log(title = "监控管理", action = "在线用户-踢出用户")
@@ -89,12 +86,12 @@ public class UserOnlineController extends BaseController
         UserOnline online = userOnlineService.selectByOnlineId(sessionId);
         if (online == null)
         {
-            return JSON.error("用户已下线。数据不存在");
+            return JSON.error("用户已下线");
         }
         OnlineSession onlineSession = (OnlineSession) onlineSessionDAO.readSession(online.getSessionId());
         if (onlineSession == null)
         {
-            return JSON.error("用户已下线。会话不存在");
+            return JSON.error("用户已下线");
         }
         onlineSession.setStatus(OnlineSession.OnlineStatus.off_line);
         online.setStatus(OnlineSession.OnlineStatus.off_line);

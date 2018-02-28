@@ -3,6 +3,7 @@ package com.ruoyi.project.monitor.online.service;
 import java.util.Date;
 import java.util.List;
 
+import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
 /**
@@ -46,9 +47,10 @@ public interface IUserOnlineService
     /**
      * 查询会话集合
      * 
+     * @param pageUtilEntity 分页参数
      * @return 会话集合
      */
-    public List<UserOnline> selectUserOnlines();
+    public List<UserOnline> pageInfoQueryUserOnline(PageUtilEntity pageUtilEntity);
 
     /**
      * 读取Session信息
