@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id     property="operId"         column="oper_id"       />
 		<result property="title"          column="title"         />
 		<result property="action"         column="action"        />
+		<result property="method"         column="method"        />
 		<result property="channel"        column="channel"       />
 		<result property="loginName"      column="login_name"    />
 		<result property="deptName"       column="dept_name"     />
@@ -20,8 +21,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<insert id="insertOperlog" parameterType="OperLog">
-		insert into sys_oper_log(oper_id, title, action, channel, login_name, dept_name, opert_url, opert_ip, oper_param, status, error_msg) 
-        values (#{operId}, #{title}, #{action}, #{channel}, #{loginName}, #{deptName}, #{opertUrl}, #{opertIp}, #{opertParam}, #{status}, #{errorMsg})
+		insert into sys_oper_log(oper_id, title, action, method, channel, login_name, dept_name, opert_url, opert_ip, oper_param, status, error_msg) 
+        values (#{operId}, #{title}, #{action}, #{method}, #{channel}, #{loginName}, #{deptName}, #{opertUrl}, #{opertIp}, #{opertParam}, #{status}, #{errorMsg})
 	</insert>
 
 </mapper> 

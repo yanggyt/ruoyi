@@ -12,33 +12,33 @@ import lombok.Data;
 @Data
 public class Menu
 {
-    // 菜单ID
+    /** 菜单ID */
     private Integer menuId;
-    // 菜单名称
+    /** 菜单名称 */
     private String menuName;
-    // 父菜单ID
+    /** 父菜单ID */
     private Integer parentId;
-    // 显示顺序
+    /** 显示顺序 */
     private String orderNum;
-    // 菜单URL
+    /** 菜单URL */
     private String url;
-    // 类型:0目录,1菜单,2按钮
+    /** 类型:0目录,1菜单,2按钮 */
     private String menuType;
-    // 菜单状态:0显示,1隐藏
+    /** 菜单状态:0显示,1隐藏 */
     private String visible;
-    // 权限字符串
+    /** 权限字符串 */
     private String perms;
-    // 菜单图标
+    /** 菜单图标 */
     private String icon;
-    // 创建时间
+    /** 创建时间 */
     private String createTime;
-    // 更新时间
+    /** 更新时间 */
     private String updateTime;
-    // 更新者
+    /** 更新者 */
     private String updateBy;
-    // 备注
+    /** 备注 */
     private String remark;
-    // 子菜单
+    /** 子菜单 */
     private List<Menu> children = new ArrayList<Menu>();
 
 }

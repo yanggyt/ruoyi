@@ -19,7 +19,6 @@ import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.project.monitor.operlog.domain.OperLog;
 import com.ruoyi.project.monitor.operlog.service.IOperLogService;
 import com.ruoyi.project.system.user.domain.User;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -76,6 +75,7 @@ public class LogAspect
             {
                 return;
             }
+
             // 获取当前的用户
             User currentUser = ShiroUtils.getUser();
 
@@ -97,7 +97,10 @@ public class LogAspect
                 operLog.setStatus(UserConstants.EXCEPTION);
                 operLog.setErrorMsg(e.getMessage());
             }
-
+            // 设置方法名称
+            String className = joinPoint.getTarget().getClass().getName();
+            String methodName = joinPoint.getSignature().getName();
+            operLog.setMethod(className + "." + methodName + "()");
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
             // 保存数据库
@@ -143,8 +146,6 @@ public class LogAspect
      */
     private static void setRequestValue(OperLog operLog)
     {
-        if (operLog == null)
-            operLog = new OperLog();
         Map<String, String[]> map = HttpContextUtils.getHttpServletRequest().getParameterMap();
         String params = JSONObject.toJSONString(map);
         operLog.setOpertParam(params);

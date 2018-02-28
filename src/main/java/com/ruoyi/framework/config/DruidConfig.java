@@ -76,8 +76,8 @@ public class DruidConfig
     @Value("{spring.datasource.connectionProperties}")
     private String connectionProperties;
 
-    @Bean(initMethod = "init", destroyMethod = "close") // 声明其为Bean实例
-    @Primary // 在同样的DataSource中，首先使用被标注的DataSource
+    @Bean(initMethod = "init", destroyMethod = "close") /** 声明其为Bean实例 */
+    @Primary /** 在同样的DataSource中，首先使用被标注的DataSource */
     public DataSource dataSource()
     {
         DruidDataSource datasource = new DruidDataSource();
@@ -87,7 +87,7 @@ public class DruidConfig
         datasource.setPassword(password);
         datasource.setDriverClassName(driverClassName);
 
-        // configuration
+        /** configuration */
         datasource.setInitialSize(initialSize);
         datasource.setMinIdle(minIdle);
         datasource.setMaxActive(maxActive);
@@ -122,11 +122,11 @@ public class DruidConfig
         ServletRegistrationBean reg = new ServletRegistrationBean();
         reg.setServlet(new StatViewServlet());
         reg.addUrlMappings("/monitor/druid/*");
-        // 白名单
+        /** 白名单 */
         reg.addInitParameter("allow", "10.211.61.45,127.0.0.1");
-        // IP黑名单(共同存在时，deny优先于allow)
+        /** IP黑名单(共同存在时，deny优先于allow) */
         reg.addInitParameter("deny", "10.211.61.4");
-        // 是否能够重置数据 禁用HTML页面上的“Reset All”功能
+        /** 是否能够重置数据 禁用HTML页面上的“Reset All”功能 */
         reg.addInitParameter("resetEnable", "false");
         return reg;
     }
@@ -139,17 +139,17 @@ public class DruidConfig
     {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setFilter(new WebStatFilter());
-        // 添加过滤规则.
+        /** 添加过滤规则. */
         filterRegistrationBean.addUrlPatterns("/*");
-        // 监控选项滤器
+        /** 监控选项滤器 */
         filterRegistrationBean.addInitParameter("DruidWebStatFilter", "/*");
-        // 添加不需要忽略的格式信息.
+        /** 添加不需要忽略的格式信息. */
         filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/monitor/druid/*");
-        // 配置profileEnable能够监控单个url调用的sql列表
+        /** 配置profileEnable能够监控单个url调用的sql列表 */
         filterRegistrationBean.addInitParameter("profileEnable", "true");
-        // 当前的cookie的用户
+        /** 当前的cookie的用户 */
         filterRegistrationBean.addInitParameter("principalCookieName", "USER_COOKIE");
-        // 当前的session的用户
+        /** 当前的session的用户 */
         filterRegistrationBean.addInitParameter("principalSessionName", "USER_SESSION");
         return filterRegistrationBean;
     }

@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
+/**
+ * 在线用户 服务层
+ * 
+ * @author yangzz
+ */
 public interface IUserOnlineDao
 {
     /**
@@ -26,6 +31,7 @@ public interface IUserOnlineDao
      * 保存会话信息
      * 
      * @param online 会话信息
+     * @return 结果
      */
     public int saveByOnline(UserOnline online);
 
@@ -33,14 +39,15 @@ public interface IUserOnlineDao
      * 查询会话集合
      * 
      * @param online 会话信息
+     * @return 会话集合
      */
     public List<UserOnline> selectUserOnlines();
-    
-    
+
     /**
      * 查询过期会话集合
      * 
      * @param lastAccessTime 过期时间
+     * @return 会话集合
      */
     public List<UserOnline> selectByOnlineExpired(String lastAccessTime);
 }

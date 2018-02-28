@@ -12,6 +12,11 @@ import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
 import com.ruoyi.project.monitor.online.dao.IUserOnlineDao;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
+/**
+ * 在线用户 服务层
+ * 
+ * @author yangzz
+ */
 @Service("userOnlineService")
 public class UserOnlineServiceImpl implements IUserOnlineService
 {

@@ -5,13 +5,13 @@ import com.ruoyi.common.exception.user.UserException;
 /**
  * 验证码错误异常类
  * 
- * @author y
+ * @author yangzz
  */
-public class JCaptchaException extends UserException
+public class CaptchaException extends UserException
 {
     private static final long serialVersionUID = 1L;
 
-    public JCaptchaException()
+    public CaptchaException()
     {
         super("user.jcaptcha.error", null);
     }

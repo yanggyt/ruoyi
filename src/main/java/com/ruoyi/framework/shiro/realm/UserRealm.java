@@ -15,7 +15,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ruoyi.common.exception.JCaptchaException;
+import com.ruoyi.common.exception.CaptchaException;
 import com.ruoyi.common.exception.user.RoleBlockedException;
 import com.ruoyi.common.exception.user.UserBlockedException;
 import com.ruoyi.common.exception.user.UserNotExistsException;
@@ -82,7 +82,7 @@ public class UserRealm extends AuthorizingRealm
             user = loginService.login(username, password);
         }
 
-        catch (JCaptchaException e)
+        catch (CaptchaException e)
         {
             throw new AuthenticationException(e.getMessage(), e);
         }

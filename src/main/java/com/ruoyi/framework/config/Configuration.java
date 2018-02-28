@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "ruoyi")
 public class Configuration
 {
-    // 上传路径
+    /** 上传路径 */
     private String uploadPath;
 
     public String getUploadPath()

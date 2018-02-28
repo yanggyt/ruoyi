@@ -21,6 +21,7 @@ public class OperLogServiceImpl implements IOperLogService
      * 
      * @param operLog 系统日志对象
      */
+    @Override
     public void insertOperlog(OperLog operLog)
     {
         operLogDao.insertOperlog(operLog);

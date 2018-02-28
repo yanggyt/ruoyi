@@ -10,15 +10,15 @@ import lombok.Data;
 @Data
 public class Dept
 {
-    // 部门ID
+    /** 部门ID */
     private Long deptId;
-    // 父部门ID
+    /** 父部门ID */
     private Long parentId;
-    // 部门名称
+    /** 部门名称 */
     private String deptName;
-    // 显示顺序
+    /** 显示顺序 */
     private String orderNum;
-    // 部门状态:0正常,1停用
+    /** 部门状态:0正常,1停用 */
     private String status;
 
 }

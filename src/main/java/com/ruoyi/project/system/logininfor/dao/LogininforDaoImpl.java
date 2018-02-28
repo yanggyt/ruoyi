@@ -5,6 +5,11 @@ import org.springframework.stereotype.Repository;
 import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
 import com.ruoyi.project.system.logininfor.domain.Logininfor;
 
+/**
+ * 登录日志记录 数据层
+ * 
+ * @author yangzz
+ */
 @Repository("logininforDao")
 public class LogininforDaoImpl extends DynamicObjectBaseDao implements ILogininforDao
 {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.controller.BaseController;
-import com.ruoyi.framework.web.domain.R;
+import com.ruoyi.framework.web.domain.JSON;
 
 /**
  * 登录验证
@@ -30,14 +30,14 @@ public class LoginController extends BaseController
 
     @PostMapping("/login")
     @ResponseBody
-    public R ajaxLogin(String username, String password)
+    public JSON ajaxLogin(String username, String password)
     {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
         try
         {
             subject.login(token);
-            return R.ok();
+            return JSON.ok();
         }
         catch (AuthenticationException e)
         {
@@ -46,7 +46,7 @@ public class LoginController extends BaseController
             {
                 msg = e.getMessage();
             }
-            return R.error(msg);
+            return JSON.error(msg);
         }
     }
 

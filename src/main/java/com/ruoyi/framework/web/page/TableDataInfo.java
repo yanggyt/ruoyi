@@ -11,9 +11,9 @@ import java.util.List;
 public class TableDataInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    // 总记录数
+    /** 总记录数 */
     private int total;
-    // 列表数据
+    /** 列表数据 */
     private List<?> rows;
 
     /**

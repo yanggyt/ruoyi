@@ -63,7 +63,9 @@ public class TreeUtils
         }
     }
 
-    // 得到子节点列表
+    /**
+     * 得到子节点列表
+     */
     private static List<Menu> getChildList(List<Menu> list, Menu t)
     {
 
@@ -133,13 +135,17 @@ public class TreeUtils
         }
     }
 
-    // 判断是否有子节点
+    /**
+     * 判断是否有子节点
+     */
     private static boolean hasChild(List<Menu> list, Menu t)
     {
         return getChildList(list, t).size() > 0 ? true : false;
     }
 
-    // 本地模拟数据测试
+    /**
+     * 本地模拟数据测试
+     */
     public static void main(String[] args)
     {
         long start = System.currentTimeMillis();

@@ -3,7 +3,7 @@ package com.ruoyi.framework.web.exception;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import com.ruoyi.framework.web.domain.R;
+import com.ruoyi.framework.web.domain.JSON;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,17 +19,17 @@ public class DefaultExceptionHandler
 {
 
     @ExceptionHandler(AuthorizationException.class)
-    public R handleAuthorizationException(AuthorizationException e)
+    public JSON handleAuthorizationException(AuthorizationException e)
     {
         log.error(e.getMessage(), e);
-        return R.error("未授权");
+        return JSON.error("未授权");
     }
 
     @ExceptionHandler(Exception.class)
-    public R handleException(Exception e)
+    public JSON handleException(Exception e)
     {
         log.error(e.getMessage(), e);
-        return R.error("服务器错误，" + e.getMessage());
+        return JSON.error("服务器错误，" + e.getMessage());
     }
 
 }

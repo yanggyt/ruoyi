@@ -4,9 +4,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 时间工具类
+ * 
+ * @author yangzz
+ */
 public class DateUtils
 {
-
     public static final String DEFAULT_YYYYMMDD = "yyyyMMddHHmmss";
 
     public static final String DEFAULT_YYYY_MM_DD = "yyyy-MM-dd HH:mm:ss";

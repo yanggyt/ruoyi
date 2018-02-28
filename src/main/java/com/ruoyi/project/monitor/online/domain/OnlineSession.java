@@ -3,35 +3,37 @@ package com.ruoyi.project.monitor.online.domain;
 import org.apache.shiro.session.mgt.SimpleSession;
 
 /**
+ * 在线用户会话属性
  * 
+ * @author yangzz
  */
 public class OnlineSession extends SimpleSession
 {
 
     private static final long serialVersionUID = 1L;
 
-    // 用户ID
+    /** 用户ID */
     private Long userId;
 
-    // 用户名称
+    /** 用户名称 */
     private String loginName;
 
-    // 部门名称
+    /** 部门名称 */
     private String deptName;
 
-    // 登录IP地址
+    /** 登录IP地址 */
     private String host;
 
-    // 浏览器类型
+    /** 浏览器类型 */
     private String browser;
 
-    // 操作系统
+    /** 操作系统 */
     private String os;
 
-    // 在线状态
+    /** 在线状态 */
     private OnlineStatus status = OnlineStatus.on_line;
 
-    // 属性是否改变 优化session数据同步
+    /** 属性是否改变 优化session数据同步 */
     private transient boolean attributeChanged = false;
 
     @Override
@@ -135,6 +137,7 @@ public class OnlineSession extends SimpleSession
 
     public static enum OnlineStatus
     {
+        /** 用户状态 */
         on_line("在线"), off_line("离线");
         private final String info;
 

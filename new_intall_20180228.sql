@@ -184,8 +184,9 @@ drop table if exists sys_oper_log;
 create table sys_oper_log (
   oper_id 			int(11) 		not null auto_increment    comment '日志主键',
   title             varchar(50)     default ''                 comment '功能请求',
-  action            varchar(50)     default ''                 comment '模块标题',
-  channel           varchar(50)     default ''                 comment '来源渠道',
+  action            varchar(100)    default ''                 comment '模块标题',
+  method            varchar(100)    default ''                 comment '方法名称',
+  channel           varchar(20)     default ''                 comment '来源渠道',
   login_name 	    varchar(50)     default '' 		 	 	   comment '登录名称',
   dept_name 		varchar(50)     default '' 		 	 	   comment '部门名称',
   opert_url 		varchar(255) 	default '' 				   comment '请求URL',
@@ -197,7 +198,7 @@ create table sys_oper_log (
   primary key (oper_id)
 ) engine=innodb auto_increment=100 default charset=utf8;
 
-insert into sys_oper_log values(1, '监控管理', '在线用户-踢出用户', 'web', 'admin', '研发部门', 'delete.do?id=1', '127.0.0.1', 'JSON参数', 0, '错误描述', '2018-01-01');
+insert into sys_oper_log values(1, '监控管理', '在线用户-踢出用户', 'com.ruoyi.xxx.xxx', 'web', 'admin', '研发部门', 'delete.do?id=1', '127.0.0.1', 'JSON参数', 0, '错误描述', '2018-01-01');
 
 -- ----------------------------
 -- 8、数据字典表

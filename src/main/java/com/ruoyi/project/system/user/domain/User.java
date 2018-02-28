@@ -11,29 +11,29 @@ import lombok.Data;
 @Data
 public class User
 {
-    // 用户ID
+    /** 用户ID */
     private Long userId;
-    // 部门ID
+    /** 部门ID */
     private Long deptId;
-    // 登录名
+    /** 登录名 */
     private String loginName;
-    // 用户名称
+    /** 用户名称 */
     private String userName;
-    // 用户邮箱
+    /** 用户邮箱 */
     private String email;
-    // 手机号码
+    /** 手机号码 */
     private String phonenumber;
-    // 密码
+    /** 密码 */
     private String password;
-    // 盐加密
+    /** 盐加密 */
     private String salt;
-    // 帐号状态:0正常,1锁定,2黑名单,3禁止
+    /** 帐号状态:0正常,1锁定,2黑名单,3禁止 */
     private String status;
-    // 拒绝登录描述
+    /** 拒绝登录描述 */
     private String refuseDes;
-    // 创建时间
+    /** 创建时间 */
     private String createTime;
-    // 部门对象
+    /** 部门对象 */
     private Dept dept;
 
 }

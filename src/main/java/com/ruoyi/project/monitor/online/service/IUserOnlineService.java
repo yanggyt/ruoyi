@@ -5,6 +5,11 @@ import java.util.List;
 
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
+/**
+ * 在线用户 服务层
+ * 
+ * @author yangzz
+ */
 public interface IUserOnlineService
 {
     /**
@@ -41,7 +46,7 @@ public interface IUserOnlineService
     /**
      * 查询会话集合
      * 
-     * @param online 会话信息
+     * @return 会话集合
      */
     public List<UserOnline> selectUserOnlines();
 
@@ -55,7 +60,8 @@ public interface IUserOnlineService
     /**
      * 查询会话集合
      * 
-     * @param online 会话信息
+     * @param expiredDate 有效期
+     * @return 会话集合
      */
     public List<UserOnline> selectByOnlineExpired(Date expiredDate);
 }

@@ -2,14 +2,11 @@ package com.ruoyi.framework.shiro.session;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import com.ruoyi.common.utils.HttpContextUtils;
 import com.ruoyi.project.monitor.online.domain.OnlineSession;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
@@ -123,39 +120,5 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
         }
         onlineSession.setStatus(OnlineSession.OnlineStatus.off_line);
         onlineService.deleteByOnlineId(String.valueOf(onlineSession.getId()));
-    }
-
-    /**
-     * 检查是否为静态链接
-     * 
-     * @return true 是 false 否
-     */
-    public boolean checkStaticLink(String uri)
-    {
-        boolean linkFlag = false;
-        // 如果是登录请求，则不更新SESSION
-        if (StringUtils.startsWithAny(uri,
-                new String[] { "/monitor/online/forceLogout", "/login", "/logout", "/index", "/favicon.ico" }))
-        {
-            linkFlag = true;
-        }
-        // 如果是登录请求，则不更新SESSION
-        if (StringUtils.endsWithAny(uri, new String[] { "/" }))
-        {
-            linkFlag = true;
-        }
-        // 如果是静态文件，则不更新SESSION
-        if (StringUtils.startsWith(uri, "/css") && StringUtils.endsWith(uri, ".css")
-                || StringUtils.startsWith(uri, "/js") && StringUtils.endsWith(uri, ".js")
-                || StringUtils.startsWith(uri, "/img") && StringUtils.endsWith(uri, ".jpg")
-                || StringUtils.startsWith(uri, "/img") && StringUtils.endsWith(uri, ".png")
-                || StringUtils.startsWith(uri, "/fonts") && StringUtils.endsWith(uri, ".woff2")
-                || StringUtils.startsWith(uri, "/js") && StringUtils.endsWith(uri, ".css")
-                || StringUtils.startsWith(uri, "/css") && StringUtils.endsWith(uri, ".png")
-                || StringUtils.startsWith(uri, "/css") && StringUtils.endsWith(uri, ".woff2"))
-        {
-            linkFlag = true;
-        }
-        return linkFlag;
     }
 }

@@ -10,23 +10,23 @@ import com.ruoyi.common.utils.StringUtils;
  */
 public class PageUtilEntity
 {
-    // 总页数
+    /** 总页数 */
     private int totalPage;
-    // 当前记录起始索引
+    /** 当前记录起始索引 */
     private int page;
-    // 每页显示记录数
+    /** 每页显示记录数 */
     private int size;
-    // 排序列
+    /** 排序列 */
     private String orderByColumn;
-    // 排序的方向 "desc" 或者 "asc".
+    /** 排序的方向 "desc" 或者 "asc". */
     private String isAsc;
-    // 排序
+    /** 排序 */
     protected String orderCond;
-    // true:需要分页的地方，传入的参数就是Page实体；false:需要分页的地方，传入的参数所代表的实体拥有Page属性
+    /** true:需要分页的地方，传入的参数就是Page实体；false:需要分页的地方，传入的参数所代表的实体拥有Page属性 */
     private boolean entityOrField;
-    // 总记录数
+    /** 总记录数 */
     private int totalResult;
-    // 请求参数
+    /** 请求参数 */
     protected Map<String, String> relationMap;
 
     public int getTotalPage()
