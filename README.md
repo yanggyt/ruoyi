@@ -65,5 +65,6 @@
 5. 密码加密：登录用户密码进行SHA1散列加密，此加密方法是不可逆的。保证密文泄露后的安全问题。
 6. 强制访问：系统对所有管理端链接都进行用户身份权限验证，防止用户直接填写url进行访问。
 
-### 若依交流群
+## 若依交流群
+
 QQ群： [![加入QQ群](https://img.shields.io/badge/QQ群-1389287-blue.svg)](http://shang.qq.com/wpa/qunwpa?idkey=9a7d9f3274e4bfbf7e40e4a485ff6dc2adbeee8086ce39e40667ed4387414f12) 或 [![加入QQ群](https://img.shields.io/badge/QQ群-1389287-blue.svg)](https://jq.qq.com/?_wv=1027&k=5ONbr1w)，推荐点击按钮入群，当然如果无法成功操作，请自行搜索群号`1389287`进行添加
