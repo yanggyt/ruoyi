@@ -16,6 +16,7 @@ import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.JSON;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.online.domain.OnlineSession;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 import com.ruoyi.project.monitor.online.service.IUserOnlineService;
@@ -45,10 +46,11 @@ public class UserOnlineController extends BaseController
 
     @GetMapping("/list")
     @ResponseBody
-    public List<UserOnline> list(Model model)
+    public TableDataInfo list(Model model)
     {
         List<UserOnline> list = userOnlineService.selectUserOnlines();
-        return list;
+        TableDataInfo tableDataInfo = new TableDataInfo(list, 111);
+        return tableDataInfo;
     }
 
     @GetMapping("/forceLogout")

@@ -109,30 +109,31 @@ insert into sys_menu values('2', '系统监控', '0', '2', '#', 'M', '0', '#', '
 insert into sys_menu values('3', '用户管理', '1', '1', '/system/user/userList',       'C', '0', 'system:user:list',    '#', '2018-01-01', '', 'admin', '用户管理菜单');
 insert into sys_menu values('4', '角色管理', '1', '2', '/system/role/roleList',       'C', '0', 'system:role:list',    '#', '2018-01-01', '', 'admin', '角色管理菜单');
 insert into sys_menu values('5', '菜单管理', '1', '3', '/system/menu/menuList',       'C', '0', 'system:menu:list',    '#', '2018-01-01', '', 'admin', '菜单管理菜单');
-insert into sys_menu values('6', '操作日志', '1', '4', '/system/operlog/operlogList', 'C', '0', 'system:operlog:list', '#', '2018-01-01', '', 'admin', '操作日志菜单');
-insert into sys_menu values('7', '登录日志', '1', '5', '/system/userlog/userlogList', 'C', '0', 'system:userlog:list', '#', '2018-01-01', '', 'admin', '登录日志菜单');
-insert into sys_menu values('8', '在线用户', '2', '1', '/monitor/online',             'C', '0', 'monitor:online',      '#', '2018-01-01', '', 'admin', '在线用户菜单');
-insert into sys_menu values('9', '数据监控', '2', '2', '/monitor/druid/index.html',   'C', '0', 'monitor:druid:list',  '#', '2018-01-01', '', 'admin', '数据监控菜单');
+insert into sys_menu values('6', '部门管理', '1', '3', '/system/dept/deptList',       'C', '0', 'system:dept:list',    '#', '2018-01-01', '', 'admin', '部门管理菜单');
+insert into sys_menu values('7', '操作日志', '2', '1', '/system/operlog/operlogList', 'C', '0', 'system:operlog:list', '#', '2018-01-01', '', 'admin', '操作日志菜单');
+insert into sys_menu values('8', '登录日志', '2', '2', '/system/userlog/userlogList', 'C', '0', 'system:userlog:list', '#', '2018-01-01', '', 'admin', '登录日志菜单');
+insert into sys_menu values('9', '在线用户', '2', '3', '/monitor/online',             'C', '0', 'monitor:online',      '#', '2018-01-01', '', 'admin', '在线用户菜单');
+insert into sys_menu values('10', '数据监控', '2', '4', '/monitor/druid/index.html',   'C', '0', 'monitor:druid:list',  '#', '2018-01-01', '', 'admin', '数据监控菜单');
 --- 三级用户按钮
-insert into sys_menu values('10', '用户新增', '3', '1', '/system/user/add',       'F', '0', 'sys:user:add',       '#', '2018-01-01', '', 'admin', '用户管理新增按钮');
-insert into sys_menu values('11', '用户修改', '3', '2', '/system/user/update',    'F', '0', 'sys:user:update',    '#', '2018-01-01', '', 'admin', '用户管理修改按钮');
-insert into sys_menu values('12', '用户删除', '3', '3', '/system/user/delete',    'F', '0', 'sys:user:delete',    '#', '2018-01-01', '', 'admin', '用户管理删除按钮');
-insert into sys_menu values('13', '用户查询', '3', '4', '/system/user/select',    'F', '0', 'sys:user:select',    '#', '2018-01-01', '', 'admin', '用户管理查询按钮');
-insert into sys_menu values('14', '密码修改', '3', '5', '/system/user/pwdUpdate', 'F', '0', 'sys:user:pwdUpdate', '#', '2018-01-01', '', 'admin', '用户密码修改按钮');
+insert into sys_menu values('11', '用户新增', '3', '1', '/system/user/add',       'F', '0', 'sys:user:add',       '#', '2018-01-01', '', 'admin', '用户管理新增按钮');
+insert into sys_menu values('12', '用户修改', '3', '2', '/system/user/update',    'F', '0', 'sys:user:update',    '#', '2018-01-01', '', 'admin', '用户管理修改按钮');
+insert into sys_menu values('13', '用户删除', '3', '3', '/system/user/delete',    'F', '0', 'sys:user:delete',    '#', '2018-01-01', '', 'admin', '用户管理删除按钮');
+insert into sys_menu values('14', '用户查询', '3', '4', '/system/user/select',    'F', '0', 'sys:user:select',    '#', '2018-01-01', '', 'admin', '用户管理查询按钮');
+insert into sys_menu values('15', '密码修改', '3', '5', '/system/user/pwdUpdate', 'F', '0', 'sys:user:pwdUpdate', '#', '2018-01-01', '', 'admin', '用户密码修改按钮');
 --- 三级角色按钮
-insert into sys_menu values('15', '角色新增', '4', '1', '/system/role/add',    'F', '0', 'sys:role:add',    '#', '2018-01-01', '', 'admin', '角色管理新增按钮');
-insert into sys_menu values('16', '角色修改', '4', '2', '/system/role/update', 'F', '0', 'sys:role:update', '#', '2018-01-01', '', 'admin', '角色管理修改按钮');
-insert into sys_menu values('17', '角色删除', '4', '3', '/system/role/delete', 'F', '0', 'sys:role:delete', '#', '2018-01-01', '', 'admin', '角色管理删除按钮');
-insert into sys_menu values('18', '角色查询', '4', '4', '/system/role/select', 'F', '0', 'sys:role:select', '#', '2018-01-01', '', 'admin', '角色管理查询按钮');
-insert into sys_menu values('19', '角色授权', '4', '5', '/system/role/auth',   'F', '0', 'sys:role:auth',   '#', '2018-01-01', '', 'admin', '角色管理授权按钮');
+insert into sys_menu values('16', '角色新增', '4', '1', '/system/role/add',    'F', '0', 'sys:role:add',    '#', '2018-01-01', '', 'admin', '角色管理新增按钮');
+insert into sys_menu values('17', '角色修改', '4', '2', '/system/role/update', 'F', '0', 'sys:role:update', '#', '2018-01-01', '', 'admin', '角色管理修改按钮');
+insert into sys_menu values('18', '角色删除', '4', '3', '/system/role/delete', 'F', '0', 'sys:role:delete', '#', '2018-01-01', '', 'admin', '角色管理删除按钮');
+insert into sys_menu values('19', '角色查询', '4', '4', '/system/role/select', 'F', '0', 'sys:role:select', '#', '2018-01-01', '', 'admin', '角色管理查询按钮');
+insert into sys_menu values('20', '角色授权', '4', '5', '/system/role/auth',   'F', '0', 'sys:role:auth',   '#', '2018-01-01', '', 'admin', '角色管理授权按钮');
 --- 三级菜单按钮
-insert into sys_menu values('20', '菜单新增', '5', '1', '/system/menu/add',    'F', '0', 'sys:menu:add',    '#', '2018-01-01', '', 'admin', '菜单管理新增按钮');
-insert into sys_menu values('21', '菜单修改', '5', '2', '/system/menu/update', 'F', '0', 'sys:menu:update', '#', '2018-01-01', '', 'admin', '菜单管理修改按钮');
-insert into sys_menu values('22', '菜单删除', '5', '3', '/system/menu/delete', 'F', '0', 'sys:menu:delete', '#', '2018-01-01', '', 'admin', '菜单管理删除按钮');
-insert into sys_menu values('23', '菜单查询', '5', '4', '/system/menu/select', 'F', '0', 'sys:menu:select', '#', '2018-01-01', '', 'system', '菜单管理查询按钮');
+insert into sys_menu values('21', '菜单新增', '5', '1', '/system/menu/add',    'F', '0', 'sys:menu:add',    '#', '2018-01-01', '', 'admin', '菜单管理新增按钮');
+insert into sys_menu values('22', '菜单修改', '5', '2', '/system/menu/update', 'F', '0', 'sys:menu:update', '#', '2018-01-01', '', 'admin', '菜单管理修改按钮');
+insert into sys_menu values('23', '菜单删除', '5', '3', '/system/menu/delete', 'F', '0', 'sys:menu:delete', '#', '2018-01-01', '', 'admin', '菜单管理删除按钮');
+insert into sys_menu values('24', '菜单查询', '5', '4', '/system/menu/select', 'F', '0', 'sys:menu:select', '#', '2018-01-01', '', 'system', '菜单管理查询按钮');
 --- 三级日志按钮
-insert into sys_menu values('24', '操作日志查询', '4', '5', '/system/operlog/auth', 'F', '0', 'sys:operlog:select', '#', '2018-01-01', '', 'admin', '操作日志查询按钮');
-insert into sys_menu values('25', '登录日志查询', '4', '5', '/system/userlog/auth', 'F', '0', 'sys:userlog:select', '#', '2018-01-01', '', 'admin', '登录日志查询按钮');
+insert into sys_menu values('25', '操作日志查询', '4', '5', '/system/operlog/auth', 'F', '0', 'sys:operlog:select', '#', '2018-01-01', '', 'admin', '操作日志查询按钮');
+insert into sys_menu values('26', '登录日志查询', '4', '5', '/system/userlog/auth', 'F', '0', 'sys:userlog:select', '#', '2018-01-01', '', 'admin', '登录日志查询按钮');
 
 
 -- ----------------------------
@@ -175,7 +176,7 @@ insert into sys_role_menu values ('1', '6');
 insert into sys_role_menu values ('1', '7');
 insert into sys_role_menu values ('1', '8');
 insert into sys_role_menu values ('1', '9');
-
+insert into sys_role_menu values ('1', '10');
 
 -- ----------------------------
 -- 7、操作日志记录
@@ -273,7 +274,7 @@ create table sys_user_online (
 ) engine=innodb default charset=utf8;
 
 insert into sys_user_online(sessionId, login_name, dept_name, ipaddr, browser, os, status) 
-values('c3b252c3-2229-4be4-a5f7-7aba4b0c314c', 'admin', '开发部', '127.0.0.1', 'Chrome 45', 'Windows 7', 'on_line');
+values('c3b252c3-2229-4be4-a5f7-7aba4b0c314c', 'admin', '开发部门', '127.0.0.1', 'Chrome 45', 'Windows 7', 'on_line');
 
 -- 用户部门表
 SELECT * FROM sys_dept;
