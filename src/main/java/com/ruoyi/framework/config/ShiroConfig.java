@@ -197,6 +197,8 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/fonts/**", "anon");
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/ajax/**", "anon");
+        filterChainDefinitionMap.put("/ruoyi/**", "anon");
         filterChainDefinitionMap.put("/druid/**", "anon");
         // 不需要拦截的访问
         filterChainDefinitionMap.put("/login", "anon");
