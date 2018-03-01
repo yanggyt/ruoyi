@@ -63,7 +63,7 @@
 ## 系统演示
 
 后续更新
-(https://gitee.com/y_project/RuoYi/blob/master/doc/login.png)
+![登录界面](https://gitee.com/y_project/RuoYi/blob/master/doc/login.png)
 
 ## 若依交流群
 
