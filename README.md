@@ -46,7 +46,7 @@
 * 缓存框架：Ehcache
 * 日志管理：SLF4J
 * 工具类：Apache Commons Fastjson
-* POJO:Lombok
+* POJO：Lombok
 
 2、前端
 
