@@ -274,7 +274,7 @@ create table sys_user_online (
 ) engine=innodb default charset=utf8;
 
 insert into sys_user_online(sessionId, login_name, dept_name, ipaddr, browser, os, status) 
-values('c3b252c3-2229-4be4-a5f7-7aba4b0c314c', 'admin', '开发部门', '127.0.0.1', 'Chrome 45', 'Windows 7', 'on_line');
+values('c3b252c3-2229-4be4-a5f7-7aba4b0c314c', 'admin', '研发部门', '127.0.0.1', 'Chrome 45', 'Windows 7', 'on_line');
 
 -- 用户部门表
 SELECT * FROM sys_dept;
