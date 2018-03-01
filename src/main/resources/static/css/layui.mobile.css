@@ -1,12 +1,4 @@
-/**
- 
- @Name: layui mobile
- @Author: 贤心
- @Site: http://www.layui.com/mobile/
- 
- */
- 
-/* reset */
+ /* reset */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,input,button,textarea,p,blockquote,th,td,form,legend{margin:0; padding:0; -webkit-tap-highlight-color:rgba(0,0,0,0)}
 html{font:12px 'Helvetica Neue','PingFang SC',STHeitiSC-Light,Helvetica,Arial,sans-serif; -ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
 a,button,input{-webkit-tap-highlight-color:rgba(255,0,0,0);}
