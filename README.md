@@ -68,7 +68,7 @@
 
 ![登录界面](https://static.oschina.net/uploads/space/2018/0301/160757_fnZP_1438828.png)
 
-![首页](https://static.oschina.net/uploads/space/2018/0301/160757_fnZP_1438828.png)
+![首页](https://static.oschina.net/uploads/space/2018/0301/221159_e9GB_1438828.png)
 
 ![在线用户](https://static.oschina.net/uploads/space/2018/0301/221211_bd0i_1438828.png)
 
