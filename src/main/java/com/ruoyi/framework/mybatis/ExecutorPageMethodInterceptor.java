@@ -85,14 +85,16 @@ public class ExecutorPageMethodInterceptor implements Interceptor
                     // System.out.println(count);
                     PageUtilEntity pageUtilEntity = null;
                     if (parameterObject instanceof PageUtilEntity)
-                    { // 参数就是Page实体
+                    { 
+                        // 参数就是Page实体
                         pageUtilEntity = (PageUtilEntity) parameterObject;
                         pageUtilEntity.setEntityOrField(true);
                         pageUtilEntity.setTotalResult(count);
                     }
                     else
-                    { // 参数为某个实体，该实体拥有Page属性
-                        Field pageField = ReflectHelper.getFieldByFieldName(parameterObject, "page");
+                    {
+                        // 参数为某个实体，该实体拥有Page属性
+                        Field pageField = ReflectHelper.getFieldByFieldName(parameterObject, "PageUtilEntity");
                         if (pageField != null)
                         {
                             pageUtilEntity = (PageUtilEntity) ReflectHelper.getValueByFieldName(parameterObject, "PageUtilEntity");
@@ -102,7 +104,7 @@ public class ExecutorPageMethodInterceptor implements Interceptor
                             }
                             pageUtilEntity.setEntityOrField(false);
                             pageUtilEntity.setTotalResult(count);
-                            ReflectHelper.setValueByFieldName(parameterObject, "page", pageUtilEntity); // 通过反射，对实体对象设置分页对象
+                            ReflectHelper.setValueByFieldName(parameterObject, "PageUtilEntity", pageUtilEntity); // 通过反射，对实体对象设置分页对象
                         }
                         else
                         {
@@ -200,6 +202,10 @@ public class ExecutorPageMethodInterceptor implements Interceptor
             if ("mysql".equals(dialect))
             {
                 pageSql.append(sql);
+                if(StringUtils.isNotEmpty(pageUtilEntity.getOrderByColumn()))
+                {
+                    pageSql.append(" order by " + pageUtilEntity.getOrderByColumn() + " " + pageUtilEntity.getIsAsc());
+                }
                 pageSql.append(" limit " + pageUtilEntity.getPage() + "," + pageUtilEntity.getSize());
             }
             else if ("oracle".equals(dialect))
