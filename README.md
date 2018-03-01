@@ -10,6 +10,8 @@
 
 若依是给刚出生的女儿取的名字 寓意：你若不离不弃，我必生死相依
 
+当前版本1.0.0 2018/03/01发布第一版 陆续更新中
+
 ## 内置功能
 
 1.	用户管理：用户是系统操作者。
@@ -63,7 +65,7 @@
 ## 系统演示
 
 后续更新
-![登录界面](https://gitee.com/y_project/RuoYi/blob/master/doc/login.png)
+![登录界面](https://static.oschina.net/uploads/space/2018/0301/160757_fnZP_1438828.png)
 
 ## 若依交流群
 
