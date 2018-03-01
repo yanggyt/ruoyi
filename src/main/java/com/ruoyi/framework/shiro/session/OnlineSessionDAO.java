@@ -2,12 +2,10 @@ package com.ruoyi.framework.shiro.session;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import com.ruoyi.common.utils.HttpContextUtils;
 import com.ruoyi.project.monitor.online.domain.OnlineSession;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 import com.ruoyi.project.monitor.online.service.IUserOnlineService;
@@ -55,7 +53,6 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     @Override
     protected Session doReadSession(Serializable sessionId)
     {
-        System.out.println("==============doReadSession url=================");
         UserOnline userOnline = onlineService.selectByOnlineId(String.valueOf(sessionId));
         if (userOnline == null)
         {
@@ -69,9 +66,6 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
      */
     public void syncToDb(OnlineSession onlineSession)
     {
-        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-        String uri = request.getServletPath();
-        System.out.println("===============update================" + uri);
         Date lastSyncTimestamp = (Date) onlineSession.getAttribute(LAST_SYNC_DB_TIMESTAMP);
         if (lastSyncTimestamp != null)
         {
@@ -110,9 +104,6 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     @Override
     protected void doDelete(Session session)
     {
-        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-        String uri = request.getServletPath();
-        System.out.println("===============delete================" + uri);
         OnlineSession onlineSession = (OnlineSession) session;
         if (null == onlineSession)
         {
