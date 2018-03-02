@@ -46,4 +46,23 @@ public class LogininforDaoImpl extends DynamicObjectBaseDao implements ILogininf
         return logininforList;
     }
 
+    /**
+     * 批量删除系统登录日志
+     * 
+     * @param ids 需要删除的数据
+     * @return
+     */
+    public int batchDeleteLogininfor(Long[] ids)
+    {
+        int rows = 0;
+        try
+        {
+            rows = this.batchDelete("SystemLogininforMapper.batchDeleteLogininfor", ids);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return rows;
+    }
 }

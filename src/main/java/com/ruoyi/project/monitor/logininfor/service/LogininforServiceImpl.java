@@ -40,4 +40,15 @@ public class LogininforServiceImpl implements ILogininforService
     {
         return logininforDao.pageInfoQuery(pageUtilEntity);
     }
+
+    /**
+     * 批量删除系统登录日志
+     * 
+     * @param ids 需要删除的数据
+     * @return
+     */
+    public int batchDeleteLogininfor(Long[] ids)
+    {
+        return logininforDao.batchDeleteLogininfor(ids);
+    }
 }

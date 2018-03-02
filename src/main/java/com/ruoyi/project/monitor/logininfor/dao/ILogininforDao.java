@@ -25,4 +25,12 @@ public interface ILogininforDao
      * @return 登录记录集合
      */
     public List<Logininfor> pageInfoQuery(PageUtilEntity pageUtilEntity);
+
+    /**
+     * 批量删除系统登录日志
+     * 
+     * @param ids 需要删除的数据
+     * @return
+     */
+    public int batchDeleteLogininfor(Long[] ids);
 }

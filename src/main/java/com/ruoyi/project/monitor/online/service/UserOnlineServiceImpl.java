@@ -97,7 +97,7 @@ public class UserOnlineServiceImpl implements IUserOnlineService
     }
 
     /**
-     * 读取Session信息
+     * 强退用户
      * 
      * @param sessionId 会话ID
      */

@@ -24,5 +24,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into sys_oper_log(oper_id, title, action, method, channel, login_name, dept_name, opert_url, opert_ip, oper_param, status, error_msg) 
         values (#{operId}, #{title}, #{action}, #{method}, #{channel}, #{loginName}, #{deptName}, #{opertUrl}, #{opertIp}, #{opertParam}, #{status}, #{errorMsg})
 	</insert>
+	
+	<select id="pageInfoQueryOperLog" parameterType="PageUtilEntity" resultMap="OperLogResult">
+		select * from sys_oper_log
+		<where>
+			<if test="searchValue != null">
+				AND login_name = #{searchValue}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="batchDeleteOperLog" parameterType="java.lang.String">
+ 		delete from sys_oper_log where oper_id in
+ 		<foreach collection="array" item="operId" open="(" separator="," close=")">
+ 			#{operId}
+        </foreach> 
+ 	</delete>
 
 </mapper> 

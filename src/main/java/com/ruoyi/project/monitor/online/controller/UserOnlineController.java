@@ -54,7 +54,7 @@ public class UserOnlineController extends BaseController
         return tableDataInfo;
     }
 
-    @Log(title = "监控管理", action = "在线用户-批量踢出用户")
+    @Log(title = "监控管理", action = "在线用户-批量强退用户")
     @PostMapping("/batchForceLogout")
     @ResponseBody
     public JSON batchForceLogout(@RequestParam("ids[]") String[] ids)

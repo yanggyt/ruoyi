@@ -1,52 +1,67 @@
-var prefix = "/monitor/logininfor"
+var prefix = "/monitor/operlog"
 
 $(function() {
 		var columns = [{
-	        checkbox: true
-	    },
-	    {
-            field: 'infoId',
+            checkbox: true
+        },
+        {
+            field: 'operId',
             // 列字段名
-            title: '访问编号' // 列标题
+            title: '日志编号' // 列标题
+        },
+        {
+            field: 'title',
+            title: '模块'
+        },
+        {
+            field: 'action',
+            title: '功能'
         },
         {
             field: 'loginName',
             title: '登录名称'
         },
         {
-            field: 'ipaddr',
+            field: 'deptName',
+            title: '部门名称'
+        },
+        {
+            field: 'opertIp',
             title: '主机'
         },
         {
-            field: 'browser',
-            title: '浏览器'
-        },
-        {
-            field: 'os',
-            title: '操作系统'
-        },
-        {
             field: 'status',
-            title: '登录状态',
+            title: '操作状态',
             align: 'center',
             formatter: function(value, row, index) {
                 if (value == 0) {
                     return '<span class="label label-success">成功</span>';
                 } else if (value == 1) {
-                    return '<span class="label label-primary">失败</span>';
+                    return '<span class="label label-primary">异常</span>';
                 }
             }
         },
         {
-            field: 'loginTime',
-            title: '登录时间'
+            field: 'operTime',
+            title: '操作时间'
+        },
+        {
+            title: '操作',
+            align: 'center',
+            formatter: function(value, row, index) {
+                var d = '<a class="btn btn-warning btn-sm" href="#" title="详细" onclick="view(\'' + row.operId + '\')"><i class="fa fa-search"></i></a> ';
+                return d;
+            }
         }];
 	var url = prefix + "/list";
     initTable(columns, url);
 });
 
+function view(id) {
+}
+
 function batchRemove() {
-	var rows = getIdSelections("infoId");
+	var rows = getIdSelections("operId");
 	if (rows.length == 0) {
 		layer.msg("请选择要删除的数据");
 		return;

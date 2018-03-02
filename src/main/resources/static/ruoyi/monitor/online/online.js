@@ -51,7 +51,6 @@ $(function() {
         },
         {
             title: '操作',
-            field: 'id',
             align: 'center',
             formatter: function(value, row, index) {
                 var d = '<a class="btn btn-warning btn-sm" href="#" title="删除" onclick="forceLogout(\'' + row.sessionId + '\')"><i class="fa fa-remove"></i></a> ';

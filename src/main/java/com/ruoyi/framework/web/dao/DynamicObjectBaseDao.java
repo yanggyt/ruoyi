@@ -6,15 +6,12 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
-import com.ruoyi.common.exception.base.DaoException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 数据DAO层通用数据处理
  * 
  * @author ruoyi
  */
-@Slf4j
 public class DynamicObjectBaseDao
 {
     @Resource(name = "sqlSessionTemplate")
@@ -23,78 +20,48 @@ public class DynamicObjectBaseDao
     /**
      * 保存对象
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
     public int save(String str, Object obj)
     {
-        int rows;
-        try
-        {
-            rows = sqlSessionTemplate.insert(str, obj);
-        }
-        catch (Exception e)
-        {
-            log.error(e.getMessage());
-            throw new DaoException("插入失败");
-        }
-        return rows;
+        return sqlSessionTemplate.insert(str, obj);
     }
 
     /**
      * 批量更新
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
     public int batchSave(String str, List<?> objs)
     {
-        int rows;
-        try
-        {
-            rows = sqlSessionTemplate.insert(str, objs);
-        }
-        catch (Exception e)
-        {
-            log.error(e.getMessage());
-            throw new DaoException("批量更新失败");
-        }
-        return rows;
+        return sqlSessionTemplate.insert(str, objs);
     }
 
     /**
      * 修改对象
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
     public int update(String str, Object obj)
     {
-        int rows;
-        try
-        {
-            rows = sqlSessionTemplate.update(str, obj);
-        }
-        catch (Exception e)
-        {
-            log.error(e.getMessage());
-            throw new DaoException("修改失败");
-        }
-        return rows;
+        return sqlSessionTemplate.update(str, obj);
     }
 
     /**
      * 批量更新
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
     public void batchUpdate(String str, List<?> objs) throws Exception
@@ -122,118 +89,81 @@ public class DynamicObjectBaseDao
     }
 
     /**
-     * 批量删除
+     * 批量删除 根据对象
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
     public int batchDelete(String str, List<?> objs) throws Exception
     {
-        int rows;
-        try
-        {
-            rows = sqlSessionTemplate.update(str, objs);
-        }
-        catch (Exception e)
-        {
-            log.error(e.getMessage());
-            throw new DaoException("批量删除失败");
-        }
-        return rows;
+        return sqlSessionTemplate.delete(str, objs);
+    }
+    
+    /**
+     * 批量删除 根据数组
+     * 
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
+     * @throws Exception
+     */
+    public int batchDelete(String str, Long[] objs) throws Exception
+    {
+        return sqlSessionTemplate.delete(str, objs);
     }
 
     /**
      * 删除对象
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
     public int delete(String str, Object obj)
     {
-        int rows;
-        try
-        {
-            rows = sqlSessionTemplate.delete(str, obj);
-        }
-        catch (Exception e)
-        {
-            log.error(e.getMessage());
-            throw new DaoException("删除失败");
-        }
-        return rows;
+        return sqlSessionTemplate.delete(str, obj);
     }
 
     /**
      * 查找单条对象
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
     public <T> T findForObject(String str, Object obj)
     {
-        T t;
-        try
-        {
-            t = sqlSessionTemplate.selectOne(str, obj);
-        }
-        catch (Exception e)
-        {
-            log.error(e.getMessage());
-            throw new DaoException("查找单条对象失败");
-        }
-        return t;
+        return sqlSessionTemplate.selectOne(str, obj);
     }
 
     /**
      * 查找对象 - 无条件
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
     public <E> List<E> findForList(String str) throws Exception
     {
-        List<E> list;
-        try
-        {
-            list = sqlSessionTemplate.selectList(str);
-        }
-        catch (Exception e)
-        {
-            log.error(e.getMessage());
-            throw new DaoException("查找所有对象-无条件。失败");
-        }
-        return list;
+        return sqlSessionTemplate.selectList(str);
     }
 
     /**
      * 查找对象 - 有条件
      * 
-     * @param str
-     * @param obj
-     * @return
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
      * @throws Exception
      */
-    public <E> List<E> findForList(String str, Object obj)
+    public <E> List<E> findForList(String str, Object obj) throws Exception
     {
-        List<E> list;
-        try
-        {
-            list = sqlSessionTemplate.selectList(str, obj);
-        }
-        catch (Exception e)
-        {
-            log.error(e.getMessage());
-            throw new DaoException("查找所有对象-有条件。失败");
-        }
-        return list;
+        return sqlSessionTemplate.selectList(str, obj);
     }
 
     public Object findForMap(String str, Object obj, String key, String value) throws Exception
