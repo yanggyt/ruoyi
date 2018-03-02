@@ -21,9 +21,9 @@ public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnli
      * @return 在线用户信息
      */
     @Override
-    public UserOnline selectByOnlineId(String sessionId)
+    public UserOnline selectOnlineById(String sessionId)
     {
-        return this.findForObject("SystemOnlineMapper.selectByOnlineId", sessionId);
+        return this.findForObject("SystemOnlineMapper.selectOnlineById", sessionId);
     }
 
     /**
@@ -33,9 +33,9 @@ public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnli
      * @return 在线用户信息
      */
     @Override
-    public int deleteByOnlineId(String sessionId)
+    public int deleteOnlineById(String sessionId)
     {
-        return this.delete("SystemOnlineMapper.deleteByOnlineId", sessionId);
+        return this.delete("SystemOnlineMapper.deleteOnlineById", sessionId);
     }
 
     /**
@@ -44,9 +44,9 @@ public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnli
      * @param online 会话信息
      */
     @Override
-    public int saveByOnline(UserOnline online)
+    public int saveOnline(UserOnline online)
     {
-        return this.save("SystemOnlineMapper.saveByOnline", online);
+        return this.save("SystemOnlineMapper.saveOnline", online);
     }
 
     /**
@@ -75,12 +75,12 @@ public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnli
      * @param lastAccessTime 过期时间
      */
     @Override
-    public List<UserOnline> selectByOnlineExpired(String lastAccessTime)
+    public List<UserOnline> selectOnlineByExpired(String lastAccessTime)
     {
         List<UserOnline> userOnlineList = null;
         try
         {
-            userOnlineList = this.findForList("SystemOnlineMapper.selectByOnlineExpired", lastAccessTime);
+            userOnlineList = this.findForList("SystemOnlineMapper.selectOnlineByExpired", lastAccessTime);
         }
         catch (Exception e)
         {

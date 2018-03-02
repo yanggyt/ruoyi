@@ -1,13 +1,17 @@
 package com.ruoyi.project.monitor.operlog.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.JSON;
@@ -57,5 +61,13 @@ public class OperlogController extends BaseController
             return JSON.ok();
         }
         return JSON.error();
+    }
+
+    @GetMapping("/view/{operId}")
+    String edit(@PathVariable("operId") Long deptId, Model model)
+    {
+        OperLog operLog = operLogService.selectOperLogById(deptId);
+        model.addAttribute("operLog", operLog);
+        return prefix + "/view";
     }
 }

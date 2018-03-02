@@ -27,6 +27,6 @@ public interface IUserDao
      * @param userName 用户名
      * @return 用户对象信息
      */
-    public User selectByUserName(String userName);
+    public User selectUserByName(String userName);
 
 }

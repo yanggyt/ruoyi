@@ -34,9 +34,9 @@ public class UserOnlineServiceImpl implements IUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public UserOnline selectByOnlineId(String sessionId)
+    public UserOnline selectOnlineById(String sessionId)
     {
-        return userOnlineDao.selectByOnlineId(sessionId);
+        return userOnlineDao.selectOnlineById(sessionId);
     }
 
     /**
@@ -46,12 +46,12 @@ public class UserOnlineServiceImpl implements IUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public void deleteByOnlineId(String sessionId)
+    public void deleteOnlineById(String sessionId)
     {
-        UserOnline userOnline = selectByOnlineId(sessionId);
+        UserOnline userOnline = selectOnlineById(sessionId);
         if (userOnline != null)
         {
-            userOnlineDao.deleteByOnlineId(sessionId);
+            userOnlineDao.deleteOnlineById(sessionId);
         }
     }
 
@@ -62,14 +62,14 @@ public class UserOnlineServiceImpl implements IUserOnlineService
      * @return 在线用户信息
      */
     @Override
-    public void batchDeleteByOnline(List<String> sessions)
+    public void batchDeleteOnline(List<String> sessions)
     {
         for (String sessionId : sessions)
         {
-            UserOnline userOnline = selectByOnlineId(sessionId);
+            UserOnline userOnline = selectOnlineById(sessionId);
             if (userOnline != null)
             {
-                userOnlineDao.deleteByOnlineId(sessionId);
+                userOnlineDao.deleteOnlineById(sessionId);
             }
         }
     }
@@ -80,9 +80,9 @@ public class UserOnlineServiceImpl implements IUserOnlineService
      * @param online 会话信息
      */
     @Override
-    public void saveByOnline(UserOnline online)
+    public void saveOnline(UserOnline online)
     {
-        userOnlineDao.saveByOnline(online);
+        userOnlineDao.saveOnline(online);
     }
 
     /**
@@ -110,7 +110,7 @@ public class UserOnlineServiceImpl implements IUserOnlineService
             return;
         }
         session.setTimeout(1000);
-        userOnlineDao.deleteByOnlineId(sessionId);
+        userOnlineDao.deleteOnlineById(sessionId);
     }
 
     /**
@@ -119,9 +119,9 @@ public class UserOnlineServiceImpl implements IUserOnlineService
      * @param online 会话信息
      */
     @Override
-    public List<UserOnline> selectByOnlineExpired(Date expiredDate)
+    public List<UserOnline> selectOnlineByExpired(Date expiredDate)
     {
         String lastAccessTime = DateUtils.dateTime("yyyy-MM-dd HH:mm:ss", expiredDate);
-        return userOnlineDao.selectByOnlineExpired(lastAccessTime);
+        return userOnlineDao.selectOnlineByExpired(lastAccessTime);
     }
 }

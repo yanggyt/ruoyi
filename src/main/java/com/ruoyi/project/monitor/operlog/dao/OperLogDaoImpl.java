@@ -64,4 +64,15 @@ public class OperLogDaoImpl extends DynamicObjectBaseDao implements IOperLogDao
         }
         return rows;
     }
+    
+    /**
+     * 查询操作日志详细
+     * 
+     * @param operId 操作ID
+     * @return 操作日志对象
+     */
+    public OperLog selectOperLogById(Long operId)
+    {
+        return this.findForObject("SystemOperLogMapper.selectOperLogById", operId);
+    }
 }

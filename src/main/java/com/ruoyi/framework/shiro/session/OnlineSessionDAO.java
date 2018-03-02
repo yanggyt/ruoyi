@@ -53,7 +53,7 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
     @Override
     protected Session doReadSession(Serializable sessionId)
     {
-        UserOnline userOnline = onlineService.selectByOnlineId(String.valueOf(sessionId));
+        UserOnline userOnline = onlineService.selectOnlineById(String.valueOf(sessionId));
         if (userOnline == null)
         {
             return null;
@@ -95,7 +95,7 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
         {
             onlineSession.resetAttributeChanged();
         }
-        onlineService.saveByOnline(UserOnline.fromOnlineSession(onlineSession));
+        onlineService.saveOnline(UserOnline.fromOnlineSession(onlineSession));
     }
 
     /**
@@ -110,6 +110,6 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
             return;
         }
         onlineSession.setStatus(OnlineSession.OnlineStatus.off_line);
-        onlineService.deleteByOnlineId(String.valueOf(onlineSession.getId()));
+        onlineService.deleteOnlineById(String.valueOf(onlineSession.getId()));
     }
 }

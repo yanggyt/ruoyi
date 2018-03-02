@@ -19,7 +19,7 @@ public interface IUserOnlineService
      * @param sessionId 会话ID
      * @return 在线用户信息
      */
-    public UserOnline selectByOnlineId(String sessionId);
+    public UserOnline selectOnlineById(String sessionId);
 
     /**
      * 通过会话序号删除信息
@@ -27,7 +27,7 @@ public interface IUserOnlineService
      * @param sessionId 会话ID
      * @return 在线用户信息
      */
-    public void deleteByOnlineId(String sessionId);
+    public void deleteOnlineById(String sessionId);
 
     /**
      * 通过会话序号删除信息
@@ -35,14 +35,14 @@ public interface IUserOnlineService
      * @param sessions 会话ID集合
      * @return 在线用户信息
      */
-    public void batchDeleteByOnline(List<String> sessions);
+    public void batchDeleteOnline(List<String> sessions);
 
     /**
      * 保存会话信息
      * 
      * @param online 会话信息
      */
-    public void saveByOnline(UserOnline online);
+    public void saveOnline(UserOnline online);
 
     /**
      * 查询会话集合
@@ -65,5 +65,5 @@ public interface IUserOnlineService
      * @param expiredDate 有效期
      * @return 会话集合
      */
-    public List<UserOnline> selectByOnlineExpired(Date expiredDate);
+    public List<UserOnline> selectOnlineByExpired(Date expiredDate);
 }

@@ -41,7 +41,7 @@ public class OperLogServiceImpl implements IOperLogService
     {
         return operLogDao.pageInfoQuery(pageUtilEntity);
     }
-    
+
     /**
      * 批量删除系统操作日志
      * 
@@ -51,5 +51,16 @@ public class OperLogServiceImpl implements IOperLogService
     public int batchDeleteOperLog(Long[] ids)
     {
         return operLogDao.batchDeleteOperLog(ids);
+    }
+
+    /**
+     * 查询操作日志详细
+     * 
+     * @param operId 操作ID
+     * @return 操作日志对象
+     */
+    public OperLog selectOperLogById(Long operId)
+    {
+        return operLogDao.selectOperLogById(operId);
     }
 }

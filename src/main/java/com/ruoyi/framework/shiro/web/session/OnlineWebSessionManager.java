@@ -91,7 +91,7 @@ public class OnlineWebSessionManager extends DefaultWebSessionManager
         int timeout = (int) this.getGlobalSessionTimeout();
         Date expiredDate = DateUtils.addMilliseconds(new Date(), 0 - timeout);
         UserOnlineServiceImpl userOnlineService = SpringUtils.getBean(UserOnlineServiceImpl.class);
-        List<UserOnline> userOnlineList = userOnlineService.selectByOnlineExpired(expiredDate);
+        List<UserOnline> userOnlineList = userOnlineService.selectOnlineByExpired(expiredDate);
         // 批量过期删除
         List<String> needOfflineIdList = new ArrayList<String>();
         for (UserOnline userOnline : userOnlineList)
@@ -123,7 +123,7 @@ public class OnlineWebSessionManager extends DefaultWebSessionManager
         {
             try
             {
-                userOnlineService.batchDeleteByOnline(needOfflineIdList);
+                userOnlineService.batchDeleteOnline(needOfflineIdList);
             }
             catch (Exception e)
             {

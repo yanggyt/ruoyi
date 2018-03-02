@@ -61,7 +61,7 @@ public class UserOnlineController extends BaseController
     {
         for (String sessionId : ids)
         {
-            UserOnline online = userOnlineService.selectByOnlineId(sessionId);
+            UserOnline online = userOnlineService.selectOnlineById(sessionId);
             if (online == null)
             {
                 return JSON.error("用户已下线");
@@ -73,17 +73,17 @@ public class UserOnlineController extends BaseController
             }
             onlineSession.setStatus(OnlineSession.OnlineStatus.off_line);
             online.setStatus(OnlineSession.OnlineStatus.off_line);
-            userOnlineService.saveByOnline(online);
+            userOnlineService.saveOnline(online);
         }
         return JSON.ok();
     }
 
-    @Log(title = "监控管理", action = "在线用户-踢出用户")
+    @Log(title = "监控管理", action = "在线用户-强退用户")
     @RequestMapping("/forceLogout/{sessionId}")
     @ResponseBody
     public JSON forceLogout(@PathVariable("sessionId") String sessionId)
     {
-        UserOnline online = userOnlineService.selectByOnlineId(sessionId);
+        UserOnline online = userOnlineService.selectOnlineById(sessionId);
         if (online == null)
         {
             return JSON.error("用户已下线");
@@ -95,7 +95,7 @@ public class UserOnlineController extends BaseController
         }
         onlineSession.setStatus(OnlineSession.OnlineStatus.off_line);
         online.setStatus(OnlineSession.OnlineStatus.off_line);
-        userOnlineService.saveByOnline(online);
+        userOnlineService.saveOnline(online);
         return JSON.ok();
     }
 

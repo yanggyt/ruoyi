@@ -18,7 +18,7 @@ public interface IUserOnlineDao
      * @param sessionId 会话ID
      * @return 在线用户信息
      */
-    public UserOnline selectByOnlineId(String sessionId);
+    public UserOnline selectOnlineById(String sessionId);
 
     /**
      * 通过会话序号删除信息
@@ -26,7 +26,7 @@ public interface IUserOnlineDao
      * @param sessionId 会话ID
      * @return 在线用户信息
      */
-    public int deleteByOnlineId(String sessionId);
+    public int deleteOnlineById(String sessionId);
 
     /**
      * 保存会话信息
@@ -34,7 +34,7 @@ public interface IUserOnlineDao
      * @param online 会话信息
      * @return 结果
      */
-    public int saveByOnline(UserOnline online);
+    public int saveOnline(UserOnline online);
 
     /**
      * 查询会话集合
@@ -50,5 +50,5 @@ public interface IUserOnlineDao
      * @param lastAccessTime 过期时间
      * @return 会话集合
      */
-    public List<UserOnline> selectByOnlineExpired(String lastAccessTime);
+    public List<UserOnline> selectOnlineByExpired(String lastAccessTime);
 }

@@ -26,11 +26,11 @@ public class OperLog
     /** 部门名称 */
     private String deptName;
     /** 请求url */
-    private String opertUrl;
+    private String operUrl;
     /** 操作地址 */
-    private String opertIp;
+    private String operIp;
     /** 请求参数 */
-    private String opertParam;
+    private String operParam;
     /** 状态0正常 1异常 */
     private int status;
     /** 错误消息 */

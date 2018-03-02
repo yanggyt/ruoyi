@@ -26,7 +26,7 @@ $(function() {
             title: '部门名称'
         },
         {
-            field: 'opertIp',
+            field: 'operIp',
             title: '主机'
         },
         {
@@ -57,7 +57,10 @@ $(function() {
     initTable(columns, url);
 });
 
+/*操作日志-详细*/
 function view(id) {
+    var url = prefix + '/view/' + id;
+    layer_show("操作日志详细", url, '800', '500');
 }
 
 function batchRemove() {

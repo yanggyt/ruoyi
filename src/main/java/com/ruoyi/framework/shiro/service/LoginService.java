@@ -55,7 +55,7 @@ public class LoginService
         }
 
         // 查询用户信息
-        User user = userService.selectByUserName(username);
+        User user = userService.selectUserByName(username);
 
         if (user == null)
         {
