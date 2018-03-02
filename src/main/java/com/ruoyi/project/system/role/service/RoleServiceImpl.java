@@ -12,7 +12,7 @@ import com.ruoyi.project.system.role.dao.IRoleDao;
 /**
  * 角色 业务层处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Service("roleService")
 public class RoleServiceImpl implements IRoleService

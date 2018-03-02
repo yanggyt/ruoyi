@@ -3,7 +3,7 @@ package com.ruoyi.common.exception.base;
 /**
  * Dao异常
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class DaoException extends RuntimeException
 {

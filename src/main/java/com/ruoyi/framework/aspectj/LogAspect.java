@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 操作日志记录处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 
 @Aspect

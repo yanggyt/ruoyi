@@ -8,7 +8,7 @@ import com.ruoyi.project.monitor.operlog.domain.OperLog;
 /**
  * 操作日志 服务层处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Service("operLogService")
 public class OperLogServiceImpl implements IOperLogService

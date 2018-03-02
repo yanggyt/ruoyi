@@ -8,7 +8,7 @@ import com.ruoyi.project.system.user.domain.User;
 /**
  * shiro 工具类
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class ShiroUtils
 {

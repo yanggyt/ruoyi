@@ -9,7 +9,7 @@ import lombok.Data;
 /**
  * 当前在线会话 sys_user_online
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Data
 public class UserOnline

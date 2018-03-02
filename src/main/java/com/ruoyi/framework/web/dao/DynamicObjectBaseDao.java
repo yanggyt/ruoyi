@@ -6,15 +6,13 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
-
 import com.ruoyi.common.exception.base.DaoException;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * 数据DAO层通用数据处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Slf4j
 public class DynamicObjectBaseDao

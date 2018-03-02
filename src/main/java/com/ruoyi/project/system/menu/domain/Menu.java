@@ -7,7 +7,7 @@ import lombok.Data;
 /**
  * 角色对象 sys_menu
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Data
 public class Menu

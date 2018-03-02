@@ -8,7 +8,7 @@ import com.ruoyi.project.system.user.domain.User;
 /**
  * 用户表 数据层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public interface IUserDao
 {

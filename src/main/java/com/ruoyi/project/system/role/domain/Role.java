@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 角色对象 sys_role
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Data
 public class Role

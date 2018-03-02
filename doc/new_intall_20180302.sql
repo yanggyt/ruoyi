@@ -106,14 +106,14 @@ create table sys_menu (
 insert into sys_menu values('1', '系统管理', '0', '1', '#', 'M', '0', '#', 'fa fa-gear',         '2018-01-01', '', 'admin', '系统管理目录');
 insert into sys_menu values('2', '系统监控', '0', '2', '#', 'M', '0', '#', 'fa fa-video-camera', '2018-01-01', '', 'admin', '系统监控目录');
 -- 二级菜单
-insert into sys_menu values('3', '用户管理', '1', '1', '/system/user/userList',       'C', '0', 'system:user:list',    '#', '2018-01-01', '', 'admin', '用户管理菜单');
-insert into sys_menu values('4', '角色管理', '1', '2', '/system/role/roleList',       'C', '0', 'system:role:list',    '#', '2018-01-01', '', 'admin', '角色管理菜单');
-insert into sys_menu values('5', '菜单管理', '1', '3', '/system/menu/menuList',       'C', '0', 'system:menu:list',    '#', '2018-01-01', '', 'admin', '菜单管理菜单');
-insert into sys_menu values('6', '部门管理', '1', '3', '/system/dept/deptList',       'C', '0', 'system:dept:list',    '#', '2018-01-01', '', 'admin', '部门管理菜单');
-insert into sys_menu values('7', '操作日志', '2', '1', '/system/operlog/operlogList', 'C', '0', 'system:operlog:list', '#', '2018-01-01', '', 'admin', '操作日志菜单');
-insert into sys_menu values('8', '登录日志', '2', '2', '/system/userlog/userlogList', 'C', '0', 'system:userlog:list', '#', '2018-01-01', '', 'admin', '登录日志菜单');
-insert into sys_menu values('9', '在线用户', '2', '3', '/monitor/online',             'C', '0', 'monitor:online',      '#', '2018-01-01', '', 'admin', '在线用户菜单');
-insert into sys_menu values('10', '数据监控', '2', '4', '/monitor/druid/index.html',   'C', '0', 'monitor:druid:list',  '#', '2018-01-01', '', 'admin', '数据监控菜单');
+insert into sys_menu values('3',  '用户管理', '1', '1', '/system/user/userList',       'C', '0', 'system:user:list',    '#', '2018-01-01', '', 'admin', '用户管理菜单');
+insert into sys_menu values('4',  '角色管理', '1', '2', '/system/role/roleList',       'C', '0', 'system:role:list',    '#', '2018-01-01', '', 'admin', '角色管理菜单');
+insert into sys_menu values('5',  '菜单管理', '1', '3', '/system/menu/menuList',       'C', '0', 'system:menu:list',    '#', '2018-01-01', '', 'admin', '菜单管理菜单');
+insert into sys_menu values('6',  '部门管理', '1', '3', '/system/dept/deptList',       'C', '0', 'system:dept:list',    '#', '2018-01-01', '', 'admin', '部门管理菜单');
+insert into sys_menu values('7',  '操作日志', '2', '1', '/monitor/operlog',            'C', '0', 'monitor:operlog',     '#', '2018-01-01', '', 'admin', '操作日志菜单');
+insert into sys_menu values('8',  '登录日志', '2', '2', '/monitor/logininfor',         'C', '0', 'monitor:logininfor',  '#', '2018-01-01', '', 'admin', '登录日志菜单');
+insert into sys_menu values('9',  '在线用户', '2', '3', '/monitor/online',             'C', '0', 'monitor:online',      '#', '2018-01-01', '', 'admin', '在线用户菜单');
+insert into sys_menu values('10', '数据监控', '2', '4', '/monitor/druid/index.html',   'C', '0', 'monitor:druid',       '#', '2018-01-01', '', 'admin', '数据监控菜单');
 --- 三级用户按钮
 insert into sys_menu values('11', '用户新增', '3', '1', '/system/user/add',       'F', '0', 'sys:user:add',       '#', '2018-01-01', '', 'admin', '用户管理新增按钮');
 insert into sys_menu values('12', '用户修改', '3', '2', '/system/user/update',    'F', '0', 'sys:user:update',    '#', '2018-01-01', '', 'admin', '用户管理修改按钮');
@@ -131,10 +131,6 @@ insert into sys_menu values('21', '菜单新增', '5', '1', '/system/menu/add', 
 insert into sys_menu values('22', '菜单修改', '5', '2', '/system/menu/update', 'F', '0', 'sys:menu:update', '#', '2018-01-01', '', 'admin', '菜单管理修改按钮');
 insert into sys_menu values('23', '菜单删除', '5', '3', '/system/menu/delete', 'F', '0', 'sys:menu:delete', '#', '2018-01-01', '', 'admin', '菜单管理删除按钮');
 insert into sys_menu values('24', '菜单查询', '5', '4', '/system/menu/select', 'F', '0', 'sys:menu:select', '#', '2018-01-01', '', 'system', '菜单管理查询按钮');
---- 三级日志按钮
-insert into sys_menu values('25', '操作日志查询', '4', '5', '/system/operlog/auth', 'F', '0', 'sys:operlog:select', '#', '2018-01-01', '', 'admin', '操作日志查询按钮');
-insert into sys_menu values('26', '登录日志查询', '4', '5', '/system/userlog/auth', 'F', '0', 'sys:userlog:select', '#', '2018-01-01', '', 'admin', '登录日志查询按钮');
-
 
 -- ----------------------------
 -- 5、用户和角色关联表  用户N-1角色
@@ -244,16 +240,16 @@ drop table if exists sys_logininfor;
 create table sys_logininfor (
   info_id 		int(11) 	 not null auto_increment   comment '访问ID',
   login_name 	varchar(50)  default '' 			   comment '登录名',
-  status 		int(1) 		 default 0 			 	   comment '登录状态 0成功 1失败',
   ipaddr 		varchar(50)  default '' 			   comment '登录IP地址',
   browser  		varchar(50)  default '' 			   comment '浏览器类型',
   os      		varchar(50)  default '' 			   comment '操作系统',
+  status 		int(1) 		 default 0 			 	   comment '登录状态 0成功 1失败',
   msg      		varchar(255) default '' 			   comment '提示消息',
-  logondate 	timestamp    default current_timestamp comment '访问时间',
+  login_time 	timestamp    default current_timestamp comment '访问时间',
   primary key (info_id)
 ) engine=innodb auto_increment=100 default charset=utf8;
 
-insert into sys_logininfor values(1, 'admin', 0 , '127.0.0.1', 'Chrome 45', 'Windows 7', '登录成功' ,'2018-01-01');
+insert into sys_logininfor values(1, 'admin', '127.0.0.1', 'Chrome 45', 'Windows 7', 0, '登录成功' ,'2018-01-01');
 
 -- ----------------------------
 -- 10、在线用户记录
@@ -269,7 +265,7 @@ create table sys_user_online (
   status      	    varchar(10)  default '' 			 	comment '在线状态on_line在线off_line离线',
   start_timestsamp 	timestamp    default current_timestamp  comment 'session创建时间',
   last_access_time  timestamp    default current_timestamp  comment 'session最后访问时间',
-  expireTime 	    int(5) 		 default 0 			 	    comment '超时时间，单位为分钟',
+  expire_time 	    int(5) 		 default 0 			 	    comment '超时时间，单位为分钟',
   primary key (sessionId)
 ) engine=innodb default charset=utf8;
 

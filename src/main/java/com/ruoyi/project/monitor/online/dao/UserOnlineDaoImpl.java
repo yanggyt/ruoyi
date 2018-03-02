@@ -9,7 +9,7 @@ import com.ruoyi.project.monitor.online.domain.UserOnline;
 /**
  * 在线用户数据层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Repository("userOnlineDao")
 public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnlineDao

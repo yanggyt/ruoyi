@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * 用户对象 sys_user
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Data
 public class User

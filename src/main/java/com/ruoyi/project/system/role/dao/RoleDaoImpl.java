@@ -9,7 +9,7 @@ import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
 /**
  * 角色 数据层处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Repository("roleDao")
 public class RoleDaoImpl extends DynamicObjectBaseDao implements IRoleDao

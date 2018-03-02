@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Druid数据库信息配置加载
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Configuration
 @Slf4j

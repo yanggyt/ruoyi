@@ -14,9 +14,9 @@ import com.ruoyi.project.monitor.online.dao.IUserOnlineDao;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
 /**
- * 在线用户 服务层
+ * 在线用户 服务层处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Service("userOnlineService")
 public class UserOnlineServiceImpl implements IUserOnlineService

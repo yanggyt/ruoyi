@@ -6,7 +6,7 @@ import com.ruoyi.project.system.menu.domain.Menu;
 /**
  * 菜单表 数据层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public interface IMenuDao
 {

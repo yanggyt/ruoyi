@@ -16,7 +16,7 @@ import com.ruoyi.project.system.user.service.IUserService;
 /**
  * 登录校验方法
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Component
 public class LoginService

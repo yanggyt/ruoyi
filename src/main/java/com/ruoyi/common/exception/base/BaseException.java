@@ -7,7 +7,7 @@ import com.ruoyi.common.utils.MessageUtils;
 /**
  * 基础异常
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class BaseException extends RuntimeException
 {

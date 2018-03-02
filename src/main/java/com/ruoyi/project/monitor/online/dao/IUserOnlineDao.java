@@ -6,9 +6,9 @@ import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
 /**
- * 在线用户 服务层
+ * 在线用户 数据层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public interface IUserOnlineDao
 {

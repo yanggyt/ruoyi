@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * 操作日志记录 oper_log
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Data
 public class OperLog

@@ -7,7 +7,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * 客户端工具类
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class HttpContextUtils
 {

@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 表格请求参数封装
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Data
 public class PageUtilEntity

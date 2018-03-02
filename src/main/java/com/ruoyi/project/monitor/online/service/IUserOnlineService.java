@@ -9,7 +9,7 @@ import com.ruoyi.project.monitor.online.domain.UserOnline;
 /**
  * 在线用户 服务层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public interface IUserOnlineService
 {

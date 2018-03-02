@@ -34,7 +34,7 @@ import com.ruoyi.framework.web.page.PageUtilEntity;
 /**三
  * 拦截需要分页SQL
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class }) })
 public class ExecutorPageMethodInterceptor implements Interceptor

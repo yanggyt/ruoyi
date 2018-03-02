@@ -6,14 +6,15 @@ import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.CommonConstant;
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
-import com.ruoyi.project.system.logininfor.domain.Logininfor;
-import com.ruoyi.project.system.logininfor.service.LogininforServiceImpl;
+import com.ruoyi.project.monitor.logininfor.domain.Logininfor;
+import com.ruoyi.project.monitor.logininfor.service.LogininforServiceImpl;
+
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
  * 记录用户日志信息
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class SystemLogUtils
 {

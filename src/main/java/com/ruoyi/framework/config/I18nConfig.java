@@ -14,7 +14,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 /**
  * 资源文件配置加载
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Configuration
 @Component

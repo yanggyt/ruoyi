@@ -18,7 +18,7 @@ import com.ruoyi.project.system.user.service.IUserService;
 /**
  * 用户信息
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Controller
 @RequestMapping("/system/user")

@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 自定义任务调度器完成
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Slf4j
 public class SpringSessionValidationScheduler implements SessionValidationScheduler

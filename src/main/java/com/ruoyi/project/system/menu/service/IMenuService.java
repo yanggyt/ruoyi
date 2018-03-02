@@ -8,7 +8,7 @@ import com.ruoyi.project.system.menu.domain.Menu;
 /**
  * 菜单 业务层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public interface IMenuService
 {

@@ -9,7 +9,7 @@ import com.ruoyi.project.system.menu.domain.Menu;
 /**
  * 菜单 数据层处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Repository("menuDao")
 public class MenuDaoImpl extends DynamicObjectBaseDao implements IMenuDao

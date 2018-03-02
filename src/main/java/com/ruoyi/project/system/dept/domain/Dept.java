@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 部门对象 sys_dept
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Data
 public class Dept

@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 字符串工具类
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class StringUtils
 {

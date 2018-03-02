@@ -1,4 +1,8 @@
-// 自定义分页处理 ruoyi
+/**
+ * 自定义分页处理
+ * 
+ * @author ruoyi
+ */
 
 // 初始化表格
 function initTable(_columns, _url) {

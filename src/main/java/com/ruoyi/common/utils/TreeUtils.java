@@ -9,7 +9,7 @@ import com.ruoyi.project.system.menu.domain.Menu;
 /**
  * 权限数据处理
  * 
- * @author y
+ * @author ruoyi
  */
 public class TreeUtils
 {

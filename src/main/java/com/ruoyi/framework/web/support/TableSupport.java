@@ -7,7 +7,7 @@ import com.ruoyi.framework.web.page.PageUtilEntity;
 /**
  * 表格数据处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class TableSupport
 {

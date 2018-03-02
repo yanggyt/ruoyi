@@ -3,7 +3,7 @@ package com.ruoyi.common.constant;
 /**
  * 用户常量信息
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class UserConstants
 {
@@ -23,8 +23,6 @@ public class UserConstants
     /** 名称是否唯一的返回结果码 */
     public final static String NAME_UNIQUE = "0";
     
-    public final static String NAME_NOT_UNIQUE = "1";
-
     /**
      * 用户名长度限制
      */

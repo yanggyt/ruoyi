@@ -12,12 +12,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="browser"     column="browser"      />
 		<result property="os"          column="os"           />
 		<result property="msg"         column="msg"          />
-		<result property="logondate"   column="logondate"    />
+		<result property="loginTime"   column="login_time"    />
 	</resultMap>
 
 	<insert id="insertLogininfor" parameterType="Logininfor">
 		insert into sys_logininfor (login_name, status, ipaddr, browser, os, msg) 
 		values (#{loginName}, #{status}, #{ipaddr}, #{browser}, #{os}, #{msg})
 	</insert>
+	
+	<select id="pageInfoQueryLogininfor" parameterType="PageUtilEntity" resultMap="LogininforResult">
+		select * from sys_logininfor
+		<where>
+			<if test="searchValue != null">
+				AND login_name = #{searchValue}
+			</if>
+		</where>
+	</select>
 
 </mapper> 

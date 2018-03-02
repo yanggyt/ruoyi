@@ -1,11 +1,13 @@
-package com.ruoyi.project.system.logininfor.domain;
+package com.ruoyi.project.monitor.logininfor.domain;
+
+import java.util.Date;
 
 import lombok.Data;
 
 /**
  * 系统访问日志情况信息 sys_logininfor
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Data
 public class Logininfor
@@ -25,6 +27,6 @@ public class Logininfor
     /** 提示消息 */
     private String msg;
     /** 访问时间 */
-    private String loginTime;
+    private Date loginTime;
 
 }

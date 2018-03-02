@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 /**
  * 通用配置
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Configuration
 public class BaseConfig extends WebMvcConfigurerAdapter

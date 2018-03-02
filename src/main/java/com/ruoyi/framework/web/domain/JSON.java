@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 返回数据通用处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class JSON extends HashMap<String, Object>
 {

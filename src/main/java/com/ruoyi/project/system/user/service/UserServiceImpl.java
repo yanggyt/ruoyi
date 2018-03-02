@@ -11,7 +11,7 @@ import com.ruoyi.project.system.user.domain.User;
 /**
  * 用户 业务层处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Service("userService")
 public class UserServiceImpl implements IUserService

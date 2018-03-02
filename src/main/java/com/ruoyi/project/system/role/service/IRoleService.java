@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * 角色业务层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public interface IRoleService
 {

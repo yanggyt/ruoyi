@@ -8,7 +8,7 @@ import com.ruoyi.project.system.user.domain.User;
 /**
  * web层通用数据处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public class BaseController
 {

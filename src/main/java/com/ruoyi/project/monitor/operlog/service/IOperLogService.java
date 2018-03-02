@@ -5,7 +5,7 @@ import com.ruoyi.project.monitor.operlog.domain.OperLog;
 /**
  * 操作日志 服务层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public interface IOperLogService
 {

@@ -8,7 +8,7 @@ import com.ruoyi.project.monitor.operlog.domain.OperLog;
 /**
  * 操作日志记录 数据层
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Repository("operLogDao")
 public class OperLogDaoImpl extends DynamicObjectBaseDao implements IOperLogDao

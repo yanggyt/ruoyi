@@ -14,8 +14,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ruoyi.common.exception.CaptchaException;
 import com.ruoyi.common.exception.user.RoleBlockedException;
 import com.ruoyi.common.exception.user.UserBlockedException;
 import com.ruoyi.common.exception.user.UserNotExistsException;
@@ -26,13 +24,12 @@ import com.ruoyi.framework.shiro.service.LoginService;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.role.service.IRoleService;
 import com.ruoyi.project.system.user.domain.User;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * 自定义Realm 处理登录 权限
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Slf4j
 public class UserRealm extends AuthorizingRealm
@@ -80,11 +77,6 @@ public class UserRealm extends AuthorizingRealm
         try
         {
             user = loginService.login(username, password);
-        }
-
-        catch (CaptchaException e)
-        {
-            throw new AuthenticationException(e.getMessage(), e);
         }
         catch (UserNotExistsException e)
         {

@@ -11,7 +11,7 @@ import com.ruoyi.project.system.user.domain.User;
 /**
  * 用户 数据层处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Repository("userDao")
 public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao

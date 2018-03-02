@@ -1,0 +1,29 @@
+package com.ruoyi.project.monitor.logininfor.service;
+
+import java.util.List;
+import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.project.monitor.logininfor.domain.Logininfor;
+
+/**
+ * 系统访问日志情况信息 服务层
+ * 
+ * @author ruoyi
+ */
+public interface ILogininforService
+{
+
+    /**
+     * 新增系统登录日志
+     * 
+     * @param logininfor 访问日志对象
+     */
+    public void insertLogininfor(Logininfor logininfor);
+
+    /**
+     * 查询系统登录日志集合
+     * 
+     * @param pageUtilEntity 分页参数
+     * @return 登录记录集合
+     */
+    public List<Logininfor> pageInfoQueryLogininfor(PageUtilEntity pageUtilEntity);
+}

@@ -15,7 +15,7 @@ import com.ruoyi.framework.web.domain.JSON;
 /**
  * 登录验证
  * 
- * @author yangzz
+ * @author ruoyi
  */
 // @RestController
 @Controller

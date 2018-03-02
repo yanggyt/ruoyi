@@ -3,7 +3,7 @@ package com.ruoyi.common.constant;
 /**
  * Shiro通用常量
  * 
- * @author yangzz
+ * @author ruoyi
  */
 public interface ShiroConstants
 {
@@ -18,11 +18,6 @@ public interface ShiroConstants
     public static final String CURRENT_USERNAME = "username";
 
     /**
-     * 验证码
-     */
-    public static final String CURRENT_JCAPTCHA = "jcaptcha";
-
-    /**
      * 消息key
      */
     public static String MESSAGE = "message";
@@ -31,11 +26,6 @@ public interface ShiroConstants
      * 错误key
      */
     public static String ERROR = "errorMsg";
-
-    /**
-     * 验证码错误
-     */
-    public static final String JCAPTCHA_ERROR = "jcaptchaError";
 
     /**
      * 编码格式

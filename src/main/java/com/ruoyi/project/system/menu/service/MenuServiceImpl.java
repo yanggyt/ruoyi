@@ -16,7 +16,7 @@ import com.ruoyi.project.system.menu.domain.Menu;
 /**
  * 菜单 业务层处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Service("menuService")
 public class MenuServiceImpl implements IMenuService

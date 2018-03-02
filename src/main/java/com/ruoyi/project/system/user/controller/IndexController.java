@@ -14,7 +14,7 @@ import com.ruoyi.project.system.user.domain.User;
 /**
  * 首页 业务处理
  * 
- * @author yangzz
+ * @author ruoyi
  */
 @Controller
 public class IndexController extends BaseController
