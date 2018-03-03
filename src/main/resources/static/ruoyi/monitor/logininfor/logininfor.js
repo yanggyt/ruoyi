@@ -6,8 +6,7 @@ $(function() {
 	    },
 	    {
             field: 'infoId',
-            // 列字段名
-            title: '访问编号' // 列标题
+            title: '访问编号'
         },
         {
             field: 'loginName',
@@ -45,6 +44,7 @@ $(function() {
     initTable(columns, url);
 });
 
+// 批量删除
 function batchRemove() {
 	var rows = getIdSelections("infoId");
 	if (rows.length == 0) {
@@ -52,18 +52,6 @@ function batchRemove() {
 		return;
 	}
 	layer.confirm("确认要删除选中的" + rows.length + "条数据吗?",{icon: 3, title:'提示'},function(index){
-		$.ajax({
-		    type: 'POST',
-		    data: { "ids": rows },
-		    url: prefix + '/batchRemove',
-		    success: function(r) {
-		        if (r.code == 0) {
-		        	layer.msg(r.msg, { icon: 1, time: 1000 });
-		            refresh();
-		        } else {
-		        	layer.alert(r.msg, {icon: 2, title:"系统提示"});
-		        }
-		    }
-		});
+		_ajax(prefix + '/batchRemove', { "ids": rows }, "post");
 	});
 }

@@ -1,6 +1,8 @@
 package com.ruoyi.project.monitor.logininfor.controller;
 
 import java.util.List;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,12 +32,14 @@ public class LogininforController extends BaseController
     @Autowired
     private ILogininforService logininforService;
 
+    @RequiresPermissions("monitor:logininfor:view")
     @GetMapping()
     public String logininfor()
     {
         return prefix + "/logininfor";
     }
 
+    @RequiresPermissions("monitor:logininfor:view")
     @GetMapping("/list")
     @ResponseBody
     public TableDataInfo list()
@@ -46,6 +50,7 @@ public class LogininforController extends BaseController
         return tableDataInfo;
     }
     
+    @RequiresPermissions("monitor:logininfor:batchRemove")
     @Log(title = "监控管理", action = "登录日志-批量删除")
     @PostMapping("/batchRemove")
     @ResponseBody

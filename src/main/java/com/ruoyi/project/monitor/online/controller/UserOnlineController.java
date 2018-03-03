@@ -2,6 +2,7 @@ package com.ruoyi.project.monitor.online.controller;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,12 +39,14 @@ public class UserOnlineController extends BaseController
     @Autowired
     private OnlineSessionDAO onlineSessionDAO;
 
+    @RequiresPermissions("monitor:online:view")
     @GetMapping()
     public String online()
     {
         return prefix + "/online";
     }
 
+    @RequiresPermissions("monitor:online:view")
     @GetMapping("/list")
     @ResponseBody
     public TableDataInfo list()
@@ -54,6 +57,7 @@ public class UserOnlineController extends BaseController
         return tableDataInfo;
     }
 
+    @RequiresPermissions("monitor:online:batchForceLogout")
     @Log(title = "监控管理", action = "在线用户-批量强退用户")
     @PostMapping("/batchForceLogout")
     @ResponseBody
@@ -78,6 +82,7 @@ public class UserOnlineController extends BaseController
         return JSON.ok();
     }
 
+    @RequiresPermissions("monitor:online:forceLogout")
     @Log(title = "监控管理", action = "在线用户-强退用户")
     @RequestMapping("/forceLogout/{sessionId}")
     @ResponseBody

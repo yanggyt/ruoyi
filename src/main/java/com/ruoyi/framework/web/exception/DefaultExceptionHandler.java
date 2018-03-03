@@ -21,7 +21,7 @@ public class DefaultExceptionHandler
     public JSON handleAuthorizationException(AuthorizationException e)
     {
         log.error(e.getMessage(), e);
-        return JSON.error("未授权");
+        return JSON.error("您没有数据的权限，请联系管理员添加");
     }
 
     @ExceptionHandler(Exception.class)

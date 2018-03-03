@@ -6,8 +6,7 @@ $(function() {
         },
         {
             field: 'operId',
-            // 列字段名
-            title: '日志编号' // 列标题
+            title: '日志编号'
         },
         {
             field: 'title',
@@ -49,8 +48,8 @@ $(function() {
             title: '操作',
             align: 'center',
             formatter: function(value, row, index) {
-                var d = '<a class="btn btn-warning btn-sm" href="#" title="详细" onclick="view(\'' + row.operId + '\')"><i class="fa fa-search"></i></a> ';
-                return d;
+                var msg = '<a class="btn btn-warning btn-sm" href="#" title="详细信息" onclick="detail(\'' + row.operId + '\')"><i class="fa fa-search"></i></a> ';
+                return msg;
             }
         }];
 	var url = prefix + "/list";
@@ -58,11 +57,12 @@ $(function() {
 });
 
 /*操作日志-详细*/
-function view(id) {
-    var url = prefix + '/view/' + id;
+function detail(id) {
+    var url = prefix + '/detail/' + id;
     layer_show("操作日志详细", url, '800', '500');
 }
 
+// 批量删除
 function batchRemove() {
 	var rows = getIdSelections("operId");
 	if (rows.length == 0) {
@@ -70,18 +70,6 @@ function batchRemove() {
 		return;
 	}
 	layer.confirm("确认要删除选中的" + rows.length + "条数据吗?",{icon: 3, title:'提示'},function(index){
-		$.ajax({
-		    type: 'POST',
-		    data: { "ids": rows },
-		    url: prefix + '/batchRemove',
-		    success: function(r) {
-		        if (r.code == 0) {
-		        	layer.msg(r.msg, { icon: 1, time: 1000 });
-		            refresh();
-		        } else {
-		        	layer.alert(r.msg, {icon: 2, title:"系统提示"});
-		        }
-		    }
-		});
+		_ajax(prefix + '/batchRemove', { "ids": rows }, "post");
 	});
 }

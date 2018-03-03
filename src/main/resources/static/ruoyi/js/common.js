@@ -47,17 +47,14 @@ web_status = {
 };
 
 //对jquery的ajax方法再次封装
-_ajax = function(url, data, success, type, contentType) {
-    success = success ||
-    function(data) {};
-    data = data || {};
+_ajax = function(url, data, type) {
     var config = {
         url: url,
         type: type,
         dataType: "json",
         data: data,
         success: function(result) {
-            success(simpleSuccess(result));
+            simpleSuccess(result);
         }
     };
     $.ajax(config)
@@ -66,19 +63,10 @@ _ajax = function(url, data, success, type, contentType) {
 /** 返回结果处理 */
 function simpleSuccess(result) {
     if (result.code == web_status.SUCCESS) {
-        if (result['msg']) {
-            layer.msg(result.msg, { icon: 1, time: 1000 });
-        }
-        //刷新
-        if (result['refresh']) {
-            refresh();
-            return;
-        }
-        return result;
+		layer.msg(result.msg, { icon: 1, time: 1000 });
+		refresh();
+
     } else {
-        if (result.msg != null) {
-            layer.alert(result.msg, { icon: 2, title: "系统提示" });
-        }
+        layer.alert(result.msg, { icon: 2, title: "系统提示" });
     }
-    return null;
 }

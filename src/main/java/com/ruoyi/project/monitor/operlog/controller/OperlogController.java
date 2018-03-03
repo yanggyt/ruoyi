@@ -2,6 +2,7 @@ package com.ruoyi.project.monitor.operlog.controller;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,12 +35,14 @@ public class OperlogController extends BaseController
     @Autowired
     private IOperLogService operLogService;
 
+    @RequiresPermissions("monitor:operlog:view")
     @GetMapping()
     public String logininfor()
     {
         return prefix + "/operlog";
     }
 
+    @RequiresPermissions("monitor:operlog:view")
     @GetMapping("/list")
     @ResponseBody
     public TableDataInfo list()
@@ -50,6 +53,7 @@ public class OperlogController extends BaseController
         return tableDataInfo;
     }
 
+    @RequiresPermissions("monitor:operlog:batchRemove")
     @Log(title = "监控管理", action = "操作日志-批量删除")
     @PostMapping("/batchRemove")
     @ResponseBody
@@ -63,8 +67,9 @@ public class OperlogController extends BaseController
         return JSON.error();
     }
 
-    @GetMapping("/view/{operId}")
-    String edit(@PathVariable("operId") Long deptId, Model model)
+    @RequiresPermissions("monitor:operlog:detail")
+    @GetMapping("/detail/{operId}")
+    public String detail(@PathVariable("operId") Long deptId, Model model)
     {
         OperLog operLog = operLogService.selectOperLogById(deptId);
         model.addAttribute("operLog", operLog);

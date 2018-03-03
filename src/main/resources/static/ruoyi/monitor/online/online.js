@@ -6,8 +6,7 @@ $(function() {
         },
         {
             field: 'sessionId',
-            // 列字段名
-            title: '会话编号' // 列标题
+            title: '会话编号'
         },
         {
             field: 'loginName',
@@ -53,32 +52,22 @@ $(function() {
             title: '操作',
             align: 'center',
             formatter: function(value, row, index) {
-                var d = '<a class="btn btn-warning btn-sm" href="#" title="删除" onclick="forceLogout(\'' + row.sessionId + '\')"><i class="fa fa-remove"></i></a> ';
-                return d;
+                var msg = '<a class="btn btn-warning btn-sm" href="#" title="强退" onclick="forceLogout(\'' + row.sessionId + '\')"><i class="fa fa-remove"></i></a> ';
+                return msg;
             }
         }];
 	var url = prefix + "/list";
     initTable(columns, url);
 });
 
+// 单条强退
 function forceLogout(id) {
 	layer.confirm("确定要强制选中用户下线吗？",{icon: 3, title:'提示'},function(index){
-        $.ajax({
-            url: prefix + "/forceLogout/" + id,
-            type: "post",
-            data: { 'id': id },
-            success: function(r) {
-                if (r.code == 0) {
-                	layer.msg(r.msg, { icon: 1, time: 1000 });
-                    refresh();
-                } else {
-                	layer.alert(r.msg, {icon: 2, title:"系统提示"});
-                }
-            }
-        });
+		_ajax(prefix + "/forceLogout/" + id, { 'id': id }, "post");
     })
 }
 
+// 批量强退
 function batchForceLogout() {
 	var rows = getIdSelections("sessionId");
 	if (rows.length == 0) {
@@ -86,18 +75,6 @@ function batchForceLogout() {
 		return;
 	}
 	layer.confirm("确认要删除选中的" + rows.length + "条数据吗?",{icon: 3, title:'提示'},function(index){
-		$.ajax({
-		    type: 'POST',
-		    data: { "ids": rows },
-		    url: prefix + '/batchForceLogout',
-		    success: function(r) {
-		        if (r.code == 0) {
-		        	layer.msg(r.msg, { icon: 1, time: 1000 });
-		            refresh();
-		        } else {
-		        	layer.alert(r.msg, {icon: 2, title:"系统提示"});
-		        }
-		    }
-		});
+		_ajax(prefix + '/batchForceLogout', { "ids": rows }, "post");
 	});
 }
