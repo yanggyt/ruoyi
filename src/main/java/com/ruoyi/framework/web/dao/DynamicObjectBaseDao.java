@@ -100,7 +100,7 @@ public class DynamicObjectBaseDao
     {
         return sqlSessionTemplate.delete(str, objs);
     }
-    
+
     /**
      * 批量删除 根据数组
      * 
@@ -136,6 +136,19 @@ public class DynamicObjectBaseDao
      * @throws Exception
      */
     public <T> T findForObject(String str, Object obj)
+    {
+        return sqlSessionTemplate.selectOne(str, obj);
+    }
+
+    /**
+     * 查找总数
+     * 
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
+     * @throws Exception
+     */
+    public int count(String str, Object obj)
     {
         return sqlSessionTemplate.selectOne(str, obj);
     }

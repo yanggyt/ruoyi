@@ -19,6 +19,8 @@ public class Dept
     /** 显示顺序 */
     private String orderNum;
     /** 部门状态:0正常,1停用 */
-    private String status;
+    private int status;
+    /** 父部门名称 */
+    private String parentName;
 
 }

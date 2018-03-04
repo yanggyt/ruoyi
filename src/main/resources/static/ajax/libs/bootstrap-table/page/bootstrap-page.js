@@ -37,6 +37,23 @@ function initTable(_columns, _url) {
     });
 }
 
+//初始化表格树
+function initTreeTable(_id, _parentId, _columns, _url) {
+    $('.bootstrap-table').bootstrapTreeTable({
+	    code : _id,                  // 用于设置父子关系
+        parentCode : _parentId,      // 用于设置父子关系
+    	type: 'get',                  // 请求方式（*）
+        url: _url,                    // 请求后台的URL（*）
+        ajaxParams : {},              // 请求数据的ajax的data属性
+		expandColumn : '1',           // 在哪一列上面显示展开按钮
+		striped : false,              // 是否各行渐变色
+		bordered : true,              // 是否显示边框
+		expandAll : false,            // 是否全部展开
+		showRefresh: true,            // 是否显示刷新按钮
+        columns: _columns
+    });
+}
+
 // 刷新
 function refresh() {
     $('.bootstrap-table').bootstrapTable('refresh');

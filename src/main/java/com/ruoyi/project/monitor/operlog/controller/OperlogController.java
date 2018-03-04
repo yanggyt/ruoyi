@@ -73,6 +73,6 @@ public class OperlogController extends BaseController
     {
         OperLog operLog = operLogService.selectOperLogById(deptId);
         model.addAttribute("operLog", operLog);
-        return prefix + "/view";
+        return prefix + "/detail";
     }
 }
