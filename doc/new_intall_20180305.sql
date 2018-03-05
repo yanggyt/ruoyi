@@ -112,7 +112,7 @@ insert into sys_menu values('6',  '部门管理', '1', '3', '/system/dept',     
 insert into sys_menu values('7',  '操作日志', '2', '1', '/monitor/operlog',    'C', '0', 'monitor:operlog:view',     '#', '2018-03-01', '', 'admin', '操作日志菜单');
 insert into sys_menu values('8',  '登录日志', '2', '2', '/monitor/logininfor', 'C', '0', 'monitor:logininfor:view',  '#', '2018-03-01', '', 'admin', '登录日志菜单');
 insert into sys_menu values('9',  '在线用户', '2', '3', '/monitor/online',     'C', '0', 'monitor:online:view',      '#', '2018-03-01', '', 'admin', '在线用户菜单');
-insert into sys_menu values('10', '数据监控', '2', '4', '/monitor/data',       'C', '0', 'monitor:data:xxxx',        '#', '2018-03-01', '', 'admin', '数据监控菜单');
+insert into sys_menu values('10', '数据监控', '2', '4', '/monitor/data',       'C', '0', 'monitor:data:view',        '#', '2018-03-01', '', 'admin', '数据监控菜单');
 -- 部门管理按钮
 insert into sys_menu values('11', '部门新增', '6', '1', '/system/dept/add',    'F', '0', 'system:dept:add',          '#', '2018-03-01', '', 'admin', '');
 insert into sys_menu values('12', '部门修改', '6', '2', '/system/dept/edit',   'F', '0', 'system:dept:edit',         '#', '2018-03-01', '', 'admin', '');

@@ -1,7 +1,7 @@
 package com.ruoyi.project.monitor.logininfor.service;
 
-import java.util.List;
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.logininfor.domain.Logininfor;
 
 /**
@@ -25,7 +25,7 @@ public interface ILogininforService
      * @param pageUtilEntity 分页参数
      * @return 登录记录集合
      */
-    public List<Logininfor> pageInfoQueryLogininfor(PageUtilEntity pageUtilEntity);
+    public TableDataInfo pageInfoQueryLogininfor(PageUtilEntity pageUtilEntity);
 
     /**
      * 批量删除系统登录日志

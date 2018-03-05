@@ -1,7 +1,7 @@
 package com.ruoyi.project.monitor.operlog.service;
 
-import java.util.List;
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.operlog.domain.OperLog;
 
 /**
@@ -24,7 +24,7 @@ public interface IOperLogService
      * @param pageUtilEntity 分页参数
      * @return 操作日志集合
      */
-    public List<OperLog> pageInfoQueryOperLog(PageUtilEntity pageUtilEntity);
+    public TableDataInfo pageInfoQueryOperLog(PageUtilEntity pageUtilEntity);
 
     /**
      * 批量删除系统操作日志

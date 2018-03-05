@@ -1,8 +1,8 @@
 package com.ruoyi.project.monitor.online.dao;
 
 import java.util.List;
-
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
 /**
@@ -42,7 +42,7 @@ public interface IUserOnlineDao
      * @param pageUtilEntity 分页参数
      * @return 会话集合
      */
-    public List<UserOnline> pageInfoQuery(PageUtilEntity pageUtilEntity);
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity);
 
     /**
      * 查询过期会话集合

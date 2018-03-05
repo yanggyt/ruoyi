@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
 /**
@@ -55,18 +56,9 @@ public class UserOnlineDaoImpl extends DynamicObjectBaseDao implements IUserOnli
      * @param pageUtilEntity 分页参数
      */
     @Override
-    public List<UserOnline> pageInfoQuery(PageUtilEntity pageUtilEntity)
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
-        List<UserOnline> userOnlineList = null;
-        try
-        {
-            userOnlineList = this.findForList("SystemOnlineMapper.pageInfoQueryUserOnline", pageUtilEntity);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return userOnlineList;
+        return findForList("SystemOnlineMapper.pageInfoQueryUserOnline", pageUtilEntity);
     }
 
     /**

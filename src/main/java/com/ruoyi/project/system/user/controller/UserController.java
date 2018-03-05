@@ -32,11 +32,10 @@ public class UserController extends BaseController
 
     @GetMapping("/getUserlist")
     @ResponseBody
-    public TableDataInfo queryUserlist(@RequestParam Map<String, Object> params)
+    public TableDataInfo queryUserlist()
     {
-        List<User> list = userService.pageInfoQuery(null);
-        TableDataInfo tableDataInfo = new TableDataInfo(list, 12);
-        return tableDataInfo;
+        TableDataInfo rows = userService.pageInfoQuery(getPageUtilEntity());
+        return rows;
     }
 
     @RequiresPermissions("system:user:list")

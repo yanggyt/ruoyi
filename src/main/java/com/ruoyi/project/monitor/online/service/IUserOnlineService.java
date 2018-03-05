@@ -2,8 +2,8 @@ package com.ruoyi.project.monitor.online.service;
 
 import java.util.Date;
 import java.util.List;
-
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
 /**
@@ -50,7 +50,7 @@ public interface IUserOnlineService
      * @param pageUtilEntity 分页参数
      * @return 会话集合
      */
-    public List<UserOnline> pageInfoQueryUserOnline(PageUtilEntity pageUtilEntity);
+    public TableDataInfo pageInfoQueryUserOnline(PageUtilEntity pageUtilEntity);
 
     /**
      * 强退用户

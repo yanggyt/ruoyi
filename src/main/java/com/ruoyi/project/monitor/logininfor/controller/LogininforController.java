@@ -1,7 +1,5 @@
 package com.ruoyi.project.monitor.logininfor.controller;
 
-import java.util.List;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.JSON;
-import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.project.monitor.logininfor.domain.Logininfor;
 import com.ruoyi.project.monitor.logininfor.service.ILogininforService;
 
 /**
@@ -44,9 +40,7 @@ public class LogininforController extends BaseController
     @ResponseBody
     public TableDataInfo list()
     {
-        PageUtilEntity pageUtilEntity = this.getPageUtilEntity();
-        List<Logininfor> list = logininforService.pageInfoQueryLogininfor(pageUtilEntity);
-        TableDataInfo tableDataInfo = new TableDataInfo(list, pageUtilEntity.getTotalResult());
+        TableDataInfo tableDataInfo = logininforService.pageInfoQueryLogininfor(getPageUtilEntity());
         return tableDataInfo;
     }
     

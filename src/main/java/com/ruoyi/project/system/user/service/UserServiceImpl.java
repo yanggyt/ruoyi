@@ -1,10 +1,9 @@
 package com.ruoyi.project.system.user.service;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.user.dao.IUserDao;
 import com.ruoyi.project.system.user.domain.User;
 
@@ -28,7 +27,7 @@ public class UserServiceImpl implements IUserService
      * @return 用户信息集合信息
      */
     @Override
-    public List<User> pageInfoQuery(PageUtilEntity pageUtilEntity)
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
         return userDao.pageInfoQuery(pageUtilEntity);
     }

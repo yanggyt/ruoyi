@@ -1,11 +1,9 @@
 package com.ruoyi.project.system.user.dao;
 
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
-
 import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.user.domain.User;
 
 /**
@@ -24,18 +22,9 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
      * @return 用户对象信息
      */
     @Override
-    public List<User> pageInfoQuery(PageUtilEntity pageUtilEntity)
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
-        List<User> userPageInfo = null;
-        try
-        {
-            userPageInfo = this.findForList("SystemUserMapper.queryUserListByCond", pageUtilEntity);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return userPageInfo;
+        return this.findForList("SystemUserMapper.queryUserListByCond", pageUtilEntity);
     }
 
     /**

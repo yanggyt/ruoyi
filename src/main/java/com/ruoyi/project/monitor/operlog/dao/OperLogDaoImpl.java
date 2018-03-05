@@ -1,9 +1,9 @@
 package com.ruoyi.project.monitor.operlog.dao;
 
-import java.util.List;
 import org.springframework.stereotype.Repository;
 import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.operlog.domain.OperLog;
 
 /**
@@ -31,18 +31,9 @@ public class OperLogDaoImpl extends DynamicObjectBaseDao implements IOperLogDao
      * @param pageUtilEntity 分页参数
      * @return 操作日志集合
      */
-    public List<OperLog> pageInfoQuery(PageUtilEntity pageUtilEntity)
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
-        List<OperLog> logininforList = null;
-        try
-        {
-            logininforList = this.findForList("SystemOperLogMapper.pageInfoQueryOperLog", pageUtilEntity);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return logininforList;
+        return this.findForList("SystemOperLogMapper.pageInfoQueryOperLog", pageUtilEntity);
     }
 
     /**
@@ -64,7 +55,7 @@ public class OperLogDaoImpl extends DynamicObjectBaseDao implements IOperLogDao
         }
         return rows;
     }
-    
+
     /**
      * 查询操作日志详细
      * 

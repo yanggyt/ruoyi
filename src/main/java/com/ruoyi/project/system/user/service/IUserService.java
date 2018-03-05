@@ -1,8 +1,7 @@
 package com.ruoyi.project.system.user.service;
 
-import java.util.List;
-
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.user.domain.User;
 
 /**
@@ -19,7 +18,7 @@ public interface IUserService
      * @param pageUtilEntity 分页对象
      * @return 用户信息集合信息
      */
-    public List<User> pageInfoQuery(PageUtilEntity pageUtilEntity);
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity);
 
     /**
      * 通过用户名查询用户

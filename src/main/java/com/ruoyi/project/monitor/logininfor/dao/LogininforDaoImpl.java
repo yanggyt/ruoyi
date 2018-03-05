@@ -1,9 +1,9 @@
 package com.ruoyi.project.monitor.logininfor.dao;
 
-import java.util.List;
 import org.springframework.stereotype.Repository;
 import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.logininfor.domain.Logininfor;
 
 /**
@@ -32,18 +32,9 @@ public class LogininforDaoImpl extends DynamicObjectBaseDao implements ILogininf
      * @return 登录记录集合
      */
     @Override
-    public List<Logininfor> pageInfoQuery(PageUtilEntity pageUtilEntity)
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
-        List<Logininfor> logininforList = null;
-        try
-        {
-            logininforList = this.findForList("SystemLogininforMapper.pageInfoQueryLogininfor", pageUtilEntity);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return logininforList;
+        return this.findForList("SystemLogininforMapper.pageInfoQueryLogininfor", pageUtilEntity);
     }
 
     /**

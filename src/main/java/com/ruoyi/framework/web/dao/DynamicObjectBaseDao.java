@@ -1,11 +1,16 @@
 package com.ruoyi.framework.web.dao;
 
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
+
+import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 
 /**
  * 数据DAO层通用数据处理
@@ -177,6 +182,21 @@ public class DynamicObjectBaseDao
     public <E> List<E> findForList(String str, Object obj) throws Exception
     {
         return sqlSessionTemplate.selectList(str, obj);
+    }
+    
+    /**
+     * 自定义分页方法
+     * 
+     * @param str mapper 节点
+     * @param obj 对象
+     * @return 结果
+     * @throws Exception
+     */
+    public TableDataInfo findForList(String str, PageUtilEntity pageUtilEntity)
+    {
+        List<?> pageList = sqlSessionTemplate.selectList(str, pageUtilEntity);
+        TableDataInfo tableDataInfo = new TableDataInfo(pageList, pageUtilEntity.getTotalResult());
+        return tableDataInfo;
     }
 
     public Object findForMap(String str, Object obj, String key, String value) throws Exception

@@ -2,14 +2,13 @@ package com.ruoyi.project.monitor.online.service;
 
 import java.util.Date;
 import java.util.List;
-
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.online.dao.IUserOnlineDao;
 import com.ruoyi.project.monitor.online.domain.UserOnline;
 
@@ -91,7 +90,7 @@ public class UserOnlineServiceImpl implements IUserOnlineService
      * @param pageUtilEntity 分页参数
      */
     @Override
-    public List<UserOnline> pageInfoQueryUserOnline(PageUtilEntity pageUtilEntity)
+    public TableDataInfo pageInfoQueryUserOnline(PageUtilEntity pageUtilEntity)
     {
         return userOnlineDao.pageInfoQuery(pageUtilEntity);
     }

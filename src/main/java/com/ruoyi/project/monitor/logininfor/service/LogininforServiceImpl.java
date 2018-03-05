@@ -1,9 +1,9 @@
 package com.ruoyi.project.monitor.logininfor.service;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.monitor.logininfor.dao.ILogininforDao;
 import com.ruoyi.project.monitor.logininfor.domain.Logininfor;
 
@@ -36,7 +36,7 @@ public class LogininforServiceImpl implements ILogininforService
      * @param pageUtilEntity 分页参数
      * @return 登录记录集合
      */
-    public List<Logininfor> pageInfoQueryLogininfor(PageUtilEntity pageUtilEntity)
+    public TableDataInfo pageInfoQueryLogininfor(PageUtilEntity pageUtilEntity)
     {
         return logininforDao.pageInfoQuery(pageUtilEntity);
     }
