@@ -3323,7 +3323,7 @@ nav.page-tabs .page-tabs-content {
     cursor: pointer;
 }
 
-.roll-right.J_tabRight {
+.roll-right.tabRight {
     right: 140px;
 }
 
@@ -7231,7 +7231,7 @@ body.skin-3 {
     background-color: #fff;
 }
 
-.J_menuTab {
+.menuTab {
     -webkit-transition: all .3s ease-out 0s;
     transition: all .3s ease-out 0s;
 }
