@@ -1,10 +1,9 @@
 package com.ruoyi.project.system.role.dao;
 
 import java.util.List;
-
 import org.springframework.stereotype.Repository;
-
 import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
+import com.ruoyi.project.system.role.domain.Role;
 
 /**
  * 角色 数据层处理
@@ -22,18 +21,39 @@ public class RoleDaoImpl extends DynamicObjectBaseDao implements IRoleDao
      * @return 角色列表
      */
     @Override
-    public List<String> selectRolesByUserId(Long userId)
+    public List<Role> selectRolesByUserId(Long userId)
     {
-        List<String> permsList = null;
+        List<Role> roleList = null;
         try
         {
-            permsList = this.findForList("SystemRoleMapper.selectRolesByUserId", userId);
+            roleList = this.findForList("SystemRoleMapper.selectRolesByUserId", userId);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        return permsList;
+        return roleList;
+    }
+
+    /**
+     * 根据用户ID查询角色
+     * 
+     * @param userId 用户ID
+     * @return 角色列表
+     */
+    @Override
+    public List<Role> selectRolesAll()
+    {
+        List<Role> roleList = null;
+        try
+        {
+            roleList = this.findForList("SystemRoleMapper.selectRolesAll");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return roleList;
     }
 
 }

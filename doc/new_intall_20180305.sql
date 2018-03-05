@@ -33,13 +33,13 @@ drop table if exists sys_user;
 create table sys_user (
   user_id 			int(11) 		not null auto_increment comment '用户ID',
   dept_id 			int(20) 		default null			comment '部门ID',
-  login_name 		varchar(30) 	not null 				comment '登录名',
+  login_name 		varchar(30) 	default '' 				comment '登录名',
   user_name 		varchar(30) 	default '' 				comment '用户名称',
   email  			varchar(100) 	default '' 				comment '用户邮箱',
   phonenumber  		varchar(20) 	default '' 				comment '手机号码',
-  password 			varchar(100) 	not null 				comment '密码',
+  password 			varchar(100) 	default '' 				comment '密码',
   salt 				varchar(100) 	default '' 				comment '盐加密',
-  status 			int(1) 			default 0 				comment '帐号状态:0正常,1锁定,2黑名单,3禁止',
+  status 			int(1) 			default 0 				comment '帐号状态:0正常,1禁用',
   refuse_des 		varchar(500) 	default '' 				comment '拒绝登录描述',
   create_time 		varchar(30) 	default null			comment '创建时间',
   primary key (user_id)

@@ -1,5 +1,7 @@
 package com.ruoyi.project.system.user.domain;
 
+import java.util.Date;
+
 import com.ruoyi.project.system.dept.domain.Dept;
 import lombok.Data;
 
@@ -27,12 +29,12 @@ public class User
     private String password;
     /** 盐加密 */
     private String salt;
-    /** 帐号状态:0正常,1锁定,2黑名单,3禁止 */
-    private String status;
+    /** 帐号状态:0正常,1禁用 */
+    private int status;
     /** 拒绝登录描述 */
     private String refuseDes;
     /** 创建时间 */
-    private String createTime;
+    private Date createTime;
     /** 部门对象 */
     private Dept dept;
 

@@ -26,5 +26,7 @@ public class Role
     private String updateBy;
     /** 备注 */
     private String remark;
+    /** 用户是否存在此角色标识 默认不存在 */
+    private boolean flag = false;
 
 }

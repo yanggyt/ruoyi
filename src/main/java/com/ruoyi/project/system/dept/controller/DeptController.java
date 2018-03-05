@@ -80,9 +80,9 @@ public class DeptController
     @RequiresPermissions("system:dept:save")
     @PostMapping("/save")
     @ResponseBody
-    public JSON save(Dept sysDept)
+    public JSON save(Dept dept)
     {
-        if (deptService.saveDept(sysDept) > 0)
+        if (deptService.saveDept(dept) > 0)
         {
             return JSON.ok();
         }

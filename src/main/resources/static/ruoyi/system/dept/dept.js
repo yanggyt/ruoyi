@@ -54,13 +54,13 @@ function loading() {
 /*部门管理-新增*/
 function add(deptId) {
     var url = prefix + '/add/' + deptId;
-    layer_show("新增部门管理", url, '800', '500');
+    layer_show("新增部门", url, '800', '500');
 }
 
 /*部门管理-修改*/
 function edit(deptId) {
     var url = prefix + '/edit/' + deptId;
-    layer_show("修改部门管理", url, '800', '400');
+    layer_show("修改部门", url, '800', '400');
 }
 
 /*部门管理-删除*/

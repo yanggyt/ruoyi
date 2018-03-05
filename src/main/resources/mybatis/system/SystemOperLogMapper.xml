@@ -28,13 +28,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="pageInfoQueryOperLog" parameterType="PageUtilEntity" resultMap="OperLogResult">
 		select * from sys_oper_log
 		<where>
-			<if test="searchValue != null">
+			<if test="searchValue != null and searchValue != ''">
 				AND login_name = #{searchValue}
 			</if>
 		</where>
 	</select>
 	
-	<delete id="batchDeleteOperLog" parameterType="java.lang.String">
+	<delete id="batchDeleteOperLog" parameterType="String">
  		delete from sys_oper_log where oper_id in
  		<foreach collection="array" item="operId" open="(" separator="," close=")">
  			#{operId}

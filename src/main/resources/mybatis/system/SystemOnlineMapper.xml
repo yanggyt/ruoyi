@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<select id="pageInfoQueryUserOnline" parameterType="PageUtilEntity" resultMap="UserOnlineResult">
 		select * from sys_user_online
 		<where>
-			<if test="searchValue != null">
+			<if test="searchValue != null and searchValue != ''">
 				AND login_name = #{searchValue}
 			</if>
 		</where>

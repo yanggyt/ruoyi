@@ -44,4 +44,50 @@ public class UserServiceImpl implements IUserService
         return userDao.selectUserByName(userName);
     }
 
+    /**
+     * 通过用户ID查询用户
+     * 
+     * @param userId 用户ID
+     * @return 用户对象信息
+     */
+    public User selectUserById(Long userId)
+    {
+        return userDao.selectUserById(userId);
+    }
+
+    /**
+     * 通过用户ID删除用户
+     * 
+     * @param userId 用户ID
+     * @return 结果
+     */
+    public int deleteUserById(Long userId)
+    {
+        return userDao.deleteUserById(userId);
+    }
+
+    /**
+     * 批量删除用户信息
+     * 
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    public int batchDeleteUser(Long[] ids)
+    {
+        return userDao.batchDeleteUser(ids);
+    }
+
+    /**
+     * 保存用户信息
+     * 
+     * @param user 用户信息
+     * @return 结果
+     */
+    public int saveUser(User user)
+    {
+        // 删除用户与角色关联
+        // 新增用户与角色管理
+        return userDao.updateUser(user);
+    }
+
 }

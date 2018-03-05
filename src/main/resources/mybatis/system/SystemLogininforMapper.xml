@@ -23,13 +23,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="pageInfoQueryLogininfor" parameterType="PageUtilEntity" resultMap="LogininforResult">
 		select * from sys_logininfor
 		<where>
-			<if test="searchValue != null">
+			<if test="searchValue != null and searchValue != ''">
 				AND login_name = #{searchValue}
 			</if>
 		</where>
 	</select>
 	
-	<delete id="batchDeleteLogininfor" parameterType="java.lang.String">
+	<delete id="batchDeleteLogininfor" parameterType="String">
  		delete from sys_logininfor where info_id in
  		<foreach collection="array" item="infoId" open="(" separator="," close=")">
  			#{infoId}

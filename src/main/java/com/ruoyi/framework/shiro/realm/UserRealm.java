@@ -53,7 +53,7 @@ public class UserRealm extends AuthorizingRealm
         Long userId = ShiroUtils.getUserId();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // 角色加入AuthorizationInfo认证对象
-        info.setRoles(roleService.selectRolesByUserId(userId));
+        info.setRoles(roleService.selectRoleKeys(userId));
         // 权限加入AuthorizationInfo认证对象
         info.setStringPermissions(menuService.selectPermsByUserId(userId));
         return info;

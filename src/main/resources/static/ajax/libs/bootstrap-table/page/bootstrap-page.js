@@ -59,9 +59,19 @@ function refresh() {
     $('.bootstrap-table').bootstrapTable('refresh');
 }
 
-// 获取选中数组
+// 获取表单选中数组
 function getIdSelections(_id) {
     return $.map($('.bootstrap-table').bootstrapTable('getSelections'), function (row) {
         return row[_id];
     });
 }
+
+// 获取新增或修改选中复选框
+function getIsChecked(_name) {
+	var checkArr = []; 
+	$('input[name="'+_name+'"]:checked').each(function() {
+	    checkArr.push($(this).val());  
+	});
+	return checkArr;
+}
+
