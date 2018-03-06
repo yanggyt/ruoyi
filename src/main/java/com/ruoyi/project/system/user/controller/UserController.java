@@ -57,7 +57,7 @@ public class UserController extends BaseController
     }
 
     /**
-     * 修改
+     * 修改用户
      */
     @Log(title = "系统管理", action = "用户管理-修改用户")
     @GetMapping("/edit/{userId}")
@@ -68,6 +68,16 @@ public class UserController extends BaseController
         model.addAttribute("roles", roles);
         model.addAttribute("user", user);
         return prefix + "/edit";
+    }
+    
+    /**
+     * 新增用户
+     */
+    @Log(title = "系统管理", action = "用户管理-新增用户")
+    @GetMapping("/add")
+    public String add()
+    {
+        return prefix + "/add";
     }
 
     @Log(title = "系统管理", action = "用户管理-删除用户")

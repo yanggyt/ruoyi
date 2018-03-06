@@ -114,6 +114,12 @@ function edit(deptId) {
     layer_show("修改用户", url, '800', '500');
 }
 
+/*用户管理-新增*/
+function add() {
+    var url = prefix + '/add';
+    layer_show("新增用户", url, '800', '500');
+}
+
 // 批量强退
 function batchRemove() {
 	var rows = getIdSelections("userId");
