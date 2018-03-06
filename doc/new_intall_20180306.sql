@@ -48,8 +48,8 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-用户信息表数据
 -- ----------------------------
-insert into sys_user values('1', '4', 'admin', '若依', 'yzz_ivy@163.com', '15088888888', '172eee54aa664e9dd0536b063796e54e', '', 0, '维护中', '2018-03-01');
-insert into sys_user values('2', '4', 'ry',    '若依', 'ry@163.com',      '15288888888', '2f59d63eddd54f3977d6fe25aec8b2bc', '', 1, '锁定中', '2018-03-01');
+insert into sys_user values('1', '7', 'admin', '若依', 'yzz_ivy@163.com', '15088888888', '172eee54aa664e9dd0536b063796e54e', '', 0, '维护中', '2018-03-01');
+insert into sys_user values('2', '8', 'ry',    '若依', 'ry@163.com',      '15288888888', '2f59d63eddd54f3977d6fe25aec8b2bc', '', 1, '锁定中', '2018-03-01');
 
 
 

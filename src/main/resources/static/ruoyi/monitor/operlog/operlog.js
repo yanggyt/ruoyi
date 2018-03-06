@@ -48,8 +48,9 @@ $(function() {
             title: '操作',
             align: 'center',
             formatter: function(value, row, index) {
-                var msg = '<a class="btn btn-warning btn-sm" href="#" title="详细信息" onclick="detail(\'' + row.operId + '\')"><i class="fa fa-search"></i></a> ';
-                return msg;
+            	var actions = [];
+            	actions.push('<a class="btn btn-warning btn-sm" href="#" title="详细信息" onclick="detail(\'' + row.operId + '\')"><i class="fa fa-search"></i></a>');
+            	return actions.join('');
             }
         }];
 	var url = prefix + "/list";

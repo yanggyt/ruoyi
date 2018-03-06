@@ -48,7 +48,7 @@ function initTreeTable(_id, _parentId, _columns, _url) {
 		expandColumn : '1',           // 在哪一列上面显示展开按钮
 		striped : false,              // 是否各行渐变色
 		bordered : true,              // 是否显示边框
-		expandAll : false,            // 是否全部展开
+		expandAll : true,             // 是否全部展开
 		showRefresh: true,            // 是否显示刷新按钮
         columns: _columns
     });
@@ -68,10 +68,8 @@ function getIdSelections(_id) {
 
 // 获取新增或修改选中复选框
 function getIsChecked(_name) {
-	var checkArr = []; 
-	$('input[name="'+_name+'"]:checked').each(function() {
-	    checkArr.push($(this).val());  
-	});
-	return checkArr;
+	return $.map($('input[name="'+_name+'"]:checked').each, function () {
+        return $(this).val();
+    });
 }
 

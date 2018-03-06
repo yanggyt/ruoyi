@@ -1,7 +1,7 @@
 package com.ruoyi.project.system.dept.controller;
 
 import java.util.List;
-
+import java.util.Map;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.web.domain.JSON;
 import com.ruoyi.project.system.dept.domain.Dept;
@@ -59,7 +58,7 @@ public class DeptController
         model.addAttribute("dept", dept);
         return prefix + "/edit";
     }
-    
+
     /**
      * 新增
      */
@@ -112,5 +111,16 @@ public class DeptController
             return JSON.ok();
         }
         return JSON.error();
+    }
+
+    /**
+     * 加载部门列表树
+     */
+    @GetMapping("/treeData")
+    @ResponseBody
+    public List<Map<String, Object>> treeData()
+    {
+        List<Map<String, Object>> tree = deptService.selectDeptTree();
+        return tree;
     }
 }

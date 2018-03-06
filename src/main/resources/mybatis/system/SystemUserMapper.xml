@@ -27,11 +27,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="status"   column="dept_status" />
 	</resultMap>
 	
-	<select id="pageInfoQuery" parameterType="User" resultMap="UserResult">
+	<select id="pageInfoQuery" parameterType="PageUtilEntity" resultMap="UserResult">
 		select * from sys_user
 		<where>
 			<if test="searchValue != null and searchValue != ''">
 				AND login_name = #{searchValue}
+			</if>
+			<if test="reqMap.deptId != null and reqMap.parentId != null and reqMap.parentId != 0">
+				AND dept_id IN (SELECT dept_id FROM sys_dept WHERE dept_id = #{reqMap.deptId} OR parent_id = #{reqMap.deptId})
 			</if>
 		</where>
 	</select>
@@ -106,5 +109,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			sysdate()
  		)
 	</insert>
-
+	
 </mapper> 

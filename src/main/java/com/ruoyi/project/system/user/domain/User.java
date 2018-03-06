@@ -37,5 +37,7 @@ public class User
     private Date createTime;
     /** 部门对象 */
     private Dept dept;
+    /** 角色组 */
+    private Long[] roleIds;
 
 }

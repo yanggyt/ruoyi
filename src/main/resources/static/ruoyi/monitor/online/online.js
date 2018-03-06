@@ -63,7 +63,7 @@ $(function() {
 // 单条强退
 function forceLogout(id) {
 	layer.confirm("确定要强制选中用户下线吗？",{icon: 3, title:'提示'},function(index){
-		_ajax(prefix + "/forceLogout/" + id, , "", "post");
+		_ajax(prefix + "/forceLogout/" + id, "", "post");
     })
 }
 

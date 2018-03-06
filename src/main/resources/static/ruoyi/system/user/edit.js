@@ -15,13 +15,26 @@ $("#form-user-edit").validate({
 	}
 });
 
+function getIsChecked(_name) {
+	var adIds = "";
+	$('input:checkbox[name="'+_name+'"]:checked').each(function(i) {
+		if (0 == i) {
+			adIds = $(this).val();
+		} else {
+			adIds += ("," + $(this).val());
+		}
+	});
+	return adIds;
+}
+
 function update() {
 	var userId = $("input[name='userId']").val();
 	var userName = $("input[name='userName']").val();
 	var email = $("input[name='email']").val();
 	var phonenumber = $("input[name='phonenumber']").val();
 	var status = $("input[name='status']").is(':checked') == true ? 0 : 1;
-	var roleIds = getIsChecked("role");  
+	var roleIds = getIsChecked("role");
+	alert(roleIds);
 	$.ajax({
 		cache : true,
 		type : "POST",

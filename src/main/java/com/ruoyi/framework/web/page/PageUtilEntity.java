@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.page;
 
+import java.util.Map;
 import lombok.Data;
 
 /**
@@ -24,4 +25,6 @@ public class PageUtilEntity
     private int totalResult;
     /** 搜索值 */
     private String searchValue;
+    /** 请求参数 */
+    protected Map<String, Object> reqMap;
 }

@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.dept.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.project.system.dept.domain.Dept;
 
 /**
@@ -23,6 +25,14 @@ public interface IDeptService
      * @return 所有部门信息
      */
     public List<Dept> selectDeptAll();
+    
+    /**
+     * 查询部门管理树
+     * 
+     * @return 所有部门信息
+     */
+    public List<Map<String, Object>> selectDeptTree();
+    
 
     /**
      * 查询部门人数

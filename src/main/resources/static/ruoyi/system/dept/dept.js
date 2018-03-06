@@ -38,10 +38,11 @@ function loading() {
 			align : 'center',
 			formatter : function(row, index) {
 				if(row.parentId != 0) {
-					var edit = '<a class="btn btn-primary btn-sm" href="#" title="编辑" mce_href="#" onclick="edit(\'' + row.deptId + '\')"><i class="fa fa-edit"></i></a> ';
-					var add = '<a class="btn btn-primary btn-sm" href="#" title="增加下級"  mce_href="#" onclick="add(\'' + row.deptId + '\')"><i class="fa fa-plus"></i></a> ';
-					var del = '<a class="btn btn-warning btn-sm" href="#" title="删除"  mce_href="#" onclick="remove(\'' + row.deptId + '\')"><i class="fa fa-remove"></i></a> ';
-					return edit + add + del;
+					var actions = [];
+					actions.push('<a class="btn btn-primary btn-sm" href="#" title="编辑" mce_href="#" onclick="edit(\'' + row.deptId + '\')"><i class="fa fa-edit"></i></a>');
+					actions.push('<a class="btn btn-primary btn-sm" href="#" title="新增" mce_href="#" onclick="add(\'' + row.deptId + '\')"><i class="fa fa-plus"></i></a>');
+					actions.push('<a class="btn btn-warning btn-sm" href="#" title="删除" mce_href="#" onclick="remove(\'' + row.deptId + '\')"><i class="fa fa-remove"></i></a>');
+					return actions.join('');
 				} else {
 					return "";
 				}

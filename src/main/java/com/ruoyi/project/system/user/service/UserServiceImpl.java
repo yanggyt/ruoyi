@@ -1,11 +1,16 @@
 package com.ruoyi.project.system.user.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.user.dao.IUserDao;
 import com.ruoyi.project.system.user.domain.User;
+import com.ruoyi.project.system.user.domain.UserRole;
 
 /**
  * 用户 业务层处理
@@ -85,8 +90,21 @@ public class UserServiceImpl implements IUserService
      */
     public int saveUser(User user)
     {
+        Long userId = user.getUserId();
         // 删除用户与角色关联
+        userDao.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
+        List<UserRole> list = new ArrayList<>();
+        for (Long roleId : user.getRoleIds())
+        {
+            UserRole ur = new UserRole();
+            ur.setUserId(userId);
+            ur.setRoleId(roleId);
+            list.add(ur);
+        }
+        if (list.size() > 0) {
+            userDao.batchUserRole(list);
+        }
         return userDao.updateUser(user);
     }
 

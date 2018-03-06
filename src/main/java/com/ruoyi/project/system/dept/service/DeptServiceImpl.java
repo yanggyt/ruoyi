@@ -1,6 +1,9 @@
 package com.ruoyi.project.system.dept.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,6 +40,27 @@ public class DeptServiceImpl implements IDeptService
     public List<Dept> selectDeptAll()
     {
         return deptDao.selectDeptAll();
+    }
+
+    /**
+     * 查询部门管理树
+     * 
+     * @return 所有部门信息
+     */
+    public List<Map<String, Object>> selectDeptTree()
+    {
+        List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
+        List<Dept> deptList = deptDao.selectDeptAll();
+
+        for (Dept dept : deptList)
+        {
+            Map<String, Object> deptMap = new HashMap<String, Object>();
+            deptMap.put("id", dept.getDeptId());
+            deptMap.put("pId", dept.getParentId());
+            deptMap.put("name", dept.getDeptName());
+            trees.add(deptMap);
+        }
+        return trees;
     }
 
     /**

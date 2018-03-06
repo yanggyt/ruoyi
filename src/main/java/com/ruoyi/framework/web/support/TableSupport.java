@@ -1,7 +1,9 @@
 package com.ruoyi.framework.web.support;
 
 import javax.servlet.http.HttpServletRequest;
+
 import com.ruoyi.common.utils.HttpContextUtils;
+import com.ruoyi.common.utils.MapDataUtil;
 import com.ruoyi.framework.web.page.PageUtilEntity;
 
 /**
@@ -23,6 +25,7 @@ public class TableSupport
         pageUtilEntity.setOrderByColumn(request.getParameter("sort"));
         pageUtilEntity.setIsAsc(request.getParameter("order"));
         pageUtilEntity.setSearchValue(request.getParameter("search"));
+        pageUtilEntity.setReqMap(MapDataUtil.convertDataMap(request));
         return pageUtilEntity;
     }
 
