@@ -69,7 +69,7 @@ public class UserController extends BaseController
         model.addAttribute("user", user);
         return prefix + "/edit";
     }
-    
+
     /**
      * 新增用户
      */
@@ -109,7 +109,7 @@ public class UserController extends BaseController
         }
         return JSON.error();
     }
-    
+
     /**
      * 保存
      */
@@ -124,6 +124,15 @@ public class UserController extends BaseController
             return JSON.ok();
         }
         return JSON.error();
+    }
+
+    /**
+     * 选择部门树
+     */
+    @GetMapping("/selectDeptTree")
+    public String selectDeptTree()
+    {
+        return prefix + "/tree";
     }
 
 }
