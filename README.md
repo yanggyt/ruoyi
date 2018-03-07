@@ -76,15 +76,13 @@
 
 ![首页](https://static.oschina.net/uploads/space/2018/0301/221159_e9GB_1438828.png)
 
-![在线用户](https://static.oschina.net/uploads/space/2018/0301/221211_bd0i_1438828.png)
-
 ![操作日志](https://static.oschina.net/uploads/space/2018/0303/011028_xWoa_1438828.png)
 
 ![部门管理](https://static.oschina.net/uploads/space/2018/0304/133113_AJe1_1438828.png)
 
 ![用户管理](https://static.oschina.net/uploads/space/2018/0307/222556_93xK_1438828.png)
 
-![用户修改](https://static.oschina.net/uploads/space/2018/0307/222608_BJEX_1438828.png)
+![用户修改](https://static.oschina.net/uploads/space/2018/0307/223430_cSVy_1438828.png)
 
 ![部门选择](https://static.oschina.net/uploads/space/2018/0307/222938_AGLO_1438828.png)
 
