@@ -67,4 +67,14 @@ public class RoleServiceImpl implements IRoleService
         return roles;
     }
 
+    /**
+     * 查询所有角色
+     * 
+     * @return 权限列表
+     */
+    public List<Role> selectRoleAll()
+    {
+        return roleDao.selectRolesAll();
+    }
+
 }

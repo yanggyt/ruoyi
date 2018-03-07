@@ -1,6 +1,12 @@
-$("#form-user-edit").validate({
+$("#form-user-add").validate({
 	rules:{
+		loginName:{
+			required:true,
+		},
 		userName:{
+			required:true,
+		},
+		password:{
 			required:true,
 		},
 		email:{
@@ -11,7 +17,7 @@ $("#form-user-edit").validate({
 		},
 	},
 	submitHandler:function(form){
-		update();
+		add();
 	}
 });
 
@@ -27,10 +33,12 @@ function getIsChecked(_name) {
 	return adIds;
 }
 
-function update() {
+function add() {
 	var userId = $("input[name='userId']").val();
 	var deptId = $("input[name='deptId']").val();
+	var loginName = $("input[name='loginName']").val();
 	var userName = $("input[name='userName']").val();
+	var password = $("input[name='password']").val();
 	var email = $("input[name='email']").val();
 	var phonenumber = $("input[name='phonenumber']").val();
 	var status = $("input[name='status']").is(':checked') == true ? 0 : 1;
@@ -42,7 +50,9 @@ function update() {
 		data : {
 			"userId": userId,
 			"deptId": deptId,
+			"loginName": loginName,
 			"userName": userName,
+			"password": password,
 			"email": email,
 			"phonenumber": phonenumber,
 			"status": status,

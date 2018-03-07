@@ -97,7 +97,18 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
      */
     public int updateUser(User user)
     {
-        return this.save("SystemUserMapper.updateUser", user);
+        return this.update("SystemUserMapper.updateUser", user);
+    }
+
+    /**
+     * 新增用户信息
+     * 
+     * @param user 用户信息
+     * @return 结果
+     */
+    public int insertUser(User user)
+    {
+        return this.save("SystemUserMapper.insertUser", user);
     }
 
     /**

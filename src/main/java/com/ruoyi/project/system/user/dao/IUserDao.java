@@ -72,6 +72,14 @@ public interface IUserDao
     public int updateUser(User user);
     
     /**
+     * 新增用户信息
+     * 
+     * @param user 用户信息
+     * @return 结果
+     */
+    public int insertUser(User user);
+    
+    /**
      * 批量新增用户角色信息
      * 
      * @param user 用户信息

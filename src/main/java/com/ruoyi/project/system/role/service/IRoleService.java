@@ -19,7 +19,7 @@ public interface IRoleService
      * @return 权限列表
      */
     public Set<String> selectRoleKeys(Long userId);
-    
+
     /**
      * 根据用户ID查询角色
      * 
@@ -27,5 +27,12 @@ public interface IRoleService
      * @return 权限列表
      */
     public List<Role> selectRolesByUserId(Long userId);
+
+    /**
+     * 查询所有角色
+     * 
+     * @return 权限列表
+     */
+    public List<Role> selectRoleAll();
 
 }

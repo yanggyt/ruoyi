@@ -75,8 +75,10 @@ public class UserController extends BaseController
      */
     @Log(title = "系统管理", action = "用户管理-新增用户")
     @GetMapping("/add")
-    public String add()
+    public String add(Model model)
     {
+        List<Role> roles = roleService.selectRoleAll();
+        model.addAttribute("roles", roles);
         return prefix + "/add";
     }
 

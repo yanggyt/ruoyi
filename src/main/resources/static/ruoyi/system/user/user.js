@@ -87,12 +87,12 @@ function queryDeptTreeDaTa()
 	};loadTree();
 	
 	$('#btnExpand').click(function() {
-	    zTree.expandAll(true);
+		tree.expandAll(true);
 	    $(this).hide();
 	    $('#btnCollapse').show();
 	});
 	$('#btnCollapse').click(function() {
-	    zTree.expandAll(false);
+		tree.expandAll(false);
 	    $(this).hide();
 	    $('#btnExpand').show();
 	});
@@ -117,7 +117,7 @@ function edit(deptId) {
 /*用户管理-新增*/
 function add() {
     var url = prefix + '/add';
-    layer_show("新增用户", url, '800', '500');
+    layer_show("新增用户", url, '800', '550');
 }
 
 // 批量强退

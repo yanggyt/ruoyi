@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.user.dao.IUserDao;
@@ -91,21 +92,41 @@ public class UserServiceImpl implements IUserService
     public int saveUser(User user)
     {
         Long userId = user.getUserId();
-        // 删除用户与角色关联
-        userDao.deleteUserRoleByUserId(userId);
+        if (StringUtils.isNotNull(userId))
+        {
+            // 删除用户与角色关联
+            userDao.deleteUserRoleByUserId(userId);
+        }
+        else
+        {
+            // 新增用户信息
+            userDao.insertUser(user);
+
+        }
+        insertUserRole(user);
+        return userDao.updateUser(user);
+    }
+
+    /**
+     * 新增用户角色信息
+     * 
+     * @param user 用户对象
+     */
+    public void insertUserRole(User user)
+    {
         // 新增用户与角色管理
         List<UserRole> list = new ArrayList<>();
         for (Long roleId : user.getRoleIds())
         {
             UserRole ur = new UserRole();
-            ur.setUserId(userId);
+            ur.setUserId(user.getUserId());
             ur.setRoleId(roleId);
             list.add(ur);
         }
-        if (list.size() > 0) {
+        if (list.size() > 0)
+        {
             userDao.batchUserRole(list);
         }
-        return userDao.updateUser(user);
     }
 
 }
