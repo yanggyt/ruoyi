@@ -46,7 +46,7 @@ public interface IUserDao
      * @return 结果
      */
     public int deleteUserById(Long userId);
-    
+
     /**
      * 通过用户ID删除用户和角色关联
      * 
@@ -62,7 +62,7 @@ public interface IUserDao
      * @return 结果
      */
     public int batchDeleteUser(Long[] ids);
-    
+
     /**
      * 修改用户信息
      * 
@@ -70,7 +70,7 @@ public interface IUserDao
      * @return 结果
      */
     public int updateUser(User user);
-    
+
     /**
      * 新增用户信息
      * 
@@ -78,7 +78,7 @@ public interface IUserDao
      * @return 结果
      */
     public int insertUser(User user);
-    
+
     /**
      * 批量新增用户角色信息
      * 
@@ -86,5 +86,13 @@ public interface IUserDao
      * @return 结果
      */
     public int batchUserRole(List<UserRole> userRoleList);
+
+    /**
+     * 校验用户名称是否唯一
+     * 
+     * @param userName 用户名
+     * @return 结果
+     */
+    public int checkNameUnique(String loginName);
 
 }

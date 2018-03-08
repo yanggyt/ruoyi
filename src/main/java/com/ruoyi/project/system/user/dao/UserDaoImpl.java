@@ -128,4 +128,15 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
         return this.batchSave("SystemUserRoleMapper.batchUserRole", userRoleList);
     }
 
+    /**
+     * 校验用户名称是否唯一
+     * 
+     * @param userName 用户名
+     * @return 结果
+     */
+    public int checkNameUnique(String loginName)
+    {
+        return this.count("SystemUserMapper.checkNameUnique", loginName);
+    }
+
 }

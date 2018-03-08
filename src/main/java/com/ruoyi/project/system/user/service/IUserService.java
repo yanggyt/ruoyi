@@ -51,7 +51,7 @@ public interface IUserService
      * @return 结果
      */
     public int batchDeleteUser(Long[] ids);
-    
+
     /**
      * 保存用户信息
      * 
@@ -59,5 +59,13 @@ public interface IUserService
      * @return 结果
      */
     public int saveUser(User user);
+
+    /**
+     * 校验用户名称是否唯一
+     * 
+     * @param userName 用户名
+     * @return 结果
+     */
+    public String checkNameUnique(String loginName);
 
 }

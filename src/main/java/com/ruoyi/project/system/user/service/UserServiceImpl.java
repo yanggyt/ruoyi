@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
@@ -129,4 +130,19 @@ public class UserServiceImpl implements IUserService
         }
     }
 
+    /**
+     * 校验用户名称是否唯一
+     * 
+     * @param userName 用户名
+     * @return
+     */
+    public String checkNameUnique(String loginName)
+    {
+        int count = userDao.checkNameUnique(loginName);
+        if (count > 0)
+        {
+            return UserConstants.NAME_NOT_UNIQUE;
+        }
+        return UserConstants.NAME_UNIQUE;
+    }
 }

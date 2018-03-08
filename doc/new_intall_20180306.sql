@@ -33,8 +33,8 @@ drop table if exists sys_user;
 create table sys_user (
   user_id 			int(11) 		not null auto_increment comment '用户ID',
   dept_id 			int(20) 		default null			comment '部门ID',
-  login_name 		varchar(30) 	default '' 				comment '登录名',
-  user_name 		varchar(30) 	default '' 				comment '用户名称',
+  login_name 		varchar(30) 	default '' 				comment '登录账号',
+  user_name 		varchar(30) 	default '' 				comment '用户昵称',
   email  			varchar(100) 	default '' 				comment '用户邮箱',
   phonenumber  		varchar(20) 	default '' 				comment '手机号码',
   password 			varchar(100) 	default '' 				comment '密码',
@@ -187,7 +187,7 @@ create table sys_oper_log (
   action            varchar(100)    default ''                 comment '功能请求',
   method            varchar(100)    default ''                 comment '方法名称',
   channel           varchar(20)     default ''                 comment '来源渠道',
-  login_name 	    varchar(50)     default '' 		 	 	   comment '登录名称',
+  login_name 	    varchar(50)     default '' 		 	 	   comment '登录账号',
   dept_name 		varchar(50)     default '' 		 	 	   comment '部门名称',
   oper_url 		    varchar(255) 	default '' 				   comment '请求URL',
   oper_ip 			varchar(30) 	default '' 				   comment '主机地址',
@@ -242,7 +242,7 @@ insert into sys_code values('system-operlog-status', '1', '失败', '', '', '2')
 drop table if exists sys_logininfor;
 create table sys_logininfor (
   info_id 		int(11) 	 not null auto_increment   comment '访问ID',
-  login_name 	varchar(50)  default '' 			   comment '登录名',
+  login_name 	varchar(50)  default '' 			   comment '登录账号',
   ipaddr 		varchar(50)  default '' 			   comment '登录IP地址',
   browser  		varchar(50)  default '' 			   comment '浏览器类型',
   os      		varchar(50)  default '' 			   comment '操作系统',
@@ -260,7 +260,7 @@ insert into sys_logininfor values(1, 'admin', '127.0.0.1', 'Chrome 45', 'Windows
 drop table if exists sys_user_online;
 create table sys_user_online (
   sessionId 	    varchar(50)  default ''              	comment '用户会话id',
-  login_name 	    varchar(50)  default '' 		 	 	comment '登录名称',
+  login_name 	    varchar(50)  default '' 		 	 	comment '登录账号',
   dept_name 		varchar(50)  default '' 		 	 	comment '部门名称',
   ipaddr 		    varchar(50)  default '' 			 	comment '登录IP地址',
   browser  		    varchar(50)  default '' 			 	comment '浏览器类型',

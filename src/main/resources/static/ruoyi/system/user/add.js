@@ -2,20 +2,42 @@ $("#form-user-add").validate({
 	rules:{
 		loginName:{
 			required:true,
+			minlength: 5,
+			remote: {
+                url: "/system/user/checkNameUnique",
+                type: "post",
+                dataType: "text",
+                data: {
+                	name : function() {
+                        return $.trim($("#loginName").val());
+                    }
+                },
+                dataFilter: function(data, type) {
+                    if (data == "0") return true;
+                    else return false;
+                }
+            }
 		},
 		userName:{
 			required:true,
 		},
 		password:{
 			required:true,
+			minlength: 6
 		},
 		email:{
 			required:true,
+			email:true
 		},
 		phonenumber:{
 			required:true,
 		},
 	},
+	messages: {
+        "loginName": {
+            remote: "该用户已经存在"
+        }
+    },
 	submitHandler:function(form){
 		add();
 	}

@@ -20,14 +20,15 @@ public class UserConstants
     /** 角色封禁状态 */
     public static final String ROLE_BLOCKED = "1";
 
-    /** 名称是否唯一的返回结果码 */
-    public final static String NAME_UNIQUE = "0";
-    
     /**
      * 用户名长度限制
      */
     public static final int USERNAME_MIN_LENGTH = 2;
     public static final int USERNAME_MAX_LENGTH = 10;
+
+    /** 名称是否唯一的返回结果码 */
+    public final static String NAME_UNIQUE = "0";
+    public final static String NAME_NOT_UNIQUE = "1";
 
     /**
      * 密码长度限制

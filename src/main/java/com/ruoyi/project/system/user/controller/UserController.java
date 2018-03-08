@@ -129,6 +129,21 @@ public class UserController extends BaseController
     }
 
     /**
+     * 校验用户名
+     */
+    @PostMapping("/checkNameUnique")
+    @ResponseBody
+    public String checkNameUnique(User user)
+    {
+        String uniqueFlag = "0";
+        if (user != null)
+        {
+            uniqueFlag = userService.checkNameUnique(user.getLoginName());
+        }
+        return uniqueFlag;
+    }
+
+    /**
      * 选择部门树
      */
     @GetMapping("/selectDeptTree")

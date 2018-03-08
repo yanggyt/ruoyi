@@ -48,6 +48,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where u.login_name = #{userName}
 	</select>
 	
+	<select id="checkNameUnique" parameterType="String" resultType="int">
+		select count(*) from sys_user where login_name=#{loginName}
+	</select>
+	
 	<select id="selectUserById" parameterType="Long" resultMap="UserResult">
 		select  u.user_id, u.dept_id, u.login_name, u.user_name, u.email, u.phonenumber, u.password, u.salt, u.status, u.refuse_des, u.create_time,
        		    d.dept_id, d.parent_id, d.dept_name, d.order_num, d.status as dept_status
