@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.utils.HttpContextUtils;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.project.monitor.operlog.domain.OperLog;
@@ -85,7 +85,7 @@ public class LogAspect
             // 请求的地址
             String ip = ShiroUtils.getIp();
             operLog.setOperIp(ip);
-            operLog.setOperUrl(HttpContextUtils.getHttpServletRequest().getRequestURI());
+            operLog.setOperUrl(ServletUtils.getHttpServletRequest().getRequestURI());
             if (currentUser != null)
             {
                 operLog.setLoginName(currentUser.getLoginName());
@@ -146,7 +146,7 @@ public class LogAspect
      */
     private static void setRequestValue(OperLog operLog)
     {
-        Map<String, String[]> map = HttpContextUtils.getHttpServletRequest().getParameterMap();
+        Map<String, String[]> map = ServletUtils.getHttpServletRequest().getParameterMap();
         String params = JSONObject.toJSONString(map);
         operLog.setOperParam(params);
     }

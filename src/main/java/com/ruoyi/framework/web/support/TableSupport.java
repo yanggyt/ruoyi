@@ -2,7 +2,7 @@ package com.ruoyi.framework.web.support;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ruoyi.common.utils.HttpContextUtils;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.MapDataUtil;
 import com.ruoyi.framework.web.page.PageUtilEntity;
 
@@ -18,7 +18,7 @@ public class TableSupport
      */
     public static PageUtilEntity getPageUtilEntity()
     {
-        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
+        HttpServletRequest request = ServletUtils.getHttpServletRequest();
         PageUtilEntity pageUtilEntity = new PageUtilEntity();
         pageUtilEntity.setPage(Integer.valueOf(request.getParameter("offset")));
         pageUtilEntity.setSize(Integer.valueOf(request.getParameter("limit")));

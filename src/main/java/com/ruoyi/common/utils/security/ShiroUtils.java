@@ -33,6 +33,11 @@ public class ShiroUtils
         return getUser().getUserId().longValue();
     }
 
+    public static String getLoginName()
+    {
+        return getUser().getLoginName();
+    }
+
     public static String getIp()
     {
         return getSubjct().getSession().getHost();

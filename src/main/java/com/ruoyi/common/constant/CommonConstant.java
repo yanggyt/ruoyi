@@ -24,6 +24,11 @@ public class CommonConstant
     public static final String LOGIN_SUCCESS = "Success";
 
     /**
+     * 注销
+     */
+    public static final String Logout = "Logout";
+
+    /**
      * 登录失败
      */
     public static final String LOGIN_FAIL = "Error";

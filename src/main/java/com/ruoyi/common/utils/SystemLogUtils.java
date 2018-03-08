@@ -41,7 +41,7 @@ public class SystemLogUtils
 
         sys_user_logger.info(s.toString(), args);
 
-        if (CommonConstant.LOGIN_SUCCESS.equals(status))
+        if (CommonConstant.LOGIN_SUCCESS.equals(status) || CommonConstant.Logout.equals(status))
         {
             saveOpLog(username, msg, CommonConstant.SUCCESS);
         }
@@ -53,7 +53,7 @@ public class SystemLogUtils
 
     public static void saveOpLog(String username, String message, String status)
     {
-        UserAgent userAgent = UserAgent.parseUserAgentString(HttpContextUtils.getHttpServletRequest().getHeader("User-Agent"));
+        UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getHttpServletRequest().getHeader("User-Agent"));
         // 获取客户端操作系统
         String os = userAgent.getOperatingSystem().getName();
         // 获取客户端浏览器

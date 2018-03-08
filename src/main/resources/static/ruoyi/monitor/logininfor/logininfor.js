@@ -26,7 +26,7 @@ $(function() {
         },
         {
             field: 'status',
-            title: '登录状态',
+            title: '状态',
             align: 'center',
             formatter: function(value, row, index) {
                 if (value == 0) {
@@ -35,6 +35,10 @@ $(function() {
                     return '<span class="label label-primary">失败</span>';
                 }
             }
+        },
+        {
+            field: 'msg',
+            title: '操作信息'
         },
         {
             field: 'loginTime',
