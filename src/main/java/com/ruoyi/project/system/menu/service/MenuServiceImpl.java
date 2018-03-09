@@ -1,13 +1,18 @@
 package com.ruoyi.project.system.menu.service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.TreeUtils;
 import com.ruoyi.project.system.menu.dao.IMenuDao;
@@ -61,6 +66,29 @@ public class MenuServiceImpl implements IMenuService
     }
 
     /**
+     * 根据角色ID查询菜单
+     * 
+     * @param roleId 角色ID
+     * @return 菜单列表
+     */
+    public List<Map<String, Object>> selectMenuTree(Long roleId)
+    {
+        List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
+        List<String> roleMenuList = menuDao.selectMenuTree(roleId);
+        List<Menu> menuList = menuDao.selectPermsAll();
+        for (Menu menu : menuList)
+        {
+            Map<String, Object> deptMap = new HashMap<String, Object>();
+            deptMap.put("id", menu.getMenuId());
+            deptMap.put("pId", menu.getParentId());
+            deptMap.put("name", menu.getMenuName());
+            deptMap.put("checked", roleMenuList.contains(menu.getMenuId() + menu.getPerms()));
+            trees.add(deptMap);
+        }
+        return trees;
+    }
+
+    /**
      * 查询系统所有权限
      * 
      * @return 权限列表
@@ -78,6 +106,15 @@ public class MenuServiceImpl implements IMenuService
             }
         }
         return section;
+    }
+
+    public static void main(String[] args)
+    {
+        List<Long> list = new ArrayList<Long>();
+        list.add(1L);
+        list.add(2L);
+        list.add(3L);
+        System.out.println(list.contains(Long.valueOf(1)));
     }
 
 }

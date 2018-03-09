@@ -52,7 +52,7 @@ function queryUserList() {
             align: 'center',
             formatter: function(value, row, index) {
             	var actions = [];
-            	actions.push('<a class="btn btn-primary btn-sm" href="#" title="编辑" mce_href="#" onclick="edit(\'' + row.userId + '\')"><i class="fa fa-edit"></i></a>');
+            	actions.push('<a class="btn btn-primary btn-sm" href="#" title="编辑" mce_href="#" onclick="edit(\'' + row.userId + '\')"><i class="fa fa-edit"></i></a> ');
             	actions.push('<a class="btn btn-warning btn-sm" href="#" title="删除" onclick="remove(\'' + row.userId + '\')"><i class="fa fa-remove"></i></a>');
             	return actions.join('');
             }

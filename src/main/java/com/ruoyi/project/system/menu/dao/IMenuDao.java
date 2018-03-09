@@ -28,6 +28,14 @@ public interface IMenuDao
     public List<String> selectPermsByUserId(Long userId);
 
     /**
+     * 根据角色ID查询菜单
+     * 
+     * @param roleId 角色ID
+     * @return 菜单列表
+     */
+    public List<String> selectMenuTree(Long roleId);
+
+    /**
      * 查询系统所有权限
      * 
      * @return 权限列表

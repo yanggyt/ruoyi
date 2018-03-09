@@ -59,7 +59,7 @@ insert into sys_user values('2', '8', 'ry',    '若依', 'ry@163.com',      '152
 drop table if exists sys_role;
 create table sys_role (
   role_id 			int(10) 		not null auto_increment    comment '角色ID',
-  role_name 		varchar(30) 	not null 				   comment '角色名',
+  role_name 		varchar(30) 	not null 				   comment '角色名称',
   role_key 		    varchar(100) 	not null 				   comment '角色权限字符串',
   role_sort         int(10)         not null                   comment '显示顺序',
   status 			int(1) 			default 0 				   comment '角色状态:0正常,1禁用',
@@ -189,7 +189,6 @@ insert into sys_role_menu values ('1', '21');
 insert into sys_role_menu values ('1', '22');
 insert into sys_role_menu values ('1', '23');
 insert into sys_role_menu values ('1', '24');
-insert into sys_role_menu values ('1', '25');
 -- ----------------------------
 -- 7、操作日志记录
 -- ----------------------------

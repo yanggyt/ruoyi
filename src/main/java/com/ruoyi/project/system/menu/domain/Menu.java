@@ -13,11 +13,11 @@ import lombok.Data;
 public class Menu
 {
     /** 菜单ID */
-    private Integer menuId;
+    private Long menuId;
     /** 菜单名称 */
     private String menuName;
     /** 父菜单ID */
-    private Integer parentId;
+    private Long parentId;
     /** 显示顺序 */
     private String orderNum;
     /** 菜单URL */

@@ -30,6 +30,14 @@ public interface IMenuService
     public Set<String> selectPermsByUserId(Long userId);
 
     /**
+     * 根据角色ID查询菜单
+     * 
+     * @param roleId 角色ID
+     * @return 菜单列表
+     */
+    public List<Map<String, Object>> selectMenuTree(Long roleId);
+
+    /**
      * 查询系统所有权限
      * 
      * @return 权限列表

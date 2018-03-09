@@ -45,16 +45,36 @@ public class MenuDaoImpl extends DynamicObjectBaseDao implements IMenuDao
     @Override
     public List<String> selectPermsByUserId(Long userId)
     {
-        List<String> permsList = null;
+        List<String> menuList = null;
         try
         {
-            permsList = this.findForList("SystemMenuMapper.selectPermsByUserId", userId);
+            menuList = this.findForList("SystemMenuMapper.selectPermsByUserId", userId);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        return permsList;
+        return menuList;
+    }
+
+    /**
+     * 根据角色ID查询菜单
+     * 
+     * @param roleId 角色ID
+     * @return 菜单列表
+     */
+    public List<String> selectMenuTree(Long roleId)
+    {
+        List<String> menuList = null;
+        try
+        {
+            menuList = this.findForList("SystemMenuMapper.selectMenuTree", roleId);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return menuList;
     }
 
     /**

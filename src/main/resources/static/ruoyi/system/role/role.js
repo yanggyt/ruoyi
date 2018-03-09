@@ -40,13 +40,21 @@ $(function() {
             title: '操作',
             align: 'center',
             formatter: function(value, row, index) {
-                var msg = '<a class="btn btn-warning btn-sm" href="#" title="删除" onclick="remove(\'' + row.roleId + '\')"><i class="fa fa-remove"></i></a> ';
-                return msg;
+            	var actions = [];
+				actions.push('<a class="btn btn-primary btn-sm" href="#" title="编辑" mce_href="#" onclick="edit(\'' + row.roleId + '\')"><i class="fa fa-edit"></i></a> ');
+				actions.push('<a class="btn btn-warning btn-sm" href="#" title="删除" onclick="remove(\'' + row.roleId + '\')"><i class="fa fa-remove"></i></a>');
+				return actions.join('');
             }
         }];
 	var url = prefix + "/list";
     initTable(columns, url);
 });
+
+/*角色管理-修改*/
+function edit(roleId) {
+    var url = prefix + '/edit/' + roleId;
+    layer_show("修改角色", url, '800', '400');
+}
 
 // 单条删除
 function remove(id) {
