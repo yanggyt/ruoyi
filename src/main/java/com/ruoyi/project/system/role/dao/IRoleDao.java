@@ -2,6 +2,8 @@ package com.ruoyi.project.system.role.dao;
 
 import java.util.List;
 
+import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.role.domain.Role;
 
 /**
@@ -11,6 +13,14 @@ import com.ruoyi.project.system.role.domain.Role;
  */
 public interface IRoleDao
 {
+
+    /**
+     * 根据条件分页查询用户对象
+     * 
+     * @param pageUtilEntity 分页对象
+     * @return 用户信息集合信息
+     */
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity);
 
     /**
      * 根据用户ID查询角色
@@ -26,5 +36,29 @@ public interface IRoleDao
      * @return 角色列表
      */
     public List<Role> selectRolesAll();
+
+    /**
+     * 通过角色ID查询角色
+     * 
+     * @param roleId 角色ID
+     * @return 角色对象信息
+     */
+    public Role selectRoleById(Long roleId);
+
+    /**
+     * 通过角色ID删除角色
+     * 
+     * @param roleId 角色ID
+     * @return 结果
+     */
+    public int deleteRoleById(Long roleId);
+
+    /**
+     * 批量角色用户信息
+     * 
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    public int batchDeleteRole(Long[] ids);
 
 }

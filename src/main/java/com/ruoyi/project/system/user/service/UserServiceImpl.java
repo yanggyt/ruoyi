@@ -57,6 +57,7 @@ public class UserServiceImpl implements IUserService
      * @param userId 用户ID
      * @return 用户对象信息
      */
+    @Override
     public User selectUserById(Long userId)
     {
         return userDao.selectUserById(userId);
@@ -68,6 +69,7 @@ public class UserServiceImpl implements IUserService
      * @param userId 用户ID
      * @return 结果
      */
+    @Override
     public int deleteUserById(Long userId)
     {
         return userDao.deleteUserById(userId);
@@ -79,6 +81,7 @@ public class UserServiceImpl implements IUserService
      * @param ids 需要删除的数据ID
      * @return 结果
      */
+    @Override
     public int batchDeleteUser(Long[] ids)
     {
         return userDao.batchDeleteUser(ids);
@@ -90,6 +93,7 @@ public class UserServiceImpl implements IUserService
      * @param user 用户信息
      * @return 结果
      */
+    @Override
     public int saveUser(User user)
     {
         Long userId = user.getUserId();
@@ -136,6 +140,7 @@ public class UserServiceImpl implements IUserService
      * @param userName 用户名
      * @return
      */
+    @Override
     public String checkNameUnique(String loginName)
     {
         int count = userDao.checkNameUnique(loginName);

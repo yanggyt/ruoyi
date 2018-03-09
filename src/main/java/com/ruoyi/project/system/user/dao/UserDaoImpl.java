@@ -84,6 +84,7 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
      * @param ids 需要删除的数据ID
      * @return 结果
      */
+    @Override
     public int batchDeleteUser(Long[] ids)
     {
         return this.delete("SystemUserMapper.batchDeleteUser", ids);
@@ -95,6 +96,7 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
      * @param user 用户信息
      * @return 结果
      */
+    @Override
     public int updateUser(User user)
     {
         return this.update("SystemUserMapper.updateUser", user);
@@ -106,6 +108,7 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
      * @param user 用户信息
      * @return 结果
      */
+    @Override
     public int insertUser(User user)
     {
         return this.save("SystemUserMapper.insertUser", user);
@@ -123,6 +126,7 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
      * @param user 用户信息
      * @return 结果
      */
+    @Override
     public int batchUserRole(List<UserRole> userRoleList)
     {
         return this.batchSave("SystemUserRoleMapper.batchUserRole", userRoleList);
@@ -134,6 +138,7 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
      * @param userName 用户名
      * @return 结果
      */
+    @Override
     public int checkNameUnique(String loginName)
     {
         return this.count("SystemUserMapper.checkNameUnique", loginName);

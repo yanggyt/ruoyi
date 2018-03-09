@@ -27,6 +27,7 @@ public class DeptServiceImpl implements IDeptService
      * 
      * @param dept 部门对象
      */
+    @Override
     public int insertDept(Dept dept)
     {
         return deptDao.insertDept(dept);
@@ -37,6 +38,7 @@ public class DeptServiceImpl implements IDeptService
      * 
      * @return 所有部门信息
      */
+    @Override
     public List<Dept> selectDeptAll()
     {
         return deptDao.selectDeptAll();
@@ -47,6 +49,7 @@ public class DeptServiceImpl implements IDeptService
      * 
      * @return 所有部门信息
      */
+    @Override
     public List<Map<String, Object>> selectDeptTree()
     {
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
@@ -69,6 +72,7 @@ public class DeptServiceImpl implements IDeptService
      * @param parentId 部门ID
      * @return 结果
      */
+    @Override
     public int selectDeptCount(Long parentId)
     {
         Dept dept = new Dept();
@@ -82,6 +86,7 @@ public class DeptServiceImpl implements IDeptService
      * @param deptId 部门ID
      * @return 结果 true 存在 false 不存在
      */
+    @Override
     public boolean checkDeptExistUser(Long deptId)
     {
         int result = deptDao.checkDeptExistUser(deptId);
@@ -94,6 +99,7 @@ public class DeptServiceImpl implements IDeptService
      * @param deptId 部门ID
      * @return 结果
      */
+    @Override
     public int deleteDeptById(Long deptId)
     {
         return deptDao.deleteDeptById(deptId);
@@ -105,6 +111,7 @@ public class DeptServiceImpl implements IDeptService
      * @param dept 部门信息
      * @return 结果
      */
+    @Override
     public int saveDept(Dept dept)
     {
         return deptDao.saveDept(dept);
@@ -116,6 +123,7 @@ public class DeptServiceImpl implements IDeptService
      * @param deptId 部门ID
      * @return 部门信息
      */
+    @Override
     public Dept selectDeptById(Long deptId)
     {
         return deptDao.selectDeptById(deptId);

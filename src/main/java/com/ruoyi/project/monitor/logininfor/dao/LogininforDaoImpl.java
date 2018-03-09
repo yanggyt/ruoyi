@@ -43,6 +43,7 @@ public class LogininforDaoImpl extends DynamicObjectBaseDao implements ILogininf
      * @param ids 需要删除的数据
      * @return
      */
+    @Override
     public int batchDeleteLogininfor(Long[] ids)
     {
         int rows = 0;

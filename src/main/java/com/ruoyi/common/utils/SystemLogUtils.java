@@ -41,7 +41,7 @@ public class SystemLogUtils
 
         sys_user_logger.info(s.toString(), args);
 
-        if (CommonConstant.LOGIN_SUCCESS.equals(status) || CommonConstant.Logout.equals(status))
+        if (CommonConstant.LOGIN_SUCCESS.equals(status) || CommonConstant.LOGOUT.equals(status))
         {
             saveOpLog(username, msg, CommonConstant.SUCCESS);
         }

@@ -58,22 +58,23 @@ insert into sys_user values('2', '8', 'ry',    '若依', 'ry@163.com',      '152
 -- ----------------------------
 drop table if exists sys_role;
 create table sys_role (
-  role_id 			int(10) 		not null auto_increment comment '角色ID',
-  role_name 		varchar(30) 	not null 				comment '角色名',
-  role_key 		    varchar(100) 	not null 				comment '角色权限字符串',
-  status 			int(1) 			default 0 				comment '角色状态:0正常,1禁用',
-  create_time 		varchar(30) 	default null			comment '创建时间',
-  update_time 		varchar(30) 	default null			comment '更新时间',
-  update_by 		varchar(30) 	default null			comment '更新者',
-  remark 			varchar(500) 	default '' 				comment '备注',
+  role_id 			int(10) 		not null auto_increment    comment '角色ID',
+  role_name 		varchar(30) 	not null 				   comment '角色名',
+  role_key 		    varchar(100) 	not null 				   comment '角色权限字符串',
+  role_sort         int(10)         not null                   comment '显示顺序',
+  status 			int(1) 			default 0 				   comment '角色状态:0正常,1禁用',
+  create_time 		timestamp       default current_timestamp  comment '创建时间',
+  update_time 		timestamp       default current_timestamp  comment '更新时间',
+  update_by 		varchar(30) 	default null			   comment '更新者',
+  remark 			varchar(500) 	default '' 				   comment '备注',
   primary key (role_id)
 ) engine=innodb auto_increment=100 default charset=utf8;
 
 -- ----------------------------
 -- 初始化-角色信息表数据
 -- ----------------------------
-insert into sys_role values('1', '管理员',   'admin',  0, '2018-03-01', '', 'system', '管理员');
-insert into sys_role values('2', '普通角色', 'common', 0, '2018-03-01', '', 'system', '普通角色');
+insert into sys_role values('1', '管理员',   'admin',  1,  0, '2018-03-01', '2018-03-01', 'system', '管理员');
+insert into sys_role values('2', '普通角色', 'common', 2,  0, '2018-03-01', '2018-03-01', 'system', '普通角色');
 
 
 
@@ -113,19 +114,25 @@ insert into sys_menu values('7',  '操作日志', '2', '1', '/monitor/operlog', 
 insert into sys_menu values('8',  '登录日志', '2', '2', '/monitor/logininfor', 'C', '0', 'monitor:logininfor:view',  '#', '2018-03-01', '', 'admin', '登录日志菜单');
 insert into sys_menu values('9',  '在线用户', '2', '3', '/monitor/online',     'C', '0', 'monitor:online:view',      '#', '2018-03-01', '', 'admin', '在线用户菜单');
 insert into sys_menu values('10', '数据监控', '2', '4', '/monitor/data',       'C', '0', 'monitor:data:view',        '#', '2018-03-01', '', 'admin', '数据监控菜单');
+-- 用户管理按钮
+insert into sys_menu values('11', '用户新增', '6', '1', '/system/user/add',         'F', '0', 'system:user:add',          '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('12', '用户修改', '6', '2', '/system/user/edit',        'F', '0', 'system:user:edit',         '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('13', '用户删除', '6', '3', '/system/user/remove',      'F', '0', 'system:user:remove',       '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('14', '用户保存', '6', '4', '/system/user/save',        'F', '0', 'system:user:save',         '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('15', '批量删除', '6', '4', '/system/user/batchRemove', 'F', '0', 'system:user:batchRemove',  '#', '2018-03-01', '', 'admin', '');
 -- 部门管理按钮
-insert into sys_menu values('11', '部门新增', '6', '1', '/system/dept/add',    'F', '0', 'system:dept:add',          '#', '2018-03-01', '', 'admin', '');
-insert into sys_menu values('12', '部门修改', '6', '2', '/system/dept/edit',   'F', '0', 'system:dept:edit',         '#', '2018-03-01', '', 'admin', '');
-insert into sys_menu values('13', '部门删除', '6', '3', '/system/dept/remove', 'F', '0', 'system:dept:remove',       '#', '2018-03-01', '', 'admin', '');
-insert into sys_menu values('14', '部门保存', '6', '4', '/system/dept/save',   'F', '0', 'system:dept:save',         '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('16', '部门新增', '6', '1', '/system/dept/add',    'F', '0', 'system:dept:add',          '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('17', '部门修改', '6', '2', '/system/dept/edit',   'F', '0', 'system:dept:edit',         '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('18', '部门删除', '6', '3', '/system/dept/remove', 'F', '0', 'system:dept:remove',       '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('19', '部门保存', '6', '4', '/system/dept/save',   'F', '0', 'system:dept:save',         '#', '2018-03-01', '', 'admin', '');
 -- 操作日志按钮
-insert into sys_menu values('15', '批量删除', '7', '1', '/monitor/operlog/batchRemove',     'F', '0', 'monitor:operlog:batchRemove',     '#', '2018-03-01', '', 'admin', '');
-insert into sys_menu values('16', '详细信息', '7', '2', '/monitor/operlog/detail',          'F', '0', 'monitor:operlog:detail',          '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('20', '批量删除', '7', '1', '/monitor/operlog/batchRemove',     'F', '0', 'monitor:operlog:batchRemove',     '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('21', '详细信息', '7', '2', '/monitor/operlog/detail',          'F', '0', 'monitor:operlog:detail',          '#', '2018-03-01', '', 'admin', '');
 -- 登录日志按钮
-insert into sys_menu values('17', '批量删除', '8', '1', '/monitor/logininfor/batchRemove',  'F', '0', 'monitor:logininfor:batchRemove',  '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('22', '批量删除', '8', '1', '/monitor/logininfor/batchRemove',  'F', '0', 'monitor:logininfor:batchRemove',  '#', '2018-03-01', '', 'admin', '');
 -- 在线用户按钮
-insert into sys_menu values('18', '批量强退', '9', '1', '/monitor/online/batchForceLogout', 'F', '0', 'monitor:online:batchForceLogout', '#', '2018-03-01', '', 'admin', '');
-insert into sys_menu values('19', '单条强退', '9', '2', '/monitor/online/forceLogout',      'F', '0', 'monitor:online:forceLogout',      '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('23', '批量强退', '9', '1', '/monitor/online/batchForceLogout', 'F', '0', 'monitor:online:batchForceLogout', '#', '2018-03-01', '', 'admin', '');
+insert into sys_menu values('24', '单条强退', '9', '2', '/monitor/online/forceLogout',      'F', '0', 'monitor:online:forceLogout',      '#', '2018-03-01', '', 'admin', '');
 
 -- ----------------------------
 -- 5、用户和角色关联表  用户N-1角色
@@ -168,15 +175,21 @@ insert into sys_role_menu values ('1', '7');
 insert into sys_role_menu values ('1', '8');
 insert into sys_role_menu values ('1', '9');
 insert into sys_role_menu values ('1', '10');
-insert into sys_role_menu values ('1', '11');
-insert into sys_role_menu values ('1', '12');
-insert into sys_role_menu values ('1', '13');
-insert into sys_role_menu values ('1', '14');
-insert into sys_role_menu values ('1', '15');
+--insert into sys_role_menu values ('1', '11');
+--insert into sys_role_menu values ('1', '12');
+--insert into sys_role_menu values ('1', '13');
+--insert into sys_role_menu values ('1', '14');
+--insert into sys_role_menu values ('1', '15');
 insert into sys_role_menu values ('1', '16');
 insert into sys_role_menu values ('1', '17');
 insert into sys_role_menu values ('1', '18');
 insert into sys_role_menu values ('1', '19');
+insert into sys_role_menu values ('1', '20');
+insert into sys_role_menu values ('1', '21');
+insert into sys_role_menu values ('1', '22');
+insert into sys_role_menu values ('1', '23');
+insert into sys_role_menu values ('1', '24');
+insert into sys_role_menu values ('1', '25');
 -- ----------------------------
 -- 7、操作日志记录
 -- ----------------------------

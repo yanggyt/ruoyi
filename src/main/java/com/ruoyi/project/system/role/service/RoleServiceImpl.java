@@ -7,6 +7,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.page.PageUtilEntity;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.role.dao.IRoleDao;
 import com.ruoyi.project.system.role.domain.Role;
 
@@ -21,6 +23,17 @@ public class RoleServiceImpl implements IRoleService
 
     @Autowired
     private IRoleDao roleDao;
+
+    /**
+     * 根据条件分页查询角色对象
+     * 
+     * @param pageUtilEntity 分页对象
+     * @return 角色信息集合信息
+     */
+    public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity)
+    {
+        return roleDao.pageInfoQuery(pageUtilEntity);
+    }
 
     /**
      * 根据用户ID查询权限
@@ -49,6 +62,7 @@ public class RoleServiceImpl implements IRoleService
      * @param userId 用户ID
      * @return 权限列表
      */
+    @Override
     public List<Role> selectRolesByUserId(Long userId)
     {
         List<Role> userRoles = roleDao.selectRolesByUserId(userId);
@@ -72,9 +86,43 @@ public class RoleServiceImpl implements IRoleService
      * 
      * @return 权限列表
      */
+    @Override
     public List<Role> selectRoleAll()
     {
         return roleDao.selectRolesAll();
+    }
+
+    /**
+     * 通过角色ID查询角色
+     * 
+     * @param roleId 角色ID
+     * @return 角色对象信息
+     */
+    public Role selectRoleById(Long roleId)
+    {
+        return roleDao.selectRoleById(roleId);
+    }
+
+    /**
+     * 通过角色ID删除角色
+     * 
+     * @param roleId 角色ID
+     * @return 结果
+     */
+    public int deleteRoleById(Long roleId)
+    {
+        return roleDao.deleteRoleById(roleId);
+    }
+
+    /**
+     * 批量角色用户信息
+     * 
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    public int batchDeleteRole(Long[] ids)
+    {
+        return roleDao.batchDeleteRole(ids);
     }
 
 }

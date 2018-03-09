@@ -59,6 +59,7 @@ public class UserController extends BaseController
     /**
      * 修改用户
      */
+    @RequiresPermissions("system:user:edit")
     @Log(title = "系统管理", action = "用户管理-修改用户")
     @GetMapping("/edit/{userId}")
     public String edit(@PathVariable("userId") Long userId, Model model)
@@ -73,6 +74,7 @@ public class UserController extends BaseController
     /**
      * 新增用户
      */
+    @RequiresPermissions("system:user:add")
     @Log(title = "系统管理", action = "用户管理-新增用户")
     @GetMapping("/add")
     public String add(Model model)
@@ -82,6 +84,7 @@ public class UserController extends BaseController
         return prefix + "/add";
     }
 
+    @RequiresPermissions("system:user:remove")
     @Log(title = "系统管理", action = "用户管理-删除用户")
     @RequestMapping("/remove/{userId}")
     @ResponseBody
@@ -99,6 +102,7 @@ public class UserController extends BaseController
         return JSON.error();
     }
 
+    @RequiresPermissions("system:user:batchRemove")
     @Log(title = "系统管理", action = "用户管理-批量删除")
     @PostMapping("/batchRemove")
     @ResponseBody
@@ -115,8 +119,8 @@ public class UserController extends BaseController
     /**
      * 保存
      */
+    @RequiresPermissions("system:user:save")
     @Log(title = "系统管理", action = "部门管理-保存部门")
-    @RequiresPermissions("system:dept:save")
     @PostMapping("/save")
     @ResponseBody
     public JSON save(User user)

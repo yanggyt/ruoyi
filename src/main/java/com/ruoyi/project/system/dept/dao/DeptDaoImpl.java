@@ -18,6 +18,7 @@ public class DeptDaoImpl extends DynamicObjectBaseDao implements IDeptDao
      * 
      * @param dept 部门对象
      */
+    @Override
     public int insertDept(Dept dept)
     {
         return this.save("SystemDeptMapper.insertDept", dept);
@@ -28,6 +29,7 @@ public class DeptDaoImpl extends DynamicObjectBaseDao implements IDeptDao
      * 
      * @return 所有部门信息
      */
+    @Override
     public List<Dept> selectDeptAll()
     {
         List<Dept> deptList = null;
@@ -48,6 +50,7 @@ public class DeptDaoImpl extends DynamicObjectBaseDao implements IDeptDao
      * @param parentId 部门ID
      * @return 结果
      */
+    @Override
     public int selectDeptCount(Dept dept)
     {
         return this.count("SystemDeptMapper.selectDeptCount", dept);
@@ -59,6 +62,7 @@ public class DeptDaoImpl extends DynamicObjectBaseDao implements IDeptDao
      * @param deptId 部门ID
      * @return 结果
      */
+    @Override
     public int checkDeptExistUser(Long deptId)
     {
         return this.count("SystemDeptMapper.checkDeptExistUser", deptId);
@@ -70,6 +74,7 @@ public class DeptDaoImpl extends DynamicObjectBaseDao implements IDeptDao
      * @param deptId 部门ID
      * @return 结果
      */
+    @Override
     public int deleteDeptById(Long deptId)
     {
         return this.delete("SystemDeptMapper.deleteDeptById", deptId);
@@ -81,6 +86,7 @@ public class DeptDaoImpl extends DynamicObjectBaseDao implements IDeptDao
      * @param dept 部门信息
      * @return 结果
      */
+    @Override
     public int saveDept(Dept dept)
     {
         return this.save("SystemDeptMapper.saveDept", dept);
@@ -92,6 +98,7 @@ public class DeptDaoImpl extends DynamicObjectBaseDao implements IDeptDao
      * @param deptId 部门ID
      * @return 部门信息
      */
+    @Override
     public Dept selectDeptById(Long deptId)
     {
         return this.findForObject("SystemDeptMapper.selectDeptById", deptId);

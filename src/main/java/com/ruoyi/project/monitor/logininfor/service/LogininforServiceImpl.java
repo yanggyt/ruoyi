@@ -36,6 +36,7 @@ public class LogininforServiceImpl implements ILogininforService
      * @param pageUtilEntity 分页参数
      * @return 登录记录集合
      */
+    @Override
     public TableDataInfo pageInfoQueryLogininfor(PageUtilEntity pageUtilEntity)
     {
         return logininforDao.pageInfoQuery(pageUtilEntity);
@@ -47,6 +48,7 @@ public class LogininforServiceImpl implements ILogininforService
      * @param ids 需要删除的数据
      * @return
      */
+    @Override
     public int batchDeleteLogininfor(Long[] ids)
     {
         return logininforDao.batchDeleteLogininfor(ids);

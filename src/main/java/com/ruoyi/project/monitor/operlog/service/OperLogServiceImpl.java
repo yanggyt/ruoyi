@@ -35,6 +35,7 @@ public class OperLogServiceImpl implements IOperLogService
      * @param pageUtilEntity 分页参数
      * @return 操作日志集合
      */
+    @Override
     public TableDataInfo pageInfoQueryOperLog(PageUtilEntity pageUtilEntity)
     {
         return operLogDao.pageInfoQuery(pageUtilEntity);
@@ -46,6 +47,7 @@ public class OperLogServiceImpl implements IOperLogService
      * @param ids 需要删除的数据
      * @return
      */
+    @Override
     public int batchDeleteOperLog(Long[] ids)
     {
         return operLogDao.batchDeleteOperLog(ids);
@@ -57,6 +59,7 @@ public class OperLogServiceImpl implements IOperLogService
      * @param operId 操作ID
      * @return 操作日志对象
      */
+    @Override
     public OperLog selectOperLogById(Long operId)
     {
         return operLogDao.selectOperLogById(operId);

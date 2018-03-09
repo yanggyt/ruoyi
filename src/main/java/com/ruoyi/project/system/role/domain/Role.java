@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.role.domain;
 
+import java.util.Date;
 import lombok.Data;
 
 /**
@@ -16,12 +17,14 @@ public class Role
     private String roleName;
     /** 角色权限 */
     private String roleKey;
+    /** 角色排序 */
+    private String roleSort;
     /** 角色状态:0正常,1禁用 */
-    private String status;
+    private int status;
     /** 创建时间 */
-    private String createTime;
+    private Date createTime;
     /** 更新时间 */
-    private String updateTime;
+    private Date updateTime;
     /** 更新者 */
     private String updateBy;
     /** 备注 */

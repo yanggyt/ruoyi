@@ -26,7 +26,7 @@ public class CommonConstant
     /**
      * 注销
      */
-    public static final String Logout = "Logout";
+    public static final String LOGOUT = "Logout";
 
     /**
      * 登录失败
