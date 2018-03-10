@@ -18,6 +18,8 @@
 
 2018/03/08 更新部分功能   1.0.3 新增用户管理(新增、删除、修改、查询、部门选择)
 
+2018/03/11 更新部分功能   1.0.4 新增角色管理(新增、删除、修改、查询、菜单选择)
+
 ## 内置功能
 
 1.	用户管理：用户是系统操作者。
@@ -59,7 +61,7 @@
 * 框架：Bootstrap
 * 数据表格：Bootstrap Table
 * 客户端验证：JQuery Validation
-* 树结构控件：JQuery TreeGrid
+* 树结构控件：zTree
 * 弹出层：layer
 
 3、平台
@@ -78,13 +80,17 @@
 
 ![操作日志](https://static.oschina.net/uploads/space/2018/0303/011028_xWoa_1438828.png)
 
-![部门管理](https://static.oschina.net/uploads/space/2018/0304/133113_AJe1_1438828.png)
+![部门管理](https://static.oschina.net/uploads/space/2018/0310/164721_eMTZ_1438828.png)
 
-![用户管理](https://static.oschina.net/uploads/space/2018/0307/222556_93xK_1438828.png)
+![用户管理](https://static.oschina.net/uploads/space/2018/0310/164711_C31O_1438828.png)
 
-![用户修改](https://static.oschina.net/uploads/space/2018/0307/223430_cSVy_1438828.png)
+![用户修改](https://static.oschina.net/uploads/space/2018/0310/164705_GKde_1438828.png)
 
-![部门选择](https://static.oschina.net/uploads/space/2018/0307/222938_AGLO_1438828.png)
+![部门选择](https://static.oschina.net/uploads/space/2018/0310/164657_sNRt_1438828.png)
+
+![角色管理](https://static.oschina.net/uploads/space/2018/0310/164633_mmv5_1438828.png)
+
+![角色修改](https://static.oschina.net/uploads/space/2018/0310/164644_Jsre_1438828.png)
 
 ## 若依交流群
 

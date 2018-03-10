@@ -8,17 +8,6 @@ var setting = {
 			var menuTrees = $.fn.zTree.getZTreeObj(treeId);
 			menuTrees.checkNode(treeNode, !treeNode.checked, true, true);
 			return false;
-		},
-		onCheck: function (event, treeId, treeNode){
-			var tid = treeNode.tId;
-			if(!treeNode.checked){
-				$(".checkall[value="+treeId+"]").each(function(){
-					if(this.checked){
-					    $(this).removeAttr("checked").iCheck('update');
-					}
-					return false;
-				}); 
-			}
 		}
 	}
 }, menuTrees, loadTree = function(){
