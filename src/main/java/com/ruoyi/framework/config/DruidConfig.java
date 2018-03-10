@@ -123,9 +123,9 @@ public class DruidConfig
         reg.setServlet(new StatViewServlet());
         reg.addUrlMappings("/monitor/druid/*");
         /** 白名单 */
-        reg.addInitParameter("allow", "10.211.61.45,127.0.0.1,123.207.20.136");
+        // reg.addInitParameter("allow", "10.211.61.45,127.0.0.1,123.207.20.136");
         /** IP黑名单(共同存在时，deny优先于allow) */
-        reg.addInitParameter("deny", "10.211.61.4");
+        // reg.addInitParameter("deny", "10.211.61.4");
         /** 是否能够重置数据 禁用HTML页面上的“Reset All”功能 */
         reg.addInitParameter("resetEnable", "false");
         return reg;

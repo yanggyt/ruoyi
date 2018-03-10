@@ -63,7 +63,7 @@ public interface IUserService
     /**
      * 校验用户名称是否唯一
      * 
-     * @param userName 用户名
+     * @param loginName 登录名称
      * @return 结果
      */
     public String checkNameUnique(String loginName);

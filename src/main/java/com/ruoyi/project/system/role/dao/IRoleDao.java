@@ -1,10 +1,10 @@
 package com.ruoyi.project.system.role.dao;
 
 import java.util.List;
-
 import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.role.domain.Role;
+import com.ruoyi.project.system.role.domain.RoleMenu;
 
 /**
  * 角色表 数据层
@@ -60,5 +60,37 @@ public interface IRoleDao
      * @return 结果
      */
     public int batchDeleteRole(Long[] ids);
+
+    /**
+     * 通过角色ID删除角色和菜单关联
+     * 
+     * @param roleId 角色ID
+     * @return 结果
+     */
+    public int deleteRoleMenuByRoleId(Long roleId);
+
+    /**
+     * 修改角色信息
+     * 
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int updateRole(Role role);
+
+    /**
+     * 新增角色信息
+     * 
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int insertRole(Role role);
+    
+    /**
+     * 批量新增角色菜单信息
+     * 
+     * @param roleMenuList 角色菜单列表
+     * @return 结果
+     */
+    public int batchRoleMenu(List<RoleMenu> roleMenuList);
 
 }

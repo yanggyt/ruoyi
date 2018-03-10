@@ -16,6 +16,7 @@ public interface IDeptService
      * 新增部门管理
      * 
      * @param dept 部门对象
+     * @return 结果
      */
     public int insertDept(Dept dept);
 

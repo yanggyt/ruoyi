@@ -50,10 +50,16 @@ $(function() {
     initTable(columns, url);
 });
 
+/*角色管理-新增*/
+function add() {
+    var url = prefix + '/add';
+    layer_show("新增角色", url, '800', '550');
+}
+
 /*角色管理-修改*/
 function edit(roleId) {
     var url = prefix + '/edit/' + roleId;
-    layer_show("修改角色", url, '800', '400');
+    layer_show("修改角色", url, '800', '550');
 }
 
 // 单条删除

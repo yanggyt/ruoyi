@@ -14,13 +14,14 @@ public interface IDeptDao
      * 新增部门管理
      * 
      * @param dept 部门对象
+     * @return 结果
      */
     public int insertDept(Dept dept);
 
     /**
      * 查询部门人数
      * 
-     * @param parentId 部门ID
+     * @param dept 部门对象
      * @return 结果
      */
     public int selectDeptCount(Dept dept);

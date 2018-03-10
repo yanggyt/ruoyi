@@ -63,6 +63,7 @@ public class MenuDaoImpl extends DynamicObjectBaseDao implements IMenuDao
      * @param roleId 角色ID
      * @return 菜单列表
      */
+    @Override
     public List<String> selectMenuTree(Long roleId)
     {
         List<String> menuList = null;

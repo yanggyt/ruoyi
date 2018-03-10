@@ -120,7 +120,7 @@ public class UserServiceImpl implements IUserService
     public void insertUserRole(User user)
     {
         // 新增用户与角色管理
-        List<UserRole> list = new ArrayList<>();
+        List<UserRole> list = new ArrayList<UserRole>();
         for (Long roleId : user.getRoleIds())
         {
             UserRole ur = new UserRole();

@@ -1,33 +1,33 @@
-	// 树结构初始化加载
-	var setting = {view:{selectedMulti:false},data:{key:{title:"title"},simpleData:{enable:true}},
-		callback:{onClick:function(event, treeId, treeNode){
-			var deptId = treeNode.id;
-			var deptName = treeNode.name;
-			$("#deptId").val(deptId);
-			$("#deptName").val(deptName);
-		}}
-	}, tree, loadTree = function(){
-		$.get("/system/dept/treeData", function(data) {
-		    tree = $.fn.zTree.init($("#tree"), setting, data);
-		    // 展开第一级节点
-		    var nodes = tree.getNodesByParam("level", 0);
-		    for (var i = 0; i < nodes.length; i++) {
-		        tree.expandNode(nodes[i], true, false, false);
-		    }
-		    // 展开第二级节点
-		    nodes = tree.getNodesByParam("level", 1);
-		    for (var i = 0; i < nodes.length; i++) {
-		        tree.expandNode(nodes[i], true, false, false);
-		    }
-		}, null, null, "正在加载，请稍后...");
-	};loadTree();
-	
-	$('#btnExpand').click(function() {
-		tree.expandAll(true);
-	});
-	$('#btnCollapse').click(function() {
-		tree.expandAll(false);
-	});
+// 树结构初始化加载
+var setting = {view:{selectedMulti:false},data:{key:{title:"title"},simpleData:{enable:true}},
+	callback:{onClick:function(event, treeId, treeNode){
+		var deptId = treeNode.id;
+		var deptName = treeNode.name;
+		$("#deptId").val(deptId);
+		$("#deptName").val(deptName);
+	}}
+}, tree, loadTree = function(){
+	$.get("/system/dept/treeData", function(data) {
+	    tree = $.fn.zTree.init($("#tree"), setting, data);
+	    // 展开第一级节点
+	    var nodes = tree.getNodesByParam("level", 0);
+	    for (var i = 0; i < nodes.length; i++) {
+	        tree.expandNode(nodes[i], true, false, false);
+	    }
+	    // 展开第二级节点
+	    nodes = tree.getNodesByParam("level", 1);
+	    for (var i = 0; i < nodes.length; i++) {
+	        tree.expandNode(nodes[i], true, false, false);
+	    }
+	}, null, null, "正在加载，请稍后...");
+};loadTree();
+
+$('#btnExpand').click(function() {
+	tree.expandAll(true);
+});
+$('#btnCollapse').click(function() {
+	tree.expandAll(false);
+});
 
 function loadUser(){
 	var deptId = $("#deptId").val();

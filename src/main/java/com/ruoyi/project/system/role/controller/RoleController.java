@@ -1,5 +1,7 @@
 package com.ruoyi.project.system.role.controller;
 
+import java.util.List;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,10 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.JSON;
 import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.project.system.menu.domain.Menu;
+import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.role.domain.Role;
 import com.ruoyi.project.system.role.service.IRoleService;
 
@@ -32,6 +37,9 @@ public class RoleController extends BaseController
     @Autowired
     private IRoleService roleService;
     
+    @Autowired
+    private IMenuService menuService;
+
     @RequiresPermissions("system:role:view")
     @GetMapping()
     public String user()
@@ -47,6 +55,16 @@ public class RoleController extends BaseController
         TableDataInfo rows = roleService.pageInfoQuery(getPageUtilEntity());
         return rows;
     }
+    
+    /**
+     * 新增角色
+     */
+    @Log(title = "系统管理", action = "角色管理-新增角色")
+    @GetMapping("/add")
+    public String add(Model model)
+    {
+        return prefix + "/add";
+    }
 
     /**
      * 修改角色
@@ -58,6 +76,21 @@ public class RoleController extends BaseController
         Role role = roleService.selectRoleById(roleId);
         model.addAttribute("role", role);
         return prefix + "/edit";
+    }
+
+    /**
+     * 修改角色
+     */
+    @Log(title = "系统管理", action = "角色管理-保存角色")
+    @PostMapping("/save")
+    @ResponseBody
+    public JSON save(Role role)
+    {
+        if (roleService.saveRole(role) > 0)
+        {
+            return JSON.ok();
+        }
+        return JSON.error();
     }
 
     @Log(title = "系统管理", action = "角色管理-删除角色")

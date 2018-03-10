@@ -8,26 +8,15 @@ var setting = {
 			var menuTrees = $.fn.zTree.getZTreeObj(treeId);
 			menuTrees.checkNode(treeNode, !treeNode.checked, true, true);
 			return false;
-		},
-		onCheck: function (event, treeId, treeNode){
-			var tid = treeNode.tId;
-			if(!treeNode.checked){
-				$(".checkall[value="+treeId+"]").each(function(){
-					if(this.checked){
-					    $(this).removeAttr("checked").iCheck('update');
-					}
-					return false;
-				}); 
-			}
 		}
 	}
 }, menuTrees, loadTree = function(){
-	$.get("/system/menu/treeData?roleId=" + $("#roleId").val(), function(data) {
+	$.get("/system/menu/treeData", function(data) {
 		menuTrees = $.fn.zTree.init($("#menuTrees"), setting, data); //.expandAll(true);
 	}, null, null, "正在加载，请稍后...");
 };loadTree();
 
-$("#form-role-edit").validate({
+$("#form-role-add").validate({
 	rules:{
 		roleName:{
 			required:true,
@@ -40,7 +29,7 @@ $("#form-role-edit").validate({
 		},
 	},
 	submitHandler:function(form){
-		update();
+		add();
 	}
 });
 
@@ -57,8 +46,7 @@ function getIsChecked() {
     return menuIds;
 }
 
-function update() {
-	var roleId = $("input[name='roleId']").val();
+function add() {
 	var roleName = $("input[name='roleName']").val();
 	var roleKey = $("input[name='roleKey']").val();
 	var roleSort = $("input[name='roleSort']").val();
@@ -70,7 +58,6 @@ function update() {
 		type : "POST",
 		url : "/system/role/save",
 		data : {
-			"roleId": roleId,
 			"roleName": roleName,
 			"roleKey": roleKey,
 			"roleSort": roleSort,
@@ -84,7 +71,7 @@ function update() {
 		},
 		success : function(data) {
 			if (data.code == 0) {
-				parent.layer.msg('修改成功',{icon:1,time:1000});
+				parent.layer.msg('新增成功',{icon:1,time:1000});
 				layer_close();
 				window.parent.location.reload();
 			} else {

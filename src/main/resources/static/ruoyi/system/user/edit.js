@@ -16,15 +16,15 @@ $("#form-user-edit").validate({
 });
 
 function getIsChecked(_name) {
-	var adIds = "";
-	$('input:checkbox[name="'+_name+'"]:checked').each(function(i) {
-		if (0 == i) {
-			adIds = $(this).val();
-		} else {
-			adIds += ("," + $(this).val());
-		}
-	});
-	return adIds;
+    var roleIds = "";
+    $('input:checkbox[name="' + _name + '"]:checked').each(function(i) {
+        if (0 == i) {
+        	roleIds = $(this).val();
+        } else {
+        	roleIds += ("," + $(this).val());
+        }
+    });
+    return roleIds;
 }
 
 function update() {

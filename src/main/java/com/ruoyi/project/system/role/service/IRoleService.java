@@ -2,7 +2,6 @@ package com.ruoyi.project.system.role.service;
 
 import java.util.List;
 import java.util.Set;
-
 import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.role.domain.Role;
@@ -69,5 +68,13 @@ public interface IRoleService
      * @return 结果
      */
     public int batchDeleteRole(Long[] ids);
+
+    /**
+     * 保存角色信息
+     * 
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int saveRole(Role role);
 
 }

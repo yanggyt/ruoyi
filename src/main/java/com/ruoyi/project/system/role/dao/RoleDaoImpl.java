@@ -6,6 +6,7 @@ import com.ruoyi.framework.web.dao.DynamicObjectBaseDao;
 import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.role.domain.Role;
+import com.ruoyi.project.system.role.domain.RoleMenu;
 
 /**
  * 角色 数据层处理
@@ -22,6 +23,7 @@ public class RoleDaoImpl extends DynamicObjectBaseDao implements IRoleDao
      * @param pageUtilEntity 分页对象
      * @return 用户信息集合信息
      */
+    @Override
     public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
         return this.findForList("SystemRoleMapper.pageInfoQuery", pageUtilEntity);
@@ -75,6 +77,7 @@ public class RoleDaoImpl extends DynamicObjectBaseDao implements IRoleDao
      * @param roleId 角色ID
      * @return 角色对象信息
      */
+    @Override
     public Role selectRoleById(Long roleId)
     {
         return this.findForObject("SystemRoleMapper.selectRoleById", roleId);
@@ -86,6 +89,7 @@ public class RoleDaoImpl extends DynamicObjectBaseDao implements IRoleDao
      * @param roleId 角色ID
      * @return 结果
      */
+    @Override
     public int deleteRoleById(Long roleId)
     {
         return this.delete("SystemRoleMapper.deleteRoleById", roleId);
@@ -97,9 +101,57 @@ public class RoleDaoImpl extends DynamicObjectBaseDao implements IRoleDao
      * @param ids 需要删除的数据ID
      * @return 结果
      */
+    @Override
     public int batchDeleteRole(Long[] ids)
     {
         return this.delete("SystemRoleMapper.batchDeleteRole", ids);
     }
 
+    /**
+     * 通过角色ID删除角色和菜单关联
+     * 
+     * @param roleId 角色ID
+     * @return 结果
+     */
+    @Override
+    public int deleteRoleMenuByRoleId(Long roleId)
+    {
+        return this.delete("SystemRoleMenuMapper.deleteRoleMenuByRoleId", roleId);
+    }
+
+    /**
+     * 保存角色信息
+     * 
+     * @param role 角色信息
+     * @return 结果
+     */
+    @Override
+    public int updateRole(Role role)
+    {
+        return this.update("SystemRoleMapper.updateRole", role);
+    }
+
+    /**
+     * 新增角色信息
+     * 
+     * @param role 角色信息
+     * @return 结果
+     */
+    @Override
+    public int insertRole(Role role)
+    {
+        return this.update("SystemRoleMapper.insertRole", role);
+    }
+
+    /**
+     * 批量新增角色菜单信息
+     * 
+     * @param roleMenuList 角色菜单列表
+     * @return 结果
+     */
+    @Override
+    public int batchRoleMenu(List<RoleMenu> roleMenuList)
+    {
+        return this.batchSave("SystemRoleMenuMapper.batchRoleMenu", roleMenuList);
+    }
 }

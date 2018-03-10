@@ -17,6 +17,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.TreeUtils;
 import com.ruoyi.project.system.menu.dao.IMenuDao;
 import com.ruoyi.project.system.menu.domain.Menu;
+import com.ruoyi.project.system.role.domain.Role;
 
 /**
  * 菜单 业务层处理
@@ -68,22 +69,23 @@ public class MenuServiceImpl implements IMenuService
     /**
      * 根据角色ID查询菜单
      * 
-     * @param roleId 角色ID
+     * @param role 角色对象
      * @return 菜单列表
      */
-    public List<Map<String, Object>> selectMenuTree(Long roleId)
+    @Override
+    public List<Map<String, Object>> selectMenuTree(Role role)
     {
+        Long roleId = role.getRoleId();
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
-        List<String> roleMenuList = menuDao.selectMenuTree(roleId);
         List<Menu> menuList = menuDao.selectPermsAll();
-        for (Menu menu : menuList)
+        if (StringUtils.isNotNull(roleId))
         {
-            Map<String, Object> deptMap = new HashMap<String, Object>();
-            deptMap.put("id", menu.getMenuId());
-            deptMap.put("pId", menu.getParentId());
-            deptMap.put("name", menu.getMenuName());
-            deptMap.put("checked", roleMenuList.contains(menu.getMenuId() + menu.getPerms()));
-            trees.add(deptMap);
+            List<String> roleMenuList = menuDao.selectMenuTree(roleId);
+            trees = getTrees(menuList, true, roleMenuList);
+        }
+        else
+        {
+            trees = getTrees(menuList, false, null);
         }
         return trees;
     }
@@ -108,13 +110,29 @@ public class MenuServiceImpl implements IMenuService
         return section;
     }
 
-    public static void main(String[] args)
+    /**
+     * 获取菜单树
+     */
+    public List<Map<String, Object>> getTrees(List<Menu> menuList, boolean isCheck, List<String> roleMenuList)
     {
-        List<Long> list = new ArrayList<Long>();
-        list.add(1L);
-        list.add(2L);
-        list.add(3L);
-        System.out.println(list.contains(Long.valueOf(1)));
+        List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
+        for (Menu menu : menuList)
+        {
+            Map<String, Object> deptMap = new HashMap<String, Object>();
+            deptMap.put("id", menu.getMenuId());
+            deptMap.put("pId", menu.getParentId());
+            deptMap.put("name", menu.getMenuName());
+            if (isCheck)
+            {
+                deptMap.put("checked", roleMenuList.contains(menu.getMenuId() + menu.getPerms()));
+            }
+            else
+            {
+                deptMap.put("checked", false);
+            }
+            trees.add(deptMap);
+        }
+        return trees;
     }
 
 }

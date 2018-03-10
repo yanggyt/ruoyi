@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.role.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import com.ruoyi.framework.web.page.PageUtilEntity;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.role.dao.IRoleDao;
 import com.ruoyi.project.system.role.domain.Role;
+import com.ruoyi.project.system.role.domain.RoleMenu;
 
 /**
  * 角色 业务层处理
@@ -30,6 +32,7 @@ public class RoleServiceImpl implements IRoleService
      * @param pageUtilEntity 分页对象
      * @return 角色信息集合信息
      */
+    @Override
     public TableDataInfo pageInfoQuery(PageUtilEntity pageUtilEntity)
     {
         return roleDao.pageInfoQuery(pageUtilEntity);
@@ -98,6 +101,7 @@ public class RoleServiceImpl implements IRoleService
      * @param roleId 角色ID
      * @return 角色对象信息
      */
+    @Override
     public Role selectRoleById(Long roleId)
     {
         return roleDao.selectRoleById(roleId);
@@ -109,6 +113,7 @@ public class RoleServiceImpl implements IRoleService
      * @param roleId 角色ID
      * @return 结果
      */
+    @Override
     public int deleteRoleById(Long roleId)
     {
         return roleDao.deleteRoleById(roleId);
@@ -120,9 +125,57 @@ public class RoleServiceImpl implements IRoleService
      * @param ids 需要删除的数据ID
      * @return 结果
      */
+    @Override
     public int batchDeleteRole(Long[] ids)
     {
         return roleDao.batchDeleteRole(ids);
+    }
+
+    /**
+     * 保存角色信息
+     * 
+     * @param role 角色信息
+     * @return 结果
+     */
+    @Override
+    public int saveRole(Role role)
+    {
+        Long roleId = role.getRoleId();
+        if (StringUtils.isNotNull(roleId))
+        {
+            // 删除角色与菜单关联
+            roleDao.deleteRoleMenuByRoleId(roleId);
+        }
+        else
+        {
+            // 新增角色信息
+            roleDao.insertRole(role);
+
+        }
+        insertRoleMenu(role);
+        return roleDao.updateRole(role);
+    }
+
+    /**
+     * 新增角色菜单信息
+     * 
+     * @param user 角色对象
+     */
+    public void insertRoleMenu(Role role)
+    {
+        // 新增用户与角色管理
+        List<RoleMenu> list = new ArrayList<RoleMenu>();
+        for (Long menuId : role.getMenuIds())
+        {
+            RoleMenu rm = new RoleMenu();
+            rm.setRoleId(role.getRoleId());
+            rm.setMenuId(menuId);
+            list.add(rm);
+        }
+        if (list.size() > 0)
+        {
+            roleDao.batchRoleMenu(list);
+        }
     }
 
 }

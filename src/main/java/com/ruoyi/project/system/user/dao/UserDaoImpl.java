@@ -115,15 +115,9 @@ public class UserDaoImpl extends DynamicObjectBaseDao implements IUserDao
     }
 
     /**
-     * 新增用户信息
-     * 
-     * @param user 用户信息
-     * @return 结果
-     */
-    /**
      * 批量新增用户角色信息
      * 
-     * @param user 用户信息
+     * @param userRoleList 用户角色列表
      * @return 结果
      */
     @Override

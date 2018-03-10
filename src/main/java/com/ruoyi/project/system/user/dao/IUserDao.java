@@ -82,7 +82,7 @@ public interface IUserDao
     /**
      * 批量新增用户角色信息
      * 
-     * @param user 用户信息
+     * @param userRoleList 用户角色列表
      * @return 结果
      */
     public int batchUserRole(List<UserRole> userRoleList);
@@ -90,7 +90,7 @@ public interface IUserDao
     /**
      * 校验用户名称是否唯一
      * 
-     * @param userName 用户名
+     * @param loginName 登录名称
      * @return 结果
      */
     public int checkNameUnique(String loginName);
