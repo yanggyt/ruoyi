@@ -51,9 +51,6 @@ public class ShiroConfig
     @Value("${shiro.user.unauthorizedUrl}")
     private String unauthorizedUrl;
 
-    @Autowired
-    private IMenuService menuService;
-
     /**
      * 缓存管理器 使用Ehcache实现
      */
@@ -213,7 +210,7 @@ public class ShiroConfig
         // 退出 logout地址，shiro去清除session
         filterChainDefinitionMap.put("/logout", "logout");
         // 系统权限列表
-        filterChainDefinitionMap.putAll(menuService.selectPermsAll());
+        //filterChainDefinitionMap.putAll(menuService.selectPermsAll());
 
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("onlineSession", onlineSessionFilter());

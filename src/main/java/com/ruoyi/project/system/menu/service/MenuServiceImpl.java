@@ -121,7 +121,7 @@ public class MenuServiceImpl implements IMenuService
             Map<String, Object> deptMap = new HashMap<String, Object>();
             deptMap.put("id", menu.getMenuId());
             deptMap.put("pId", menu.getParentId());
-            deptMap.put("name", menu.getMenuName());
+            deptMap.put("name", menu.getMenuName() + "<font color=\"#888\">&nbsp;&nbsp;&nbsp;" + menu.getPerms() + "</font>");
             if (isCheck)
             {
                 deptMap.put("checked", roleMenuList.contains(menu.getMenuId() + menu.getPerms()));

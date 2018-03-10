@@ -1,7 +1,5 @@
 package com.ruoyi.project.system.role.controller;
 
-import java.util.List;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.JSON;
 import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.project.system.menu.domain.Menu;
-import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.role.domain.Role;
 import com.ruoyi.project.system.role.service.IRoleService;
 
@@ -37,9 +32,6 @@ public class RoleController extends BaseController
     @Autowired
     private IRoleService roleService;
     
-    @Autowired
-    private IMenuService menuService;
-
     @RequiresPermissions("system:role:view")
     @GetMapping()
     public String user()
@@ -59,6 +51,7 @@ public class RoleController extends BaseController
     /**
      * 新增角色
      */
+    @RequiresPermissions("system:role:add")
     @Log(title = "系统管理", action = "角色管理-新增角色")
     @GetMapping("/add")
     public String add(Model model)
@@ -69,6 +62,7 @@ public class RoleController extends BaseController
     /**
      * 修改角色
      */
+    @RequiresPermissions("system:role:edit")
     @Log(title = "系统管理", action = "角色管理-修改角色")
     @GetMapping("/edit/{roleId}")
     public String edit(@PathVariable("roleId") Long roleId, Model model)
@@ -79,8 +73,9 @@ public class RoleController extends BaseController
     }
 
     /**
-     * 修改角色
+     * 保存角色
      */
+    @RequiresPermissions("system:role:save")
     @Log(title = "系统管理", action = "角色管理-保存角色")
     @PostMapping("/save")
     @ResponseBody
@@ -93,6 +88,7 @@ public class RoleController extends BaseController
         return JSON.error();
     }
 
+    @RequiresPermissions("system:role:remove")
     @Log(title = "系统管理", action = "角色管理-删除角色")
     @RequestMapping("/remove/{roleId}")
     @ResponseBody
@@ -110,6 +106,7 @@ public class RoleController extends BaseController
         return JSON.error();
     }
 
+    @RequiresPermissions("system:role:batchRemove")
     @Log(title = "系统管理", action = "角色管理-批量删除")
     @PostMapping("/batchRemove")
     @ResponseBody
