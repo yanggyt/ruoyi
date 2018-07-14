@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.project.system.role.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.ruoyi.common.constant.UserConstants;
@@ -58,6 +60,25 @@ public class DeptServiceImpl implements IDeptService
             }
         }
         return trees;
+    }
+
+    /**
+     * 根据角色ID查询部门（数据权限）
+     *
+     * @param role 角色对象
+     * @return 部门列表（数据权限）
+     */
+    @Override
+    public List<Map<String, Object>> roleDeptTreeData(Role role) {
+        Long roleId = role.getRoleId();
+        List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
+        List<Dept> deptList=deptMapper.selectDeptAll();
+        if(StringUtils.isNotNull(roleId)){
+          //  List<String> roleDeptList=deptMapper.
+        }else {
+
+        }
+        return null;
     }
 
     /**
