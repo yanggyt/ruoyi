@@ -97,7 +97,7 @@
                 }
             }
         }, deptTrees, loadTree = function(){
-            $.get(ctx + "system/menu/roleMenuTreeData?roleId=" + $("#roleId").val(), function(data) {
+            $.get(ctx + "system/dept/roleDeptTreeData?roleId=" + $("#roleId").val(), function(data) {
                 deptTrees = $.fn.zTree.init($("#deptTrees"), deptsetting, data); //.expandAll(true);
             }, null, null, "正在加载，请稍后...");
         };loadTree();
@@ -154,7 +154,20 @@
 		    }
 		    return menuIds;
 		}
-	
+
+        function selectDeptCheckeds() {
+            var deptIds = "";
+            var treeNodes = deptTrees.getCheckedNodes(true);
+            for (var i = 0; i < treeNodes.length; i++) {
+                if (0 == i) {
+                    deptIds = treeNodes[i].id;
+                } else {
+                    deptIds += ("," + treeNodes[i].id);
+                }
+            }
+            return deptIds;
+        }
+
 		function edit() {
 			var roleId = $("input[name='roleId']").val();
 			var roleName = $("input[name='roleName']").val();
@@ -163,6 +176,7 @@
 			var status = $("input[name='status']").is(':checked') == true ? 0 : 1;
 			var remark = $("input[name='remark']").val();
 			var menuIds = selectCheckeds();
+            var deptIds = selectDeptCheckeds();
 			$.ajax({
 				cache : true,
 				type : "POST",
@@ -174,7 +188,8 @@
 					"roleSort": roleSort,
 					"status": status,
 					"remark": remark,
-					"menuIds": menuIds
+					"menuIds": menuIds,
+			        "deptIds": deptIds
 				},
 				async : false,
 				error : function(request) {

@@ -46,21 +46,10 @@ public class DeptServiceImpl implements IDeptService
     {
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
         List<Dept> deptList = deptMapper.selectDeptAll();
-
-        for (Dept dept : deptList)
-        {
-            if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()))
-            {
-                Map<String, Object> deptMap = new HashMap<String, Object>();
-                deptMap.put("id", dept.getDeptId());
-                deptMap.put("pId", dept.getParentId());
-                deptMap.put("name", dept.getDeptName());
-                deptMap.put("title", dept.getDeptName());
-                trees.add(deptMap);
-            }
-        }
+        trees=getTrees(deptList,false,null);
         return trees;
     }
+
 
     /**
      * 根据角色ID查询部门（数据权限）
@@ -70,17 +59,50 @@ public class DeptServiceImpl implements IDeptService
      */
     @Override
     public List<Map<String, Object>> roleDeptTreeData(Role role) {
-        Long roleId = role.getRoleId();
+        Long roleId=role.getRoleId();
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
         List<Dept> deptList=deptMapper.selectDeptAll();
         if(StringUtils.isNotNull(roleId)){
-          //  List<String> roleDeptList=deptMapper.
+            List<String> roleDeptList=deptMapper.selectRoleDeptTree(roleId);
+             trees=getTrees(deptList,true,roleDeptList);
         }else {
-
+            trees=getTrees(deptList,false,null);
         }
-        return null;
+        return trees;
     }
+    /**
+     * 对象转菜单树
+     *
+     * @param menuList 菜单列表
+     * @param isCheck 是否需要选中
+     * @param roleDeptList 角色已存在菜单列表
+     * @return
+     */
+    public List<Map<String, Object>> getTrees(List<Dept> menuList, boolean isCheck, List<String> roleDeptList){
 
+        List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
+        for (Dept dept : menuList)
+        {
+            if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()))
+            {
+                Map<String, Object> deptMap = new HashMap<String, Object>();
+                deptMap.put("id", dept.getDeptId());
+                deptMap.put("pId", dept.getParentId());
+                deptMap.put("name", dept.getDeptName());
+                deptMap.put("title", dept.getDeptName());
+                if (isCheck)
+                {
+                    deptMap.put("checked", roleDeptList.contains(dept.getDeptId() + dept.getDeptName()));
+                }
+                else
+                {
+                    deptMap.put("checked", false);
+                }
+                trees.add(deptMap);
+            }
+        }
+        return trees;
+    }
     /**
      * 查询部门人数
      * 
