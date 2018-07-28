@@ -1,9 +1,9 @@
 package com.ruoyi.project.system.role.domain;
 
-import java.util.Arrays;
-
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
+
+import java.util.Arrays;
 
 /**
  * 角色对象 sys_role

@@ -168,6 +168,8 @@ public class RoleServiceImpl implements IRoleService
         // 新增角色信息
         roleMapper.insertRole(role);
         ShiroUtils.clearCachedAuthorizationInfo();
+        //新增角色和部门信息（数据权限）
+        insertRoleDept(role);
         return insertRoleMenu(role);
     }
 
