@@ -2,7 +2,8 @@ package com.ruoyi.framework.web.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import com.ruoyi.common.utils.DateUtils;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Entity基类
@@ -12,18 +13,29 @@ import com.ruoyi.common.utils.DateUtils;
 public class BaseEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;
+
     /** 搜索值 */
     private String searchValue;
+
     /** 创建者 */
     private String createBy;
+
     /** 创建时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+
     /** 更新者 */
     private String updateBy;
+
     /** 更新时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
     /** 备注 */
     private String remark;
+
+    /** 请求参数 */
+    private Map<String, Object> params;
 
     public String getSearchValue()
     {
@@ -45,14 +57,9 @@ public class BaseEntity implements Serializable
         this.createBy = createBy;
     }
 
-    public String getCreateTimeStr()
+    public Date getCreateTime()
     {
-        return createTime != null ? DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, createTime) : "";
-    }
-
-    public String getCreateDateTimeStr()
-    {
-        return createTime != null ? DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, createTime) : "";
+        return createTime;
     }
 
     public void setCreateTime(Date createTime)
@@ -70,14 +77,9 @@ public class BaseEntity implements Serializable
         this.updateBy = updateBy;
     }
 
-    public String getUpdateTimeStr()
+    public Date getUpdateTime()
     {
-        return updateTime != null ? DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, updateTime) : "";
-    }
-
-    public String getUpdateDateTimeStr()
-    {
-        return updateTime != null ? DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, updateTime) : "";
+        return updateTime;
     }
 
     public void setUpdateTime(Date updateTime)
@@ -93,6 +95,16 @@ public class BaseEntity implements Serializable
     public void setRemark(String remark)
     {
         this.remark = remark;
+    }
+
+    public Map<String, Object> getParams()
+    {
+        return params;
+    }
+
+    public void setParams(Map<String, Object> params)
+    {
+        this.params = params;
     }
 
 }

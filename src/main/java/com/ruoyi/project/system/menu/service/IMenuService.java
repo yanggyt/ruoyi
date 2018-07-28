@@ -24,6 +24,14 @@ public interface IMenuService
     public List<Menu> selectMenusByUserId(Long userId);
 
     /**
+     * 查询系统菜单列表
+     * 
+     * @param menu 菜单信息
+     * @return 菜单列表
+     */
+    public List<Menu> selectMenuList(Menu menu);
+
+    /**
      * 查询菜单集合
      * 
      * @return 所有菜单信息
@@ -93,12 +101,20 @@ public interface IMenuService
     public int selectCountRoleMenuByMenuId(Long menuId);
 
     /**
-     * 保存菜单信息
+     * 新增保存菜单信息
      * 
      * @param menu 菜单信息
      * @return 结果
      */
-    public int saveMenu(Menu menu);
+    public int insertMenu(Menu menu);
+
+    /**
+     * 修改保存菜单信息
+     * 
+     * @param menu 菜单信息
+     * @return 结果
+     */
+    public int updateMenu(Menu menu);
 
     /**
      * 校验菜单名称是否唯一

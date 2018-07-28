@@ -23,7 +23,7 @@
                     sortStable: true,                                   // 设置为 true 将获得稳定的排序
                     sortName: _sortName,                                // 排序列名称
                     sortOrder: _sortOrder,                              // 排序方式  asc 或者 desc
-                    pagination: true,                                   // 是否显示分页（*）
+                    pagination: $.common.visible(options.pagination),   // 是否显示分页（*）
                     pageNumber: 1,                                      // 初始化加载第一页，默认第一页
                     pageSize: 10,                                       // 每页的记录行数（*） 
                     pageList: [10, 25, 50],                             // 可供选择的每页的行数（*）
@@ -51,11 +51,12 @@
         		}; 
             },
             // 搜索
-            search: function(form) {
+            search: function(formId) {
+            	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
     		    var params = $("#bootstrap-table").bootstrapTable('getOptions');
     		    params.queryParams = function(params) {
     		        var search = {};
-    		        $.each($("#" + form).serializeArray(), function(i, field) {
+    		        $.each($("#" + currentId).serializeArray(), function(i, field) {
     		            search[field.name] = field.value;
     		        });
     		        search.pageSize = params.limit;
@@ -68,13 +69,16 @@
     		    $("#bootstrap-table").bootstrapTable('refresh', params);
     		},
     		// 下载
-    		exportExcel: function(form) {
-    			$.post($.table._option.exportUrl, $("#" + form).serializeArray(), function(result) {
+    		exportExcel: function(formId) {
+    			var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+    			$.modal.loading("正在导出数据，请稍后...");
+    			$.post($.table._option.exportUrl, $("#" + currentId).serializeArray(), function(result) {
     				if (result.code == web_status.SUCCESS) {
     			        window.location.href = ctx + "common/download?fileName=" + result.msg + "&delete=" + true;
     				} else {
     					$.modal.alertError(result.msg);
     				}
+    				$.modal.closeLoading();
     			});
     		},
             // 刷新
@@ -95,15 +99,27 @@
             	return $.map($('#bootstrap-table').bootstrapTable('getSelections'), function (row) {
         	        return row[$.table._option.columns[1].field];
         	    });
+            },
+            // 回显数据字典
+            selectDictLabel: function(_datas, _value) {
+            	var actions = [];
+                $.each(_datas, function(index, dict) {
+                    if (dict.dictValue == _value) {
+                    	actions.push("<span class='badge badge-" + dict.listClass + "'>" + dict.dictLabel + "</span>");
+                        return false;
+                    }
+                });
+                return actions.join('');
             }
         },
         // 表格树封装处理
         treeTable: {
             _option: {},
+            _treeTable: {},
             // 初始化表格
             init: function(options) {
                 $.table._option = options;
-                $('#bootstrap-table').bootstrapTreeTable({
+                var treeTable = $('#bootstrap-table').bootstrapTreeTable({
         		    code : options.id,             // 用于设置父子关系
         	        parentCode : options.parentId, // 用于设置父子关系
         	    	type: 'get',                   // 请求方式（*）
@@ -115,7 +131,21 @@
         			expandAll : $.common.visible(options.expandAll), // 是否全部展开
         	        columns: options.columns
         	    });
-            }
+                $.treeTable._treeTable = treeTable;
+            },
+            // 条件查询
+            search: function(formId) {
+            	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+            	var params = {};
+            	$.each($("#" + currentId).serializeArray(), function(i, field) {
+            		params[field.name] = field.value;
+		        });
+            	$.treeTable._treeTable.bootstrapTreeTable('refresh', params);
+            },
+            // 刷新
+            refresh: function() {
+            	$.treeTable._treeTable.bootstrapTreeTable('refresh');
+            },
         },
         // 表单封装处理
     	form: {
@@ -131,7 +161,7 @@
         	    });
         	    return checkeds;
             },
-            // 获取选中复选框项
+            // 获取选中下拉框项
             selectSelects: function(name) {
             	var selects = "";
         	    $('#' + name + ' option:selected').each(function (i) {
@@ -231,6 +261,11 @@
             },
             // 弹出层指定宽度
             open: function (title, url, width, height) {
+            	//如果是移动端，就使用自适应大小弹窗
+            	if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+            	    width = 'auto';
+            	    height = 'auto';
+            	}
             	if ($.common.isEmpty(title)) {
                     title = false;
                 };
@@ -256,6 +291,11 @@
             },
             // 弹出层全屏
             openFull: function (title, url, width, height) {
+            	//如果是移动端，就使用自适应大小弹窗
+            	if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+            	    width = 'auto';
+            	    height = 'auto';
+            	}
             	if ($.common.isEmpty(title)) {
                     title = false;
                 };

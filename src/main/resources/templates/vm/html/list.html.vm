@@ -13,14 +13,14 @@
 			</a>
 		</div>
 			
-		<div class="col-sm-12 select-info order-table">
+		<div class="col-sm-12 select-info table-striped">
 			<table id="bootstrap-table" data-mobile-responsive="true"></table>
 		</div>
     </div>
     <div th:include="include :: footer"></div>
     <script th:inline="javascript">
-        var editFlag = [[${@permissionService.hasPermi('${moduleName}:${classname}:edit')}]];
-        var removeFlag = [[${@permissionService.hasPermi('${moduleName}:${classname}:remove')}]];
+        var editFlag = [[${@permission.hasPermi('${moduleName}:${classname}:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('${moduleName}:${classname}:remove')}]];
         var prefix = ctx + "${moduleName}/${classname}"
 
         $(function() {

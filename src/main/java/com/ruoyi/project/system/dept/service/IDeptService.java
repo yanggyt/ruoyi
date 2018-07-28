@@ -14,12 +14,20 @@ import com.ruoyi.project.system.role.domain.Role;
 public interface IDeptService
 {
     /**
-     * 查询部门管理集合
+     * 查询部门管理数据
      * 
-     * @return 所有部门信息
+     * @param dept 部门信息
+     * @return 部门信息集合
+     */
+    public List<Dept> selectDeptList(Dept dept);
+
+    /**
+     * 查询部门所有数据
+     * 
+     * @return 部门信息集合
      */
     public List<Dept> selectDeptAll();
-    
+
     /**
      * 查询部门管理树
      * 
@@ -60,12 +68,20 @@ public interface IDeptService
     public int deleteDeptById(Long deptId);
 
     /**
-     * 保存部门信息
+     * 新增保存部门信息
      * 
      * @param dept 部门信息
      * @return 结果
      */
-    public int saveDept(Dept dept);
+    public int insertDept(Dept dept);
+
+    /**
+     * 修改保存部门信息
+     * 
+     * @param dept 部门信息
+     * @return 结果
+     */
+    public int updateDept(Dept dept);
 
     /**
      * 根据部门ID查询信息
@@ -74,7 +90,7 @@ public interface IDeptService
      * @return 部门信息
      */
     public Dept selectDeptById(Long deptId);
-    
+
     /**
      * 校验部门名称是否唯一
      * 

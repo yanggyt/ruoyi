@@ -2,6 +2,7 @@ package com.ruoyi.project.monitor.job.domain;
 
 import java.io.Serializable;
 
+import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 
@@ -15,31 +16,35 @@ public class Job extends BaseEntity implements Serializable
     private static final long serialVersionUID = 1L;
 
     /** 任务ID */
-    @Excel(name = "任务序号", column = "A")
+    @Excel(name = "任务序号")
     private Long jobId;
 
     /** 任务名称 */
-    @Excel(name = "任务名称", column = "B")
+    @Excel(name = "任务名称")
     private String jobName;
 
     /** 任务组名 */
-    @Excel(name = "任务组名", column = "C")
+    @Excel(name = "任务组名")
     private String jobGroup;
 
     /** 任务方法 */
-    @Excel(name = "任务方法", column = "D")
+    @Excel(name = "任务方法")
     private String methodName;
 
     /** 方法参数 */
-    @Excel(name = "方法参数", column = "E")
-    private String params;
+    @Excel(name = "方法参数")
+    private String methodParams;
 
     /** cron执行表达式 */
-    @Excel(name = "执行表达式 ", column = "F")
+    @Excel(name = "执行表达式 ")
     private String cronExpression;
 
+    /** cron计划策略 */
+    @Excel(name = "计划策略 ")
+    private String misfirePolicy = ScheduleConstants.MISFIRE_DEFAULT;
+
     /** 任务状态（0正常 1暂停） */
-    @Excel(name = "任务状态", column = "G")
+    @Excel(name = "任务状态")
     private String status;
 
     public Long getJobId()
@@ -82,14 +87,14 @@ public class Job extends BaseEntity implements Serializable
         this.methodName = methodName;
     }
 
-    public String getParams()
+    public String getMethodParams()
     {
-        return params;
+        return methodParams;
     }
 
-    public void setParams(String params)
+    public void setMethodParams(String methodParams)
     {
-        this.params = params;
+        this.methodParams = methodParams;
     }
 
     public String getCronExpression()
@@ -100,6 +105,16 @@ public class Job extends BaseEntity implements Serializable
     public void setCronExpression(String cronExpression)
     {
         this.cronExpression = cronExpression;
+    }
+
+    public String getMisfirePolicy()
+    {
+        return misfirePolicy;
+    }
+
+    public void setMisfirePolicy(String misfirePolicy)
+    {
+        this.misfirePolicy = misfirePolicy;
     }
 
     public String getStatus()
@@ -116,7 +131,7 @@ public class Job extends BaseEntity implements Serializable
     public String toString()
     {
         return "Job [jobId=" + jobId + ", jobName=" + jobName + ", jobGroup=" + jobGroup + ", methodName=" + methodName
-                + ", params=" + params + ", cronExpression=" + cronExpression + ", status=" + status + "]";
+                + ", methodParams=" + methodParams + ", cronExpression=" + cronExpression + ", status=" + status + "]";
     }
 
 }

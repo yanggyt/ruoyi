@@ -3,7 +3,7 @@
  *   Author: Ruoyi
  */
 
-/** ÓÃ»§¹ÜÀí ÑùÊ½²¼¾Ö */
+/** ç”¨æˆ·ç®¡ç† æ ·å¼å¸ƒå±€ */
 
 .box {
 	position: relative;
@@ -92,7 +92,7 @@
 	margin: 5px 0 5px -25px
 }
 
-/** select2 ÑùÊ½ÐÞ¸Ä */
+/** select2 æ ·å¼ä¿®æ”¹ */
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
 	background-color: #1AB394;
 	border-color: #1AB394;
@@ -113,7 +113,7 @@
 	padding-right: 10px
 }
 
-/** ±íµ¥ÑéÖ¤ ÑùÊ½²¼¾Ö */
+/** è¡¨å•éªŒè¯ æ ·å¼å¸ƒå±€ */
 label.error {
 	position: absolute;
 	right: 18px;
@@ -136,7 +136,7 @@ label.error {
 	padding-left: 25px
 }
 
-/** ÕÚÕÖ²ã */
+/** é®ç½©å±‚ */
 .loaderbox {
   display: inline-block;
   min-width: 125px;
@@ -200,7 +200,12 @@ label.error {
   }
 }
 
-/** ±íµ¥²éÑ¯Ìõ¼þ */
+/** è¡¨å•æŸ¥è¯¢æ¡ä»¶ */
+
+label{
+    font-weight: normal;
+}
+
 .container-div{
 	padding:20px 45px;
 	height:100%;
@@ -301,23 +306,24 @@ label.error {
     cursor: pointer;
 }
 
-/** ±í¸ñ²éÑ¯Êý¾Ý */
-.order-table{
+/** è¡¨æ ¼æŸ¥è¯¢æ•°æ® */
+.table-striped{
 	min-height:75%;
 }
-.order-table .bootstrap-table{
+.table-striped .bootstrap-table{
 	border:0px!important;
 }
-.order-table .table, .fixed-table-container, .order-table .table, .order-table .table, .order-table .table>thead>tr>th, .order-table .table>tbody>tr>th, .order-table .table>tfoot>tr>th, .order-table .table>thead>tr>td, .order-table .table>tbody>tr>td, .order-table .table>tfoot>tr>td{
-   /*  border-bottom: 0px!important; */
+.table-striped .table, .fixed-table-container, .table-striped .table, .table-striped .table, .table-striped .table>thead>tr>th, .table-striped .table>tbody>tr>th, .table-striped .table>tfoot>tr>th, .table-striped .table>thead>tr>td, .table-striped .table>tbody>tr>td, .table-striped .table>tfoot>tr>td{
     background-color: transparent!important;
-        border: 0px;
+    border: 0px;
 }
-
-.order-table .table>thead>tr>th, .order-table .table>tbody>tr>th{
+.table-striped .table>thead>tr>th, .table-striped .table>tbody>tr>th{
 	border-bottom: 1px solid #ccc!important;
-	    border-top: 0px!important;
+	border-top: 0px!important;
 }
-.order-table .table>thead:first-child>tr:first-child>th{
+.table-striped .table>thead:first-child>tr:first-child>th{
 	color:#333;
+}
+.table-bordered td,.table-bordered th {
+	border: 1px solid #ddd!important
 }

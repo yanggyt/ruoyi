@@ -12,20 +12,26 @@
 					<div class="select-list gd">
 						<ul>
 							<li>
-								系统模块：<input type="text" name="title"/>
+								<label>系统模块： </label><input type="text" name="title"/>
 							</li>
 							<li>
-								操作人员：<input type="text" name="operName"/>
+								<label>操作人员： </label><input type="text" name="operName"/>
 							</li>
 							<li>
-								操作类型：<select name="action" th:with="type=${@dictService.selectDictData('sys_oper_type')}">
+								<label>操作类型： </label><select name="action" th:with="type=${@dict.getType('sys_oper_type')}">
 									<option value="">所有</option>
 									<option th:each="e : ${type}" th:text="${e['dictLabel']}" th:value="${e['dictValue']}"></option>
 								</select>
 							</li>
+							<li class="time">
+								<label>操作时间： </label>
+								<input type="text" class="layui-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="layui-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
 							<li>
-								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search($('form').attr('id'))"><i class="fa fa-search"></i>&nbsp;搜索</a>
-								<a class="btn btn-success btn-rounded btn-sm" onclick="$.table.exportExcel($('form').attr('id'))"><i class="fa fa-download"></i>&nbsp;下载</a>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-success btn-rounded btn-sm" onclick="$.table.exportExcel()"><i class="fa fa-download"></i>&nbsp;下载</a>
 							</li>
 						</ul>
 					</div>
@@ -38,7 +44,7 @@
 		        </a>
 	        </div>
 	        
-			<div class="col-sm-12 select-info order-table">
+			<div class="col-sm-12 select-info table-striped">
 				<table id="bootstrap-table" data-mobile-responsive="true"></table>
 			</div>
 		</div>
@@ -46,7 +52,8 @@
 	
 	<div th:include="include :: footer"></div>
 	<script th:inline="javascript">
-		var detailFlag = [[${@permissionService.hasPermi('monitor:operlog:detail')}]];
+		var detailFlag = [[${@permission.hasPermi('monitor:operlog:detail')}]];
+		var datas = [[${@dict.getType('sys_oper_type')}]];
 		var prefix = ctx + "monitor/operlog"
 
 		$(function() {
@@ -74,32 +81,13 @@
 		            title: '操作类型',
 		            align: 'center',
 		            formatter: function(value, row, index) {
-		                if (value == 1) {
-		                    return '<span class="badge badge-primary">新增</span>';
-		                } else if (value == 2) {
-		                    return '<span class="badge badge-primary">修改</span>';
-		                } else if (value == 3) {
-		                    return '<span class="badge badge-warning">保存</span>';
-		                } else if (value == 4) {
-		                    return '<span class="badge badge-danger">删除</span>';
-		                } else if (value == 5) {
-		                    return '<span class="badge badge-primary">授权</span>';
-		                } else if (value == 6) {
-		                    return '<span class="badge badge-warning">导出</span>';
-		                } else if (value == 7) {
-		                    return '<span class="badge badge-warning">导入</span>';
-		                } else if (value == 8) {
-		                    return '<span class="badge badge-danger">强退</span>';
-		                } else if (value == 9) {
-		                    return '<span class="badge badge-danger">禁止访问</span>';
-		                } else if (value == 10) {
-		                    return '<span class="badge badge-warning">生成代码</span>';
-		                }
+		            	return $.table.selectDictLabel(datas, value);
 		            }
 		        },
 		        {
 		            field: 'operName',
-		            title: '操作人员'
+		            title: '操作人员',
+		            sortable: true
 		        },
 		        {
 		            field: 'deptName',
@@ -127,7 +115,8 @@
 		        },
 		        {
 		            field: 'operTime',
-		            title: '操作时间'
+		            title: '操作时间',
+		            sortable: true
 		        },
 		        {
 		            title: '操作',

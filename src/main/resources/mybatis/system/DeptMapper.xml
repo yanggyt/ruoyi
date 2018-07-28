@@ -36,8 +36,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectDeptVo"/>
 	</select>
 	
+	<select id="selectDeptList" parameterType="Dept" resultMap="DeptResult">
+        <include refid="selectDeptVo"/>
+        <where>
+			<if test="deptName != null and deptName != ''">
+				AND dept_name like concat('%', #{deptName}, '%')
+			</if>
+			<if test="status != null and status != ''">
+				AND status = #{status}
+			</if>
+		</where>
+    </select>
+	
 	<select id="checkDeptExistUser" parameterType="Long" resultType="int">
-		select count(*) from sys_user where dept_id = #{deptId}
+		select count(*) from sys_user where dept_id = #{deptId} and del_flag = '0'
 	</select>
 	
 	<select id="selectDeptCount" parameterType="Dept" resultType="int">
@@ -99,8 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
  			update_time = sysdate()
  		</set>
- 		where 1=1
- 		<if test="deptId != null and deptId  != ''">and dept_id = #{deptId}</if>
+ 		where dept_id = #{deptId}
 	</update>
 
 	<delete id="deleteDeptById" parameterType="Long">

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 自定义注解
+ * 自定义导出Excel数据注解
  * 
  * @author ruoyi
  */
@@ -18,11 +18,6 @@ public @interface Excel
      * 导出到Excel中的名字.
      */
     public abstract String name();
-
-    /**
-     * 配置列的名称
-     */
-    public abstract String column();
 
     /**
      * 提示信息

@@ -4,7 +4,7 @@
 
 性别男，若依是女儿的名字。
 
-若依基于hplus和inspinia两套后台系统摸版开发。有需要可自行到群内下载。
+若依基于hplus和inspinia两套后台系统模板开发。有需要可自行到群内下载。
 
 http://www.zi-han.net/theme/hplus
 
@@ -37,52 +37,28 @@ http://webapplayers.com/inspinia_admin-v2.7.1
 
 <table>
     <tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E9%A6%96%E9%A1%B5.png"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/25b5e333768d013d45a990c152dbe4d9d6e.jpg"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/114553_jBTY_1438828.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E7%94%A8%E6%88%B7%E4%BF%AE%E6%94%B9.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/114830_eIHp_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/114854_Y5a2_1438828.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E8%A7%92%E8%89%B2%E4%BF%AE%E6%94%B9.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/114920_P8qv_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/114946_O3jx_1438828.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E8%8F%9C%E5%8D%95%E7%AE%A1%E7%90%86.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E4%BF%AE%E6%94%B9%E8%8F%9C%E5%8D%95.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/115022_1Tnm_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/115051_XvMW_1438828.png"/></td>
     </tr>
 	<tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E9%83%A8%E9%97%A8%E7%AE%A1%E7%90%86.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E4%BF%AE%E6%94%B9%E9%83%A8%E9%97%A8.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/115117_9TZ3_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/115130_a5xO_1438828.png"/></td>
     </tr>
 	<tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E5%B2%97%E4%BD%8D%E7%AE%A1%E7%90%86.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E5%B2%97%E4%BD%8D%E4%BF%AE%E6%94%B9.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E5%AD%97%E5%85%B8%E7%B1%BB%E5%9E%8B.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E5%AD%97%E5%85%B8%E6%95%B0%E6%8D%AE.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E9%80%9A%E7%9F%A5%E7%AE%A1%E7%90%86.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E6%93%8D%E4%BD%9C%E6%97%A5%E5%BF%97.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%97%A5%E5%BF%97.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E5%9C%A8%E7%BA%BF%E7%94%A8%E6%88%B7.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E6%95%B0%E6%8D%AE%E7%9B%91%E6%8E%A7.png"/></td>
-        <td><img src="https://ruoyi-1256174062.cos.ap-guangzhou.myqcloud.com/%E8%8B%A5%E4%BE%9D2.0/%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/115151_EuYC_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/0728/115212_QybT_1438828.png"/></td>
     </tr>
 </table>
 

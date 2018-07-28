@@ -31,6 +31,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="dictType != null and dictType != ''">
 				AND dict_type like concat('%', #{dictType}, '%')
 			</if>
+			<if test="params != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+			</if>
+			<if test="params != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			</if>
 	    </where>
 	</select>
 	
@@ -69,8 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
  			update_time = sysdate()
  		</set>
- 		where 1=1
- 		<if test="dictId != null and dictId  != ''">and dict_id = #{dictId}</if>
+ 		where dict_id = #{dictId}
 	</update>
  	
  	<insert id="insertDictType" parameterType="DictType">

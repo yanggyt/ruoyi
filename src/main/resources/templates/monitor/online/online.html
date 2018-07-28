@@ -8,7 +8,7 @@
     <div class="container-div">
 		<div class="row">
 			<div class="col-sm-12 select-info">
-				<form id="operlog-form">
+				<form id="online-form">
 					<div class="select-list gd">
 						<ul>
 							<li>
@@ -18,7 +18,7 @@
 								操作人员：<input type="text" name="loginName"/>
 							</li>
 							<li>
-								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search($('form').attr('id'))"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 							</li>
 						</ul>
 					</div>
@@ -31,14 +31,14 @@
 	            </a>
 	        </div>
 	        
-	        <div class="col-sm-12 select-info order-table">
+	        <div class="col-sm-12 select-info table-striped">
 			    <table id="bootstrap-table" data-mobile-responsive="true"></table>
 			</div>
 		</div>
 	</div>
 	<div th:include="include :: footer"></div>
 	<script th:inline="javascript">
-		var forceFlag = [[${@permissionService.hasPermi('monitor:online:forceLogout')}]];
+		var forceFlag = [[${@permission.hasPermi('monitor:online:forceLogout')}]];
 		var prefix = ctx + "monitor/online"
 
 		$(function() {
@@ -57,7 +57,8 @@
 		        },
 		        {
 		            field: 'loginName',
-		            title: '登录名称'
+		            title: '登录名称',
+		            sortable: true
 		        },
 		        {
 		            field: 'deptName',
@@ -93,11 +94,13 @@
 		        },
 		        {
 		            field: 'startTimestamp',
-		            title: '登录时间'
+		            title: '登录时间',
+		            sortable: true
 		        },
 		        {
 		            field: 'lastAccessTime',
-		            title: '最后访问时间'
+		            title: '最后访问时间',
+		            sortable: true
 		        },
 		        {
 		            title: '操作',

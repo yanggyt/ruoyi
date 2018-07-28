@@ -25,7 +25,7 @@ import com.ruoyi.project.system.role.mapper.RoleMenuMapper;
  * 
  * @author ruoyi
  */
-@Service("menuService")
+@Service
 public class MenuServiceImpl implements IMenuService
 {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
@@ -47,6 +47,17 @@ public class MenuServiceImpl implements IMenuService
     {
         List<Menu> menus = menuMapper.selectMenusByUserId(userId);
         return TreeUtils.getChildPerms(menus, 0);
+    }
+
+    /**
+     * 查询菜单集合
+     * 
+     * @return 所有菜单信息
+     */
+    @Override
+    public List<Menu> selectMenuList(Menu menu)
+    {
+        return menuMapper.selectMenuList(menu);
     }
 
     /**
@@ -233,27 +244,31 @@ public class MenuServiceImpl implements IMenuService
     }
 
     /**
-     * 保存菜单信息
+     * 新增保存菜单信息
      * 
      * @param menu 菜单信息
      * @return 结果
      */
     @Override
-    public int saveMenu(Menu menu)
+    public int insertMenu(Menu menu)
     {
-        Long menuId = menu.getMenuId();
-        if (StringUtils.isNotNull(menuId))
-        {
-            menu.setUpdateBy(ShiroUtils.getLoginName());
-            ShiroUtils.clearCachedAuthorizationInfo();
-            return menuMapper.updateMenu(menu);
-        }
-        else
-        {
-            menu.setCreateBy(ShiroUtils.getLoginName());
-            ShiroUtils.clearCachedAuthorizationInfo();
-            return menuMapper.insertMenu(menu);
-        }
+        menu.setCreateBy(ShiroUtils.getLoginName());
+        ShiroUtils.clearCachedAuthorizationInfo();
+        return menuMapper.insertMenu(menu);
+    }
+
+    /**
+     * 修改保存菜单信息
+     * 
+     * @param menu 菜单信息
+     * @return 结果
+     */
+    @Override
+    public int updateMenu(Menu menu)
+    {
+        menu.setUpdateBy(ShiroUtils.getLoginName());
+        ShiroUtils.clearCachedAuthorizationInfo();
+        return menuMapper.updateMenu(menu);
     }
 
     /**
@@ -265,14 +280,9 @@ public class MenuServiceImpl implements IMenuService
     @Override
     public String checkMenuNameUnique(Menu menu)
     {
-        if (menu.getMenuId() == null)
-        {
-            menu.setMenuId(-1L);
-        }
-        Long menuId = menu.getMenuId();
+        Long menuId = StringUtils.isNull(menu.getMenuId()) ? -1L : menu.getMenuId();
         Menu info = menuMapper.checkMenuNameUnique(menu.getMenuName());
-        if (StringUtils.isNotNull(info) && StringUtils.isNotNull(info.getMenuId())
-                && info.getMenuId().longValue() != menuId.longValue())
+        if (StringUtils.isNotNull(info) && info.getMenuId().longValue() != menuId.longValue())
         {
             return UserConstants.MENU_NAME_NOT_UNIQUE;
         }

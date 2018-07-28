@@ -1,16 +1,15 @@
 package com.ruoyi.project.common;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.ruoyi.common.utils.file.FileUtils;
 
 /**
  * 通用请求处理
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class CommonController
 {
+    private static final Logger log = LoggerFactory.getLogger(CommonController.class);
+
     @RequestMapping("common/download")
     public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
     {
@@ -31,25 +32,15 @@ public class CommonController
             response.setCharacterEncoding("utf-8");
             response.setContentType("multipart/form-data");
             response.setHeader("Content-Disposition", "attachment;fileName=" + setFileDownloadHeader(request, realFileName));
-            File file = new File(filePath);
-            InputStream inputStream = new FileInputStream(file);
-            OutputStream os = response.getOutputStream();
-            byte[] b = new byte[1024];
-            int length;
-            while ((length = inputStream.read(b)) > 0)
+            FileUtils.writeBytes(filePath, response.getOutputStream());
+            if (delete)
             {
-                os.write(b, 0, length);
-            }
-            os.close();
-            inputStream.close();
-            if (delete && file.exists())
-            {
-                file.delete();
+                FileUtils.deleteFile(filePath);
             }
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error("下载文件失败", e);
         }
     }
 
