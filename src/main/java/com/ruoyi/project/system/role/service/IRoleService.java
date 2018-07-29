@@ -1,8 +1,9 @@
 package com.ruoyi.project.system.role.service;
 
+import com.ruoyi.project.system.role.domain.Role;
+
 import java.util.List;
 import java.util.Set;
-import com.ruoyi.project.system.role.domain.Role;
 
 /**
  * 角色业务层
@@ -42,6 +43,13 @@ public interface IRoleService
      * @return 角色列表
      */
     public List<Role> selectRoleAll();
+
+    /**
+     * 查询所有正常角色
+     *
+     * @return 正常角色列表
+     */
+    public List<Role> selectNORMALRoleAll();
 
     /**
      * 通过角色ID查询角色

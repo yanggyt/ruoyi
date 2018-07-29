@@ -31,7 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from sys_menu m
 			 left join sys_role_menu rm on m.menu_id = rm.menu_id
 			 left join sys_user_role ur on rm.role_id = ur.role_id
-		where ur.user_id = #{userId} and m.menu_type in ('M', 'C') and m.visible = 0
+			 left join sys_role sr on ur.role_id=sr.role_id
+		where ur.user_id = #{userId} and sr.status=0 and m.menu_type in ('M', 'C') and m.visible = 0
 		order by m.order_num
 	</select>
 	
