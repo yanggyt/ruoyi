@@ -105,6 +105,23 @@ public class RoleServiceImpl implements IRoleService
     }
 
     /**
+     * 查询所有正常角色
+     *
+     * @return 正常角色列表
+     */
+    @Override
+    public List<Role> selectNORMALRoleAll()
+    {
+        List<Role> roles=roleMapper.selectRolesAll();
+        List<Role> nomalRoles=new ArrayList<Role>();
+        for(Role role:roles){
+          if(UserConstants.ROLE_NORMAL.equals(role.getStatus())){
+              nomalRoles.add(role);
+          }
+        }
+        return nomalRoles;
+    }
+    /**
      * 通过角色ID查询角色
      * 
      * @param roleId 角色ID

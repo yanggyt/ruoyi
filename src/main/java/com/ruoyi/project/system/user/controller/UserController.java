@@ -1,16 +1,5 @@
 package com.ruoyi.project.system.user.controller;
 
-import java.util.List;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
@@ -22,6 +11,14 @@ import com.ruoyi.project.system.post.service.IPostService;
 import com.ruoyi.project.system.role.service.IRoleService;
 import com.ruoyi.project.system.user.domain.User;
 import com.ruoyi.project.system.user.service.IUserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 用户信息
@@ -83,7 +80,7 @@ public class UserController extends BaseController
     @GetMapping("/add")
     public String add(ModelMap mmap)
     {
-        mmap.put("roles", roleService.selectRoleAll());
+        mmap.put("roles", roleService.selectNORMALRoleAll());
         mmap.put("posts", postService.selectPostAll());
         return prefix + "/add";
     }

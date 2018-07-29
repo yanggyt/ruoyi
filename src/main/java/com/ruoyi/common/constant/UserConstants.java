@@ -20,6 +20,9 @@ public class UserConstants
     /** 角色封禁状态 */
     public static final String ROLE_BLOCKED = "1";
 
+    /** 角色正常状态 */
+    public static final String ROLE_NORMAL = "0";
+
     /** 部门正常状态 */
     public static final String DEPT_NORMAL = "0";
 
