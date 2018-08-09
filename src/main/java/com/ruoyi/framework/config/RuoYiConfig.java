@@ -57,6 +57,6 @@ public class RuoYiConfig {
 	}
 	
 	public void setProfile(String profile) {
-		RuoYiConfig.profile = RuoYiConfig.class.getResource("/").getPath() + profile+"/";
+		RuoYiConfig.profile = this.getClass().getResource("/").getPath() + profile + "/";
 	}
 }
