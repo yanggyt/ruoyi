@@ -23,5 +23,15 @@
            statistics="true">
     </cache>
 
+    <!-- 系统字典缓存 -->
+    <cache name="dictCache"
+           maxEntriesLocalHeap="10000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="0"
+           timeToIdleSeconds="0"
+           statistics="true"/>
+
 </ehcache>
 	
