@@ -1,0 +1,58 @@
+/**
+ * Copyright &copy; 2018 All rights reserved.
+ */
+package com.ruoyi.common.utils;
+
+import com.ruoyi.project.system.dict.domain.DictData;
+import com.ruoyi.project.system.dict.mapper.DictDataMapper;
+
+import java.util.List;
+
+/**
+ * 字典工具类
+ *
+ * @author yawu_bear
+ * @date 2018-08-10
+ */
+
+public class DictUtils {
+
+    private static DictDataMapper dictDataMapper = SpringUtil.getBean(DictDataMapper.class);
+
+    public static final String DICT_CACHE = "dictCache";
+    public static final String DICT_CACHE_TYPE = "type_";
+
+    /**
+     * 根据类型和键值获取标签
+     *
+     * @param type
+     * @param value
+     * @return
+     */
+    public static String getDictLabel(String type, String value) {
+        String label = "";
+        if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(value)) {
+            for (DictData dictData : getDataByType(type)) {
+                if (label.equals(dictData.getDictValue())) {
+                    label = dictData.getDictLabel();
+                }
+            }
+        }
+        return label;
+    }
+
+    /**
+     * 根据type获取data列表
+     *
+     * @param dictType
+     * @return
+     */
+    public static List<DictData> getDataByType(String dictType) {
+        List<DictData> dictList = (List<DictData>) CacheUtils.get(DICT_CACHE, DICT_CACHE_TYPE + dictType);
+        if (StringUtils.isEmpty(dictList)) {
+            dictList = dictDataMapper.selectDictDataByType(dictType);
+            CacheUtils.put(DICT_CACHE, DICT_CACHE_TYPE + dictType, dictList);
+        }
+        return dictList;
+    }
+}
