@@ -55,4 +55,37 @@ public class DictUtils {
         }
         return dictList;
     }
+
+    /**
+     * 增删改字典缓存刷新
+     *
+     * @param dictType
+     * @param row
+     */
+    public static void flushDictList(String dictType, int row) {
+        if (row > 0) {
+            // 增删改成功修改缓存信息
+            List<DictData> dictList = dictDataMapper.selectDictDataByType(dictType);
+            CacheUtils.remove(DictUtils.DICT_CACHE, DictUtils.DICT_CACHE_TYPE + dictType);
+            CacheUtils.put(DictUtils.DICT_CACHE, DictUtils.DICT_CACHE_TYPE + dictType, dictList);
+        }
+    }
+
+    /**
+     * 缓存重置
+     *
+     * @param row
+     */
+    public static void restAllDictList(int row) {
+        if (row > 0) {
+            // 增删改成功修改缓存信息
+            List<DictData> dictList = dictDataMapper.selectDictDataList(new DictData());
+            if (StringUtils.isNotEmpty(dictList)) {
+                for (DictData dictData : dictList) {
+                    CacheUtils.removeAll(DictUtils.DICT_CACHE);
+                    CacheUtils.put(DictUtils.DICT_CACHE, DictUtils.DICT_CACHE_TYPE + dictData.getDictType(), dictList);
+                }
+            }
+        }
+    }
 }

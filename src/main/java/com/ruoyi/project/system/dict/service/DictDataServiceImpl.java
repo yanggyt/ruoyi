@@ -82,7 +82,11 @@ public class DictDataServiceImpl implements IDictDataService
     @Override
     public int deleteDictDataById(Long dictCode)
     {
-        return dictDataMapper.deleteDictDataById(dictCode);
+        DictData dictData = dictDataMapper.selectDictDataById(dictCode);
+        String dictType = dictData.getDictType();
+        int row = dictDataMapper.deleteDictDataById(dictCode);
+        DictUtils.flushDictList(dictType, row);
+        return row;
     }
 
     /**
@@ -94,7 +98,9 @@ public class DictDataServiceImpl implements IDictDataService
     @Override
     public int deleteDictDataByIds(String ids)
     {
-        return dictDataMapper.deleteDictDataByIds(Convert.toStrArray(ids));
+        int row = dictDataMapper.deleteDictDataByIds(Convert.toStrArray(ids));
+        DictUtils.restAllDictList(row);
+        return row;
     }
 
     /**
@@ -109,12 +115,7 @@ public class DictDataServiceImpl implements IDictDataService
         dictData.setCreateBy(ShiroUtils.getLoginName());
         String dictType = dictData.getDictType();
         int row = dictDataMapper.insertDictData(dictData);
-        if(row > 0) {
-            // 新增成功修改缓存信息
-            List<DictData> dictList = dictDataMapper.selectDictDataByType(dictType);
-            CacheUtils.remove(DictUtils.DICT_CACHE, DictUtils.DICT_CACHE_TYPE + dictType);
-            CacheUtils.put(DictUtils.DICT_CACHE, DictUtils.DICT_CACHE_TYPE + dictType, dictList);
-        }
+        DictUtils.flushDictList(dictType, row);
         return row;
     }
 
@@ -130,12 +131,7 @@ public class DictDataServiceImpl implements IDictDataService
         dictData.setUpdateBy(ShiroUtils.getLoginName());
         String dictType = dictData.getDictType();
         int row = dictDataMapper.updateDictData(dictData);
-        if(row > 0) {
-            List<DictData> dictList = dictDataMapper.selectDictDataByType(dictType);
-            // 修改成功更新缓存信息
-            CacheUtils.remove(DictUtils.DICT_CACHE, DictUtils.DICT_CACHE_TYPE + dictType);
-            CacheUtils.put(DictUtils.DICT_CACHE, DictUtils.DICT_CACHE_TYPE + dictType, dictList);
-        }
+        DictUtils.flushDictList(dictType, row);
         return row;
     }
 
