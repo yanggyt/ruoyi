@@ -1,6 +1,9 @@
 package com.ruoyi.project.system.dict.service;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.CacheUtils;
+import com.ruoyi.common.utils.DictUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
@@ -69,7 +72,11 @@ public class DictTypeServiceImpl implements IDictTypeService
     @Override
     public int deleteDictTypeById(Long dictId)
     {
-        return dictTypeMapper.deleteDictTypeById(dictId);
+        DictType dictType = selectDictTypeById(dictId);
+        String type = dictType.getDictType();
+        int row = dictTypeMapper.deleteDictTypeById(dictId);
+        CacheUtils.remove(DictUtils.DICT_CACHE, DictUtils.DICT_CACHE_TYPE + type);
+        return row;
     }
 
     /**
@@ -90,8 +97,9 @@ public class DictTypeServiceImpl implements IDictTypeService
                 throw new Exception(String.format("%1$s已分配,不能删除", dictType.getDictName()));
             }
         }
-
-        return dictTypeMapper.deleteDictTypeByIds(dictIds);
+        int row = dictTypeMapper.deleteDictTypeByIds(dictIds);
+        DictUtils.restAllDictList(row);
+        return row;
     }
 
     /**
@@ -118,14 +126,15 @@ public class DictTypeServiceImpl implements IDictTypeService
     {
         dictType.setUpdateBy(ShiroUtils.getLoginName());
         DictType oldDict = dictTypeMapper.selectDictTypeById(dictType.getDictId());
-        dictDataMapper.updateDictDataType(oldDict.getDictType(), dictType.getDictType());
+        int row = dictDataMapper.updateDictDataType(oldDict.getDictType(), dictType.getDictType());
+        DictUtils.flushDictList(oldDict.getDictType(), dictType.getDictType(), row);
         return dictTypeMapper.updateDictType(dictType);
     }
 
     /**
      * 校验字典类型称是否唯一
      * 
-     * @param dictType 字典类型
+     * @param dict 字典类型
      * @return 结果
      */
     @Override
