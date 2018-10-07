@@ -10,9 +10,9 @@ http://www.zi-han.net/theme/hplus
 
 http://webapplayers.com/inspinia_admin-v2.7.1
 
-阿里云优惠活动（2CPU 4GRAM 1M带宽 40G高效云盘）：https://promotion.aliyun.com/ntms/act/vm/aliyun-group/buy.html?group=BphATfDhsQ
+> RuoYi从3.0开始，进行模块拆分，将原先的单应用转变为多模块，如需单应用，请移步 [RuoYi-fast](https://gitee.com/y_project/RuoYi-fast)  
 
-云产品通用1000元代金券，可叠加官网常规优惠使用 ：https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=brki8iof
+> 推荐使用阿里云部署，通用云产品代金券 ：[点我领取](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=brki8iof)
 
 ## 内置功能
 
@@ -42,27 +42,27 @@ http://webapplayers.com/inspinia_admin-v2.7.1
 <table>
     <tr>
         <td><img src="https://oscimg.oschina.net/oscnet/25b5e333768d013d45a990c152dbe4d9d6e.jpg"/></td>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132411_4c5I_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194326_GBIJ_1438828.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132436_rRBh_1438828.png"/></td>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132442_umjM_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194443_Qyuq_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194501_U7gT_1438828.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132449_OtY8_1438828.png"/></td>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132454_4Evz_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194525_PApp_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194535_3EM0_1438828.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132520_Zzkj_1438828.png"/></td>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132539_5bJe_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194612_kJ4F_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194623_YEXO_1438828.png"/></td>
     </tr>
 	<tr>
         <td><img src="https://static.oschina.net/uploads/space/2018/0902/132548_ne4U_1438828.png"/></td>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132557_Fab4_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194643_MsxF_1438828.png"/></td>
     </tr>
 	<tr>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132617_MLmV_1438828.png"/></td>
-        <td><img src="https://static.oschina.net/uploads/space/2018/0902/132626_3iBs_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194658_40L4_1438828.png"/></td>
+        <td><img src="https://static.oschina.net/uploads/space/2018/1005/194712_2ma3_1438828.png"/></td>
     </tr>
 </table>
 
