@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cronie.mengyu.mapper.MoneyPoolMapper">
+    
+    <resultMap type="MoneyPool" id="MoneyPoolResult">
+        <result property="creater"    column="creater"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="moneyPool"    column="money_pool"    />
+        <result property="moneyPoolId"    column="money_pool_id"    />
+    </resultMap>
+	
+	<sql id="selectMoneyPoolVo">
+        select creater, create_time, money_pool, money_pool_id from my_money_pool
+    </sql>
+	
+    <select id="selectMoneyPoolList" parameterType="MoneyPool" resultMap="MoneyPoolResult">
+        <include refid="selectMoneyPoolVo"/>
+        <where>  
+            <if test="creater != null "> and creater = #{creater}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="moneyPool != null "> and money_pool = #{moneyPool}</if>
+             <if test="moneyPoolId != null "> and money_pool_id = #{moneyPoolId}</if>
+         </where>
+    </select>
+    
+    <select id="selectMoneyPoolById" parameterType="Integer" resultMap="MoneyPoolResult">
+        <include refid="selectMoneyPoolVo"/>
+        where creater = #{creater}
+    </select>
+        
+    <insert id="insertMoneyPool" parameterType="MoneyPool">
+        insert into my_money_pool
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="creater != null  ">creater,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="moneyPool != null  ">money_pool,</if>
+			<if test="moneyPoolId != null  ">money_pool_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="creater != null  ">#{creater},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="moneyPool != null  ">#{moneyPool},</if>
+			<if test="moneyPoolId != null  ">#{moneyPoolId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateMoneyPool" parameterType="MoneyPool">
+        update my_money_pool
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="moneyPool != null  ">money_pool = #{moneyPool},</if>
+            <if test="moneyPoolId != null  ">money_pool_id = #{moneyPoolId},</if>
+        </trim>
+        where creater = #{creater}
+    </update>
+
+	<delete id="deleteMoneyPoolById" parameterType="Integer">
+        delete from my_money_pool where creater = #{creater}
+    </delete>
+	
+    <delete id="deleteMoneyPoolByIds" parameterType="String">
+        delete from my_money_pool where creater in 
+        <foreach item="creater" collection="array" open="(" separator="," close=")">
+            #{creater}
+        </foreach>
+    </delete>
+    
+</mapper>
