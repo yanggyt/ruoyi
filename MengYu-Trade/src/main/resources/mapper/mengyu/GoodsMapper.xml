@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cronie.mengyu.mapper.GoodsMapper">
+    
+    <resultMap type="Goods" id="GoodsResult">
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="codeType"    column="code_type"    />
+        <result property="industryType"    column="industry_type"    />
+        <result property="plateType"    column="plate_type"    />
+        <result property="creater"    column="creater"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+	
+	<sql id="selectGoodsVo">
+        select code, name, code_type, industry_type, plate_type, creater, create_time from my_goods
+    </sql>
+	
+    <select id="selectGoodsList" parameterType="Goods" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        <where>  
+            <if test="code != null  and code != '' "> and code = #{code}</if>
+             <if test="name != null  and name != '' "> and name = #{name}</if>
+             <if test="codeType != null "> and code_type = #{codeType}</if>
+             <if test="industryType != null "> and industry_type = #{industryType}</if>
+             <if test="plateType != null "> and plate_type = #{plateType}</if>
+             <if test="creater != null "> and creater = #{creater}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectGoodsById" parameterType="String" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        where code = #{code}
+    </select>
+        
+    <insert id="insertGoods" parameterType="Goods">
+        insert into my_goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="code != null  and code != ''  ">code,</if>
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="codeType != null  ">code_type,</if>
+			<if test="industryType != null  ">industry_type,</if>
+			<if test="plateType != null  ">plate_type,</if>
+			<if test="creater != null  ">creater,</if>
+			<if test="createTime != null  ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="code != null  and code != ''  ">#{code},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="codeType != null  ">#{codeType},</if>
+			<if test="industryType != null  ">#{industryType},</if>
+			<if test="plateType != null  ">#{plateType},</if>
+			<if test="creater != null  ">#{creater},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateGoods" parameterType="Goods">
+        update my_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="codeType != null  ">code_type = #{codeType},</if>
+            <if test="industryType != null  ">industry_type = #{industryType},</if>
+            <if test="plateType != null  ">plate_type = #{plateType},</if>
+            <if test="creater != null  ">creater = #{creater},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+        </trim>
+        where code = #{code}
+    </update>
+
+	<delete id="deleteGoodsById" parameterType="String">
+        delete from my_goods where code = #{code}
+    </delete>
+	
+    <delete id="deleteGoodsByIds" parameterType="String">
+        delete from my_goods where code in 
+        <foreach item="code" collection="array" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </delete>
+    
+</mapper>

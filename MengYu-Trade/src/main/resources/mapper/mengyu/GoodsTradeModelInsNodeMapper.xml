@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cronie.mengyu.mapper.GoodsTradeModelInsNodeMapper">
+    
+    <resultMap type="GoodsTradeModelInsNode" id="GoodsTradeModelInsNodeResult">
+        <result property="nodeId"    column="node_id"    />
+        <result property="insId"    column="ins_id"    />
+        <result property="price"    column="price"    />
+        <result property="volumes"    column="volumes"    />
+        <result property="tradeTime"    column="trade_time"    />
+        <result property="creater"    column="creater"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="tradeType"    column="trade_type"    />
+        <result property="tradeNote"    column="trade_note"    />
+    </resultMap>
+	
+	<sql id="selectGoodsTradeModelInsNodeVo">
+        select node_id, ins_id, price, volumes, trade_time, creater, create_time, trade_type, trade_note from my_goods_trade_model_ins_node
+    </sql>
+	
+    <select id="selectGoodsTradeModelInsNodeList" parameterType="GoodsTradeModelInsNode" resultMap="GoodsTradeModelInsNodeResult">
+        <include refid="selectGoodsTradeModelInsNodeVo"/>
+        <where>  
+            <if test="nodeId != null "> and node_id = #{nodeId}</if>
+             <if test="insId != null "> and ins_id = #{insId}</if>
+             <if test="price != null "> and price = #{price}</if>
+             <if test="volumes != null "> and volumes = #{volumes}</if>
+             <if test="tradeTime != null "> and trade_time = #{tradeTime}</if>
+             <if test="creater != null "> and creater = #{creater}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="tradeType != null "> and trade_type = #{tradeType}</if>
+             <if test="tradeNote != null  and tradeNote != '' "> and trade_note = #{tradeNote}</if>
+         </where>
+    </select>
+    
+    <select id="selectGoodsTradeModelInsNodeById" parameterType="Integer" resultMap="GoodsTradeModelInsNodeResult">
+        <include refid="selectGoodsTradeModelInsNodeVo"/>
+        where node_id = #{nodeId}
+    </select>
+        
+    <insert id="insertGoodsTradeModelInsNode" parameterType="GoodsTradeModelInsNode">
+        insert into my_goods_trade_model_ins_node
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="nodeId != null  ">node_id,</if>
+			<if test="insId != null  ">ins_id,</if>
+			<if test="price != null  ">price,</if>
+			<if test="volumes != null  ">volumes,</if>
+			<if test="tradeTime != null  ">trade_time,</if>
+			<if test="creater != null  ">creater,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="tradeType != null  ">trade_type,</if>
+			<if test="tradeNote != null  and tradeNote != ''  ">trade_note,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="nodeId != null  ">#{nodeId},</if>
+			<if test="insId != null  ">#{insId},</if>
+			<if test="price != null  ">#{price},</if>
+			<if test="volumes != null  ">#{volumes},</if>
+			<if test="tradeTime != null  ">#{tradeTime},</if>
+			<if test="creater != null  ">#{creater},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="tradeType != null  ">#{tradeType},</if>
+			<if test="tradeNote != null  and tradeNote != ''  ">#{tradeNote},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateGoodsTradeModelInsNode" parameterType="GoodsTradeModelInsNode">
+        update my_goods_trade_model_ins_node
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="insId != null  ">ins_id = #{insId},</if>
+            <if test="price != null  ">price = #{price},</if>
+            <if test="volumes != null  ">volumes = #{volumes},</if>
+            <if test="tradeTime != null  ">trade_time = #{tradeTime},</if>
+            <if test="creater != null  ">creater = #{creater},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="tradeType != null  ">trade_type = #{tradeType},</if>
+            <if test="tradeNote != null  and tradeNote != ''  ">trade_note = #{tradeNote},</if>
+        </trim>
+        where node_id = #{nodeId}
+    </update>
+
+	<delete id="deleteGoodsTradeModelInsNodeById" parameterType="Integer">
+        delete from my_goods_trade_model_ins_node where node_id = #{nodeId}
+    </delete>
+	
+    <delete id="deleteGoodsTradeModelInsNodeByIds" parameterType="String">
+        delete from my_goods_trade_model_ins_node where node_id in 
+        <foreach item="nodeId" collection="array" open="(" separator="," close=")">
+            #{nodeId}
+        </foreach>
+    </delete>
+    
+</mapper>
