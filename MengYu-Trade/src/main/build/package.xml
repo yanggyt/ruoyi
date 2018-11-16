@@ -23,6 +23,12 @@
                 <include>*.jar</include>
             </includes>
         </fileSet>
+		
+		<fileSet>
+            <directory>${basedir.parent}/ruoyi-admin/src/main/resources</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+		
     </fileSets>
     <dependencySets>
         <dependencySet>

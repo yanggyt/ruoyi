@@ -32,7 +32,9 @@
   	
   </dependencies>
   
+  
    <build>
+    
     
         <plugins>
             <plugin>
@@ -103,6 +105,8 @@
                         <exclude>freemaker.properties</exclude>
                         <exclude>logback-spring.xml</exclude>
                         <exclude>*.jar</exclude>
+                        <exclude>ehcache/**</exclude>
+                        <exclude>i18n/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -137,6 +141,8 @@
                 </configuration>
             </plugin>
         </plugins>
+        
+    
     </build>
     
 </project>

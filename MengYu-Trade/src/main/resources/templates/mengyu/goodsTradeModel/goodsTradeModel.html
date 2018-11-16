@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="mengyu:goodsTradeModel:add">
+				<i class="fa fa-plus"></i> 添加
+			</a>
+			<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="mengyu:goodsTradeModel:edit">
+	            <i class="fa fa-edit"></i> 修改
+	        </a>
+			<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="mengyu:goodsTradeModel:remove">
+				<i class="fa fa-remove"></i> 删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('mengyu:goodsTradeModel:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('mengyu:goodsTradeModel:remove')}]];
+        var prefix = ctx + "mengyu/goodsTradeModel";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                modalName: "品种计划模型",
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'modelId', 
+					title : '模型ID' 
+				},
+				{
+					field : 'code', 
+					title : '品种代码' 
+				},
+				{
+					field : 'basicVolumes', 
+					title : '基础成交量' 
+				},
+				{
+					field : 'modelStatus', 
+					title : '模型状态 （启用，停用）' 
+				},
+				{
+					field : 'buildingPrice', 
+					title : '建仓价' 
+				},
+				{
+					field : 'exitPrice', 
+					title : '平仓价' 
+				},
+				{
+					field : 'stopPrice', 
+					title : '止损价' 
+				},
+				{
+					field : 'creater', 
+					title : '创建人' 
+				},
+				{
+					field : 'createTime', 
+					title : '创建时间' 
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.modelId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.modelId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="mengyu:moneyPoolLog:add">
+				<i class="fa fa-plus"></i> 添加
+			</a>
+			<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="mengyu:moneyPoolLog:edit">
+	            <i class="fa fa-edit"></i> 修改
+	        </a>
+			<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="mengyu:moneyPoolLog:remove">
+				<i class="fa fa-remove"></i> 删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('mengyu:moneyPoolLog:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('mengyu:moneyPoolLog:remove')}]];
+        var prefix = ctx + "mengyu/moneyPoolLog";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                modalName: "资金池交明细",
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'billType', 
+					title : '交易类型  (支出/收入)' 
+				},
+				{
+					field : 'moneyPoolLog', 
+					title : '交易后的资金池金额' 
+				},
+				{
+					field : 'trademMoney', 
+					title : '交易金额' 
+				},
+				{
+					field : 'moneyPoolId', 
+					title : '资金池ID号' 
+				},
+				{
+					field : 'nodeId', 
+					title : '资金池流水号ID=交易ID号' 
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.billType + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.billType + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>
