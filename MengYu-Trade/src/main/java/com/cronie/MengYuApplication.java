@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 
 
 
@@ -13,7 +14,8 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @author cronie
  */
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
-@MapperScan({"com.ruoyi.*.mapper","com.cronie.*.mapper"})
+@MapperScan(basePackages={"com.ruoyi.*.mapper","com.cronie.*.mapper"})
+@ComponentScan({"com.cronie.mengyu.*","com.ruoyi.*"})
 public class MengYuApplication
 {
     public static void main(String[] args)
