@@ -1,5 +1,6 @@
 package com.cronie.mengyu.web.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -72,7 +73,9 @@ public class MoneyPoolController extends BaseController
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(MoneyPool moneyPool)
-	{		
+	{	
+		moneyPool.setCreater(getUserId().intValue());
+		moneyPool.setCreateTime(new Date());
 		return toAjax(moneyPoolService.insertMoneyPool(moneyPool));
 	}
 

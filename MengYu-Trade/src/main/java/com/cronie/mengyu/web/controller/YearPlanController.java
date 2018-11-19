@@ -1,5 +1,6 @@
 package com.cronie.mengyu.web.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -73,6 +74,8 @@ public class YearPlanController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(YearPlan yearPlan)
 	{		
+		yearPlan.setCreater(getUserId().intValue());
+		yearPlan.setCreateTime(new Date());
 		return toAjax(yearPlanService.insertYearPlan(yearPlan));
 	}
 

@@ -1,5 +1,6 @@
 package com.cronie.mengyu.web.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -73,6 +74,8 @@ public class GoodsTradeModelController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(GoodsTradeModel goodsTradeModel)
 	{		
+		goodsTradeModel.setCreater(getUserId().intValue());
+		goodsTradeModel.setCreateTime(new Date());
 		return toAjax(goodsTradeModelService.insertGoodsTradeModel(goodsTradeModel));
 	}
 
