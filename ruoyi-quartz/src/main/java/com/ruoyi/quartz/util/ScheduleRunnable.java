@@ -28,11 +28,11 @@ public class ScheduleRunnable implements Runnable
 
         if (StringUtils.isNotEmpty(params))
         {
-            this.method = target.getClass().getDeclaredMethod(methodName, String.class);
+            this.method = target.getClass().getMethod(methodName, String.class);
         }
         else
         {
-            this.method = target.getClass().getDeclaredMethod(methodName);
+            this.method = target.getClass().getMethod(methodName);
         }
     }
 
