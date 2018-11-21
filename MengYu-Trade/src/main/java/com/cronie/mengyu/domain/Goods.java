@@ -20,11 +20,11 @@ public class Goods extends BaseEntity
 	/** 品种名称 */
 	private String name;
 	/** 品种类型 （股标，基金等） */
-	private Integer codeType;
+	private String codeType;
 	/** 行业类型（军工，证券等） */
-	private Integer industryType;
+	private String industryType;
 	/** 板块类型（上证，深证 创业板等） */
-	private Integer plateType;
+	private String plateType;
 	/** 创建人 */
 	private Integer creater;
 	/** 创建时间 */
@@ -48,33 +48,31 @@ public class Goods extends BaseEntity
 	{
 		return name;
 	}
-	public void setCodeType(Integer codeType) 
-	{
+ 
+	public String getCodeType() {
+		return codeType;
+	}
+
+	public void setCodeType(String codeType) {
 		this.codeType = codeType;
 	}
 
-	public Integer getCodeType() 
-	{
-		return codeType;
+	public String getIndustryType() {
+		return industryType;
 	}
-	public void setIndustryType(Integer industryType) 
-	{
+
+	public void setIndustryType(String industryType) {
 		this.industryType = industryType;
 	}
 
-	public Integer getIndustryType() 
-	{
-		return industryType;
+	public String getPlateType() {
+		return plateType;
 	}
-	public void setPlateType(Integer plateType) 
-	{
+
+	public void setPlateType(String plateType) {
 		this.plateType = plateType;
 	}
 
-	public Integer getPlateType() 
-	{
-		return plateType;
-	}
 	public void setCreater(Integer creater) 
 	{
 		this.creater = creater;

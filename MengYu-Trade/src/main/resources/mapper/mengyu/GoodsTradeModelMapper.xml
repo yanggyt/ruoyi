@@ -14,10 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="stopPrice"    column="stop_price"    />
         <result property="creater"    column="creater"    />
         <result property="createTime"    column="create_time"    />
+        <result property="hasMailNotice"    column="has_mail_notice"    />
     </resultMap>
 	
 	<sql id="selectGoodsTradeModelVo">
-        select model_id, code, basic_volumes, model_status, building_price, exit_price, stop_price, creater, create_time from my_goods_trade_model
+        select model_id, code, basic_volumes, model_status, building_price, exit_price, stop_price, creater, create_time,has_mail_notice from my_goods_trade_model
     </sql>
 	
     <select id="selectGoodsTradeModelList" parameterType="GoodsTradeModel" resultMap="GoodsTradeModelResult">
@@ -32,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="stopPrice != null "> and stop_price = #{stopPrice}</if>
              <if test="creater != null "> and creater = #{creater}</if>
              <if test="createTime != null "> and create_time = #{createTime}</if>
+              <if test="hasMailNotice != null "> and has_mail_notice = #{hasMailNotice}</if>
          </where>
     </select>
     
@@ -52,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="stopPrice != null  ">stop_price,</if>
 			<if test="creater != null  ">creater,</if>
 			<if test="createTime != null  ">create_time,</if>
+			<if test="hasMailNotice != null "> #{hasMailNotice},</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="modelId != null  ">#{modelId},</if>
@@ -63,6 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="stopPrice != null  ">#{stopPrice},</if>
 			<if test="creater != null  ">#{creater},</if>
 			<if test="createTime != null  ">#{createTime},</if>
+			<if test="hasMailNotice != null "> #{hasMailNotice},</if>
          </trim>
     </insert>
 	 
@@ -77,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stopPrice != null  ">stop_price = #{stopPrice},</if>
             <if test="creater != null  ">creater = #{creater},</if>
             <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="hasMailNotice != null ">has_mail_notice = #{hasMailNotice},</if>
         </trim>
         where model_id = #{modelId}
     </update>

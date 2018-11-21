@@ -10,10 +10,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="insStatus"    column="ins_status"    />
         <result property="creater"    column="creater"    />
         <result property="createTime"    column="create_time"    />
+        <result property="hasMailNotice"    column="has_mail_notice"    />
     </resultMap>
 	
 	<sql id="selectGoodsTradeModelInsVo">
-        select ins_id, model_id, ins_status, creater, create_time from my_goods_trade_model_ins
+        select ins_id, model_id, ins_status, creater, create_time,has_mail_notice from my_goods_trade_model_ins
     </sql>
 	
     <select id="selectGoodsTradeModelInsList" parameterType="GoodsTradeModelIns" resultMap="GoodsTradeModelInsResult">
@@ -24,6 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="insStatus != null "> and ins_status = #{insStatus}</if>
              <if test="creater != null "> and creater = #{creater}</if>
              <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="hasMailNotice != null "> and has_mail_notice = #{hasMailNotice}</if>
          </where>
     </select>
     
@@ -40,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="insStatus != null  ">ins_status,</if>
 			<if test="creater != null  ">creater,</if>
 			<if test="createTime != null  ">create_time,</if>
+			<if test="hasMailNotice != null "> #{hasMailNotice},</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="insId != null  ">#{insId},</if>
@@ -47,6 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="insStatus != null  ">#{insStatus},</if>
 			<if test="creater != null  ">#{creater},</if>
 			<if test="createTime != null  ">#{createTime},</if>
+			<if test="hasMailNotice != null ">#{hasMailNotice},</if>
          </trim>
     </insert>
 	 
@@ -57,6 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="insStatus != null  ">ins_status = #{insStatus},</if>
             <if test="creater != null  ">creater = #{creater},</if>
             <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="hasMailNotice != null ">has_mail_notice = #{hasMailNotice},</if>
         </trim>
         where ins_id = #{insId}
     </update>

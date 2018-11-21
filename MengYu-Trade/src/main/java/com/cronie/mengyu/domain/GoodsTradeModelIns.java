@@ -25,10 +25,20 @@ public class GoodsTradeModelIns extends BaseEntity
 	private Integer creater;
 	/** 创建时间 */
 	private Date createTime;
+	/** 是否已邮件提醒 */
+	private Integer hasMailNotice ;
 
 	public void setInsId(Integer insId) 
 	{
 		this.insId = insId;
+	}
+
+	public Integer getHasMailNotice() {
+		return hasMailNotice;
+	}
+
+	public void setHasMailNotice(Integer hasMailNotice) {
+		this.hasMailNotice = hasMailNotice;
 	}
 
 	public Integer getInsId() 
