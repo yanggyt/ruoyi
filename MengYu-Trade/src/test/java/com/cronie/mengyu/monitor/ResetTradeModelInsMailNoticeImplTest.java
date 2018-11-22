@@ -7,21 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-
-import com.cronie.mengyu.monitor.impl.ResetTradeModelInsMailNoticeImpl;
-import com.ruoyi.system.mapper.SysUserMapper;
-import com.ruoyi.system.service.impl.SysUserServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@EnableAutoConfiguration
-@ContextConfiguration(classes={ ResetTradeModelInsMailNoticeImpl.class})
-@WebAppConfiguration
-@ComponentScan({"com.ruoyi.*","com.cronie.*"})
+//@EnableAutoConfiguration
+//@ContextConfiguration(classes={ ResetTradeModelInsMailNoticeImpl.class})
+//@WebAppConfiguration
+//@ComponentScan({"com.ruoyi.*","com.cronie.*"})
+//@SpringApplicationConfiguration
 public class ResetTradeModelInsMailNoticeImplTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(ResetTradeModelInsMailNoticeImplTest.class);

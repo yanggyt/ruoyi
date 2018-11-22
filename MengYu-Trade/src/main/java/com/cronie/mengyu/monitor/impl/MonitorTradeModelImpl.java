@@ -75,6 +75,7 @@ public class MonitorTradeModelImpl extends AbstractMonitor {
 			logger.error("尚未配置系统参数【goods_Price_Increase_Rate】.");
 		}else {
 			goodsPriceIncreaseRate = new BigDecimal(goodsPriceIncreaseRateStr.trim());
+			logger.info("初始化参数:【"+TradeConstants.GOODS_PRICE_INCREASE_RATE+"】值:【"+goodsPriceIncreaseRateStr.trim()+"】");
 		}
 		
 		//2.设置放量比
@@ -83,6 +84,7 @@ public class MonitorTradeModelImpl extends AbstractMonitor {
 			logger.error("尚未配置系统参数【goods_Volumes_Increase_Rate】.");
 		}else {
 			goodsVolumesIncreaseRate = new BigDecimal(goodsVolumesIncreaseRateStr.trim());
+			logger.info("初始化参数:【"+TradeConstants.GOODS_VOLUMES_INCREASE_RATE+"】值:【"+goodsVolumesIncreaseRateStr.trim()+"】");
 		}
 		//3.风控比
 		String moneyPoolLossRateStr = sysConfigService.selectConfigByKey(TradeConstants.MONEY_POOL_LOSS_RATE) ;
@@ -90,6 +92,7 @@ public class MonitorTradeModelImpl extends AbstractMonitor {
 			logger.error("尚未配置系统参数【money_Pool_Loss_Rate】.");
 		}else {
 			moneyPoolLossRate = new BigDecimal(moneyPoolLossRateStr.trim());
+			logger.info("初始化参数:【"+TradeConstants.MONEY_POOL_LOSS_RATE+"】值:【"+moneyPoolLossRateStr.trim()+"】");
 		}
 		//4.交易次数
 		String moneyPoolTradeNumsStr = sysConfigService.selectConfigByKey(TradeConstants.MONEY_POOL_TRADE_NUMS) ;
@@ -97,6 +100,7 @@ public class MonitorTradeModelImpl extends AbstractMonitor {
 			logger.error("尚未配置系统参数【money_Pool_Trade_Nums】.");
 		}else {
 			moneyPoolTradeNums = new BigDecimal(moneyPoolTradeNumsStr.trim());  
+			logger.info("初始化参数:【"+TradeConstants.MONEY_POOL_TRADE_NUMS+"】值:【"+moneyPoolTradeNumsStr.trim()+"】");
 		}
 		//4.交易份额
 		String goodsTradeMinAmountStr = sysConfigService.selectConfigByKey(TradeConstants.GOODS_TRADE_MIN_AMOUNT) ;
@@ -104,8 +108,8 @@ public class MonitorTradeModelImpl extends AbstractMonitor {
 			logger.error("尚未配置系统参数【goods_trade_min_amount】.");
 		}else {
 			goodsTradeMinAmount = Integer.parseInt(goodsTradeMinAmountStr) ;
+			logger.info("初始化参数:【"+TradeConstants.GOODS_TRADE_MIN_AMOUNT+"】值:【"+goodsTradeMinAmountStr.trim()+"】");
 		}
-		logger.info("完成初始化模型监控参数");
 	}
 	
 	@Override
