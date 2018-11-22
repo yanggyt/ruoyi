@@ -3,15 +3,15 @@ package com.ruoyi.web.controller.tool;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.enums.DataSourceType;
+import com.ruoyi.framework.datasource.DynamicDataSourceContextHolder;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.support.Convert;
@@ -36,8 +36,9 @@ public class GenController extends BaseController
 
     @RequiresPermissions("tool:gen:view")
     @GetMapping()
-    public String gen()
+    public String gen(ModelMap mmap)
     {
+        mmap.put("dataSource", DataSourceType.MASTER.name());
         return prefix + "/gen";
     }
 
@@ -47,7 +48,9 @@ public class GenController extends BaseController
     public TableDataInfo list(TableInfo tableInfo)
     {
         startPage();
+        DynamicDataSourceContextHolder.setDateSoureType((String) tableInfo.getParams().get("dataSource"));
         List<TableInfo> list = genService.selectTableList(tableInfo);
+        DynamicDataSourceContextHolder.clearDateSoureType();
         return getDataTable(list);
     }
 
@@ -56,10 +59,12 @@ public class GenController extends BaseController
      */
     @RequiresPermissions("tool:gen:code")
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
-    @GetMapping("/genCode/{tableName}")
-    public void genCode(HttpServletResponse response, @PathVariable("tableName") String tableName) throws IOException
+    @GetMapping("/genCode/{tableName}/{dataSource}")
+    public void genCode(HttpServletResponse response, @PathVariable("tableName") String tableName, @PathVariable("dataSource") String dataSource) throws IOException
     {
+        DynamicDataSourceContextHolder.setDateSoureType(dataSource);
         byte[] data = genService.generatorCode(tableName);
+        DynamicDataSourceContextHolder.clearDateSoureType();
         response.reset();
         response.setHeader("Content-Disposition", "attachment; filename=\"ruoyi.zip\"");
         response.addHeader("Content-Length", "" + data.length);
@@ -75,10 +80,12 @@ public class GenController extends BaseController
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     @GetMapping("/batchGenCode")
     @ResponseBody
-    public void batchGenCode(HttpServletResponse response, String tables) throws IOException
+    public void batchGenCode(HttpServletResponse response, String tables, String dataSource) throws IOException
     {
         String[] tableNames = Convert.toStrArray(tables);
+        DynamicDataSourceContextHolder.setDateSoureType(dataSource);
         byte[] data = genService.generatorCode(tableNames);
+        DynamicDataSourceContextHolder.clearDateSoureType();
         response.reset();
         response.setHeader("Content-Disposition", "attachment; filename=\"ruoyi.zip\"");
         response.addHeader("Content-Length", "" + data.length);
