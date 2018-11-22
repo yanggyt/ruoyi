@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-yearPlan-edit" th:object="${yearPlan}">
+            <input id="year" name="year" th:field="*{year}"  type="hidden">
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">预期盈利：</label>
+                <div class="col-sm-8">
+                    <input id="profit" name="profit" th:field="*{profit}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">计划状态：</label>
+                <div class="col-sm-8">
+                    <input id="planStatus" name="planStatus" th:field="*{planStatus}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">任务状态：</label>
+                <div class="col-sm-8">
+                    <input id="taskStatus" name="taskStatus" th:field="*{taskStatus}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">创建时间：</label>
+                <div class="col-sm-8">
+                    <input id="createTime" name="createTime" th:field="*{createTime}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">创建人：</label>
+                <div class="col-sm-8">
+                    <input id="creater" name="creater" th:field="*{creater}" class="form-control" type="text">
+                </div>
+            </div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "mengyu/yearPlan"
+		$("#form-yearPlan-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-yearPlan-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-moneyPoolLog-edit" th:object="${moneyPoolLog}">
+            <input id="billType" name="billType" th:field="*{billType}"  type="hidden">
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">交易后的资金池金额：</label>
+                <div class="col-sm-8">
+                    <input id="moneyPoolLog" name="moneyPoolLog" th:field="*{moneyPoolLog}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">交易金额：</label>
+                <div class="col-sm-8">
+                    <input id="trademMoney" name="trademMoney" th:field="*{trademMoney}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">资金池ID号：</label>
+                <div class="col-sm-8">
+                    <input id="moneyPoolId" name="moneyPoolId" th:field="*{moneyPoolId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">资金池流水号ID=交易ID号：</label>
+                <div class="col-sm-8">
+                    <input id="nodeId" name="nodeId" th:field="*{nodeId}" class="form-control" type="text">
+                </div>
+            </div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "mengyu/moneyPoolLog"
+		$("#form-moneyPoolLog-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-moneyPoolLog-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

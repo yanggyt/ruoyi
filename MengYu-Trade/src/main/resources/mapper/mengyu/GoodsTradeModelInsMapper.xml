@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cronie.mengyu.mapper.GoodsTradeModelInsMapper">
+    
+    <resultMap type="GoodsTradeModelIns" id="GoodsTradeModelInsResult">
+        <result property="insId"    column="ins_id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="insStatus"    column="ins_status"    />
+        <result property="creater"    column="creater"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="hasMailNotice"    column="has_mail_notice"    />
+    </resultMap>
+	
+	<sql id="selectGoodsTradeModelInsVo">
+        select ins_id, model_id, ins_status, creater, create_time,has_mail_notice from my_goods_trade_model_ins
+    </sql>
+	
+    <select id="selectGoodsTradeModelInsList" parameterType="GoodsTradeModelIns" resultMap="GoodsTradeModelInsResult">
+        <include refid="selectGoodsTradeModelInsVo"/>
+        <where>  
+            <if test="insId != null "> and ins_id = #{insId}</if>
+             <if test="modelId != null "> and model_id = #{modelId}</if>
+             <if test="insStatus != null "> and ins_status = #{insStatus}</if>
+             <if test="creater != null "> and creater = #{creater}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="hasMailNotice != null "> and has_mail_notice = #{hasMailNotice}</if>
+         </where>
+    </select>
+    
+    <select id="selectGoodsTradeModelInsById" parameterType="Integer" resultMap="GoodsTradeModelInsResult">
+        <include refid="selectGoodsTradeModelInsVo"/>
+        where ins_id = #{insId}
+    </select>
+        
+    <insert id="insertGoodsTradeModelIns" parameterType="GoodsTradeModelIns">
+        insert into my_goods_trade_model_ins
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="insId != null  ">ins_id,</if>
+			<if test="modelId != null  ">model_id,</if>
+			<if test="insStatus != null  ">ins_status,</if>
+			<if test="creater != null  ">creater,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="hasMailNotice != null "> #{hasMailNotice},</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="insId != null  ">#{insId},</if>
+			<if test="modelId != null  ">#{modelId},</if>
+			<if test="insStatus != null  ">#{insStatus},</if>
+			<if test="creater != null  ">#{creater},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="hasMailNotice != null ">#{hasMailNotice},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateGoodsTradeModelIns" parameterType="GoodsTradeModelIns">
+        update my_goods_trade_model_ins
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelId != null  ">model_id = #{modelId},</if>
+            <if test="insStatus != null  ">ins_status = #{insStatus},</if>
+            <if test="creater != null  ">creater = #{creater},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="hasMailNotice != null ">has_mail_notice = #{hasMailNotice},</if>
+        </trim>
+        where ins_id = #{insId}
+    </update>
+
+	<delete id="deleteGoodsTradeModelInsById" parameterType="Integer">
+        delete from my_goods_trade_model_ins where ins_id = #{insId}
+    </delete>
+	
+    <delete id="deleteGoodsTradeModelInsByIds" parameterType="String">
+        delete from my_goods_trade_model_ins where ins_id in 
+        <foreach item="insId" collection="array" open="(" separator="," close=")">
+            #{insId}
+        </foreach>
+    </delete>
+    
+</mapper>
