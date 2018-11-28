@@ -88,23 +88,28 @@ $(function () {
     }), $("#boxedlayout").click(function () {
         $("#boxedlayout").is(":checked") ? ($("body").addClass("boxed-layout"), $("#fixednavbar").prop("checked", !1), $(".navbar-fixed-top").removeClass("navbar-fixed-top").addClass("navbar-static-top"), $("body").removeClass("fixed-nav"), localStorageSupport && localStorage.setItem("fixednavbar", "off"), localStorageSupport && localStorage.setItem("boxedlayout", "on")) : ($("body").removeClass("boxed-layout"), localStorageSupport && localStorage.setItem("boxedlayout", "off"))
     }), $(".s-skin-0").click(function () {
-        return $("body").removeClass("skin-1"), $("body").removeClass("skin-2"), $("body").removeClass("skin-3"), !1
+        //默认 skin-default、蓝色 skin-blue、黄色 skin-yellow
+        return $("body").removeClass("skin-blue"), $("body").removeClass("skin-yellow"),$("body").addClass("skin-default"),
+        localStorageSupport && localStorage.setItem("skin_name", "skin-default"),!1
     }), $(".s-skin-1").click(function () {
-        return $("body").removeClass("skin-2"), $("body").removeClass("skin-3"), $("body").addClass("skin-1"), !1
-    }), $(".s-skin-3").click(function () {
-        return $("body").removeClass("skin-1"), $("body").removeClass("skin-2"), $("body").addClass("skin-3"), !1
+        return $("body").removeClass("skin-default"), $("body").removeClass("skin-yellow"), $("body").addClass("skin-blue"),
+        localStorageSupport && localStorage.setItem("skin_name", "skin-blue"),!1
+    }), $(".s-skin-2").click(function () {
+        return $("body").removeClass("skin-default"), $("body").removeClass("skin-yellow"), $("body").addClass("skin-yellow"),
+        localStorageSupport && localStorage.setItem("skin_name", "skin-yellow"),!1
     }), localStorageSupport){
         var e = localStorage.getItem("collapse_menu"), a = localStorage.getItem("fixednavbar"),
             o = localStorage.getItem("boxedlayout");
         "on" == e && $("#collapsemenu").prop("checked", "checked"), "on" == a && $("#fixednavbar").prop("checked", "checked"), "on" == o && $("#boxedlayout").prop("checked", "checked")
+
     }
     if (localStorageSupport) {//第一次加载 初始化 主题设置
         var e = localStorage.getItem("collapse_menu"), a = localStorage.getItem("fixednavbar"),
-            o = localStorage.getItem("boxedlayout"), l = $("body");
+            o = localStorage.getItem("boxedlayout"), l = $("body"),skinName = localStorage.getItem("skin_name");
         "on" == e && (l.hasClass("body-small") || l.addClass("mini-navbar")),
         "on" == a && ($(".navbar-static-top").removeClass("navbar-static-top").addClass("navbar-fixed-top"),
             l.addClass("fixed-nav")),
-        "on" == o && l.addClass("boxed-layout")
+        "on" == o && l.addClass("boxed-layout"),skinName != null &&l.removeClass("skin-default skin-blue skin-yellow")&&l.addClass(skinName);
     }
 });
 
