@@ -1,0 +1,251 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								实体类名称：<input type="text" name="className"/>
+							</li>
+
+							<li>
+								表说明：<input type="text" name="comments"/>
+							</li>
+
+							<li>
+								关联父表的表名：<input type="text" name="parentTableName"/>
+							</li>
+
+							<li>
+								本表关联父表的外键名：<input type="text" name="parentTableFkName"/>
+							</li>
+
+							<li>
+								数据源名称：<input type="text" name="dataSourceName"/>
+							</li>
+
+							<li>
+								使用的模板：<input type="text" name="tplCategory"/>
+							</li>
+
+							<li>
+								生成包路径：<input type="text" name="packageName"/>
+							</li>
+
+							<li>
+								生成模块名：<input type="text" name="moduleName"/>
+							</li>
+
+							<li>
+								生成子模块名：<input type="text" name="subModuleName"/>
+							</li>
+
+							<li>
+								生成功能名：<input type="text" name="functionName"/>
+							</li>
+
+							<li>
+								生成功能名（简写）：<input type="text" name="functionNameSimple"/>
+							</li>
+
+							<li>
+								生成功能作者：<input type="text" name="functionAuthor"/>
+							</li>
+
+							<li>
+								生成基础路径：<input type="text" name="genBaseDir"/>
+							</li>
+
+							<li>
+								其它生成选项：<input type="text" name="options"/>
+							</li>
+
+							<li>
+								创建者：<input type="text" name="createBy"/>
+							</li>
+
+							<li>
+								创建时间：<input type="text" name="createDate"/>
+							</li>
+
+							<li>
+								更新者：<input type="text" name="updateBy"/>
+							</li>
+
+							<li>
+								更新时间：<input type="text" name="updateDate"/>
+							</li>
+
+							<li>
+								备注信息：<input type="text" name="remarks"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="agile:genTable:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="agile:genTable:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="agile:genTable:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="agile:genTable:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('agile:genTable:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('agile:genTable:remove')}]];
+        var prefix = ctx + "agile/genTable";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "代码生成",
+				search: false,
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'tableName', 
+					title : '表名',
+					visible: false
+				},
+				{
+					field : 'className', 
+					title : '实体类名称',
+					sortable: true
+				},
+				{
+					field : 'comments', 
+					title : '表说明',
+					sortable: true
+				},
+				{
+					field : 'parentTableName', 
+					title : '关联父表的表名',
+					sortable: true
+				},
+				{
+					field : 'parentTableFkName', 
+					title : '本表关联父表的外键名',
+					sortable: true
+				},
+				{
+					field : 'dataSourceName', 
+					title : '数据源名称',
+					sortable: true
+				},
+				{
+					field : 'tplCategory', 
+					title : '使用的模板',
+					sortable: true
+				},
+				{
+					field : 'packageName', 
+					title : '生成包路径',
+					sortable: true
+				},
+				{
+					field : 'moduleName', 
+					title : '生成模块名',
+					sortable: true
+				},
+				{
+					field : 'subModuleName', 
+					title : '生成子模块名',
+					sortable: true
+				},
+				{
+					field : 'functionName', 
+					title : '生成功能名',
+					sortable: true
+				},
+				{
+					field : 'functionNameSimple', 
+					title : '生成功能名（简写）',
+					sortable: true
+				},
+				{
+					field : 'functionAuthor', 
+					title : '生成功能作者',
+					sortable: true
+				},
+				{
+					field : 'genBaseDir', 
+					title : '生成基础路径',
+					sortable: true
+				},
+				{
+					field : 'options', 
+					title : '其它生成选项',
+					sortable: true
+				},
+				{
+					field : 'createBy', 
+					title : '创建者',
+					sortable: true
+				},
+				{
+					field : 'createDate', 
+					title : '创建时间',
+					sortable: true
+				},
+				{
+					field : 'updateBy', 
+					title : '更新者',
+					sortable: true
+				},
+				{
+					field : 'updateDate', 
+					title : '更新时间',
+					sortable: true
+				},
+				{
+					field : 'remarks', 
+					title : '备注信息',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.tableName + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.tableName + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

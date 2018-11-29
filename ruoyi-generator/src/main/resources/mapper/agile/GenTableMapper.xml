@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.agile.mapper.GenTableMapper">
+    
+    <resultMap type="GenTable" id="GenTableResult">
+        <result property="tableName"    column="table_name"    />
+        <result property="className"    column="class_name"    />
+        <result property="comments"    column="comments"    />
+        <result property="parentTableName"    column="parent_table_name"    />
+        <result property="parentTableFkName"    column="parent_table_fk_name"    />
+        <result property="dataSourceName"    column="data_source_name"    />
+        <result property="tplCategory"    column="tpl_category"    />
+        <result property="packageName"    column="package_name"    />
+        <result property="moduleName"    column="module_name"    />
+        <result property="subModuleName"    column="sub_module_name"    />
+        <result property="functionName"    column="function_name"    />
+        <result property="functionNameSimple"    column="function_name_simple"    />
+        <result property="functionAuthor"    column="function_author"    />
+        <result property="genBaseDir"    column="gen_base_dir"    />
+        <result property="options"    column="options"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+	
+	<sql id="selectGenTableVo">
+        select table_name, class_name, comments, parent_table_name, parent_table_fk_name, data_source_name, tpl_category, package_name, module_name, sub_module_name, function_name, function_name_simple, function_author, gen_base_dir, options, create_by, create_date, update_by, update_date, remarks from gen_table
+    </sql>
+	
+    <select id="selectGenTableList" parameterType="GenTable" resultMap="GenTableResult">
+        <include refid="selectGenTableVo"/>
+        <where>  
+            <if test="tableName != null  and tableName != '' "> and table_name = #{tableName}</if>
+             <if test="className != null  and className != '' "> and class_name = #{className}</if>
+             <if test="comments != null  and comments != '' "> and comments = #{comments}</if>
+             <if test="parentTableName != null  and parentTableName != '' "> and parent_table_name = #{parentTableName}</if>
+             <if test="parentTableFkName != null  and parentTableFkName != '' "> and parent_table_fk_name = #{parentTableFkName}</if>
+             <if test="dataSourceName != null  and dataSourceName != '' "> and data_source_name = #{dataSourceName}</if>
+             <if test="tplCategory != null  and tplCategory != '' "> and tpl_category = #{tplCategory}</if>
+             <if test="packageName != null  and packageName != '' "> and package_name = #{packageName}</if>
+             <if test="moduleName != null  and moduleName != '' "> and module_name = #{moduleName}</if>
+             <if test="subModuleName != null  and subModuleName != '' "> and sub_module_name = #{subModuleName}</if>
+             <if test="functionName != null  and functionName != '' "> and function_name = #{functionName}</if>
+             <if test="functionNameSimple != null  and functionNameSimple != '' "> and function_name_simple = #{functionNameSimple}</if>
+             <if test="functionAuthor != null  and functionAuthor != '' "> and function_author = #{functionAuthor}</if>
+             <if test="genBaseDir != null  and genBaseDir != '' "> and gen_base_dir = #{genBaseDir}</if>
+             <if test="options != null  and options != '' "> and options = #{options}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+         </where>
+    </select>
+    
+    <select id="selectGenTableById" parameterType="String" resultMap="GenTableResult">
+        <include refid="selectGenTableVo"/>
+        where table_name = #{tableName}
+    </select>
+        
+    <insert id="insertGenTable" parameterType="GenTable">
+        insert into gen_table
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="tableName != null  and tableName != ''  ">table_name,</if>
+			<if test="className != null  and className != ''  ">class_name,</if>
+			<if test="comments != null  and comments != ''  ">comments,</if>
+			<if test="parentTableName != null  and parentTableName != ''  ">parent_table_name,</if>
+			<if test="parentTableFkName != null  and parentTableFkName != ''  ">parent_table_fk_name,</if>
+			<if test="dataSourceName != null  and dataSourceName != ''  ">data_source_name,</if>
+			<if test="tplCategory != null  and tplCategory != ''  ">tpl_category,</if>
+			<if test="packageName != null  and packageName != ''  ">package_name,</if>
+			<if test="moduleName != null  and moduleName != ''  ">module_name,</if>
+			<if test="subModuleName != null  and subModuleName != ''  ">sub_module_name,</if>
+			<if test="functionName != null  and functionName != ''  ">function_name,</if>
+			<if test="functionNameSimple != null  and functionNameSimple != ''  ">function_name_simple,</if>
+			<if test="functionAuthor != null  and functionAuthor != ''  ">function_author,</if>
+			<if test="genBaseDir != null  and genBaseDir != ''  ">gen_base_dir,</if>
+			<if test="options != null  and options != ''  ">options,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createDate != null  ">create_date,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+			<if test="updateDate != null  ">update_date,</if>
+			<if test="remarks != null  and remarks != ''  ">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="tableName != null  and tableName != ''  ">#{tableName},</if>
+			<if test="className != null  and className != ''  ">#{className},</if>
+			<if test="comments != null  and comments != ''  ">#{comments},</if>
+			<if test="parentTableName != null  and parentTableName != ''  ">#{parentTableName},</if>
+			<if test="parentTableFkName != null  and parentTableFkName != ''  ">#{parentTableFkName},</if>
+			<if test="dataSourceName != null  and dataSourceName != ''  ">#{dataSourceName},</if>
+			<if test="tplCategory != null  and tplCategory != ''  ">#{tplCategory},</if>
+			<if test="packageName != null  and packageName != ''  ">#{packageName},</if>
+			<if test="moduleName != null  and moduleName != ''  ">#{moduleName},</if>
+			<if test="subModuleName != null  and subModuleName != ''  ">#{subModuleName},</if>
+			<if test="functionName != null  and functionName != ''  ">#{functionName},</if>
+			<if test="functionNameSimple != null  and functionNameSimple != ''  ">#{functionNameSimple},</if>
+			<if test="functionAuthor != null  and functionAuthor != ''  ">#{functionAuthor},</if>
+			<if test="genBaseDir != null  and genBaseDir != ''  ">#{genBaseDir},</if>
+			<if test="options != null  and options != ''  ">#{options},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createDate != null  ">#{createDate},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+			<if test="updateDate != null  ">#{updateDate},</if>
+			<if test="remarks != null  and remarks != ''  ">#{remarks},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateGenTable" parameterType="GenTable">
+        update gen_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="className != null  and className != ''  ">class_name = #{className},</if>
+            <if test="comments != null  and comments != ''  ">comments = #{comments},</if>
+            <if test="parentTableName != null  and parentTableName != ''  ">parent_table_name = #{parentTableName},</if>
+            <if test="parentTableFkName != null  and parentTableFkName != ''  ">parent_table_fk_name = #{parentTableFkName},</if>
+            <if test="dataSourceName != null  and dataSourceName != ''  ">data_source_name = #{dataSourceName},</if>
+            <if test="tplCategory != null  and tplCategory != ''  ">tpl_category = #{tplCategory},</if>
+            <if test="packageName != null  and packageName != ''  ">package_name = #{packageName},</if>
+            <if test="moduleName != null  and moduleName != ''  ">module_name = #{moduleName},</if>
+            <if test="subModuleName != null  and subModuleName != ''  ">sub_module_name = #{subModuleName},</if>
+            <if test="functionName != null  and functionName != ''  ">function_name = #{functionName},</if>
+            <if test="functionNameSimple != null  and functionNameSimple != ''  ">function_name_simple = #{functionNameSimple},</if>
+            <if test="functionAuthor != null  and functionAuthor != ''  ">function_author = #{functionAuthor},</if>
+            <if test="genBaseDir != null  and genBaseDir != ''  ">gen_base_dir = #{genBaseDir},</if>
+            <if test="options != null  and options != ''  ">options = #{options},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createDate != null  ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+        </trim>
+        where table_name = #{tableName}
+    </update>
+
+	<delete id="deleteGenTableById" parameterType="String">
+        delete from gen_table where table_name = #{tableName}
+    </delete>
+	
+    <delete id="deleteGenTableByIds" parameterType="String">
+        delete from gen_table where table_name in 
+        <foreach item="tableName" collection="array" open="(" separator="," close=")">
+            #{tableName}
+        </foreach>
+    </delete>
+    
+</mapper>
