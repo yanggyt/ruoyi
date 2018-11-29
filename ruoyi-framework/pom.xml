@@ -103,13 +103,6 @@
             <artifactId>ruoyi-quartz</artifactId>
             <version>${ruoyi.version}</version>
         </dependency>
-        
-        <!-- 代码生成-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-generator</artifactId>
-            <version>${ruoyi.version}</version>
-        </dependency>
 
 
 		<!-- pagehelper 分页插件 -->
