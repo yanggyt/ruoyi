@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysNotice;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -9,7 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
  * 
  * @author ruoyi
  */
-public interface SysNoticeMapper extends Mapper<SysNotice>
+public interface SysNoticeMapper extends MyMapper<SysNotice>
 {
     /**
      * 查询公告信息

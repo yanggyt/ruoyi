@@ -31,6 +31,7 @@
                     pageNumber: 1,                                      // 初始化加载第一页，默认第一页
                     pageSize: 10,                                       // 每页的记录行数（*） 
                     pageList: [10, 25, 50],                             // 可供选择的每页的行数（*）
+                    clickToSelect: true,								// 点击行选中
                     iconSize: 'outline',                                // 图标大小：undefined默认的按钮尺寸 xs超小按钮sm小按钮lg大按钮
         	        toolbar: '#toolbar',                                // 指定工作栏
                     sidePagination: "server",                           // 启用服务端分页 

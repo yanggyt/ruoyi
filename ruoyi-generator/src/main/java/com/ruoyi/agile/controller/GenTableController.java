@@ -22,7 +22,7 @@ import com.ruoyi.common.utils.ExcelUtil;
  * @author zhujj
  * @date 2018-11-29
  */
-@RestController
+@Controller
 @RequestMapping("/agile/genTable")
 public class GenTableController extends BaseController {
     private String prefix = "agile/genTable";
@@ -43,7 +43,7 @@ public class GenTableController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(GenTable genTable) {
-        List<GenTable> list = genTableService.selectGenTableList(genTable);
+        List<GenTable> list = genTableService.selectListByPage(genTable);
         return getDataTable(list);
     }
 
@@ -55,7 +55,7 @@ public class GenTableController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(GenTable genTable) {
-        List<GenTable> list = genTableService.selectGenTableList(genTable);
+        List<GenTable> list = genTableService.selectList(genTable);
         ExcelUtil<GenTable> util = new ExcelUtil<GenTable>(GenTable.class);
         return util.exportExcel(list, "genTable");
     }
@@ -77,15 +77,15 @@ public class GenTableController extends BaseController {
     @ResponseBody
     public AjaxResult addSave(GenTable genTable) {
 
-        return toAjax(genTableService.insertGenTable(genTable));
+        return toAjax(genTableService.insert(genTable));
     }
 
     /**
      * 修改代码生成
      */
     @GetMapping("/edit/{tableName}")
-    public String edit(@PathVariable("tableName") String tableName, ModelMap mmap) {
-        GenTable genTable = genTableService.selectGenTableById(tableName);
+    public String edit(@PathVariable("id") String id, ModelMap mmap) {
+        GenTable genTable = genTableService.selectById(id);
         mmap.put("genTable", genTable);
         return prefix + "/edit";
     }
@@ -98,7 +98,7 @@ public class GenTableController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(GenTable genTable) {
-        return toAjax(genTableService.updateGenTable(genTable));
+        return toAjax(genTableService.updateById(genTable));
     }
 
     /**
@@ -109,8 +109,10 @@ public class GenTableController extends BaseController {
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult remove(String ids) {
-
-        return toAjax(genTableService.deleteGenTableByIds(ids));
+        genTableService.deleteByIds(ids);
+//        return toAjax(genTableService.deleteGenTableByIds(ids));
+        return null;
     }
+
 
 }

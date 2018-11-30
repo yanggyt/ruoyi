@@ -61,9 +61,7 @@ public class EntityUtils {
 		try {
 			Method[] methods = entity.getClass().getMethods();
 			for(Method m : methods){
-				if(m.getName().equals("setCreateBy")){
-					m.invoke(entity, ShiroUtils.getUserId());
-				}else if(m.getName().equals("setUpdateBy")){
+				if(m.getName().equals("setUpdateBy")){
 					m.invoke(entity, ShiroUtils.getUserId());
 				}
 			}

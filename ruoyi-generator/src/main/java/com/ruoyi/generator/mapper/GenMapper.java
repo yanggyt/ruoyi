@@ -1,6 +1,8 @@
 package com.ruoyi.generator.mapper;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.generator.domain.ColumnInfo;
 import com.ruoyi.generator.domain.TableInfo;
 import tk.mybatis.mapper.common.Mapper;
@@ -10,7 +12,7 @@ import tk.mybatis.mapper.common.Mapper;
  * 
  * @author ruoyi
  */
-public interface GenMapper extends Mapper<TableInfo>
+public interface GenMapper extends MyMapper<TableInfo>
 {
     /**
      * 查询ry数据库表信息

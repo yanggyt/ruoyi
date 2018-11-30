@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysRoleMenu;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -9,7 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
  * 
  * @author ruoyi
  */
-public interface SysRoleMenuMapper extends Mapper<SysRoleMenu>
+public interface SysRoleMenuMapper extends MyMapper<SysRoleMenu>
 {
     /**
      * 通过角色ID删除角色和菜单关联

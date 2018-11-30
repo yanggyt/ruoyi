@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysDept;
 import org.apache.ibatis.annotations.Param;
 import com.ruoyi.system.domain.SysDictData;
@@ -12,7 +13,7 @@ import tk.mybatis.mapper.common.Mapper;
  * 
  * @author ruoyi
  */
-public interface SysDictDataMapper extends Mapper<SysDictData>
+public interface SysDictDataMapper extends MyMapper<SysDictData>
 {
     /**
      * 根据条件分页查询字典数据

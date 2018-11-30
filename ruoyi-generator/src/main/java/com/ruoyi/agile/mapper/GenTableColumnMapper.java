@@ -1,7 +1,11 @@
 package com.ruoyi.agile.mapper;
 
 import com.ruoyi.agile.domain.GenTableColumn;
-import java.util.List;	
+import com.ruoyi.framework.web.base.MyMapper;
+import com.ruoyi.generator.domain.TableInfo;
+import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 /**
  * 代码生成列 数据层
@@ -9,7 +13,7 @@ import java.util.List;
  * @author zhujj
  * @date 2018-11-29
  */
-public interface GenTableColumnMapper 
+public interface GenTableColumnMapper  extends MyMapper<TableInfo>
 {
 	/**
      * 查询代码生成列信息

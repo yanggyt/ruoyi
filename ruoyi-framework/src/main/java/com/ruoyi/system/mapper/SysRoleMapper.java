@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysRole;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -9,7 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
  * 
  * @author ruoyi
  */
-public interface SysRoleMapper extends Mapper<SysRole>
+public interface SysRoleMapper extends MyMapper<SysRole>
 {
     /**
      * 根据条件分页查询角色数据

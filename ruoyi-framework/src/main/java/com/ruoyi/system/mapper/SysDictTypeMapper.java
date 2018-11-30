@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.MyMapper;
 import org.apache.ibatis.annotations.Mapper;
 import com.ruoyi.system.domain.SysDictType;
 
@@ -10,7 +12,7 @@ import com.ruoyi.system.domain.SysDictType;
  * @author ruoyi
  */
 @Mapper
-public interface SysDictTypeMapper  extends tk.mybatis.mapper.common.Mapper<SysDictType>
+public interface SysDictTypeMapper  extends MyMapper<SysDictType>
 {
     /**
      * 根据条件分页查询字典类型

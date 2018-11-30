@@ -3,6 +3,8 @@ package com.ruoyi.agile.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
+
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -16,6 +18,7 @@ public class GenTable extends BaseEntity
 	private static final long serialVersionUID = 1L;
 	
 	/** 编码 */
+	@Id
 	private Integer id;
 	/** 表名 */
 	private String tableName;

@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 15:13
  * Version 1.0.0
  */
-public abstract class AbstractBaseServiceImpl<M extends Mapper<T>, T> implements AbstractBaseService<T>{
+public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implements AbstractBaseService<T>{
     @Autowired
     protected M mapper;
     public void setMapper(M mapper) {
@@ -33,6 +33,11 @@ public abstract class AbstractBaseServiceImpl<M extends Mapper<T>, T> implements
         return mapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    public List<T> selectListByPage(T entity) {
+        startPage();
+        return mapper.select(entity);
+    }
 
     @Override
     public List<T> selectList(T entity) {
@@ -53,43 +58,45 @@ public abstract class AbstractBaseServiceImpl<M extends Mapper<T>, T> implements
 
 
     @Override
-    public void insert(T entity) {
+    public int insert(T entity) {
         EntityUtils.setCreatAndUpdatInfo(entity);
-        mapper.insert(entity);
+        return mapper.insert(entity);
     }
 
 
     @Override
-    public void insertSelective(T entity) {
+    public int insertSelective(T entity) {
         EntityUtils.setCreatAndUpdatInfo(entity);
-        mapper.insertSelective(entity);
+        return  mapper.insertSelective(entity);
     }
 
 
     @Override
-    public void delete(T entity) {
-        mapper.delete(entity);
+    public int delete(T entity) {
+        return mapper.delete(entity);
     }
 
 
     @Override
-    public void deleteById(Object id) {
-        mapper.deleteByPrimaryKey(id);
+    public int deleteById(Object id) {
+        return mapper.deleteByPrimaryKey(id);
     }
 
-
     @Override
-    public void updateById(T entity) {
+    public int deleteByIds(String ids) {
+        return mapper.deleteByIds(ids);
+    }
+    @Override
+    public int updateById(T entity) {
         EntityUtils.setUpdatedInfo(entity);
-        mapper.updateByPrimaryKey(entity);
+        return mapper.updateByPrimaryKey(entity);
     }
 
 
     @Override
-    public void updateSelectiveById(T entity) {
+    public int updateSelectiveById(T entity) {
         EntityUtils.setUpdatedInfo(entity);
-        mapper.updateByPrimaryKeySelective(entity);
-
+        return mapper.updateByPrimaryKeySelective(entity);
     }
 
     @Override
@@ -102,13 +109,6 @@ public abstract class AbstractBaseServiceImpl<M extends Mapper<T>, T> implements
         return mapper.selectCountByExample(example);
     }
 
-
-
-    @Override
-    public List<T> selectByQuery(T entity) {
-        startPage();
-        return  mapper.select(entity);
-    }
     /**
      * 设置请求分页数据
      */
