@@ -1,14 +1,17 @@
 package com.ruoyi.quartz.service;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.quartz.domain.SysJob;
+import com.ruoyi.quartz.domain.SysJobLog;
 
 /**
  * 定时任务调度信息信息 服务层
  * 
  * @author ruoyi
  */
-public interface ISysJobService
+public interface ISysJobService extends AbstractBaseService<SysJob>
 {
     /**
      * 获取quartz调度器的计划任务

@@ -1,6 +1,9 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysDictData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
@@ -17,7 +20,7 @@ import com.ruoyi.system.service.ISysDictTypeService;
  * @author ruoyi
  */
 @Service
-public class SysDictTypeServiceImpl implements ISysDictTypeService
+public class SysDictTypeServiceImpl extends AbstractBaseServiceImpl<SysDictTypeMapper,SysDictType> implements ISysDictTypeService
 {
     @Autowired
     private SysDictTypeMapper dictTypeMapper;

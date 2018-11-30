@@ -50,7 +50,6 @@ public class SysUserOnlineController extends BaseController
     @ResponseBody
     public TableDataInfo list(SysUserOnline userOnline)
     {
-        startPage();
         List<SysUserOnline> list = userOnlineService.selectUserOnlineList(userOnline);
         return getDataTable(list);
     }

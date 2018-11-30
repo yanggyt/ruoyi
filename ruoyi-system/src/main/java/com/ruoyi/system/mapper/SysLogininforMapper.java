@@ -2,13 +2,14 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysLogininfor;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 系统访问日志情况信息 数据层
  * 
  * @author ruoyi
  */
-public interface SysLogininforMapper
+public interface SysLogininforMapper extends Mapper<SysLogininfor>
 {
     /**
      * 新增系统登录日志

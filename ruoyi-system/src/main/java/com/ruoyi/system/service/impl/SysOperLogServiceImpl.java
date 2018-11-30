@@ -1,6 +1,10 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysNotice;
+import com.ruoyi.system.mapper.SysNoticeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.support.Convert;
@@ -14,7 +18,7 @@ import com.ruoyi.system.service.ISysOperLogService;
  * @author ruoyi
  */
 @Service
-public class SysOperLogServiceImpl implements ISysOperLogService
+public class SysOperLogServiceImpl extends AbstractBaseServiceImpl<SysOperLogMapper,SysOperLog> implements ISysOperLogService
 {
     @Autowired
     private SysOperLogMapper operLogMapper;

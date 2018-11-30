@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysUser;
 
 /**
@@ -8,7 +10,7 @@ import com.ruoyi.system.domain.SysUser;
  * 
  * @author ruoyi
  */
-public interface ISysUserService
+public interface ISysUserService extends AbstractBaseService<SysUser>
 {
     /**
      * 根据条件分页查询用户对象

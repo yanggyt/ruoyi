@@ -1,6 +1,10 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysOperLog;
+import com.ruoyi.system.mapper.SysOperLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
@@ -17,7 +21,7 @@ import com.ruoyi.system.service.ISysPostService;
  * @author ruoyi
  */
 @Service
-public class SysPostServiceImpl implements ISysPostService
+public class SysPostServiceImpl extends AbstractBaseServiceImpl<SysPostMapper,SysPost> implements ISysPostService
 {
     @Autowired
     private SysPostMapper postMapper;
@@ -34,6 +38,7 @@ public class SysPostServiceImpl implements ISysPostService
     @Override
     public List<SysPost> selectPostList(SysPost post)
     {
+        startPage();
         return postMapper.selectPostList(post);
     }
 

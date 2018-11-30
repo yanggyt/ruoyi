@@ -1,6 +1,10 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysMenu;
+import com.ruoyi.system.mapper.SysMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.support.Convert;
@@ -15,7 +19,7 @@ import com.ruoyi.system.service.ISysNoticeService;
  * @date 2018-06-25
  */
 @Service
-public class SysNoticeServiceImpl implements ISysNoticeService
+public class SysNoticeServiceImpl extends AbstractBaseServiceImpl<SysNoticeMapper,SysNotice> implements ISysNoticeService
 {
     @Autowired
     private SysNoticeMapper noticeMapper;

@@ -2,13 +2,14 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysUser;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 用户表 数据层
  * 
  * @author ruoyi
  */
-public interface SysUserMapper
+public interface SysUserMapper extends Mapper<SysUser>
 {
     /**
      * 根据条件分页查询用户对象

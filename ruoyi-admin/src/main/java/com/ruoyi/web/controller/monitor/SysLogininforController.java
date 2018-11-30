@@ -43,7 +43,6 @@ public class SysLogininforController extends BaseController
     @ResponseBody
     public TableDataInfo list(SysLogininfor logininfor)
     {
-        startPage();
         List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
         return getDataTable(list);
     }

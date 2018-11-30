@@ -2,6 +2,9 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
+import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysRole;
 
@@ -10,7 +13,7 @@ import com.ruoyi.system.domain.SysRole;
  * 
  * @author ruoyi
  */
-public interface ISysDeptService
+public interface ISysDeptService extends AbstractBaseService<SysDept>
 {
     /**
      * 查询部门管理数据

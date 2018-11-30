@@ -3,13 +3,14 @@ package com.ruoyi.generator.mapper;
 import java.util.List;
 import com.ruoyi.generator.domain.ColumnInfo;
 import com.ruoyi.generator.domain.TableInfo;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 代码生成 数据层
  * 
  * @author ruoyi
  */
-public interface GenMapper
+public interface GenMapper extends Mapper<TableInfo>
 {
     /**
      * 查询ry数据库表信息

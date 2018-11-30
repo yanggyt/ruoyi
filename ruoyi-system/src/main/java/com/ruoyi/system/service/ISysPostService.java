@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysPost;
 
 /**
@@ -8,7 +10,7 @@ import com.ruoyi.system.domain.SysPost;
  * 
  * @author ruoyi
  */
-public interface ISysPostService
+public interface ISysPostService extends AbstractBaseService<SysPost>
 {
     /**
      * 查询岗位信息集合

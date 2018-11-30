@@ -2,13 +2,14 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysUserPost;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 用户与岗位 表 数据层
  * 
  * @author ruoyi
  */
-public interface SysUserPostMapper
+public interface SysUserPostMapper extends Mapper<SysUserPost>
 {
     /**
      * 通过用户ID删除用户和岗位关联

@@ -47,7 +47,7 @@ public class SysRoleController extends BaseController
     @ResponseBody
     public TableDataInfo list(SysRole role)
     {
-        startPage();
+
         List<SysRole> list = roleService.selectRoleList(role);
         return getDataTable(list);
     }

@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysDictType;
 
 /**
@@ -8,7 +10,7 @@ import com.ruoyi.system.domain.SysDictType;
  * 
  * @author ruoyi
  */
-public interface ISysDictTypeService
+public interface ISysDictTypeService extends AbstractBaseService<SysDictType>
 {
     /**
      * 根据条件分页查询字典类型

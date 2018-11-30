@@ -1,14 +1,17 @@
 package com.ruoyi.quartz.mapper;
 
 import java.util.List;
+
+import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.domain.SysJobLog;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 调度任务日志信息 数据层
  * 
  * @author ruoyi
  */
-public interface SysJobLogMapper
+public interface SysJobLogMapper extends Mapper<SysJobLog>
 {
     /**
      * 获取quartz调度器日志的计划任务

@@ -1,6 +1,10 @@
 package com.ruoyi.quartz.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.quartz.domain.SysJob;
+import com.ruoyi.quartz.mapper.SysJobMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.support.Convert;
@@ -14,7 +18,7 @@ import com.ruoyi.quartz.service.ISysJobLogService;
  * @author ruoyi
  */
 @Service
-public class SysJobLogServiceImpl implements ISysJobLogService
+public class SysJobLogServiceImpl extends AbstractBaseServiceImpl<SysJobLogMapper,SysJobLog> implements ISysJobLogService
 {
     @Autowired
     private SysJobLogMapper jobLogMapper;
@@ -28,6 +32,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
     @Override
     public List<SysJobLog> selectJobLogList(SysJobLog jobLog)
     {
+        startPage();
         return jobLogMapper.selectJobLogList(jobLog);
     }
 

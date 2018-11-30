@@ -9,12 +9,14 @@ import java.util.Date;
  * 代码生成表 gen_table
  * 
  * @author zhujj
- * @date 2018-11-29
+ * @date 2018-11-30
  */
 public class GenTable extends BaseEntity
 {
 	private static final long serialVersionUID = 1L;
 	
+	/** 编码 */
+	private Integer id;
 	/** 表名 */
 	private String tableName;
 	/** 实体类名称 */
@@ -40,7 +42,7 @@ public class GenTable extends BaseEntity
 	/** 生成功能名（简写） */
 	private String functionNameSimple;
 	/** 生成功能作者 */
-	private String functionAuthor;
+	private String functionAuthor="AgileDev";
 	/** 生成基础路径 */
 	private String genBaseDir;
 	/** 其它生成选项 */
@@ -56,6 +58,15 @@ public class GenTable extends BaseEntity
 	/** 备注信息 */
 	private String remarks;
 
+	public void setId(Integer id) 
+	{
+		this.id = id;
+	}
+
+	public Integer getId() 
+	{
+		return id;
+	}
 	public void setTableName(String tableName) 
 	{
 		this.tableName = tableName;
@@ -239,6 +250,7 @@ public class GenTable extends BaseEntity
 
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", getId())
             .append("tableName", getTableName())
             .append("className", getClassName())
             .append("comments", getComments())

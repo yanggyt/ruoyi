@@ -49,7 +49,6 @@ public class GenTableColumnController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(GenTableColumn genTableColumn)
 	{
-		startPage();
         List<GenTableColumn> list = genTableColumnService.selectGenTableColumnList(genTableColumn);
 		return getDataTable(list);
 	}

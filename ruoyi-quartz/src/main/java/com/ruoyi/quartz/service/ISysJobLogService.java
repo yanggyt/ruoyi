@@ -1,6 +1,9 @@
 package com.ruoyi.quartz.service;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
+import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.domain.SysJobLog;
 
 /**
@@ -8,7 +11,7 @@ import com.ruoyi.quartz.domain.SysJobLog;
  * 
  * @author ruoyi
  */
-public interface ISysJobLogService
+public interface ISysJobLogService extends AbstractBaseService<SysJobLog>
 {
     /**
      * 获取quartz调度器日志的计划任务

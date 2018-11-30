@@ -2,6 +2,10 @@ package com.ruoyi.system.service.impl;
 
 import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysRole;
+import com.ruoyi.system.mapper.SysRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.utils.DateUtils;
@@ -16,7 +20,7 @@ import com.ruoyi.system.service.ISysUserOnlineService;
  * @author ruoyi
  */
 @Service
-public class SysUserOnlineServiceImpl implements ISysUserOnlineService
+public class SysUserOnlineServiceImpl extends AbstractBaseServiceImpl<SysUserOnlineMapper,SysUserOnline> implements ISysUserOnlineService
 {
     @Autowired
     private SysUserOnlineMapper userOnlineDao;

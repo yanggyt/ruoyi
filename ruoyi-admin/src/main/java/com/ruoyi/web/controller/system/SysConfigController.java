@@ -49,7 +49,6 @@ public class SysConfigController extends BaseController
     @ResponseBody
     public TableDataInfo list(SysConfig config)
     {
-        startPage();
         List<SysConfig> list = configService.selectConfigList(config);
         return getDataTable(list);
     }

@@ -45,7 +45,6 @@ public class SysOperlogController extends BaseController
     @ResponseBody
     public TableDataInfo list(SysOperLog operLog)
     {
-        startPage();
         List<SysOperLog> list = operLogService.selectOperLogList(operLog);
         return getDataTable(list);
     }

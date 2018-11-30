@@ -1,6 +1,9 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
+import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysDictData;
 
 /**
@@ -8,7 +11,7 @@ import com.ruoyi.system.domain.SysDictData;
  * 
  * @author ruoyi
  */
-public interface ISysDictDataService
+public interface ISysDictDataService extends AbstractBaseService<SysDictData>
 {
     /**
      * 根据条件分页查询字典数据

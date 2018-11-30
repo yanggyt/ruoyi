@@ -2,6 +2,8 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import java.util.Set;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysRole;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.system.domain.SysRole;
  * 
  * @author ruoyi
  */
-public interface ISysRoleService
+public interface ISysRoleService extends AbstractBaseService<SysRole>
 {
     /**
      * 根据条件分页查询角色数据

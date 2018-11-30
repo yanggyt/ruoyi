@@ -1,6 +1,8 @@
 package com.ruoyi.generator.service;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.generator.domain.TableInfo;
 
 /**
@@ -8,7 +10,7 @@ import com.ruoyi.generator.domain.TableInfo;
  * 
  * @author ruoyi
  */
-public interface IGenService
+public interface IGenService extends AbstractBaseService<TableInfo>
 {
     /**
      * 查询ry数据库表信息

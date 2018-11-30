@@ -6,13 +6,14 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.config.Global;
 import com.ruoyi.common.constant.Constants;
@@ -30,12 +31,9 @@ import com.ruoyi.generator.util.VelocityInitializer;
  * @author ruoyi
  */
 @Service
-public class GenServiceImpl implements IGenService
-{
+public class GenServiceImpl extends AbstractBaseServiceImpl<GenMapper,TableInfo> implements IGenService {
     private static final Logger log = LoggerFactory.getLogger(GenServiceImpl.class);
 
-    @Autowired
-    private GenMapper genMapper;
 
     /**
      * 查询ry数据库表信息
@@ -46,7 +44,8 @@ public class GenServiceImpl implements IGenService
     @Override
     public List<TableInfo> selectTableList(TableInfo tableInfo)
     {
-        return genMapper.selectTableList(tableInfo);
+        startPage();
+        return mapper.selectTableList(tableInfo);
     }
 
     /**
@@ -61,9 +60,9 @@ public class GenServiceImpl implements IGenService
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
         // 查询表信息
-        TableInfo table = genMapper.selectTableByName(tableName);
+        TableInfo table = mapper.selectTableByName(tableName);
         // 查询列信息
-        List<ColumnInfo> columns = genMapper.selectTableColumnsByName(tableName);
+        List<ColumnInfo> columns = mapper.selectTableColumnsByName(tableName);
         // 生成代码
         generatorCode(table, columns, zip);
         IOUtils.closeQuietly(zip);
@@ -84,9 +83,9 @@ public class GenServiceImpl implements IGenService
         for (String tableName : tableNames)
         {
             // 查询表信息
-            TableInfo table = genMapper.selectTableByName(tableName);
+            TableInfo table = mapper.selectTableByName(tableName);
             // 查询列信息
-            List<ColumnInfo> columns = genMapper.selectTableColumnsByName(tableName);
+            List<ColumnInfo> columns = mapper.selectTableColumnsByName(tableName);
             // 生成代码
             generatorCode(table, columns, zip);
         }

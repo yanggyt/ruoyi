@@ -5,6 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.agile.mapper.GenTableMapper">
     
     <resultMap type="GenTable" id="GenTableResult">
+        <result property="id"    column="id"    />
         <result property="tableName"    column="table_name"    />
         <result property="className"    column="class_name"    />
         <result property="comments"    column="comments"    />
@@ -28,13 +29,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectGenTableVo">
-        select table_name, class_name, comments, parent_table_name, parent_table_fk_name, data_source_name, tpl_category, package_name, module_name, sub_module_name, function_name, function_name_simple, function_author, gen_base_dir, options, create_by, create_date, update_by, update_date, remarks from gen_table
+        select id, table_name, class_name, comments, parent_table_name, parent_table_fk_name, data_source_name, tpl_category, package_name, module_name, sub_module_name, function_name, function_name_simple, function_author, gen_base_dir, options, create_by, create_date, update_by, update_date, remarks from gen_table
     </sql>
 	
     <select id="selectGenTableList" parameterType="GenTable" resultMap="GenTableResult">
         <include refid="selectGenTableVo"/>
         <where>  
-            <if test="tableName != null  and tableName != '' "> and table_name = #{tableName}</if>
+            <if test="id != null "> and id = #{id}</if>
+             <if test="tableName != null  and tableName != '' "> and table_name = #{tableName}</if>
              <if test="className != null  and className != '' "> and class_name = #{className}</if>
              <if test="comments != null  and comments != '' "> and comments = #{comments}</if>
              <if test="parentTableName != null  and parentTableName != '' "> and parent_table_name = #{parentTableName}</if>
@@ -57,14 +59,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </where>
     </select>
     
-    <select id="selectGenTableById" parameterType="String" resultMap="GenTableResult">
+    <select id="selectGenTableById" parameterType="Integer" resultMap="GenTableResult">
         <include refid="selectGenTableVo"/>
-        where table_name = #{tableName}
+        where id = #{id}
     </select>
         
     <insert id="insertGenTable" parameterType="GenTable">
         insert into gen_table
 		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
 			<if test="tableName != null  and tableName != ''  ">table_name,</if>
 			<if test="className != null  and className != ''  ">class_name,</if>
 			<if test="comments != null  and comments != ''  ">comments,</if>
@@ -87,6 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="remarks != null  and remarks != ''  ">remarks,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
 			<if test="tableName != null  and tableName != ''  ">#{tableName},</if>
 			<if test="className != null  and className != ''  ">#{className},</if>
 			<if test="comments != null  and comments != ''  ">#{comments},</if>
@@ -113,6 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateGenTable" parameterType="GenTable">
         update gen_table
         <trim prefix="SET" suffixOverrides=",">
+            <if test="tableName != null  and tableName != ''  ">table_name = #{tableName},</if>
             <if test="className != null  and className != ''  ">class_name = #{className},</if>
             <if test="comments != null  and comments != ''  ">comments = #{comments},</if>
             <if test="parentTableName != null  and parentTableName != ''  ">parent_table_name = #{parentTableName},</if>
@@ -133,17 +138,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateDate != null  ">update_date = #{updateDate},</if>
             <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
         </trim>
-        where table_name = #{tableName}
+        where id = #{id}
     </update>
 
-	<delete id="deleteGenTableById" parameterType="String">
-        delete from gen_table where table_name = #{tableName}
+	<delete id="deleteGenTableById" parameterType="Integer">
+        delete from gen_table where id = #{id}
     </delete>
 	
     <delete id="deleteGenTableByIds" parameterType="String">
-        delete from gen_table where table_name in 
-        <foreach item="tableName" collection="array" open="(" separator="," close=")">
-            #{tableName}
+        delete from gen_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </delete>
     

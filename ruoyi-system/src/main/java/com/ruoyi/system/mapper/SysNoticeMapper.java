@@ -2,13 +2,14 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysNotice;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 公告 数据层
  * 
  * @author ruoyi
  */
-public interface SysNoticeMapper
+public interface SysNoticeMapper extends Mapper<SysNotice>
 {
     /**
      * 查询公告信息

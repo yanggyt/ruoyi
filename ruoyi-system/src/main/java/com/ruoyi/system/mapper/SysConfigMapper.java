@@ -2,18 +2,19 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysConfig;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 参数配置 数据层
  * 
  * @author ruoyi
  */
-public interface SysConfigMapper
+public interface SysConfigMapper extends Mapper<SysConfig>
 {
     /**
      * 查询参数配置信息
      * 
-     * @param configId 参数配置信息
+     * @param config 参数配置信息
      * @return 参数配置信息
      */
     public SysConfig selectConfig(SysConfig config);

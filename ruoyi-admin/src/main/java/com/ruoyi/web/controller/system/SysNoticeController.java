@@ -48,7 +48,6 @@ public class SysNoticeController extends BaseController
     @ResponseBody
     public TableDataInfo list(SysNotice notice)
     {
-        startPage();
         List<SysNotice> list = noticeService.selectNoticeList(notice);
         return getDataTable(list);
     }

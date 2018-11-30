@@ -46,7 +46,6 @@ public class SysDictDataController extends BaseController
     @ResponseBody
     public TableDataInfo list(SysDictData dictData)
     {
-        startPage();
         List<SysDictData> list = dictDataService.selectDictDataList(dictData);
         return getDataTable(list);
     }

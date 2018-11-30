@@ -10,7 +10,7 @@ import com.ruoyi.system.domain.SysDictType;
  * @author ruoyi
  */
 @Mapper
-public interface SysDictTypeMapper
+public interface SysDictTypeMapper  extends tk.mybatis.mapper.common.Mapper<SysDictType>
 {
     /**
      * 根据条件分页查询字典类型

@@ -35,7 +35,12 @@
             <artifactId>ruoyi-common</artifactId>
             <version>${ruoyi.version}</version>
         </dependency>
-		
+        <!-- 通用框架-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-framework</artifactId>
+            <version>3.0</version>
+        </dependency>
     </dependencies>
 	
 </project>

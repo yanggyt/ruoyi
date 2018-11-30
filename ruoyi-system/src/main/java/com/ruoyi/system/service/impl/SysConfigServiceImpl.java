@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
@@ -16,7 +18,7 @@ import com.ruoyi.system.service.ISysConfigService;
  * @author ruoyi
  */
 @Service
-public class SysConfigServiceImpl implements ISysConfigService
+public class SysConfigServiceImpl extends AbstractBaseServiceImpl<SysConfigMapper,SysConfig> implements ISysConfigService
 {
     @Autowired
     private SysConfigMapper configMapper;
@@ -59,6 +61,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public List<SysConfig> selectConfigList(SysConfig config)
     {
+        startPage();
         return configMapper.selectConfigList(config);
     }
 

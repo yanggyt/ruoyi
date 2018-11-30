@@ -3,6 +3,8 @@ package com.ruoyi.framework.web.base;
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.system.domain.SysUser;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import com.github.pagehelper.PageHelper;
@@ -14,7 +16,6 @@ import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.framework.web.page.PageDomain;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.framework.web.page.TableSupport;
-import com.ruoyi.system.domain.SysUser;
 
 /**
  * web层通用数据处理
@@ -40,20 +41,6 @@ public class BaseController
         });
     }
 
-    /**
-     * 设置请求分页数据
-     */
-    protected void startPage()
-    {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Integer pageNum = pageDomain.getPageNum();
-        Integer pageSize = pageDomain.getPageSize();
-        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize))
-        {
-            String orderBy = pageDomain.getOrderBy();
-            PageHelper.startPage(pageNum, pageSize, orderBy);
-        }
-    }
 
     /**
      * 响应请求分页数据
@@ -70,7 +57,7 @@ public class BaseController
 
     /**
      * 响应返回结果
-     * 
+     *
      * @param rows 影响行数
      * @return 操作结果
      */

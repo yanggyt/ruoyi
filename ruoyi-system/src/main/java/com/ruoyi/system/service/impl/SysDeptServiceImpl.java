@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysConfig;
+import com.ruoyi.system.mapper.SysConfigMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.annotation.DataScope;
@@ -20,7 +24,7 @@ import com.ruoyi.system.service.ISysDeptService;
  * @author ruoyi
  */
 @Service
-public class SysDeptServiceImpl implements ISysDeptService
+public class SysDeptServiceImpl extends AbstractBaseServiceImpl<SysDeptMapper,SysDept> implements ISysDeptService
 {
     @Autowired
     private SysDeptMapper deptMapper;
@@ -34,7 +38,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     @DataScope(tableAlias = "d")
     public List<SysDept> selectDeptList(SysDept dept)
     {
-        return deptMapper.selectDeptList(dept);
+        return mapper.selectDeptList(dept);
     }
 
     /**

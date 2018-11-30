@@ -2,6 +2,10 @@ package com.ruoyi.quartz.service.impl;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysDept;
+import com.ruoyi.system.mapper.SysDeptMapper;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +24,7 @@ import com.ruoyi.quartz.util.ScheduleUtils;
  * @author ruoyi
  */
 @Service
-public class SysJobServiceImpl implements ISysJobService
+public class SysJobServiceImpl extends AbstractBaseServiceImpl<SysJobMapper,SysJob> implements ISysJobService
 {
     @Autowired
     private Scheduler scheduler;
@@ -59,6 +63,7 @@ public class SysJobServiceImpl implements ISysJobService
     @Override
     public List<SysJob> selectJobList(SysJob job)
     {
+        startPage();
         return jobMapper.selectJobList(job);
     }
 

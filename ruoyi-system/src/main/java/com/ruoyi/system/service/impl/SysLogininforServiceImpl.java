@@ -1,6 +1,10 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.system.domain.SysDictType;
+import com.ruoyi.system.mapper.SysDictTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.support.Convert;
@@ -14,7 +18,7 @@ import com.ruoyi.system.service.ISysLogininforService;
  * @author ruoyi
  */
 @Service
-public class SysLogininforServiceImpl implements ISysLogininforService
+public class SysLogininforServiceImpl extends AbstractBaseServiceImpl<SysLogininforMapper,SysLogininfor> implements ISysLogininforService
 {
 
     @Autowired

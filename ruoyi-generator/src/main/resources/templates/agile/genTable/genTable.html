@@ -3,7 +3,6 @@
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <body class="gray-bg">
-    
      <div class="container-div">
 		<div class="row">
 			<div class="col-sm-12 search-collapse">
@@ -11,79 +10,10 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								实体类名称：<input type="text" name="className"/>
+								表名：<input type="text" name="tableName"/>
 							</li>
-
 							<li>
 								表说明：<input type="text" name="comments"/>
-							</li>
-
-							<li>
-								关联父表的表名：<input type="text" name="parentTableName"/>
-							</li>
-
-							<li>
-								本表关联父表的外键名：<input type="text" name="parentTableFkName"/>
-							</li>
-
-							<li>
-								数据源名称：<input type="text" name="dataSourceName"/>
-							</li>
-
-							<li>
-								使用的模板：<input type="text" name="tplCategory"/>
-							</li>
-
-							<li>
-								生成包路径：<input type="text" name="packageName"/>
-							</li>
-
-							<li>
-								生成模块名：<input type="text" name="moduleName"/>
-							</li>
-
-							<li>
-								生成子模块名：<input type="text" name="subModuleName"/>
-							</li>
-
-							<li>
-								生成功能名：<input type="text" name="functionName"/>
-							</li>
-
-							<li>
-								生成功能名（简写）：<input type="text" name="functionNameSimple"/>
-							</li>
-
-							<li>
-								生成功能作者：<input type="text" name="functionAuthor"/>
-							</li>
-
-							<li>
-								生成基础路径：<input type="text" name="genBaseDir"/>
-							</li>
-
-							<li>
-								其它生成选项：<input type="text" name="options"/>
-							</li>
-
-							<li>
-								创建者：<input type="text" name="createBy"/>
-							</li>
-
-							<li>
-								创建时间：<input type="text" name="createDate"/>
-							</li>
-
-							<li>
-								更新者：<input type="text" name="updateBy"/>
-							</li>
-
-							<li>
-								更新时间：<input type="text" name="updateDate"/>
-							</li>
-
-							<li>
-								备注信息：<input type="text" name="remarks"/>
 							</li>
 
 							<li>
@@ -149,88 +79,13 @@
 					sortable: true
 				},
 				{
-					field : 'parentTableName', 
-					title : '关联父表的表名',
-					sortable: true
-				},
-				{
-					field : 'parentTableFkName', 
-					title : '本表关联父表的外键名',
-					sortable: true
-				},
-				{
-					field : 'dataSourceName', 
-					title : '数据源名称',
-					sortable: true
-				},
-				{
-					field : 'tplCategory', 
-					title : '使用的模板',
-					sortable: true
-				},
-				{
-					field : 'packageName', 
-					title : '生成包路径',
-					sortable: true
-				},
-				{
-					field : 'moduleName', 
-					title : '生成模块名',
-					sortable: true
-				},
-				{
-					field : 'subModuleName', 
-					title : '生成子模块名',
-					sortable: true
-				},
-				{
-					field : 'functionName', 
-					title : '生成功能名',
-					sortable: true
-				},
-				{
-					field : 'functionNameSimple', 
-					title : '生成功能名（简写）',
-					sortable: true
-				},
-				{
 					field : 'functionAuthor', 
 					title : '生成功能作者',
 					sortable: true
 				},
 				{
-					field : 'genBaseDir', 
-					title : '生成基础路径',
-					sortable: true
-				},
-				{
-					field : 'options', 
-					title : '其它生成选项',
-					sortable: true
-				},
-				{
-					field : 'createBy', 
-					title : '创建者',
-					sortable: true
-				},
-				{
 					field : 'createDate', 
 					title : '创建时间',
-					sortable: true
-				},
-				{
-					field : 'updateBy', 
-					title : '更新者',
-					sortable: true
-				},
-				{
-					field : 'updateDate', 
-					title : '更新时间',
-					sortable: true
-				},
-				{
-					field : 'remarks', 
-					title : '备注信息',
 					sortable: true
 				},
 		        {

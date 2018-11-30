@@ -46,7 +46,6 @@ public class SysPostController extends BaseController
     @ResponseBody
     public TableDataInfo list(SysPost post)
     {
-        startPage();
         List<SysPost> list = postService.selectPostList(post);
         return getDataTable(list);
     }

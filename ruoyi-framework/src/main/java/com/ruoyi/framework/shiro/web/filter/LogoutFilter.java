@@ -2,6 +2,8 @@ package com.ruoyi.framework.shiro.web.filter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
+import com.ruoyi.system.domain.SysUser;
 import org.apache.shiro.session.SessionException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -12,7 +14,6 @@ import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.util.MessageUtils;
 import com.ruoyi.framework.util.ShiroUtils;
-import com.ruoyi.system.domain.SysUser;
 
 /**
  * 退出过滤器

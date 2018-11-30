@@ -3,6 +3,8 @@ package com.ruoyi.system.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
@@ -12,7 +14,7 @@ import com.ruoyi.system.domain.SysUser;
  * 
  * @author ruoyi
  */
-public interface ISysMenuService
+public interface ISysMenuService extends AbstractBaseService<SysMenu>
 {
     /**
      * 根据用户ID查询菜单

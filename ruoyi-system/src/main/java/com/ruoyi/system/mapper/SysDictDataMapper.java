@@ -1,15 +1,18 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.SysDept;
 import org.apache.ibatis.annotations.Param;
 import com.ruoyi.system.domain.SysDictData;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 字典表 数据层
  * 
  * @author ruoyi
  */
-public interface SysDictDataMapper
+public interface SysDictDataMapper extends Mapper<SysDictData>
 {
     /**
      * 根据条件分页查询字典数据

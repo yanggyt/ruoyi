@@ -67,7 +67,6 @@ public class BaseEntity implements Serializable
     {
         this.createTime = createTime;
     }
-
     public String getUpdateBy()
     {
         return updateBy;

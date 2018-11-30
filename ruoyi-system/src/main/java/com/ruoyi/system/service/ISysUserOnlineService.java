@@ -2,6 +2,8 @@ package com.ruoyi.system.service;
 
 import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysUserOnline;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.system.domain.SysUserOnline;
  * 
  * @author ruoyi
  */
-public interface ISysUserOnlineService
+public interface ISysUserOnlineService extends AbstractBaseService<SysUserOnline>
 {
     /**
      * 通过会话序号查询信息

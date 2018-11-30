@@ -2,13 +2,14 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysUserRole;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 用户表 数据层
  * 
  * @author ruoyi
  */
-public interface SysUserRoleMapper
+public interface SysUserRoleMapper extends Mapper<SysUserRole>
 {
     /**
      * 通过用户ID删除用户和角色关联
