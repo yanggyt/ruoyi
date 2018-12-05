@@ -1,4 +1,4 @@
-package com.ruoyi.framework.util;
+package com.ruoyi.framework.web.util;
 
 import java.lang.reflect.Method;
 

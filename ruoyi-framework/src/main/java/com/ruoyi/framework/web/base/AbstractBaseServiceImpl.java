@@ -6,7 +6,6 @@ import com.ruoyi.framework.util.EntityUtils;
 import com.ruoyi.framework.web.page.PageDomain;
 import com.ruoyi.framework.web.page.TableSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * Time: 15:13
  * Version 1.0.0
  */
-public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implements AbstractBaseService<T>{
+public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implements AbstractBaseService<T> {
     @Autowired
     protected M mapper;
     public void setMapper(M mapper) {
