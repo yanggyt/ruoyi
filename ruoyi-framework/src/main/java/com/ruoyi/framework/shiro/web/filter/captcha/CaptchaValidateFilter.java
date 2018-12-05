@@ -7,7 +7,7 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 import com.google.code.kaptcha.Constants;
 import com.ruoyi.common.constant.ShiroConstants;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 
 /**
  * 验证码过滤器

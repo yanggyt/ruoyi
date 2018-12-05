@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.service.ISysMenuService;

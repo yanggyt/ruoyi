@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.exception.DemoModeException;
-import com.ruoyi.framework.util.PermissionUtils;
+import com.ruoyi.framework.web.util.PermissionUtils;
 
 /**
  * 自定义异常处理器

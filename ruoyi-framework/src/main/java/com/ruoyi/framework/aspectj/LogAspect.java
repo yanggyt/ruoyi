@@ -18,8 +18,8 @@ import com.ruoyi.common.json.JSON;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
-import com.ruoyi.framework.util.ServletUtils;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ServletUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.domain.SysUser;
 

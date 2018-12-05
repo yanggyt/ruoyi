@@ -1,7 +1,7 @@
 package com.ruoyi.framework.web.exception.base;
 
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.util.MessageUtils;
+import com.ruoyi.framework.web.util.MessageUtils;
 
 /**
  * 基础异常

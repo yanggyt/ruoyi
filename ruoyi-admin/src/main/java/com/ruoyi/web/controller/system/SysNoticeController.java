@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.service.ISysNoticeService;

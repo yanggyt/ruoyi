@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ruoyi.framework.shiro.service.SysLoginService;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.framework.web.exception.user.CaptchaException;
 import com.ruoyi.framework.web.exception.user.RoleBlockedException;
 import com.ruoyi.framework.web.exception.user.UserBlockedException;

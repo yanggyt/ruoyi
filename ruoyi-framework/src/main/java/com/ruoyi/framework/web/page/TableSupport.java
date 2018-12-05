@@ -1,7 +1,7 @@
 package com.ruoyi.framework.web.page;
 
 import com.ruoyi.common.constant.Constants;
-import com.ruoyi.framework.util.ServletUtils;
+import com.ruoyi.framework.web.util.ServletUtils;
 
 /**
  * 表格数据处理

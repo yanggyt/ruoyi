@@ -13,7 +13,7 @@ import com.ruoyi.common.constant.ShiroConstants;
 import com.ruoyi.common.enums.OnlineStatus;
 import com.ruoyi.framework.shiro.session.OnlineSession;
 import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 
 /**

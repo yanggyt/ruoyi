@@ -17,7 +17,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.ExcelUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysPostService;

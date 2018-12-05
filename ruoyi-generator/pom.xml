@@ -28,12 +28,6 @@
             <version>${velocity.version}</version>
         </dependency>
 
-        <!-- 通用工具-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common</artifactId>
-            <version>${ruoyi.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-framework</artifactId>

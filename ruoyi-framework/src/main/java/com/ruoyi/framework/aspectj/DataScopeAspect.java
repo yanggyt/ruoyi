@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.base.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
 

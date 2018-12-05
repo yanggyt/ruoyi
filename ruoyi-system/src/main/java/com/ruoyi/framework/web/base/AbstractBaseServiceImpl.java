@@ -2,7 +2,7 @@ package com.ruoyi.framework.web.base;
 
 import com.github.pagehelper.PageHelper;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.util.EntityUtils;
+import com.ruoyi.framework.web.util.EntityUtils;
 import com.ruoyi.framework.web.page.PageDomain;
 import com.ruoyi.framework.web.page.TableSupport;
 import org.springframework.beans.factory.annotation.Autowired;

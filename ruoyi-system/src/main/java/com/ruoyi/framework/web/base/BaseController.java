@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.system.domain.SysUser;
 import org.springframework.web.bind.WebDataBinder;
