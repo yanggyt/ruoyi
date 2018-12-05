@@ -1,10 +1,11 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.base.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.ruoyi.common.base.BaseEntity;
 
 /**
  * 菜单权限表 sys_menu

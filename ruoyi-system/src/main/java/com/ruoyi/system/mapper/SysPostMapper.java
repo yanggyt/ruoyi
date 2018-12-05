@@ -1,15 +1,16 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysPost;
-import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 /**
  * 岗位信息 数据层
  * 
  * @author ruoyi
  */
-public interface SysPostMapper extends Mapper<SysPost>
+public interface SysPostMapper extends MyMapper<SysPost>
 {
     /**
      * 查询岗位数据集合

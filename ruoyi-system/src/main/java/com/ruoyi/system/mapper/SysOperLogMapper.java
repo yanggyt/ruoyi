@@ -1,15 +1,16 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysOperLog;
-import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 /**
  * 操作日志 数据层
  * 
  * @author ruoyi
  */
-public interface SysOperLogMapper extends Mapper<SysOperLog>
+public interface SysOperLogMapper extends MyMapper<SysOperLog>
 {
     /**
      * 新增操作日志

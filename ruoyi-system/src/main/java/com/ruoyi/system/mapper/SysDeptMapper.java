@@ -1,18 +1,17 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
-
-import com.ruoyi.system.domain.SysConfig;
-import org.apache.ibatis.annotations.Param;
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysDept;
-import tk.mybatis.mapper.common.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 部门管理 数据层
  * 
  * @author ruoyi
  */
-public interface SysDeptMapper extends Mapper<SysDept>
+public interface SysDeptMapper extends MyMapper<SysDept>
 {
     /**
      * 查询部门人数

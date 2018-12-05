@@ -1,20 +1,21 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.system.domain.SysUser;
-import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 /**
  * 用户表 数据层
  * 
  * @author ruoyi
  */
-public interface SysUserMapper extends Mapper<SysUser>
+public interface SysUserMapper extends MyMapper<SysUser>
 {
     /**
      * 根据条件分页查询用户对象
      * 
-     * @param user 用户信息
+     * @param sysUser 用户信息
      * @return 用户信息集合信息
      */
     public List<SysUser> selectUserList(SysUser sysUser);

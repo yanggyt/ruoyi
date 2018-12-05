@@ -1,9 +1,9 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-
 import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysUser;
+
+import java.util.List;
 
 /**
  * 用户 业务层

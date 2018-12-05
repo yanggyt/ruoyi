@@ -1,18 +1,16 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
-import com.ruoyi.system.domain.SysRole;
-import com.ruoyi.system.mapper.SysRoleMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.mapper.SysUserOnlineMapper;
 import com.ruoyi.system.service.ISysUserOnlineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 在线用户 服务层处理
@@ -91,6 +89,7 @@ public class SysUserOnlineServiceImpl extends AbstractBaseServiceImpl<SysUserOnl
     @Override
     public List<SysUserOnline> selectUserOnlineList(SysUserOnline userOnline)
     {
+        startPage();
         return userOnlineDao.selectUserOnlineList(userOnline);
     }
 

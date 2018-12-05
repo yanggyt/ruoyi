@@ -1,16 +1,14 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
-
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
-import com.ruoyi.system.domain.SysDictType;
-import com.ruoyi.system.mapper.SysDictTypeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.support.Convert;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.system.domain.SysLogininfor;
 import com.ruoyi.system.mapper.SysLogininforMapper;
 import com.ruoyi.system.service.ISysLogininforService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 系统访问日志情况信息 服务层处理
@@ -44,6 +42,7 @@ public class SysLogininforServiceImpl extends AbstractBaseServiceImpl<SysLoginin
     @Override
     public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor)
     {
+        startPage();
         return logininforMapper.selectLogininforList(logininfor);
     }
 

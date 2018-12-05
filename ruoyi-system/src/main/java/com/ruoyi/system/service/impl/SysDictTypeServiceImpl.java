@@ -1,18 +1,17 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
-
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
-import com.ruoyi.system.domain.SysDictData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.system.domain.SysDictType;
 import com.ruoyi.system.mapper.SysDictDataMapper;
 import com.ruoyi.system.mapper.SysDictTypeMapper;
 import com.ruoyi.system.service.ISysDictTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 字典 业务层处理
@@ -37,6 +36,7 @@ public class SysDictTypeServiceImpl extends AbstractBaseServiceImpl<SysDictTypeM
     @Override
     public List<SysDictType> selectDictTypeList(SysDictType dictType)
     {
+        startPage();
         return dictTypeMapper.selectDictTypeList(dictType);
     }
 

@@ -1,8 +1,8 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.base.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.base.BaseEntity;
 
 /**
  * 通知公告表 sys_notice

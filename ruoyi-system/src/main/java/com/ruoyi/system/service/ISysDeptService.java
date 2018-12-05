@@ -1,12 +1,11 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.ruoyi.framework.web.base.AbstractBaseService;
-import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysRole;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 部门管理 服务层

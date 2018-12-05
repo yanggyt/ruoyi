@@ -1,10 +1,10 @@
 package com.ruoyi.system.service;
 
-import java.util.Date;
-import java.util.List;
-
 import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysUserOnline;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 在线用户 服务层

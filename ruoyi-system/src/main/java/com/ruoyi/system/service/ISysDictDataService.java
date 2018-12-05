@@ -1,10 +1,9 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-
 import com.ruoyi.framework.web.base.AbstractBaseService;
-import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysDictData;
+
+import java.util.List;
 
 /**
  * 字典 业务层

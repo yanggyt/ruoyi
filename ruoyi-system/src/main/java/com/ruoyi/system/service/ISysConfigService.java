@@ -1,9 +1,9 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-
 import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.system.domain.SysConfig;
+
+import java.util.List;
 
 /**
  * 参数配置 服务层
