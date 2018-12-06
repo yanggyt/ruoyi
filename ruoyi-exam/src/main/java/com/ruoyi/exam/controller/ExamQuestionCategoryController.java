@@ -21,7 +21,7 @@ import com.ruoyi.common.utils.ExcelUtil;
 
 /**
  * 试题分类 信息操作处理
- * 
+ *
  * @author zhujj
  * @date 2018-12-06
  */
@@ -29,18 +29,18 @@ import com.ruoyi.common.utils.ExcelUtil;
 @RequestMapping("/exam/examQuestionCategory")
 public class ExamQuestionCategoryController extends BaseController
 {
-    private String prefix = "exam/examQuestionCategory";
-	
+	private String prefix = "exam/examQuestionCategory";
+
 	@Autowired
 	private IExamQuestionCategoryService examQuestionCategoryService;
-	
+
 	@RequiresPermissions("exam:examQuestionCategory:view")
 	@GetMapping()
 	public String examQuestionCategory()
 	{
-	    return prefix + "/examQuestionCategory";
+		return prefix + "/examQuestionCategory";
 	}
-	
+
 	/**
 	 * 查询试题分类列表
 	 */
@@ -49,34 +49,33 @@ public class ExamQuestionCategoryController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(ExamQuestionCategory examQuestionCategory)
 	{
-		startPage();
-        List<ExamQuestionCategory> list = examQuestionCategoryService.selectExamQuestionCategoryList(examQuestionCategory);
+		List<ExamQuestionCategory> list = examQuestionCategoryService.selectExamQuestionCategoryList(examQuestionCategory);
 		return getDataTable(list);
 	}
-	
-	
+
+
 	/**
 	 * 导出试题分类列表
 	 */
 	@RequiresPermissions("exam:examQuestionCategory:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(ExamQuestionCategory examQuestionCategory)
-    {
-    	List<ExamQuestionCategory> list = examQuestionCategoryService.selectExamQuestionCategoryList(examQuestionCategory);
-        ExcelUtil<ExamQuestionCategory> util = new ExcelUtil<ExamQuestionCategory>(ExamQuestionCategory.class);
-        return util.exportExcel(list, "examQuestionCategory");
-    }
-	
+	@PostMapping("/export")
+	@ResponseBody
+	public AjaxResult export(ExamQuestionCategory examQuestionCategory)
+	{
+		List<ExamQuestionCategory> list = examQuestionCategoryService.selectExamQuestionCategoryList(examQuestionCategory);
+		ExcelUtil<ExamQuestionCategory> util = new ExcelUtil<ExamQuestionCategory>(ExamQuestionCategory.class);
+		return util.exportExcel(list, "examQuestionCategory");
+	}
+
 	/**
 	 * 新增试题分类
 	 */
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		return prefix + "/add";
 	}
-	
+
 	/**
 	 * 新增保存试题分类
 	 */
@@ -85,7 +84,7 @@ public class ExamQuestionCategoryController extends BaseController
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(ExamQuestionCategory examQuestionCategory)
-	{		
+	{
 		return toAjax(examQuestionCategoryService.insertExamQuestionCategory(examQuestionCategory));
 	}
 
@@ -97,9 +96,9 @@ public class ExamQuestionCategoryController extends BaseController
 	{
 		ExamQuestionCategory examQuestionCategory = examQuestionCategoryService.selectExamQuestionCategoryById(id);
 		mmap.put("examQuestionCategory", examQuestionCategory);
-	    return prefix + "/edit";
+		return prefix + "/edit";
 	}
-	
+
 	/**
 	 * 修改保存试题分类
 	 */
@@ -108,10 +107,10 @@ public class ExamQuestionCategoryController extends BaseController
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(ExamQuestionCategory examQuestionCategory)
-	{		
+	{
 		return toAjax(examQuestionCategoryService.updateExamQuestionCategory(examQuestionCategory));
 	}
-	
+
 	/**
 	 * 删除试题分类
 	 */
@@ -120,8 +119,8 @@ public class ExamQuestionCategoryController extends BaseController
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(examQuestionCategoryService.deleteExamQuestionCategoryByIds(ids));
 	}
-	
+
 }

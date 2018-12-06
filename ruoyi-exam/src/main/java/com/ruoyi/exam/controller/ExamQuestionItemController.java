@@ -49,7 +49,6 @@ public class ExamQuestionItemController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(ExamQuestionItem examQuestionItem)
 	{
-		startPage();
         List<ExamQuestionItem> list = examQuestionItemService.selectExamQuestionItemList(examQuestionItem);
 		return getDataTable(list);
 	}

@@ -49,7 +49,6 @@ public class ${className}Controller extends BaseController
 	@ResponseBody
 	public TableDataInfo list(${className} ${classname})
 	{
-		startPage();
         List<${className}> list = ${classname}Service.select${className}List(${classname});
 		return getDataTable(list);
 	}
