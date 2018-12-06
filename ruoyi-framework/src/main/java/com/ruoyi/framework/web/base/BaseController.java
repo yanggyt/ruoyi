@@ -7,20 +7,25 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.system.domain.SysUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * web层通用数据处理
  * 
  * @author ruoyi
  */
-public class BaseController
-{
+public class BaseController{
+    @Autowired
+    protected HttpServletRequest request;
+
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型
      */
