@@ -2,14 +2,14 @@ package ${package}.service;
 
 import ${package}.domain.${className};
 import java.util.List;
-
+import com.ruoyi.framework.web.base.AbstractBaseService;
 /**
  * ${tableComment} 服务层
  * 
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${className}Service 
+public interface I${className}Service extends AbstractBaseService<${className}>
 {
 	/**
      * 查询${tableComment}信息

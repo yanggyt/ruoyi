@@ -7,7 +7,7 @@ import ${package}.mapper.${className}Mapper;
 import ${package}.domain.${className};
 import ${package}.service.I${className}Service;
 import com.ruoyi.common.support.Convert;
-
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 /**
  * ${tableComment} 服务层实现
  * 
@@ -15,7 +15,7 @@ import com.ruoyi.common.support.Convert;
  * @date ${datetime}
  */
 @Service
-public class ${className}ServiceImpl implements I${className}Service 
+public class ${className}ServiceImpl extends AbstractBaseServiceImpl<${className}Mapper,${className}> implements I${className}Service
 {
 	@Autowired
 	private ${className}Mapper ${classname}Mapper;

@@ -2,7 +2,6 @@ package com.ruoyi.agile.service;
 
 import com.ruoyi.agile.domain.GenTable;
 import com.ruoyi.framework.web.base.AbstractBaseService;
-import com.ruoyi.generator.domain.TableInfo;
 
 import java.util.List;
 

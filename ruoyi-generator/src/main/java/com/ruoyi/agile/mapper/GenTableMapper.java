@@ -3,7 +3,6 @@ package com.ruoyi.agile.mapper;
 import com.ruoyi.agile.domain.GenTable;
 import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.generator.domain.TableInfo;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
