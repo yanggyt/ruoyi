@@ -45,7 +45,12 @@
             <artifactId>ruoyi-generator</artifactId>
             <version>${ruoyi.version}</version>
         </dependency>
-
+        <!-- 考试系统-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-exam</artifactId>
+            <version>${ruoyi.version}</version>
+        </dependency>
         <!-- 定时任务
         <dependency>
             <groupId>com.ruoyi</groupId>
