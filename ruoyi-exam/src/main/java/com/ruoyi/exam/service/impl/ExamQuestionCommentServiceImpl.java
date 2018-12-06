@@ -41,6 +41,7 @@ public class ExamQuestionCommentServiceImpl extends AbstractBaseServiceImpl<Exam
 	@Override
 	public List<ExamQuestionComment> selectExamQuestionCommentList(ExamQuestionComment examQuestionComment)
 	{
+		startPage();
 	    return examQuestionCommentMapper.selectExamQuestionCommentList(examQuestionComment);
 	}
 	

@@ -41,6 +41,7 @@ public class ExamQuestionCategoryServiceImpl extends AbstractBaseServiceImpl<Exa
 	@Override
 	public List<ExamQuestionCategory> selectExamQuestionCategoryList(ExamQuestionCategory examQuestionCategory)
 	{
+		startPage();
 	    return examQuestionCategoryMapper.selectExamQuestionCategoryList(examQuestionCategory);
 	}
 	

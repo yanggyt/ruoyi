@@ -41,6 +41,7 @@ public class ExamQuestionItemServiceImpl extends AbstractBaseServiceImpl<ExamQue
 	@Override
 	public List<ExamQuestionItem> selectExamQuestionItemList(ExamQuestionItem examQuestionItem)
 	{
+		startPage();
 	    return examQuestionItemMapper.selectExamQuestionItemList(examQuestionItem);
 	}
 	

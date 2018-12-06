@@ -41,7 +41,8 @@ public class ${className}ServiceImpl extends AbstractBaseServiceImpl<${className
 	@Override
 	public List<${className}> select${className}List(${className} ${classname})
 	{
-	    return ${classname}Mapper.select${className}List(${classname});
+	    startPage();
+        return ${classname}Mapper.select${className}List(${classname});
 	}
 	
     /**
