@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.exam;
+package com.ruoyi.exam.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,7 +23,7 @@ import com.ruoyi.common.utils.ExcelUtil;
  * 问题点评 信息操作处理
  * 
  * @author zhujj
- * @date 2018-12-06
+ * @date 2018-12-07
  */
 @Controller
 @RequestMapping("/exam/examQuestionComment")
@@ -49,7 +49,7 @@ public class ExamQuestionCommentController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(ExamQuestionComment examQuestionComment)
 	{
-        List<ExamQuestionComment> list = examQuestionCommentService.selectExamQuestionCommentList(examQuestionComment);
+        List<ExamQuestionComment> list = examQuestionCommentService.selectExamQuestionCommentPage(examQuestionComment);
 		return getDataTable(list);
 	}
 	
@@ -85,7 +85,7 @@ public class ExamQuestionCommentController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(ExamQuestionComment examQuestionComment)
 	{		
-		return toAjax(examQuestionCommentService.insertExamQuestionComment(examQuestionComment));
+		return toAjax(examQuestionCommentService.insert(examQuestionComment));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class ExamQuestionCommentController extends BaseController
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") String id, ModelMap mmap)
 	{
-		ExamQuestionComment examQuestionComment = examQuestionCommentService.selectExamQuestionCommentById(id);
+		ExamQuestionComment examQuestionComment = examQuestionCommentService.selectById(id);
 		mmap.put("examQuestionComment", examQuestionComment);
 	    return prefix + "/edit";
 	}
@@ -108,7 +108,7 @@ public class ExamQuestionCommentController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(ExamQuestionComment examQuestionComment)
 	{		
-		return toAjax(examQuestionCommentService.updateExamQuestionComment(examQuestionComment));
+		return toAjax(examQuestionCommentService.updateById(examQuestionComment));
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class ExamQuestionCommentController extends BaseController
 	@ResponseBody
 	public AjaxResult remove(String ids)
 	{		
-		return toAjax(examQuestionCommentService.deleteExamQuestionCommentByIds(ids));
+		return toAjax(examQuestionCommentService.deleteByIds(ids));
 	}
 	
 }

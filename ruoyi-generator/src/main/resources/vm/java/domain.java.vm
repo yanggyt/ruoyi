@@ -23,7 +23,6 @@ public class ${className}
 	
 #foreach ($column in $columns)
 	/** $column.columnComment */
-	@Id
 	private $column.attrType $column.attrname;
 #end
 

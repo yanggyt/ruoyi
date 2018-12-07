@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.exam;
+package com.ruoyi.exam.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,7 +23,7 @@ import com.ruoyi.common.utils.ExcelUtil;
  * 问题 信息操作处理
  * 
  * @author zhujj
- * @date 2018-12-06
+ * @date 2018-12-07
  */
 @Controller
 @RequestMapping("/exam/examQuestion")
@@ -49,7 +49,7 @@ public class ExamQuestionController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(ExamQuestion examQuestion)
 	{
-        List<ExamQuestion> list = examQuestionService.selectExamQuestionList(examQuestion);
+        List<ExamQuestion> list = examQuestionService.selectExamQuestionPage(examQuestion);
 		return getDataTable(list);
 	}
 	
@@ -85,7 +85,7 @@ public class ExamQuestionController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(ExamQuestion examQuestion)
 	{		
-		return toAjax(examQuestionService.insertExamQuestion(examQuestion));
+		return toAjax(examQuestionService.insert(examQuestion));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class ExamQuestionController extends BaseController
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") String id, ModelMap mmap)
 	{
-		ExamQuestion examQuestion = examQuestionService.selectExamQuestionById(id);
+		ExamQuestion examQuestion = examQuestionService.selectById(id);
 		mmap.put("examQuestion", examQuestion);
 	    return prefix + "/edit";
 	}
@@ -108,7 +108,7 @@ public class ExamQuestionController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(ExamQuestion examQuestion)
 	{		
-		return toAjax(examQuestionService.updateExamQuestion(examQuestion));
+		return toAjax(examQuestionService.updateById(examQuestion));
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class ExamQuestionController extends BaseController
 	@ResponseBody
 	public AjaxResult remove(String ids)
 	{		
-		return toAjax(examQuestionService.deleteExamQuestionByIds(ids));
+		return toAjax(examQuestionService.deleteByIds(ids));
 	}
 	
 }
