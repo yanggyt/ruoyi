@@ -2,7 +2,8 @@ package com.ruoyi.exam.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.base.BaseEntity;
+
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -16,6 +17,7 @@ public class ExamQuestionCategory
 	private static final long serialVersionUID = 1L;
 	
 	/**  */
+	@Id
 	private String id;
 	/** 分类 */
 	private String name;

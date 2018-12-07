@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
+
 /**
  * 字典类型表 sys_dict_type
  * 
@@ -16,6 +18,7 @@ public class SysDictType extends BaseEntity
 
     /** 字典主键 */
     @Excel(name = "字典主键")
+    @Id
     private Long dictId;
 
     /** 字典名称 */

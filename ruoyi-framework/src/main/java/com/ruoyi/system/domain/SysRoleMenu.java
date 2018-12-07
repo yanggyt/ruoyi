@@ -3,6 +3,8 @@ package com.ruoyi.system.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.Id;
+
 /**
  * 角色和菜单关联 sys_role_menu
  * 
@@ -11,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class SysRoleMenu
 {
     /** 角色ID */
+    @Id
     private Long roleId;
     
     /** 菜单ID */

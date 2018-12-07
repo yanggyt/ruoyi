@@ -6,6 +6,8 @@ import java.util.Date;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
+
 /**
  * 系统访问记录表 sys_logininfor
  * 
@@ -17,6 +19,7 @@ public class SysLogininfor extends BaseEntity
     
     /** ID */
     @Excel(name = "序号")
+    @Id
     private Long infoId;
     
     /** 用户账号 */

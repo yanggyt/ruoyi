@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
+
 /**
  * 岗位表 sys_post
  * 
@@ -16,6 +18,7 @@ public class SysPost extends BaseEntity
 
     /** 岗位序号 */
     @Excel(name = "岗位序号")
+    @Id
     private Long postId;
 
     /** 岗位编码 */

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
+
 /**
  * 菜单权限表 sys_menu
  * 
@@ -16,6 +18,7 @@ public class SysMenu extends BaseEntity
     private static final long serialVersionUID = 1L;
     
     /** 菜单ID */
+    @Id
     private Long menuId;
     
     /** 菜单名称 */

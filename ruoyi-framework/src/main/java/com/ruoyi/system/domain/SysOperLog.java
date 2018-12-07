@@ -6,6 +6,8 @@ import java.util.Date;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
+
 /**
  * 操作日志记录表 oper_log
  * 
@@ -17,6 +19,7 @@ public class SysOperLog extends BaseEntity
 
     /** 日志主键 */
     @Excel(name = "操作序号")
+    @Id
     private Long operId;
 
     /** 操作模块 */

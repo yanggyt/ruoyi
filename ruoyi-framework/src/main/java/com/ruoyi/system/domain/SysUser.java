@@ -7,6 +7,8 @@ import java.util.List;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
+
 /**
  * 用户对象 sys_user
  * 
@@ -18,6 +20,7 @@ public class SysUser extends BaseEntity
 
     /** 用户ID */
     @Excel(name = "用户序号")
+    @Id
     private Long userId;
 
     /** 部门ID */

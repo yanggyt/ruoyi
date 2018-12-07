@@ -3,6 +3,8 @@ package com.ruoyi.system.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.Id;
+
 /**
  * 用户和岗位关联 sys_user_post
  * 
@@ -11,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class SysUserPost
 {
     /** 用户ID */
+    @Id
     private Long userId;
     
     /** 岗位ID */

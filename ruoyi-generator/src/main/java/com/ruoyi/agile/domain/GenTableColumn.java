@@ -1,9 +1,10 @@
 package com.ruoyi.agile.domain;
 
+import com.ruoyi.common.base.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
 /**
@@ -17,6 +18,7 @@ public class GenTableColumn extends BaseEntity
 	private static final long serialVersionUID = 1L;
 	
 	/** 编号 */
+	@Id
 	private String id;
 	/** 表名 */
 	private String tableName;
