@@ -86,7 +86,7 @@ public class ExamQuestionCategoryController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(ExamQuestionCategory examQuestionCategory)
 	{
-		return toAjax(examQuestionCategoryService.insertExamQuestionCategory(examQuestionCategory));
+		return toAjax(examQuestionCategoryService.insert(examQuestionCategory));
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class ExamQuestionCategoryController extends BaseController
 	@ResponseBody
 	public AjaxResult remove(String ids)
 	{
-		return toAjax(examQuestionCategoryService.deleteExamQuestionCategoryByIds(ids));
+		return toAjax(examQuestionCategoryService.deleteByIds(ids));
 	}
 
 }
