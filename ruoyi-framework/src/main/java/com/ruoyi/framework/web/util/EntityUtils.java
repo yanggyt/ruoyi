@@ -1,8 +1,10 @@
 package com.ruoyi.framework.web.util;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 
 
 /**
@@ -21,7 +23,7 @@ public class EntityUtils {
      * @param entity 实体bean
      * @author 王浩彬
      */
-    public static <T> void setCreateAndUpdatInfo(T entity) {
+    public static <T> void setCreateAndUpdateInfo(T entity) {
         setCreateInfo( entity );
         setUpdatedInfo( entity );
     }
@@ -37,7 +39,9 @@ public class EntityUtils {
             Method[] methods = entity.getClass().getMethods();
             for (Method m : methods) {
                 if (m.getName().equals( "setCreateBy" )) {
-                    m.invoke( entity, com.ruoyi.framework.web.util.ShiroUtils.getUserId() );
+                    m.invoke( entity, StrUtil.toString( com.ruoyi.framework.web.util.ShiroUtils.getUserId()) );
+                } else if (m.getName().equals( "setCreateDate" )) {
+                    m.invoke( entity, new Date() );
                 } else if (m.getName().equals( "setId" )) {
                     m.invoke( entity, RandomUtil.randomUUID() );
                 }
@@ -60,7 +64,9 @@ public class EntityUtils {
             Method[] methods = entity.getClass().getMethods();
             for (Method m : methods) {
                 if (m.getName().equals( "setUpdateBy" )) {
-                    m.invoke( entity, com.ruoyi.framework.web.util.ShiroUtils.getUserId() );
+                    m.invoke( entity, StrUtil.toString( com.ruoyi.framework.web.util.ShiroUtils.getUserId()  ));
+                } else if (m.getName().equals( "setUpdateDate" )) {
+                    m.invoke( entity, new Date() );
                 }
             }
         } catch (Exception e) {

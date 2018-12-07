@@ -58,14 +58,14 @@ public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implemen
 
     @Override
     public int insert(T entity) {
-        EntityUtils.setCreateAndUpdatInfo(entity);
+        EntityUtils.setCreateAndUpdateInfo(entity);
         return mapper.insert(entity);
     }
 
 
     @Override
     public int insertSelective(T entity) {
-        EntityUtils.setCreateAndUpdatInfo(entity);
+        EntityUtils.setUpdatedInfo(entity);
         return  mapper.insertSelective(entity);
     }
 
