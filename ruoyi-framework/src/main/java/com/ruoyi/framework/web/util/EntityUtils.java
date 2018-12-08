@@ -42,8 +42,6 @@ public class EntityUtils {
                     m.invoke( entity, StrUtil.toString( com.ruoyi.framework.web.util.ShiroUtils.getUserId()) );
                 } else if (m.getName().equals( "setCreateDate" )) {
                     m.invoke( entity, new Date() );
-                } else if (m.getName().equals( "setId" )) {
-                    m.invoke( entity, RandomUtil.randomUUID() );
                 }
 
 
