@@ -1,11 +1,11 @@
-package com.ruoyi.courseware.service.impl;
+package com.ruoyi.course.service.impl;
 
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.courseware.domain.TrainCoursewareCategory;
-import com.ruoyi.courseware.mapper.TrainCoursewareCategoryMapper;
-import com.ruoyi.courseware.service.ITrainCoursewareCategoryService;
+import com.ruoyi.course.domain.TrainCourseCategory;
+import com.ruoyi.course.mapper.TrainCourseCategoryMapper;
+import com.ruoyi.course.service.ITrainCourseCategoryService;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ import java.util.Map;
  * @author ruoyi
  */
 @Service
-public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<TrainCoursewareCategoryMapper, TrainCoursewareCategory> implements ITrainCoursewareCategoryService {
+public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<TrainCourseCategoryMapper, TrainCourseCategory> implements ITrainCourseCategoryService {
     @Autowired
-    private TrainCoursewareCategoryMapper trainCoursewareCategoryMapper;
+    private TrainCourseCategoryMapper trainCourseCategoryMapper;
     /**
      * 查询部门管理数据
      *
@@ -31,8 +31,8 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      */
     @Override
     @DataScope(tableAlias = "d")
-    public List<TrainCoursewareCategory> selectDeptList(TrainCoursewareCategory dept) {
-        return trainCoursewareCategoryMapper.selectDeptList( dept );
+    public List<TrainCourseCategory> selectDeptList(TrainCourseCategory dept) {
+        return trainCourseCategoryMapper.selectDeptList( dept );
     }
 
     /**
@@ -43,7 +43,7 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
     @Override
     public List<Map<String, Object>> selectDeptTree() {
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
-        List<TrainCoursewareCategory> deptList = selectDeptList( new TrainCoursewareCategory() );
+        List<TrainCourseCategory> deptList = selectDeptList( new TrainCourseCategory() );
         trees = getTrees( deptList, false, null );
         return trees;
     }
@@ -57,10 +57,10 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      * @param roleDeptList 角色已存在菜单列表
      * @return
      */
-    public List<Map<String, Object>> getTrees(List<TrainCoursewareCategory> deptList, boolean isCheck, List<String> roleDeptList) {
+    public List<Map<String, Object>> getTrees(List<TrainCourseCategory> deptList, boolean isCheck, List<String> roleDeptList) {
 
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
-        for (TrainCoursewareCategory dept : deptList) {
+        for (TrainCourseCategory dept : deptList) {
             if (UserConstants.DEPT_NORMAL.equals( dept.getDelFlag() )) {
                 Map<String, Object> deptMap = new HashMap<String, Object>();
                 deptMap.put( "id", dept.getId() );
@@ -86,9 +86,9 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      */
     @Override
     public int selectDeptCount(Long parentId) {
-        TrainCoursewareCategory dept = new TrainCoursewareCategory();
+        TrainCourseCategory dept = new TrainCourseCategory();
         dept.setParentId( parentId );
-        return trainCoursewareCategoryMapper.selectDeptCount( dept );
+        return trainCourseCategoryMapper.selectDeptCount( dept );
     }
 
     /**
@@ -99,7 +99,7 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      */
     @Override
     public boolean checkDeptExistUser(Long deptId) {
-        int result = trainCoursewareCategoryMapper.checkDeptExistUser( deptId );
+        int result = trainCourseCategoryMapper.checkDeptExistUser( deptId );
         return result > 0 ? true : false;
     }
 
@@ -111,7 +111,7 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      */
     @Override
     public int deleteDeptById(Long deptId) {
-        return trainCoursewareCategoryMapper.deleteDeptById( deptId );
+        return trainCourseCategoryMapper.deleteDeptById( deptId );
     }
 
     /**
@@ -121,10 +121,10 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      * @return 结果
      */
     @Override
-    public int insertDept(TrainCoursewareCategory dept) {
-        TrainCoursewareCategory info = trainCoursewareCategoryMapper.selectDeptById( dept.getParentId() );
+    public int insertDept(TrainCourseCategory dept) {
+        TrainCourseCategory info = trainCourseCategoryMapper.selectDeptById( dept.getParentId() );
         dept.setParentIds( info.getParentIds() + "," + dept.getParentId() );
-        return trainCoursewareCategoryMapper.insertDept( dept );
+        return trainCourseCategoryMapper.insertDept( dept );
     }
 
     /**
@@ -134,14 +134,14 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      * @return 结果
      */
     @Override
-    public int updateDept(TrainCoursewareCategory dept) {
-        TrainCoursewareCategory info = trainCoursewareCategoryMapper.selectDeptById( dept.getParentId() );
+    public int updateDept(TrainCourseCategory dept) {
+        TrainCourseCategory info = trainCourseCategoryMapper.selectDeptById( dept.getParentId() );
         if (StringUtils.isNotNull( info )) {
             String ancestors = info.getParentIds() + "," + dept.getParentId();
             dept.setParentIds( ancestors );
             updateDeptChildren( dept.getDeptId(), ancestors );
         }
-        return trainCoursewareCategoryMapper.updateDept( dept );
+        return trainCourseCategoryMapper.updateDept( dept );
     }
 
     /**
@@ -151,14 +151,14 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      * @param ancestors 元素列表
      */
     public void updateDeptChildren(Long deptId, String ancestors) {
-        TrainCoursewareCategory dept = new TrainCoursewareCategory();
+        TrainCourseCategory dept = new TrainCourseCategory();
         dept.setParentId( deptId );
-        List<TrainCoursewareCategory> childrens = trainCoursewareCategoryMapper.selectDeptList( dept );
-        for (TrainCoursewareCategory children : childrens) {
+        List<TrainCourseCategory> childrens = trainCourseCategoryMapper.selectDeptList( dept );
+        for (TrainCourseCategory children : childrens) {
             children.setParentIds( ancestors + "," + dept.getParentId() );
         }
         if (childrens.size() > 0) {
-            trainCoursewareCategoryMapper.updateDeptChildren( childrens );
+            trainCourseCategoryMapper.updateDeptChildren( childrens );
         }
     }
 
@@ -169,8 +169,8 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      * @return 部门信息
      */
     @Override
-    public TrainCoursewareCategory selectDeptById(Long deptId) {
-        return trainCoursewareCategoryMapper.selectDeptById( deptId );
+    public TrainCourseCategory selectDeptById(Long deptId) {
+        return trainCourseCategoryMapper.selectDeptById( deptId );
     }
 
     /**
@@ -180,9 +180,9 @@ public class TrainCoursewareCategoryServiceImpl extends AbstractBaseServiceImpl<
      * @return 结果
      */
     @Override
-    public String checkDeptNameUnique(TrainCoursewareCategory dept) {
+    public String checkDeptNameUnique(TrainCourseCategory dept) {
         Long deptId = StringUtils.isNull( dept.getDeptId() ) ? -1L : dept.getDeptId();
-        TrainCoursewareCategory info = trainCoursewareCategoryMapper.checkDeptNameUnique( dept.getName(), dept.getParentId() );
+        TrainCourseCategory info = trainCourseCategoryMapper.checkDeptNameUnique( dept.getName(), dept.getParentId() );
         if (StringUtils.isNotNull( info ) && info.getDeptId().longValue() != deptId.longValue()) {
             return UserConstants.DEPT_NAME_NOT_UNIQUE;
         }

@@ -1,11 +1,11 @@
-package com.ruoyi.courseware.controller;
+package com.ruoyi.course.controller;
 
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.courseware.domain.TrainCoursewareCategory;
-import com.ruoyi.courseware.service.ITrainCoursewareCategoryService;
+import com.ruoyi.course.domain.TrainCourseCategory;
+import com.ruoyi.course.service.ITrainCourseCategoryService;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,27 +23,27 @@ import java.util.Map;
  * @author ruoyi
  */
 @Controller
-@RequestMapping("/train/courseware/category")
-public class TrainCoursewareCategoryController extends BaseController
+@RequestMapping("/train/course/category")
+public class TrainCourseCategoryController extends BaseController
 {
-    private String prefix = "courseware/category";
+    private String prefix = "course/category";
 
     @Autowired
-    private ITrainCoursewareCategoryService trainCoursewareCategoryService;
+    private ITrainCourseCategoryService trainCourseCategoryService;
 
-    @RequiresPermissions("train:courseware:category:view")
+    @RequiresPermissions("train:course:category:view")
     @GetMapping()
     public String dept()
     {
         return prefix + "/dept";
     }
 
-    @RequiresPermissions("train:courseware:category:list")
+    @RequiresPermissions("train:course:category:list")
     @GetMapping("/list")
     @ResponseBody
-    public List<TrainCoursewareCategory> list(TrainCoursewareCategory dept)
+    public List<TrainCourseCategory> list(TrainCourseCategory dept)
     {
-        List<TrainCoursewareCategory> deptList = trainCoursewareCategoryService.selectDeptList(dept);
+        List<TrainCourseCategory> deptList = trainCourseCategoryService.selectDeptList(dept);
         return deptList;
     }
 
@@ -53,7 +53,7 @@ public class TrainCoursewareCategoryController extends BaseController
     @GetMapping("/add/{parentId}")
     public String add(@PathVariable("parentId") Long parentId, ModelMap mmap)
     {
-        mmap.put("dept", trainCoursewareCategoryService.selectDeptById(parentId));
+        mmap.put("dept", trainCourseCategoryService.selectDeptById(parentId));
         return prefix + "/add";
     }
 
@@ -61,13 +61,13 @@ public class TrainCoursewareCategoryController extends BaseController
      * 新增保存部门
      */
     @Log(title = "部门管理", businessType = BusinessType.INSERT)
-    @RequiresPermissions("train:courseware:category:add")
+    @RequiresPermissions("train:course:category:add")
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(TrainCoursewareCategory dept)
+    public AjaxResult addSave(TrainCourseCategory dept)
     {
         dept.setCreateBy(ShiroUtils.getLoginName());
-        return toAjax(trainCoursewareCategoryService.insertDept(dept));
+        return toAjax(trainCourseCategoryService.insertDept(dept));
     }
 
     /**
@@ -76,7 +76,7 @@ public class TrainCoursewareCategoryController extends BaseController
     @GetMapping("/edit/{deptId}")
     public String edit(@PathVariable("deptId") Long deptId, ModelMap mmap)
     {
-        TrainCoursewareCategory dept = trainCoursewareCategoryService.selectDeptById(deptId);
+        TrainCourseCategory dept = trainCourseCategoryService.selectDeptById(deptId);
         if (StringUtils.isNotNull(dept) && 100L == deptId)
         {
             dept.setParentName("无");
@@ -89,33 +89,33 @@ public class TrainCoursewareCategoryController extends BaseController
      * 保存
      */
     @Log(title = "部门管理", businessType = BusinessType.UPDATE)
-    @RequiresPermissions("train:courseware:category:edit")
+    @RequiresPermissions("train:course:category:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(TrainCoursewareCategory dept)
+    public AjaxResult editSave(TrainCourseCategory dept)
     {
         dept.setUpdateBy(ShiroUtils.getLoginName());
-        return toAjax(trainCoursewareCategoryService.updateDept(dept));
+        return toAjax(trainCourseCategoryService.updateDept(dept));
     }
 
     /**
      * 删除
      */
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
-    @RequiresPermissions("train:courseware:category:remove")
+    @RequiresPermissions("train:course:category:remove")
     @PostMapping("/remove/{deptId}")
     @ResponseBody
     public AjaxResult remove(@PathVariable("deptId") Long deptId)
     {
-        if (trainCoursewareCategoryService.selectDeptCount(deptId) > 0)
+        if (trainCourseCategoryService.selectDeptCount(deptId) > 0)
         {
             return error(1, "存在下级部门,不允许删除");
         }
-        if (trainCoursewareCategoryService.checkDeptExistUser(deptId))
+        if (trainCourseCategoryService.checkDeptExistUser(deptId))
         {
             return error(1, "部门存在用户,不允许删除");
         }
-        return toAjax(trainCoursewareCategoryService.deleteDeptById(deptId));
+        return toAjax(trainCourseCategoryService.deleteDeptById(deptId));
     }
 
     /**
@@ -123,9 +123,9 @@ public class TrainCoursewareCategoryController extends BaseController
      */
     @PostMapping("/checkDeptNameUnique")
     @ResponseBody
-    public String checkDeptNameUnique(TrainCoursewareCategory dept)
+    public String checkDeptNameUnique(TrainCourseCategory dept)
     {
-        return trainCoursewareCategoryService.checkDeptNameUnique(dept);
+        return trainCourseCategoryService.checkDeptNameUnique(dept);
     }
 
     /**
@@ -134,7 +134,7 @@ public class TrainCoursewareCategoryController extends BaseController
     @GetMapping("/selectDeptTree/{deptId}")
     public String selectDeptTree(@PathVariable("deptId") Long deptId, ModelMap mmap)
     {
-        mmap.put("dept", trainCoursewareCategoryService.selectDeptById(deptId));
+        mmap.put("dept", trainCourseCategoryService.selectDeptById(deptId));
         return prefix + "/tree";
     }
 
@@ -145,7 +145,7 @@ public class TrainCoursewareCategoryController extends BaseController
     @ResponseBody
     public List<Map<String, Object>> treeData()
     {
-        List<Map<String, Object>> tree = trainCoursewareCategoryService.selectDeptTree();
+        List<Map<String, Object>> tree = trainCourseCategoryService.selectDeptTree();
         return tree;
     }
 

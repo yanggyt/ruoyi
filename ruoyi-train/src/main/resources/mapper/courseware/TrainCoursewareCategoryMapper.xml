@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.courseware.mapper.TrainCoursewareCategoryMapper">
 
-	<resultMap type="TrainCoursewareCategory" id="TrainCoursewareCategoryResult">
+	<resultMap type="TrainCourseCategory" id="TrainCoursewareCategoryResult">
 		<id     property="id"     column="id"     />
 		<result property="deptId"   column="dept_id"   />
 		<result property="parentId"   column="parent_id"   />
@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by d.parent_id, d.order_num
 	</select>
 	
-	<select id="selectDeptList" parameterType="TrainCoursewareCategory" resultMap="TrainCoursewareCategoryResult">
+	<select id="selectDeptList" parameterType="TrainCourseCategory" resultMap="TrainCoursewareCategoryResult">
         <include refid="selectDeptVo"/>
         where d.del_flag = '0'
         <if test="parentId != null and parentId != 0">
@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(1) from sys_user where id = #{id} and del_flag = '0'
 	</select>
 	
-	<select id="selectDeptCount" parameterType="TrainCoursewareCategory" resultType="int">
+	<select id="selectDeptCount" parameterType="TrainCourseCategory" resultType="int">
 		select count(1) from train_courseware_category
 		where del_flag = '0'
 		<if test="id != null and id != 0"> and id = #{id} </if>
@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where d.id = #{id}
 	</select>
 	
-	<insert id="insertDept" parameterType="TrainCoursewareCategory">
+	<insert id="insertDept" parameterType="TrainCourseCategory">
  		insert into train_courseware_category(
  			<if test="id != null and id != 0">id,</if>
  			<if test="parentId != null and parentId != 0">parent_id,</if>
@@ -90,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		)
 	</insert>
 	
-	<update id="updateDept" parameterType="TrainCoursewareCategory">
+	<update id="updateDept" parameterType="TrainCourseCategory">
  		update train_courseware_category
  		<set>
  			<if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>

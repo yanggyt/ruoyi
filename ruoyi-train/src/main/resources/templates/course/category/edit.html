@@ -5,7 +5,7 @@
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-dept-edit" th:object="${dept}">
-			<input name="id" type="hidden" th:field="*{id}" />
+			<input name="deptId" type="hidden" th:field="*{deptId}" />
 			<input id="treeId" name="parentId" type="hidden" th:field="*{parentId}" />
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">上级部门：</label>
@@ -16,7 +16,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">部门名称：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="name" th:field="*{name}" id="name">
+					<input class="form-control" type="text" name="deptName" th:field="*{deptName}" id="deptName">
 				</div>
 			</div>
 			<div class="form-group">
@@ -56,25 +56,25 @@
 	</div>
 	<div th:include="include::footer"></div>
 	<script type="text/javascript">
-		var prefix = ctx + "courseware/category";
+		var prefix = ctx + "course/category";
 		
 		$("#form-dept-edit").validate({
 			rules:{
-				name:{
+				deptName:{
 					required:true,
 					remote: {
-		                url: prefix + "/checknameUnique",
+		                url: prefix + "/checkDeptNameUnique",
 		                type: "post",
 		                dataType: "json",
 		                data: {
-		                	"id": function() {
-		                        return $("#id").val();
+		                	"deptId": function() {
+		                        return $("#deptId").val();
 		                    },
 		                    "parentId": function() {
 		                        return $("input[name='parentId']").val();
 		                    },
-		        			"name": function() {
-		                        return $.common.trim($("#name").val());
+		        			"deptName": function() {
+		                        return $.common.trim($("#deptName").val());
 		                    }
 		                },
 		                dataFilter: function(data, type) {
@@ -94,7 +94,7 @@
         		},
 			},
 			messages: {
-		        "name": {
+		        "deptName": {
 		            remote: "部门已经存在"
 		        }
 		    }
@@ -108,8 +108,8 @@
 	
 		/*部门管理-修改-选择部门树*/
 		function selectDeptTree() {
-			var id = $("#treeId").val();
-			if(id > 0) {
+			var deptId = $("#treeId").val();
+			if(deptId > 0) {
 			    var options = {
 					title: '部门选择',
 					width: "380",

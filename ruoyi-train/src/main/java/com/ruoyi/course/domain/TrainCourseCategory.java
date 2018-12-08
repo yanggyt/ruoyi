@@ -1,4 +1,4 @@
-package com.ruoyi.courseware.domain;
+package com.ruoyi.course.domain;
 
 import com.ruoyi.common.base.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,7 +11,7 @@ import javax.persistence.Id;
  *
  * @author ruoyi
  */
-public class TrainCoursewareCategory extends BaseEntity
+public class TrainCourseCategory extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

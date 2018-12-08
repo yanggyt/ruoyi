@@ -19,11 +19,11 @@
     <dependencies>
 
         <!-- spring-boot-devtools -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional> <!-- 表示依赖不会传递 -->
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional> <!-- 表示依赖不会传递 -->
+        </dependency>
 
 		<!-- swagger2-->
 		<dependency>
@@ -55,6 +55,12 @@
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-vip</artifactId>
+            <version>${ruoyi.version}</version>
+        </dependency>
+        <!-- 培训系统-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-train</artifactId>
             <version>${ruoyi.version}</version>
         </dependency>
         <!-- 测试生成的代码-->

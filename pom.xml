@@ -47,6 +47,8 @@
 		<module>ruoyi-generator</module>
         <module>ruoyi-common</module>
 		<module>ruoyi-exam</module>
+		<module>ruoyi-vip</module>
+		<module>ruoyi-train</module>
 	</modules>
     <packaging>pom</packaging>
 
