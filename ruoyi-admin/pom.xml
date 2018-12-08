@@ -51,12 +51,18 @@
             <artifactId>ruoyi-exam</artifactId>
             <version>${ruoyi.version}</version>
         </dependency>
-        <!-- 测试生成的代码-->
+        <!-- 会员系统-->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-test</artifactId>
+            <artifactId>ruoyi-vip</artifactId>
             <version>${ruoyi.version}</version>
         </dependency>
+        <!-- 测试生成的代码-->
+        <!--<dependency>-->
+            <!--<groupId>com.ruoyi</groupId>-->
+            <!--<artifactId>ruoyi-test</artifactId>-->
+            <!--<version>${ruoyi.version}</version>-->
+        <!--</dependency>-->
         <!-- 定时任务
         <dependency>
             <groupId>com.ruoyi</groupId>
