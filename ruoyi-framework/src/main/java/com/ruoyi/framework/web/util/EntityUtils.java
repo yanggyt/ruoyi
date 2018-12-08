@@ -1,8 +1,5 @@
 package com.ruoyi.framework.web.util;
 
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
-
 import java.lang.reflect.Method;
 import java.util.Date;
 
@@ -39,7 +36,7 @@ public class EntityUtils {
             Method[] methods = entity.getClass().getMethods();
             for (Method m : methods) {
                 if (m.getName().equals( "setCreateBy" )) {
-                    m.invoke( entity, StrUtil.toString( com.ruoyi.framework.web.util.ShiroUtils.getUserId()) );
+                    m.invoke( entity,com.ruoyi.framework.web.util.ShiroUtils.getLoginName() );
                 } else if (m.getName().equals( "setCreateDate" )) {
                     m.invoke( entity, new Date() );
                 }
@@ -62,7 +59,7 @@ public class EntityUtils {
             Method[] methods = entity.getClass().getMethods();
             for (Method m : methods) {
                 if (m.getName().equals( "setUpdateBy" )) {
-                    m.invoke( entity, StrUtil.toString( com.ruoyi.framework.web.util.ShiroUtils.getUserId()  ));
+                    m.invoke( entity,com.ruoyi.framework.web.util.ShiroUtils.getLoginName());
                 } else if (m.getName().equals( "setUpdateDate" )) {
                     m.invoke( entity, new Date() );
                 }
