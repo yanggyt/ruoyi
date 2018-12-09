@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateDate"    column="update_date"    />
         <result property="remarks"    column="remarks"    />
         <result property="delFlag"    column="del_flag"    />
+        <result property="orderNum"    column="order_num"    />
     </resultMap>
 	
 	<sql id="selectExamQuestionCategoryVo">
-        select id, name, parent_id, parent_ids, create_by, create_date, update_by, update_date, remarks, del_flag from exam_question_category
+        select id, name, parent_id, parent_ids, create_by, create_date, update_by, update_date, remarks, del_flag,order_num from exam_question_category
     </sql>
 	
     <select id="selectExamQuestionCategoryList" parameterType="ExamQuestionCategory" resultMap="ExamQuestionCategoryResult">

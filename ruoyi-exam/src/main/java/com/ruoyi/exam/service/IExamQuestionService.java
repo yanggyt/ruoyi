@@ -50,5 +50,6 @@ public interface IExamQuestionService extends AbstractBaseService<ExamQuestion>
      * @return 结果
      */
 	public int deleteExamQuestionByIds(String ids);
-	
+
+	int insertQuestion(ExamQuestion examQuestion, String[] number, String[] content);
 }

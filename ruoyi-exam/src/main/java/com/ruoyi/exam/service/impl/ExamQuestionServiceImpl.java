@@ -1,6 +1,12 @@
 package com.ruoyi.exam.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamQuestionItem;
+import com.ruoyi.exam.mapper.ExamQuestionItemMapper;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamQuestionMapper;
@@ -19,6 +25,9 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
 {
 	@Autowired
 	private ExamQuestionMapper examQuestionMapper;
+
+	@Autowired
+	private ExamQuestionItemMapper examQuestionItemMapper;
 
 	/**
      * 查询问题信息
@@ -80,5 +89,29 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
 	{
 		return examQuestionMapper.deleteExamQuestionByIds(Convert.toStrArray(ids));
 	}
-	
+
+    @Override
+    public int insertQuestion(ExamQuestion examQuestion, String[] number, String[] content) {
+		Date date = new Date();
+		examQuestion.setCreateDate(date);
+		examQuestion.setCreateBy(ShiroUtils.getLoginName());
+		int i = examQuestionMapper.insertExamQuestion(examQuestion);
+		examQuestion.setCreateDate(null);
+		List<ExamQuestion> select = examQuestionMapper.selectExamQuestionList(examQuestion);
+		ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+		for (int i1 = 0; i1 < number.length; i1++) {
+			examQuestionItem.setContent(content[i1]);
+			examQuestionItem.setNumber(number[i1]);
+			examQuestionItem.setExamQuestionId(select.get(0).getId()+"");
+			examQuestionItem.setCreateDate(date);
+			examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
+			examQuestionItemMapper.insertExamQuestionItem(examQuestionItem);
+
+
+		}
+
+
+		return i ;
+    }
+
 }

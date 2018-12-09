@@ -1,6 +1,11 @@
-package com.ruoyi.web.controller.exam;
+package com.ruoyi.exam.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import com.ruoyi.framework.web.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,17 +46,19 @@ public class ExamQuestionCategoryController extends BaseController
 		return prefix + "/examQuestionCategory";
 	}
 
+
+
 	/**
 	 * 查询试题分类列表
 	 */
 	@RequiresPermissions("exam:examQuestionCategory:list")
-	@PostMapping("/list")
+	@GetMapping("/list")
 	@ResponseBody
-	public TableDataInfo list(ExamQuestionCategory examQuestionCategory)
+	public List<ExamQuestionCategory> list(ExamQuestionCategory examQuestionCategory)
 	{
 
 		List<ExamQuestionCategory> list = examQuestionCategoryService.selectExamQuestionCategoryList(examQuestionCategory);
-		return getDataTable(list);
+		return list;
 	}
 
 
@@ -71,9 +78,10 @@ public class ExamQuestionCategoryController extends BaseController
 	/**
 	 * 新增试题分类
 	 */
-	@GetMapping("/add")
-	public String add()
+	@GetMapping("/add/{parentId}")
+	public String add(@PathVariable("parentId") String parentId, ModelMap mmap)
 	{
+		mmap.put("examQuestionCategory", examQuestionCategoryService.selectExamQuestionCategoryById(parentId));
 		return prefix + "/add";
 	}
 
@@ -86,6 +94,8 @@ public class ExamQuestionCategoryController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(ExamQuestionCategory examQuestionCategory)
 	{
+		examQuestionCategory.setCreateBy(ShiroUtils.getLoginName());
+		examQuestionCategory.setCreateDate(new Date());
 		return toAjax(examQuestionCategoryService.insertExamQuestionCategory(examQuestionCategory));
 	}
 
@@ -122,6 +132,50 @@ public class ExamQuestionCategoryController extends BaseController
 	public AjaxResult remove(String ids)
 	{
 		return toAjax(examQuestionCategoryService.deleteExamQuestionCategoryByIds(ids));
+	}
+
+
+	/**
+	 * 选择部门树
+	 */
+	@GetMapping("/selectExamQuestionCategoryTree/{examQuestionCategoryId}")
+	public String selectDeptTree(@PathVariable("examQuestionCategoryId") String examQuestionCategoryId, ModelMap mmap)
+	{
+		mmap.put("examQuestionCategory", examQuestionCategoryService.selectExamQuestionCategoryById(examQuestionCategoryId));
+		return prefix + "/tree";
+	}
+
+
+	/**
+	 * 加载列表树
+	 */
+	@GetMapping("/treeData")
+	@ResponseBody
+	public List<Map<String, Object>> treeData()
+	{
+		List<Map<String, Object>> tree = examQuestionCategoryService.selectDeptTree();
+		return tree;
+	}
+
+
+	/**
+	 * 选择部门树
+	 */
+	@GetMapping("/treeDataForAdd")
+	@ResponseBody
+	public List<Map<String, Object>> treeDataForAdd()
+	{
+		List<Map<String, Object>> tree = examQuestionCategoryService.selectDeptTree();
+		List<Map<String, Object>> res = new ArrayList<>();
+		for (Map<String, Object> stringObjectMap : tree) {
+			String pId = stringObjectMap.get("pId").toString();
+			if(pId.equals("0")||pId.equals("1")){
+				res.add(stringObjectMap);
+			}
+
+		}
+
+		return res;
 	}
 
 }

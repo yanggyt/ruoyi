@@ -2,6 +2,8 @@ package com.ruoyi.exam.service;
 
 import com.ruoyi.exam.domain.ExamQuestionCategory;
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.framework.web.base.AbstractBaseService;
 /**
  * 试题分类 服务层
@@ -50,5 +52,6 @@ public interface IExamQuestionCategoryService extends AbstractBaseService<ExamQu
      * @return 结果
      */
 	public int deleteExamQuestionCategoryByIds(String ids);
-	
+
+    List<Map<String,Object>> selectDeptTree();
 }

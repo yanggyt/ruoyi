@@ -16,11 +16,11 @@ public class ExamQuestionCategory
 	private static final long serialVersionUID = 1L;
 	
 	/**  */
-	private String id;
+	private Long id;
 	/** 分类 */
 	private String name;
 	/**  */
-	private String parentId;
+	private Long parentId;
 	/**  */
 	private String parentIds;
 	/** 创建者 */
@@ -36,12 +36,22 @@ public class ExamQuestionCategory
 	/** 删除标记 */
 	private String delFlag;
 
-	public void setId(String id) 
+	private String orderNum;
+
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	public void setId(Long id)
 	{
 		this.id = id;
 	}
 
-	public String getId() 
+	public Long getId()
 	{
 		return id;
 	}
@@ -54,12 +64,12 @@ public class ExamQuestionCategory
 	{
 		return name;
 	}
-	public void setParentId(String parentId) 
+	public void setParentId(Long parentId)
 	{
 		this.parentId = parentId;
 	}
 
-	public String getParentId() 
+	public Long getParentId()
 	{
 		return parentId;
 	}

@@ -1,15 +1,12 @@
-package com.ruoyi.web.controller.exam;
+package com.ruoyi.exam.controller;
 
+import java.util.Enumeration;
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.exam.domain.ExamQuestion;
@@ -18,6 +15,8 @@ import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.utils.ExcelUtil;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 问题 信息操作处理
@@ -39,6 +38,14 @@ public class ExamQuestionController extends BaseController
 	public String examQuestion()
 	{
 	    return prefix + "/examQuestion";
+	}
+
+	@GetMapping("/choiceadd/{id}")
+	public String addChoiceUrl(@PathVariable("id") String id, ModelMap mmap)
+	{
+		mmap.put("categoryId",id);
+		mmap.put("type",1);
+		return prefix + "/choiceadd";
 	}
 	
 	/**
@@ -83,9 +90,11 @@ public class ExamQuestionController extends BaseController
 	@Log(title = "问题", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(ExamQuestion examQuestion)
-	{		
-		return toAjax(examQuestionService.insertExamQuestion(examQuestion));
+	public AjaxResult addSave(ExamQuestion examQuestion,@RequestParam(value = "number", required = true) String[] number,
+							  @RequestParam(value = "content", required = true) String[] content)
+	{
+
+		return toAjax(examQuestionService.insertQuestion(examQuestion,number,content));
 	}
 
 	/**
