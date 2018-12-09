@@ -3,6 +3,8 @@ package com.ruoyi.generator.domain;
 import com.ruoyi.common.json.JSON;
 import com.ruoyi.common.utils.StringUtils;
 
+import javax.persistence.Id;
+
 /**
  * ry数据库表列信息
  * 
@@ -11,6 +13,7 @@ import com.ruoyi.common.utils.StringUtils;
 public class ColumnInfo
 {
     /** 字段名称 */
+    @Id
     private String columnName;
 
     /** 字段类型 */

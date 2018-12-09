@@ -49,7 +49,7 @@ public class ${className}Controller extends BaseController
 	@ResponseBody
 	public TableDataInfo list(${className} ${classname})
 	{
-        List<${className}> list = ${classname}Service.select${className}List(${classname});
+        List<${className}> list = ${classname}Service.select${className}Page(${classname});
 		return getDataTable(list);
 	}
 	
@@ -85,7 +85,7 @@ public class ${className}Controller extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(${className} ${classname})
 	{		
-		return toAjax(${classname}Service.insert${className}(${classname}));
+		return toAjax(${classname}Service.insert(${classname}));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class ${className}Controller extends BaseController
 	@GetMapping("/edit/{${primaryKey.attrname}}")
 	public String edit(@PathVariable("${primaryKey.attrname}") ${primaryKey.attrType} ${primaryKey.attrname}, ModelMap mmap)
 	{
-		${className} ${classname} = ${classname}Service.select${className}ById(${primaryKey.attrname});
+		${className} ${classname} = ${classname}Service.selectById(${primaryKey.attrname});
 		mmap.put("${classname}", ${classname});
 	    return prefix + "/edit";
 	}
@@ -108,7 +108,7 @@ public class ${className}Controller extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(${className} ${classname})
 	{		
-		return toAjax(${classname}Service.update${className}(${classname}));
+		return toAjax(${classname}Service.updateById(${classname}));
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class ${className}Controller extends BaseController
 	@ResponseBody
 	public AjaxResult remove(String ids)
 	{		
-		return toAjax(${classname}Service.delete${className}ByIds(ids));
+		return toAjax(${classname}Service.deleteByIds(ids));
 	}
 	
 }

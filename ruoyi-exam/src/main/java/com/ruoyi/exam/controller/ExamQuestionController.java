@@ -16,7 +16,6 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.utils.ExcelUtil;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 问题 信息操作处理

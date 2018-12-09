@@ -37,12 +37,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
          </where>
     </select>
-    
+
     <select id="selectExamQuestionCategoryById" parameterType="String" resultMap="ExamQuestionCategoryResult">
         <include refid="selectExamQuestionCategoryVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertExamQuestionCategory" parameterType="ExamQuestionCategory">
         insert into exam_question_category
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
          </trim>
     </insert>
-	 
+
     <update id="updateExamQuestionCategory" parameterType="ExamQuestionCategory">
         update exam_question_category
         <trim prefix="SET" suffixOverrides=",">
@@ -90,12 +90,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteExamQuestionCategoryById" parameterType="String">
         delete from exam_question_category where id = #{id}
     </delete>
-	
+
     <delete id="deleteExamQuestionCategoryByIds" parameterType="String">
-        delete from exam_question_category where id in 
+        delete from exam_question_category where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

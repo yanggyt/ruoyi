@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.exam;
+package com.ruoyi.exam.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,7 +23,7 @@ import com.ruoyi.common.utils.ExcelUtil;
  * 问题选项 信息操作处理
  * 
  * @author zhujj
- * @date 2018-12-06
+ * @date 2018-12-07
  */
 @Controller
 @RequestMapping("/exam/examQuestionItem")
@@ -49,7 +49,7 @@ public class ExamQuestionItemController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(ExamQuestionItem examQuestionItem)
 	{
-        List<ExamQuestionItem> list = examQuestionItemService.selectExamQuestionItemList(examQuestionItem);
+        List<ExamQuestionItem> list = examQuestionItemService.selectExamQuestionItemPage(examQuestionItem);
 		return getDataTable(list);
 	}
 	
@@ -85,7 +85,7 @@ public class ExamQuestionItemController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(ExamQuestionItem examQuestionItem)
 	{		
-		return toAjax(examQuestionItemService.insertExamQuestionItem(examQuestionItem));
+		return toAjax(examQuestionItemService.insert(examQuestionItem));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class ExamQuestionItemController extends BaseController
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") String id, ModelMap mmap)
 	{
-		ExamQuestionItem examQuestionItem = examQuestionItemService.selectExamQuestionItemById(id);
+		ExamQuestionItem examQuestionItem = examQuestionItemService.selectById(id);
 		mmap.put("examQuestionItem", examQuestionItem);
 	    return prefix + "/edit";
 	}
@@ -108,7 +108,7 @@ public class ExamQuestionItemController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(ExamQuestionItem examQuestionItem)
 	{		
-		return toAjax(examQuestionItemService.updateExamQuestionItem(examQuestionItem));
+		return toAjax(examQuestionItemService.updateById(examQuestionItem));
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class ExamQuestionItemController extends BaseController
 	@ResponseBody
 	public AjaxResult remove(String ids)
 	{		
-		return toAjax(examQuestionItemService.deleteExamQuestionItemByIds(ids));
+		return toAjax(examQuestionItemService.deleteByIds(ids));
 	}
 	
 }

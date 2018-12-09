@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
+
 /**
  * 角色表 sys_role
  * 
@@ -16,6 +18,7 @@ public class SysRole extends BaseEntity
 
     /** 角色ID */
     @Excel(name = "角色序号")
+    @Id
     private Long roleId;
 
     /** 角色名称 */

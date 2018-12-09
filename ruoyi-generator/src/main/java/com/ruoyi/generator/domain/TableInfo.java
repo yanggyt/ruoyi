@@ -4,6 +4,8 @@ import java.util.List;
 import com.ruoyi.common.base.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
 
+import javax.persistence.Id;
+
 /**
  * ry 数据库表
  * 
@@ -14,6 +16,7 @@ public class TableInfo extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 表名称 */
+    @Id
     private String tableName;
 
     /** 表描述 */

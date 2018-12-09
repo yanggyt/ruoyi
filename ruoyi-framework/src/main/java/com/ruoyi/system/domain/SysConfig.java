@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
+import javax.persistence.Id;
+
 /**
  * 参数配置表 sys_config
  * 
@@ -16,6 +18,7 @@ public class SysConfig extends BaseEntity
 
     /** 参数主键 */
     @Excel(name = "参数主键")
+    @Id
     private Long configId;
 
     /** 参数名称 */

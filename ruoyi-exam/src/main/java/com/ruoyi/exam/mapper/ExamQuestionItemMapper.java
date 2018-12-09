@@ -14,12 +14,12 @@ public interface ExamQuestionItemMapper  extends MyMapper<ExamQuestionItem>
 {
 	/**
      * 查询问题选项信息
-     * 
+     *
      * @param id 问题选项ID
      * @return 问题选项信息
      */
 	public ExamQuestionItem selectExamQuestionItemById(String id);
-	
+
 	/**
      * 查询问题选项列表
      * 
@@ -30,34 +30,34 @@ public interface ExamQuestionItemMapper  extends MyMapper<ExamQuestionItem>
 	
 	/**
      * 新增问题选项
-     * 
+     *
      * @param examQuestionItem 问题选项信息
      * @return 结果
      */
 	public int insertExamQuestionItem(ExamQuestionItem examQuestionItem);
-	
+
 	/**
      * 修改问题选项
-     * 
+     *
      * @param examQuestionItem 问题选项信息
      * @return 结果
      */
 	public int updateExamQuestionItem(ExamQuestionItem examQuestionItem);
-	
+
 	/**
      * 删除问题选项
-     * 
+     *
      * @param id 问题选项ID
      * @return 结果
      */
 	public int deleteExamQuestionItemById(String id);
-	
+
 	/**
      * 批量删除问题选项
-     * 
+     *
      * @param ids 需要删除的数据ID
      * @return 结果
      */
 	public int deleteExamQuestionItemByIds(String[] ids);
-	
+
 }

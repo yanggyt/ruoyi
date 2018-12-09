@@ -2,9 +2,6 @@ package com.ruoyi.agile.mapper;
 
 import com.ruoyi.agile.domain.GenTable;
 import com.ruoyi.framework.web.base.MyMapper;
-import com.ruoyi.generator.domain.TableInfo;
-
-import java.util.List;
 
 /**
  * 代码生成 数据层
