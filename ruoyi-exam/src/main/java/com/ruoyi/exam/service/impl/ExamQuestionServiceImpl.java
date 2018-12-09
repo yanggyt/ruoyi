@@ -99,8 +99,7 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
 		examQuestion.setCreateDate(null);
 		List<ExamQuestion> select = examQuestionMapper.selectExamQuestionList(examQuestion);
 		ExamQuestionItem examQuestionItem = new ExamQuestionItem();
-		for (int i1 = 0; i1 < number.length; i1++) {
-			examQuestionItem.setContent(content[i1]);
+		for (int i1 = 0; i1 < number.length; i1++) {examQuestionItem.setContent(content[i1]);
 			examQuestionItem.setNumber(number[i1]);
 			examQuestionItem.setExamQuestionId(select.get(0).getId()+"");
 			examQuestionItem.setCreateDate(date);
