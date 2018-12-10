@@ -113,7 +113,7 @@
     function addOption(){
         $("#addOption").before(' <div class="form-group update1"  id="div'+item[index]+'"> <label class="col-sm-3 control-label"></label> <div class="col-sm-1"> ' +
             '<input  style="padding: 6px 10px" id="number'+item[index]+'" name="number" class="form-control update2" type="text" value="'+item[index]+'" readonly> ' +
-            '</div> <div class="col-sm-7"> <input name="content" class="form-control" type="text"> </div> <div class="col-sm-1"> <a  style="text-align: center;color: #999;border: 1px #ccc dashed;display:block;height: 34px;line-height: 34px" href="javascript:deleteOption(\''+item[index++]+'\');">X</a> </div></div>')
+            '</div> <div class="col-sm-7"> <input name="content" class="form-control" type="text"> </div> <div class="col-sm-1"> <a  class="update3" style="text-align: center;color: #999;border: 1px #ccc dashed;display:block;height: 34px;line-height: 34px" href="javascript:deleteOption(\''+item[index++]+'\');">X</a> </div></div>')
     }
 
     function deleteOption(id){
@@ -122,12 +122,17 @@
         index--;
         var index1 = 0;
         var index2 = 0;
+        var index3 = 0
         $(".update1").each(function(){
             $(this).attr("id","div"+item[index1++])
         })
         $(".update2").each(function(){
             $(this).attr("value",item[index2++])
         })
+        $(".update3").each(function(){
+            $(this).attr("href",'javascript:deleteOption(\''+item[index3++]+'\');');
+        })
+
 
     }
 </script>
