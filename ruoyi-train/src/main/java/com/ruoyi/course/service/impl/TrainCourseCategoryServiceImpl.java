@@ -16,18 +16,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 部门管理 服务实现
+ * 课程分类管理 服务实现
  *
  * @author ruoyi
  */
 @Service
 public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<TrainCourseCategoryMapper, TrainCourseCategory> implements ITrainCourseCategoryService {
+
     @Autowired
     private TrainCourseCategoryMapper trainCourseCategoryMapper;
+
     /**
-     * 查询部门管理数据
+     * 查询课程分类管理数据
      *
-     * @return 部门信息集合
+     * @return 课程分类信息集合
      */
     @Override
     @DataScope(tableAlias = "d")
@@ -36,23 +38,22 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     }
 
     /**
-     * 查询部门管理树
+     * 查询课程分类管理树
      *
-     * @return 所有部门信息
+     * @return 所有课程分类信息
      */
     @Override
     public List<Map<String, Object>> selectDeptTree() {
-        List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
         List<TrainCourseCategory> deptList = selectDeptList( new TrainCourseCategory() );
-        trees = getTrees( deptList, false, null );
+        List<Map<String, Object>> trees = getTrees( deptList, false, null );
         return trees;
     }
 
 
     /**
-     * 对象转部门树
+     * 对象转课程分类树
      *
-     * @param deptList     部门列表
+     * @param deptList     课程分类列表
      * @param isCheck      是否需要选中
      * @param roleDeptList 角色已存在菜单列表
      * @return
@@ -79,9 +80,9 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     }
 
     /**
-     * 查询部门人数
+     * 查询课程分类人数
      *
-     * @param parentId 部门ID
+     * @param parentId 课程分类ID
      * @return 结果
      */
     @Override
@@ -92,9 +93,9 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     }
 
     /**
-     * 查询部门是否存在用户
+     * 查询课程分类是否存在用户
      *
-     * @param deptId 部门ID
+     * @param deptId 课程分类ID
      * @return 结果 true 存在 false 不存在
      */
     @Override
@@ -104,9 +105,9 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     }
 
     /**
-     * 删除部门管理信息
+     * 删除课程分类管理信息
      *
-     * @param deptId 部门ID
+     * @param deptId 课程分类ID
      * @return 结果
      */
     @Override
@@ -115,9 +116,9 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     }
 
     /**
-     * 新增保存部门信息
+     * 新增保存课程分类信息
      *
-     * @param dept 部门信息
+     * @param dept 课程分类信息
      * @return 结果
      */
     @Override
@@ -128,9 +129,9 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     }
 
     /**
-     * 修改保存部门信息
+     * 修改保存课程分类信息
      *
-     * @param dept 部门信息
+     * @param dept 课程分类信息
      * @return 结果
      */
     @Override
@@ -147,7 +148,7 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     /**
      * 修改子元素关系
      *
-     * @param deptId    部门ID
+     * @param deptId    课程分类ID
      * @param ancestors 元素列表
      */
     public void updateDeptChildren(Long deptId, String ancestors) {
@@ -163,10 +164,10 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     }
 
     /**
-     * 根据部门ID查询信息
+     * 根据课程分类ID查询信息
      *
-     * @param deptId 部门ID
-     * @return 部门信息
+     * @param deptId 课程分类ID
+     * @return 课程分类信息
      */
     @Override
     public TrainCourseCategory selectDeptById(Long deptId) {
@@ -174,9 +175,9 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
     }
 
     /**
-     * 校验部门名称是否唯一
+     * 校验课程分类名称是否唯一
      *
-     * @param dept 部门信息
+     * @param dept 课程分类信息
      * @return 结果
      */
     @Override

@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.Id;
 
 /**
- * 部门表 sys_dept
+ * 课件分类表 sys_dept
  *
  * @author ruoyi
  */
@@ -19,16 +19,16 @@ public class TrainCoursewareCategory extends BaseEntity
     @Id
     private Long id;
     /**
-     * 部门
+     * 课件分类
      */
     private Long deptId;
-    /** 父部门ID */
+    /** 父课件分类ID */
     private Long parentId;
 
     /** 祖级列表 */
     private String parentIds;
 
-    /** 部门名称 */
+    /** 课件分类名称 */
     private String name;
 
     /** 显示顺序 */
@@ -37,7 +37,7 @@ public class TrainCoursewareCategory extends BaseEntity
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    /** 父部门名称 */
+    /** 父课件分类名称 */
     private String parentName;
 
     public Long getId() {
