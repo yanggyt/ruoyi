@@ -5507,8 +5507,8 @@ del {
     }
 
     20% {
-        -webkit-transform: scaleY (1);
-        transform: scaleY (1);
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
     }
 }
 
@@ -5556,18 +5556,18 @@ del {
 }
 
 @-webkit-keyframes sk-wanderingCubeMove {
-    25% {
+    25%{
         -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5);
         transform: translateX(42px) rotate(-90deg) scale(0.5);
     }
 
-    50% {
+    50%{
         /* Hack to make FF rotate in the right direction */
         -webkit-transform: translateX(42px)  translateY(42px)  rotate(-179deg);
         transform: translateX(42px)  translateY(42px)  rotate(-179deg);
     }
 
-50 .1 % {
+50.1% {
     -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg);
     transform: translateX(42px) translateY(42px) rotate(-180deg);
 }
@@ -6661,7 +6661,7 @@ body.rtls .top-navigation .footer.fixed, body.rtls.top-navigation .footer.fixed 
 }
 /*
  *
- *   SKIN blue 云企智联管理系统
+ *   SKIN blue 云企互联管理系统
  *   NAME - blue/purple
  *
 */
