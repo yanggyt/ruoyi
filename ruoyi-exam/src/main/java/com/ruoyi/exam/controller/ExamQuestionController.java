@@ -1,15 +1,12 @@
 package com.ruoyi.exam.controller;
 
+import java.util.Enumeration;
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.exam.domain.ExamQuestion;
@@ -19,11 +16,12 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.utils.ExcelUtil;
 
+
 /**
  * 问题 信息操作处理
  * 
  * @author zhujj
- * @date 2018-12-07
+ * @date 2018-12-06
  */
 @Controller
 @RequestMapping("/exam/examQuestion")
@@ -40,6 +38,14 @@ public class ExamQuestionController extends BaseController
 	{
 	    return prefix + "/examQuestion";
 	}
+
+	@GetMapping("/choiceadd/{id}")
+	public String addChoiceUrl(@PathVariable("id") String id, ModelMap mmap)
+	{
+		mmap.put("categoryId",id);
+		mmap.put("type",1);
+		return prefix + "/choiceadd";
+	}
 	
 	/**
 	 * 查询问题列表
@@ -49,7 +55,7 @@ public class ExamQuestionController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(ExamQuestion examQuestion)
 	{
-        List<ExamQuestion> list = examQuestionService.selectExamQuestionPage(examQuestion);
+        List<ExamQuestion> list = examQuestionService.selectExamQuestionList(examQuestion);
 		return getDataTable(list);
 	}
 	
@@ -83,9 +89,11 @@ public class ExamQuestionController extends BaseController
 	@Log(title = "问题", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(ExamQuestion examQuestion)
-	{		
-		return toAjax(examQuestionService.insert(examQuestion));
+	public AjaxResult addSave(ExamQuestion examQuestion,@RequestParam(value = "number", required = true) String[] number,
+							  @RequestParam(value = "content", required = true) String[] content)
+	{
+
+		return toAjax(examQuestionService.insertQuestion(examQuestion,number,content));
 	}
 
 	/**
@@ -94,7 +102,7 @@ public class ExamQuestionController extends BaseController
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") String id, ModelMap mmap)
 	{
-		ExamQuestion examQuestion = examQuestionService.selectById(id);
+		ExamQuestion examQuestion = examQuestionService.selectExamQuestionById(id);
 		mmap.put("examQuestion", examQuestion);
 	    return prefix + "/edit";
 	}
@@ -108,7 +116,7 @@ public class ExamQuestionController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(ExamQuestion examQuestion)
 	{		
-		return toAjax(examQuestionService.updateById(examQuestion));
+		return toAjax(examQuestionService.updateExamQuestion(examQuestion));
 	}
 	
 	/**
@@ -120,7 +128,7 @@ public class ExamQuestionController extends BaseController
 	@ResponseBody
 	public AjaxResult remove(String ids)
 	{		
-		return toAjax(examQuestionService.deleteByIds(ids));
+		return toAjax(examQuestionService.deleteExamQuestionByIds(ids));
 	}
 	
 }

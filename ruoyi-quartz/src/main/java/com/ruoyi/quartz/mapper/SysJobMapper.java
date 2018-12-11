@@ -1,6 +1,8 @@
 package com.ruoyi.quartz.mapper;
 
 import java.util.List;
+
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.system.domain.SysConfig;
 import tk.mybatis.mapper.common.Mapper;
@@ -10,8 +12,7 @@ import tk.mybatis.mapper.common.Mapper;
  * 
  * @author ruoyi
  */
-public interface SysJobMapper extends Mapper<SysJob>
-{
+public interface SysJobMapper extends Mapper<SysJob>,MyMapper<SysJob> {
     /**
      * 查询调度任务日志集合
      * 

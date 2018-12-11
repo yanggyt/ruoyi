@@ -478,6 +478,10 @@
             	var url = $.common.isEmpty(id) ? $.table._option.createUrl : $.table._option.createUrl.replace("{id}", id);
                 $.modal.open("添加" + $.table._option.modalName, url);
             },
+			//跳转自定义
+            jumpModeltoUrl: function(modelName,url) {
+                $.modal.open(modelName, url);
+            },
             // 修改信息
             edit: function(id) {
             	var url = "/404.html";

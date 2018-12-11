@@ -2,6 +2,7 @@ package com.ruoyi.quartz.mapper;
 
 import java.util.List;
 
+import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.domain.SysJobLog;
 import tk.mybatis.mapper.common.Mapper;
@@ -11,8 +12,7 @@ import tk.mybatis.mapper.common.Mapper;
  * 
  * @author ruoyi
  */
-public interface SysJobLogMapper extends Mapper<SysJobLog>
-{
+public interface SysJobLogMapper extends Mapper<SysJobLog>,MyMapper<SysJobLog> {
     /**
      * 获取quartz调度器日志的计划任务
      * 
