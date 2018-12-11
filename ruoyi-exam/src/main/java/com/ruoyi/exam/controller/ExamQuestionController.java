@@ -46,6 +46,22 @@ public class ExamQuestionController extends BaseController
 		mmap.put("type",1);
 		return prefix + "/choiceadd";
 	}
+
+	@GetMapping("/morechoiceadd/{id}")
+	public String addMoreChoiceUrl(@PathVariable("id") String id, ModelMap mmap)
+	{
+		mmap.put("categoryId",id);
+		mmap.put("type",2);
+		return prefix + "/morechoiceadd";
+	}
+
+	@GetMapping("/judgeadd/{id}")
+	public String JudgeUrl(@PathVariable("id") String id, ModelMap mmap)
+	{
+		mmap.put("categoryId",id);
+		mmap.put("type",3);
+		return prefix + "/judgeadd";
+	}
 	
 	/**
 	 * 查询问题列表

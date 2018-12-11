@@ -62,7 +62,13 @@
 
         <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
             <a class="btn btn-success" onclick="addChoiceQuestion()" shiro:hasPermission="exam:examQuestion:add">
-                <i class="fa fa-plus"></i> 添加选择题
+                <i class="fa fa-plus"></i> 添加单选题
+            </a>
+            <a class="btn btn-success" onclick="addMoreChoiceQuestion()" shiro:hasPermission="exam:examQuestion:add">
+                <i class="fa fa-plus"></i> 添加多选题
+            </a>
+            <a class="btn btn-success" onclick="addJudgeQuestion()" shiro:hasPermission="exam:examQuestion:add">
+                <i class="fa fa-plus"></i> 添加判断题
             </a>
             <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()"
                shiro:hasPermission="exam:examQuestion:edit">
@@ -219,7 +225,25 @@
             return;
         }
         var url = prefix + "/choiceadd/"+$("#categoryId").val();
-        $.operate.jumpModeltoUrl("添加选择题",url);
+        $.operate.jumpModeltoUrl("添加单选题",url);
+    }
+
+    function addMoreChoiceQuestion(){
+        if($("#categoryId").val() == null||$("#categoryId").val() == ''){
+            alert("请选择题库！")
+            return;
+        }
+        var url = prefix + "/morechoiceadd/"+$("#categoryId").val();
+        $.operate.jumpModeltoUrl("添加多选题",url);
+    }
+
+    function addJudgeQuestion(){
+        if($("#categoryId").val() == null||$("#categoryId").val() == ''){
+            alert("请选择题库！")
+            return;
+        }
+        var url = prefix + "/judgeadd/"+$("#categoryId").val();
+        $.operate.jumpModeltoUrl("添加多选题",url);
     }
 </script>
 </body>
