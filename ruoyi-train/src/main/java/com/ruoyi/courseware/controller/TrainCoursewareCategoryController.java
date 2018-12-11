@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 部门信息
+ * 课件分类信息
  * 
  * @author ruoyi
  */
@@ -48,7 +48,7 @@ public class TrainCoursewareCategoryController extends BaseController
     }
 
     /**
-     * 新增部门
+     * 新增课件分类
      */
     @GetMapping("/add/{parentId}")
     public String add(@PathVariable("parentId") Long parentId, ModelMap mmap)
@@ -58,9 +58,9 @@ public class TrainCoursewareCategoryController extends BaseController
     }
 
     /**
-     * 新增保存部门
+     * 新增保存课件分类
      */
-    @Log(title = "部门管理", businessType = BusinessType.INSERT)
+    @Log(title = "课件分类管理", businessType = BusinessType.INSERT)
     @RequiresPermissions("train:courseware:category:add")
     @PostMapping("/add")
     @ResponseBody
@@ -88,7 +88,7 @@ public class TrainCoursewareCategoryController extends BaseController
     /**
      * 保存
      */
-    @Log(title = "部门管理", businessType = BusinessType.UPDATE)
+    @Log(title = "课件分类管理", businessType = BusinessType.UPDATE)
     @RequiresPermissions("train:courseware:category:edit")
     @PostMapping("/edit")
     @ResponseBody
@@ -101,7 +101,7 @@ public class TrainCoursewareCategoryController extends BaseController
     /**
      * 删除
      */
-    @Log(title = "部门管理", businessType = BusinessType.DELETE)
+    @Log(title = "课件分类管理", businessType = BusinessType.DELETE)
     @RequiresPermissions("train:courseware:category:remove")
     @PostMapping("/remove/{deptId}")
     @ResponseBody
@@ -109,17 +109,17 @@ public class TrainCoursewareCategoryController extends BaseController
     {
         if (trainCoursewareCategoryService.selectDeptCount(deptId) > 0)
         {
-            return error(1, "存在下级部门,不允许删除");
+            return error(1, "存在下级课件分类,不允许删除");
         }
         if (trainCoursewareCategoryService.checkDeptExistUser(deptId))
         {
-            return error(1, "部门存在用户,不允许删除");
+            return error(1, "课件分类存在用户,不允许删除");
         }
         return toAjax(trainCoursewareCategoryService.deleteDeptById(deptId));
     }
 
     /**
-     * 校验部门名称
+     * 校验课件分类名称
      */
     @PostMapping("/checkDeptNameUnique")
     @ResponseBody
@@ -129,7 +129,7 @@ public class TrainCoursewareCategoryController extends BaseController
     }
 
     /**
-     * 选择部门树
+     * 选择课件分类树
      */
     @GetMapping("/selectDeptTree/{deptId}")
     public String selectDeptTree(@PathVariable("deptId") Long deptId, ModelMap mmap)
@@ -139,7 +139,7 @@ public class TrainCoursewareCategoryController extends BaseController
     }
 
     /**
-     * 加载部门列表树
+     * 加载课件分类列表树
      */
     @GetMapping("/treeData")
     @ResponseBody

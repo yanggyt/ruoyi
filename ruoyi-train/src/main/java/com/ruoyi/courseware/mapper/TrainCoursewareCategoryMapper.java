@@ -7,56 +7,56 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 部门管理 数据层
+ * 课件分类管理 数据层
  *
  * @author ruoyi
  */
 public interface TrainCoursewareCategoryMapper extends MyMapper<TrainCoursewareCategory>
 {
     /**
-     * 查询部门人数
+     * 查询课件分类人数
      *
-     * @param dept 部门信息
+     * @param dept 课件分类信息
      * @return 结果
      */
     public int selectDeptCount(TrainCoursewareCategory dept);
 
     /**
-     * 查询部门是否存在用户
+     * 查询课件分类是否存在用户
      *
-     * @param deptId 部门ID
+     * @param deptId 课件分类ID
      * @return 结果
      */
     public int checkDeptExistUser(Long deptId);
 
     /**
-     * 查询部门管理数据
+     * 查询课件分类管理数据
      *
-     * @param dept 部门信息
-     * @return 部门信息集合
+     * @param dept 课件分类信息
+     * @return 课件分类信息集合
      */
     public List<TrainCoursewareCategory> selectDeptList(TrainCoursewareCategory dept);
 
     /**
-     * 删除部门管理信息
+     * 删除课件分类管理信息
      *
-     * @param deptId 部门ID
+     * @param deptId 课件分类ID
      * @return 结果
      */
     public int deleteDeptById(Long deptId);
 
     /**
-     * 新增部门信息
+     * 新增课件分类信息
      *
-     * @param dept 部门信息
+     * @param dept 课件分类信息
      * @return 结果
      */
     public int insertDept(TrainCoursewareCategory dept);
 
     /**
-     * 修改部门信息
+     * 修改课件分类信息
      *
-     * @param dept 部门信息
+     * @param dept 课件分类信息
      * @return 结果
      */
     public int updateDept(TrainCoursewareCategory dept);
@@ -70,27 +70,27 @@ public interface TrainCoursewareCategoryMapper extends MyMapper<TrainCoursewareC
     public int updateDeptChildren(@Param("depts") List<TrainCoursewareCategory> depts);
 
     /**
-     * 根据部门ID查询信息
+     * 根据课件分类ID查询信息
      *
-     * @param deptId 部门ID
-     * @return 部门信息
+     * @param deptId 课件分类ID
+     * @return 课件分类信息
      */
     public TrainCoursewareCategory selectDeptById(Long deptId);
 
     /**
-     * 校验部门名称是否唯一
+     * 校验课件分类名称是否唯一
      *
-     * @param deptName 部门名称
-     * @param parentId 父部门ID
+     * @param deptName 课件分类名称
+     * @param parentId 父课件分类ID
      * @return 结果
      */
     public TrainCoursewareCategory checkDeptNameUnique(@Param("deptName") String deptName, @Param("parentId") Long parentId);
 
     /**
-     * 根据角色ID查询部门
+     * 根据角色ID查询课件分类
      *
      * @param roleId 角色ID
-     * @return 部门列表
+     * @return 课件分类列表
      */
     public List<String> selectRoleDeptTree(Long roleId);
 }

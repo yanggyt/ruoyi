@@ -7,81 +7,81 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 部门管理 服务层
+ * 课件分类管理 服务层
  * 
  * @author ruoyi
  */
 public interface ITrainCoursewareCategoryService extends AbstractBaseService<TrainCoursewareCategory>
 {
     /**
-     * 查询部门管理数据
+     * 查询课件分类管理数据
      * 
-     * @param dept 部门信息
-     * @return 部门信息集合
+     * @param dept 课件分类信息
+     * @return 课件分类信息集合
      */
     public List<TrainCoursewareCategory> selectDeptList(TrainCoursewareCategory dept);
 
     /**
-     * 查询部门管理树
+     * 查询课件分类管理树
      * 
-     * @return 所有部门信息
+     * @return 所有课件分类信息
      */
     public List<Map<String, Object>> selectDeptTree();
 
 
 
     /**
-     * 查询部门人数
+     * 查询课件分类人数
      * 
-     * @param parentId 父部门ID
+     * @param parentId 父课件分类ID
      * @return 结果
      */
     public int selectDeptCount(Long parentId);
 
     /**
-     * 查询部门是否存在用户
+     * 查询课件分类是否存在用户
      * 
-     * @param deptId 部门ID
+     * @param deptId 课件分类ID
      * @return 结果 true 存在 false 不存在
      */
     public boolean checkDeptExistUser(Long deptId);
 
     /**
-     * 删除部门管理信息
+     * 删除课件分类管理信息
      * 
-     * @param deptId 部门ID
+     * @param deptId 课件分类ID
      * @return 结果
      */
     public int deleteDeptById(Long deptId);
 
     /**
-     * 新增保存部门信息
+     * 新增保存课件分类信息
      * 
-     * @param dept 部门信息
+     * @param dept 课件分类信息
      * @return 结果
      */
     public int insertDept(TrainCoursewareCategory dept);
 
     /**
-     * 修改保存部门信息
+     * 修改保存课件分类信息
      * 
-     * @param dept 部门信息
+     * @param dept 课件分类信息
      * @return 结果
      */
     public int updateDept(TrainCoursewareCategory dept);
 
     /**
-     * 根据部门ID查询信息
+     * 根据课件分类ID查询信息
      * 
-     * @param deptId 部门ID
-     * @return 部门信息
+     * @param deptId 课件分类ID
+     * @return 课件分类信息
      */
     public TrainCoursewareCategory selectDeptById(Long deptId);
 
     /**
-     * 校验部门名称是否唯一
+     * 校验课件分类名称是否唯一
      * 
-     * @param dept 部门信息
+     * @param dept 课件分类信息
      * @return 结果
      */
     public String checkDeptNameUnique(TrainCoursewareCategory dept);
