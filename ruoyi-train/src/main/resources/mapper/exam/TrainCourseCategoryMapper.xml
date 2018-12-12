@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.TrainCourseCategoryMapper">
+    
+    <resultMap type="TrainCourseCategory" id="TrainCourseCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="parentIds"    column="parent_ids"    />
+        <result property="name"    column="name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+	
+	<sql id="selectTrainCourseCategoryVo">
+         id, dept_id, parent_id, parent_ids, name, order_num, del_flag, create_by, create_time, update_by, update_time, remark    </sql>
+	
+    <select id="selectTrainCourseCategoryList" parameterType="TrainCourseCategory" resultMap="TrainCourseCategoryResult">
+        select
+        <include refid="selectTrainCourseCategoryVo"/>
+        from train_course_category
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="deptId != null "> and dept_id = #{deptId}</if>
+             <if test="parentId != null "> and parent_id = #{parentId}</if>
+             <if test="parentIds != null  and parentIds != '' "> and parent_ids = #{parentIds}</if>
+             <if test="name != null  and name != '' "> and name = #{name}</if>
+             <if test="orderNum != null "> and order_num = #{orderNum}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+         </where>
+    </select>
+
+    
+</mapper>
