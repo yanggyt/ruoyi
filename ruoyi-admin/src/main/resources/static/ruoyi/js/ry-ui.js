@@ -479,8 +479,8 @@
                 $.modal.open("添加" + $.table._option.modalName, url);
             },
 			//跳转自定义
-            jumpModeltoUrl: function(modelName,url) {
-                $.modal.open(modelName, url);
+            jumpModeltoUrl: function(modelName,url,width, height) {
+                $.modal.open(modelName, url,width, height);
             },
             // 修改信息
             edit: function(id) {

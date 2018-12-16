@@ -181,4 +181,15 @@ public class ExamPaperCategoryController extends BaseController
 
 		return toAjax(examPaperCategoryService.deleteById(id));
 	}
+
+	/**
+	 * 加载列表树
+	 */
+	@GetMapping("/treeData")
+	@ResponseBody
+	public List<Map<String, Object>> treeData()
+	{
+		List<Map<String, Object>> tree = examPaperCategoryService.selectDeptTree();
+		return tree;
+	}
 }
