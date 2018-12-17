@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.exam.domain.ExamPaperCategory;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,6 +177,25 @@ public class ExamQuestionCategoryController extends BaseController
 		}
 
 		return res;
+	}
+
+	/**
+	 * 删除
+	 */
+	@Log(title = "试题分类管理", businessType = BusinessType.DELETE)
+	@RequiresPermissions("system:examQuestionCategory:remove")
+	@PostMapping("/remove/{id}")
+	@ResponseBody
+	public AjaxResult remove(@PathVariable("id") Long id)
+	{
+		ExamQuestionCategory exam = new ExamQuestionCategory();
+		exam.setParentId(id);
+		if (examQuestionCategoryService.selectList(exam).size() > 0)
+		{
+			return error(1, "存在下级分类,不允许删除");
+		}
+
+		return toAjax(examQuestionCategoryService.deleteById(id));
 	}
 
 }
