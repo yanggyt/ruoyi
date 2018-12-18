@@ -36,7 +36,7 @@
     <div class="row">
         <div class="col-sm-12 search-collapse">
             <form id="formId">
-                <input type="hidden" id="categoryId" name="categoryId">
+                <input type="hidden" id="categoryId" name="categoryId" >
                 <div class="select-list">
                     <ul>
                         <li>
@@ -97,7 +97,9 @@
 
     $(function () {
         $('body').layout({west__size: 185});
+        $("#categoryId").val(0);
         queryExamQuestionList();
+//        $.table.search();
         queryExamQuestionCategoryTree();
     });
 
@@ -188,9 +190,9 @@
         $.tree.init(options);
 
         function zOnClick(event, treeId, treeNode) {
-            if(treeNode.pId == 1 || treeNode.pId == 0 ||treeNode.pId == null) {
-                return;
-            }
+//            if(treeNode.pId == 1 || treeNode.pId == 0 ||treeNode.pId == null) {
+//                return;
+//            }
             $("#categoryId").val(treeNode.id);
             $.table.search();
         }
@@ -220,7 +222,7 @@
     }
 
     function addChoiceQuestion(){
-        if($("#categoryId").val() == null||$("#categoryId").val() == ''){
+        if($("#categoryId").val() == null||$("#categoryId").val() == ''||$("#categoryId").val() == 1 || $("#categoryId").val() == 0 ){
             alert("请选择题库！")
             return;
         }
@@ -229,7 +231,7 @@
     }
 
     function addMoreChoiceQuestion(){
-        if($("#categoryId").val() == null||$("#categoryId").val() == ''){
+        if($("#categoryId").val() == null||$("#categoryId").val() == ''||$("#categoryId").val() == 1 || $("#categoryId").val() == 0 ){
             alert("请选择题库！")
             return;
         }
@@ -238,7 +240,7 @@
     }
 
     function addJudgeQuestion(){
-        if($("#categoryId").val() == null||$("#categoryId").val() == ''){
+        if($("#categoryId").val() == null||$("#categoryId").val() == ''||$("#categoryId").val() == 1 || $("#categoryId").val() == 0 ){
             alert("请选择题库！")
             return;
         }
