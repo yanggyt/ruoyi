@@ -36,7 +36,7 @@
     <div class="row">
         <div class="col-sm-12 search-collapse">
             <form id="formId">
-                <input type="hidden" id="categoryId" name="categoryId" >
+                <input type="hidden" id="categoryId" name="categoryId" value="1">
                 <div class="select-list">
                     <ul>
                         <li>
@@ -97,9 +97,9 @@
 
     $(function () {
         $('body').layout({west__size: 185});
-        $("#categoryId").val(0);
         queryExamQuestionList();
-//        $.table.search();
+        $("#categoryId").val(1);
+        $.table.search();
         queryExamQuestionCategoryTree();
     });
 
@@ -117,18 +117,8 @@
                 checkbox: true
             },
                 {
-                    field: 'id',
-                    title: 'ID',
-                    sortable: true
-                },
-                {
                     field: 'title',
                     title: '问题标题',
-                    sortable: true
-                },
-                {
-                    field: 'answer',
-                    title: '问题答案',
                     sortable: true
                 },
                 {
@@ -152,18 +142,8 @@
                     sortable: true
                 },
                 {
-                    field: 'updateBy',
-                    title: '更新者',
-                    sortable: true
-                },
-                {
-                    field: 'updateDate',
-                    title: '更新时间',
-                    sortable: true
-                },
-                {
                     field: 'remarks',
-                    title: '备注信息',
+                    title: '答案解析',
                     sortable: true
                 },
                 {
@@ -190,9 +170,6 @@
         $.tree.init(options);
 
         function zOnClick(event, treeId, treeNode) {
-//            if(treeNode.pId == 1 || treeNode.pId == 0 ||treeNode.pId == null) {
-//                return;
-//            }
             $("#categoryId").val(treeNode.id);
             $.table.search();
         }
@@ -222,27 +199,24 @@
     }
 
     function addChoiceQuestion(){
-        if($("#categoryId").val() == null||$("#categoryId").val() == ''||$("#categoryId").val() == 1 || $("#categoryId").val() == 0 ){
-            alert("请选择题库！")
-            return;
+        if(!$.tree.notAllowParents($._tree)){
+            return ;
         }
         var url = prefix + "/choiceadd/"+$("#categoryId").val();
         $.operate.jumpModeltoUrl("添加单选题",url);
     }
 
     function addMoreChoiceQuestion(){
-        if($("#categoryId").val() == null||$("#categoryId").val() == ''||$("#categoryId").val() == 1 || $("#categoryId").val() == 0 ){
-            alert("请选择题库！")
-            return;
+        if(!$.tree.notAllowParents($._tree)){
+            return ;
         }
         var url = prefix + "/morechoiceadd/"+$("#categoryId").val();
         $.operate.jumpModeltoUrl("添加多选题",url);
     }
 
     function addJudgeQuestion(){
-        if($("#categoryId").val() == null||$("#categoryId").val() == ''||$("#categoryId").val() == 1 || $("#categoryId").val() == 0 ){
-            alert("请选择题库！")
-            return;
+        if(!$.tree.notAllowParents($._tree)){
+            return ;
         }
         var url = prefix + "/judgeadd/"+$("#categoryId").val();
         $.operate.jumpModeltoUrl("添加多选题",url);
