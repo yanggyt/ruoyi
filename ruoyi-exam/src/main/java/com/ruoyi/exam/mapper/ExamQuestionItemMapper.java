@@ -60,4 +60,5 @@ public interface ExamQuestionItemMapper  extends MyMapper<ExamQuestionItem>
      */
 	public int deleteExamQuestionItemByIds(String[] ids);
 
+    void deleteByQuestionIds(String[] ids);
 }

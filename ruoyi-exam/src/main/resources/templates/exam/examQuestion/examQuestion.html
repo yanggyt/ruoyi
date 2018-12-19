@@ -78,9 +78,7 @@
                shiro:hasPermission="exam:examQuestion:remove">
                 <i class="fa fa-remove"></i> 删除
             </a>
-            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="exam:examQuestion:export">
-                <i class="fa fa-download"></i> 导出
-            </a>
+
         </div>
         <div class="col-sm-12 select-table table-striped">
             <table id="bootstrap-table" data-mobile-responsive="true"></table>
@@ -93,6 +91,7 @@
 <script th:inline="javascript">
     var editFlag = [[${@permission.hasPermi('exam:examQuestion:edit')}]];
     var removeFlag = [[${@permission.hasPermi('exam:examQuestion:remove')}]];
+    var type = [[${@dict.getType('exam_question_type')}]];
     var prefix = ctx + "exam/examQuestion";
 
     $(function () {
@@ -115,6 +114,10 @@
             showExport: true,
             columns: [{
                 checkbox: true
+            },{
+                field:"id",
+                title: '#',
+                visible: false
             },
                 {
                     field: 'title',
@@ -124,12 +127,12 @@
                 {
                     field: 'type',
                     title: '问题类型',
-                    sortable: true
-                },
-                {
-                    field: 'label',
-                    title: '标签',
-                    sortable: true
+                    sortable: true,
+                    formatter: function(value, item, index) {
+                        debugger
+                        return $.table.selectDictLabel(type, item.type);
+                    }
+
                 },
                 {
                     field: 'createBy',
@@ -139,11 +142,6 @@
                 {
                     field: 'createDate',
                     title: '创建时间',
-                    sortable: true
-                },
-                {
-                    field: 'remarks',
-                    title: '答案解析',
                     sortable: true
                 },
                 {

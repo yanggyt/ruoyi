@@ -113,4 +113,31 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
 		return i ;
 	}
 
+	@Override
+	public int updateQuestion(ExamQuestion examQuestion, String[] number, String[] content) {
+		Date date = new Date();
+		examQuestion.setUpdateDate(date);
+		examQuestion.setUpdateBy(ShiroUtils.getLoginName());
+		int i = examQuestionMapper.updateExamQuestion(examQuestion);
+		examQuestion.setCreateDate(null);
+		examQuestion.setUpdateDate(null);
+		List<ExamQuestion> select = examQuestionMapper.selectExamQuestionList(examQuestion);
+		String id = select.get(0).getId();
+		examQuestionItemMapper.deleteByQuestionIds(new String[]{id});
+		ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+		for (int i1 = 0; i1 < number.length; i1++) {examQuestionItem.setContent(content[i1]);
+			examQuestionItem.setNumber(number[i1]);
+			examQuestionItem.setExamQuestionId(select.get(0).getId()+"");
+			examQuestionItem.setCreateDate(date);
+			examQuestionItem.setCreateBy(ShiroUtils.getLoginName());
+			examQuestionItemMapper.insertExamQuestionItem(examQuestionItem);
+
+
+		}
+
+
+		return i ;
+
+	}
+
 }
