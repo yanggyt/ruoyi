@@ -21,11 +21,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<sql id="selectDeptVo">
         select d.id,d.dept_id, d.parent_id, d.parent_ids, d.name, d.order_num, d.del_flag, d.create_by, d.create_time
-        from train_courseware_category d
+        from train_course_category d
     </sql>
 	<select id="selectRoleDeptTree" parameterType="Long" resultType="String">
 		select concat(d.id, d.name) as name
-		from train_courseware_category d
+		from train_course_category d
 			left join sys_role_dept rd on d.id = rd.id
 		where d.del_flag = '0' and rd.role_id = #{roleId}
 		order by d.parent_id, d.order_num
@@ -45,12 +45,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${params.dataScope}
     </select>
 	
-	<select id="checkDeptExistUser" parameterType="Long" resultType="int">
-		select count(1) from sys_user where id = #{id} and del_flag = '0'
+	<select id="checkDeptExistCourse" parameterType="Long" resultType="int">
+		select count(1) from train_course where train_course_category_id = #{id} and del_flag = '0'
 	</select>
 	
 	<select id="selectDeptCount" parameterType="TrainCourseCategory" resultType="int">
-		select count(1) from train_courseware_category
+		select count(1) from train_course_category
 		where del_flag = '0'
 		<if test="id != null and id != 0"> and id = #{id} </if>
 		<if test="parentId != null and parentId != 0"> and parent_id = #{parentId} </if>
@@ -62,14 +62,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectDeptById" parameterType="Long" resultMap="TrainCourseCategoryResult">
-		select d.id, d.parent_id, d.parent_ids, d.name, d.order_num,
-			(select name from train_courseware_category where id = d.parent_id) parent_name
-		from train_courseware_category d
+		select d.id, d.parent_id, d.parent_ids, d.name, d.order_num, d.del_flag,
+			(select name from train_course_category where id = d.parent_id) parent_name
+		from train_course_category d
 		where d.id = #{id}
 	</select>
 	
 	<insert id="insertDept" parameterType="TrainCourseCategory">
- 		insert into train_courseware_category(
+ 		insert into train_course_category(
  			<if test="id != null and id != 0">id,</if>
  			<if test="parentId != null and parentId != 0">parent_id,</if>
  			<if test="name != null and name != ''">name,</if>
@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<update id="updateDept" parameterType="TrainCourseCategory">
- 		update train_courseware_category
+ 		update train_course_category
  		<set>
  			<if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
  			<if test="name != null and name != ''">name = #{name},</if>
@@ -105,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<update id="updateDeptChildren" parameterType="java.util.List">
-	    update train_courseware_category set parent_ids =
+	    update train_course_category set parent_ids =
 	    <foreach collection="depts" item="item" index="index"
 	        separator=" " open="case id" close="end">
 	        when #{item.id} then #{item.parent_ids}
@@ -118,7 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 </update>
 
 	<delete id="deleteDeptById" parameterType="Long">
-		update train_courseware_category set del_flag = '2' where id = #{id}
+		update train_course_category set del_flag = '2' where id = #{id}
 	</delete>
 
 </mapper> 
