@@ -58,17 +58,17 @@
             <version>${ruoyi.version}</version>
         </dependency>
         <!-- 培训系统-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-train</artifactId>
-            <version>${ruoyi.version}</version>
-        </dependency>
-        <!-- 测试生成的代码-->
         <!--<dependency>-->
             <!--<groupId>com.ruoyi</groupId>-->
-            <!--<artifactId>ruoyi-test</artifactId>-->
+            <!--<artifactId>ruoyi-train</artifactId>-->
             <!--<version>${ruoyi.version}</version>-->
         <!--</dependency>-->
+        <!-- 测试生成的代码-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>tuoyi-test</artifactId>
+            <version>${ruoyi.version}</version>
+        </dependency>
         <!-- 定时任务
         <dependency>
             <groupId>com.ruoyi</groupId>
