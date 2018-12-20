@@ -41,8 +41,10 @@ private static final long serialVersionUID = 1L;
 	    private String remarks;
 	        /** 删除标记 */
 	    private String delFlag;
-	
-	    /** 设置试卷分类 */
+
+
+
+    /** 设置试卷分类 */
     public void setId(Integer id)
             {
             this.id = id;

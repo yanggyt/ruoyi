@@ -109,7 +109,9 @@ public class ExamQuestionCategoryController extends BaseController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, ModelMap mmap) {
         ExamQuestionCategory examQuestionCategory = examQuestionCategoryService.selectExamQuestionCategoryById(id);
+        ExamQuestionCategory parent = examQuestionCategoryService.selectExamQuestionCategoryById(examQuestionCategory.getParentId().toString());
         mmap.put("examQuestionCategory", examQuestionCategory);
+        mmap.put("parentName", parent.getName());
         return prefix + "/edit";
     }
 
@@ -121,6 +123,18 @@ public class ExamQuestionCategoryController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(ExamQuestionCategory examQuestionCategory) {
+        ExamQuestion examQuestion = new ExamQuestion();
+        examQuestion.setCategoryId(examQuestionCategory.getParentId().toString());
+
+        if (examQuestionService.selectList(examQuestion).size() > 0) {
+            return error(1, "父级分类下包含试题，无法移动");
+        }
+
+        ExamQuestionCategory exam = new ExamQuestionCategory();
+        exam.setParentId(exam.getId());
+        if (examQuestionCategoryService.selectList(exam).size() > 0) {
+            return error(1, "此分类存在下级分类,无法移动");
+        }
         return toAjax(examQuestionCategoryService.updateExamQuestionCategory(examQuestionCategory));
     }
 

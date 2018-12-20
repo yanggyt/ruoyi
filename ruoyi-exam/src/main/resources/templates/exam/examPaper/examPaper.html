@@ -93,6 +93,8 @@
     $(function () {
         $('body').layout({west__size: 185});
         queryExamPaperList();
+        $("#examPaperCategoryId").val(1);
+        $.table.search();
         queryExamPaperCategoryTree();
     });
 
@@ -206,9 +208,8 @@
 
 
     function add(){
-        if($("#examPaperCategoryId").val() == null||$("#examPaperCategoryId").val() == ''){
-            alert("请选分类库！")
-            return;
+        if(!$.tree.notAllowParents($._tree)){
+            return ;
         }
         var url = prefix + "/add/"+$("#examPaperCategoryId").val();
         $.operate.jumpModeltoUrl("添加试卷",url);

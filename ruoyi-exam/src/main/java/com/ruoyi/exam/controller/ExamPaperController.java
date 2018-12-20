@@ -1,8 +1,13 @@
 package com.ruoyi.exam.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.ruoyi.exam.domain.ExamPaperCategory;
+import com.ruoyi.exam.domain.ExamQuestion;
+import com.ruoyi.exam.domain.ExamQuestionCategory;
+import com.ruoyi.exam.service.IExamPaperCategoryService;
 import com.ruoyi.exam.service.IExamPaperQuestionService;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -35,6 +40,9 @@ public class ExamPaperController extends BaseController
 	private IExamPaperService examPaperService;
 
 	@Autowired
+	private IExamPaperCategoryService examPaperCategoryService;
+
+	@Autowired
 	private IExamPaperQuestionService examPaperQuestionService;
 	
 	@RequiresPermissions("exam:examPaper:view")
@@ -52,8 +60,28 @@ public class ExamPaperController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(ExamPaper examPaper)
 	{
-        List<ExamPaper> list = examPaperService.selectExamPaperPage(examPaper);
-		return getDataTable(list);
+        List<ExamPaper> list = new ArrayList<>();
+		List<ExamPaper> listByIds = getListByIds(list, examPaper);
+		return getDataTable(listByIds);
+	}
+
+	/**
+	 * 递归找到所有下级的试卷
+	 * @param list
+	 * @param examPaper
+	 * @return
+	 */
+	private List<ExamPaper> getListByIds(List<ExamPaper> list,ExamPaper examPaper){
+		list.addAll(examPaperService.selectExamPaperList(examPaper));
+		String categoryId = examPaper.getExamPaperCategoryId().toString();
+		ExamPaperCategory examPaperCategory = new ExamPaperCategory();
+		examPaperCategory.setParentId(Integer.parseInt(categoryId));
+		List<ExamPaperCategory> examPaperCategorys = examPaperCategoryService.selectList(examPaperCategory);
+		for (ExamPaperCategory questionCategory : examPaperCategorys) {
+			examPaper.setExamPaperCategoryId(questionCategory.getId());
+			getListByIds(list,examPaper);
+		}
+		return list;
 	}
 	
 	
