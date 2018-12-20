@@ -1,10 +1,10 @@
 package com.ruoyi.framework.web.service;
 
+import cn.hutool.json.JSONObject;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,17 +26,17 @@ public class AliyunOSSClient {
     private ConfigService configService;
 
     public AliyunOSSClient() {
-        this.endpoint = configService.getKey("ali.oss.endpoint");
-        this.accessKeyId = configService.getKey("ali.oss.accessKeyId");
-        this.accessKeySecret = configService.getKey("ali.oss.accessKeySecret");
-        this.bucket = configService.getKey("ali.oss.bucket");
+//        this.endpoint = configService.getKey("ali.oss.endpoint");
+//        this.accessKeyId = configService.getKey("ali.oss.accessKeyId");
+//        this.accessKeySecret = configService.getKey("ali.oss.accessKeySecret");
+//        this.bucket = configService.getKey("ali.oss.bucket");
     }
 
     @PostConstruct
     void init() {
-        if (this.ossClient == null) {
-            this.ossClient = new OSSClient(this.endpoint, this.accessKeyId, this.accessKeySecret);
-        }
+//        if (this.ossClient == null) {
+//            this.ossClient = new OSSClient(this.endpoint, this.accessKeyId, this.accessKeySecret);
+//        }
     }
 
     /**
