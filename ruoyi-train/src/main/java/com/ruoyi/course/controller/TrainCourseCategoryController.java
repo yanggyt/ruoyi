@@ -32,16 +32,16 @@ public class TrainCourseCategoryController extends BaseController {
 
     @RequiresPermissions("train:course:category:view")
     @GetMapping()
-    public String dept() {
+    public String category() {
         return prefix + "/category";
     }
 
     @RequiresPermissions("train:course:category:list")
     @GetMapping("/list")
     @ResponseBody
-    public List<TrainCourseCategory> list(TrainCourseCategory dept) {
-        List<TrainCourseCategory> deptList = trainCourseCategoryService.selectDeptList( dept );
-        return deptList;
+    public List<TrainCourseCategory> list(TrainCourseCategory category) {
+        List<TrainCourseCategory> categoryList = trainCourseCategoryService.selectCategoryList( category );
+        return categoryList;
     }
 
     /**
@@ -49,7 +49,7 @@ public class TrainCourseCategoryController extends BaseController {
      */
     @GetMapping("/add/{parentId}")
     public String add(@PathVariable("parentId") Long parentId, ModelMap mmap) {
-        mmap.put( "dept", trainCourseCategoryService.selectDeptById( parentId ) );
+        mmap.put( "category", trainCourseCategoryService.selectCategoryById( parentId ) );
         return prefix + "/add";
     }
 
@@ -60,9 +60,9 @@ public class TrainCourseCategoryController extends BaseController {
     @RequiresPermissions("train:course:category:add")
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(TrainCourseCategory dept) {
-        dept.setCreateBy( ShiroUtils.getLoginName() );
-        return toAjax( trainCourseCategoryService.insertDept( dept ) );
+    public AjaxResult addSave(TrainCourseCategory category) {
+        category.setCreateBy( ShiroUtils.getLoginName() );
+        return toAjax( trainCourseCategoryService.insertCategory( category ) );
     }
 
     /**
@@ -70,11 +70,11 @@ public class TrainCourseCategoryController extends BaseController {
      */
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, ModelMap mmap) {
-        TrainCourseCategory dept = trainCourseCategoryService.selectDeptById( id );
-        if (StringUtils.isNotNull( dept ) && 100L == id) {
-            dept.setParentName( "无" );
+        TrainCourseCategory category = trainCourseCategoryService.selectCategoryById( id );
+        if (StringUtils.isNotNull( category ) && 100L == id) {
+            category.setParentName( "无" );
         }
-        mmap.put( "dept", dept );
+        mmap.put( "category", category );
         return prefix + "/edit";
     }
 
@@ -85,9 +85,9 @@ public class TrainCourseCategoryController extends BaseController {
     @RequiresPermissions("train:course:category:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(TrainCourseCategory dept) {
-        dept.setUpdateBy( ShiroUtils.getLoginName() );
-        return toAjax( trainCourseCategoryService.updateDept( dept ) );
+    public AjaxResult editSave(TrainCourseCategory category) {
+        category.setUpdateBy( ShiroUtils.getLoginName() );
+        return toAjax( trainCourseCategoryService.updateCategory( category ) );
     }
 
     /**
@@ -98,30 +98,30 @@ public class TrainCourseCategoryController extends BaseController {
     @PostMapping("/remove/{id}")
     @ResponseBody
     public AjaxResult remove(@PathVariable("id") Long id) {
-        if (trainCourseCategoryService.selectDeptCount( id ) > 0) {
+        if (trainCourseCategoryService.selectCategoryCount( id ) > 0) {
             return error( 1, "存在下级课程分类,不允许删除" );
         }
-        if (trainCourseCategoryService.checkDeptExistUser( id )) {
+        if (trainCourseCategoryService.checkCategoryExistCourse( id )) {
             return error( 1, "课程分类存在用户,不允许删除" );
         }
-        return toAjax( trainCourseCategoryService.deleteDeptById( id ) );
+        return toAjax( trainCourseCategoryService.deleteCategoryById( id ) );
     }
 
     /**
      * 校验课程分类名称
      */
-    @PostMapping("/checkDeptNameUnique")
+    @PostMapping("/checkCategoryNameUnique")
     @ResponseBody
-    public String checkDeptNameUnique(TrainCourseCategory dept) {
-        return trainCourseCategoryService.checkDeptNameUnique( dept );
+    public String checkCategoryNameUnique(TrainCourseCategory category) {
+        return trainCourseCategoryService.checkCategoryNameUnique( category );
     }
 
     /**
      * 选择课程分类树
      */
-    @GetMapping("/selectDeptTree/{id}")
-    public String selectDeptTree(@PathVariable("id") Long id, ModelMap mmap) {
-        mmap.put( "dept", trainCourseCategoryService.selectDeptById( id ) );
+    @GetMapping("/selectCategoryTree/{id}")
+    public String selectCategoryTree(@PathVariable("id") Long id, ModelMap mmap) {
+        mmap.put( "category", trainCourseCategoryService.selectCategoryById( id ) );
         return prefix + "/tree";
     }
 
@@ -131,7 +131,7 @@ public class TrainCourseCategoryController extends BaseController {
     @GetMapping("/treeData")
     @ResponseBody
     public List<Map<String, Object>> treeData() {
-        List<Map<String, Object>> tree = trainCourseCategoryService.selectDeptTree();
+        List<Map<String, Object>> tree = trainCourseCategoryService.selectCategoryTree();
         return tree;
     }
 

@@ -19,11 +19,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateTime" column="update_time" />
 	</resultMap>
 	
-	<sql id="selectDeptVo">
+	<sql id="selectCategoryVo">
         select d.id,d.dept_id, d.parent_id, d.parent_ids, d.name, d.order_num, d.del_flag, d.create_by, d.create_time
         from train_course_category d
     </sql>
-	<select id="selectRoleDeptTree" parameterType="Long" resultType="String">
+	<select id="selectRoleCategoryTree" parameterType="Long" resultType="String">
 		select concat(d.id, d.name) as name
 		from train_course_category d
 			left join sys_role_dept rd on d.id = rd.id
@@ -31,8 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by d.parent_id, d.order_num
 	</select>
 	
-	<select id="selectDeptList" parameterType="TrainCourseCategory" resultMap="TrainCourseCategoryResult">
-        <include refid="selectDeptVo"/>
+	<select id="selectCategoryList" parameterType="TrainCourseCategory" resultMap="TrainCourseCategoryResult">
+        <include refid="selectCategoryVo"/>
         where d.del_flag = '0'
         <if test="parentId != null and parentId != 0">
 			AND parent_id = #{parentId}
@@ -45,30 +45,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${params.dataScope}
     </select>
 	
-	<select id="checkDeptExistCourse" parameterType="Long" resultType="int">
+	<select id="checkCategoryExistCourse" parameterType="Long" resultType="int">
 		select count(1) from train_course where train_course_category_id = #{id} and del_flag = '0'
 	</select>
 	
-	<select id="selectDeptCount" parameterType="TrainCourseCategory" resultType="int">
+	<select id="selectCategoryCount" parameterType="TrainCourseCategory" resultType="int">
 		select count(1) from train_course_category
 		where del_flag = '0'
 		<if test="id != null and id != 0"> and id = #{id} </if>
 		<if test="parentId != null and parentId != 0"> and parent_id = #{parentId} </if>
 	</select>
 	
-	<select id="checkDeptNameUnique" resultMap="TrainCourseCategoryResult">
-	    <include refid="selectDeptVo"/>
+	<select id="checkCategoryNameUnique" resultMap="TrainCourseCategoryResult">
+	    <include refid="selectCategoryVo"/>
 		where name=#{name} and parent_id = #{parentId}
 	</select>
 
-	<select id="selectDeptById" parameterType="Long" resultMap="TrainCourseCategoryResult">
+	<select id="selectCategoryById" parameterType="Long" resultMap="TrainCourseCategoryResult">
 		select d.id, d.parent_id, d.parent_ids, d.name, d.order_num, d.del_flag,
 			(select name from train_course_category where id = d.parent_id) parent_name
 		from train_course_category d
 		where d.id = #{id}
 	</select>
 	
-	<insert id="insertDept" parameterType="TrainCourseCategory">
+	<insert id="insertCategory" parameterType="TrainCourseCategory">
  		insert into train_course_category(
  			<if test="id != null and id != 0">id,</if>
  			<if test="parentId != null and parentId != 0">parent_id,</if>
@@ -90,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		)
 	</insert>
 	
-	<update id="updateDept" parameterType="TrainCourseCategory">
+	<update id="updateCategory" parameterType="TrainCourseCategory">
  		update train_course_category
  		<set>
  			<if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
@@ -104,20 +104,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		where id = #{id}
 	</update>
 	
-	<update id="updateDeptChildren" parameterType="java.util.List">
+	<update id="updateCategoryChildren" parameterType="java.util.List">
 	    update train_course_category set parent_ids =
-	    <foreach collection="depts" item="item" index="index"
+	    <foreach collection="ids" item="item" index="index"
 	        separator=" " open="case id" close="end">
 	        when #{item.id} then #{item.parent_ids}
 	    </foreach>
 	    where id in
-	    <foreach collection="depts" item="item" index="index"
+	    <foreach collection="ids" item="item" index="index"
 	        separator="," open="(" close=")">
 	        #{item.id}
 	    </foreach>
 	 </update>
 
-	<delete id="deleteDeptById" parameterType="Long">
+	<delete id="deleteCategoryById" parameterType="Long">
 		update train_course_category set del_flag = '2' where id = #{id}
 	</delete>
 

@@ -33,8 +33,8 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      */
     @Override
     @DataScope(tableAlias = "d")
-    public List<TrainCourseCategory> selectDeptList(TrainCourseCategory dept) {
-        return trainCourseCategoryMapper.selectDeptList( dept );
+    public List<TrainCourseCategory> selectCategoryList(TrainCourseCategory dept) {
+        return trainCourseCategoryMapper.selectCategoryList( dept );
     }
 
     /**
@@ -43,8 +43,8 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @return 所有课程分类信息
      */
     @Override
-    public List<Map<String, Object>> selectDeptTree() {
-        List<TrainCourseCategory> deptList = selectDeptList( new TrainCourseCategory() );
+    public List<Map<String, Object>> selectCategoryTree() {
+        List<TrainCourseCategory> deptList = selectCategoryList( new TrainCourseCategory() );
         List<Map<String, Object>> trees = getTrees( deptList, false, null );
         return trees;
     }
@@ -55,10 +55,10 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      *
      * @param deptList     课程分类列表
      * @param isCheck      是否需要选中
-     * @param roleDeptList 角色已存在菜单列表
+     * @param roleCategoryList 角色已存在菜单列表
      * @return
      */
-    public List<Map<String, Object>> getTrees(List<TrainCourseCategory> deptList, boolean isCheck, List<String> roleDeptList) {
+    public List<Map<String, Object>> getTrees(List<TrainCourseCategory> deptList, boolean isCheck, List<String> roleCategoryList) {
 
         List<Map<String, Object>> trees = new ArrayList<Map<String, Object>>();
         for (TrainCourseCategory dept : deptList) {
@@ -69,7 +69,7 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
                 deptMap.put( "name", dept.getName() );
                 deptMap.put( "title", dept.getName() );
                 if (isCheck) {
-                    deptMap.put( "checked", roleDeptList.contains( dept.getDeptId() + dept.getName() ) );
+                    deptMap.put( "checked", roleCategoryList.contains( dept.getId() + dept.getName() ) );
                 } else {
                     deptMap.put( "checked", false );
                 }
@@ -86,10 +86,10 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @return 结果
      */
     @Override
-    public int selectDeptCount(Long parentId) {
+    public int selectCategoryCount(Long parentId) {
         TrainCourseCategory dept = new TrainCourseCategory();
         dept.setParentId( parentId );
-        return trainCourseCategoryMapper.selectDeptCount( dept );
+        return trainCourseCategoryMapper.selectCategoryCount( dept );
     }
 
     /**
@@ -99,8 +99,8 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @return 结果 true 存在 false 不存在
      */
     @Override
-    public boolean checkDeptExistUser(Long deptId) {
-        int result = trainCourseCategoryMapper.checkDeptExistUser( deptId );
+    public boolean checkCategoryExistCourse(Long deptId) {
+        int result = trainCourseCategoryMapper.checkCategoryExistCourse( deptId );
         return result > 0 ? true : false;
     }
 
@@ -111,8 +111,8 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @return 结果
      */
     @Override
-    public int deleteDeptById(Long deptId) {
-        return trainCourseCategoryMapper.deleteDeptById( deptId );
+    public int deleteCategoryById(Long deptId) {
+        return trainCourseCategoryMapper.deleteCategoryById( deptId );
     }
 
     /**
@@ -122,10 +122,10 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @return 结果
      */
     @Override
-    public int insertDept(TrainCourseCategory dept) {
-        TrainCourseCategory info = trainCourseCategoryMapper.selectDeptById( dept.getParentId() );
+    public int insertCategory(TrainCourseCategory dept) {
+        TrainCourseCategory info = trainCourseCategoryMapper.selectCategoryById( dept.getParentId() );
         dept.setParentIds( info.getParentIds() + "," + dept.getParentId() );
-        return trainCourseCategoryMapper.insertDept( dept );
+        return trainCourseCategoryMapper.insertCategory( dept );
     }
 
     /**
@@ -135,14 +135,14 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @return 结果
      */
     @Override
-    public int updateDept(TrainCourseCategory dept) {
-        TrainCourseCategory info = trainCourseCategoryMapper.selectDeptById( dept.getParentId() );
+    public int updateCategory(TrainCourseCategory dept) {
+        TrainCourseCategory info = trainCourseCategoryMapper.selectCategoryById( dept.getParentId() );
         if (StringUtils.isNotNull( info )) {
             String ancestors = info.getParentIds() + "," + dept.getParentId();
             dept.setParentIds( ancestors );
-            updateDeptChildren( dept.getDeptId(), ancestors );
+            updateCategoryChildren( dept.getId(), ancestors );
         }
-        return trainCourseCategoryMapper.updateDept( dept );
+        return trainCourseCategoryMapper.updateCategory( dept );
     }
 
     /**
@@ -151,15 +151,15 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @param deptId    课程分类ID
      * @param ancestors 元素列表
      */
-    public void updateDeptChildren(Long deptId, String ancestors) {
+    public void updateCategoryChildren(Long deptId, String ancestors) {
         TrainCourseCategory dept = new TrainCourseCategory();
         dept.setParentId( deptId );
-        List<TrainCourseCategory> childrens = trainCourseCategoryMapper.selectDeptList( dept );
+        List<TrainCourseCategory> childrens = trainCourseCategoryMapper.selectCategoryList( dept );
         for (TrainCourseCategory children : childrens) {
             children.setParentIds( ancestors + "," + dept.getParentId() );
         }
         if (childrens.size() > 0) {
-            trainCourseCategoryMapper.updateDeptChildren( childrens );
+            trainCourseCategoryMapper.updateCategoryChildren( childrens );
         }
     }
 
@@ -170,8 +170,8 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @return 课程分类信息
      */
     @Override
-    public TrainCourseCategory selectDeptById(Long deptId) {
-        return trainCourseCategoryMapper.selectDeptById( deptId );
+    public TrainCourseCategory selectCategoryById(Long deptId) {
+        return trainCourseCategoryMapper.selectCategoryById( deptId );
     }
 
     /**
@@ -181,10 +181,10 @@ public class TrainCourseCategoryServiceImpl extends AbstractBaseServiceImpl<Trai
      * @return 结果
      */
     @Override
-    public String checkDeptNameUnique(TrainCourseCategory dept) {
-        Long deptId = StringUtils.isNull( dept.getDeptId() ) ? -1L : dept.getDeptId();
-        TrainCourseCategory info = trainCourseCategoryMapper.checkDeptNameUnique( dept.getName(), dept.getParentId() );
-        if (StringUtils.isNotNull( info ) && info.getDeptId().longValue() != deptId.longValue()) {
+    public String checkCategoryNameUnique(TrainCourseCategory dept) {
+        Long deptId = StringUtils.isNull( dept.getId() ) ? -1L : dept.getId();
+        TrainCourseCategory info = trainCourseCategoryMapper.checkCategoryNameUnique( dept.getName(), dept.getParentId() );
+        if (StringUtils.isNotNull( info ) && info.getId().longValue() != deptId.longValue()) {
             return UserConstants.DEPT_NAME_NOT_UNIQUE;
         }
         return UserConstants.DEPT_NAME_UNIQUE;
