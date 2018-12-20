@@ -29,17 +29,18 @@ public class AliyunOSSClient implements AliyunOssClientService {
     private ISysConfigService configService;
 
     public AliyunOSSClient() {
-//        this.endpoint = configService.selectConfigByKey( "ali.oss.endpoint");
-//        this.accessKeyId = configService.selectConfigByKey("ali.oss.accessKeyId");
-//        this.accessKeySecret = configService.selectConfigByKey("ali.oss.accessKeySecret");
-//        this.bucket = configService.selectConfigByKey("ali.oss.bucket");
     }
 
     @PostConstruct
     void init() {
-//        if (this.ossClient == null) {
-//            this.ossClient = new OSSClient(this.endpoint, this.accessKeyId, this.accessKeySecret);
-//        }
+        System.out.println( "==============" );
+        this.endpoint = configService.selectConfigByKey( "ali.oss.endpoint");
+        this.accessKeyId = configService.selectConfigByKey("ali.oss.accessKeyId");
+        this.accessKeySecret = configService.selectConfigByKey("ali.oss.accessKeySecret");
+        this.bucket = configService.selectConfigByKey("ali.oss.bucket");
+        if (this.ossClient == null) {
+            this.ossClient = new OSSClient(this.endpoint, this.accessKeyId, this.accessKeySecret);
+        }
     }
 
     /**
