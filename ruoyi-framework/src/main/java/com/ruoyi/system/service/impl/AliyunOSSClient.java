@@ -1,10 +1,13 @@
-package com.ruoyi.framework.web.service;
+package com.ruoyi.system.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.ruoyi.framework.web.service.ConfigService;
+import com.ruoyi.system.service.AliyunOssClientService;
+import com.ruoyi.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @Service
-public class AliyunOSSClient {
+public class AliyunOSSClient implements AliyunOssClientService {
 
     private String endpoint;
     private String accessKeyId;
@@ -23,13 +26,13 @@ public class AliyunOSSClient {
 
     private OSSClient ossClient;
     @Autowired
-    private ConfigService configService;
+    private ISysConfigService configService;
 
     public AliyunOSSClient() {
-//        this.endpoint = configService.getKey("ali.oss.endpoint");
-//        this.accessKeyId = configService.getKey("ali.oss.accessKeyId");
-//        this.accessKeySecret = configService.getKey("ali.oss.accessKeySecret");
-//        this.bucket = configService.getKey("ali.oss.bucket");
+//        this.endpoint = configService.selectConfigByKey( "ali.oss.endpoint");
+//        this.accessKeyId = configService.selectConfigByKey("ali.oss.accessKeyId");
+//        this.accessKeySecret = configService.selectConfigByKey("ali.oss.accessKeySecret");
+//        this.bucket = configService.selectConfigByKey("ali.oss.bucket");
     }
 
     @PostConstruct
