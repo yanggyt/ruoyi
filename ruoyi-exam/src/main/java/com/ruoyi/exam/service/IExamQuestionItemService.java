@@ -26,5 +26,6 @@ public interface IExamQuestionItemService extends AbstractBaseService<ExamQuesti
      */
     public List<ExamQuestionItem> selectExamQuestionItemList(ExamQuestionItem examQuestionItem);
 
-	
+
+    void deleteByQuestionIds(String ids);
 }

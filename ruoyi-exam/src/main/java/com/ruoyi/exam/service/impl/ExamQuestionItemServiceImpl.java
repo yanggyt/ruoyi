@@ -32,6 +32,13 @@ public class ExamQuestionItemServiceImpl extends AbstractBaseServiceImpl<ExamQue
 	{
         return examQuestionItemMapper.selectExamQuestionItemList(examQuestionItem);
 	}
+
+    @Override
+    public void deleteByQuestionIds(String ids) {
+        String[] split = ids.split(",");
+        examQuestionItemMapper.deleteByQuestionIds(split);
+    }
+
     /**
      * 查询问题选项分页列表
      *

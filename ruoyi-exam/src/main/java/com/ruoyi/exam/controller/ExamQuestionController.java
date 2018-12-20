@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import cn.hutool.json.JSONArray;
+import com.ruoyi.common.json.JSONObject;
 import com.ruoyi.exam.domain.ExamQuestionCategory;
+import com.ruoyi.exam.domain.ExamQuestionItem;
 import com.ruoyi.exam.service.IExamQuestionCategoryService;
+import com.ruoyi.exam.service.IExamQuestionItemService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +42,9 @@ public class ExamQuestionController extends BaseController
 
 	@Autowired
 	private IExamQuestionCategoryService examQuestionCategoryService;
+
+	@Autowired
+    private IExamQuestionItemService examQuestionItemService;
 	
 	@RequiresPermissions("exam:examQuestion:view")
 	@GetMapping()
@@ -139,6 +146,18 @@ public class ExamQuestionController extends BaseController
 		return toAjax(examQuestionService.insertQuestion(examQuestion,number,content));
 	}
 
+
+	@RequiresPermissions("exam:examQuestion:edit")
+	@Log(title = "问题", businessType = BusinessType.INSERT)
+	@PostMapping("/update")
+	@ResponseBody
+	public AjaxResult update(ExamQuestion examQuestion,@RequestParam(value = "number", required = true) String[] number,
+							  @RequestParam(value = "content", required = true) String[] content)
+	{
+
+		return toAjax(examQuestionService.updateQuestion(examQuestion,number,content));
+	}
+
 	/**
 	 * 修改问题
 	 */
@@ -147,7 +166,21 @@ public class ExamQuestionController extends BaseController
 	{
 		ExamQuestion examQuestion = examQuestionService.selectExamQuestionById(id);
 		mmap.put("examQuestion", examQuestion);
-	    return prefix + "/edit";
+		ExamQuestionItem examQuestionItem = new ExamQuestionItem();
+		examQuestionItem.setExamQuestionId(id);
+		List<ExamQuestionItem> examQuestionItems = examQuestionItemService.selectList(examQuestionItem);
+		JSONArray arr = new JSONArray();
+		arr.addAll(examQuestionItems);
+		mmap.put("examQuestionItem", arr.toString());
+		String s = "";
+		if(examQuestion.getType().equals("1")){
+			s= "/choiceUpdate";
+		}else if(examQuestion.getType().equals("2")){
+			s = "/morechoiceUpdate";
+		}else{
+			s = "/judgeUpdate";
+		}
+		return prefix + s;
 	}
 	
 	/**
@@ -170,7 +203,8 @@ public class ExamQuestionController extends BaseController
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
+	    examQuestionItemService.deleteByQuestionIds(ids);
 		return toAjax(examQuestionService.deleteExamQuestionByIds(ids));
 	}
 	
