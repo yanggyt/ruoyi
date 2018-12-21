@@ -177,9 +177,7 @@
         $.tree.init(options);
 
         function zOnClick(event, treeId, treeNode) {
-            if (treeNode.pId == null) {
-                return;
-            }
+
             $("#examPaperCategoryId").val(treeNode.id);
             $.table.search();
         }
