@@ -1,14 +1,17 @@
 package com.ruoyi.exam.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
 
-import com.ruoyi.exam.domain.ExamPaperCategory;
-import com.ruoyi.exam.domain.ExamQuestion;
-import com.ruoyi.exam.domain.ExamQuestionCategory;
+import cn.hutool.core.lang.*;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.IExamPaperCategoryService;
 import com.ruoyi.exam.service.IExamPaperQuestionService;
+import com.ruoyi.exam.service.IExamQuestionService;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.exam.domain.ExamPaper;
 import com.ruoyi.exam.service.IExamPaperService;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.page.TableDataInfo;
@@ -44,6 +46,9 @@ public class ExamPaperController extends BaseController
 
 	@Autowired
 	private IExamPaperQuestionService examPaperQuestionService;
+
+	@Autowired
+	private IExamQuestionService examQuestionService;
 	
 	@RequiresPermissions("exam:examPaper:view")
 	@GetMapping()
@@ -119,6 +124,8 @@ public class ExamPaperController extends BaseController
 	{
 		examPaper.setCreateBy(ShiroUtils.getLoginName());
 		examPaper.setCreateDate(new Date());
+		examPaper.setScore(0);
+		examPaper.setQuestionNumber(0);
 		examPaper.setDelFlag("0");
 		return toAjax(examPaperService.insert(examPaper));
 	}
@@ -162,21 +169,117 @@ public class ExamPaperController extends BaseController
 
 
 	@GetMapping("/addQuestion/{id}")
-	public String addQuestion(@PathVariable("id") Integer id, ModelMap mmap)
+	public String addQuestion(@PathVariable("id") String ids, ModelMap mmap)
 	{
-		mmap.put("examPaperId", id);
-		mmap.put("examPaperQuestionIds",examPaperQuestionService.selectQuestionIdsForPaperId(id));
+		String[] split = ids.split(",");
+		List<String> strings = Arrays.asList(split);
+		mmap.put("examPaperId", strings.get(0));
+		mmap.put("examPaperQuestionIds",strings.subList(1,strings.size()));
 		return prefix + "/examQuestion";
 	}
 
-	@RequiresPermissions("exam:examPaper:remove")
-	@Log(title = "试卷", businessType = BusinessType.DELETE)
+//	@RequiresPermissions("exam:examPaper:add")
+//	@Log(title = "试卷", businessType = BusinessType.DELETE)
 	@PostMapping( "/saveQuestion")
 	@ResponseBody
-	public AjaxResult saveQuestion(@RequestParam(value = "questionId[]" ,required = false) String[] questionId,@RequestParam("paperId")String paperId)
+	public AjaxResult saveQuestion(@RequestBody List<ExamPaperQuestion>  paperQuestionList)
 	{
-
-		return toAjax(examPaperQuestionService.saveQuestion(paperId,questionId));
+		ExamPaperQuestion examPaperQuestion = paperQuestionList.get(0);
+		ExamPaperQuestion delete = new ExamPaperQuestion();
+		delete.setExamPaperId(examPaperQuestion.getExamPaperId());
+		ExamPaper examPaper = new ExamPaper();
+		examPaper.setId(examPaperQuestion.getExamPaperId());
+		examPaperQuestionService.delete(delete);
+		int num =0;
+		int score = 0;
+		for (int i = 1; i < paperQuestionList.size(); i++) {
+			ExamPaperQuestion item = paperQuestionList.get(i);
+			item.setDelFlag("0");
+			examPaperQuestionService.insert(item);
+			num++;
+			score+=item.getScore();
+		}
+		examPaper.setQuestionNumber(num);
+		examPaper.setScore(score);
+		examPaperService.updateSelectiveById(examPaper);
+		return AjaxResult.success();
 	}
-	
+
+
+	@GetMapping("/toManagerPaperQuestion/{id}")
+	public String toManagerPaperQuestion(@PathVariable("id") Integer id, ModelMap mmap)
+	{
+		mmap.put("examPaper", examPaperService.selectById(id));
+		JSONObject json = new JSONObject();
+		List<ExamPaperQuestionVO> examPaperQuestions = examPaperQuestionService.selectQuestionForPaperId(id);
+		for (ExamPaperQuestionVO examPaperQuestion : examPaperQuestions) {
+			//排序用
+			json.append(examPaperQuestion.getOrderNum().toString()+examPaperQuestion.getExamQuestionId().toString(),new JSONObject(examPaperQuestion).toString());
+		}
+		mmap.put("examPaperQuestion",json.toString());
+		return prefix + "/managerPaperQuestion";
+	}
+
+	@RequiresPermissions("exam:examPaper:add")
+	@Log(title = "试卷", businessType = BusinessType.DELETE)
+	@PostMapping( "/addQuestionForModel")
+	@ResponseBody
+	public AjaxResult addQuestionForModel(@RequestParam(value = "questionId[]" ,required = false) String[] questionId,@RequestParam("paperId")String paperId)
+	{
+		//题目数量和总分数
+		int questionNum = 0;
+		int score = 0;
+		ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
+		examPaperQuestion.setExamPaperId(Integer.parseInt(paperId));
+		ExamPaper examPaper = new ExamPaper();
+		if(questionId==null){
+			examPaperQuestionService.delete(examPaperQuestion);
+			examPaper.setId(Integer.parseInt(paperId));
+			examPaper.setQuestionNumber(0);
+			examPaper.setScore(0);
+			examPaperService.updateSelectiveById(examPaper);
+			return AjaxResult.success();
+		}
+		List<ExamPaperQuestionVO> dbDatas = examPaperQuestionService.selectExamPaperQuestionList(examPaperQuestion);
+		questionNum +=dbDatas.size();
+		HashSet<Integer> dbSet = new HashSet<>();
+		for (ExamPaperQuestionVO dbData : dbDatas) {
+			dbSet.add(dbData.getExamQuestionId());
+			score+=dbData.getScore();
+		}
+
+		HashSet<Integer> htmlSet = new HashSet<>();
+		//新增的
+		for (String s : questionId) {
+			Integer i = Integer.parseInt(s);
+			if(!dbSet.contains(i)){
+				ExamPaperQuestion insert = new ExamPaperQuestion();
+				insert.setExamPaperId(Integer.parseInt(paperId));
+				insert.setDelFlag("0");
+				insert.setCreateDate(new Date());
+				insert.setCreateBy(ShiroUtils.getLoginName());
+				insert.setExamQuestionId(i);
+				insert.setOrderNum(9999);
+				insert.setScore(0);
+				examPaperQuestionService.insert(insert);
+				questionNum++;
+			}
+			htmlSet.add(i);
+		}
+
+		for (ExamPaperQuestionVO dbData : dbDatas) {
+			if(!htmlSet.contains(dbData.getExamQuestionId())){
+				examPaperQuestionService.delete(dbData);
+				questionNum--;
+				score-=dbData.getScore();
+			}
+		}
+
+		examPaper.setId(Integer.parseInt(paperId));
+		examPaper.setQuestionNumber(questionNum);
+		examPaper.setScore(score);
+		examPaperService.updateSelectiveById(examPaper);
+
+		return AjaxResult.success();
+	}
 }

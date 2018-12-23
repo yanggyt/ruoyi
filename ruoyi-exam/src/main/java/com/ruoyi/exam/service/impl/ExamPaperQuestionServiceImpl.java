@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.ruoyi.exam.domain.ExamPaper;
-import com.ruoyi.exam.mapper.ExamPaperMapper;
+import com.ruoyi.exam.domain.ExamPaperQuestionVO;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamPaperQuestionMapper;
 import com.ruoyi.exam.domain.ExamPaperQuestion;
 import com.ruoyi.exam.service.IExamPaperQuestionService;
-import com.ruoyi.common.support.Convert;
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 /**
  * 试卷题目 服务层实现
@@ -35,7 +33,7 @@ public class ExamPaperQuestionServiceImpl extends AbstractBaseServiceImpl<ExamPa
      * @return 试卷题目集合
      */
 	@Override
-	public List<ExamPaperQuestion> selectExamPaperQuestionList(ExamPaperQuestion examPaperQuestion)
+	public List<ExamPaperQuestionVO> selectExamPaperQuestionList(ExamPaperQuestion examPaperQuestion)
 	{
         return examPaperQuestionMapper.selectExamPaperQuestionList(examPaperQuestion);
 	}
@@ -69,14 +67,29 @@ public class ExamPaperQuestionServiceImpl extends AbstractBaseServiceImpl<ExamPa
     public List<String> selectQuestionIdsForPaperId(Integer id) {
         ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
         examPaperQuestion.setExamPaperId(id);
-        List<ExamPaperQuestion> examPaperQuestions = examPaperQuestionMapper.selectExamPaperQuestionList(examPaperQuestion);
+        List<ExamPaperQuestionVO> examPaperQuestions = examPaperQuestionMapper.selectExamPaperQuestionList(examPaperQuestion);
         List<String> ids = new ArrayList<>();
-        for (ExamPaperQuestion paperQuestion : examPaperQuestions) {
+        for (ExamPaperQuestionVO paperQuestion : examPaperQuestions) {
             ids.add(paperQuestion.getExamQuestionId().toString());
 
         }
         return ids;
     }
+
+    @Override
+    public List<ExamPaperQuestionVO> selectQuestionForPaperId(Integer id) {
+        ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
+        examPaperQuestion.setExamPaperId(id);
+        List<ExamPaperQuestionVO> examPaperQuestions = examPaperQuestionMapper.selectExamPaperQuestionList(examPaperQuestion);
+	    return examPaperQuestions;
+    }
+
+    @Override
+    public List<ExamPaperQuestion> selectquestionByIds(List<String> ids) {
+        return examPaperQuestionMapper.selectquestionByIds(ids);
+    }
+
+
 
     /**
      * 查询试卷题目分页列表
@@ -85,7 +98,7 @@ public class ExamPaperQuestionServiceImpl extends AbstractBaseServiceImpl<ExamPa
      * @return 试卷题目集合
      */
     @Override
-    public List<ExamPaperQuestion> selectExamPaperQuestionPage(ExamPaperQuestion examPaperQuestion)
+    public List<ExamPaperQuestionVO> selectExamPaperQuestionPage(ExamPaperQuestion examPaperQuestion)
     {
         startPage();
         return examPaperQuestionMapper.selectExamPaperQuestionList(examPaperQuestion);

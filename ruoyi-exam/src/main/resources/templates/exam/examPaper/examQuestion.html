@@ -76,11 +76,14 @@
 <script th:inline="javascript">
     var editFlag = [[${@permission.hasPermi('exam:examQuestion:edit')}]];
     var removeFlag = [[${@permission.hasPermi('exam:examQuestion:remove')}]];
+    var type = [[${@dict.getType('exam_question_type')}]];
     var prefix = ctx + "exam/examQuestion";
     var overAllIds = new Array();
     $(function () {
         $('body').layout({west__size: 150});
         queryExamQuestionList();
+        $("#categoryId").val(1);
+        $.table.search();
         queryExamQuestionCategoryTree();
         debugger;
         overAllIds = [[${examPaperQuestionIds}]];
@@ -111,7 +114,7 @@
                 {
                     field: 'id',
                     title: 'ID',
-                    sortable: true
+                    visible: false
                 },
                 {
                     field: 'title',
@@ -119,25 +122,19 @@
                     sortable: true
                 },
                 {
-                    field: 'answer',
-                    title: '问题答案',
-                    sortable: true
-                },
-                {
                     field: 'type',
                     title: '问题类型',
-                    sortable: true
+                    formatter: function(value, item, index) {
+                        debugger
+                        return $.table.selectDictLabel(type, item.type);
+                    }
                 },
                 {
                     field: 'createBy',
                     title: '创建者',
                     sortable: true
-                },
-                {
-                    field: 'remarks',
-                    title: '备注信息',
-                    sortable: true
-                }]
+                }
+               ]
 //                {
 //                    title: '操作',
 //                    align: 'center',
@@ -162,9 +159,7 @@
         $.tree.init(options);
 
         function zOnClick(event, treeId, treeNode) {
-            if (treeNode.pId == 1 || treeNode.pId == 0 || treeNode.pId == null) {
-                return;
-            }
+
             $("#categoryId").val(treeNode.id);
             $.table.search();
         }
@@ -193,32 +188,7 @@
         createMenuItem(url, "题库管理");
     }
 
-    function addChoiceQuestion() {
-        if ($("#categoryId").val() == null || $("#categoryId").val() == '') {
-            alert("请选择题库！")
-            return;
-        }
-        var url = prefix + "/choiceadd/" + $("#categoryId").val();
-        $.operate.jumpModeltoUrl("添加单选题", url);
-    }
 
-    function addMoreChoiceQuestion() {
-        if ($("#categoryId").val() == null || $("#categoryId").val() == '') {
-            alert("请选择题库！")
-            return;
-        }
-        var url = prefix + "/morechoiceadd/" + $("#categoryId").val();
-        $.operate.jumpModeltoUrl("添加多选题", url);
-    }
-
-    function addJudgeQuestion() {
-        if ($("#categoryId").val() == null || $("#categoryId").val() == '') {
-            alert("请选择题库！")
-            return;
-        }
-        var url = prefix + "/judgeadd/" + $("#categoryId").val();
-        $.operate.jumpModeltoUrl("添加多选题", url);
-    }
 
     var overAllIds = new Array(); //全局数组
     function getSelectCheck() {
@@ -248,7 +218,7 @@
 
     function submitHandler() {
         debugger
-        $.operate.save(ctx + "exam/examPaper"+ "/saveQuestion",$.param({questionId:overAllIds,paperId:$("#examPaperId").val()}));
+        $.operate.save(ctx + "exam/examPaper"+ "/addQuestionForModel",$.param({questionId:overAllIds,paperId:$("#examPaperId").val()}));
     }
 </script>
 </body>

@@ -54,4 +54,6 @@ public interface IExamQuestionService extends AbstractBaseService<ExamQuestion>
 	int insertQuestion(ExamQuestion examQuestion, String[] number, String[] content);
 
     int updateQuestion(ExamQuestion examQuestion, String[] number, String[] content);
+
+	List<ExamQuestion> selectByIds(List<String> ids);
 }

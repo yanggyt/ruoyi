@@ -2,6 +2,8 @@ package com.ruoyi.exam.service;
 
 import com.ruoyi.exam.domain.ExamPaperQuestion;
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamPaperQuestionVO;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 /**
  * 试卷题目 服务层
@@ -17,17 +19,22 @@ public interface IExamPaperQuestionService extends AbstractBaseService<ExamPaper
      * @param examPaperQuestion 试卷题目信息
      * @return 试卷题目集合
      */
-	public List<ExamPaperQuestion> selectExamPaperQuestionPage(ExamPaperQuestion examPaperQuestion);
+	public List<ExamPaperQuestionVO> selectExamPaperQuestionPage(ExamPaperQuestion examPaperQuestion);
     /**
      * 查询试卷题目列表
      *
      * @param examPaperQuestion 试卷题目信息
      * @return 试卷题目集合
      */
-    public List<ExamPaperQuestion> selectExamPaperQuestionList(ExamPaperQuestion examPaperQuestion);
+    public List<ExamPaperQuestionVO> selectExamPaperQuestionList(ExamPaperQuestion examPaperQuestion);
 
 
     int saveQuestion(String paperId, String[] questionId);
 
     List<String> selectQuestionIdsForPaperId(Integer id);
+
+    List<ExamPaperQuestionVO> selectQuestionForPaperId(Integer id);
+
+    List<ExamPaperQuestion> selectquestionByIds(List<String> ids);
+
 }

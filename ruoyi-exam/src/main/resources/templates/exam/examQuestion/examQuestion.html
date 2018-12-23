@@ -200,6 +200,10 @@
         if(!$.tree.notAllowParents($._tree)){
             return ;
         }
+        if($("#categoryId").val()==1){
+            $.modal.alertWarning("请选择试题分类");
+            return;
+        }
         var url = prefix + "/choiceadd/"+$("#categoryId").val();
         $.operate.jumpModeltoUrl("添加单选题",url);
     }
@@ -208,6 +212,10 @@
         if(!$.tree.notAllowParents($._tree)){
             return ;
         }
+        if($("#categoryId").val()==1){
+            $.modal.alertWarning("请选择试题分类");
+            return;
+        }
         var url = prefix + "/morechoiceadd/"+$("#categoryId").val();
         $.operate.jumpModeltoUrl("添加多选题",url);
     }
@@ -215,6 +223,10 @@
     function addJudgeQuestion(){
         if(!$.tree.notAllowParents($._tree)){
             return ;
+        }
+        if($("#categoryId").val()==1){
+            $.modal.alertWarning("请选择试题分类");
+            return;
         }
         var url = prefix + "/judgeadd/"+$("#categoryId").val();
         $.operate.jumpModeltoUrl("添加多选题",url);

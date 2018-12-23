@@ -35,8 +35,30 @@ private static final long serialVersionUID = 1L;
 	    private String remarks;
 	        /** 删除标记 */
 	    private String delFlag;
-	
-	    /** 设置试卷题目ID */
+
+	    private Integer score;
+
+	    private Integer orderNum;
+
+
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    /** 设置试卷题目ID */
     public void setId(Integer id)
             {
             this.id = id;

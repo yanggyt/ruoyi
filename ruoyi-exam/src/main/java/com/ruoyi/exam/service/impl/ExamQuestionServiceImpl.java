@@ -140,4 +140,14 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
 
 	}
 
+    @Override
+    public List<ExamQuestion> selectByIds(List<String> ids) {
+        StringBuffer sb = new StringBuffer();
+		for (String id : ids) {
+			sb.append(id+",");
+		}
+		String substring = sb.substring(0, sb.length() - 1);
+		return examQuestionMapper.selectByIds(substring.toString());
+    }
+
 }
