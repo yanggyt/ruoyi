@@ -27,20 +27,19 @@ import com.ruoyi.framework.web.base.BaseController;
 
 /**
  * 个人信息 业务处理
- * 
+ *
  * @author ruoyi
  */
 @Controller
 @RequestMapping("/system/user/profile")
-public class SysProfileController extends BaseController
-{
-    private static final Logger log = LoggerFactory.getLogger(SysProfileController.class);
+public class SysProfileController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger( SysProfileController.class );
 
     private String prefix = "system/user/profile";
 
     @Autowired
     private ISysUserService userService;
-    
+
     @Autowired
     private SysPasswordService passwordService;
 
@@ -51,47 +50,41 @@ public class SysProfileController extends BaseController
      * 个人信息
      */
     @GetMapping()
-    public String profile(ModelMap mmap)
-    {
+    public String profile(ModelMap mmap) {
         SysUser user = getSysUser();
-        user.setSex(dictDataService.selectDictLabel("sys_user_sex", user.getSex()));
-        mmap.put("user", user);
-        mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
-        mmap.put("postGroup", userService.selectUserPostGroup(user.getUserId()));
+        user.setSex( dictDataService.selectDictLabel( "sys_user_sex", user.getSex() ) );
+        mmap.put( "user", user );
+        mmap.put( "roleGroup", userService.selectUserRoleGroup( user.getUserId() ) );
+        mmap.put( "postGroup", userService.selectUserPostGroup( user.getUserId() ) );
         return prefix + "/profile";
     }
 
     @GetMapping("/checkPassword")
     @ResponseBody
-    public boolean checkPassword(String password)
-    {
+    public boolean checkPassword(String password) {
         SysUser user = getSysUser();
-        String encrypt = new Md5Hash(user.getLoginName() + password + user.getSalt()).toHex().toString();
-        if (user.getPassword().equals(encrypt))
-        {
+        String encrypt = new Md5Hash( user.getLoginName() + password + user.getSalt() ).toHex().toString();
+        if (user.getPassword().equals( encrypt )) {
             return true;
         }
         return false;
     }
 
     @GetMapping("/resetPwd/{userId}")
-    public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap)
-    {
-        mmap.put("user", userService.selectUserById(userId));
+    public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
+        mmap.put( "user", userService.selectUserById( userId ) );
         return prefix + "/resetPwd";
     }
 
     @Log(title = "重置密码", businessType = BusinessType.UPDATE)
     @PostMapping("/resetPwd")
     @ResponseBody
-    public AjaxResult resetPwd(SysUser user)
-    {
-        user.setSalt(ShiroUtils.randomSalt());
-        user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
-        int rows = userService.resetUserPwd(user);
-        if (rows > 0)
-        {
-            setSysUser(userService.selectUserById(user.getUserId()));
+    public AjaxResult resetPwd(SysUser user) {
+        user.setSalt( ShiroUtils.randomSalt() );
+        user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
+        int rows = userService.resetUserPwd( user );
+        if (rows > 0) {
+            setSysUser( userService.selectUserById( user.getUserId() ) );
             return success();
         }
         return error();
@@ -101,9 +94,8 @@ public class SysProfileController extends BaseController
      * 修改用户
      */
     @GetMapping("/edit/{userId}")
-    public String edit(@PathVariable("userId") Long userId, ModelMap mmap)
-    {
-        mmap.put("user", userService.selectUserById(userId));
+    public String edit(@PathVariable("userId") Long userId, ModelMap mmap) {
+        mmap.put( "user", userService.selectUserById( userId ) );
         return prefix + "/edit";
     }
 
@@ -111,9 +103,8 @@ public class SysProfileController extends BaseController
      * 修改头像
      */
     @GetMapping("/avatar/{userId}")
-    public String avatar(@PathVariable("userId") Long userId, ModelMap mmap)
-    {
-        mmap.put("user", userService.selectUserById(userId));
+    public String avatar(@PathVariable("userId") Long userId, ModelMap mmap) {
+        mmap.put( "user", userService.selectUserById( userId ) );
         return prefix + "/avatar";
     }
 
@@ -123,11 +114,9 @@ public class SysProfileController extends BaseController
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     @ResponseBody
-    public AjaxResult update(SysUser user)
-    {
-        if (userService.updateUserInfo(user) > 0)
-        {
-            setSysUser(userService.selectUserById(user.getUserId()));
+    public AjaxResult update(SysUser user) {
+        if (userService.updateUserInfo( user ) > 0) {
+            setSysUser( userService.selectUserById( user.getUserId() ) );
             return success();
         }
         return error();
@@ -139,26 +128,20 @@ public class SysProfileController extends BaseController
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PostMapping("/updateAvatar")
     @ResponseBody
-    public AjaxResult updateAvatar(SysUser user, @RequestParam("avatarfile") MultipartFile file)
-    {
-        try
-        {
-            if (!file.isEmpty())
-            {
-                String avatar = FileUploadUtils.upload(Global.getAvatarPath(), file);
-                user.setAvatar(avatar);
-                if (userService.updateUserInfo(user) > 0)
-                {
-                    setSysUser(userService.selectUserById(user.getUserId()));
+    public AjaxResult updateAvatar(SysUser user, @RequestParam("avatarfile") MultipartFile file) {
+        try {
+            if (!file.isEmpty()) {
+                String avatar = FileUploadUtils.upload( Global.getAvatarPath(), file );
+                user.setAvatar( avatar );
+                if (userService.updateUserInfo( user ) > 0) {
+                    setSysUser( userService.selectUserById( user.getUserId() ) );
                     return success();
                 }
             }
             return error();
-        }
-        catch (Exception e)
-        {
-            log.error("修改头像失败！", e);
-            return error(e.getMessage());
+        } catch (Exception e) {
+            log.error( "修改头像失败！", e );
+            return error( e.getMessage() );
         }
     }
 }
