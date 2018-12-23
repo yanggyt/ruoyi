@@ -25,7 +25,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/train/courseware/category")
 public class TrainCoursewareCategoryController extends BaseController {
-    private String prefix = "courseware/category";
+    private String prefix = "train/courseware/category";
 
     @Autowired
     private ITrainCoursewareCategoryService trainCoursewareCategoryService;
