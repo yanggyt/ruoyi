@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamExaminationMapper">
+    
+    <resultMap type="ExamExamination" id="ExamExaminationResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="examPaperId"    column="exam_paper_id"    />
+        <result property="name"    column="name"    />
+        <result property="enableControlTime"    column="enable_control_time"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="timeLength"    column="time_length"    />
+        <result property="examNumber"    column="exam_number"    />
+        <result property="passMark"    column="pass_mark"    />
+        <result property="questionDisorder"    column="question_disorder"    />
+        <result property="finishedPaper"    column="finished_paper"    />
+        <result property="examEnd"    column="exam_end"    />
+        <result property="examinationUserLimit"    column="examination_user_limit"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectExamExaminationVo">
+         id, dept_id, exam_paper_id, name, enable_control_time, start_time, end_time, time_length, exam_number, pass_mark, question_disorder, finished_paper, exam_end, examination_user_limit, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+	
+    <select id="selectExamExaminationList" parameterType="ExamExamination" resultMap="ExamExaminationResult">
+        select
+        <include refid="selectExamExaminationVo"/>
+        from exam_examination
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="deptId != null "> and dept_id = #{deptId}</if>
+             <if test="examPaperId != null "> and exam_paper_id = #{examPaperId}</if>
+             <if test="name != null  and name != '' "> and name = #{name}</if>
+             <if test="enableControlTime != null  and enableControlTime != '' "> and enable_control_time = #{enableControlTime}</if>
+             <if test="startTime != null "> and start_time = #{startTime}</if>
+             <if test="endTime != null "> and end_time = #{endTime}</if>
+             <if test="timeLength != null "> and time_length = #{timeLength}</if>
+             <if test="examNumber != null "> and exam_number = #{examNumber}</if>
+             <if test="passMark != null "> and pass_mark = #{passMark}</if>
+             <if test="questionDisorder != null  and questionDisorder != '' "> and question_disorder = #{questionDisorder}</if>
+             <if test="finishedPaper != null  and finishedPaper != '' "> and finished_paper = #{finishedPaper}</if>
+             <if test="examEnd != null  and examEnd != '' "> and exam_end = #{examEnd}</if>
+             <if test="examinationUserLimit != null  and examinationUserLimit != '' "> and examination_user_limit = #{examinationUserLimit}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createDate != null "> and create_date = #{createDate}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateDate != null "> and update_date = #{updateDate}</if>
+             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+         </where>
+    </select>
+
+    
+</mapper>
