@@ -24,7 +24,7 @@ import com.ruoyi.common.utils.ExcelUtil;
 
 /**
  * 课程 信息操作处理
- * 
+ *
  * @author zhujj
  * @date 2018-12-23
  */
@@ -32,8 +32,8 @@ import com.ruoyi.common.utils.ExcelUtil;
 @RequestMapping("/train/trainCourse")
 public class TrainCourseController extends BaseController
 {
-    private String prefix = "train/course/trainCourse";
-	
+	private String prefix = "train/course/trainCourse";
+
 	@Autowired
 	private ITrainCourseService trainCourseService;
 
@@ -43,9 +43,9 @@ public class TrainCourseController extends BaseController
 	@GetMapping()
 	public String trainCourse()
 	{
-	    return prefix + "/trainCourse";
+		return prefix + "/trainCourse";
 	}
-	
+
 	/**
 	 * 查询课程列表
 	 */
@@ -54,33 +54,33 @@ public class TrainCourseController extends BaseController
 	@ResponseBody
 	public TableDataInfo list(TrainCourse trainCourse)
 	{
-        List<TrainCourse> list = trainCourseService.selectTrainCoursePage(trainCourse);
+		List<TrainCourse> list = trainCourseService.selectTrainCoursePage(trainCourse);
 		return getDataTable(list);
 	}
-	
-	
+
+
 	/**
 	 * 导出课程列表
 	 */
 	@RequiresPermissions("train:trainCourse:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(TrainCourse trainCourse)
-    {
-    	List<TrainCourse> list = trainCourseService.selectTrainCourseList(trainCourse);
-        ExcelUtil<TrainCourse> util = new ExcelUtil<TrainCourse>(TrainCourse.class);
-        return util.exportExcel(list, "trainCourse");
-    }
-	
+	@PostMapping("/export")
+	@ResponseBody
+	public AjaxResult export(TrainCourse trainCourse)
+	{
+		List<TrainCourse> list = trainCourseService.selectTrainCourseList(trainCourse);
+		ExcelUtil<TrainCourse> util = new ExcelUtil<TrainCourse>(TrainCourse.class);
+		return util.exportExcel(list, "trainCourse");
+	}
+
 	/**
 	 * 新增课程
 	 */
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		return prefix + "/add";
 	}
-	
+
 	/**
 	 * 新增保存课程
 	 */
@@ -89,7 +89,7 @@ public class TrainCourseController extends BaseController
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(TrainCourse trainCourse)
-	{		
+	{
 		return toAjax(trainCourseService.insert(trainCourse));
 	}
 
@@ -103,9 +103,9 @@ public class TrainCourseController extends BaseController
 		TrainCourseCategory courseCategory = trainCourseCategoryService.selectCategoryById( (long) trainCourse.getTrainCourseCategoryId() );
 		mmap.put("trainCourse", trainCourse);
 		mmap.put("category", courseCategory);
-	    return prefix + "/edit";
+		return prefix + "/edit";
 	}
-	
+
 	/**
 	 * 修改保存课程
 	 */
@@ -114,10 +114,10 @@ public class TrainCourseController extends BaseController
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(TrainCourse trainCourse)
-	{		
+	{
 		return toAjax(trainCourseService.updateById(trainCourse));
 	}
-	
+
 	/**
 	 * 删除课程
 	 */
@@ -126,8 +126,8 @@ public class TrainCourseController extends BaseController
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(trainCourseService.deleteByIds(ids));
 	}
-	
+
 }
