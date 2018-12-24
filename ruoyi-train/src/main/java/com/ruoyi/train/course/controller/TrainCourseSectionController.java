@@ -30,15 +30,16 @@ import com.ruoyi.common.utils.ExcelUtil;
 @RequestMapping("/train/trainCourseSection")
 public class TrainCourseSectionController extends BaseController
 {
-    private String prefix = "train/trainCourseSection";
+    private String prefix = "train/course/trainCourseSection";
 	
 	@Autowired
 	private ITrainCourseSectionService trainCourseSectionService;
 	
 	@RequiresPermissions("train:trainCourseSection:view")
 	@GetMapping()
-	public String trainCourseSection()
+	public String trainCourseSection(String trainCourseId, ModelMap mmap)
 	{
+		mmap.put("courseId", trainCourseId);
 	    return prefix + "/trainCourseSection";
 	}
 	
