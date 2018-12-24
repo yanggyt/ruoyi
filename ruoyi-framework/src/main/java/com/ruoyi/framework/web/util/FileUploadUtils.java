@@ -54,7 +54,7 @@ public class FileUploadUtils {
      */
     public static final String upload(MultipartFile file) throws IOException {
         try {
-            return upload( getDefaultBaseDir(), file, FileUploadUtils.IMAGE_JPG_EXTENSION );
+            return upload( getDefaultBaseDir(), file,true, FileUploadUtils.IMAGE_JPG_EXTENSION );
         } catch (Exception e) {
             throw new IOException( e );
         }
@@ -70,7 +70,7 @@ public class FileUploadUtils {
      */
     public static final String upload(String baseDir, MultipartFile file) throws IOException {
         try {
-            return upload( baseDir, file, FileUploadUtils.IMAGE_JPG_EXTENSION );
+            return upload( baseDir, file,true, FileUploadUtils.IMAGE_JPG_EXTENSION );
         } catch (Exception e) {
             throw new IOException( e );
         }
@@ -88,7 +88,7 @@ public class FileUploadUtils {
      * @throws FileNameLengthLimitExceededException 文件名太长
      * @throws IOException                          比如读写文件出错时
      */
-    public static final String upload(String baseDir, MultipartFile file, String extension)
+    public static final String upload(String baseDir, MultipartFile file,boolean needDatePathAndRandomName, String extension)
             throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException {
 
         int fileNamelength = file.getOriginalFilename().length();
@@ -99,7 +99,10 @@ public class FileUploadUtils {
 
         assertAllowed( file );
 
-        String fileName = encodingFilename( file.getOriginalFilename(), extension );
+        String fileName = extension;
+        if(needDatePathAndRandomName){
+            fileName =encodingFilename( file.getOriginalFilename(), extension );
+        }
 
         File desc = getAbsoluteFile( baseDir, baseDir + fileName );
         file.transferTo( desc );
@@ -127,7 +130,7 @@ public class FileUploadUtils {
         return filename;
     }
 
-    /**
+    /**`    、。，
      * 文件大小校验
      *
      * @param file 上传的文件

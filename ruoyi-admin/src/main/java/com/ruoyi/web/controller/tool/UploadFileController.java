@@ -57,7 +57,7 @@ public class UploadFileController extends BaseController {
                 if (null != module) {
                     filePath=module+ File.separator+ DateUtil.today()+ File.separator;
                 }
-                String fileName = FileUploadUtils.upload( Global.getAvatarPath()+filePath, file,originalFileName);
+                String fileName = FileUploadUtils.upload( Global.getAvatarPath()+filePath, file,false,originalFileName);
                 AjaxResult ajaxResult = new AjaxResult();
                 ajaxResult.put( "fileName", filePath+fileName );
                 ajaxResult.put( "code", "200" );
