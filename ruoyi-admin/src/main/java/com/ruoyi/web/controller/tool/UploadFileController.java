@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.tool;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
@@ -27,6 +28,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -45,14 +47,19 @@ public class UploadFileController extends BaseController {
      */
     @Log(title = "上传文件", businessType = BusinessType.INSERT)
     @PostMapping("/files")
-    public AjaxResult updateAvatar(@RequestParam("file") MultipartFile file) {
+    public AjaxResult updateAvatar(@RequestParam("file") MultipartFile file,String module) {
         try {
             if (!file.isEmpty()) {
                 String originalFileName = file.getOriginalFilename();
                 originalFileName.substring(originalFileName.lastIndexOf("."));
-                String fileName = FileUploadUtils.upload( Global.getAvatarPath(), file,originalFileName);
+                String filePath="";
+                //上传文件路径由模块参数（module）和上传的当天日期组成
+                if (null != module) {
+                    filePath=module+ File.separator+ DateUtil.today()+ File.separator;
+                }
+                String fileName = FileUploadUtils.upload( Global.getAvatarPath()+filePath, file,originalFileName);
                 AjaxResult ajaxResult = new AjaxResult();
-                ajaxResult.put( "fileName", fileName );
+                ajaxResult.put( "fileName", filePath+fileName );
                 ajaxResult.put( "code", "200" );
                 ajaxResult.put( "msg", "上传成功" );
                 return ajaxResult;

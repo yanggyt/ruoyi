@@ -33,7 +33,6 @@ import com.ruoyi.common.utils.ExcelUtil;
 public class TrainCourseController extends BaseController
 {
 	private String prefix = "train/course/trainCourse";
-
 	@Autowired
 	private ITrainCourseService trainCourseService;
 
