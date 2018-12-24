@@ -1,8 +1,10 @@
-package com.ruoyi.train.service;
+package com.ruoyi.train.course.service;
 
-import com.ruoyi.train.domain.TrainCourseSectionCourseware;
-import java.util.List;
 import com.ruoyi.framework.web.base.AbstractBaseService;
+import com.ruoyi.train.course.domain.TrainCourseSectionCourseware;
+
+import java.util.List;
+
 /**
  * 章节课件 服务层
  * 

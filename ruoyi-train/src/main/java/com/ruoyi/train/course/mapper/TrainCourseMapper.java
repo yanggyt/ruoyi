@@ -1,8 +1,10 @@
-package com.ruoyi.train.mapper;
+package com.ruoyi.train.course.mapper;
 
-import com.ruoyi.train.domain.TrainCourse;
-import java.util.List;
+
 import com.ruoyi.framework.web.base.MyMapper;
+import com.ruoyi.train.course.domain.TrainCourse;
+
+import java.util.List;
 
 /**
  * 课程 数据层

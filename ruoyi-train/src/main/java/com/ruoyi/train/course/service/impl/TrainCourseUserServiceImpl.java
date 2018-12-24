@@ -1,13 +1,14 @@
-package com.ruoyi.train.service.impl;
+package com.ruoyi.train.course.service.impl;
 
-import java.util.List;
+import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.train.course.domain.TrainCourseUser;
+import com.ruoyi.train.course.mapper.TrainCourseUserMapper;
+import com.ruoyi.train.course.service.ITrainCourseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.train.mapper.TrainCourseUserMapper;
-import com.ruoyi.train.domain.TrainCourseUser;
-import com.ruoyi.train.service.ITrainCourseUserService;
-import com.ruoyi.common.support.Convert;
-import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+
+import java.util.List;
+
 /**
  * 课程使用对象 服务层实现
  * 

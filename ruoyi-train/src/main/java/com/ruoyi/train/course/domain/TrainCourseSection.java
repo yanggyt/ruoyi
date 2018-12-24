@@ -1,5 +1,4 @@
-package com.ruoyi.train.domain;
-
+package com.ruoyi.train.course.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
