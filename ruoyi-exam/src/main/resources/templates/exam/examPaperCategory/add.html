@@ -48,7 +48,7 @@
 		function submitHandler() {
 	        if ($.validate.form()) {
 	            $.operate.save(prefix + "/add", $('#form-examPaperCategory-add').serialize());
-	        }
+	        }5
 	    }
 
         function selectExamPaperCategoryTree() {
@@ -66,6 +66,8 @@
             $("#treeId").val(body.find('#treeId').val());
             $("#treeName").val(body.find('#treeName').val());
             layer.close(index);
+
+
         }
 	</script>
 </body>

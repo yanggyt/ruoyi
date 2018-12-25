@@ -56,7 +56,10 @@ public class ExamPaperController extends BaseController
 	{
 	    return prefix + "/examPaper";
 	}
-	
+
+
+
+
 	/**
 	 * 查询试卷列表
 	 */
