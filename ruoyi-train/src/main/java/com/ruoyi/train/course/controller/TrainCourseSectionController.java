@@ -87,7 +87,7 @@ public class TrainCourseSectionController extends BaseController
 	@ResponseBody
 	public AjaxResult addSave(TrainCourseSection trainCourseSection)
 	{		
-		return toAjax(trainCourseSectionService.insert(trainCourseSection));
+		return toAjax(trainCourseSectionService.insertSelective(trainCourseSection));
 	}
 
 	/**

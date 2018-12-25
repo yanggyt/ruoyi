@@ -29,6 +29,8 @@
 		<div class="row">
 			<div class="col-sm-12 search-collapse">
 				<form id="formId">
+					<input type="hidden" id="trainCourseCategoryId" name="trainCourseCategoryId">
+					<input type="hidden" id="parentId" name="parentId">
 					<div class="select-list">
 						<ul>
 							<li>
@@ -101,6 +103,10 @@
                         title : '课程名称'
                     },
                     {
+                        field : 'price',
+                        title : '课程价格'
+                    },
+                    {
                         field : 'description',
                         title : '课程介绍'
                     },
@@ -145,7 +151,7 @@
             $.tree.init(options);
 
             function zOnClick(event, treeId, treeNode) {
-                $("#trainCoursewareCategoryId").val(treeNode.id);
+                $("#trainCourseCategoryId").val(treeNode.id);
                 $("#parentId").val(treeNode.pId);
                 $.table.search();
             }
@@ -171,6 +177,7 @@
             var url ="/train/course/category";
             createMenuItem(url, "分类管理");
         }
+        /**跳转到课程章节*/
         function courseSection(id) {
             var url =  "/train/trainCourseSection?trainCourseId="+id;
             createMenuItem(url, "课程内容");

@@ -2,28 +2,6 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<link th:href="@{/ajax/libs/jquery-layout/jquery.layout-latest.css}" rel="stylesheet"/>
-<body class="gray-bg">
-	<div class="ui-layout-west">
-		<div class="main-content">
-			<div class="box box-main">
-				<div class="box-header">
-					<div class="box-title">
-						<i class="fa icon-grid"></i> 课程章节
-					</div>
-					<div class="box-tools pull-right">
-						<a type="button" class="btn btn-box-tool menuItem" href="#" onclick="category()" title="管理分类"><i class="fa fa-edit"></i></a>
-						<button type="button" class="btn btn-box-tool" id="btnExpand" title="展开" style="display:none;"><i class="fa fa-chevron-up"></i></button>
-						<button type="button" class="btn btn-box-tool" id="btnCollapse" title="折叠"><i class="fa fa-chevron-down"></i></button>
-						<button type="button" class="btn btn-box-tool" id="btnRefresh" title="刷新分类"><i class="fa fa-refresh"></i></button>
-					</div>
-				</div>
-				<div class="ui-layout-content">
-					<div id="tree" class="ztree"></div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="container-div ui-layout-center">
 		<div class="row">
 			<div class="col-sm-12 search-collapse">
@@ -62,13 +40,11 @@
 		</div>
 	</div>
     <div th:include="include :: footer"></div>
-	<script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('train:trainCourseSection:edit')}]];
         var removeFlag = [[${@permission.hasPermi('train:trainCourseSection:remove')}]];
         var prefix = ctx + "train/trainCourseSection";
         $(function() {
-            $('body').layout({ west__size: 185 });
             var options = {
                 url: prefix + "/list",
                 createUrl: prefix + "/add",

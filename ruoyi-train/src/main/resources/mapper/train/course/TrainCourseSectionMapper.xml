@@ -8,6 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="trainCourseId"    column="train_course_id"    />
         <result property="name"    column="name"    />
+        <result property="courseware"    column="courseware"    />
+
         <result property="orderNum"    column="order_num"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createBy"    column="create_by"    />
@@ -18,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectTrainCourseSectionVo">
-         id, train_course_id, name, order_num, del_flag, create_by, create_time, update_by, update_time, remark    </sql>
+         id, train_course_id, name,courseware, order_num, del_flag, create_by, create_time, update_by, update_time, remark    </sql>
 	
     <select id="selectTrainCourseSectionList" parameterType="TrainCourseSection" resultMap="TrainCourseSectionResult">
         select

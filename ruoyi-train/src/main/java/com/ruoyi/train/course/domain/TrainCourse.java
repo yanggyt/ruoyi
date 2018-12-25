@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
 
 import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -32,6 +33,10 @@ public class TrainCourse {
      * 课程名称
      */
     private String name;
+    /**
+     * 价格
+     */
+    private BigDecimal price;
     /**
      * 课程封面
      */
@@ -121,6 +126,14 @@ public class TrainCourse {
      */
     public String getName() {
         return name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     /**
