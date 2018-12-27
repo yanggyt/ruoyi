@@ -6,6 +6,7 @@
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-examExamination-edit" th:object="${examExamination}">
             <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<input id="paperId" name="paperId" th:value="${examExamination.examPaperId}"  type="hidden">
 			<div class="form-group">
 
 				<div class="form-group">
@@ -21,8 +22,8 @@
 						<input id="treeName" name="treeName" value="试卷分类" onclick="selectExamPaperCategoryTree()" class="form-control" type="text" readonly="true">
 					</div>
 					<div class="col-sm-5">
-						<select id="examPaperId" name="examPaperId" class="form-control m-b" >
-							<option>---请选择---</option>
+						<select id="examPaperId" name="examPaperId" class="form-control m-b"  >
+							<option value="">---请选择---</option>
 						</select>
 					</div>
 				</div>
@@ -113,14 +114,17 @@
                 url: ctx + "exam/examPaper"+ "/list",
                 type: "post",
                 dataType: "json",
-                data: {examPaperCategoryId:$("#examPaperId").val()},
+                data: {examPaperCategoryId:1},
 //                contentType:"application/json",
                 success: function(result) {
-                    $("#examPaperId").html("<option>---请选择---</option>");
+                    debugger
+                    var id = $("#paperId").val();
+                    $("#examPaperId").html("<option value=''>---请选择---</option>");
                     var rows =result.rows;
                     for(var i in rows){
                         $("#examPaperId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
                     }
+                    $("#examPaperId").val(id);
                 }
             };
             $.ajax(config)
@@ -128,11 +132,27 @@
 
 
 		$("#form-examExamination-edit").validate({
-			rules:{
-				xxxx:{
-					required:true,
-				},
-			}
+            rules:{
+                name:{
+                    required:true,
+                },
+                examPaperId:{
+                    required:true,
+                },
+                startTime:{
+                    required:true,
+                },
+                endTime:{
+                    required:true,
+                },
+                passMark:{
+                    required:true,
+                },
+                timeLength:{
+                    required:true
+                }
+
+            }
 		});
 		
 		function submitHandler() {

@@ -113,8 +113,11 @@ public class ExamExaminationController extends BaseController
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(ExamExamination examExamination)
-	{		
-		return toAjax(examExaminationService.updateById(examExamination));
+	{
+		examExamination.setDelFlag("0");
+		examExamination.setUpdateDate(new Date());
+		examExamination.setUpdateBy(ShiroUtils.getLoginName());
+		return toAjax(examExaminationService.updateSelectiveById(examExamination));
 	}
 	
 	/**

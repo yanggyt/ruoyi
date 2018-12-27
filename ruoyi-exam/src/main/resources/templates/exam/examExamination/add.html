@@ -22,7 +22,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">考试试卷：</label>
 				<div class="col-sm-3">
-					<input id="treeName" name="treeName" onclick="selectExamPaperCategoryTree()" class="form-control" type="text" readonly="true">
+					<input id="treeName" name="treeName" value="试卷分类" onclick="selectExamPaperCategoryTree()" class="form-control" type="text" readonly="true">
 				</div>
 				<div class="col-sm-5">
 					<select id="examPaperId" name="examPaperId" class="form-control m-b" >
@@ -114,13 +114,47 @@
     <script type="text/javascript">
 		var prefix = ctx + "exam/examExamination"
 
+        $(function () {
+            var config = {
+                url: ctx + "exam/examPaper"+ "/list",
+                type: "post",
+                dataType: "json",
+                data: {examPaperCategoryId:1},
+//                contentType:"application/json",
+                success: function(result) {
+
+                    $("#examPaperId").html("<option value=''>---请选择---</option>");
+                    var rows =result.rows;
+                    for(var i in rows){
+                        $("#examPaperId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
+                    }
+                }
+            };
+            $.ajax(config)
+        })
 
 
 		$("#form-examExamination-add").validate({
 			rules:{
-				xxxx:{
+                name:{
 					required:true,
 				},
+                examPaperId:{
+                    required:true,
+                },
+                startTime:{
+                    required:true,
+                },
+                endTime:{
+                    required:true,
+                },
+                passMark:{
+                    required:true,
+                },
+                timeLength:{
+                    required:true
+				}
+
 			}
 		});
 		
