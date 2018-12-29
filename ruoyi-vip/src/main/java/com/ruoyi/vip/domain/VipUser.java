@@ -2,6 +2,7 @@ package com.ruoyi.vip.domain;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
+import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysRole;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -75,7 +76,7 @@ public class VipUser extends BaseEntity
     private Date loginDate;
 
     /** 部门对象 */
-    private VipDept dept;
+    private SysDept dept;
 
 
     public Long getId() {
@@ -226,12 +227,12 @@ public class VipUser extends BaseEntity
         this.loginDate = loginDate;
     }
 
-    public VipDept getDept()
+    public SysDept getDept()
     {
         return dept;
     }
 
-    public void setDept(VipDept dept)
+    public void setDept(SysDept dept)
     {
         this.dept = dept;
     }
