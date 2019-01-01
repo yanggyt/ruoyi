@@ -17,7 +17,9 @@ public @interface Excel
     /**
      * 导出到Excel中的名字.
      */
-    public String name();
+    public String name() default "";
+
+    public int order() default 0;
 
     /**
      * 日期格式, 如: yyyy-MM-dd
@@ -63,4 +65,7 @@ public @interface Excel
      * 是否导出数据,应对需求:有时我们需要导出一份模板,这是标题需要但内容需要用户手工填写.
      */
     public boolean isExport() default true;
+
+
+
 }

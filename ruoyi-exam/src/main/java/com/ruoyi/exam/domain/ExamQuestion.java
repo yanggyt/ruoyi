@@ -1,5 +1,6 @@
 package com.ruoyi.exam.domain;
 
+import com.ruoyi.common.annotation.Excel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
@@ -20,10 +21,10 @@ public class ExamQuestion
     @Id
 	private String id;
 	/** 问题标题 */
-	
+
 	private String title;
 	/** 问题答案 */
-	
+
 	private String answer;
 	/** 问题类型 */
 	

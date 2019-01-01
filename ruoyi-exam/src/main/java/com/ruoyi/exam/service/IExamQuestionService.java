@@ -1,6 +1,8 @@
 package com.ruoyi.exam.service;
 
 import com.ruoyi.exam.domain.ExamQuestion;
+
+import java.util.Collection;
 import java.util.List;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 /**
@@ -56,4 +58,6 @@ public interface IExamQuestionService extends AbstractBaseService<ExamQuestion>
     int updateQuestion(ExamQuestion examQuestion, String[] number, String[] content);
 
 	List<ExamQuestion> selectByIds(List<String> ids);
+
+	List<ExamQuestion> selectQuestionList(ExamQuestion examQuestion);
 }

@@ -112,16 +112,20 @@ public class ExcelUtil<T>
                 {
                     // 设置类的私有字段属性可访问.
                     field.setAccessible(true);
-                    fieldsMap.put(++serialNum, field);
+                    Excel annotation = field.getAnnotation(Excel.class);
+                    fieldsMap.put(annotation.order(), field);
+                    if(annotation.order()>serialNum){
+                        serialNum=annotation.order();
+                    }
                 }
             }
-            for (int i = 1; i < rows; i++)
+            for (int i = 2; i < rows; i++)
             {
                 // 从第2行开始取数据,默认第一行是表头.
                 Row row = sheet.getRow(i);
                 int cellNum = serialNum;
                 T entity = null;
-                for (int j = 0; j < cellNum; j++)
+                for (int j = 0; j < serialNum; j++)
                 {
                     Cell cell = row.getCell(j);
                     if (cell == null)
@@ -145,6 +149,9 @@ public class ExcelUtil<T>
                     entity = (entity == null ? clazz.newInstance() : entity);
                     // 从map中得到对应列的field.
                     Field field = fieldsMap.get(j + 1);
+                    if(field==null){
+                        continue;
+                    }
                     // 取得类型,并根据对象类型设置值.
                     Class<?> fieldType = field.getType();
                     if (String.class == fieldType)

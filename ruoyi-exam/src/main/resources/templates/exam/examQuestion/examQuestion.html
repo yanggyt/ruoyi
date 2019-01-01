@@ -46,7 +46,8 @@
                         <li>
                             问题类型：<select name="type" th:with="type=${@dict.getType('exam_question_type')}">
                             <option value="">所有</option>
-                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
                         </select>
                         </li>
 
@@ -61,6 +62,9 @@
         </div>
 
         <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">导入</button>
+
             <a class="btn btn-success" onclick="addChoiceQuestion()" shiro:hasPermission="exam:examQuestion:add">
                 <i class="fa fa-plus"></i> 添加单选题
             </a>
@@ -84,6 +88,24 @@
             <table id="bootstrap-table" data-mobile-responsive="true"></table>
         </div>
     </div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">导入试题</h4>
+            </div>
+            <input id="questionFile" type="file" class="file" data-show-preview="false"
+                   data-allowed-file-extensions='["docx","png"]'>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="importFile()">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 <div th:include="include :: footer"></div>
 <script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
@@ -114,8 +136,8 @@
             showExport: true,
             columns: [{
                 checkbox: true
-            },{
-                field:"id",
+            }, {
+                field: "id",
                 title: '#',
                 visible: false
             },
@@ -128,7 +150,7 @@
                     field: 'type',
                     title: '问题类型',
                     sortable: true,
-                    formatter: function(value, item, index) {
+                    formatter: function (value, item, index) {
                         debugger
                         return $.table.selectDictLabel(type, item.type);
                     }
@@ -196,40 +218,73 @@
         createMenuItem(url, "题库管理");
     }
 
-    function addChoiceQuestion(){
-        if(!$.tree.notAllowParents($._tree)){
-            return ;
+    function addChoiceQuestion() {
+        if (!$.tree.notAllowParents($._tree)) {
+            return;
         }
-        if($("#categoryId").val()==1){
+        if ($("#categoryId").val() == 1) {
             $.modal.alertWarning("请选择试题分类");
             return;
         }
-        var url = prefix + "/choiceadd/"+$("#categoryId").val();
-        $.operate.jumpModeltoUrl("添加单选题",url);
+        var url = prefix + "/choiceadd/" + $("#categoryId").val();
+        $.operate.jumpModeltoUrl("添加单选题", url);
     }
 
-    function addMoreChoiceQuestion(){
-        if(!$.tree.notAllowParents($._tree)){
-            return ;
+    function addMoreChoiceQuestion() {
+        if (!$.tree.notAllowParents($._tree)) {
+            return;
         }
-        if($("#categoryId").val()==1){
+        if ($("#categoryId").val() == 1) {
             $.modal.alertWarning("请选择试题分类");
             return;
         }
-        var url = prefix + "/morechoiceadd/"+$("#categoryId").val();
-        $.operate.jumpModeltoUrl("添加多选题",url);
+        var url = prefix + "/morechoiceadd/" + $("#categoryId").val();
+        $.operate.jumpModeltoUrl("添加多选题", url);
     }
 
-    function addJudgeQuestion(){
-        if(!$.tree.notAllowParents($._tree)){
-            return ;
+    function addJudgeQuestion() {
+        if (!$.tree.notAllowParents($._tree)) {
+            return;
         }
-        if($("#categoryId").val()==1){
+        if ($("#categoryId").val() == 1) {
             $.modal.alertWarning("请选择试题分类");
             return;
         }
-        var url = prefix + "/judgeadd/"+$("#categoryId").val();
-        $.operate.jumpModeltoUrl("添加多选题",url);
+        var url = prefix + "/judgeadd/" + $("#categoryId").val();
+        $.operate.jumpModeltoUrl("添加多选题", url);
+    }
+
+    function importFile() {
+        if (!$.tree.notAllowParents($._tree)) {
+            return;
+        }
+        if ($("#categoryId").val() == 1) {
+            $.modal.alertWarning("请选择试题分类");
+            return;
+        }
+
+
+        var formData = new FormData();
+        formData.append("file", document.getElementById("questionFile").files[0]);
+        formData.append("categoryId", $("#categoryId").val());
+        $.ajax({
+            type: 'post',
+            url: prefix + "/importfile",
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.code == web_status.SUCCESS) {
+                    $.modal.msgSuccess(data.msg);
+                    $('#myModal').modal('hide')
+                    $.table.search();
+                }else{
+                    $.modal.msgError(result.msg);
+                }
+            }
+        });
+
     }
 </script>
 </body>
