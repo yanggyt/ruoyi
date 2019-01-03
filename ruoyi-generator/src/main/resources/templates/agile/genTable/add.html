@@ -2,125 +2,141 @@
 <html  lang="zh" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/layui/extend/steps/steps.css}" rel="stylesheet"/>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-genTable-add">
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">实体类名称：</label>
-				<div class="col-sm-8">
-					<input id="className" name="className" class="form-control" type="text">
+			<div id="step_demo" class="step-body">
+				<div class="step-header" style="width:80%;overflow: hidden;">
+					<ul>
+						<li>
+							<span class="step-name">选择表</span>
+						</li>
+						<li>
+							<span class="step-name">基本信息</span>
+						</li>
+						<li>
+							<span class="step-name">字段信息</span>
+						</li>
+						<li>
+							<span class="step-name">生成信息</span>
+						</li>
+						<li>
+							<span class="step-name">完成</span>
+						</li>
+					</ul>
 				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">表说明：</label>
-				<div class="col-sm-8">
-					<input id="comments" name="comments" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">关联父表的表名：</label>
-				<div class="col-sm-8">
-					<input id="parentTableName" name="parentTableName" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">本表关联父表的外键名：</label>
-				<div class="col-sm-8">
-					<input id="parentTableFkName" name="parentTableFkName" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">数据源名称：</label>
-				<div class="col-sm-8">
-					<input id="dataSourceName" name="dataSourceName" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">使用的模板：</label>
-				<div class="col-sm-8">
-					<input id="tplCategory" name="tplCategory" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">生成包路径：</label>
-				<div class="col-sm-8">
-					<input id="packageName" name="packageName" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">生成模块名：</label>
-				<div class="col-sm-8">
-					<input id="moduleName" name="moduleName" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">生成子模块名：</label>
-				<div class="col-sm-8">
-					<input id="subModuleName" name="subModuleName" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">生成功能名：</label>
-				<div class="col-sm-8">
-					<input id="functionName" name="functionName" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">生成功能名（简写）：</label>
-				<div class="col-sm-8">
-					<input id="functionNameSimple" name="functionNameSimple" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">生成功能作者：</label>
-				<div class="col-sm-8">
-					<input id="functionAuthor" name="functionAuthor" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">生成基础路径：</label>
-				<div class="col-sm-8">
-					<input id="genBaseDir" name="genBaseDir" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">其它生成选项：</label>
-				<div class="col-sm-8">
-					<input id="options" name="options" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">创建者：</label>
-				<div class="col-sm-8">
-					<input id="createBy" name="createBy" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">创建时间：</label>
-				<div class="col-sm-8">
-					<input id="createDate" name="createDate" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">更新者：</label>
-				<div class="col-sm-8">
-					<input id="updateBy" name="updateBy" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">更新时间：</label>
-				<div class="col-sm-8">
-					<input id="updateDate" name="updateDate" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">备注信息：</label>
-				<div class="col-sm-8">
-					<input id="remarks" name="remarks" class="form-control" type="text">
+				<div class="step-content">
+						<div class="step-list">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">数据源名称：</label>
+								<div class="col-sm-8">
+									<input id="dataSourceName" name="dataSourceName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">选择表：</label>
+								<div class="col-sm-8">
+									<input id="tableName" name="tableName" class="form-control" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="step-list">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">实体类名称：</label>
+								<div class="col-sm-8">
+									<input id="className" name="className" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">表说明：</label>
+								<div class="col-sm-8">
+									<input id="comments" name="comments" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">关联父表的表名：</label>
+								<div class="col-sm-8">
+									<input id="parentTableName" name="parentTableName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">本表关联父表的外键名：</label>
+								<div class="col-sm-8">
+									<input id="parentTableFkName" name="parentTableFkName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">备注信息：</label>
+								<div class="col-sm-8">
+									<input id="remarks" name="remarks" class="form-control" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="step-list">待确认</div>
+						<div class="step-list">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">使用的模板：</label>
+								<div class="col-sm-8">
+									<input id="tplCategory" name="tplCategory" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">生成包路径：</label>
+								<div class="col-sm-8">
+									<input id="packageName" name="packageName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">生成模块名：</label>
+								<div class="col-sm-8">
+									<input id="moduleName" name="moduleName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">生成子模块名：</label>
+								<div class="col-sm-8">
+									<input id="subModuleName" name="subModuleName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">生成功能名：</label>
+								<div class="col-sm-8">
+									<input id="functionName" name="functionName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">生成功能名（简写）：</label>
+								<div class="col-sm-8">
+									<input id="functionNameSimple" name="functionNameSimple" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">生成功能作者：</label>
+								<div class="col-sm-8">
+									<input id="functionAuthor" name="functionAuthor" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">生成基础路径：</label>
+								<div class="col-sm-8">
+									<input id="genBaseDir" name="genBaseDir" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">其它生成选项：</label>
+								<div class="col-sm-8">
+									<input id="options" name="options" class="form-control" type="text">
+								</div>
+							</div>
+						</div>
 				</div>
 			</div>
 		</form>
+		<button id="preBtn">上一步</button>
+		<button id="nextBtn">下一步</button>
 	</div>
+
     <div th:include="include::footer"></div>
     <script type="text/javascript">
 		var prefix = ctx + "agile/genTable"
@@ -137,6 +153,33 @@
 	            $.operate.save(prefix + "/add", $('#form-genTable-add').serialize());
 	        }
 	    }
+        layui.config({
+			debug: true
+            ,base: '/ajax/libs/layui/extend/'
+        }).extend({
+            steps:"steps/steps"
+        });
+
+
+
+        layui.use(['jquery', 'steps'],function(){
+
+            var $ = layui.$;
+
+            var $step= $("#step_demo").step();
+
+            $("#preBtn").click(function(event) {
+                console.log("上一步");
+                $step.preStep();//上一步
+            });
+            $("#nextBtn").click(function(event) {
+                console.log("下一步");
+                $step.nextStep();//下一步
+            });
+            $("#goBtn").click(function(event) {
+                $step.goStep(3);//到指定步
+            });
+        });
 	</script>
 </body>
 </html>
