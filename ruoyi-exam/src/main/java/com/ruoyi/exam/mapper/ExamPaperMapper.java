@@ -20,5 +20,6 @@ public interface ExamPaperMapper  extends MyMapper<ExamPaper>
      * @return 试卷集合
      */
 	public List<ExamPaper> selectExamPaperList(ExamPaper examPaper);
-	
+
+    List<ExamPaper> selectListByCategory(ExamPaper examPaper);
 }

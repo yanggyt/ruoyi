@@ -92,7 +92,7 @@ public class ExamQuestionController extends BaseController
 	public TableDataInfo list(ExamQuestion examQuestion)
 	{
 		ArrayList<ExamQuestion> objects = new ArrayList<>();
-		List<ExamQuestion> listByIds = getListByIds(objects, examQuestion);
+		List<ExamQuestion> listByIds = examQuestionService.selectListBycategory(examQuestion);
 		return getDataTable(listByIds);
 	}
 

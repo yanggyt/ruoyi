@@ -60,4 +60,6 @@ public interface IExamQuestionService extends AbstractBaseService<ExamQuestion>
 	List<ExamQuestion> selectByIds(List<String> ids);
 
 	List<ExamQuestion> selectQuestionList(ExamQuestion examQuestion);
+
+    List<ExamQuestion> selectListBycategory(ExamQuestion examQuestion);
 }

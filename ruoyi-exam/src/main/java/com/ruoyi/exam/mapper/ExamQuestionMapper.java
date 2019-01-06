@@ -60,4 +60,5 @@ public interface ExamQuestionMapper  extends MyMapper<ExamQuestion>
      */
 	public int deleteExamQuestionByIds(String[] ids);
 
+    List<ExamQuestion> selectListBycategory(ExamQuestion examQuestion);
 }

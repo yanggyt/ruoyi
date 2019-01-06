@@ -98,6 +98,9 @@ public class ExamQuestionCategoryController extends BaseController {
         if (examQuestionService.selectList(examQuestion).size() > 0) {
             return error(1, "分类包含试题，不允许扩展分类");
         }
+        Long parentId = examQuestionCategory.getParentId();
+        String parentIds = examQuestionCategoryService.selectById(parentId).getParentIds();
+        examQuestionCategory.setParentIds(parentIds+","+parentId);
         examQuestionCategory.setCreateBy(ShiroUtils.getLoginName());
         examQuestionCategory.setCreateDate(new Date());
         return toAjax(examQuestionCategoryService.insertExamQuestionCategory(examQuestionCategory));
@@ -123,6 +126,7 @@ public class ExamQuestionCategoryController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(ExamQuestionCategory examQuestionCategory) {
+        ExamQuestionCategory db = examQuestionCategoryService.selectById(examQuestionCategory.getId());
         ExamQuestion examQuestion = new ExamQuestion();
         examQuestion.setCategoryId(examQuestionCategory.getParentId().toString());
 
@@ -131,10 +135,13 @@ public class ExamQuestionCategoryController extends BaseController {
         }
 
         ExamQuestionCategory exam = new ExamQuestionCategory();
-        exam.setParentId(exam.getId());
-        if (examQuestionCategoryService.selectList(exam).size() > 0) {
+        exam.setParentId(examQuestionCategory.getId());
+        if (examQuestionCategoryService.selectList(exam).size() > 0&&examQuestionCategory.getParentId()!=db.getParentId()) {
             return error(1, "此分类存在下级分类,无法移动");
         }
+        Long parentId = examQuestionCategory.getParentId();
+        String parentIds = examQuestionCategoryService.selectById(parentId).getParentIds();
+        examQuestionCategory.setParentIds(parentIds+","+parentId);
         return toAjax(examQuestionCategoryService.updateExamQuestionCategory(examQuestionCategory));
     }
 
