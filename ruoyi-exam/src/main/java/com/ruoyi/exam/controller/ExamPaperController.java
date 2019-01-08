@@ -69,7 +69,7 @@ public class ExamPaperController extends BaseController
 	public TableDataInfo list(ExamPaper examPaper)
 	{
         List<ExamPaper> list = new ArrayList<>();
-		List<ExamPaper> listByIds = getListByIds(list, examPaper);
+		List<ExamPaper> listByIds = examPaperService.selectListByCategory(examPaper);
 		return getDataTable(listByIds);
 	}
 

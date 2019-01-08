@@ -155,4 +155,10 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
         return examQuestionMapper.selectExamQuestionList(examQuestion);
     }
 
+    @Override
+    public List<ExamQuestion> selectListBycategory(ExamQuestion examQuestion) {
+		startPage();
+		return examQuestionMapper.selectListBycategory(examQuestion);
+    }
+
 }

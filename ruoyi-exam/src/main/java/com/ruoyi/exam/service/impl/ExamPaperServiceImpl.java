@@ -32,6 +32,13 @@ public class ExamPaperServiceImpl extends AbstractBaseServiceImpl<ExamPaperMappe
 	{
         return examPaperMapper.selectExamPaperList(examPaper);
 	}
+
+    @Override
+    public List<ExamPaper> selectListByCategory(ExamPaper examPaper) {
+        startPage();
+        return examPaperMapper.selectListByCategory(examPaper);
+    }
+
     /**
      * 查询试卷分页列表
      *

@@ -26,5 +26,6 @@ public interface IExamPaperService extends AbstractBaseService<ExamPaper>
      */
     public List<ExamPaper> selectExamPaperList(ExamPaper examPaper);
 
-	
+
+    List<ExamPaper> selectListByCategory(ExamPaper examPaper);
 }

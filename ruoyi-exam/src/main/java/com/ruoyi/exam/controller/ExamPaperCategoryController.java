@@ -101,6 +101,10 @@ public class ExamPaperCategoryController extends BaseController
 		if(examPaperService.selectList(examPaper).size()>0){
 			return error(1, "分类包含试卷，不允许扩展分类");
 		}
+		Integer parentId = examPaperCategory.getParentId();
+		String parentIds = examPaperCategoryService.selectById(parentId).getParentIds();
+		examPaperCategory.setParentIds(parentIds+","+parentId);
+
 		examPaperCategory.setCreateBy(ShiroUtils.getLoginName());
 		examPaperCategory.setCreateDate(new Date());
 		examPaperCategory.setDelFlag("0");
@@ -129,6 +133,7 @@ public class ExamPaperCategoryController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(ExamPaperCategory examPaperCategory)
 	{
+		ExamPaperCategory db = examPaperCategoryService.selectById(examPaperCategory.getId());
 		examPaperCategory.setUpdateBy(ShiroUtils.getLoginName());
 		examPaperCategory.setUpdateDate(new Date());
 
@@ -140,7 +145,7 @@ public class ExamPaperCategoryController extends BaseController
 
 		ExamPaperCategory exam = new ExamPaperCategory();
 		exam.setParentId(examPaperCategory.getId());
-		if (examPaperCategoryService.selectList(exam).size() > 0)
+		if (examPaperCategoryService.selectList(exam).size() > 0&&db.getParentId()!=examPaperCategory.getParentId() )
 		{
 			return error(1, "此分类存在下级分类,无法移动");
 		}

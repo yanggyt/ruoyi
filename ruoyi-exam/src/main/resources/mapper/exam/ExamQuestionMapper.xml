@@ -46,6 +46,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectListBycategory" parameterType="ExamQuestion" resultMap="ExamQuestionResult">
+        select id, title, answer, type, label, category_id, create_by, create_date, update_by, update_date, remarks, del_flag from exam_question
+        <where>
+            <if test="id != null  and id != '' "> and id = #{id}</if>
+            <if test="title != null  and title != '' "> and title = #{title}</if>
+            <if test="answer != null  and answer != '' "> and answer = #{answer}</if>
+            <if test="type != null  and type != '' "> and type = #{type}</if>
+            <if test="label != null  and label != '' "> and label = #{label}</if>
+            <if test="categoryId != null  and categoryId != '' "> and (category_id in
+                (select id from exam_question_category  where FIND_IN_SET(#{categoryId},parent_ids))
+                or category_id = #{categoryId} )</if>
+            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
+    </select>
+
     <insert id="insertExamQuestion" keyProperty="id" useGeneratedKeys="true" parameterType="ExamQuestion">
         insert into exam_question
 		<trim prefix="(" suffix=")" suffixOverrides=",">
