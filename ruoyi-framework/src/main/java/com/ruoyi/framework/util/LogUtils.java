@@ -1,33 +1,34 @@
 package com.ruoyi.framework.util;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+import com.ruoyi.common.json.JSON;
+import com.ruoyi.common.utils.IpUtils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ruoyi.common.json.JSON;
-import com.ruoyi.common.utils.IpUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Map;
 
 /**
- * 处理并记录日志文件
- * 
+ * 处理并记录日志文件，
+ * 日志的工具类
+ *
  * @author ruoyi
  */
-public class LogUtils
-{
+public class LogUtils {
     public static final Logger ERROR_LOG = LoggerFactory.getLogger("sys-error");
     public static final Logger ACCESS_LOG = LoggerFactory.getLogger("sys-access");
 
     /**
      * 记录访问日志 [username][jsessionid][ip][accept][UserAgent][url][params][Referer]
+     * 获取用户名、seessionId、ip、accept、url、paramas等参数
      *
      * @param request
      * @throws Exception
      */
-    public static void logAccess(HttpServletRequest request) throws Exception
-    {
+    public static void logAccess(HttpServletRequest request) throws Exception {
         String username = getUsername();
         String jsessionId = request.getRequestedSessionId();
         String ip = IpUtils.getIpAddr(request);
@@ -54,8 +55,7 @@ public class LogUtils
      * @param message
      * @param e
      */
-    public static void logError(String message, Throwable e)
-    {
+    public static void logError(String message, Throwable e) {
         String username = getUsername();
         StringBuilder s = new StringBuilder();
         s.append(getBlock("exception"));
@@ -69,8 +69,7 @@ public class LogUtils
      *
      * @param request
      */
-    public static void logPageError(HttpServletRequest request)
-    {
+    public static void logPageError(HttpServletRequest request) {
         String username = getUsername();
 
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
@@ -78,8 +77,7 @@ public class LogUtils
         String uri = (String) request.getAttribute("javax.servlet.error.request_uri");
         Throwable t = (Throwable) request.getAttribute("javax.servlet.error.exception");
 
-        if (statusCode == null)
-        {
+        if (statusCode == null) {
             statusCode = 0;
         }
 
@@ -94,8 +92,7 @@ public class LogUtils
         s.append(getBlock(request.getHeader("Referer")));
         StringWriter sw = new StringWriter();
 
-        while (t != null)
-        {
+        while (t != null) {
             t.printStackTrace(new PrintWriter(sw));
             t = t.getCause();
         }
@@ -104,33 +101,55 @@ public class LogUtils
 
     }
 
-    public static String getBlock(Object msg)
-    {
-        if (msg == null)
-        {
+    /**
+     * 获取代码块
+     *
+     * @param msg
+     * @return
+     */
+    public static String getBlock(Object msg) {
+        if (msg == null) {
             msg = "";
         }
         return "[" + msg.toString() + "]";
     }
 
-    protected static String getParams(HttpServletRequest request) throws Exception
-    {
+    /**
+     * 获取参数并将参数转成Json格式
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    protected static String getParams(HttpServletRequest request) throws Exception {
         Map<String, String[]> params = request.getParameterMap();
         return JSON.marshal(params);
     }
 
-    protected static String getUsername()
-    {
+    /**
+     * 获取用户名
+     *
+     * @return
+     */
+    protected static String getUsername() {
         return (String) SecurityUtils.getSubject().getPrincipal();
     }
 
-    public static Logger getAccessLog()
-    {
+    /**
+     * 获取数据库访问日志
+     *
+     * @return
+     */
+    public static Logger getAccessLog() {
         return ACCESS_LOG;
     }
 
-    public static Logger getErrorLog()
-    {
+    /**
+     * 获取错误日志
+     *
+     * @return
+     */
+    public static Logger getErrorLog() {
         return ERROR_LOG;
     }
 }

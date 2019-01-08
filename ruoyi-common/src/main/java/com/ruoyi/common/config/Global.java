@@ -1,15 +1,16 @@
 package com.ruoyi.common.config;
 
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.YamlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.YamlUtil;
 
 /**
- * 全局配置类
+ * 全局配置类，读取 application.yml 配置文件的参数
  * 
  * @author ruoyi
  */
@@ -43,8 +44,9 @@ public class Global
         {
             synchronized (Global.class)
             {
-                if (global == null)
+                if (global == null) {
                     global = new Global();
+                }
             }
         }
         return global;

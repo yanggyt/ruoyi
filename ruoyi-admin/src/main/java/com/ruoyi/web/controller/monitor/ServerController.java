@@ -9,7 +9,7 @@ import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.domain.Server;
 
 /**
- * 服务器监控
+ * 服务器监控，获取项目部署的服务器的cpu、内存等情况
  * 
  * @author ruoyi
  */
