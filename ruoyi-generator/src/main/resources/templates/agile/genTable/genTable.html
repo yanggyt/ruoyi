@@ -4,7 +4,8 @@
 <head th:include="include :: header"></head>
 <body class="gray-bg">
      <div class="container-div">
-		<div class="row">
+
+		 <div class="row">
 			<div class="col-sm-12 search-collapse">
 				<form id="formId">
 					<div class="select-list">
@@ -26,7 +27,7 @@
 			</div>
 			
 	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="agile:genTable:add">
+				<a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="agile:genTable:add">
 					<i class="fa fa-plus"></i> 添加
 				</a>
 				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="agile:genTable:edit">

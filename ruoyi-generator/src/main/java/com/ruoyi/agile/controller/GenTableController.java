@@ -22,15 +22,14 @@ import com.ruoyi.common.utils.ExcelUtil;
  * @author zhujj
  * @date 2018-11-29
  */
-@Controller
-@RequestMapping("/agile/genTable")
+@RestController
+@RequestMapping("/genTable")
 public class GenTableController extends BaseController {
     private String prefix = "agile/genTable";
 
     @Autowired
     private IGenTableService genTableService;
 
-    @RequiresPermissions("agile:genTable:view")
     @GetMapping()
     public String genTable() {
         return prefix + "/genTable";
@@ -39,7 +38,6 @@ public class GenTableController extends BaseController {
     /**
      * 查询代码生成列表
      */
-    @RequiresPermissions("agile:genTable:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(GenTable genTable) {
@@ -51,7 +49,6 @@ public class GenTableController extends BaseController {
     /**
      * 导出代码生成列表
      */
-    @RequiresPermissions("agile:genTable:export")
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(GenTable genTable) {
@@ -71,7 +68,6 @@ public class GenTableController extends BaseController {
     /**
      * 新增保存代码生成
      */
-    @RequiresPermissions("agile:genTable:add")
     @Log(title = "代码生成", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
@@ -93,7 +89,6 @@ public class GenTableController extends BaseController {
     /**
      * 修改保存代码生成
      */
-    @RequiresPermissions("agile:genTable:edit")
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
@@ -104,7 +99,6 @@ public class GenTableController extends BaseController {
     /**
      * 删除代码生成
      */
-    @RequiresPermissions("agile:genTable:remove")
     @Log(title = "代码生成", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody

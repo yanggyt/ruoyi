@@ -12,7 +12,7 @@ public class AliyunOSSRest {
 //    @Autowired
 //    private AliyunOSSClient aliyunOSSClient ;
     @GetMapping("policy.json")
-    public JSONObject getPolicy() {
+    public JSONObject getPolicy(String id) {
          String dir = String.valueOf(System.currentTimeMillis());
 //         return aliyunOSSClient .getPostObjectPolicy(dir);
         return  null;

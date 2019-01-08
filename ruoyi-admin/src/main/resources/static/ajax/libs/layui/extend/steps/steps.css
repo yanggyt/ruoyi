@@ -75,8 +75,10 @@
 	height: 1px;
 
 }
+.step-content{
+	margin-top: 20px;
+}
 .step-list{
 	display: none;
 	clear: both;
-	margin-bottom: 30px;
 }

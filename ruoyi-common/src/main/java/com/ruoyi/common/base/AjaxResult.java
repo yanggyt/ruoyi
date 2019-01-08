@@ -1,5 +1,7 @@
 package com.ruoyi.common.base;
 
+import com.ruoyi.common.constant.Constants;
+
 import java.util.HashMap;
 
 /**
@@ -64,7 +66,7 @@ public class AjaxResult extends HashMap<String, Object>
     {
         AjaxResult json = new AjaxResult();
         json.put("msg", msg);
-        json.put("code", 0);
+        json.put("code", Constants.SUCCESS);
         return json;
     }
     
