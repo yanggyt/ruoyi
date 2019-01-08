@@ -1,5 +1,5 @@
 package com.ruoyi.framework.jwt;
- 
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -8,16 +8,16 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ruoyi.framework.web.util.ServletUtils;
 
 import java.util.Date;
- 
+
 /**
  * @author Mr.Li
  * @create 2018-07-12 14:23
  * @desc JWT工具类
  **/
 public class JwtUtil {
- 
+
     private static final long EXPIRE_TIME = 5 * 60 * 1000;
- 
+
     /**
      * 校验token是否正确
      *
@@ -39,7 +39,7 @@ public class JwtUtil {
             return false;
         }
     }
- 
+
     /**
      * 获得token中的信息无需secret解密也能获得
      *
@@ -47,14 +47,14 @@ public class JwtUtil {
      */
     public static String getLoginName() {
         try {
-            String token = ServletUtils.getRequest().getHeader("token");
+            String token = ServletUtils.getRequest().getHeader("Authorization");
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaim("loginName").asString();
         } catch (JWTDecodeException e) {
             return null;
         }
     }
- 
+
     /**
      * 生成签名,5min后过期
      *
@@ -70,6 +70,6 @@ public class JwtUtil {
                 .withClaim("loginName", loginName)
                 .withExpiresAt(date)
                 .sign(algorithm);
- 
+
     }
 }

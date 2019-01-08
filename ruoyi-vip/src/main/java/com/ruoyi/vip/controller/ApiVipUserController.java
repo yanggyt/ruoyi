@@ -14,6 +14,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.framework.web.util.ServletUtils;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.vip.domain.VipUser;
 import com.ruoyi.vip.service.IVipUserService;
 import io.swagger.annotations.Api;
@@ -36,51 +37,50 @@ import java.util.List;
  */
 @Api("用户信息管理")
 @RestController
-@RequestMapping("/api/v1/vip/user")
+@RequestMapping("/api/v1")
 public class ApiVipUserController extends BaseController {
 
     @Autowired
     private IVipUserService userService;
 
     @Autowired
+    private ISysUserService sysUserService;
+    @Autowired
     private SysPasswordService passwordService;
 
     @ApiOperation("用户登陆")
     @Log(title = "用户登陆", businessType = BusinessType.EXPORT)
-    @RequestMapping(value = "/login", method = RequestMethod.POST,produces= "application/json;charset=UTF-8")
+    @RequestMapping(value = "/vip/user/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public AjaxResult login(@RequestBody SysUser user) {
-        AjaxResult success = success("登陆成功");
-        boolean rememberMe=false;
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword(), rememberMe);
+        AjaxResult success = success( "登陆成功" );
+        boolean rememberMe = false;
+        UsernamePasswordToken token = new UsernamePasswordToken( user.getUserName(), user.getPassword(), rememberMe );
         Subject subject = SecurityUtils.getSubject();
-        try
-        {
-            subject.login(token);
-            String tokenSign=JwtUtil.sign(user.getUserName(),user.getUserName());
+        try {
+            subject.login( token );
+            String tokenSign = JwtUtil.sign( user.getUserName(), user.getUserName() );
             JSONObject json = new JSONObject();
 
-            json.put("token",tokenSign);
-            success.put("data",json);
+            json.put( "token", tokenSign );
+            success.put( "data", json );
             return success;
-        }
-        catch (AuthenticationException e)
-        {
+        } catch (AuthenticationException e) {
             String msg = "用户或密码错误";
-            if (StringUtils.isNotEmpty(e.getMessage()))
-            {
+            if (StringUtils.isNotEmpty( e.getMessage() )) {
                 msg = e.getMessage();
             }
-            return error(msg);
+            return error( msg );
         }
     }
-    @GetMapping("/info")
+
+    @GetMapping("/member/user/info")
     public AjaxResult get() {
-        AjaxResult success = success("登陆成功");
-        VipUser vipUser = userService.selectUserByLoginName(JwtUtil.getLoginName());
-        success.put("user", vipUser);
-        SysUser vipUser2 =ShiroUtils.getSysUser();
+        AjaxResult success = success( "登陆成功" );
+        SysUser vipUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        success.put( "data", vipUser );
         return success;
     }
+
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(VipUser user) {
@@ -112,7 +112,6 @@ public class ApiVipUserController extends BaseController {
         user.setCreateBy( ShiroUtils.getLoginName() );
         return toAjax( userService.insertUser( user ) );
     }
-
 
 
     /**
