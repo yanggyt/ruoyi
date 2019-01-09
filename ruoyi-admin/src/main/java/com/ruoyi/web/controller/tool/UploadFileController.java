@@ -47,19 +47,19 @@ public class UploadFileController extends BaseController {
      */
     @Log(title = "上传文件", businessType = BusinessType.INSERT)
     @PostMapping("/files")
-    public AjaxResult updateAvatar(@RequestParam("file") MultipartFile file,String module) {
+    public AjaxResult updateAvatar(@RequestParam("file") MultipartFile file, String module) {
         try {
             if (!file.isEmpty()) {
                 String originalFileName = file.getOriginalFilename();
-                originalFileName.substring(originalFileName.lastIndexOf("."));
-                String filePath="";
+                originalFileName.substring( originalFileName.lastIndexOf( "." ) );
+                String filePath = "";
                 //上传文件路径由模块参数（module）和上传的当天日期组成
                 if (null != module) {
-                    filePath=module+ File.separator+ DateUtil.today()+ File.separator;
+                    filePath = module + "/" + DateUtil.today() + "/";
                 }
-                String fileName = FileUploadUtils.upload( Global.getAvatarPath()+filePath, file,false,originalFileName);
+                String fileName = FileUploadUtils.upload( Global.getAvatarPath() + filePath, file, false, originalFileName );
                 AjaxResult ajaxResult = new AjaxResult();
-                ajaxResult.put( "fileName", filePath+fileName );
+                ajaxResult.put( "fileName", filePath + fileName );
                 ajaxResult.put( "code", "200" );
                 ajaxResult.put( "msg", "上传成功" );
                 return ajaxResult;
