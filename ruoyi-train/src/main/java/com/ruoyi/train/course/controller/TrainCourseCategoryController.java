@@ -71,9 +71,6 @@ public class TrainCourseCategoryController extends BaseController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, ModelMap mmap) {
         TrainCourseCategory category = trainCourseCategoryService.selectCategoryById( id );
-        if (StringUtils.isNotNull( category ) && 100L == id) {
-            category.setParentName( "无" );
-        }
         mmap.put( "category", category );
         return prefix + "/edit";
     }

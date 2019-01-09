@@ -1,13 +1,7 @@
 package com.ruoyi.train.course.controller;
 
-import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.ExcelUtil;
-import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseCategory;
 import com.ruoyi.train.course.domain.TrainCourseSection;
@@ -55,10 +49,10 @@ public class ApiTrainCourseController extends BaseController {
 	@GetMapping("/trainCourse/{id}")
 	public AjaxResult get(@PathVariable("id") Integer id) {
 		TrainCourse trainCourse = trainCourseService.selectById( id );
-		TrainCourseCategory courseCategory = trainCourseCategoryService.selectCategoryById( (long) trainCourse.getTrainCourseCategoryId() );
+		TrainCourseCategory courseCategory = trainCourseCategoryService.selectById( trainCourse.getTrainCourseCategoryId() );
 		JSONObject jsonObject = JSONObject.fromObject( trainCourse );
 		JSONObject courseCategoryJSON = JSONObject.fromObject( courseCategory );
-		jsonObject.put( "courseCategory", courseCategoryJSON );
+		jsonObject.put( "courseCategory", courseCategory );
 		AjaxResult success = success( "查询成功" );
 		success.put( "data", jsonObject );
 		return success;
