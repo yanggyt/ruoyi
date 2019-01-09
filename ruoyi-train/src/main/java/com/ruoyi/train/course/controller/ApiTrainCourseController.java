@@ -42,7 +42,6 @@ public class ApiTrainCourseController extends BaseController {
 	 * 查询课程列表
 	 */
 	@GetMapping("/trainCourse/list")
-	@ResponseBody
 	public AjaxResult list(TrainCourse trainCourse) {
 		List<TrainCourse> list = trainCourseService.selectTrainCoursePage( trainCourse );
 		AjaxResult success = success( "查询成功" );
@@ -58,7 +57,8 @@ public class ApiTrainCourseController extends BaseController {
 		TrainCourse trainCourse = trainCourseService.selectById( id );
 		TrainCourseCategory courseCategory = trainCourseCategoryService.selectCategoryById( (long) trainCourse.getTrainCourseCategoryId() );
 		JSONObject jsonObject = JSONObject.fromObject( trainCourse );
-		jsonObject.put( "courseCategory", courseCategory );
+		JSONObject courseCategoryJSON = JSONObject.fromObject( courseCategory );
+		jsonObject.put( "courseCategory", courseCategoryJSON );
 		AjaxResult success = success( "查询成功" );
 		success.put( "data", jsonObject );
 		return success;
