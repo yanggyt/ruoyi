@@ -24,10 +24,6 @@ private static final long serialVersionUID = 1L;
 	    private Integer deptId;
 	        /** 练习名称 */
 	    private String name;
-        /**
-         * 价格
-         */
-        private BigDecimal price;
         /** 是否控制开始结束时间（0-不控制,1-控制） */
 	    private String enableControlTime;
 	        /** 开始时间 */
@@ -49,13 +45,6 @@ private static final long serialVersionUID = 1L;
 	        /** 删除标记 */
 	    private String delFlag;
 
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 
     /** 设置练习ID */
     public void setId(Integer id)
