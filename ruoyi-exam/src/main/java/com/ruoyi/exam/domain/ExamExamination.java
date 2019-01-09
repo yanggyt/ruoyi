@@ -25,6 +25,10 @@ private static final long serialVersionUID = 1L;
 	    private Integer examPaperId;
 	        /** 试卷名称 */
 	    private String name;
+    /**
+     * 考试类型(1-模拟考试；2-正式考试)
+     */
+    private String type;
 	        /** 是否控制开始结束时间（0-不控制,1-控制） */
 	    private String enableControlTime;
 	        /** 开始时间 */
@@ -107,6 +111,14 @@ private static final long serialVersionUID = 1L;
             {
             this.enableControlTime = enableControlTime;
             }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     /** 获取是否控制开始结束时间（0-不控制,1-控制） */
     public String getEnableControlTime()
