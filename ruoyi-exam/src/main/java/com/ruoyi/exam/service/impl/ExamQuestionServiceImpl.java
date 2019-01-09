@@ -161,4 +161,16 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
 		return examQuestionMapper.selectListBycategory(examQuestion);
     }
 
+	@Override
+	public List<ExamQuestion> selectByIdsPage(List<String> ids) {
+		StringBuffer sb = new StringBuffer();
+		for (String id : ids) {
+			sb.append(id+",");
+		}
+		String substring = sb.substring(0, sb.length() - 1);
+		startPage();
+		return examQuestionMapper.selectByIds(substring.toString());
+
+	}
+
 }
