@@ -6,6 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 search-collapse">
 				<form id="formId">
+					<input type="hidden" id="trainCourseId" name="trainCourseId" th:value="${trainCourseId}"/>
 					<div class="select-list">
 						<ul>
 							<li>
@@ -21,7 +22,7 @@
 			</div>
 			
 	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="train:trainCourseSection:add">
+				<a class="btn btn-success" onclick="toAdd()" shiro:hasPermission="train:trainCourseSection:add">
 					<i class="fa fa-plus"></i> 添加
 				</a>
 				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="train:trainCourseSection:edit">
@@ -100,6 +101,10 @@
             };
             $.table.init(options);
         });
+        function toAdd() {
+            var url =prefix + "/add/"+$("#trainCourseId").val();
+            $.operate.jumpModeltoUrl("课程章节添加",url,1000,600);
+        }
     </script>
 </body>
 </html>
