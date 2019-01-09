@@ -34,6 +34,11 @@ public class ExamPracticeServiceImpl extends AbstractBaseServiceImpl<ExamPractic
         return examPracticeMapper.selectExamPracticeList(examPractice);
 	}
 
+    @Override
+    public List<ExamPractice> selectListFromWeb(ExamPractice examPractice) {
+        startPage();
+	    return examPracticeMapper.selectListFromWeb(examPractice);
+    }
 
 
     /**

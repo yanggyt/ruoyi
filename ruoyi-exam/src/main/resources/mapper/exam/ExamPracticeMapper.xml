@@ -43,6 +43,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
          </where>
     </select>
+    <select id="selectListFromWeb" parameterType="ExamPractice" resultMap="ExamPracticeResult">
+        select
+        <include refid="selectExamPracticeVo"/>
+        from exam_practice
+        <where>
+            ((enable_control_time = '1' and end_time > NOW() and start_time < NOW())
+            or enable_control_time = '0')
+            <if test="id != null "> and id = #{id}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="name != null  and name != '' "> and name = #{name}</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and enable_control_time = #{enableControlTime}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="practiceUserLimit != null  and practiceUserLimit != '' "> and practice_user_limit = #{practiceUserLimit}</if>
+            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
 
-    
+    </select>
+
+
 </mapper>

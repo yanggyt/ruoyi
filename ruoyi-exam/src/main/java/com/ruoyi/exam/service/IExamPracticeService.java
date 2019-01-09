@@ -29,4 +29,10 @@ public interface IExamPracticeService extends AbstractBaseService<ExamPractice>
     public List<ExamPractice> selectExamPracticeList(ExamPractice examPractice);
 
 
+    /**
+     * 前台页面调用API
+     * @param examPractice
+     * @return
+     */
+    List<ExamPractice> selectListFromWeb(ExamPractice examPractice);
 }

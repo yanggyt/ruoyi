@@ -20,5 +20,6 @@ public interface ExamPracticeMapper  extends MyMapper<ExamPractice>
      * @return 练习集合
      */
 	public List<ExamPractice> selectExamPracticeList(ExamPractice examPractice);
-	
+
+    List<ExamPractice> selectListFromWeb(ExamPractice examPractice);
 }
