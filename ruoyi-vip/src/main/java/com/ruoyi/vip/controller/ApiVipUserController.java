@@ -75,7 +75,7 @@ public class ApiVipUserController extends BaseController {
 
     @GetMapping("/member/user/info")
     public AjaxResult get() {
-        AjaxResult success = success( "登陆成功" );
+        AjaxResult success = success( "获取用户信息成功" );
         SysUser vipUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
         success.put( "data", vipUser );
         return success;
