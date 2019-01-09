@@ -1,10 +1,11 @@
 package com.ruoyi.exam.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.exam.domain.ExamQuestionItem;
+import com.ruoyi.exam.domain.ExamQuestionVO;
 import com.ruoyi.exam.mapper.ExamQuestionItemMapper;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,14 +163,10 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
     }
 
 	@Override
-	public List<ExamQuestion> selectByIdsPage(List<String> ids) {
-		StringBuffer sb = new StringBuffer();
-		for (String id : ids) {
-			sb.append(id+",");
-		}
-		String substring = sb.substring(0, sb.length() - 1);
+	public List<ExamQuestionVO> selectQuestionListByPracticeId(Map<String, Object> map) {
+
 		startPage();
-		return examQuestionMapper.selectByIds(substring.toString());
+		return examQuestionMapper.selectQuestionListByPracticeId(map);
 
 	}
 

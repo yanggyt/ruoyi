@@ -2,6 +2,9 @@ package com.ruoyi.exam.mapper;
 
 import com.ruoyi.exam.domain.ExamQuestion;
 import java.util.List;
+import java.util.Map;
+
+import com.ruoyi.exam.domain.ExamQuestionVO;
 import com.ruoyi.framework.web.base.MyMapper;
 
 /**
@@ -61,4 +64,6 @@ public interface ExamQuestionMapper  extends MyMapper<ExamQuestion>
 	public int deleteExamQuestionByIds(String[] ids);
 
     List<ExamQuestion> selectListBycategory(ExamQuestion examQuestion);
+
+    List<ExamQuestionVO> selectQuestionListByPracticeId(Map<String, Object> map);
 }

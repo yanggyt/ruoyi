@@ -2,8 +2,10 @@ package com.ruoyi.exam.service;
 
 import com.ruoyi.exam.domain.ExamQuestion;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+
+import com.ruoyi.exam.domain.ExamQuestionVO;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 /**
  * 问题 服务层
@@ -63,5 +65,5 @@ public interface IExamQuestionService extends AbstractBaseService<ExamQuestion>
 
     List<ExamQuestion> selectListBycategory(ExamQuestion examQuestion);
 
-	List<ExamQuestion> selectByIdsPage(List<String> ids);
+	List<ExamQuestionVO> selectQuestionListByPracticeId(Map<String, Object> map);
 }

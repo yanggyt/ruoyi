@@ -18,6 +18,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remarks"    column="remarks"    />
         <result property="delFlag"    column="del_flag"    />
     </resultMap>
+
+
+    <resultMap type="ExamQuestionVO" id="ExamQuestionResultVO">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="answer"    column="answer"    />
+        <result property="type"    column="type"    />
+        <result property="label"    column="label"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <collection property="questionItem" ofType="com.ruoyi.exam.domain.ExamQuestionItem">
+            <result property="id"    column="item_id"    />
+            <result property="content"    column="item_content"    />
+            <result property="number"    column="item_number"    />
+            <result property="examQuestionId"    column="item_exam_question_id"    />
+            <result property="createBy"    column="item_create_by"    />
+            <result property="createDate"    column="item_create_date"    />
+            <result property="updateBy"    column="item_update_by"    />
+            <result property="updateDate"    column="item_update_date"    />
+            <result property="remarks"    column="item_remarks"    />
+            <result property="delFlag"    column="item_del_flag"    />
+        </collection>
+    </resultMap>
 	
 	<sql id="selectExamQuestionVo">
         select id, title, answer, type, label, category_id, create_by, create_date, update_by, update_date, remarks, del_flag from exam_question
@@ -41,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </where>
     </select>
 
-    <select id="selectExamQuestionById" parameterType="String" resultMap="ExamQuestionResult">
+    <select id="selectExamQuestionById"  resultMap="ExamQuestionResult">
         <include refid="selectExamQuestionVo"/>
         where id = #{id}
     </select>
@@ -64,6 +92,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
         </where>
+    </select>
+
+    <select id="selectQuestionListByPracticeId" resultMap="ExamQuestionResultVO">
+          select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+          eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+          eqi.id AS item_id,
+          eqi.content AS item_content,
+          eqi.number AS item_number,
+          eqi.exam_question_id AS item_exam_question_id,
+          eqi.remarks AS item_remarks
+          from exam_question eq
+          INNER JOIN exam_practice_question epq ON eq.id = epq.exam_question_id
+          INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+          where epq.exam_practice_id = #{practiceId}
+          order by epq.order_num
     </select>
 
     <insert id="insertExamQuestion" keyProperty="id" useGeneratedKeys="true" parameterType="ExamQuestion">

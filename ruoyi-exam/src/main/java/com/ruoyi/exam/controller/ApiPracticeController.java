@@ -1,9 +1,7 @@
 package com.ruoyi.exam.controller;
 
-import com.ruoyi.exam.domain.ExamPractice;
-import com.ruoyi.exam.domain.ExamPracticeQuestion;
-import com.ruoyi.exam.domain.ExamPracticeQuestionVO;
-import com.ruoyi.exam.domain.ExamQuestion;
+import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.IExamPracticeQuestionService;
 import com.ruoyi.exam.service.IExamPracticeService;
 import com.ruoyi.exam.service.IExamQuestionService;
@@ -13,8 +11,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by flower on 2019/1/9.
@@ -35,23 +32,42 @@ public class ApiPracticeController extends BaseController {
 
 
     @PostMapping("/list")
-    public TableDataInfo list(ExamPractice examPractice) {
+    public AjaxResult list(ExamPractice examPractice) {
 
         List<ExamPractice> list = examPracticeService.selectListFromWeb(examPractice);
-        return getDataTable( list );
+        AjaxResult success = success("查询成功");
+        success.put("data",list);
+        return success;
     }
 
-    @GetMapping("/queryone/question/{id}")
-    public TableDataInfo queryOne(@PathVariable("id") Integer id) {
-        ExamPracticeQuestionVO examPracticeQuestion = new ExamPracticeQuestionVO();
-        examPracticeQuestion.setId(id);
-        List<ExamPracticeQuestionVO> list = examPracticeQuestionService.selectExamPracticeQuestionList(examPracticeQuestion);
-        List<String> ids = new ArrayList<>();
-        for (ExamPracticeQuestionVO item : list) {
-            ids.add(item.getExamQuestionId().toString());
+    /**
+     * 查询练习具体的问题列表
+     * @param map
+     * @return
+     */
+    @PostMapping("/queryone/question")
+    public AjaxResult queryOne(@RequestParam Map<String,Object> map) {
+        List<ExamQuestionVO> result = examQuestionService.selectQuestionListByPracticeId(map);
+        if(map.containsKey("disorder")&&map.get("disorder").toString().equals("1")){
+            Collections.shuffle(result);
         }
-        List<ExamQuestion> result = examQuestionService.selectByIdsPage(ids);
-        return getDataTable( result );
+        AjaxResult success = success("查询成功");
+        success.put("data",result);
+        return success;
+    }
+
+    @PostMapping("/answer")
+    public AjaxResult answer(@RequestBody List<Map<String,Object>> answers) {
+        for (Map<String, Object> answer : answers) {
+            String questionId = answer.get("questionId").toString();
+            String userAnswer = answer.get("userAnswer").toString();
+            ExamQuestion examQuestion = examQuestionService.selectById(questionId);
+            if(!examQuestion.getAnswer().equals(userAnswer)){
+
+            }
+        }
+        AjaxResult success = success("查询成功");
+        return success;
     }
 
 }
