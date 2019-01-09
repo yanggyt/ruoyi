@@ -31,7 +31,7 @@ public class ApiPracticeController extends BaseController {
     private IExamQuestionService examQuestionService;
 
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public AjaxResult list( ExamPractice examPractice) {
 
         List<ExamPractice> list = examPracticeService.selectListFromWeb(examPractice);
