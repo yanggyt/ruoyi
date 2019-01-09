@@ -32,7 +32,7 @@ public class ApiPracticeController extends BaseController {
 
 
     @PostMapping("/list")
-    public AjaxResult list(ExamPractice examPractice) {
+    public AjaxResult list(@RequestBody  ExamPractice examPractice) {
 
         List<ExamPractice> list = examPracticeService.selectListFromWeb(examPractice);
         AjaxResult success = success("查询成功");
