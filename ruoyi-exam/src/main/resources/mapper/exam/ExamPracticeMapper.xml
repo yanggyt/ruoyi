@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="deptId"    column="dept_id"    />
         <result property="name"    column="name"    />
+        <result property="price"    column="price"    />
         <result property="enableControlTime"    column="enable_control_time"    />
         <result property="startTime"    column="start_time"    />
         <result property="endTime"    column="end_time"    />
@@ -21,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectExamPracticeVo">
-         id, dept_id, name, enable_control_time, start_time, end_time, practice_user_limit, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+         id, dept_id, name, price,enable_control_time, start_time, end_time, practice_user_limit, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
 	
     <select id="selectExamPracticeList" parameterType="ExamPractice" resultMap="ExamPracticeResult">
         select
