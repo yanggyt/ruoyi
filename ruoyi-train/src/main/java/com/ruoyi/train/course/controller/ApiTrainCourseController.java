@@ -36,7 +36,7 @@ public class ApiTrainCourseController extends BaseController {
 	 * 查询课程列表
 	 */
 	@GetMapping("/trainCourse/list")
-	public AjaxResult list(TrainCourse trainCourse) {
+	public AjaxResult list( TrainCourse trainCourse) {
 		List<TrainCourse> list = trainCourseService.selectTrainCoursePage( trainCourse );
 		AjaxResult success = success( "查询成功" );
 		success.put( "data", list );
