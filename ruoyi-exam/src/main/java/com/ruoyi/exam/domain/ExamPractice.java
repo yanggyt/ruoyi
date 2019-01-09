@@ -4,7 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
 					    import javax.persistence.Id;
-    import java.util.Date;
+import java.math.BigDecimal;
+import java.util.Date;
 		
 /**
  * 练习表 exam_practice
@@ -23,8 +24,10 @@ private static final long serialVersionUID = 1L;
 	    private Integer deptId;
 	        /** 练习名称 */
 	    private String name;
-        /** 是否控制开始结束时间（0-不控制,1-控制） */
-
+        /**
+         * 价格
+         */
+        private BigDecimal price;
         /** 是否控制开始结束时间（0-不控制,1-控制） */
 	    private String enableControlTime;
 	        /** 开始时间 */
@@ -45,8 +48,16 @@ private static final long serialVersionUID = 1L;
 	    private String remarks;
 	        /** 删除标记 */
 	    private String delFlag;
-	
-	    /** 设置练习ID */
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    /** 设置练习ID */
     public void setId(Integer id)
             {
             this.id = id;

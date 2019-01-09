@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="deptId"    column="dept_id"    />
         <result property="examPaperId"    column="exam_paper_id"    />
         <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
         <result property="enableControlTime"    column="enable_control_time"    />
         <result property="startTime"    column="start_time"    />
         <result property="endTime"    column="end_time"    />
@@ -28,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectExamExaminationVo">
-         id, dept_id, exam_paper_id, name, enable_control_time, start_time, end_time, time_length, exam_number, pass_mark, question_disorder, finished_paper, exam_end, examination_user_limit, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+         id, dept_id, exam_paper_id, name,type, enable_control_time, start_time, end_time, time_length, exam_number, pass_mark, question_disorder, finished_paper, exam_end, examination_user_limit, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
 	
     <select id="selectExamExaminationList" parameterType="ExamExamination" resultMap="ExamExaminationResult">
         select
