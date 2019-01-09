@@ -3,6 +3,7 @@ package com.ruoyi.vip.controller;
 import com.auth0.jwt.JWTVerifier;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.json.JSONObject;
 import com.ruoyi.common.utils.ExcelUtil;
@@ -91,6 +92,7 @@ public class ApiVipUserController extends BaseController {
     @ResponseBody
     public AjaxResult addSave(@RequestBody SysUser user) {
         user.setSalt( ShiroUtils.randomSalt() );
+        user.setUserType( UserConstants.USER_VIP );
         user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
         return toAjax( sysUserService.insertUser( user ) );
     }
