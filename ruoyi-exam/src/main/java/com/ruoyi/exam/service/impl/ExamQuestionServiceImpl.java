@@ -170,4 +170,9 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
 
 	}
 
+    @Override
+    public ExamQuestionVO selectQuestionDetail(String questionId) {
+        return examQuestionMapper.selectQuestionDetail(questionId);
+    }
+
 }

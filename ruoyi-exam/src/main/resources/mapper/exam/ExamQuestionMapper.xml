@@ -109,6 +109,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
           order by epq.order_num
     </select>
 
+    <select id="selectQuestionDetail" resultMap="ExamQuestionResultVO">
+        select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+          eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+          eqi.id AS item_id,
+          eqi.content AS item_content,
+          eqi.number AS item_number,
+          eqi.exam_question_id AS item_exam_question_id,
+          eqi.remarks AS item_remarks
+          from exam_question eq
+          INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+          where eq.id = #{questionId}
+
+    </select>
+
     <insert id="insertExamQuestion" keyProperty="id" useGeneratedKeys="true" parameterType="ExamQuestion">
         insert into exam_question
 		<trim prefix="(" suffix=")" suffixOverrides=",">
