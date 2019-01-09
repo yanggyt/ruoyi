@@ -36,8 +36,8 @@ public class ApiPracticeController extends BaseController {
     private IExamUserErrorQuestionService examUserErrorQuestionService;
 
 
-    @PostMapping("/list")
-    public AjaxResult list(@RequestBody ExamPractice examPractice) {
+    @GetMapping("/list")
+    public AjaxResult list(ExamPractice examPractice) {
 
         List<ExamPractice> list = examPracticeService.selectListFromWeb(examPractice);
         AjaxResult success = success("查询成功");
