@@ -50,7 +50,7 @@ public class ApiPracticeController extends BaseController {
      * @param map
      * @return
      */
-    @PostMapping("/queryone/question")
+    @GetMapping("/info")
     public AjaxResult queryOne(@RequestParam Map<String,Object> map) {
         List<ExamQuestionVO> result = examQuestionService.selectQuestionListByPracticeId(map);
         if(map.containsKey("disorder")&&map.get("disorder").toString().equals("1")){
