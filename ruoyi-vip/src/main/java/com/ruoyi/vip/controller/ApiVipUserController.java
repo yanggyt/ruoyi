@@ -40,8 +40,6 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class ApiVipUserController extends BaseController {
 
-    @Autowired
-    private IVipUserService userService;
 
     @Autowired
     private ISysUserService sysUserService;
@@ -50,7 +48,7 @@ public class ApiVipUserController extends BaseController {
 
     @ApiOperation("用户登陆")
     @Log(title = "用户登陆", businessType = BusinessType.EXPORT)
-    @RequestMapping(value = "/vip/user/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/user/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public AjaxResult login(@RequestBody SysUser user) {
         AjaxResult success = success( "登陆成功" );
         boolean rememberMe = false;
@@ -58,10 +56,12 @@ public class ApiVipUserController extends BaseController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login( token );
-            String tokenSign = JwtUtil.sign( user.getUserName(), user.getUserName() );
+            String tokenSign = JwtUtil.sign( user.getUserName(), user.getPassword() );
             JSONObject json = new JSONObject();
 
             json.put( "token", tokenSign );
+            SysUser sysUser = sysUserService.selectUserByLoginName( user.getUserName());
+            json.put( "user", sysUser );
             success.put( "data", json );
             return success;
         } catch (AuthenticationException e) {
@@ -76,26 +76,9 @@ public class ApiVipUserController extends BaseController {
     @GetMapping("/member/user/info")
     public AjaxResult get() {
         AjaxResult success = success( "获取用户信息成功" );
-        SysUser vipUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        success.put( "data", vipUser );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        success.put( "data", sysUser );
         return success;
-    }
-
-    @PostMapping("/list")
-    @ResponseBody
-    public TableDataInfo list(VipUser user) {
-
-        List<VipUser> list = userService.selectUserList( user );
-        return getDataTable( list );
-    }
-
-    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(VipUser user) {
-        List<VipUser> list = userService.selectUserList( user );
-        ExcelUtil<VipUser> util = new ExcelUtil<VipUser>( VipUser.class );
-        return util.exportExcel( list, "user" );
     }
 
 
@@ -103,14 +86,13 @@ public class ApiVipUserController extends BaseController {
      * 新增保存用户
      */
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @PostMapping("/user/add")
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    public AjaxResult addSave(VipUser user) {
+    public AjaxResult addSave(@RequestBody SysUser user) {
         user.setSalt( ShiroUtils.randomSalt() );
         user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
-        user.setCreateBy( ShiroUtils.getLoginName() );
-        return toAjax( userService.insertUser( user ) );
+        return toAjax( sysUserService.insertUser( user ) );
     }
 
 
@@ -118,60 +100,48 @@ public class ApiVipUserController extends BaseController {
      * 修改保存用户
      */
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
+    @PostMapping("/member/user/edit")
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    public AjaxResult editSave(VipUser user) {
+    public AjaxResult editSave(SysUser user) {
 
         user.setUpdateBy( ShiroUtils.getLoginName() );
-        return toAjax( userService.updateUser( user ) );
+        return toAjax( sysUserService.updateUser( user ) );
     }
 
     @Log(title = "重置密码", businessType = BusinessType.UPDATE)
-    @PostMapping("/resetPwd")
+    @PostMapping("/member/user/resetPwd")
     @ResponseBody
-    public AjaxResult resetPwdSave(VipUser user) {
+    public AjaxResult resetPwdSave(SysUser user) {
         user.setSalt( ShiroUtils.randomSalt() );
         user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
-        return toAjax( userService.resetUserPwd( user ) );
-    }
-
-    @RequiresPermissions("vip:user:remove")
-    @Log(title = "用户管理", businessType = BusinessType.DELETE)
-    @PostMapping("/remove")
-    @ResponseBody
-    public AjaxResult remove(String ids) {
-        try {
-            return toAjax( userService.deleteUserByIds( ids ) );
-        } catch (Exception e) {
-            return error( e.getMessage() );
-        }
+        return toAjax( sysUserService.resetUserPwd( user ) );
     }
 
     /**
      * 校验用户名
      */
-    @PostMapping("/checkLoginNameUnique")
+    @PostMapping("/member/user//checkLoginNameUnique")
     @ResponseBody
-    public String checkLoginNameUnique(VipUser user) {
-        return userService.checkLoginNameUnique( user.getLoginName() );
+    public String checkLoginNameUnique(SysUser user) {
+        return sysUserService.checkLoginNameUnique( user.getLoginName() );
     }
 
     /**
      * 校验手机号码
      */
-    @PostMapping("/checkPhoneUnique")
+    @PostMapping("/member/user//checkPhoneUnique")
     @ResponseBody
-    public String checkPhoneUnique(VipUser user) {
-        return userService.checkPhoneUnique( user );
+    public String checkPhoneUnique(SysUser user) {
+        return sysUserService.checkPhoneUnique( user );
     }
 
     /**
      * 校验email邮箱
      */
-    @PostMapping("/checkEmailUnique")
+    @PostMapping("/member/user//checkEmailUnique")
     @ResponseBody
-    public String checkEmailUnique(VipUser user) {
-        return userService.checkEmailUnique( user );
+    public String checkEmailUnique(SysUser user) {
+        return sysUserService.checkEmailUnique( user );
     }
 }
