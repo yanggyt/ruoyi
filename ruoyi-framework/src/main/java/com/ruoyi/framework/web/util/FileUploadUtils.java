@@ -97,7 +97,7 @@ public class FileUploadUtils {
                     FileUploadUtils.DEFAULT_FILE_NAME_LENGTH );
         }
 
-        assertAllowed( file );
+//        assertAllowed( file );
 
         String fileName = extension;
         if(needDatePathAndRandomName){
