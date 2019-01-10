@@ -13,7 +13,23 @@
             // 初始化表格参数
             init: function(options) {
                 $.table._option = options;
-                $.table._params = $.common.isEmpty(options.queryParams) ? $.table.queryParams : options.queryParams;
+
+                //和search查询时条件保持一直
+                var currentId = $.common.isEmpty(options.formId) ? $('form').attr('id') : options.formId;
+                $.table._params = function(params) {
+                    var search = {};
+                    $.each($("#" + currentId).serializeArray(), function(i, field) {
+                        search[field.name] = field.value;
+                    });
+                    search.pageSize = params.limit;
+                    search.pageNum = params.offset / params.limit + 1;
+                    search.searchValue = params.search;
+                    search.orderByColumn = params.sort;
+                    search.isAsc = params.order;
+                    return search;
+                }
+
+                // $.table._params = $.common.isEmpty(options.queryParams) ? $.table.queryParams : options.queryParams;
                 _sortOrder = $.common.isEmpty(options.sortOrder) ? "asc" : options.sortOrder;
                 _sortName = $.common.isEmpty(options.sortName) ? "" : options.sortName;
                 _striped = $.common.isEmpty(options.striped) ? false : options.striped;
