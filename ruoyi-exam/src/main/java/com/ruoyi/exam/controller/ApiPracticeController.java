@@ -20,7 +20,7 @@ import java.util.*;
  */
 @Api("练习")
 @RestController
-@RequestMapping("/api/v1/practice")
+@RequestMapping("/api")
 public class ApiPracticeController extends BaseController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class ApiPracticeController extends BaseController {
     private IExamUserErrorQuestionService examUserErrorQuestionService;
 
 
-    @GetMapping("/list")
+    @GetMapping("/v1/practice/list")
     public AjaxResult list(ExamPractice examPractice) {
 
         List<ExamPractice> list = examPracticeService.selectListFromWeb(examPractice);
@@ -50,7 +50,7 @@ public class ApiPracticeController extends BaseController {
      * @param map
      * @return
      */
-    @GetMapping("/info")
+    @GetMapping("/v1/practice/info")
     public AjaxResult queryOne(@RequestParam Map<String,Object> map) {
         List<ExamQuestionVO> result = examQuestionService.selectQuestionListByPracticeId(map);
         if(map.containsKey("disorder")&&map.get("disorder").toString().equals("1")){
@@ -62,11 +62,13 @@ public class ApiPracticeController extends BaseController {
     }
 
     /**
-     * 回答问题
+     * 保存错题记录
+     * @description 练习时答错题就保存到错题记录中
+     * 传入问题id
      * @param answers
      * @return
      */
-    @PostMapping("/answer")
+    @PostMapping("/v1/practice/answer")
     public AjaxResult answer(@RequestBody List<Map<String,Object>> answers) {
         int error = 0;
         for (Map<String, Object> answer : answers) {
@@ -89,11 +91,11 @@ public class ApiPracticeController extends BaseController {
     }
 
     /**
-     * 查询错题本列表
+     * 查询我的错题列表
      * @return
      */
-    @GetMapping("/queryerror")
-    public AjaxResult answer() {
+    @GetMapping("/v1/practice/{userId}/error")
+    public AjaxResult answer(@PathVariable("userId") String userId) {
         ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
         examUserErrorQuestion.setVipUserId(Integer.parseInt(ShiroUtils.getUserId().toString()));
         List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailPage(examUserErrorQuestion);
@@ -104,12 +106,12 @@ public class ApiPracticeController extends BaseController {
 
     /**
      * 查询问题详情
-     * @param questionId
+     * @param id
      * @return
      */
-    @GetMapping("/queryquestion/{id}")
-    public AjaxResult queryQuestion(@PathVariable("id") String questionId) {
-        ExamQuestionVO result = examQuestionService.selectQuestionDetail(questionId);
+    @GetMapping("/v1/practice/question/{id}")
+    public AjaxResult queryQuestion(@PathVariable("id") String id) {
+        ExamQuestionVO result = examQuestionService.selectQuestionDetail(id);
         AjaxResult success = success("查询成功");
         success.put("data",result);
         return success;
