@@ -41,71 +41,68 @@ public class ApiPracticeController extends BaseController {
 
         List<ExamPractice> list = examPracticeService.selectListFromWeb(examPractice);
         AjaxResult success = success("查询成功");
-        success.put("data",list);
+        success.put("data", list);
         return success;
     }
 
     /**
      * 查询练习具体的问题列表
+     *
      * @param map
      * @return
      */
     @GetMapping("/v1/practice/info")
-    public AjaxResult queryOne(@RequestParam Map<String,Object> map) {
+    public AjaxResult queryOne(@RequestParam Map<String, Object> map) {
         List<ExamQuestionVO> result = examQuestionService.selectQuestionListByPracticeId(map);
-        if(map.containsKey("disorder")&&map.get("disorder").toString().equals("1")){
+        if (map.containsKey("disorder") && map.get("disorder").toString().equals("1")) {
             Collections.shuffle(result);
         }
         AjaxResult success = success("查询成功");
-        success.put("data",result);
+        success.put("data", result);
         return success;
     }
 
     /**
      * 保存错题记录
+     *
+     * @param questionId
+     * @return
      * @description 练习时答错题就保存到错题记录中
      * 传入问题id
-     * @param answers
-     * @return
      */
     @PostMapping("/v1/practice/answer")
-    public AjaxResult answer(@RequestBody List<Map<String,Object>> answers) {
-        int error = 0;
-        for (Map<String, Object> answer : answers) {
-            String questionId = answer.get("questionId").toString();
-            String userAnswer = answer.get("userAnswer").toString();
-            ExamQuestion examQuestion = examQuestionService.selectById(questionId);
-            if(!examQuestion.getAnswer().equals(userAnswer)){
-                ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
-                examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
-                examUserErrorQuestion.setVipUserId(Integer.parseInt(ShiroUtils.getUserId().toString()));
-                examUserErrorQuestion.setCreateBy(ShiroUtils.getLoginName());
-                examUserErrorQuestion.setCreateDate(new Date());
-                examUserErrorQuestion.setDelFlag("0");
-                examUserErrorQuestionService.insert(examUserErrorQuestion);
-                error++;
-            }
-        }
-        AjaxResult success = success(error+"题进入错题本");
+    public AjaxResult answer(String questionId) {
+
+        ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
+        examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
+        examUserErrorQuestion.setVipUserId(Integer.parseInt(ShiroUtils.getUserId().toString()));
+        examUserErrorQuestion.setCreateBy(ShiroUtils.getLoginName());
+        examUserErrorQuestion.setCreateDate(new Date());
+        examUserErrorQuestion.setDelFlag("0");
+        examUserErrorQuestionService.insert(examUserErrorQuestion);
+
+        AjaxResult success = success("插入错题本成功");
         return success;
     }
 
     /**
      * 查询我的错题列表
+     *
      * @return
      */
     @GetMapping("/v1/practice/{userId}/error")
-    public AjaxResult answer(@PathVariable("userId") String userId) {
+    public AjaxResult queryError(@PathVariable("userId") String userId) {
         ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
         examUserErrorQuestion.setVipUserId(Integer.parseInt(ShiroUtils.getUserId().toString()));
         List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailPage(examUserErrorQuestion);
         AjaxResult success = success("查询成功");
-        success.put("data",list);
+        success.put("data", list);
         return success;
     }
 
     /**
      * 查询问题详情
+     *
      * @param id
      * @return
      */
@@ -113,7 +110,7 @@ public class ApiPracticeController extends BaseController {
     public AjaxResult queryQuestion(@PathVariable("id") String id) {
         ExamQuestionVO result = examQuestionService.selectQuestionDetail(id);
         AjaxResult success = success("查询成功");
-        success.put("data",result);
+        success.put("data", result);
         return success;
     }
 
