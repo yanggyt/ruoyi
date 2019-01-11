@@ -31,7 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="id != null "> and id = #{id}</if>
              <if test="deptId != null "> and dept_id = #{deptId}</if>
-             <if test="trainCourseCategoryId != null "> and train_course_category_id = #{trainCourseCategoryId}</if>
+             <if test="trainCourseCategoryId != null ">
+                 and (train_course_category_id in
+                 (select id from train_course_category where FIND_IN_SET(#{trainCourseCategoryId},parent_ids))
+                 or train_course_category_id = #{trainCourseCategoryId} )
+             </if>
              <if test="name != null  and name != '' "> and name = #{name}</if>
              <if test="cover != null  and cover != '' "> and cover = #{cover}</if>
              <if test="description != null  and description != '' "> and description = #{description}</if>
