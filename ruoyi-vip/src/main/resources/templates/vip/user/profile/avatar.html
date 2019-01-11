@@ -70,7 +70,7 @@ function submitHandler() {
     formdata.append("avatarfile", img);
     formdata.append("userId", $("#userId").val());
     $.ajax({
-        url: ctx + "vip/user/profile/updateAvatar",
+        url: ctx + "system/user/profile/updateAvatar",
         data: formdata,
         type: "post",
         processData: false,

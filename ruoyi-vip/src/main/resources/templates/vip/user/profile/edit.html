@@ -63,7 +63,7 @@
 					required:true,
 		            email:true,
 		            remote: {
-		                url: ctx + "vip/user/checkEmailUnique",
+		                url: ctx + "system/user/checkEmailUnique",
 		                type: "post",
 		                dataType: "json",
 		                data: {
@@ -83,7 +83,7 @@
 					required:true,
 					isPhone:true,
 		            remote: {
-		                url: ctx + "vip/user/checkPhoneUnique",
+		                url: ctx + "system/user/checkPhoneUnique",
 		                type: "post",
 		                dataType: "json",
 		                data: {
@@ -112,7 +112,7 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	        	$.operate.save(ctx + "vip/user/profile/update", $('#form-user-edit').serialize());
+	        	$.operate.save(ctx + "system/user/profile/update", $('#form-user-edit').serialize());
 	        }
 	    }
 	</script>

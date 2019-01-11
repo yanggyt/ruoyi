@@ -91,7 +91,7 @@
         			required:true,
                     email:true,
                     remote: {
-                        url: ctx + "vip/user/checkEmailUnique",
+                        url: ctx + "system/user/checkEmailUnique",
                         type: "post",
                         dataType: "json",
                         data: {
@@ -111,7 +111,7 @@
         			required:true,
         			isPhone:true,
                     remote: {
-                        url: ctx + "vip/user/checkPhoneUnique",
+                        url: ctx + "system/user/checkPhoneUnique",
                         type: "post",
                         dataType: "json",
                         data: {
@@ -160,7 +160,7 @@
         	$.ajax({
         		cache : true,
         		type : "POST",
-        		url : ctx + "vip/user/edit",
+        		url : ctx + "system/user/edit",
         		data : {
         			"userId": userId,
         			"deptId": deptId,
@@ -185,7 +185,7 @@
         /*用户管理-修改-选择部门树*/
         function selectDeptTree() {
         	var deptId = $("#treeId").val();
-            var url = ctx + "vip/dept/selectDeptTree/" + deptId;
+            var url = ctx + "system/dept/selectDeptTree/" + deptId;
 		    var options = {
 				title: '选择部门',
 				width: "380",

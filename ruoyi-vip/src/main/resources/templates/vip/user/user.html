@@ -34,6 +34,7 @@
 				<form id="user-form">
 					<input type="hidden" id="deptId" name="deptId">
 	                <input type="hidden" id="parentId" name="parentId">
+					<input type="hidden" id="userType" name="userType" value="10">
 					<div class="select-list">
 						<ul>
 							<li>
@@ -43,7 +44,8 @@
 								手机号码：<input type="text" name="phonenumber"/>
 							</li>
 							<li>
-								用户状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
+								用户状态：
+								<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
 									<option value="">所有</option>
 									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
 								</select>
@@ -64,16 +66,16 @@
 			</div>
 			
 	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-	        	<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="vip:user:add">
+	        	<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:user:add">
 	                <i class="fa fa-plus"></i> 新增
 	            </a>
-	             <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="vip:user:edit">
+	             <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:user:edit">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
-	            <a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="vip:user:remove">
+	            <a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:user:remove">
 	                <i class="fa fa-remove"></i> 删除
 	            </a>
-	            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="vip:user:export">
+	            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:user:export">
 		            <i class="fa fa-download"></i> 导出
 		        </a>
 	        </div>
@@ -87,11 +89,11 @@
 	<script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
 	<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
 	<script th:inline="javascript">
-		var editFlag = [[${@permission.hasPermi('vip:user:edit')}]];
-		var removeFlag = [[${@permission.hasPermi('vip:user:remove')}]];
-		var resetPwdFlag = [[${@permission.hasPermi('vip:user:resetPwd')}]];
+		var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
+		var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
+		var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
 		var datas = [[${@dict.getType('sys_normal_disable')}]];
-		var prefix = ctx + "vip/user";
+		var prefix = ctx + "system/user";
 
 		$(function() {
 			$('body').layout({ west__size: 185 });
@@ -203,7 +205,7 @@
 
 		/*用户管理-部门*/
 		function dept() {
-			var url = ctx + "vip/dept";
+			var url = ctx + "system/dept";
 			createMenuItem(url, "部门管理");
 		}
 

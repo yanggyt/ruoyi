@@ -41,7 +41,7 @@
 				oldPassword:{
 					required:true,
 					remote: {
-	                    url: ctx + "vip/user/profile/checkPassword",
+	                    url: ctx + "system/user/profile/checkPassword",
 	                    type: "get",
 	                    dataType: "json",
 	                    data: {
@@ -81,7 +81,7 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	        	$.operate.save(ctx + "vip/user/profile/resetPwd", $('#form-user-resetPwd').serialize());
+	        	$.operate.save(ctx + "system/user/profile/resetPwd", $('#form-user-resetPwd').serialize());
 	        }
 	    }
 	</script>
