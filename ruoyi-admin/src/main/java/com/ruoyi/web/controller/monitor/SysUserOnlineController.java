@@ -103,6 +103,10 @@ public class SysUserOnlineController extends BaseController {
         if (online == null) {
             return error("用户已下线");
         }
+        /**
+         * 首先尝试使用会话ID作为缓存键从缓存获取会话。如果没有会话
+         * 找到后，调用{@code super.readSession(sessionId)}执行实际检索。
+         */
         OnlineSession onlineSession = (OnlineSession) onlineSessionDAO.readSession(online.getSessionId());
         if (onlineSession == null) {
             return error("用户已下线");
