@@ -2,6 +2,8 @@ package com.ruoyi.exam.service;
 
 import com.ruoyi.exam.domain.ExamExamination;
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.framework.web.base.AbstractBaseService;
 /**
  * 考试 服务层
@@ -26,5 +28,10 @@ public interface IExamExaminationService extends AbstractBaseService<ExamExamina
      */
     public List<ExamExamination> selectExamExaminationList(ExamExamination examExamination);
 
-	
+    /**
+     * web查询考试列表
+     * @param map
+     * @return
+     */
+    List<ExamExamination> selectListFromWeb(Map<String, Object> map);
 }

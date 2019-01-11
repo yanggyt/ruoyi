@@ -12,6 +12,20 @@
 					<input id="name" name="name" class="form-control" type="text">
 				</div>
 			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">课程选择：</label>
+				<div class="col-sm-3">
+					<input id="trainCateGoryName" name="trainCateGoryName" value="课程分类" onclick="selectTrainCategoryTree()" class="form-control" type="text" readonly="true">
+				</div>
+				<div class="col-sm-5">
+					<select id="trainCourseId" name="trainCourseId" class="form-control m-b" >
+						<option>---请选择---</option>
+					</select>
+				</div>
+			</div>
+
+
 			<div class="form-group">
 				<label class="col-sm-3 control-label">是否控制开始结束时间：</label>
 
@@ -55,6 +69,24 @@
     <div th:include="include::footer"></div>
     <script type="text/javascript">
 		var prefix = ctx + "exam/examPractice"
+		$(function () {
+            var config = {
+                url: ctx + "train/trainCourse"+ "/list",
+                type: "post",
+                dataType: "json",
+                data: {trainCourseCategoryId:100},
+//                contentType:"application/json",
+                success: function(result) {
+                    $("#trainCourseId").html("<option>---请选择---</option>");
+                    var rows =result.rows;
+                    for(var i in rows){
+                        $("#trainCourseId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
+                    }
+                }
+            };
+            $.ajax(config)
+        })
+
 		$("#form-examPractice-add").validate({
 			rules:{
 				xxxx:{
@@ -68,6 +100,40 @@
 	            $.operate.save(prefix + "/add", $('#form-examPractice-add').serialize());
 	        }
 	    }
+
+        var trainCategoryId = 100;
+        function selectTrainCategoryTree(){
+            var options = {
+                title: '课程分类选择',
+                width: "380",
+                url: ctx + "train/course/category" + "/selectCategoryTree/"+trainCategoryId,
+                callBack: doSubmitForTrainCategory
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmitForTrainCategory(index, layero){
+            var body = layer.getChildFrame('body', index);
+            trainCategoryId = body.find('#treeId').val()
+            $("#trainCateGoryName").val(body.find('#treeName').val());
+            layer.close(index);
+
+            var config = {
+                url: ctx + "train/trainCourse"+ "/list",
+                type: "post",
+                dataType: "json",
+                data: {trainCourseCategoryId:trainCategoryId},
+//                contentType:"application/json",
+                success: function(result) {
+                    $("#trainCourseId").html("<option>---请选择---</option>");
+                    var rows =result.rows;
+                    for(var i in rows){
+                        $("#trainCourseId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
+                    }
+                }
+            };
+            $.ajax(config)
+        }
 	</script>
 </body>
 </html>

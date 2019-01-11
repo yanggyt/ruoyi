@@ -23,6 +23,8 @@ private static final long serialVersionUID = 1L;
 	    private Integer deptId;
 	        /** 试卷代码 */
 	    private Integer examPaperId;
+	    /** 课程代码 */
+	    private Integer trainCourseId;
 	        /** 试卷名称 */
 	    private String name;
         /**
@@ -73,7 +75,16 @@ private static final long serialVersionUID = 1L;
             {
             return id;
             }
-	    /** 设置部门ID */
+
+    public Integer getTrainCourseId() {
+        return trainCourseId;
+    }
+
+    public void setTrainCourseId(Integer trainCourseId) {
+        this.trainCourseId = trainCourseId;
+    }
+
+    /** 设置部门ID */
     public void setDeptId(Integer deptId)
             {
             this.deptId = deptId;

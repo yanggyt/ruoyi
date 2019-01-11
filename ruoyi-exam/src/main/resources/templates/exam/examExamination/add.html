@@ -32,6 +32,18 @@
 			</div>
 
 			<div class="form-group">
+				<label class="col-sm-3 control-label">课程选择：</label>
+				<div class="col-sm-3">
+					<input id="trainCateGoryName" name="trainCateGoryName" value="课程分类" onclick="selectTrainCategoryTree()" class="form-control" type="text" readonly="true">
+				</div>
+				<div class="col-sm-5">
+					<select id="trainCourseId" name="trainCourseId" class="form-control m-b" >
+						<option>---请选择---</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
 				<label class="col-sm-3 control-label">考试类型</label>
 
 				<div class="col-sm-8">
@@ -140,7 +152,23 @@
                     }
                 }
             };
+
+            var config2 = {
+                url: ctx + "train/trainCourse"+ "/list",
+                type: "post",
+                dataType: "json",
+                data: {trainCourseCategoryId:100},
+//                contentType:"application/json",
+                success: function(result) {
+                    $("#trainCourseId").html("<option>---请选择---</option>");
+                    var rows =result.rows;
+                    for(var i in rows){
+                        $("#trainCourseId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
+                    }
+                }
+            };
             $.ajax(config)
+            $.ajax(config2)
         })
 
 
@@ -178,13 +206,15 @@
 	    var id = 1;
         function selectExamPaperCategoryTree() {
             var options = {
-                title: '分类选择',
+                title: '试卷分类选择',
                 width: "380",
                 url: ctx + "exam/examPaperCategory" + "/selectExamPaperCategoryTree/"+id,
                 callBack: doSubmit
             };
             $.modal.openOptions(options);
         }
+
+
 
 
         function doSubmit(index, layero){
@@ -205,6 +235,42 @@
                   for(var i in rows){
                       $("#examPaperId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
 				  }
+                }
+            };
+            $.ajax(config)
+        }
+
+
+
+        var trainCategoryId = 100;
+        function selectTrainCategoryTree(){
+            var options = {
+                title: '课程分类选择',
+                width: "380",
+                url: ctx + "train/course/category" + "/selectCategoryTree/"+trainCategoryId,
+                callBack: doSubmitForTrainCategory
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmitForTrainCategory(index, layero){
+            var body = layer.getChildFrame('body', index);
+            trainCategoryId = body.find('#treeId').val()
+            $("#trainCateGoryName").val(body.find('#treeName').val());
+            layer.close(index);
+
+            var config = {
+                url: ctx + "train/trainCourse"+ "/list",
+                type: "post",
+                dataType: "json",
+                data: {trainCourseCategoryId:trainCategoryId},
+//                contentType:"application/json",
+                success: function(result) {
+                    $("#trainCourseId").html("<option>---请选择---</option>");
+                    var rows =result.rows;
+                    for(var i in rows){
+                        $("#trainCourseId").append("<option value='"+rows[i].id+"'>"+rows[i].name+"</option>");
+                    }
                 }
             };
             $.ajax(config)

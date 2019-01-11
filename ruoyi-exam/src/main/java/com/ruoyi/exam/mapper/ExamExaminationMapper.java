@@ -2,6 +2,8 @@ package com.ruoyi.exam.mapper;
 
 import com.ruoyi.exam.domain.ExamExamination;
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.framework.web.base.MyMapper;
 
 /**
@@ -20,5 +22,6 @@ public interface ExamExaminationMapper  extends MyMapper<ExamExamination>
      * @return 考试集合
      */
 	public List<ExamExamination> selectExamExaminationList(ExamExamination examExamination);
-	
+
+	List<ExamExamination> selectListFromWeb(Map<String, Object> map);
 }

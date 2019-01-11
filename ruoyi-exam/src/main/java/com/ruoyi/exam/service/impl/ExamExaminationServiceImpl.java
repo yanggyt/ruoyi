@@ -1,6 +1,8 @@
 package com.ruoyi.exam.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamExaminationMapper;
@@ -32,6 +34,13 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
 	{
         return examExaminationMapper.selectExamExaminationList(examExamination);
 	}
+
+    @Override
+    public List<ExamExamination> selectListFromWeb(Map<String, Object> map) {
+        startPage();
+	    return examExaminationMapper.selectListFromWeb(map);
+    }
+
     /**
      * 查询考试分页列表
      *

@@ -24,6 +24,8 @@ private static final long serialVersionUID = 1L;
 	    private Integer deptId;
 	        /** 练习名称 */
 	    private String name;
+        /** 课程代码 */
+        private Integer trainCourseId;
         /** 是否控制开始结束时间（0-不控制,1-控制） */
 	    private String enableControlTime;
 	        /** 开始时间 */
@@ -45,6 +47,14 @@ private static final long serialVersionUID = 1L;
 	        /** 删除标记 */
 	    private String delFlag;
 
+
+    public Integer getTrainCourseId() {
+        return trainCourseId;
+    }
+
+    public void setTrainCourseId(Integer trainCourseId) {
+        this.trainCourseId = trainCourseId;
+    }
 
     /** 设置练习ID */
     public void setId(Integer id)

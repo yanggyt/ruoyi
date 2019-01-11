@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="deptId"    column="dept_id"    />
         <result property="name"    column="name"    />
+        <result property="trainCourseId"    column="train_course_id"    />
         <result property="enableControlTime"    column="enable_control_time"    />
         <result property="startTime"    column="start_time"    />
         <result property="endTime"    column="end_time"    />
@@ -21,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectExamPracticeVo">
-         id, dept_id, name,enable_control_time, start_time, end_time, practice_user_limit, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+         id, dept_id, name,train_course_id,enable_control_time, start_time, end_time, practice_user_limit, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
 	
     <select id="selectExamPracticeList" parameterType="ExamPractice" resultMap="ExamPracticeResult">
         select
@@ -31,7 +32,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null "> and id = #{id}</if>
              <if test="deptId != null "> and dept_id = #{deptId}</if>
              <if test="name != null  and name != '' "> and name = #{name}</if>
-             <if test="enableControlTime != null  and enableControlTime != '' "> and enable_control_time = #{enableControlTime}</if>
+            <if test="trainCourseId != null "> and exam_examination.train_course_id = #{ination.trainCourseId}</if>
+            <if test="enableControlTime != null  and enableControlTime != '' "> and enable_control_time = #{enableControlTime}</if>
              <if test="startTime != null "> and start_time = #{startTime}</if>
              <if test="endTime != null "> and end_time = #{endTime}</if>
              <if test="practiceUserLimit != null  and practiceUserLimit != '' "> and practice_user_limit = #{practiceUserLimit}</if>
@@ -52,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             or enable_control_time = '0')  ]]>
             <if test="id != null "> and id = #{id}</if>
             <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="trainCourseId != null "> and exam_examination.train_course_id = #{ination.trainCourseId}</if>
             <if test="name != null  and name != '' "> and name = #{name}</if>
             <if test="enableControlTime != null  and enableControlTime != '' "> and enable_control_time = #{enableControlTime}</if>
             <if test="startTime != null "> and start_time = #{startTime}</if>
