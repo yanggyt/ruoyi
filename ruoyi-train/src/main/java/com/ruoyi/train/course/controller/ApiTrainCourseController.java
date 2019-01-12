@@ -1,5 +1,6 @@
 package com.ruoyi.train.course.controller;
 
+import cn.hutool.json.JSONObject;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.train.course.domain.TrainCourse;
@@ -8,7 +9,6 @@ import com.ruoyi.train.course.domain.TrainCourseSection;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,12 +49,8 @@ public class ApiTrainCourseController extends BaseController {
 	@GetMapping("/trainCourse/{id}")
 	public AjaxResult get(@PathVariable("id") Integer id) {
 		TrainCourse trainCourse = trainCourseService.selectById( id );
-//		TrainCourseCategory courseCategory = trainCourseCategoryService.selectById( trainCourse.getTrainCourseCategoryId() );
-		JSONObject jsonObject = JSONObject.fromObject( trainCourse );
-//		JSONObject courseCategoryJSON = JSONObject.fromObject( courseCategory );
-//		jsonObject.put( "courseCategory", courseCategory );
 		AjaxResult success = success( "查询成功" );
-		success.put( "data", jsonObject );
+		success.put( "data", trainCourse );
 		return success;
 	}
 

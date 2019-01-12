@@ -74,7 +74,7 @@
         			required:true,
                     email:true,
                     remote: {
-                        url: ctx + "system/user/checkEmailUnique",
+                        url: ctx + "vip/user/checkEmailUnique",
                         type: "post",
                         dataType: "json",
                         data: {
@@ -94,7 +94,7 @@
         			required:true,
         			isPhone:true,
                     remote: {
-                        url: ctx + "system/user/checkPhoneUnique",
+                        url: ctx + "vip/user/checkPhoneUnique",
                         type: "post",
                         dataType: "json",
                         data: {
@@ -143,7 +143,7 @@
         	$.ajax({
         		cache : true,
         		type : "POST",
-        		url : ctx + "system/user/edit",
+        		url : ctx + "vip/user/edit",
         		data : {
         			"userId": userId,
         			"deptId": deptId,
