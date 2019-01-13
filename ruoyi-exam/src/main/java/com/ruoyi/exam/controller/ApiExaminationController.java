@@ -19,7 +19,7 @@ import java.util.*;
 @Api("考试")
 @RestController
 @RequestMapping("/api")
-public class ApiInationController extends BaseController {
+public class ApiExaminationController extends BaseController {
 
     @Autowired
     private IExamExaminationService examExaminationService;
@@ -42,7 +42,7 @@ public class ApiInationController extends BaseController {
      * @param examExamination
      * @return
      */
-    @GetMapping("/v1/ination/list")
+    @GetMapping("/v1/examination/list")
     public AjaxResult list(ExamExamination examExamination) {
         Map<String, Object> map = new HashMap<>();
         map.put("ination",examExamination);
@@ -59,7 +59,7 @@ public class ApiInationController extends BaseController {
      * @param inationId
      * @return
      */
-    @GetMapping("/v1/ination/start/{inationId}")
+    @GetMapping("/v1/examination/start/{inationId}")
     public AjaxResult start(@PathVariable("inationId") String inationId) {
         ExamExamination examExamination = examExaminationService.selectById(inationId);
         Integer userId = 1;//Integer.parseInt(ShiroUtils.getUserId().toString());
@@ -131,7 +131,7 @@ public class ApiInationController extends BaseController {
      * @param examExamination
      * @return
      */
-    @GetMapping("/v1/ination/entername/list")
+    @GetMapping("/v1/examination/entername/list")
     public AjaxResult enterNameList(ExamExamination examExamination) {
         Map<String, Object> map = new HashMap<>();
         map.put("ination",examExamination);
@@ -150,7 +150,7 @@ public class ApiInationController extends BaseController {
      * @param inationId
      * @return
      */
-    @PostMapping("/v1/ination/entername")
+    @PostMapping("/v1/examination/entername")
     public AjaxResult enterName(SysUser sysUser,String inationId) {
         sysUser.setUserId(ShiroUtils.getUserId());
         sysUserService.updateSelectiveById(sysUser);
