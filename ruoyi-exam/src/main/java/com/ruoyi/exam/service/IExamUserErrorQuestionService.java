@@ -30,4 +30,6 @@ public interface IExamUserErrorQuestionService extends AbstractBaseService<ExamU
 
 
     List<ExamUserErrorQuestionVO> selectExamUserErrorQuestionDetailPage(ExamUserErrorQuestion examUserErrorQuestion);
+
+    int insertError(ExamUserErrorQuestion examUserErrorQuestion);
 }

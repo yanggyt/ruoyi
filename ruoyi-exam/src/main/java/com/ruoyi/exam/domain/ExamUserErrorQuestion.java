@@ -49,9 +49,9 @@ private static final long serialVersionUID = 1L;
             }
 	    /** 设置会员代码 */
     public void setVipUserId(Integer vipUserId)
-            {
-            this.vipUserId = vipUserId;
-            }
+    {
+        this.vipUserId = vipUserId;
+    }
 
     /** 获取会员代码 */
     public Integer getVipUserId()

@@ -6,9 +6,13 @@ import com.ruoyi.exam.service.IExamPracticeQuestionService;
 import com.ruoyi.exam.service.IExamPracticeService;
 import com.ruoyi.exam.service.IExamQuestionService;
 import com.ruoyi.exam.service.IExamUserErrorQuestionService;
+import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.framework.web.util.EntityUtils;
 import com.ruoyi.framework.web.util.ShiroUtils;
+import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +39,8 @@ public class ApiPracticeController extends BaseController {
     @Autowired
     private IExamUserErrorQuestionService examUserErrorQuestionService;
 
+    @Autowired
+    private ISysUserService sysUserService;
 
     @GetMapping("/v1/practice/list")
     public AjaxResult list(ExamPractice examPractice) {
@@ -65,22 +71,25 @@ public class ApiPracticeController extends BaseController {
     /**
      * 保存错题记录
      *
-     * @param questionId
+     * @param questionIds
      * @return
      * @description 练习时答错题就保存到错题记录中
      * 传入问题id
      */
     @PostMapping("/v1/practice/answer")
-    public AjaxResult answer(String questionId) {
-
-        ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
-        examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
-        examUserErrorQuestion.setVipUserId(Integer.parseInt(ShiroUtils.getUserId().toString()));
-        examUserErrorQuestion.setCreateBy(ShiroUtils.getLoginName());
-        examUserErrorQuestion.setCreateDate(new Date());
-        examUserErrorQuestion.setDelFlag("0");
-        examUserErrorQuestionService.insert(examUserErrorQuestion);
-
+    public AjaxResult answer(@RequestBody List<String> questionIds) {
+        for (String questionId : questionIds) {
+            ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
+            examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
+            SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+            examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
+            examUserErrorQuestion.setCreateBy(sysUser.getLoginName());
+            examUserErrorQuestion.setCreateDate(new Date());
+            examUserErrorQuestion.setDelFlag("0");
+            examUserErrorQuestion.setUpdateBy(sysUser.getLoginName());
+            examUserErrorQuestion.setUpdateDate(new Date());
+            int insert = examUserErrorQuestionService.insertError( examUserErrorQuestion );
+        }
         AjaxResult success = success("插入错题本成功");
         return success;
     }
