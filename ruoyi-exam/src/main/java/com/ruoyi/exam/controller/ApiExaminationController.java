@@ -3,6 +3,7 @@ package com.ruoyi.exam.controller;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
+import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
@@ -44,9 +45,12 @@ public class ApiExaminationController extends BaseController {
      */
     @GetMapping("/v1/examination/list")
     public AjaxResult list(ExamExamination examExamination) {
+
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+
         Map<String, Object> map = new HashMap<>();
         map.put("ination",examExamination);
-        map.put("userId", ShiroUtils.getUserId());
+        map.put("userId", sysUser.getUserId());
         List<ExamExamination> list = examExaminationService.selectListFromWeb(map);
         AjaxResult success = success("查询成功");
         success.put("data", list);
@@ -62,7 +66,8 @@ public class ApiExaminationController extends BaseController {
     @GetMapping("/v1/examination/start/{inationId}")
     public AjaxResult start(@PathVariable("inationId") String inationId) {
         ExamExamination examExamination = examExaminationService.selectById(inationId);
-        Integer userId = 1;//Integer.parseInt(ShiroUtils.getUserId().toString());
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        Integer userId = Integer.parseInt(sysUser.getUserId().toString());
         //考试类型
         String type = examExamination.getType();
         //试卷ID
@@ -133,9 +138,11 @@ public class ApiExaminationController extends BaseController {
      */
     @GetMapping("/v1/examination/entername/list")
     public AjaxResult enterNameList(ExamExamination examExamination) {
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+
         Map<String, Object> map = new HashMap<>();
         map.put("ination",examExamination);
-        map.put("userId",1);
+        map.put("userId",sysUser.getUserId());
         List<ExamExamination> list = examExaminationService.selectEnterNameListFromWeb(map);
         AjaxResult success = success("查询成功");
         success.put("data", list);
@@ -152,20 +159,24 @@ public class ApiExaminationController extends BaseController {
      */
     @PostMapping("/v1/examination/entername")
     public AjaxResult enterName(SysUser sysUser,String inationId) {
-        sysUser.setUserId(ShiroUtils.getUserId());
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        Long userId = user.getUserId();
+        sysUser.setUserId(userId);
         sysUserService.updateSelectiveById(sysUser);
 
         ExamExaminationUser examExaminationUser = new ExamExaminationUser();
-        examExaminationUser.setVipUserId(Integer.parseInt(ShiroUtils.getUserId().toString()));
+        examExaminationUser.setVipUserId(Integer.parseInt(userId.toString()));
         examExaminationUser.setDelFlag("0");
         examExaminationUser.setCreateDate(new Date());
-        examExaminationUser.setCreateBy(ShiroUtils.getLoginName());
+        examExaminationUser.setCreateBy(user.getLoginName());
         examExaminationUser.setExamExaminationId(Integer.parseInt(inationId));
         examExaminationUserService.insert(examExaminationUser);
 
         AjaxResult success = success("报名成功");
         return success;
     }
+
+
 
 
 
