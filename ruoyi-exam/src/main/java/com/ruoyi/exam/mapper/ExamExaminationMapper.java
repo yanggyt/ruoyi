@@ -24,4 +24,6 @@ public interface ExamExaminationMapper  extends MyMapper<ExamExamination>
 	public List<ExamExamination> selectExamExaminationList(ExamExamination examExamination);
 
 	List<ExamExamination> selectListFromWeb(Map<String, Object> map);
+
+    List<ExamExamination> selectEnterNameListFromWeb(Map<String, Object> map);
 }

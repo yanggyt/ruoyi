@@ -41,6 +41,12 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
 	    return examExaminationMapper.selectListFromWeb(map);
     }
 
+    @Override
+    public List<ExamExamination> selectEnterNameListFromWeb(Map<String, Object> map) {
+        startPage();
+        return examExaminationMapper.selectEnterNameListFromWeb(map);
+    }
+
     /**
      * 查询考试分页列表
      *

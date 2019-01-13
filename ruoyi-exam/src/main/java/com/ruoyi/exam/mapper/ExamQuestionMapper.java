@@ -68,4 +68,6 @@ public interface ExamQuestionMapper  extends MyMapper<ExamQuestion>
     List<ExamQuestionVO> selectQuestionListByPracticeId(Map<String, Object> map);
 
     ExamQuestionVO selectQuestionDetail(String questionId);
+
+	List<ExamQuestionVO> selectQuestionListByPaperId(Integer examPaperId);
 }
