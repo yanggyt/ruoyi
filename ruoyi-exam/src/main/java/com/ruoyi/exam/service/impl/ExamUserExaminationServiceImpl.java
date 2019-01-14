@@ -1,6 +1,8 @@
 package com.ruoyi.exam.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamUserExaminationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamUserExaminationMapper;
@@ -46,6 +48,12 @@ public class ExamUserExaminationServiceImpl extends AbstractBaseServiceImpl<Exam
     @Override
     public int updateOneSelectiveById(ExamUserExamination examUserExamination) {
         return examUserExaminationMapper.updateByPrimaryKeySelective(examUserExamination);
+    }
+
+    @Override
+    public List<ExamUserExaminationVO> selectMyExamUserExamination(ExamUserExaminationVO bean) {
+        startPage();
+	    return examUserExaminationMapper.selectMyExamUserExamination(bean);
     }
 
     /**

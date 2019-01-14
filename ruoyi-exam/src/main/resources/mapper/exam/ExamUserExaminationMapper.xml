@@ -17,9 +17,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remarks"    column="remarks"    />
         <result property="delFlag"    column="del_flag"    />
     </resultMap>
+
+
+    <resultMap type="ExamUserExaminationVO" id="ExamUserExaminationResultVO">
+        <result property="id"    column="id"    />
+        <result property="vipUserId"    column="vip_user_id"    />
+        <result property="examExaminationId"    column="exam_examination_id"    />
+        <result property="examPaperId"    column="exam_paper_id"    />
+        <result property="score"    column="score"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <association property="examExaminationVO" javaType="com.ruoyi.exam.domain.ExamExaminationVO">
+            <result property="id"    column="v_id"    />
+            <result property="deptId"    column="v_dept_id"    />
+            <result property="examPaperId"    column="v_exam_paper_id"    />
+            <result property="trainCourseId"    column="v_train_course_id"    />
+            <result property="trainCourseName"    column="v_traincourse_name"    />
+            <result property="name"    column="v_name"    />
+            <result property="type"    column="v_type"    />
+            <result property="enableControlTime"    column="v_enable_control_time"    />
+            <result property="startTime"    column="v_start_time"    />
+            <result property="endTime"    column="v_end_time"    />
+            <result property="timeLength"    column="v_time_length"    />
+            <result property="examNumber"    column="v_exam_number"    />
+            <result property="passMark"    column="v_pass_mark"    />
+            <result property="questionDisorder"    column="v_question_disorder"    />
+            <result property="finishedPaper"    column="v_finished_paper"    />
+            <result property="examEnd"    column="v_exam_end"    />
+            <result property="examinationUserLimit"    column="v_examination_user_limit"    />
+            <result property="createBy"    column="v_create_by"    />
+            <result property="createDate"    column="v_create_date"    />
+            <result property="updateBy"    column="v_update_by"    />
+            <result property="updateDate"    column="v_update_date"    />
+            <result property="remarks"    column="v_remarks"    />
+            <result property="delFlag"    column="v_del_flag"    />
+        </association>
+    </resultMap>
+
 	
 	<sql id="selectExamUserExaminationVo">
-         id, vip_user_id, exam_examination_id, exam_paper_id, score, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+         exam_user_examination.id,
+         exam_user_examination.vip_user_id,
+         exam_user_examination.exam_examination_id,
+         exam_user_examination.exam_paper_id, score,
+         exam_user_examination.create_by,
+         exam_user_examination.create_date,
+         exam_user_examination.update_by,
+         exam_user_examination.update_date,
+         exam_user_examination.remarks,
+         exam_user_examination.del_flag    </sql>
 	
     <select id="selectExamUserExaminationList" parameterType="ExamUserExamination" resultMap="ExamUserExaminationResult">
         select
@@ -58,6 +108,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
         </where>
         order by create_date desc;
+    </select>
+
+    <select id="selectMyExamUserExamination" resultMap="ExamUserExaminationResultVO">
+        select
+        <include refid="selectExamUserExaminationVo"/>,
+        tc.name as v_traincourse_name,
+        ee.name as v_name,
+        ee.type as v_type,
+        ee.enable_control_time as v_enable_control_time,
+        ee.start_time as v_start_time,
+        ee.end_time as v_end_time
+        from exam_user_examination exam_user_examination
+        INNER JOIN exam_examination ee ON exam_user_examination.exam_examination_id = ee.id
+        INNER JOIN train_course tc ON ee.train_course_id = tc.id
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
+            <if test="examExaminationId != null "> and exam_examination_id = #{examExaminationId}</if>
+            <if test="examPaperId != null "> and exam_paper_id = #{examPaperId}</if>
+            <if test="score != null "> and score = #{score}</if>
+            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
+
     </select>
 
 

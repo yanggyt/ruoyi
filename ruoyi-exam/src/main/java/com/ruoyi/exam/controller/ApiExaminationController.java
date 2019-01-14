@@ -192,6 +192,14 @@ public class ApiExaminationController extends BaseController {
     }
 
 
+    /**
+     * 交卷
+     * @param examUserExaminationQuestion
+     * @param examUserExaminationId
+     * @param examinationId
+     * @param paperId
+     * @return
+     */
     @PostMapping("/v1/examination/finish/{examUserExaminationId}/{examinationId}/{paperId}")
     public AjaxResult finish(@RequestBody List<ExamUserExaminationQuestion> examUserExaminationQuestion,
                              @PathVariable Integer examUserExaminationId ,@PathVariable Integer examinationId,@PathVariable Integer paperId) {
@@ -259,6 +267,22 @@ public class ApiExaminationController extends BaseController {
         if(!finishedPaper.equals("0")){
             success.put("data", data);
         }
+        return success;
+    }
+
+
+    /**
+     * 考试记录列表
+     * @param bean
+     * @return
+     */
+    @GetMapping("/v1/examination/userexamination/list")
+    public AjaxResult userexamination(ExamUserExaminationVO bean) {
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        bean.setVipUserId(Integer.parseInt(sysUser.getUserId().toString()));
+        List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination(bean);
+        AjaxResult success = success("考试完成");
+        success.put("data", data);
         return success;
     }
 

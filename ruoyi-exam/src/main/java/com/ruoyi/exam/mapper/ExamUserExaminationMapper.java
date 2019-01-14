@@ -2,6 +2,8 @@ package com.ruoyi.exam.mapper;
 
 import com.ruoyi.exam.domain.ExamUserExamination;
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamUserExaminationVO;
 import com.ruoyi.framework.web.base.MyMapper;
 
 /**
@@ -22,4 +24,11 @@ public interface ExamUserExaminationMapper  extends MyMapper<ExamUserExamination
 	public List<ExamUserExamination> selectExamUserExaminationList(ExamUserExamination examUserExamination);
 
     List<ExamUserExamination> selectLastOne(ExamUserExamination examUserExamination);
+
+    /**
+     * 查询我的考试记录
+     * @param bean
+     * @return
+     */
+    List<ExamUserExaminationVO> selectMyExamUserExamination(ExamUserExaminationVO bean);
 }
