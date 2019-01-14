@@ -3,6 +3,7 @@ package com.ruoyi.train.course.mapper;
 
 import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.train.course.domain.TrainCourse;
+import com.ruoyi.train.course.domain.TrainCourseVO;
 
 import java.util.List;
 
@@ -21,6 +22,6 @@ public interface TrainCourseMapper  extends MyMapper<TrainCourse>
      * @param trainCourse 课程信息
      * @return 课程集合
      */
-	public List<TrainCourse> selectTrainCourseList(TrainCourse trainCourse);
+	public List<TrainCourseVO> selectTrainCourseList(TrainCourseVO trainCourse);
 	
 }

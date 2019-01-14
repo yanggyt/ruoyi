@@ -4,6 +4,7 @@ import com.ruoyi.exam.domain.ExamPractice;
 import java.util.List;
 
 import com.ruoyi.exam.domain.ExamPracticeQuestionVO;
+import com.ruoyi.exam.domain.ExamPracticeVO;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 /**
  * 练习 服务层
@@ -34,5 +35,5 @@ public interface IExamPracticeService extends AbstractBaseService<ExamPractice>
      * @param examPractice
      * @return
      */
-    List<ExamPractice> selectListFromWeb(ExamPractice examPractice);
+    List<ExamPracticeVO> selectListFromWeb(ExamPractice examPractice);
 }

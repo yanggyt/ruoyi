@@ -2,6 +2,7 @@ package com.ruoyi.train.course.service.impl;
 
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
 import com.ruoyi.train.course.domain.TrainCourse;
+import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.mapper.TrainCourseMapper;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
      * @return 课程集合
      */
     @Override
-    public List<TrainCourse> selectTrainCourseList(TrainCourse trainCourse)
+    public List<TrainCourseVO> selectTrainCourseList(TrainCourseVO trainCourse)
     {
         return trainCourseMapper.selectTrainCourseList(trainCourse);
     }
@@ -40,7 +41,7 @@ public class TrainCourseServiceImpl extends AbstractBaseServiceImpl<TrainCourseM
      * @return 课程集合
      */
     @Override
-    public List<TrainCourse> selectTrainCoursePage(TrainCourse trainCourse)
+    public List<TrainCourseVO> selectTrainCoursePage(TrainCourseVO trainCourse)
     {
         startPage();
         return trainCourseMapper.selectTrainCourseList(trainCourse);

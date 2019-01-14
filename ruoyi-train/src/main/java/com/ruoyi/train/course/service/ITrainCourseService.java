@@ -2,6 +2,7 @@ package com.ruoyi.train.course.service;
 
 import com.ruoyi.framework.web.base.AbstractBaseService;
 import com.ruoyi.train.course.domain.TrainCourse;
+import com.ruoyi.train.course.domain.TrainCourseVO;
 
 import java.util.List;
 
@@ -19,14 +20,14 @@ public interface ITrainCourseService extends AbstractBaseService<TrainCourse>
      * @param trainCourse 课程信息
      * @return 课程集合
      */
-	public List<TrainCourse> selectTrainCoursePage(TrainCourse trainCourse);
+	public List<TrainCourseVO> selectTrainCoursePage(TrainCourseVO trainCourse);
     /**
      * 查询课程列表
      *
      * @param trainCourse 课程信息
      * @return 课程集合
      */
-    public List<TrainCourse> selectTrainCourseList(TrainCourse trainCourse);
+    public List<TrainCourseVO> selectTrainCourseList(TrainCourseVO trainCourse);
 
 	
 }

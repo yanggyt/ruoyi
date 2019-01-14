@@ -2,6 +2,8 @@ package com.ruoyi.exam.mapper;
 
 import com.ruoyi.exam.domain.ExamPractice;
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamPracticeVO;
 import com.ruoyi.framework.web.base.MyMapper;
 
 /**
@@ -21,5 +23,10 @@ public interface ExamPracticeMapper  extends MyMapper<ExamPractice>
      */
 	public List<ExamPractice> selectExamPracticeList(ExamPractice examPractice);
 
-    List<ExamPractice> selectListFromWeb(ExamPractice examPractice);
+	/**
+	 * 接口查询练习题列表
+	 * @param examPractice
+	 * @return
+	 */
+	List<ExamPracticeVO> selectListFromWeb(ExamPractice examPractice);
 }

@@ -2,10 +2,14 @@ package com.ruoyi.train.course.controller;
 
 import cn.hutool.json.JSONObject;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseCategory;
 import com.ruoyi.train.course.domain.TrainCourseSection;
+import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
@@ -32,17 +36,30 @@ public class ApiTrainCourseController extends BaseController {
 	@Autowired
 	private ITrainCourseSectionService trainCourseSectionService;
 
+	@Autowired
+	private ISysUserService sysUserService;
 	/**
 	 * 查询课程列表
 	 */
 	@GetMapping("/trainCourse/list")
-	public AjaxResult list( TrainCourse trainCourse) {
-		List<TrainCourse> list = trainCourseService.selectTrainCoursePage( trainCourse );
+	public AjaxResult list( TrainCourseVO trainCourse) {
+		List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourse );
 		AjaxResult success = success( "查询成功" );
 		success.put( "data", list );
 		return success;
 	}
-
+	/**
+	 * 查询课程列表
+	 */
+	@GetMapping("/trainCourse/myList")
+	public AjaxResult myList( TrainCourseVO trainCourse) {
+		SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+		trainCourse.setUserId( sysUser.getUserId().intValue() );
+		List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourse );
+		AjaxResult success = success( "查询成功" );
+		success.put( "data", list );
+		return success;
+	}
 	/**
 	 * 查询课程详情
 	 */

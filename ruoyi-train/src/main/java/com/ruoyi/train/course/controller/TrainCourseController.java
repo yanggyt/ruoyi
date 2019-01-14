@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseCategory;
+import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -51,9 +52,9 @@ public class TrainCourseController extends BaseController
 	@RequiresPermissions("train:trainCourse:list")
 	@PostMapping("/list")
 	@ResponseBody
-	public TableDataInfo list(TrainCourse trainCourse)
+	public TableDataInfo list(TrainCourseVO trainCourse)
 	{
-		List<TrainCourse> list = trainCourseService.selectTrainCoursePage(trainCourse);
+		List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage(trainCourse);
 		return getDataTable(list);
 	}
 
@@ -64,10 +65,10 @@ public class TrainCourseController extends BaseController
 	@RequiresPermissions("train:trainCourse:export")
 	@PostMapping("/export")
 	@ResponseBody
-	public AjaxResult export(TrainCourse trainCourse)
+	public AjaxResult export(TrainCourseVO trainCourse)
 	{
-		List<TrainCourse> list = trainCourseService.selectTrainCourseList(trainCourse);
-		ExcelUtil<TrainCourse> util = new ExcelUtil<TrainCourse>(TrainCourse.class);
+		List<TrainCourseVO> list = trainCourseService.selectTrainCourseList(trainCourse);
+		ExcelUtil<TrainCourseVO> util = new ExcelUtil<TrainCourseVO>(TrainCourseVO.class);
 		return util.exportExcel(list, "trainCourse");
 	}
 

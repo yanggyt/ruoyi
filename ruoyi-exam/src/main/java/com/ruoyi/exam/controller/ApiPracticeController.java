@@ -45,7 +45,7 @@ public class ApiPracticeController extends BaseController {
     @GetMapping("/v1/practice/list")
     public AjaxResult list(ExamPractice examPractice) {
 
-        List<ExamPractice> list = examPracticeService.selectListFromWeb(examPractice);
+        List<ExamPracticeVO> list = examPracticeService.selectListFromWeb(examPractice);
         AjaxResult success = success("查询成功");
         success.put("data", list);
         return success;
@@ -99,10 +99,11 @@ public class ApiPracticeController extends BaseController {
      *
      * @return
      */
-    @GetMapping("/v1/practice/{userId}/error")
-    public AjaxResult queryError(@PathVariable("userId") String userId) {
+    @GetMapping("/v1/practice/error")
+    public AjaxResult queryError() {
         ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
-        examUserErrorQuestion.setVipUserId(Integer.parseInt(ShiroUtils.getUserId().toString()));
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
         List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailPage(examUserErrorQuestion);
         AjaxResult success = success("查询成功");
         success.put("data", list);
