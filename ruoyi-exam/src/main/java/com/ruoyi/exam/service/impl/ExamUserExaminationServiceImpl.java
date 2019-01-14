@@ -38,6 +38,16 @@ public class ExamUserExaminationServiceImpl extends AbstractBaseServiceImpl<Exam
         return examUserExaminationMapper.selectLastOne(examUserExamination);
     }
 
+    @Override
+    public void insertOne(ExamUserExamination insert) {
+        examUserExaminationMapper.insert(insert);
+    }
+
+    @Override
+    public int updateOneSelectiveById(ExamUserExamination examUserExamination) {
+        return examUserExaminationMapper.updateByPrimaryKeySelective(examUserExamination);
+    }
+
     /**
      * 查询我的考试记录分页列表
      *

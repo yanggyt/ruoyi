@@ -32,4 +32,8 @@ public interface IExamUserExaminationService extends AbstractBaseService<ExamUse
      * @return
      */
     List<ExamUserExamination> selectLastOne(ExamUserExamination examUserExamination);
+
+    void insertOne(ExamUserExamination insert);
+
+    int updateOneSelectiveById(ExamUserExamination examUserExamination);
 }

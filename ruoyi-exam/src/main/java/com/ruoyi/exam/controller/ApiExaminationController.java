@@ -37,6 +37,15 @@ public class ApiExaminationController extends BaseController {
     @Autowired
     private IExamExaminationUserService examExaminationUserService;
 
+    @Autowired
+    private IExamUserExaminationQuestionService examUserExaminationQuestionService;
+
+    @Autowired
+    private IExamQuestionService examQuestionService;
+
+    @Autowired
+    private IExamPaperQuestionService examPaperQuestionService;
+
 
     /**
      * 获取考试列表
@@ -76,7 +85,10 @@ public class ApiExaminationController extends BaseController {
         Integer examNumber = examExamination.getExamNumber();
         //考试时长
         Integer timeLength = examExamination.getTimeLength();
+        //考试记录ID
+        Integer  examUserExaminationId = -1;
 
+        //正式考试
         if(type.equals("2")){
             ExamUserExamination examUserExamination = new ExamUserExamination();
             examUserExamination.setVipUserId(userId);
@@ -114,8 +126,10 @@ public class ApiExaminationController extends BaseController {
                 insert.setExamPaperId(examPaperId);
                 insert.setDelFlag("0");
                 insert.setScore(0);
-                examUserExaminationService.insert(insert);
-
+                examUserExaminationService.insertOne(insert);
+                examUserExaminationId = insert.getId();
+            }else{
+                examUserExaminationId = userExamination.get(0).getId();
             }
 
         }
@@ -127,6 +141,7 @@ public class ApiExaminationController extends BaseController {
         }
         AjaxResult success = success("查询成功");
         success.put("data", list);
+        success.put("examUserExaminationId",examUserExaminationId);
         return success;
     }
 
@@ -170,9 +185,80 @@ public class ApiExaminationController extends BaseController {
         examExaminationUser.setCreateDate(new Date());
         examExaminationUser.setCreateBy(user.getLoginName());
         examExaminationUser.setExamExaminationId(Integer.parseInt(inationId));
-        examExaminationUserService.insert(examExaminationUser);
+        examExaminationUserService.insertOne(examExaminationUser);
 
         AjaxResult success = success("报名成功");
+        return success;
+    }
+
+
+    @PostMapping("/v1/examination/finish/{examUserExaminationId}/{examinationId}/{paperId}")
+    public AjaxResult finish(@RequestBody List<ExamUserExaminationQuestion> examUserExaminationQuestion,
+                             @PathVariable Integer examUserExaminationId ,@PathVariable Integer examinationId,@PathVariable Integer paperId) {
+
+
+        SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        Long userId = user.getUserId();
+        //交卷后返回的数据
+        ArrayList<Map<String,String>> data = new ArrayList<>();
+
+
+        //如果是模拟考试，考试记录新增数据
+        if(examUserExaminationId == -1){
+            ExamUserExamination insert = new ExamUserExamination();
+            insert.setExamExaminationId(examinationId);
+            insert.setVipUserId(Integer.parseInt(userId.toString()));
+            insert.setCreateDate(new Date());
+            insert.setExamPaperId(paperId);
+            insert.setDelFlag("0");
+            insert.setScore(0);
+            examUserExaminationService.insertOne(insert);
+            examUserExaminationId = insert.getId();
+        }
+
+        Integer score = 0;
+        for (ExamUserExaminationQuestion item : examUserExaminationQuestion) {
+            HashMap<String, String> returnItem = new HashMap<>();
+            String userAnswer = item.getUserAnswer();
+            //存入用户回答
+            returnItem.put("userAnswer",userAnswer);
+            Integer examQuestionId = item.getExamQuestionId();
+            ExamQuestion examQuestion = examQuestionService.selectById(examQuestionId);
+            //存入正确答案
+            returnItem.put("answer",examQuestion.getAnswer());
+            returnItem.put("title",examQuestion.getTitle());
+            returnItem.put("rightWrong","错误");
+            if(examQuestion.getAnswer().equals(userAnswer)){
+                ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
+                examPaperQuestion.setExamPaperId(paperId);
+                examPaperQuestion.setExamQuestionId(examQuestionId);
+                score+=examPaperQuestionService.selectExamPaperQuestionList(examPaperQuestion).get(0).getScore();
+                returnItem.put("rightWrong","正确");
+            }
+            item.setExamUserExaminationId(examUserExaminationId);
+            item.setCreateDate(new Date());
+            item.setCreateBy(user.getLoginName());
+            item.setDelFlag("0");
+            examUserExaminationQuestionService.insertOne(item);
+            data.add(returnItem);
+        }
+        ExamUserExamination examUserExamination = examUserExaminationService.selectById(examUserExaminationId);
+        examUserExamination.setScore(score);
+        examUserExamination.setUpdateDate(new Date());
+        examUserExamination.setCreateBy(user.getLoginName());
+        examUserExaminationService.updateOneSelectiveById(examUserExamination);
+
+        ExamExamination examExamination = examExaminationService.selectById(examinationId);
+        String finishedPaper = examExamination.getFinishedPaper();
+
+
+        AjaxResult success = success("考试完成");
+        //考试完成后参数
+        success.put("finishedPaper",finishedPaper);
+        success.put("score",score);
+        if(!finishedPaper.equals("0")){
+            success.put("data", data);
+        }
         return success;
     }
 

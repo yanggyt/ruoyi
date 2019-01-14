@@ -32,6 +32,12 @@ public class ExamExaminationUserServiceImpl extends AbstractBaseServiceImpl<Exam
 	{
         return examExaminationUserMapper.selectExamExaminationUserList(examExaminationUser);
 	}
+
+    @Override
+    public int insertOne(ExamExaminationUser examExaminationUser) {
+        return examExaminationUserMapper.insert(examExaminationUser);
+    }
+
     /**
      * 查询考试对象分页列表
      *

@@ -26,5 +26,6 @@ public interface IExamExaminationUserService extends AbstractBaseService<ExamExa
      */
     public List<ExamExaminationUser> selectExamExaminationUserList(ExamExaminationUser examExaminationUser);
 
-	
+
+    int insertOne(ExamExaminationUser examExaminationUser);
 }
