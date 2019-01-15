@@ -1,6 +1,8 @@
 package com.ruoyi.vip.controller;
 
 import java.util.List;
+
+import com.ruoyi.vip.domain.vo.VipUserCertificateVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +22,8 @@ import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.utils.ExcelUtil;
 
 /**
- * 我的订单 信息操作处理
- * 
+ * 证书管理 信息操作处理
+ *
  * @author zhujj
  * @date 2019-01-15
  */
@@ -29,98 +31,99 @@ import com.ruoyi.common.utils.ExcelUtil;
 @RequestMapping("/vip/vipUserCertificate")
 public class VipUserCertificateController extends BaseController
 {
-    private String prefix = "vip/vipUserCertificate";
-	
+	private String prefix = "vip/vipUserCertificate";
+
 	@Autowired
 	private IVipUserCertificateService vipUserCertificateService;
-	
+
 	@RequiresPermissions("vip:vipUserCertificate:view")
 	@GetMapping()
 	public String vipUserCertificate()
 	{
-	    return prefix + "/vipUserCertificate";
+		return prefix + "/vipUserCertificate";
 	}
-	
+
 	/**
-	 * 查询我的订单列表
+	 * 查询证书管理列表
 	 */
 	@RequiresPermissions("vip:vipUserCertificate:list")
 	@PostMapping("/list")
 	@ResponseBody
-	public TableDataInfo list(VipUserCertificate vipUserCertificate)
+	public TableDataInfo list(VipUserCertificateVO vipUserCertificate)
 	{
-        List<VipUserCertificate> list = vipUserCertificateService.selectVipUserCertificatePage(vipUserCertificate);
+		List<VipUserCertificateVO> list = vipUserCertificateService.selectVipUserCertificatePage(vipUserCertificate);
 		return getDataTable(list);
 	}
-	
-	
+
+
 	/**
-	 * 导出我的订单列表
+	 * 导出证书管理列表
 	 */
 	@RequiresPermissions("vip:vipUserCertificate:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(VipUserCertificate vipUserCertificate)
-    {
-    	List<VipUserCertificate> list = vipUserCertificateService.selectVipUserCertificateList(vipUserCertificate);
-        ExcelUtil<VipUserCertificate> util = new ExcelUtil<VipUserCertificate>(VipUserCertificate.class);
-        return util.exportExcel(list, "vipUserCertificate");
-    }
-	
+	@PostMapping("/export")
+	@ResponseBody
+	public AjaxResult export(VipUserCertificateVO vipUserCertificate)
+	{
+		List<VipUserCertificateVO> list = vipUserCertificateService.selectVipUserCertificateList(vipUserCertificate);
+		ExcelUtil<VipUserCertificateVO> util = new ExcelUtil<VipUserCertificateVO>(VipUserCertificateVO.class);
+		return util.exportExcel(list, "vipUserCertificate");
+	}
+
 	/**
-	 * 新增我的订单
+	 * 新增证书管理
 	 */
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		return prefix + "/add";
 	}
-	
+
 	/**
-	 * 新增保存我的订单
+	 * 新增保存证书管理
 	 */
 	@RequiresPermissions("vip:vipUserCertificate:add")
-	@Log(title = "我的订单", businessType = BusinessType.INSERT)
+	@Log(title = "证书管理", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(VipUserCertificate vipUserCertificate)
-	{		
+	{
+		vipUserCertificate.setDelFlag( "0" );
 		return toAjax(vipUserCertificateService.insert(vipUserCertificate));
 	}
 
 	/**
-	 * 修改我的订单
+	 * 修改证书管理
 	 */
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, ModelMap mmap)
 	{
 		VipUserCertificate vipUserCertificate = vipUserCertificateService.selectById(id);
 		mmap.put("vipUserCertificate", vipUserCertificate);
-	    return prefix + "/edit";
+		return prefix + "/edit";
 	}
-	
+
 	/**
-	 * 修改保存我的订单
+	 * 修改保存证书管理
 	 */
 	@RequiresPermissions("vip:vipUserCertificate:edit")
-	@Log(title = "我的订单", businessType = BusinessType.UPDATE)
+	@Log(title = "证书管理", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(VipUserCertificate vipUserCertificate)
-	{		
-		return toAjax(vipUserCertificateService.updateById(vipUserCertificate));
+	{
+		return toAjax(vipUserCertificateService.updateSelectiveById(vipUserCertificate));
 	}
-	
+
 	/**
-	 * 删除我的订单
+	 * 删除证书管理
 	 */
 	@RequiresPermissions("vip:vipUserCertificate:remove")
-	@Log(title = "我的订单", businessType = BusinessType.DELETE)
+	@Log(title = "证书管理", businessType = BusinessType.DELETE)
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(vipUserCertificateService.deleteByIds(ids));
 	}
-	
+
 }

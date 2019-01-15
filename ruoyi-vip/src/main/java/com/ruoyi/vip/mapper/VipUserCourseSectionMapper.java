@@ -3,6 +3,7 @@ package com.ruoyi.vip.mapper;
 import com.ruoyi.vip.domain.VipUserCourseSection;
 import java.util.List;
 import com.ruoyi.framework.web.base.MyMapper;
+import com.ruoyi.vip.domain.vo.VipUserCourseSectionVO;
 
 /**
  * 我的课程学习 数据层
@@ -19,6 +20,6 @@ public interface VipUserCourseSectionMapper  extends MyMapper<VipUserCourseSecti
      * @param vipUserCourseSection 我的课程学习信息
      * @return 我的课程学习集合
      */
-	public List<VipUserCourseSection> selectVipUserCourseSectionList(VipUserCourseSection vipUserCourseSection);
+	public List<VipUserCourseSectionVO> selectVipUserCourseSectionList(VipUserCourseSectionVO vipUserCourseSection);
 	
 }

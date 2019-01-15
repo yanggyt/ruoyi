@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.vip.mapper.VipUserCertificateMapper">
     
-    <resultMap type="VipUserCertificate" id="VipUserCertificateResult">
+    <resultMap type="VipUserCertificateVO" id="VipUserCertificateResult">
         <result property="id"    column="id"    />
         <result property="vipUserId"    column="vip_user_id"    />
         <result property="name"    column="name"    />
@@ -17,27 +17,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateDate"    column="update_date"    />
         <result property="remarks"    column="remarks"    />
         <result property="delFlag"    column="del_flag"    />
+        <result property="user.userName"    column="user_name"    />
     </resultMap>
 	
 	<sql id="selectVipUserCertificateVo">
-         id, vip_user_id, name, image, start_date, end_date, create_by, create_date, update_by, update_date, remarks, del_flag    </sql>
+         vip_user_certificate.id, vip_user_certificate.vip_user_id, vip_user_certificate.name, vip_user_certificate.image, vip_user_certificate.start_date, vip_user_certificate.end_date,
+          vip_user_certificate.create_by, vip_user_certificate.create_date, vip_user_certificate.update_by, vip_user_certificate.update_date, vip_user_certificate.remarks, vip_user_certificate.del_flag    </sql>
 	
-    <select id="selectVipUserCertificateList" parameterType="VipUserCertificate" resultMap="VipUserCertificateResult">
+    <select id="selectVipUserCertificateList" parameterType="VipUserCertificateVO" resultMap="VipUserCertificateResult">
         select
         <include refid="selectVipUserCertificateVo"/>
+        ,suser.user_name
         from vip_user_certificate
-        <where>  
-            <if test="id != null "> and id = #{id}</if>
-             <if test="vipUserId != null "> and vip_user_id = #{vipUserId}</if>
-             <if test="name != null  and name != '' "> and name = #{name}</if>
-             <if test="image != null  and image != '' "> and image = #{image}</if>
-             <if test="startDate != null "> and start_date = #{startDate}</if>
-             <if test="endDate != null "> and end_date = #{endDate}</if>
-             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
-             <if test="createDate != null "> and create_date = #{createDate}</if>
-             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
-             <if test="updateDate != null "> and update_date = #{updateDate}</if>
-             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+        left join sys_user suser on suser.user_id=vip_user_certificate.vip_user_id
+        <where>
+            <if test="user != null and user.userName != null and user.userName != ''"> and suser.user_name like CONCAT('%',#{user.userName},'%') </if>
+            <if test="id != null "> and vip_user_certificate.id = #{id}</if>
+             <if test="vipUserId != null "> and vip_user_certificate.vip_user_id = #{vipUserId}</if>
+             <if test="name != null  and name != '' "> and name like CONCAT('%',#{name},'%')</if>
+
+             <if test="startDate != null "> <![CDATA[ and vip_user_certificate.start_date >= #{startDate}]]></if>
+             <if test="endDate != null "> <![CDATA[ and vip_user_certificate.end_date <= #{endDate}]]></if>
              <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
          </where>
     </select>

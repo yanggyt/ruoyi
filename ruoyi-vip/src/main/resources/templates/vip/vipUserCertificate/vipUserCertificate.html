@@ -11,32 +11,22 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								会员代码：<input type="text" name="vipUserId"/>
+								会员姓名：<input type="text" name="user.userName"/>
 							</li>
 
 							<li>
 								证书名称：<input type="text" name="name"/>
 							</li>
 
-							<li>
-								证书照片：<input type="text" name="image"/>
+							<li class="select-time">
+								<label>有效日期： </label>
+
+								<input type="text" class="time-input" id="startDate" placeholder="生效时间" name="startDate"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endDate" placeholder="截至时间" name="endDate"/>
+
 							</li>
 
-							<li>
-								生效日期：<input type="text" name="startDate"/>
-							</li>
-
-							<li>
-								截止日期：<input type="text" name="endDate"/>
-							</li>
-
-							<li>
-								创建者：<input type="text" name="createBy"/>
-							</li>
-
-							<li>
-								创建时间：<input type="text" name="createDate"/>
-							</li>
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>

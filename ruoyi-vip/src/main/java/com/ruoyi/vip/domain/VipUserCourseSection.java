@@ -24,7 +24,7 @@ private static final long serialVersionUID = 1L;
 	        /** 课程ID */
 	    private Integer trainCourseId;
 	        /** 章节id */
-	    private Integer trainCourseSection;
+        private Integer trainCourseSectionId;
 	        /** 学习时间长度（分钟） */
 	    private Integer duration;
 	        /** 创建者 */
@@ -74,17 +74,15 @@ private static final long serialVersionUID = 1L;
             return trainCourseId;
             }
 	    /** 设置章节id */
-    public void setTrainCourseSection(Integer trainCourseSection)
-            {
-            this.trainCourseSection = trainCourseSection;
-            }
+    public Integer getTrainCourseSectionId() {
+        return trainCourseSectionId;
+    }
 
-    /** 获取章节id */
-    public Integer getTrainCourseSection()
-            {
-            return trainCourseSection;
-            }
-	    /** 设置学习时间长度（分钟） */
+    public void setTrainCourseSectionId(Integer trainCourseSectionId) {
+        this.trainCourseSectionId = trainCourseSectionId;
+    }
+
+    /** 设置学习时间长度（分钟） */
     public void setDuration(Integer duration)
             {
             this.duration = duration;
@@ -167,7 +165,7 @@ public String toString() {
 	            .append("id", getId())
 	            .append("vipUserId", getVipUserId())
 	            .append("trainCourseId", getTrainCourseId())
-	            .append("trainCourseSection", getTrainCourseSection())
+	            .append("trainCourseSection", getTrainCourseSectionId())
 	            .append("duration", getDuration())
 	            .append("createBy", getCreateBy())
 	            .append("createDate", getCreateDate())

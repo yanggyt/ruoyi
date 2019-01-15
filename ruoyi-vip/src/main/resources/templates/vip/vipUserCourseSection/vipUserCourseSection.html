@@ -23,18 +23,6 @@
 							</li>
 
 							<li>
-								学习时间长度（分钟）：<input type="text" name="duration"/>
-							</li>
-
-							<li>
-								创建者：<input type="text" name="createBy"/>
-							</li>
-
-							<li>
-								创建时间：<input type="text" name="createDate"/>
-							</li>
-
-							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
 							</li>
@@ -87,38 +75,28 @@
 					visible: false
 				},
 				{
-					field : 'vipUserId', 
-					title : '会员代码',
-					sortable: true
+					field : 'userName',
+					title : '会员姓名',
 				},
 				{
-					field : 'trainCourseId', 
-					title : '课程ID',
-					sortable: true
+					field : 'trainCourseName',
+					title : '课程名称',
 				},
 				{
-					field : 'trainCourseSection', 
-					title : '章节id',
-					sortable: true
+					field : 'trainCourseSectionName',
+					title : '章节名称',
 				},
 				{
 					field : 'duration', 
 					title : '学习时间（分钟）',
-					sortable: true
 				},
 				{
 					field : 'createBy', 
 					title : '创建者',
-					sortable: true
 				},
 				{
 					field : 'createDate', 
 					title : '创建时间',
-					sortable: true
-				},
-				{
-					field : 'updateBy', 
-					title : '更新者',
 					sortable: true
 				},
 		        {

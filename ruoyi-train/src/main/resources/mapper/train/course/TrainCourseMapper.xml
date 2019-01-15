@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                  (select id from train_course_category where FIND_IN_SET(#{trainCourseCategoryId},parent_ids))
                  or train_course.train_course_category_id = #{trainCourseCategoryId} )
              </if>
-             <if test="name != null  and name != '' "> and train_course.name = #{name}</if>
+             <if test="name != null  and name != '' "> and train_course.name like CONCAT('%', #{name},'%')</if>
              <if test="cover != null  and cover != '' "> and train_course.cover = #{cover}</if>
              <if test="description != null  and description != '' "> and train_course.description = #{description}</if>
              <if test="state != null  and state != '' "> and train_course.state = #{state}</if>

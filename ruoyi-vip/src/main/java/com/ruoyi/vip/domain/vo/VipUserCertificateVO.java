@@ -13,5 +13,16 @@ import com.ruoyi.vip.domain.VipUserCertificate;
  * @Version: 1.0
  */
 public class VipUserCertificateVO extends VipUserCertificate {
+    /**
+     * 会员
+     */
     private SysUser user;
+
+    public SysUser getUser() {
+        return user;
+    }
+
+    public void setUser(SysUser user) {
+        this.user = user;
+    }
 }

@@ -1,6 +1,8 @@
 package com.ruoyi.vip.controller;
 
 import java.util.List;
+
+import com.ruoyi.vip.domain.vo.VipUserCourseSectionVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,7 @@ import com.ruoyi.common.utils.ExcelUtil;
 
 /**
  * 我的课程学习 信息操作处理
- * 
+ *
  * @author zhujj
  * @date 2019-01-15
  */
@@ -29,53 +31,53 @@ import com.ruoyi.common.utils.ExcelUtil;
 @RequestMapping("/vip/vipUserCourseSection")
 public class VipUserCourseSectionController extends BaseController
 {
-    private String prefix = "vip/vipUserCourseSection";
-	
+	private String prefix = "vip/vipUserCourseSection";
+
 	@Autowired
 	private IVipUserCourseSectionService vipUserCourseSectionService;
-	
+
 	@RequiresPermissions("vip:vipUserCourseSection:view")
 	@GetMapping()
 	public String vipUserCourseSection()
 	{
-	    return prefix + "/vipUserCourseSection";
+		return prefix + "/vipUserCourseSection";
 	}
-	
+
 	/**
 	 * 查询我的课程学习列表
 	 */
 	@RequiresPermissions("vip:vipUserCourseSection:list")
 	@PostMapping("/list")
 	@ResponseBody
-	public TableDataInfo list(VipUserCourseSection vipUserCourseSection)
+	public TableDataInfo list(VipUserCourseSectionVO vipUserCourseSection)
 	{
-        List<VipUserCourseSection> list = vipUserCourseSectionService.selectVipUserCourseSectionPage(vipUserCourseSection);
+		List<VipUserCourseSectionVO> list = vipUserCourseSectionService.selectVipUserCourseSectionPage(vipUserCourseSection);
 		return getDataTable(list);
 	}
-	
-	
+
+
 	/**
 	 * 导出我的课程学习列表
 	 */
 	@RequiresPermissions("vip:vipUserCourseSection:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(VipUserCourseSection vipUserCourseSection)
-    {
-    	List<VipUserCourseSection> list = vipUserCourseSectionService.selectVipUserCourseSectionList(vipUserCourseSection);
-        ExcelUtil<VipUserCourseSection> util = new ExcelUtil<VipUserCourseSection>(VipUserCourseSection.class);
-        return util.exportExcel(list, "vipUserCourseSection");
-    }
-	
+	@PostMapping("/export")
+	@ResponseBody
+	public AjaxResult export(VipUserCourseSectionVO vipUserCourseSection)
+	{
+		List<VipUserCourseSectionVO> list = vipUserCourseSectionService.selectVipUserCourseSectionList(vipUserCourseSection);
+		ExcelUtil<VipUserCourseSectionVO> util = new ExcelUtil<VipUserCourseSectionVO>(VipUserCourseSectionVO.class);
+		return util.exportExcel(list, "vipUserCourseSection");
+	}
+
 	/**
 	 * 新增我的课程学习
 	 */
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		return prefix + "/add";
 	}
-	
+
 	/**
 	 * 新增保存我的课程学习
 	 */
@@ -84,7 +86,7 @@ public class VipUserCourseSectionController extends BaseController
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(VipUserCourseSection vipUserCourseSection)
-	{		
+	{	vipUserCourseSection.setDelFlag( "0" );
 		return toAjax(vipUserCourseSectionService.insert(vipUserCourseSection));
 	}
 
@@ -96,9 +98,9 @@ public class VipUserCourseSectionController extends BaseController
 	{
 		VipUserCourseSection vipUserCourseSection = vipUserCourseSectionService.selectById(id);
 		mmap.put("vipUserCourseSection", vipUserCourseSection);
-	    return prefix + "/edit";
+		return prefix + "/edit";
 	}
-	
+
 	/**
 	 * 修改保存我的课程学习
 	 */
@@ -107,10 +109,10 @@ public class VipUserCourseSectionController extends BaseController
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(VipUserCourseSection vipUserCourseSection)
-	{		
-		return toAjax(vipUserCourseSectionService.updateById(vipUserCourseSection));
+	{
+		return toAjax(vipUserCourseSectionService.updateSelectiveById(vipUserCourseSection));
 	}
-	
+
 	/**
 	 * 删除我的课程学习
 	 */
@@ -119,8 +121,8 @@ public class VipUserCourseSectionController extends BaseController
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(vipUserCourseSectionService.deleteByIds(ids));
 	}
-	
+
 }

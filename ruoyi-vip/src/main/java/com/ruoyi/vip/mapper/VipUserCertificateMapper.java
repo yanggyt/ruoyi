@@ -3,6 +3,7 @@ package com.ruoyi.vip.mapper;
 import com.ruoyi.vip.domain.VipUserCertificate;
 import java.util.List;
 import com.ruoyi.framework.web.base.MyMapper;
+import com.ruoyi.vip.domain.vo.VipUserCertificateVO;
 
 /**
  * 我的订单 数据层
@@ -19,6 +20,6 @@ public interface VipUserCertificateMapper  extends MyMapper<VipUserCertificate>
      * @param vipUserCertificate 我的订单信息
      * @return 我的订单集合
      */
-	public List<VipUserCertificate> selectVipUserCertificateList(VipUserCertificate vipUserCertificate);
+	public List<VipUserCertificateVO> selectVipUserCertificateList(VipUserCertificateVO vipUserCertificate);
 	
 }
