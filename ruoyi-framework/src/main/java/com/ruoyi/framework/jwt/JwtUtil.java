@@ -49,6 +49,7 @@ public class JwtUtil {
         try {
             String token = ServletUtils.getRequest().getHeader("Authorization");
             DecodedJWT jwt = JWT.decode(token);
+//            jwt.getExpiresAt();
             return jwt.getClaim("loginName").asString();
         } catch (JWTDecodeException e) {
             return null;
