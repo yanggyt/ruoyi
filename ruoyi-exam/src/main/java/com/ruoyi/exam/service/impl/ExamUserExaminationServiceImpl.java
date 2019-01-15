@@ -1,6 +1,7 @@
 package com.ruoyi.exam.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.exam.domain.ExamUserExaminationVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,18 @@ public class ExamUserExaminationServiceImpl extends AbstractBaseServiceImpl<Exam
     public List<ExamUserExaminationVO> selectMyExamUserExamination(ExamUserExaminationVO bean) {
         startPage();
 	    return examUserExaminationMapper.selectMyExamUserExamination(bean);
+    }
+
+    @Override
+    public List<ExamUserExaminationVO> selectMyExamUserExamination(Map<String,Object> map) {
+        startPage();
+        return examUserExaminationMapper.selectMyExamUserExamination(map);
+    }
+
+    @Override
+    public ExamUserExaminationVO selectDetailById(Integer id) {
+
+	    return examUserExaminationMapper.selectDetailById(id);
     }
 
     /**

@@ -286,8 +286,15 @@ public class ApiExaminationController extends BaseController {
         return success;
     }
 
+    @GetMapping("/v1/examination/userexamination/detail/{id}")
+    public AjaxResult detail(@PathVariable Integer id) {
+        ExamUserExaminationVO data = examUserExaminationService.selectDetailById(id);
 
+        AjaxResult success = success("考试完成");
+        success.put("data", data);
+        return success;
 
+    }
 
 
 }

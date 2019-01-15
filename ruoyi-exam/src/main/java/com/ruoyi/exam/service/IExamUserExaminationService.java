@@ -2,6 +2,7 @@ package com.ruoyi.exam.service;
 
 import com.ruoyi.exam.domain.ExamUserExamination;
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.exam.domain.ExamUserExaminationVO;
 import com.ruoyi.framework.web.base.AbstractBaseService;
@@ -40,4 +41,9 @@ public interface IExamUserExaminationService extends AbstractBaseService<ExamUse
     int updateOneSelectiveById(ExamUserExamination examUserExamination);
 
     List<ExamUserExaminationVO> selectMyExamUserExamination(ExamUserExaminationVO bean);
+
+    List<ExamUserExaminationVO> selectMyExamUserExamination(Map<String,Object> map);
+
+    //查询考试记录详情
+    ExamUserExaminationVO selectDetailById(Integer id);
 }
