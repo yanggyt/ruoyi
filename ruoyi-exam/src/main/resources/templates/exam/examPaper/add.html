@@ -14,12 +14,37 @@
 					<input id="name" name="name" class="form-control" type="text">
 				</div>
 			</div>
-			<!--<div class="form-group">	-->
-				<!--<label class="col-sm-3 control-label">试卷类型（1-固定试卷；2-随机试卷）：</label>-->
-				<!--<div class="col-sm-8">-->
-					<!--<input id="type" name="type" class="form-control" type="text">-->
-				<!--</div>-->
-			<!--</div>-->
+			<div class="form-group">
+				<label class="col-sm-3 control-label">试卷类型</label>
+				<div class="col-sm-8">
+					<select id="type" name="type" class="form-control m-b" th:with="type=${@dict.getType('exam_paper_type')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group type">
+				<label class="col-sm-3 control-label">单选题数量：</label>
+				<div class="col-sm-8">
+					<input id="choiceNumber" name="choiceNumber"  class="form-control" type="text" value="0">
+				</div>
+			</div>
+
+			<div class="form-group type">
+				<label class="col-sm-3 control-label">多选题数量：</label>
+				<div class="col-sm-8">
+					<input id="moreChoiceNumber" name="moreChoiceNumber"  class="form-control" type="text" value="0">
+				</div>
+			</div>
+
+			<div class="form-group type">
+				<label class="col-sm-3 control-label">选择题：</label>
+				<div class="col-sm-8">
+					<input id="judgeNumber" name="judgeNumber"  class="form-control" type="text" value="0">
+				</div>
+			</div>
+
+
 			<div class="form-group">
 				<label class="col-sm-3 control-label">备注信息：</label>
 				<div class="col-sm-8">
@@ -44,6 +69,23 @@
 	            $.operate.save(prefix + "/add", $('#form-examPaper-add').serialize());
 	        }
 	    }
+
+	    $(function(){
+	        if($("#type").val().toString()=="1"){
+				$(".type").hide()
+			}else{
+                $(".type").show()
+			}
+
+	        $("#type").change(function(){
+                if($("#type").val().toString()=="1"){
+                    $(".type").hide()
+                }else{
+                    $(".type").show()
+                }
+			})
+
+		})
 	</script>
 </body>
 </html>
