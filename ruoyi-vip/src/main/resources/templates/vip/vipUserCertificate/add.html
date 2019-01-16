@@ -8,10 +8,10 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-vipUserCertificate-add">
-			<div class="form-group">	
+			<div class="form-group hide">
 				<label class="col-sm-3 control-label">会员代码：</label>
 				<div class="col-sm-8">
-					<input id="vipUserId" name="vipUserId" class="form-control" type="text">
+					<input id="vipUserId" name="vipUserId" class="form-control" type="hidden">
 				</div>
 			</div>
 			<div class="form-group">	
@@ -54,7 +54,7 @@
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">备注信息：</label>
 				<div class="col-sm-8">
-					<input id="remarks" name="remarks" class="form-control" type="text">
+					<textarea id="remarks" name="remarks" placeholder="请输入备注信息" class="layui-textarea"></textarea>
 				</div>
 			</div>
 		</form>
