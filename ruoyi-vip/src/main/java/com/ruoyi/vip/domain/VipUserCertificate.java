@@ -1,5 +1,6 @@
 package com.ruoyi.vip.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
@@ -26,8 +27,10 @@ private static final long serialVersionUID = 1L;
 	        /** 证书照片 */
 	    private String image;
 	        /** 生效日期 */
+        @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
 	    private Date startDate;
 	        /** 截止日期 */
+        @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
 	    private Date endDate;
 	        /** 创建者 */
 	    private String createBy;

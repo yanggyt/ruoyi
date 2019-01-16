@@ -38,7 +38,7 @@
 				<label class="col-sm-3 control-label">生效日期：</label>
 				<div class="col-sm-8">
 					<div class="input-group date"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input type="text"  id="startDate" th:field="*{startDate}" name="startDate" class="form-control" >
+						<input type="text"  id="startDate" th:value="*{#dates.format(startDate, 'yyyy-MM-dd')}" name="startDate" class="form-control" >
 					</div>
 				</div>
 			</div>
@@ -46,7 +46,7 @@
 				<label class="col-sm-3 control-label">截止日期：</label>
 				<div class="col-sm-8">
 					<div class="input-group date"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input type="text"  id="endDate" th:field="*{endDate}" name="endDate" class="form-control" >
+						<input type="text"  id="endDate" th:value="*{#dates.format(endDate, 'yyyy-MM-dd')}" name="endDate" class="form-control" >
 					</div>
 				</div>
 			</div>
