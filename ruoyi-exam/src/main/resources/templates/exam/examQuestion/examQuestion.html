@@ -101,7 +101,7 @@
             <input id="questionFile" type="file" class="file" data-show-preview="false"
                    data-allowed-file-extensions='["docx","png"]'>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default myModalClose" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" onclick="importFile()">确定</button>
             </div>
         </div><!-- /.modal-content -->
@@ -151,7 +151,6 @@
                     title: '问题类型',
                     sortable: true,
                     formatter: function (value, item, index) {
-                        debugger
                         return $.table.selectDictLabel(type, item.type);
                     }
 
@@ -262,8 +261,12 @@
             $.modal.alertWarning("请选择试题分类");
             return;
         }
-
-
+        if(!document.getElementById("questionFile").files[0]){
+            $.modal.alertWarning("请选择导入文件");
+            return;
+        }
+        $(".myModalClose").click();
+        $.modal.loading("正在导入数据，请稍后...");
         var formData = new FormData();
         formData.append("file", document.getElementById("questionFile").files[0]);
         formData.append("categoryId", $("#categoryId").val());
@@ -280,8 +283,9 @@
                     $('#myModal').modal('hide')
                     $.table.search();
                 }else{
-                    $.modal.msgError(result.msg);
+                    $.modal.msgError("导入失败"+data.msg);
                 }
+                $.modal.closeLoading();
             }
         });
 
