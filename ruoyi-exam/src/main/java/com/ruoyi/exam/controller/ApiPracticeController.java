@@ -2,10 +2,7 @@ package com.ruoyi.exam.controller;
 
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.exam.domain.*;
-import com.ruoyi.exam.service.IExamPracticeQuestionService;
-import com.ruoyi.exam.service.IExamPracticeService;
-import com.ruoyi.exam.service.IExamQuestionService;
-import com.ruoyi.exam.service.IExamUserErrorQuestionService;
+import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.framework.web.page.TableDataInfo;
@@ -22,7 +19,7 @@ import java.util.*;
 /**
  * Created by flower on 2019/1/9.
  */
-@Api("练习")
+@Api("练习接口")
 @RestController
 @RequestMapping("/api")
 public class ApiPracticeController extends BaseController {
@@ -30,20 +27,17 @@ public class ApiPracticeController extends BaseController {
     @Autowired
     private IExamPracticeService examPracticeService;
 
-    @Autowired
-    private IExamPracticeQuestionService examPracticeQuestionService;
 
     @Autowired
     private IExamQuestionService examQuestionService;
 
-    @Autowired
-    private IExamUserErrorQuestionService examUserErrorQuestionService;
-
-    @Autowired
-    private ISysUserService sysUserService;
-
+    /**
+     * 查询练习列表
+     * @param examPractice
+     * @return
+     */
     @GetMapping("/v1/practice/list")
-    public AjaxResult list(ExamPractice examPractice) {
+    public AjaxResult list(@RequestParam ExamPractice examPractice) {
 
         List<ExamPracticeVO> list = examPracticeService.selectListFromWeb(examPractice);
         AjaxResult success = success("查询成功");
@@ -52,7 +46,7 @@ public class ApiPracticeController extends BaseController {
     }
 
     /**
-     * 查询练习具体的问题列表
+     * 查询练习题库的问题列表
      *
      * @param map
      * @return
@@ -63,62 +57,6 @@ public class ApiPracticeController extends BaseController {
         if (map.containsKey("disorder") && map.get("disorder").toString().equals("1")) {
             Collections.shuffle(result);
         }
-        AjaxResult success = success("查询成功");
-        success.put("data", result);
-        return success;
-    }
-
-    /**
-     * 保存错题记录
-     *
-     * @param questionIds
-     * @return
-     * @description 练习时答错题就保存到错题记录中
-     * 传入问题id
-     */
-    @PostMapping("/v1/practice/answer")
-    public AjaxResult answer(@RequestBody List<String> questionIds) {
-        for (String questionId : questionIds) {
-            ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
-            examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
-            SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-            examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
-            examUserErrorQuestion.setCreateBy(sysUser.getLoginName());
-            examUserErrorQuestion.setCreateDate(new Date());
-            examUserErrorQuestion.setDelFlag("0");
-            examUserErrorQuestion.setUpdateBy(sysUser.getLoginName());
-            examUserErrorQuestion.setUpdateDate(new Date());
-            int insert = examUserErrorQuestionService.insertError( examUserErrorQuestion );
-        }
-        AjaxResult success = success("插入错题本成功");
-        return success;
-    }
-
-    /**
-     * 查询我的错题列表
-     *
-     * @return
-     */
-    @GetMapping("/v1/practice/error")
-    public AjaxResult queryError() {
-        ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
-        List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailPage(examUserErrorQuestion);
-        AjaxResult success = success("查询成功");
-        success.put("data", list);
-        return success;
-    }
-
-    /**
-     * 查询问题详情
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/v1/practice/question/{id}")
-    public AjaxResult queryQuestion(@PathVariable("id") String id) {
-        ExamQuestionVO result = examQuestionService.selectQuestionDetail(id);
         AjaxResult success = success("查询成功");
         success.put("data", result);
         return success;

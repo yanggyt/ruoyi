@@ -63,11 +63,47 @@ public interface ExamQuestionMapper  extends MyMapper<ExamQuestion>
      */
 	public int deleteExamQuestionByIds(String[] ids);
 
+	/**
+	 * 根据分类筛选题库
+	 * @param examQuestion
+	 * @return
+	 */
     List<ExamQuestion> selectListBycategory(ExamQuestion examQuestion);
 
+	/**
+	 * 查询练习题库
+	 * @param map
+	 * @return
+	 */
     List<ExamQuestionVO> selectQuestionListByPracticeId(Map<String, Object> map);
 
+
+	/**
+	 * 查询问题详情
+	 * @param questionId
+	 * @return
+	 */
     ExamQuestionVO selectQuestionDetail(String questionId);
 
+	/**
+	 * 查询试卷题库
+	 * @param examPaperId
+	 * @return
+	 */
 	List<ExamQuestionVO> selectQuestionListByPaperId(Integer examPaperId);
+
+
+	/**
+	 * 查询我的错题
+	 * @param vipUserId
+	 * @return
+	 */
+	List<ExamQuestionVO> selectQuestionListByUserError(Integer vipUserId);
+
+	/**
+	 * 查询我的收藏
+	 * @param vipUserId
+	 * @return
+	 */
+	List<ExamQuestionVO> selectQuestionListByUserCollection(Integer vipUserId);
 }

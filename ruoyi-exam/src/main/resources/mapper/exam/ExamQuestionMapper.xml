@@ -108,7 +108,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
           where epq.exam_practice_id = #{practiceId}
           order by epq.order_num
     </select>
-
+    <select id="selectQuestionListByUserError" resultMap="ExamQuestionResultVO">
+        select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+        eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+        eqi.id AS item_id,
+        eqi.content AS item_content,
+        eqi.number AS item_number,
+        eqi.exam_question_id AS item_exam_question_id,
+        eqi.remarks AS item_remarks
+        from exam_user_error_question eueq
+        INNER JOIN exam_question eq  ON eq.id = eueq.exam_question_id
+        INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+        where eueq.vip_user_id = #{vipUserId}
+        order by eueq.update_date
+    </select>
+    <select id="selectQuestionListByUserCollection" resultMap="ExamQuestionResultVO">
+        select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
+        eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
+        eqi.id AS item_id,
+        eqi.content AS item_content,
+        eqi.number AS item_number,
+        eqi.exam_question_id AS item_exam_question_id,
+        eqi.remarks AS item_remarks
+        from exam_user_collection_question eueq
+        INNER JOIN exam_question eq  ON eq.id = eueq.exam_question_id
+        INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
+        where eueq.vip_user_id = #{vipUserId}
+        order by eueq.update_date
+    </select>
     <select id="selectQuestionDetail" resultMap="ExamQuestionResultVO">
         select eq.id, eq.title, eq.answer, eq.type, eq.label, eq.category_id,
           eq.create_by, eq.create_date, eq.update_by, eq.update_date, eq.remarks, eq.del_flag ,
