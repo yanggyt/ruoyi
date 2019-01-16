@@ -1,5 +1,6 @@
 package com.ruoyi.exam.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
@@ -49,6 +50,7 @@ public class ApiExaminationController extends BaseController {
 
     /**
      * 获取考试列表
+     *
      * @param examExamination
      * @return
      */
@@ -58,25 +60,26 @@ public class ApiExaminationController extends BaseController {
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
 
         Map<String, Object> map = new HashMap<>();
-        map.put("ination",examExamination);
-        map.put("userId", sysUser.getUserId());
-        List<ExamExamination> list = examExaminationService.selectListFromWeb(map);
-        AjaxResult success = success("查询成功");
-        success.put("data", list);
+        map.put( "ination", examExamination );
+        map.put( "userId", sysUser.getUserId() );
+        List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
+        AjaxResult success = success( "查询成功" );
+        success.put( "data", list );
         return success;
     }
 
 
     /**
      * 开始考试
+     *
      * @param inationId
      * @return
      */
     @GetMapping("/v1/examination/start/{inationId}")
     public AjaxResult start(@PathVariable("inationId") String inationId) {
-        ExamExamination examExamination = examExaminationService.selectById(inationId);
+        ExamExamination examExamination = examExaminationService.selectById( inationId );
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        Integer userId = Integer.parseInt(sysUser.getUserId().toString());
+        Integer userId = Integer.parseInt( sysUser.getUserId().toString() );
         //考试类型
         String type = examExamination.getType();
         //试卷ID
@@ -86,68 +89,70 @@ public class ApiExaminationController extends BaseController {
         //考试时长
         Integer timeLength = examExamination.getTimeLength();
         //考试记录ID
-        Integer  examUserExaminationId = -1;
+        Integer examUserExaminationId = -1;
 
+        ExamUserExamination insert = new ExamUserExamination();
         //正式考试
-        if(type.equals("2")){
+        if (type.equals( "2" )) {
             ExamUserExamination examUserExamination = new ExamUserExamination();
-            examUserExamination.setVipUserId(userId);
-            examUserExamination.setExamPaperId(examPaperId);
-            examUserExamination.setExamExaminationId(Integer.parseInt(inationId));
+            examUserExamination.setVipUserId( userId );
+            examUserExamination.setExamPaperId( examPaperId );
+            examUserExamination.setExamExaminationId( Integer.parseInt( inationId ) );
             //考试记录集合
-            List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne(examUserExamination);
+            List<ExamUserExamination> userExamination = examUserExaminationService.selectLastOne( examUserExamination );
             // 最后一次考试
             ExamUserExamination last;
 
             //超过考试次数
-            if(userExamination.size()>=examNumber){
+            if (userExamination.size() >= examNumber) {
 
-                last = userExamination.get(0);
+                last = userExamination.get( 0 );
                 //最后一次考试已交卷，直接返回
-                if(last.getUpdateDate()!=null&&!last.getUpdateDate().equals("")){
-                    return error(500,"已超过"+examNumber+"次考试，");
-                }else{
+                if (last.getUpdateDate() != null && !last.getUpdateDate().equals( "" )) {
+                    return error( 500, "已超过" + examNumber + "次考试，" );
+                } else {
                     // 最后一次考试未交卷，但超过考试时长,直接返回
-                    if(last.getCreateDate().getTime()+timeLength*60*1000<new Date().getTime()){
-                        return error(500,"已超过"+examNumber+"次考试，");
+                    if (last.getCreateDate().getTime() + timeLength * 60 * 1000 < new Date().getTime()) {
+                        return error( 500, "已超过" + examNumber + "次考试，" );
                     }
                 }
 
             }
 
-            if(userExamination.size()<=0 //考试次数小于0
-                    ||userExamination.get(0).getUpdateDate()!=null //最后一次考试已交卷
-                    ||userExamination.get(0).getCreateDate().getTime()+timeLength*60*1000<new Date().getTime()//最后一次考试，已超过考过时长
-                    ){
-                ExamUserExamination insert = new ExamUserExamination();
-                insert.setExamExaminationId(Integer.parseInt(inationId));
-                insert.setVipUserId(userId);
-                insert.setCreateDate(new Date());
-                insert.setExamPaperId(examPaperId);
-                insert.setDelFlag("0");
-                insert.setScore(0);
-                examUserExaminationService.insertOne(insert);
+            if (userExamination.size() <= 0 //考试次数小于0
+                    || userExamination.get( 0 ).getUpdateDate() != null //最后一次考试已交卷
+                    || userExamination.get( 0 ).getCreateDate().getTime() + timeLength * 60 * 1000 < new Date().getTime()//最后一次考试，已超过考过时长
+                    ) {
+                insert.setExamExaminationId( Integer.parseInt( inationId ) );
+                insert.setVipUserId( userId );
+                insert.setCreateDate( new Date() );
+                insert.setExamPaperId( examPaperId );
+                insert.setDelFlag( "0" );
+                insert.setScore( 0 );
+                examUserExaminationService.insertOne( insert );
                 examUserExaminationId = insert.getId();
-            }else{
-                examUserExaminationId = userExamination.get(0).getId();
+            } else {
+                examUserExaminationId = userExamination.get( 0 ).getId();
             }
 
         }
 
-        List<ExamQuestionVO> list = examPaperService.selectQuestionAndItemByPaperId(examPaperId);
+        List<ExamQuestionVO> list = examPaperService.selectQuestionAndItemByPaperId( examPaperId );
         //是否乱序
-        if(examExamination.getQuestionDisorder().equals("2")){
-            Collections.shuffle(list);
+        if (examExamination.getQuestionDisorder().equals( "2" )) {
+            Collections.shuffle( list );
         }
-        AjaxResult success = success("查询成功");
-        success.put("data", list);
-        success.put("examUserExaminationId",examUserExaminationId);
+        AjaxResult success = success( "查询成功" );
+        success.put( "data", list );
+        success.put( "examUserExaminationId", examUserExaminationId );
+        success.put( "examExamination", examExamination );
         return success;
     }
 
 
     /**
      * 报名列表
+     *
      * @param examExamination
      * @return
      */
@@ -156,44 +161,45 @@ public class ApiExaminationController extends BaseController {
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
 
         Map<String, Object> map = new HashMap<>();
-        map.put("ination",examExamination);
-        map.put("userId",sysUser.getUserId());
-        List<ExamExamination> list = examExaminationService.selectEnterNameListFromWeb(map);
-        AjaxResult success = success("查询成功");
-        success.put("data", list);
+        map.put( "ination", examExamination );
+        map.put( "userId", sysUser.getUserId() );
+        List<ExamExamination> list = examExaminationService.selectEnterNameListFromWeb( map );
+        AjaxResult success = success( "查询成功" );
+        success.put( "data", list );
         return success;
     }
 
 
-
     /**
      * 报名
+     *
      * @param sysUser
      * @param inationId
      * @return
      */
     @PostMapping("/v1/examination/entername")
-    public AjaxResult enterName(SysUser sysUser,String inationId) {
+    public AjaxResult enterName(SysUser sysUser, String inationId) {
         SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
         Long userId = user.getUserId();
-        sysUser.setUserId(userId);
-        sysUserService.updateSelectiveById(sysUser);
+        sysUser.setUserId( userId );
+        sysUserService.updateSelectiveById( sysUser );
 
         ExamExaminationUser examExaminationUser = new ExamExaminationUser();
-        examExaminationUser.setVipUserId(Integer.parseInt(userId.toString()));
-        examExaminationUser.setDelFlag("0");
-        examExaminationUser.setCreateDate(new Date());
-        examExaminationUser.setCreateBy(user.getLoginName());
-        examExaminationUser.setExamExaminationId(Integer.parseInt(inationId));
-        examExaminationUserService.insertOne(examExaminationUser);
+        examExaminationUser.setVipUserId( Integer.parseInt( userId.toString() ) );
+        examExaminationUser.setDelFlag( "0" );
+        examExaminationUser.setCreateDate( new Date() );
+        examExaminationUser.setCreateBy( user.getLoginName() );
+        examExaminationUser.setExamExaminationId( Integer.parseInt( inationId ) );
+        examExaminationUserService.insertOne( examExaminationUser );
 
-        AjaxResult success = success("报名成功");
+        AjaxResult success = success( "报名成功" );
         return success;
     }
 
 
     /**
      * 交卷
+     *
      * @param examUserExaminationQuestion
      * @param examUserExaminationId
      * @param examinationId
@@ -202,25 +208,25 @@ public class ApiExaminationController extends BaseController {
      */
     @PostMapping("/v1/examination/finish/{examUserExaminationId}/{examinationId}/{paperId}")
     public AjaxResult finish(@RequestBody List<ExamUserExaminationQuestion> examUserExaminationQuestion,
-                             @PathVariable Integer examUserExaminationId ,@PathVariable Integer examinationId,@PathVariable Integer paperId) {
+                             @PathVariable Integer examUserExaminationId, @PathVariable Integer examinationId, @PathVariable Integer paperId) {
 
 
         SysUser user = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
         Long userId = user.getUserId();
         //交卷后返回的数据
-        ArrayList<Map<String,String>> data = new ArrayList<>();
+        ArrayList<Map<String, String>> data = new ArrayList<>();
 
 
         //如果是模拟考试，考试记录新增数据
-        if(examUserExaminationId == -1){
+        if (examUserExaminationId == -1) {
             ExamUserExamination insert = new ExamUserExamination();
-            insert.setExamExaminationId(examinationId);
-            insert.setVipUserId(Integer.parseInt(userId.toString()));
-            insert.setCreateDate(new Date());
-            insert.setExamPaperId(paperId);
-            insert.setDelFlag("0");
-            insert.setScore(0);
-            examUserExaminationService.insertOne(insert);
+            insert.setExamExaminationId( examinationId );
+            insert.setVipUserId( Integer.parseInt( userId.toString() ) );
+            insert.setCreateDate( new Date() );
+            insert.setExamPaperId( paperId );
+            insert.setDelFlag( "0" );
+            insert.setScore( 0 );
+            examUserExaminationService.insertOne( insert );
             examUserExaminationId = insert.getId();
         }
 
@@ -229,43 +235,48 @@ public class ApiExaminationController extends BaseController {
             HashMap<String, String> returnItem = new HashMap<>();
             String userAnswer = item.getUserAnswer();
             //存入用户回答
-            returnItem.put("userAnswer",userAnswer);
-            Integer examQuestionId = item.getExamQuestionId();
-            ExamQuestion examQuestion = examQuestionService.selectById(examQuestionId);
-            //存入正确答案
-            returnItem.put("answer",examQuestion.getAnswer());
-            returnItem.put("title",examQuestion.getTitle());
-            returnItem.put("rightWrong","错误");
-            if(examQuestion.getAnswer().equals(userAnswer)){
-                ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
-                examPaperQuestion.setExamPaperId(paperId);
-                examPaperQuestion.setExamQuestionId(examQuestionId);
-                score+=examPaperQuestionService.selectExamPaperQuestionList(examPaperQuestion).get(0).getScore();
-                returnItem.put("rightWrong","正确");
+            if (StrUtil.isNotBlank( userAnswer )) {
+                returnItem.put( "userAnswer", userAnswer );
             }
-            item.setExamUserExaminationId(examUserExaminationId);
-            item.setCreateDate(new Date());
-            item.setCreateBy(user.getLoginName());
-            item.setDelFlag("0");
-            examUserExaminationQuestionService.insertOne(item);
-            data.add(returnItem);
+            Integer examQuestionId = item.getExamQuestionId();
+            ExamQuestion examQuestion = examQuestionService.selectById( examQuestionId );
+            //存入正确答案
+            if (StrUtil.isNotBlank( examQuestion.getAnswer() )) {
+                returnItem.put( "answer", examQuestion.getAnswer() );
+            }
+            returnItem.put( "title", examQuestion.getTitle() );
+            returnItem.put( "rightWrong", "错误" );
+            if (examQuestion.getAnswer().equals( userAnswer )) {
+                ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
+                examPaperQuestion.setExamPaperId( paperId );
+                examPaperQuestion.setExamQuestionId( examQuestionId );
+                score += examPaperQuestionService.selectExamPaperQuestionList( examPaperQuestion ).get( 0 ).getScore();
+                returnItem.put( "rightWrong", "正确" );
+            }
+            item.setExamUserExaminationId( examUserExaminationId );
+            item.setCreateDate( new Date() );
+            item.setCreateBy( user.getLoginName() );
+            item.setDelFlag( "0" );
+            item.setId( null );
+            examUserExaminationQuestionService.insertOne( item );
+            data.add( returnItem );
         }
-        ExamUserExamination examUserExamination = examUserExaminationService.selectById(examUserExaminationId);
-        examUserExamination.setScore(score);
-        examUserExamination.setUpdateDate(new Date());
-        examUserExamination.setCreateBy(user.getLoginName());
-        examUserExaminationService.updateOneSelectiveById(examUserExamination);
+        ExamUserExamination examUserExamination = examUserExaminationService.selectById( examUserExaminationId );
+        examUserExamination.setScore( score );
+        examUserExamination.setUpdateDate( new Date() );
+        examUserExamination.setCreateBy( user.getLoginName() );
+        examUserExaminationService.updateOneSelectiveById( examUserExamination );
 
-        ExamExamination examExamination = examExaminationService.selectById(examinationId);
+        ExamExamination examExamination = examExaminationService.selectById( examinationId );
         String finishedPaper = examExamination.getFinishedPaper();
 
 
-        AjaxResult success = success("考试完成");
+        AjaxResult success = success( "考试完成" );
         //考试完成后参数
-        success.put("finishedPaper",finishedPaper);
-        success.put("score",score);
-        if(!finishedPaper.equals("0")){
-            success.put("data", data);
+        success.put( "finishedPaper", finishedPaper );
+        success.put( "score", score );
+        if (!finishedPaper.equals( "0" )) {
+            success.put( "data", data );
         }
         return success;
     }
@@ -273,25 +284,26 @@ public class ApiExaminationController extends BaseController {
 
     /**
      * 考试记录列表
+     *
      * @param bean
      * @return
      */
-    @GetMapping("/v1/examination/userexamination/list")
+    @GetMapping("/v1/user/examination/page")
     public AjaxResult userexamination(ExamUserExaminationVO bean) {
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        bean.setVipUserId(Integer.parseInt(sysUser.getUserId().toString()));
-        List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination(bean);
-        AjaxResult success = success("考试完成");
-        success.put("data", data);
+        bean.setVipUserId( Integer.parseInt( sysUser.getUserId().toString() ) );
+        List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination( bean );
+        AjaxResult success = success( "考试完成" );
+        success.put( "data", data );
         return success;
     }
 
     @GetMapping("/v1/examination/userexamination/detail/{id}")
     public AjaxResult detail(@PathVariable Integer id) {
-        ExamUserExaminationVO data = examUserExaminationService.selectDetailById(id);
+        ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );
 
-        AjaxResult success = success("考试完成");
-        success.put("data", data);
+        AjaxResult success = success( "考试完成" );
+        success.put( "data", data );
         return success;
 
     }
