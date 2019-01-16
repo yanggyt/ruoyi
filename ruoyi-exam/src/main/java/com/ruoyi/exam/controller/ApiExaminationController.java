@@ -291,9 +291,9 @@ public class ApiExaminationController extends BaseController {
     @GetMapping("/v1/user/examination/page")
     public AjaxResult userexamination(ExamUserExaminationVO bean) {
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        bean.setVipUserId( Integer.parseInt( sysUser.getUserId().toString() ) );
+        bean.setVipUserId( sysUser.getUserId().intValue() );
         List<ExamUserExaminationVO> data = examUserExaminationService.selectMyExamUserExamination( bean );
-        AjaxResult success = success( "考试完成" );
+        AjaxResult success = success( "查询列表成功" );
         success.put( "data", data );
         return success;
     }

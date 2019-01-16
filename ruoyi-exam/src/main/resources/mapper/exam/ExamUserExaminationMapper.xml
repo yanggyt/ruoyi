@@ -141,13 +141,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateDate != null "> and update_date = #{updateDate}</if>
             <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
-
-
-
             <if test="userName != null  and userName != '' "> and su.user_name = #{userName}</if>
-            <if test="trainCourseName != null  and trainCourseName != '' "> and tc.name = #{trainCourseName}</if>
+            <if test="examExaminationVO != null  and examExaminationVO.trainCourseName != null  and examExaminationVO.trainCourseName != '' "> and tc.name = #{examExaminationVO.trainCourseName}</if>
             <if test="examPaperName != null  and examPaperName != '' "> and ep.name = #{examPaperName}</if>
-            <if test="type != null  and type != '' "> and ee.type = #{type}</if>
+            <if test="examExaminationVO!=null and examExaminationVO.type != null  and examExaminationVO.type != '' "> and ee.type = #{examExaminationVO.type}</if>
 
         </where>
 
