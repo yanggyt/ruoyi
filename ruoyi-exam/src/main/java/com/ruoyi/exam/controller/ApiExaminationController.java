@@ -47,6 +47,9 @@ public class ApiExaminationController extends BaseController {
     @Autowired
     private IExamPaperQuestionService examPaperQuestionService;
 
+    @Autowired
+    private IExamPaperTypeNumberService examPaperTypeNumberService;
+
 
     /**
      * 获取考试列表
@@ -136,14 +139,51 @@ public class ApiExaminationController extends BaseController {
             }
 
         }
-
+        ExamPaper examPaper = examPaperService.selectById(examPaperId);
+        List<ExamQuestionVO> data = new ArrayList<>();
         List<ExamQuestionVO> list = examPaperService.selectQuestionAndItemByPaperId( examPaperId );
+        //随机试卷
+        if(examPaper.getType().equals("2")){
+            Collections.shuffle( list );
+            ExamPaperTypeNumber examPaperTypeNumber = new ExamPaperTypeNumber();
+            examPaperTypeNumber.setExamPaperId(examPaperId);
+            List<ExamPaperTypeNumber> examPaperTypeNumbers = examPaperTypeNumberService.selectList(examPaperTypeNumber);
+            //三种题型的数量
+            int one=0,two=0,three=0;
+            for (ExamPaperTypeNumber item : examPaperTypeNumbers) {
+                if(item.getExamQuestionType()==1){
+                    one = item.getNumber();
+                }
+                if(item.getExamQuestionType()==2){
+                    two = item.getNumber();
+                }
+                if(item.getExamQuestionType()==3){
+                    three = item.getNumber();
+                }
+            }
+            for (ExamQuestionVO item : list) {
+                if(item.getType().equals("1")&&one>0){
+                    data.add(item);
+                    one--;
+                }
+                if(item.getType().equals("2")&&two>0){
+                    data.add(item);
+                    two--;
+                }
+                if(item.getType().equals("3")&&three>0){
+                    data.add(item);
+                    three--;
+                }
+            }
+        }else{
+            data = list;
+        }
         //是否乱序
         if (examExamination.getQuestionDisorder().equals( "2" )) {
             Collections.shuffle( list );
         }
         AjaxResult success = success( "查询成功" );
-        success.put( "data", list );
+        success.put( "data", data );
         success.put( "examUserExaminationId", examUserExaminationId );
         success.put( "examExamination", examExamination );
         return success;
