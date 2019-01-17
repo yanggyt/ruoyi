@@ -1,6 +1,8 @@
 package com.ruoyi.exam.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamUserCollectionQuestionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamUserCollectionQuestionMapper;
@@ -28,7 +30,7 @@ public class ExamUserCollectionQuestionServiceImpl extends AbstractBaseServiceIm
      * @return 我的收藏集合
      */
 	@Override
-	public List<ExamUserCollectionQuestion> selectExamUserCollectionQuestionList(ExamUserCollectionQuestion examUserCollectionQuestion)
+	public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionList(ExamUserCollectionQuestionVO examUserCollectionQuestion)
 	{
         return examUserCollectionQuestionMapper.selectExamUserCollectionQuestionList(examUserCollectionQuestion);
 	}
@@ -45,7 +47,7 @@ public class ExamUserCollectionQuestionServiceImpl extends AbstractBaseServiceIm
      * @return 我的收藏集合
      */
     @Override
-    public List<ExamUserCollectionQuestion> selectExamUserCollectionQuestionPage(ExamUserCollectionQuestion examUserCollectionQuestion)
+    public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionPage(ExamUserCollectionQuestionVO examUserCollectionQuestion)
     {
         startPage();
         return examUserCollectionQuestionMapper.selectExamUserCollectionQuestionList(examUserCollectionQuestion);

@@ -2,6 +2,8 @@ package com.ruoyi.exam.service;
 
 import com.ruoyi.exam.domain.ExamUserCollectionQuestion;
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamUserCollectionQuestionVO;
 import com.ruoyi.framework.web.base.AbstractBaseService;
 /**
  * 我的收藏 服务层
@@ -17,14 +19,14 @@ public interface IExamUserCollectionQuestionService extends AbstractBaseService<
      * @param examUserCollectionQuestion 我的收藏信息
      * @return 我的收藏集合
      */
-	public List<ExamUserCollectionQuestion> selectExamUserCollectionQuestionPage(ExamUserCollectionQuestion examUserCollectionQuestion);
+	public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionPage(ExamUserCollectionQuestionVO examUserCollectionQuestion);
     /**
      * 查询我的收藏列表
      *
      * @param examUserCollectionQuestion 我的收藏信息
      * @return 我的收藏集合
      */
-    public List<ExamUserCollectionQuestion> selectExamUserCollectionQuestionList(ExamUserCollectionQuestion examUserCollectionQuestion);
+    public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionList(ExamUserCollectionQuestionVO examUserCollectionQuestion);
 
     /**
      * 插入收藏题库

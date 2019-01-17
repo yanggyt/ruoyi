@@ -1,6 +1,8 @@
 package com.ruoyi.exam.controller;
 
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamUserCollectionQuestionVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,9 +49,9 @@ public class ExamUserCollectionQuestionController extends BaseController
 	@RequiresPermissions("exam:examUserCollectionQuestion:list")
 	@PostMapping("/list")
 	@ResponseBody
-	public TableDataInfo list(ExamUserCollectionQuestion examUserCollectionQuestion)
+	public TableDataInfo list(ExamUserCollectionQuestionVO examUserCollectionQuestion)
 	{
-        List<ExamUserCollectionQuestion> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage(examUserCollectionQuestion);
+        List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage(examUserCollectionQuestion);
 		return getDataTable(list);
 	}
 	
@@ -60,10 +62,10 @@ public class ExamUserCollectionQuestionController extends BaseController
 	@RequiresPermissions("exam:examUserCollectionQuestion:export")
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(ExamUserCollectionQuestion examUserCollectionQuestion)
+    public AjaxResult export(ExamUserCollectionQuestionVO examUserCollectionQuestion)
     {
-    	List<ExamUserCollectionQuestion> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionList(examUserCollectionQuestion);
-        ExcelUtil<ExamUserCollectionQuestion> util = new ExcelUtil<ExamUserCollectionQuestion>(ExamUserCollectionQuestion.class);
+    	List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionList(examUserCollectionQuestion);
+        ExcelUtil<ExamUserCollectionQuestionVO> util = new ExcelUtil<ExamUserCollectionQuestionVO>(ExamUserCollectionQuestionVO.class);
         return util.exportExcel(list, "examUserCollectionQuestion");
     }
 	

@@ -39,7 +39,10 @@ public class ExamUserErrorQuestionServiceImpl extends AbstractBaseServiceImpl<Ex
         startPage();
         return examUserErrorQuestionMapper.selectExamUserErrorQuestionDetailPage(examUserErrorQuestion);
     }
-
+    @Override
+    public List<ExamUserErrorQuestionVO> selectExamUserErrorQuestionDetailList(ExamUserErrorQuestion examUserErrorQuestion) {
+        return examUserErrorQuestionMapper.selectExamUserErrorQuestionDetailPage(examUserErrorQuestion);
+    }
     @Override
     public int insertError(ExamUserErrorQuestion examUserErrorQuestion) {
 

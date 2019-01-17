@@ -83,7 +83,21 @@ public class ApiUserErrorQuestionController extends BaseController {
         success.put("data", list);
         return success;
     }
-
+    /**
+     * 查询我的错题列表(不分页)
+     *
+     * @return
+     */
+    @GetMapping("/v1/question/error/list")
+    public AjaxResult queryErrorList() {
+        ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
+        List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailList(examUserErrorQuestion);
+        AjaxResult success = success("查询成功");
+        success.put("data", list);
+        return success;
+    }
     /**
      * 查询问题详情
      *
@@ -103,7 +117,7 @@ public class ApiUserErrorQuestionController extends BaseController {
      * @param id
      * @return
      */
-    @PostMapping("/v1/question/error/delete/{id}")
+    @GetMapping("/v1/question/error/delete/{id}")
     public AjaxResult deleteErrorQuestion(@PathVariable("id") String id) {
         examUserErrorQuestionService.deleteById(id);
         AjaxResult success = success("删除成功");

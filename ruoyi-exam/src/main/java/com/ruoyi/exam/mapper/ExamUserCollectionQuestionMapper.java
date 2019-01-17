@@ -2,6 +2,8 @@ package com.ruoyi.exam.mapper;
 
 import com.ruoyi.exam.domain.ExamUserCollectionQuestion;
 import java.util.List;
+
+import com.ruoyi.exam.domain.ExamUserCollectionQuestionVO;
 import com.ruoyi.framework.web.base.MyMapper;
 
 /**
@@ -19,6 +21,6 @@ public interface ExamUserCollectionQuestionMapper  extends MyMapper<ExamUserColl
      * @param examUserCollectionQuestion 我的收藏信息
      * @return 我的收藏集合
      */
-	public List<ExamUserCollectionQuestion> selectExamUserCollectionQuestionList(ExamUserCollectionQuestion examUserCollectionQuestion);
+	public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionList(ExamUserCollectionQuestionVO examUserCollectionQuestion);
 	
 }

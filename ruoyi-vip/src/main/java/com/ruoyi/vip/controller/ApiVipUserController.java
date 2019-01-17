@@ -16,6 +16,8 @@ import com.ruoyi.framework.web.util.ServletUtils;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.vip.domain.vo.VipUserCertificateVO;
+import com.ruoyi.vip.service.IVipUserCertificateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
@@ -34,114 +36,25 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Api("用户信息管理")
+@Api("我的证书管理")
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class ApiVipUserController extends BaseController {
-
 
     @Autowired
     private ISysUserService sysUserService;
+
     @Autowired
-    private SysPasswordService passwordService;
-
-    @ApiOperation("用户登陆")
-    @Log(title = "用户登陆", businessType = BusinessType.EXPORT)
-    @RequestMapping(value = "/user/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public AjaxResult login(@RequestBody SysUser user) {
-        AjaxResult success = success( "登陆成功" );
-        boolean rememberMe = false;
-        UsernamePasswordToken token = new UsernamePasswordToken( user.getUserName(), user.getPassword(), rememberMe );
-        Subject subject = SecurityUtils.getSubject();
-        try {
-            subject.login( token );
-            String tokenSign = JwtUtil.sign( user.getUserName(), user.getPassword() );
-            JSONObject json = new JSONObject();
-
-            json.put( "token", tokenSign );
-            SysUser sysUser = sysUserService.selectUserByLoginName( user.getUserName());
-            json.put( "user", sysUser );
-            success.put( "data", json );
-            return success;
-        } catch (AuthenticationException e) {
-            String msg = "用户或密码错误";
-            if (StringUtils.isNotEmpty( e.getMessage() )) {
-                msg = e.getMessage();
-            }
-            return error( msg );
-        }
-    }
-
-    @GetMapping("/member/user/info")
+    private IVipUserCertificateService vipUserCertificateService;
+    @GetMapping("/v1/user/cerificate/page")
     public AjaxResult get() {
-        AjaxResult success = success( "获取用户信息成功" );
+        AjaxResult success = success( "获取我的证书成功" );
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        success.put( "data", sysUser );
+        VipUserCertificateVO certificateVO = new VipUserCertificateVO();
+        certificateVO.setVipUserId( sysUser.getUserId().intValue() );
+        List<VipUserCertificateVO> list = vipUserCertificateService.selectVipUserCertificatePage( certificateVO );
+        success.put( "data", list );
         return success;
     }
 
-
-    /**
-     * 新增保存用户
-     */
-    @Log(title = "用户管理", businessType = BusinessType.INSERT)
-    @PostMapping("/user/add")
-    @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    public AjaxResult addSave(@RequestBody SysUser user) {
-        user.setSalt( ShiroUtils.randomSalt() );
-        user.setUserType( UserConstants.USER_VIP );
-        user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
-        return toAjax( sysUserService.insertUser( user ) );
-    }
-
-
-    /**
-     * 修改保存用户
-     */
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @PostMapping("/member/user/edit")
-    @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    public AjaxResult editSave(SysUser user) {
-
-        user.setUpdateBy( ShiroUtils.getLoginName() );
-        return toAjax( sysUserService.updateUser( user ) );
-    }
-
-    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
-    @PostMapping("/member/user/resetPwd")
-    @ResponseBody
-    public AjaxResult resetPwdSave(SysUser user) {
-        user.setSalt( ShiroUtils.randomSalt() );
-        user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
-        return toAjax( sysUserService.resetUserPwd( user ) );
-    }
-
-    /**
-     * 校验用户名
-     */
-    @PostMapping("/member/user//checkLoginNameUnique")
-    @ResponseBody
-    public String checkLoginNameUnique(SysUser user) {
-        return sysUserService.checkLoginNameUnique( user.getLoginName() );
-    }
-
-    /**
-     * 校验手机号码
-     */
-    @PostMapping("/member/user//checkPhoneUnique")
-    @ResponseBody
-    public String checkPhoneUnique(SysUser user) {
-        return sysUserService.checkPhoneUnique( user );
-    }
-
-    /**
-     * 校验email邮箱
-     */
-    @PostMapping("/member/user//checkEmailUnique")
-    @ResponseBody
-    public String checkEmailUnique(SysUser user) {
-        return sysUserService.checkEmailUnique( user );
-    }
 }

@@ -32,63 +32,68 @@ public class ApiUserCollectionQuestionController extends BaseController {
 
     /**
      * 保存收藏记录
+     *
      * @param id
      * @return
      */
-    @PostMapping("/v1/practice/collection/{id}")
+    @PostMapping("/v1/question/collection/{id}")
     public AjaxResult answer(@PathVariable("id") Integer id) {
         ExamUserCollectionQuestion examUserCollectionQuestion = new ExamUserCollectionQuestion();
-        examUserCollectionQuestion.setExamQuestionId(id);
+        examUserCollectionQuestion.setExamQuestionId( id );
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        examUserCollectionQuestion.setVipUserId(sysUser.getUserId().intValue());
-        examUserCollectionQuestion.setCreateBy(sysUser.getLoginName());
-        examUserCollectionQuestion.setCreateDate(new Date());
-        examUserCollectionQuestion.setDelFlag("0");
-        examUserCollectionQuestion.setUpdateBy(sysUser.getLoginName());
-        examUserCollectionQuestion.setUpdateDate(new Date());
-        int insert = examUserCollectionQuestionService.insertSelectiveBySelf(examUserCollectionQuestion );
-        AjaxResult success = success("插入我的收藏记录成功");
+        examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
+        examUserCollectionQuestion.setCreateBy( sysUser.getLoginName() );
+        examUserCollectionQuestion.setCreateDate( new Date() );
+        examUserCollectionQuestion.setDelFlag( "0" );
+        examUserCollectionQuestion.setUpdateBy( sysUser.getLoginName() );
+        examUserCollectionQuestion.setUpdateDate( new Date() );
+        int insert = examUserCollectionQuestionService.insertSelectiveBySelf( examUserCollectionQuestion );
+        AjaxResult success = success( "插入我的收藏记录成功" );
         return success;
     }
 
     /**
      * 我的收藏显示列表（分页）
+     *
      * @return
      */
-    @PostMapping("/v1/question/collection/page")
-    public AjaxResult collectionPage(){
-        ExamUserCollectionQuestion examUserCollectionQuestion=new ExamUserCollectionQuestion();
+    @GetMapping("/v1/question/collection/page")
+    public AjaxResult collectionPage() {
+        ExamUserCollectionQuestionVO examUserCollectionQuestion = new ExamUserCollectionQuestionVO();
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        examUserCollectionQuestion.setVipUserId(sysUser.getUserId().intValue());
-        List<ExamUserCollectionQuestion> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage(examUserCollectionQuestion);
-        AjaxResult success = success("查询我的收藏成功");
-        success.put("data", list);
+        examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
+        List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage( examUserCollectionQuestion );
+        AjaxResult success = success( "查询我的收藏成功" );
+        success.put( "data", list );
         return success;
     }
+
     /**
      * 我的收藏显示列表（不分页）
+     *
      * @return
      */
-    @PostMapping("/v1/question/collection/list")
-    public AjaxResult collectionList(){
-        ExamUserCollectionQuestion examUserCollectionQuestion=new ExamUserCollectionQuestion();
+    @GetMapping("/v1/question/collection/list")
+    public AjaxResult collectionList() {
+        ExamUserCollectionQuestionVO examUserCollectionQuestion = new ExamUserCollectionQuestionVO();
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        examUserCollectionQuestion.setVipUserId(sysUser.getUserId().intValue());
-        List<ExamUserCollectionQuestion> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage(examUserCollectionQuestion);
-        AjaxResult success = success("查询我的收藏成功");
-        success.put("data", list);
+        examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
+        List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage( examUserCollectionQuestion );
+        AjaxResult success = success( "查询我的收藏成功" );
+        success.put( "data", list );
         return success;
     }
+
     /**
      * 删除我的收藏记录
      *
      * @param id
      * @return
      */
-    @PostMapping("/v1/question/collection/delete/{id}")
+    @GetMapping("/v1/question/collection/delete/{id}")
     public AjaxResult deleteCollectionQuestion(@PathVariable("id") String id) {
-        examUserCollectionQuestionService.deleteById(id);
-        AjaxResult success = success("删除成功");
+        examUserCollectionQuestionService.deleteById( id );
+        AjaxResult success = success( "删除成功" );
         return success;
     }
 }

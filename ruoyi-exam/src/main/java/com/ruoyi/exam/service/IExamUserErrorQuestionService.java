@@ -28,8 +28,21 @@ public interface IExamUserErrorQuestionService extends AbstractBaseService<ExamU
      */
     public List<ExamUserErrorQuestion> selectExamUserErrorQuestionList(ExamUserErrorQuestion examUserErrorQuestion);
 
-
+    /**
+     * 查询我的错题详情列表
+     *
+     * @param examUserErrorQuestion 我的错题信息
+     * @return 我的错题集合
+     */
     List<ExamUserErrorQuestionVO> selectExamUserErrorQuestionDetailPage(ExamUserErrorQuestion examUserErrorQuestion);
+    /**
+     * 查询我的错题详情列表（不分页）
+     *
+     * @param examUserErrorQuestion 我的错题信息
+     * @return 我的错题集合
+     */
+    List<ExamUserErrorQuestionVO> selectExamUserErrorQuestionDetailList(ExamUserErrorQuestion examUserErrorQuestion);
+
 
     int insertError(ExamUserErrorQuestion examUserErrorQuestion);
 }
