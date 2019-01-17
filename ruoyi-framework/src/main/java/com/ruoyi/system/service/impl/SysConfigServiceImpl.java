@@ -117,4 +117,16 @@ public class SysConfigServiceImpl extends AbstractBaseServiceImpl<SysConfigMappe
         }
         return UserConstants.CONFIG_KEY_UNIQUE;
     }
+
+    @Override
+    public int updateValueByKey(String key, String configValue)
+    {
+        SysConfig info = configMapper.checkConfigKeyUnique(key);
+        if (StringUtils.isNotNull(info))
+        {
+            info.setConfigValue(configValue);
+            return updateConfig(info);
+        }
+        return 0;
+    }
 }
