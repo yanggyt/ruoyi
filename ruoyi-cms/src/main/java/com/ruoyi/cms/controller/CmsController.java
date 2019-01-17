@@ -5,6 +5,7 @@ import com.ruoyi.common.utils.file.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,14 +19,17 @@ import java.net.URLEncoder;
  * @author ruoyi
  */
 @Controller
+@RequestMapping("/web")
 public class CmsController
 {
     private static final Logger log = LoggerFactory.getLogger(CmsController.class);
 
-    @RequestMapping("common/download")
-    public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
-    {
+    private String prefix = "web";
 
+    @RequestMapping("/index")
+    @GetMapping()
+    public String user() {
+        return prefix + "/index";
     }
 
 }
