@@ -52,6 +52,7 @@
 		<module>ruoyi-exam</module>
 		<module>ruoyi-vip</module>
 		<module>ruoyi-train</module>
+        <module>ruoyi-cms</module>
         <!--<module>tuoyi-test</module>-->
     </modules>
     <packaging>pom</packaging>
