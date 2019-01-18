@@ -78,7 +78,7 @@ public class ApiUserCollectionQuestionController extends BaseController {
         ExamUserCollectionQuestionVO examUserCollectionQuestion = new ExamUserCollectionQuestionVO();
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
         examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
-        List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage( examUserCollectionQuestion );
+        List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionList( examUserCollectionQuestion );
         AjaxResult success = success( "查询我的收藏成功" );
         success.put( "data", list );
         return success;

@@ -39,7 +39,7 @@
 					<div class="layui-upload">
 						<button type="button" class="layui-btn" id="test1">上传图片</button>
 						<div class="layui-upload-list">
-							<img class="layui-upload-img" id="demo1" th:src="@{/profile/avatar/}+*{cover}">
+							<img class="layui-upload-img" id="demo1" th:src="*{cover}">
 							<p id="demoText"></p>
 						</div>
 					</div>
@@ -108,7 +108,7 @@
             //普通图片上传
             var uploadInst = upload.render({
                 elem: '#test1'
-                ,url: '/upload/files'
+                ,url: '/upload/oss'
                 ,data:{module:"train/course"}//文件存放路径
                 ,before: function(obj){
                     //预读本地文件示例，不支持ie8
@@ -117,13 +117,14 @@
                     });
                 }
                 ,done: function(res){
+                    debugger;
                     //如果上传失败
                     if(res.code !=200){
                         return layer.msg('上传失败');
                     }
                     //上传成功
                     if(res.code ==200){
-                        $("#cover").val(res.fileName)
+                        $("#cover").val(res.data)
                         return layer.msg('上传成功');
                     }
                 }

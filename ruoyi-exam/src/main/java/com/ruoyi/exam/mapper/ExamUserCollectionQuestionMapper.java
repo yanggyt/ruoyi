@@ -22,5 +22,12 @@ public interface ExamUserCollectionQuestionMapper  extends MyMapper<ExamUserColl
      * @return 我的收藏集合
      */
 	public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionList(ExamUserCollectionQuestionVO examUserCollectionQuestion);
-	
+	/**
+	 * 查询我的收藏列表详情（包含题目选项）
+	 *
+	 * @param examUserCollectionQuestion 我的收藏信息
+	 * @return 我的收藏集合
+	 */
+	public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionDetailList(ExamUserCollectionQuestionVO examUserCollectionQuestion);
+
 }

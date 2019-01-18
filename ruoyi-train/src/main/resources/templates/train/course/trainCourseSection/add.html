@@ -81,7 +81,7 @@
             var demoListView = $('#demoList')
                 ,uploadListIns = upload.render({
                 elem: '#testList'
-                ,url: '/upload/files'
+                ,url: '/upload/oss'
                 ,data:{module:"train/courseware"}//文件存放路径
                 ,accept: 'file'
                 ,multiple: true
@@ -122,7 +122,7 @@
                             ,tds = tr.children();
                         tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                         tds.eq(3).html(''); //清空操作
-                        fileList.push(res.fileName);
+                        fileList.push(res.data);
                         return delete this.files[index]; //删除文件队列已经上传成功的文件
                     }
                     this.error(index, upload);

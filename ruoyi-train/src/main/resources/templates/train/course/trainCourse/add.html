@@ -107,7 +107,7 @@
             //普通图片上传
             var uploadInst = upload.render({
                 elem: '#test1'
-                ,url: '/upload/files'
+                ,url: '/upload/oss'
 				,data:{module:"train/course"}//文件存放路径
                 ,before: function(obj){
                     //预读本地文件示例，不支持ie8
@@ -122,7 +122,7 @@
                     }
                     //上传成功
                     if(res.code ==200){
-                        $("#cover").val(res.fileName)
+                        $("#cover").val(res.data)
                         return layer.msg('上传成功');
                     }
                 }

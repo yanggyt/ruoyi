@@ -22,24 +22,6 @@ public class ExamUserCollectionQuestionServiceImpl extends AbstractBaseServiceIm
 	@Autowired
 	private ExamUserCollectionQuestionMapper examUserCollectionQuestionMapper;
 
-	
-	/**
-     * 查询我的收藏列表
-     * 
-     * @param examUserCollectionQuestion 我的收藏信息
-     * @return 我的收藏集合
-     */
-	@Override
-	public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionList(ExamUserCollectionQuestionVO examUserCollectionQuestion)
-	{
-        return examUserCollectionQuestionMapper.selectExamUserCollectionQuestionList(examUserCollectionQuestion);
-	}
-
-    @Override
-    public int insertSelectiveBySelf(ExamUserCollectionQuestion examUserCollectionQuestion) {
-	    return examUserCollectionQuestionMapper.insertSelective(examUserCollectionQuestion);
-    }
-
     /**
      * 查询我的收藏分页列表
      *
@@ -52,5 +34,23 @@ public class ExamUserCollectionQuestionServiceImpl extends AbstractBaseServiceIm
         startPage();
         return examUserCollectionQuestionMapper.selectExamUserCollectionQuestionList(examUserCollectionQuestion);
     }
+	/**
+     * 查询我的收藏列表(包含题目选项)
+     * 
+     * @param examUserCollectionQuestion 我的收藏信息
+     * @return 我的收藏集合
+     */
+	@Override
+	public List<ExamUserCollectionQuestionVO> selectExamUserCollectionQuestionList(ExamUserCollectionQuestionVO examUserCollectionQuestion)
+	{
+        return examUserCollectionQuestionMapper.selectExamUserCollectionQuestionDetailList(examUserCollectionQuestion);
+	}
+
+    @Override
+    public int insertSelectiveBySelf(ExamUserCollectionQuestion examUserCollectionQuestion) {
+	    return examUserCollectionQuestionMapper.insertSelective(examUserCollectionQuestion);
+    }
+
+
 
 }
