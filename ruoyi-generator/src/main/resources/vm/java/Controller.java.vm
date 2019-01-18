@@ -126,7 +126,7 @@ public class ${className}Controller extends BaseController
 	public AjaxResult save(${className} ${classname})
 	{		
 	#if(${primaryKey.attrType}=='String')
-		if(StringUtils.isBlank(${classname}.get${primaryKey.attrname}())) 
+		if(StringUtils.isBlank(${classname}.get${primaryKey.attrName}())) 
 	#else
 		if (${classname}.get${primaryKey.attrName}()==null)
 	#end
