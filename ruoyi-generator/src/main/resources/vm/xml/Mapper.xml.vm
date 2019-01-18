@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
     <select id="select${className}List" parameterType="${className}" resultMap="${className}Result">
         <include refid="select${className}Vo"/>
-        <where>  
+        <where>  del_flag = '0'
 #foreach($column in $columns)
             <if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname.trim() != '' #end"> and $column.columnName = #{$column.attrname}</if>
  #end
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="select${className}ById" parameterType="${primaryKey.attrType}" resultMap="${className}Result">
         <include refid="select${className}Vo"/>
-        where ${primaryKey.columnName} = #{${primaryKey.attrname}}
+        where del_flag = '0' and ${primaryKey.columnName} = #{${primaryKey.attrname}}
     </select>
         
     <insert id="insert${className}" parameterType="${className}"#if($primaryKey.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$primaryKey.attrname"#end>
@@ -33,14 +33,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 #foreach($column in $columns)
 #if($column.columnName != $primaryKey.columnName || $primaryKey.extra != 'auto_increment')
+	#if($column.attrname=='createTime'||$column.attrname=='updateTime')
+		$column.columnName,
+	#else
 			<if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname != '' #end ">$column.columnName,</if>
+	#end
 #end
 #end
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 #foreach($column in $columns)
 #if($column.columnName != $primaryKey.columnName || $primaryKey.extra != 'auto_increment')
+	#if($column.attrname=='createTime'||$column.attrname=='updateTime')
+		sysDate(),
+	#else	
 			<if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname != '' #end ">#{$column.attrname},</if>
+	#end
 #end			
 #end
          </trim>
@@ -51,22 +59,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
 #foreach($column in $columns)
 #if($column.columnName != $primaryKey.columnName)
-            <if test="$column.attrname != null #if($column.attrType == 'String' ) and $column.attrname != '' #end ">$column.columnName = #{$column.attrname},</if>
+	#if($column.attrname=='updateTime')
+		$column.columnName=sysDate(),
+	#else
+			$column.columnName = #{$column.attrname},
+	#end
+            
 #end
 #end
         </trim>
         where ${primaryKey.columnName} = #{${primaryKey.attrname}}
     </update>
 
-	<delete id="delete${className}ById" parameterType="${primaryKey.attrType}">
-        delete from ${tableName} where ${primaryKey.columnName} = #{${primaryKey.attrname}}
-    </delete>
+	<update id="delete${className}ById" parameterType="${primaryKey.attrType}">
+        update ${tableName} set del_flag = '2'  where ${primaryKey.columnName} = #{${primaryKey.attrname}}
+    </update>
 	
-    <delete id="delete${className}ByIds" parameterType="String">
-        delete from ${tableName} where ${primaryKey.columnName} in 
+    <update id="delete${className}ByIds" parameterType="String">
+         update ${tableName} set del_flag = '2'  where ${primaryKey.columnName} in 
         <foreach item="${primaryKey.attrname}" collection="array" open="(" separator="," close=")">
             #{${primaryKey.attrname}}
         </foreach>
-    </delete>
+    </update>
     
 </mapper>

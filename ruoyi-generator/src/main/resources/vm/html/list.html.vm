@@ -79,8 +79,8 @@
         $(function() {
             var options = {
                 url: prefix + "/list",
-                createUrl: prefix + "/add",
-                updateUrl: prefix + "/edit/{id}",
+                createUrl: prefix + "/form",
+                updateUrl: prefix + "/form?id={id}",
                 removeUrl: prefix + "/remove",
 				exportUrl: prefix + "/export",
                 modalName: "${tableComment}",
