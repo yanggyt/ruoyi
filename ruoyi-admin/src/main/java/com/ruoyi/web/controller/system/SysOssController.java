@@ -111,7 +111,6 @@ public class SysOssController extends BaseController
      * 上传文件
      */
     @RequestMapping("/upload")
-    @RequiresPermissions("sys:oss:add")
     @ResponseBody
     public AjaxResult upload(@RequestParam("file") MultipartFile file) throws Exception
     {
