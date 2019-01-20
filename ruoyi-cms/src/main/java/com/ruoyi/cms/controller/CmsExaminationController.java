@@ -7,7 +7,6 @@ import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.exception.base.BaseException;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
-import com.sun.tools.internal.ws.wsdl.document.jaxws.Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
