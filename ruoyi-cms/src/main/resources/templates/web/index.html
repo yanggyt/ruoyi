@@ -3,28 +3,132 @@
 <head th:fragment="cmsHeader">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
+  <title>骏聪信息科技培训考试系统</title>
   <meta name="keywords" content="">
   <meta name="description" content="">
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="stylesheet" th:href="@{/web/res/layui/css/layui.css}">
   <link rel="stylesheet" th:href="@{/web/res/css/global.css}">
-  <style type="text/css">
-
-    .course{
-      height: 300px;
-      border: 1px solid #8a8a8a;
-      background-color: #ffffff;
-    }
-
-  </style>
+  <script th:src="@{/web/res/layui/layui.js}"></script>
 </head>
 <body>
+<style type="text/css">
 
+  .course{
+    height: 370px;
+    border: 1px solid #8a8a8a;
+    background-color: #ffffff;
+  }
+  .title{
+    margin-top: 20px;
+  }
+  .title span{
+    font-size: 28px;
+    font-weight: normal;
+    float: left;
+    margin-left: 10px;
+    line-height: 50px;
+  }
+  .title em{
+    display: block;
+    width: 70px;
+    height: 24px;
+    border-bottom: 2px #666 solid;
+    float: left;
+  }
+  .title i{
+    float: left;
+    font-size: 20px;
+    color: #999;
+    margin-left: 10px;
+    line-height: 50px;
+  }
+  .in01{
+    background: rgba(0,0,0,0.6);
+    width: 100%;
+    line-height: 30px;
+    height: 30px;
+    padding: 0px 10px;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .in01 span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 18px;
+    color: #fff;
+  }
+  .remark{
+    width: 80%;
+    margin: 5% 10%;
+    line-height: 25px;
+    font-size: 14px;
+    color: #777;
+    text-align: left;
+  }
+  .remark .title{
+    height: 50px;
+    line-height: 25px;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+  .remark .price{
+    font-size: 18px;
+    line-height: 30px;
+    color: #e91c35;
+    height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .remark .free_price{
+    font-size: 18px;
+    line-height: 30px;
+    color: #3ab57f;
+    height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .remark .boxbtn01{
+    margin: 0px 20px 20px;
+  }
+  .remark .clearfix{
+    display: block;
+  }
+  .remark .boxbtn01 .btn01{
+    float: left;
+    color: #999;
+    width: 46%;
+    border: 1px solid #ddd;
+  }
+  .remark .boxbtn01 .btn02{
+    float: right;
+    background: #0288d1;
+    color: #fff;
+    width: 46%;
+    border: 1px solid #0288d1;
+  }
+  .remark .boxbtn01 a{
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    box-sizing: border-box;
+    border-radius: 30px;
+    overflow: hidden;
+  }
+
+</style>
 <div class="fly-header layui-bg-black" th:fragment="top">
   <div class="layui-container">
     <a class="fly-logo" th:href="@{/web}">
-      <img th:src="@{juncong.png}" alt="骏聪" width="100px" height="50px">
+      <img th:src="@{juncong.png}" alt="骏聪" width="100px" height="45px">
     </a>
     <ul class="layui-nav fly-nav layui-hide-xs">
       <li class="layui-nav-item layui-this">
@@ -53,15 +157,38 @@
     </ul>
   </div>
 </div>
-
 <div class="layui-container">
+  <div class="title">
+    <em></em>
+    <span>所有课程</span>
+    <i>All Course</i>
+  </div>
   <div class="layui-row layui-col-space15">
       <div class="layui-col-md3" th:each="course:${trainCourse}">
         <div class="course">
           <div class="courseImg">
-            <img th:src="${course.cover}" th:alt="${course.name}" width="100%" height="230px">
+            <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
+            <img th:if="${#strings.isEmpty(course.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${course.name}" width="100%" height="180px">
+            <img th:if="${not #strings.isEmpty(course.cover)}" th:src="${course.cover}" th:alt="${course.name}" width="100%" height="180px">
+            <p class="in01">
+              <span class="f20 c77b" th:text="${course.name}">安全测试基础课程</span>
+              <span class="cfff"></span>
+            </p>
+            </a>
           </div>
-          <span th:text="${course.name}"></span>
+          <div class="remark">
+            <div class="title" th:text="${course.description}">
+            </div>
+            <div class="price" th:if="${course.price>0}" th:text="'￥'+${course.price}">
+            </div>
+
+            <div class="free_price" th:if="${course.price==0}" th:text="'免费'">
+            </div>
+            <div class="boxbtn01 clearfix">
+              <a class="btn01"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">了解更多</a>
+              <a class="btn02"  th:href="@{/web/course/coursePay.html}">立即购买</a>
+            </div>
+          </div>
         </div>
       </div>
   </div>
@@ -71,25 +198,6 @@
   <p><a href="http://fly.layui.com/" target="_blank">骏聪信息科技</a></p>
 </div>
 
-<script src="../res/layui/layui.js"></script>
-<script>
-layui.cache.page = '';
-layui.cache.user = {
-  username: '游客'
-  ,uid: -1
-  ,avatar: '../res/images/avatar/00.jpg'
-  ,experience: 83
-  ,sex: '男'
-};
-layui.config({
-  version: "3.0.0"
-  ,base: '../res/mods/' //这里实际使用时，建议改成绝对路径
-}).extend({
-  fly: 'index'
-}).use('fly');
-</script>
-
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
 
 </body>
 </html>

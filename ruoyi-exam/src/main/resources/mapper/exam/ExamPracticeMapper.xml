@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null "> and id = #{id}</if>
              <if test="deptId != null "> and dept_id = #{deptId}</if>
              <if test="name != null  and name != '' "> and name = #{name}</if>
-            <if test="trainCourseId != null "> and exam_examination.train_course_id = #{ination.trainCourseId}</if>
+            <if test="trainCourseId != null "> and exam_practice.train_course_id = #{trainCourseId}</if>
             <if test="enableControlTime != null  and enableControlTime != '' "> and enable_control_time = #{enableControlTime}</if>
              <if test="startTime != null "> and start_time = #{startTime}</if>
              <if test="endTime != null "> and end_time = #{endTime}</if>
@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             or exam_practice.enable_control_time = '0')  ]]>
             <if test="id != null "> and exam_practice.id = #{id}</if>
             <if test="deptId != null "> and exam_practice.dept_id = #{deptId}</if>
-            <if test="trainCourseId != null "> and exam_examination.train_course_id = #{ination.trainCourseId}</if>
+            <if test="trainCourseId != null "> and exam_practice.train_course_id = #{trainCourseId}</if>
             <if test="name != null  and name != '' "> and exam_practice.name = #{name}</if>
             <if test="enableControlTime != null  and enableControlTime != '' "> and exam_practice.enable_control_time = #{enableControlTime}</if>
             <if test="startTime != null "> and exam_practice.start_time = #{startTime}</if>

@@ -1,4 +1,5 @@
 package com.ruoyi.train.course.domain;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.base.BaseEntity;
@@ -31,10 +32,12 @@ public class TrainCourseSection
     /** 创建者 */
     private String createBy;
     /** 创建时间 */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /** 更新者 */
     private String updateBy;
     /** 更新时间 */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     /** 备注 */
     private String remark;

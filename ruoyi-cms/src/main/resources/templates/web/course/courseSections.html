@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="web/index::cmsHeader">
+</head>
+<body>
+<div class="fly-header layui-bg-black" th:replace="web/index:: top">
+</div>
+
+<style type="text/css">
+    .video-box {
+        background-color: #000000;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .container-fluid {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+        height: 450px;
+    }
+    .play-list{
+        padding: 0;
+        background-color: #202026;
+        height: 430px;
+        overflow-y: auto;
+        line-height: 40px;
+    }
+    .play-list .section{
+        display: flex;
+        flex-direction: row;
+    }
+    .play-list .section-index{
+        font-size: 2rem;
+        text-align: center;
+        width: 50px;
+        color: #d0d0d6;
+        margin-top: 15px;
+    }
+    .play-list .section-info{
+        margin-top: 5px;
+        color: #d0d0d6;
+    }
+    .play-list .section-time{
+        font-size: 10px;
+        line-height: 12px;
+        color: #909096;
+        margin-bottom: 10px;
+    }
+    a:hover .section-index, a:hover .section-info-name{
+        color: #2692ff;
+    }
+</style>
+<div class="container-fluid video-box layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md2">1
+        </div>
+        <div class="layui-col-md6">2
+            <video th:src="${trainCourseSection.courseware}" width="95%" height="400px" controls="controls">
+            </video>
+        </div>
+        <div class="layui-col-md2">
+            <div class="play-list">
+                <ul>
+                    <a  th:each="section,obj:${trainCourseSections}" th:href="@{'/web/course/courseSections.html/'+${section.id}}">
+                        <li class="section">
+                            <div class="section-index" th:text="${obj.index+1}"></div>
+                            <div class="section-info">
+                                <div class="section-info-name" th:text="${section.name}"></div>
+                                <div class="section-time" th:text="'创建于：'+*{#dates.format(section.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+                            </div>
+                            <hr>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-col-md2">4
+        </div>
+    </div>
+</div>
+
+
+
+<div class="fly-footer" th:replace="web/index::cmsBottom">
+</div>
+</body>
+</html>
