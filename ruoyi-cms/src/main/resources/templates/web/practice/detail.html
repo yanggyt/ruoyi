@@ -15,7 +15,7 @@
 
                 <div class="layui-col-md12">
                     <div class="layui-card" th:each="question:${data}">
-                        <div class="layui-card-header"><span th:text="${question.title}"></span>
+                        <div class="layui-card-header">[[${questionStat.index+1}]]:<span th:text="${question.title}"></span>
                             <span th:if="${question.type=='1'}">(单选)</span>
                             <span th:if="${question.type=='2'}">(多选)</span>
                             <span th:if="${question.type=='3'}">(判断)</span>
@@ -24,7 +24,7 @@
                             <input th:class="${question.id}+'useranswer'" th:if="${question.type=='2'}" type="checkbox" th:name="${question.id}" th:value="${item.number}">
                             <input th:class="${question.id}+'useranswer'" th:if="${question.type != '2'}" type="radio" th:name="${question.id}" th:value="${item.number}">
                             [[${item.number}]]:
-                            <span th:text="${item.content}"></span>
+                            <span th:text="${item.content}" onclick="checkbox(this)"></span>
                         </div>
                         <div class="layui-card-body">
                             <button class="layui-btn layui-btn-warm" th:onclick="'analysis('+${question.id}+',\''+${question.answer}+'\')'">解析</button>
@@ -37,6 +37,7 @@
 
 
                 </div>
+
 
 
 
@@ -57,11 +58,15 @@
 document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
 
 <script type="text/javascript">
+
+
+
     var layer;
     $(function(){
         layui.use('layer', function(){
             layer = layui.layer;
         });
+
     })
 
 
@@ -78,7 +83,7 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
                 data:"["+id+"]",
                 success : function(result) {
                     if (result.code != web_status.SUCCESS) {
-                        $.modal.msgError(result.msg);
+                        layer.msg('result.msg', {icon: 2});
                     }
                 }
             });
@@ -87,6 +92,10 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
         }
         $("#"+id+"answer").show()
     }
+
+//    function checkbox(value){
+//        $(value).prev().attr("checked", true);
+//    }
 
 </script>
 

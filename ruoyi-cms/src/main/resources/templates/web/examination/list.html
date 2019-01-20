@@ -37,10 +37,27 @@
 </div>
  
 <script src="/web/res/layui/layui.js"></script>
+<script src="/js/jquery.min.js"></script>
 
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
 
 <script type="text/javascript">
+
+
+    var layer;
+    $(function(){
+        layui.use('layer', function(){
+            layer = layui.layer;
+        });
+
+        var errormsg = '[[${error}]]';
+        if(errormsg){
+            layer.msg(errormsg, {icon: 2});
+        }
+
+
+    })
+
     layui.use('table', function(){
         var table = layui.table;
 
@@ -110,7 +127,7 @@
             var data = obj.data //获得当前行数据
                 ,layEvent = obj.event; //获得 lay-event 对应的值
             if(layEvent === 'start'){
-                window.location.href = "/web/practice/start/"+data.id;
+                window.location.href = "/web/examination/start/"+data.id;
             }
         })
     });

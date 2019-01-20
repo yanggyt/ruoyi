@@ -61,8 +61,8 @@ public class CmsExaminationController {
     @GetMapping()
     public String start(@PathVariable String id, ModelMap mmap) {
         ExamExamination examExamination = examExaminationService.selectById( id );
-        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        Integer userId = Integer.parseInt( sysUser.getUserId().toString() );
+//        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+//        Integer userId = Integer.parseInt( sysUser.getUserId().toString() );
         //考试类型
         String type = examExamination.getType();
         //试卷ID
@@ -73,14 +73,15 @@ public class CmsExaminationController {
         Integer timeLength = examExamination.getTimeLength();
         //考试记录ID
         Integer examUserExaminationId = -1;
-        if(1==1){
-            throw new BaseException("已超过" + examNumber + "次考试，");
-        }
+//        if(1==1){
+//            mmap.put("error","已超过" + examNumber + "次考试");
+//            return prefix + "list";
+//        }
         ExamUserExamination insert = new ExamUserExamination();
         //正式考试
         if (type.equals( "2" )) {
             ExamUserExamination examUserExamination = new ExamUserExamination();
-            examUserExamination.setVipUserId( userId );
+            examUserExamination.setVipUserId( 1 );
             examUserExamination.setExamPaperId( examPaperId );
             examUserExamination.setExamExaminationId( Integer.parseInt( id ) );
             //考试记录集合
@@ -110,7 +111,7 @@ public class CmsExaminationController {
                     || userExamination.get( 0 ).getCreateDate().getTime() + timeLength * 60 * 1000 < new Date().getTime()//最后一次考试，已超过考过时长
                     ) {
                 insert.setExamExaminationId( Integer.parseInt( id ) );
-                insert.setVipUserId( userId );
+                insert.setVipUserId( 1 );
                 insert.setCreateDate( new Date() );
                 insert.setExamPaperId( examPaperId );
                 insert.setDelFlag( "0" );
@@ -169,7 +170,8 @@ public class CmsExaminationController {
         mmap.put( "data", data );
         mmap.put( "examUserExaminationId", examUserExaminationId );
         mmap.put( "examExamination", examExamination );
-        return prefix+"deatil";
+        mmap.put("paperId", examPaperId);
+        return prefix+"detail";
     }
 
 
