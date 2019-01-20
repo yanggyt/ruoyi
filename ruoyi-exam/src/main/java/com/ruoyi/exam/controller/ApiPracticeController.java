@@ -37,7 +37,7 @@ public class ApiPracticeController extends BaseController {
      * @return
      */
     @GetMapping("/v1/practice/list")
-    public AjaxResult list(@RequestParam ExamPractice examPractice) {
+    public AjaxResult list(ExamPractice examPractice) {
 
         List<ExamPracticeVO> list = examPracticeService.selectListFromWeb(examPractice);
         AjaxResult success = success("查询成功");
