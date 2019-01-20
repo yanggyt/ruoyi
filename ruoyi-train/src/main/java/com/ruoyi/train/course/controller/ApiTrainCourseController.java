@@ -49,7 +49,7 @@ public class ApiTrainCourseController extends BaseController {
 		return success;
 	}
 	/**
-	 * 查询课程列表
+	 * 查询我的课程列表
 	 */
 	@GetMapping("/trainCourse/myList")
 	public AjaxResult myList( TrainCourseVO trainCourse) {
