@@ -4,6 +4,7 @@ import com.ruoyi.common.config.Global;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.exam.domain.ExamPractice;
 import com.ruoyi.exam.service.IExamPracticeService;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseSection;
@@ -51,28 +52,14 @@ public class CmsController {
     @Autowired
     private IExamPracticeService examPracticeService;
 
-    @RequestMapping("")
+    @RequestMapping({"","/index","/index.html"})
     @GetMapping()
     public String user(TrainCourseVO trainCourse, ModelMap map) {
         List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourse );
         map.put( "trainCourse", list );
+        map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/index";
     }
-
-
-    @RequestMapping("/user/login.html")
-    @GetMapping()
-    public String login() {
-        return prefix + "/user/login";
-    }
-
-
-    @RequestMapping("/user/reg.html")
-    @GetMapping()
-    public String reg() {
-        return prefix + "/user/reg";
-    }
-
 
     @RequestMapping("/course/courseInfo.html/{id}")
     @GetMapping()
@@ -87,6 +74,7 @@ public class CmsController {
         map.put( "trainCourse", trainCourse );
         map.put( "trainCourseSections", trainCourseSections );
         map.put( "examPractices", examPractices );
+        map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/course/courseInfo";
     }
     @RequestMapping("/course/courseSections.html/{id}")
@@ -100,6 +88,7 @@ public class CmsController {
         examPractice.setTrainCourseId( id );
         map.put( "trainCourseSection", tcs );
         map.put( "trainCourseSections", trainCourseSections );
+        map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/course/courseSections";
     }
 

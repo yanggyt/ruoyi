@@ -165,7 +165,7 @@ public class ExamQuestionServiceImpl extends AbstractBaseServiceImpl<ExamQuestio
 	@Override
 	public List<ExamQuestionVO> selectQuestionListByPracticeId(Map<String, Object> map) {
 
-		startPage();
+//		startPage();
 		return examQuestionMapper.selectQuestionListByPracticeId(map);
 
 	}

@@ -19,26 +19,24 @@
       <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
         <div class="layui-tab-item layui-show">
           <div class="layui-form layui-form-pane">
-            <form method="post">
               <div class="layui-form-item">
-                <label for="L_email" class="layui-form-label">邮箱</label>
+                <label for="L_loginName" class="layui-form-label">账户</label>
                 <div class="layui-input-inline">
-                  <input type="text" id="L_email" name="email" required lay-verify="required" autocomplete="off" class="layui-input">
+                  <input type="text" id="L_loginName" name="loginName" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="pass" required lay-verify="required" autocomplete="off" class="layui-input">
+                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-form-item">
-                <button class="layui-btn" lay-filter="*" lay-submit>立即登录</button>
+                <button id="btnSubmit" class="layui-btn" lay-filter="*" onclick="login()" >立即登录</button>
                 <span style="padding-left:20px;">
                   <a href="forget.html">忘记密码？</a>
                 </span>
               </div>
-            </form>
           </div>
         </div>
       </div>
@@ -48,23 +46,28 @@
 
 <div class="fly-footer" th:replace="web/index::cmsBottom">
 </div>
-
-<script src="../../res/layui/layui.js"></script>
 <script>
-layui.cache.page = 'user';
-layui.cache.user = {
-  username: '游客'
-  ,uid: -1
-  ,avatar: '../../res/images/avatar/00.jpg'
-  ,experience: 83
-  ,sex: '男'
-};
-layui.config({
-  version: "3.0.0"
-  ,base: '../../res/mods/'
-}).extend({
-  fly: 'index'
-}).use('fly');
+    function login() {
+        var loginName = $.common.trim($("input[name='loginName']").val());
+        var password = $.common.trim($("input[name='password']").val());
+        $.ajax({
+            type: "post",
+            url: ctx + "login",
+            data: {
+                "username": loginName,
+                "password": password,
+                "rememberMe":false,
+            },
+            success: function(r) {
+                debugger
+                if (r.code == 200) {
+                    location.href = ctx + 'web/user/index.html';
+                } else {
+                    $.modal.msg(r.msg);
+                }
+            }
+        });
+    }
 </script>
 
 </body>
