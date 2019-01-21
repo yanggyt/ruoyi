@@ -21,7 +21,13 @@ public class SysIndexController extends BaseController
 {
     @Autowired
     private ISysMenuService menuService;
+    // 系统CMS首页
+    @GetMapping({"","/"})
+    public String cmsindex(ModelMap mmap)
+    {
 
+        return "web";
+    }
     // 系统首页
     @GetMapping("/index")
     public String index(ModelMap mmap)
