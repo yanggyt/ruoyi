@@ -3,6 +3,7 @@ package com.ruoyi.cms.controller;
 import com.ruoyi.exam.domain.ExamQuestionVO;
 import com.ruoyi.exam.service.IExamPracticeService;
 import com.ruoyi.exam.service.IExamQuestionService;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,7 +35,9 @@ public class CmsPracticeController {
 
     @RequestMapping("/practice")
     @GetMapping()
-    public String list() {
+    public String list(ModelMap map) {
+
+        map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "list";
     }
 

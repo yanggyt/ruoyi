@@ -5,6 +5,7 @@ import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.exception.base.BaseException;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,8 @@ public class CmsExaminationController {
 
     @RequestMapping("/examination")
     @GetMapping()
-    public String list() {
+    public String list(ModelMap map) {
+        map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "list";
     }
 
