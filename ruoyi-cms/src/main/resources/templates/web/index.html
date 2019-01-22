@@ -135,6 +135,17 @@
     border-radius: 30px;
     overflow: hidden;
   }
+  .filterbox{/*! border:1px solid #ebebeb; */border-radius:4px;background: #fff;margin-top: 40px}
+  .filterbox ul{ background-color:white; text-indent:20px;border-radius:3px;}
+  .filterbox li{ position: relative;border-top:1px dashed #ebebeb;padding: 15px 15px 15px 0;margin-left: 140px;}
+  .filterbox li:first-child{border-top:0px;}
+  .filterbox li span{width: 140px;font-size: 16px;line-height:34px;position: absolute;left:-150px;top:15px; color:#fff;background:url(web/res/images/icon-1.png) #ff9f37 no-repeat right center;}
+  .filterbox li a{float: left;margin:0px 15px 0px 0;font-size: 14px;color: #828282;line-height: 34px;}
+  .filterbox li a.curr,
+  .filterbox li a:hover{color:#0288d1;}
+  .filterbox li:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+  .filterbox .path-now{font-size: 16px;color: #333;margin-bottom:20px;}
+
 
 </style>
 <div class="fly-header layui-bg-black" th:fragment="top">
@@ -187,6 +198,27 @@
   </div>
 </div>
 <div class="layui-container">
+  <section class="filterbox">
+    <ul>
+      <li field="classid"><span>选择分类：</span>
+        <a th:href="@{/web}" th:class="${#strings.isEmpty(selectCategoryId)}?'curr':''">不限</a>
+        <a th:each="category:${courseCategories1}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}"
+           th:class="${category.id}==${selectCategoryId}?'curr':''"></a>
+      </li>
+      <li field="classid"><span>选择分类：</span>
+        <a th:if="${#lists.size(courseCategories3)}>0" th:href="@{'/web?parentIds='+${courseCategories2[0].parentIds}}">不限</a>
+        <a th:if="${#lists.size(courseCategories3)}==0" th:href="@{'/web'}">不限</a>
+        <a th:each="category:${courseCategories2}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id}==${selectCategoryId}?'curr':''"></a>
+
+      </li>
+      <li field="classid"><span>选择分类：</span>
+        <a th:if="${#lists.size(courseCategories3)}>0" th:href="@{'/web?parentIds='+${courseCategories3[0].parentIds}}">不限</a>
+        <a th:if="${#lists.size(courseCategories3)}==0" th:href="@{'/web'}">不限</a>
+        <a th:each="category:${courseCategories3}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id}==${selectCategoryId}?'curr':''"></a>
+
+      </li>
+    </ul>
+  </section>
   <div class="title">
     <em></em>
     <span>所有课程</span>
@@ -200,7 +232,7 @@
             <img th:if="${#strings.isEmpty(course.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${course.name}" width="100%" height="180px">
             <img th:if="${not #strings.isEmpty(course.cover)}" th:src="${course.cover}" th:alt="${course.name}" width="100%" height="180px">
             <p class="in01">
-              <span class="f20 c77b" th:text="${course.name}">安全测试基础课程</span>
+              <span class="f20 c77b" th:text="${course.name}"></span>
               <span class="cfff"></span>
             </p>
             </a>

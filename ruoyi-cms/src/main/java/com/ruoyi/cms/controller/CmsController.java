@@ -1,5 +1,6 @@
 package com.ruoyi.cms.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.config.Global;
 import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.exam.domain.ExamPractice;
@@ -7,6 +8,7 @@ import com.ruoyi.exam.service.IExamPracticeService;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.train.course.domain.TrainCourse;
+import com.ruoyi.train.course.domain.TrainCourseCategory;
 import com.ruoyi.train.course.domain.TrainCourseSection;
 import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
@@ -17,14 +19,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,12 +53,38 @@ public class CmsController {
     @Autowired
     private IExamPracticeService examPracticeService;
 
-    @RequestMapping({"","/index","/index.html"})
+    @RequestMapping({"", "/index", "/index.html"})
     @GetMapping()
-    public String user(TrainCourseVO trainCourse, ModelMap map) {
-        List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourse );
+    public String index(String parentIds, ModelMap map) {
+        TrainCourseVO trainCourseVO = new TrainCourseVO();
+        //三级分类列表根据parentIds判断
+        TrainCourseCategory courseCategory = new TrainCourseCategory();
+        courseCategory.setParentId( (long) 100 );
+        List<TrainCourseCategory> courseCategories1 = trainCourseCategoryService.selectCategoryList( courseCategory );
+        List<TrainCourseCategory> courseCategories2 = new ArrayList<>();
+        List<TrainCourseCategory> courseCategories3 = new ArrayList<>();
+        if (StrUtil.isNotBlank( parentIds ) && parentIds.split( "," ).length >= 3) {//二级分类
+            Long parentId = new Long( parentIds.split( "," )[2] );
+            courseCategory.setParentId( parentId );
+            courseCategories2 = trainCourseCategoryService.selectCategoryList( courseCategory );
+        }
+        if (StrUtil.isNotBlank( parentIds ) && parentIds.split( "," ).length >= 4) {//三级分类
+            Long parentId = new Long( parentIds.split( "," )[3] );
+            courseCategory.setParentId( parentId );
+            courseCategories3 = trainCourseCategoryService.selectCategoryList( courseCategory );
+        }
+        if (StrUtil.isNotBlank( parentIds )) {
+            trainCourseVO.setTrainCourseCategoryId( new Integer( parentIds.split( "," )[parentIds.split( "," ).length - 1] ) );
+            //当前选中的分类id
+            map.put( "selectCategoryId", parentIds.split( "," )[parentIds.split( "," ).length - 1]  );
+        }
+        List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourseVO );
         map.put( "trainCourse", list );
         map.put( "user", ShiroUtils.getSysUser() );
+        //三级分类列表
+        map.put( "courseCategories1", courseCategories1 );
+        map.put( "courseCategories2", courseCategories2 );
+        map.put( "courseCategories3", courseCategories3 );
         return prefix + "/index";
     }
 
@@ -77,10 +104,11 @@ public class CmsController {
         map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/course/courseInfo";
     }
+
     @RequestMapping("/course/courseSections.html/{id}")
     @GetMapping()
     public String courseSections(@PathVariable("id") Integer id, ModelMap map) {
-        TrainCourseSection tcs= trainCourseSectionService.selectById( id );
+        TrainCourseSection tcs = trainCourseSectionService.selectById( id );
         TrainCourseSection trainCourseSection = new TrainCourseSection();
         trainCourseSection.setTrainCourseId( tcs.getTrainCourseId() );
         List<TrainCourseSection> trainCourseSections = trainCourseSectionService.selectTrainCourseSectionList( trainCourseSection );
