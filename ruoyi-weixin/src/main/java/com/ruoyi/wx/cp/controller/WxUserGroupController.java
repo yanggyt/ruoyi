@@ -52,7 +52,7 @@ public class WxUserGroupController {
     }
 
     @Log(title = "新增组织机构", businessType = BusinessType.INSERT)
-    @GetMapping("/insert")
+    @PostMapping("/insert")
     public AjaxResult insert(@RequestBody WxCpDepart wxCpDepart) {
         this.logger.info("新增组织机构");
         try {
@@ -64,7 +64,7 @@ public class WxUserGroupController {
         }
     }
     @Log(title = "全量新增组织机构", businessType = BusinessType.INSERT)
-    @GetMapping("/insertList")
+    @PostMapping("/insertList")
     public AjaxResult insertList(@RequestBody List<WxCpDepart> wxCpDeparts) {
         this.logger.info("全量新增组织机构");
         try {
@@ -78,7 +78,7 @@ public class WxUserGroupController {
         }
     }
     @Log(title = "获取组织机构", businessType = BusinessType.INSERT)
-    @GetMapping("/update")
+    @PostMapping("/update")
     public AjaxResult update(@RequestBody WxCpDepart wxCpDepart) {
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
@@ -91,8 +91,8 @@ public class WxUserGroupController {
     }
 
     @Log(title = "删除组织机构", businessType = BusinessType.INSERT)
-    @GetMapping("/delete")
-    public AjaxResult delete(@RequestBody Long id) {
+    @GetMapping("/delete/{id}")
+    public AjaxResult delete(@PathVariable("id") Long id) {
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             departmentService.delete(id);
