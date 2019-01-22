@@ -1,8 +1,13 @@
 package com.ruoyi.cms.controller;
 
 import com.ruoyi.exam.domain.ExamPractice;
+import com.ruoyi.exam.domain.ExamUserErrorQuestion;
+import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
 import com.ruoyi.exam.service.IExamPracticeService;
+import com.ruoyi.exam.service.IExamUserErrorQuestionService;
+import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.util.ShiroUtils;
+import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseSection;
@@ -35,6 +40,9 @@ public class CmsUserController {
 
     @Autowired
     private ISysUserService sysUserService;
+
+    @Autowired
+    private IExamUserErrorQuestionService examUserErrorQuestionService;
 
 
 
@@ -74,5 +82,14 @@ public class CmsUserController {
     public String webUserMessage(ModelMap map) {
         map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/user/message";
+    }
+
+    @RequestMapping("/user/errorquestion.html")
+    public String errorquestion(ModelMap map) {
+        ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
+        examUserErrorQuestion.setVipUserId(ShiroUtils.getSysUser().getUserId().intValue());
+        List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailList(examUserErrorQuestion);
+        map.put("data", list);
+        return prefix + "/user/errorquestion";
     }
 }

@@ -151,7 +151,7 @@
 <div class="fly-header layui-bg-black" th:fragment="top">
   <div class="layui-container">
     <a class="fly-logo" th:href="@{/web}">
-      <img th:src="@{juncong.png}" alt="骏聪" width="100px" height="45px">
+      <img th:src="@{/juncong.png}" alt="骏聪" width="100px" height="45px">
     </a>
     <ul class="layui-nav fly-nav layui-hide-xs">
       <li class="layui-nav-item layui-this">
@@ -189,6 +189,8 @@
           <dd><a th:href="@{/web/user/set.html}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
           <dd><a th:href="@{/web/user/message.html}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
           <dd><a th:href="@{/web/user/home.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+          <dd><a th:href="@{/web/user/errorquestion.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe63c;</i>我的错题本</a></dd>
+          <dd><a th:href="@{/web/user/collect.html}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe600;</i>我的收藏</a></dd>
           <dd><a href="" style="text-align: center;">退出</a></dd>
         </dl>
       </li>
@@ -225,33 +227,33 @@
     <i>All Course</i>
   </div>
   <div class="layui-row layui-col-space15">
-      <div class="layui-col-md3" th:each="course:${trainCourse}">
-        <div class="course">
-          <div class="courseImg">
-            <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
+    <div class="layui-col-md3" th:each="course:${trainCourse}">
+      <div class="course">
+        <div class="courseImg">
+          <a th:href="@{'/web/course/courseInfo.html/'+${course.id}}">
             <img th:if="${#strings.isEmpty(course.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${course.name}" width="100%" height="180px">
             <img th:if="${not #strings.isEmpty(course.cover)}" th:src="${course.cover}" th:alt="${course.name}" width="100%" height="180px">
             <p class="in01">
               <span class="f20 c77b" th:text="${course.name}"></span>
               <span class="cfff"></span>
             </p>
-            </a>
+          </a>
+        </div>
+        <div class="remark">
+          <div class="title" th:text="${course.description}">
           </div>
-          <div class="remark">
-            <div class="title" th:text="${course.description}">
-            </div>
-            <div class="price" th:if="${course.price>0}" th:text="'￥'+${course.price}">
-            </div>
+          <div class="price" th:if="${course.price>0}" th:text="'￥'+${course.price}">
+          </div>
 
-            <div class="free_price" th:if="${course.price==0}" th:text="'免费'">
-            </div>
-            <div class="boxbtn01 clearfix">
-              <a class="btn01"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">了解更多</a>
-              <a class="btn02"  th:href="@{/web/course/coursePay.html}">立即购买</a>
-            </div>
+          <div class="free_price" th:if="${course.price==0}" th:text="'免费'">
+          </div>
+          <div class="boxbtn01 clearfix">
+            <a class="btn01"  th:href="@{'/web/course/courseInfo.html/'+${course.id}}">了解更多</a>
+            <a class="btn02"  th:href="@{/web/course/coursePay.html}">立即购买</a>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </div>
 
