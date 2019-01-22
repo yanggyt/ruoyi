@@ -5,7 +5,9 @@ import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.wx.cp.config.WxCpConfiguration;
 import com.ruoyi.wx.cp.config.WxCpProperties;
+import com.ruoyi.wx.cp.constant.ErrorCodeText;
 import com.ruoyi.wx.cp.utils.JsonUtils;
+import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.WxCpDepartmentService;
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
@@ -44,64 +46,59 @@ public class WxUserGroupController {
             WxCpDepartmentService departmentService = wxCpService.getDepartmentService();
             List<WxCpDepart> list = departmentService.list(null);
             return AjaxResult.success(list,"获取组织机构成功");
-        } catch (Exception e) {
-            this.logger.info("\n获取组织机构出错" + e.getMessage());
-            return AjaxResult.error("获取组织机构出错");
+        } catch (WxErrorException e) {
+            return AjaxResult.error("获取组织机构出错，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
 
     @Log(title = "新增组织机构", businessType = BusinessType.INSERT)
     @GetMapping("/insert")
-    public AjaxResult insert(WxCpDepart wxCpDepart) {
+    public AjaxResult insert(@RequestBody WxCpDepart wxCpDepart) {
         this.logger.info("新增组织机构");
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             Integer id = departmentService.create(wxCpDepart);
             return AjaxResult.success(id,"新增组织机构成功");
-        } catch (Exception e) {
-            this.logger.info("\n新增组织机构" + e.getMessage());
-            return AjaxResult.error("新增组织机构出错");
+        } catch (WxErrorException e) {
+            return AjaxResult.error("新增组织机构出错，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
     @Log(title = "全量新增组织机构", businessType = BusinessType.INSERT)
     @GetMapping("/insertList")
-    public AjaxResult insertList(List<WxCpDepart> wxCpDeparts) {
+    public AjaxResult insertList(@RequestBody List<WxCpDepart> wxCpDeparts) {
         this.logger.info("全量新增组织机构");
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             for (WxCpDepart wxCpDepart : wxCpDeparts) {
                 Integer id = departmentService.create(wxCpDepart);
             }
-            return AjaxResult.success(wxCpDeparts.size(),"全量新增组织机构");
-        } catch (Exception e) {
-            this.logger.info("\n全量新增组织机构" + e.getMessage());
-            return AjaxResult.error("全量新增组织机构");
+            return AjaxResult.success(wxCpDeparts.size(),"全量新增组织机构成功");
+        } catch (WxErrorException e) {
+            return AjaxResult.error("全量新增组织机构失败，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
     @Log(title = "获取组织机构", businessType = BusinessType.INSERT)
     @GetMapping("/update")
-    public AjaxResult update(WxCpDepart wxCpDepart) {
+    public AjaxResult update(@RequestBody WxCpDepart wxCpDepart) {
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
 
             departmentService.update(wxCpDepart);
             return AjaxResult.success("更新组织机构成功");
-        } catch (Exception e) {
-            this.logger.info("\n更新组织机构成功" + e.getMessage());
-            return AjaxResult.error("更新组织机构成功");
+        } catch (WxErrorException e) {
+            return AjaxResult.error("更新组织机构失败，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
 
     @Log(title = "删除组织机构", businessType = BusinessType.INSERT)
     @GetMapping("/delete")
-    public AjaxResult delete(Long id) {
+    public AjaxResult delete(@RequestBody Long id) {
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             departmentService.delete(id);
             return AjaxResult.success("删除组织机构成功");
-        } catch (Exception e) {
-            this.logger.info("\n删除组织机构出错" + e.getMessage());
-            return AjaxResult.error("删除组织机构出错");
+        } catch (WxErrorException e) {
+            return AjaxResult.error("删除组织机构出错，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
 
