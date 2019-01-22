@@ -53,6 +53,7 @@
 		<module>ruoyi-vip</module>
 		<module>ruoyi-train</module>
         <module>ruoyi-cms</module>
+        <module>ruoyi-weixin</module>
         <!--<module>tuoyi-test</module>-->
     </modules>
     <packaging>pom</packaging>

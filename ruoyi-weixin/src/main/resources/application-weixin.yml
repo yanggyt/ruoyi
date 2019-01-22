@@ -1,0 +1,12 @@
+wechat:
+  cp:
+    corpId: wwffb70143e94111eb
+    appConfigs:
+      - agentId: 999999
+        secret: yeL6mZp5IFIkfQ3wWMGFI8G-L4a6BEF194fnRzhvCy0
+        token: 111
+        aesKey: 111
+      - agentId: 1000002
+        secret: 1111
+        token: 111
+        aesKey: 111
