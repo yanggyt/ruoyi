@@ -56,7 +56,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
   profiles: 
-    active: druid
+    active: druid,weixin
   # 文件上传
   servlet:
      multipart:

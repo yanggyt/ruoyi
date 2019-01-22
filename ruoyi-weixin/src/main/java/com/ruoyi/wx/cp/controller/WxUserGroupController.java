@@ -35,7 +35,7 @@ public class WxUserGroupController {
 
     private WxCpProperties properties;
 
-    @Log(title = "上传文件", businessType = BusinessType.INSERT)
+    @Log(title = "获取组织机构列表", businessType = BusinessType.INSERT)
     @GetMapping("/departAllList")
     public AjaxResult departAllList() {
         this.logger.info("\n获取组织机构");
@@ -50,6 +50,7 @@ public class WxUserGroupController {
         }
     }
 
+    @Log(title = "新增组织机构", businessType = BusinessType.INSERT)
     @GetMapping("/insert")
     public AjaxResult insert(WxCpDepart wxCpDepart) {
         this.logger.info("新增组织机构");
@@ -62,32 +63,46 @@ public class WxUserGroupController {
             return AjaxResult.error("新增组织机构出错");
         }
     }
-
+    @Log(title = "全量新增组织机构", businessType = BusinessType.INSERT)
+    @GetMapping("/insertList")
+    public AjaxResult insertList(List<WxCpDepart> wxCpDeparts) {
+        this.logger.info("全量新增组织机构");
+        try {
+            WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
+            for (WxCpDepart wxCpDepart : wxCpDeparts) {
+                Integer id = departmentService.create(wxCpDepart);
+            }
+            return AjaxResult.success(wxCpDeparts.size(),"全量新增组织机构");
+        } catch (Exception e) {
+            this.logger.info("\n全量新增组织机构" + e.getMessage());
+            return AjaxResult.error("全量新增组织机构");
+        }
+    }
+    @Log(title = "获取组织机构", businessType = BusinessType.INSERT)
     @GetMapping("/update")
     public AjaxResult update(WxCpDepart wxCpDepart) {
-        this.logger.info("\n获取组织机构");
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
 
             departmentService.update(wxCpDepart);
             return AjaxResult.success("更新组织机构成功");
         } catch (Exception e) {
-            this.logger.info("\n获取组织机构出错" + e.getMessage());
+            this.logger.info("\n更新组织机构成功" + e.getMessage());
+            return AjaxResult.error("更新组织机构成功");
         }
-        return null;
     }
 
+    @Log(title = "删除组织机构", businessType = BusinessType.INSERT)
     @GetMapping("/delete")
     public AjaxResult delete(Long id) {
-        this.logger.info("\n获取组织机构");
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             departmentService.delete(id);
             return AjaxResult.success("删除组织机构成功");
         } catch (Exception e) {
             this.logger.info("\n删除组织机构出错" + e.getMessage());
+            return AjaxResult.error("删除组织机构出错");
         }
-        return null;
     }
 
 }

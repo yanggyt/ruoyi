@@ -249,6 +249,7 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/api/**", "anon");
         //前端网站展示
         filterChainDefinitionMap.put("/web/**", "anon");
+        filterChainDefinitionMap.put("/weixin/**", "anon");
         filterChainDefinitionMap.put("/profile/**", "anon");
         filterChainDefinitionMap.put("/captcha/captchaImage**", "anon");
         // 退出 logout地址，shiro去清除session
