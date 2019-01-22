@@ -67,11 +67,17 @@ public class CmsController {
             Long parentId = new Long( parentIds.split( "," )[2] );
             courseCategory.setParentId( parentId );
             courseCategories2 = trainCourseCategoryService.selectCategoryList( courseCategory );
+
+            map.put( "selectCategoryId1",parentId);
         }
         if (StrUtil.isNotBlank( parentIds ) && parentIds.split( "," ).length >= 4) {//三级分类
             Long parentId = new Long( parentIds.split( "," )[3] );
             courseCategory.setParentId( parentId );
             courseCategories3 = trainCourseCategoryService.selectCategoryList( courseCategory );
+            //当前选中的分类id
+            map.put( "selectCategoryId2",parentId);
+            Long parentId1 = new Long( parentIds.split( "," )[2] );
+            map.put( "selectCategoryId1",parentId1);
         }
         if (StrUtil.isNotBlank( parentIds )) {
             trainCourseVO.setTrainCourseCategoryId( new Integer( parentIds.split( "," )[parentIds.split( "," ).length - 1] ) );

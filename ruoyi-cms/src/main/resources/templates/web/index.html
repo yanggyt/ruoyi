@@ -203,12 +203,12 @@
       <li field="classid"><span>选择分类：</span>
         <a th:href="@{/web}" th:class="${#strings.isEmpty(selectCategoryId)}?'curr':''">不限</a>
         <a th:each="category:${courseCategories1}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}"
-           th:class="${category.id}==${selectCategoryId}?'curr':''"></a>
+           th:class="${category.id==selectCategoryId||category.id==selectCategoryId1}?'curr':''"></a>
       </li>
       <li field="classid"><span>选择分类：</span>
-        <a th:if="${#lists.size(courseCategories3)}>0" th:href="@{'/web?parentIds='+${courseCategories2[0].parentIds}}">不限</a>
-        <a th:if="${#lists.size(courseCategories3)}==0" th:href="@{'/web'}">不限</a>
-        <a th:each="category:${courseCategories2}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id}==${selectCategoryId}?'curr':''"></a>
+        <a th:if="${#lists.size(courseCategories2)}>0" th:href="@{'/web?parentIds='+${courseCategories2[0].parentIds}}">不限</a>
+        <a th:if="${#lists.size(courseCategories2)}==0" th:href="@{'/web'}">不限</a>
+        <a th:each="category:${courseCategories2}" th:href="@{'/web?parentIds='+${category.parentIds}+','+${category.id}}" th:text="${category.name}" th:class="${category.id==selectCategoryId||category.id==selectCategoryId2}?'curr':''"></a>
 
       </li>
       <li field="classid"><span>选择分类：</span>
