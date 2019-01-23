@@ -26,25 +26,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Binary Wang(https://github.com/binarywang)
+ * 同步
+ * @author zhujj
  */
 @RestController
-@RequestMapping("/wx/cp/user/group")
-public class WxUserGroupController {
+@RequestMapping("/wx/cp/department")
+public class WxDepartmentController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
 
     private WxCpProperties properties;
 
-    @Log(title = "获取组织机构列表", businessType = BusinessType.INSERT)
+    /**
+     * 获取指定部门及其下的子部门。 如果不填，默认获取全量组织架构
+     * @param id
+     * @return
+     */
     @GetMapping("/departAllList")
-    public AjaxResult departAllList() {
-        this.logger.info("\n获取组织机构");
+    public AjaxResult departAllList(Long id) {
         try {
             final WxCpService wxCpService = WxCpConfiguration.getCpService(999999);
             WxCpDepartmentService departmentService = wxCpService.getDepartmentService();
-            List<WxCpDepart> list = departmentService.list(null);
+            List<WxCpDepart> list = departmentService.list(id);
             return AjaxResult.success(list,"获取组织机构成功");
         } catch (WxErrorException e) {
             return AjaxResult.error("获取组织机构出错，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
@@ -54,7 +58,6 @@ public class WxUserGroupController {
     @Log(title = "新增组织机构", businessType = BusinessType.INSERT)
     @PostMapping("/insert")
     public AjaxResult insert(@RequestBody WxCpDepart wxCpDepart) {
-        this.logger.info("新增组织机构");
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             Integer id = departmentService.create(wxCpDepart);
@@ -77,7 +80,7 @@ public class WxUserGroupController {
             return AjaxResult.error("全量新增组织机构失败，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
-    @Log(title = "获取组织机构", businessType = BusinessType.INSERT)
+    @Log(title = "获取组织机构", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     public AjaxResult update(@RequestBody WxCpDepart wxCpDepart) {
         try {
@@ -90,7 +93,7 @@ public class WxUserGroupController {
         }
     }
 
-    @Log(title = "删除组织机构", businessType = BusinessType.INSERT)
+    @Log(title = "删除组织机构", businessType = BusinessType.DELETE)
     @GetMapping("/delete/{id}")
     public AjaxResult delete(@PathVariable("id") Long id) {
         try {
