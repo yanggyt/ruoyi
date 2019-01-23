@@ -90,6 +90,7 @@ public class CmsUserController {
         examUserErrorQuestion.setVipUserId(ShiroUtils.getSysUser().getUserId().intValue());
         List<ExamUserErrorQuestionVO> list = examUserErrorQuestionService.selectExamUserErrorQuestionDetailList(examUserErrorQuestion);
         map.put("data", list);
+        map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/user/errorquestion";
     }
 }
