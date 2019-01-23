@@ -94,7 +94,7 @@ public class WxUserController {
             return AjaxResult.error("全量新增成员成功【"+i+"】条,其余失败，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
-    @Log(title = "获取成员", businessType = BusinessType.UPDATE)
+    @Log(title = "更新成员", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     public AjaxResult update(@RequestBody WxCpUser wxCpUser) {
         try {
@@ -105,14 +105,24 @@ public class WxUserController {
             return AjaxResult.error("更新成员失败，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
-
     @Log(title = "删除成员", businessType = BusinessType.DELETE)
     @GetMapping("/delete")
+    public AjaxResult delete(String id) {
+        try {
+            WxCpUserService userService = WxCpConfiguration.getCpService(999999).getUserService();
+            userService.delete(id);
+            return AjaxResult.success("删除成员成功");
+        } catch (WxErrorException e) {
+            return AjaxResult.error("删除成员出错，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
+        }
+    }
+    @Log(title = "批量删除成员", businessType = BusinessType.DELETE)
+    @GetMapping("/deleteByIds")
     public AjaxResult delete(@RequestBody String[] ids) {
         try {
             WxCpUserService userService = WxCpConfiguration.getCpService(999999).getUserService();
             userService.delete(ids);
-            return AjaxResult.success("删除成员成功");
+            return AjaxResult.success("批量删除成员");
         } catch (WxErrorException e) {
             return AjaxResult.error("删除成员出错，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }

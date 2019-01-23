@@ -94,8 +94,8 @@ public class WxDepartmentController {
     }
 
     @Log(title = "删除组织机构", businessType = BusinessType.DELETE)
-    @GetMapping("/delete/{id}")
-    public AjaxResult delete(@PathVariable("id") Long id) {
+    @GetMapping("/delete")
+    public AjaxResult delete(Long id) {
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             departmentService.delete(id);
