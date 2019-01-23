@@ -51,6 +51,7 @@ public class CmsPracticeController {
             Collections.shuffle(result);
         }
         mmap.put("data", result);
+        mmap.put("practice",examPracticeService.selectById(id));
         return prefix + "detail";
     }
 }

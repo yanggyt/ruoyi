@@ -16,7 +16,10 @@
 
                 <div class="layui-col-md9">
                     <div class="layui-col-md12">
-                        <div class="layui-card" th:each="question:${data}">
+                        <div class="layui-card" style="text-align: center;">
+                            <span style="font-size: 30px;line-height: 60px">[[${examExamination.name}]]</span>
+                        </div>
+                        <div class="layui-card question" th:each="question:${data}">
                             <div class="layui-card-header">[[${questionStat.index+1}]]:<span
                                     th:text="${question.title}"></span>
                                 <span th:if="${question.type=='1'}">(单选)</span>
@@ -34,24 +37,23 @@
 
 
                             <!--<div class="layui-card-body">-->
-                                <!--<button class="layui-btn layui-btn-warm"-->
-                                        <!--th:onclick="'analysis('+${question.id}+',\''+${question.answer}+'\')'">解析-->
-                                <!--</button>-->
+                            <!--<button class="layui-btn layui-btn-warm"-->
+                            <!--th:onclick="'analysis('+${question.id}+',\''+${question.answer}+'\')'">解析-->
+                            <!--</button>-->
                             <!--</div>-->
                             <!--<div class="layui-card-body" hidden th:id="${question.id}+'answer'">-->
-                                <!--解析:正确答案[[${question.answer}]]<br>-->
-                                <!--[[${question.label}]]-->
+                            <!--解析:正确答案[[${question.answer}]]<br>-->
+                            <!--[[${question.label}]]-->
                             <!--</div>-->
                         </div>
 
                         <div class="layui-card">
-                            <button class="layui-btn layui-btn-warm" onclick="endPaper()">交卷</button>
+                            <button class="layui-btn layui-btn-warm" onclick="endPaper()" >交卷</button>
                         </div>
                     </div>
 
 
                 </div>
-
 
 
             </div>
@@ -78,26 +80,23 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
     })
 
 
+
     function endPaper() {
-        var userAnswer = $("." + id + "useranswer:checked").val();
-        if (userAnswer != answer) {
-            layer.msg('回答错误', {icon: 2});
+        var data = [];
+        $(".question").each(function(){
 
-            $.ajax({
-                type: 'post',
-                url: "/api/v1/practice/answer",
-                contentType: "application/json",
-                data: "[" + id + "]",
-                success: function (result) {
-                    if (result.code != web_status.SUCCESS) {
-                        $.modal.msgError(result.msg);
-                    }
+        })
+        $.ajax({
+            type: 'post',
+            url: "/api/v1/examination/finish/"+[[${examUserExaminationId}]]+"/"+[[${examExamination.id}]]+"/"+[[${paperId}]],
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.code != web_status.SUCCESS) {
+                    $.modal.msgError(result.msg);
                 }
-            });
-
-
-        }
-        $("#" + id + "answer").show()
+            }
+        });
     }
 
 </script>

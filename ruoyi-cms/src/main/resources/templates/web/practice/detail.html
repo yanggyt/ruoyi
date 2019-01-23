@@ -12,6 +12,10 @@
             <div class="fly-panel">
 
                 <div class="layui-col-md12">
+                    <div class="layui-card" style="text-align: center;">
+                        <span style="font-size: 30px;line-height: 60px">[[${practice.name}]]</span>
+                    </div>
+
                     <div class="layui-card" th:each="question:${data}">
                         <div class="layui-card-header">[[${questionStat.index+1}]]:<span th:text="${question.title}"></span>
                             <span th:if="${question.type=='1'}">(单选)</span>
