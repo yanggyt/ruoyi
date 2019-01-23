@@ -1,6 +1,7 @@
 package com.ruoyi.exam.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
@@ -60,15 +61,14 @@ public class ApiExaminationController extends BaseController {
     @GetMapping("/v1/examination/list")
     public AjaxResult list(ExamExamination examExamination) {
 
-//        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-//
+        SysUser sysUser = sysUserService.selectUserByLoginName( ShiroUtils.getLoginName() );
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
-//        map.put( "userId", sysUser.getUserId() );
-        map.put( "userId", 1 );
+        map.put( "userId", sysUser.getUserId() );
         List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
         AjaxResult success = success( "查询成功" );
         success.put( "data", list );
+        success.put("total",new PageInfo(list).getTotal());
         return success;
     }
 
@@ -296,7 +296,7 @@ public class ApiExaminationController extends BaseController {
             }
             item.setExamUserExaminationId( examUserExaminationId );
             item.setCreateDate( new Date() );
-            item.setCreateBy( user.getLoginName() );
+            item.setCreateBy(  user.getLoginName() );
             item.setDelFlag( "0" );
             item.setId( null );
             examUserExaminationQuestionService.insertOne( item );

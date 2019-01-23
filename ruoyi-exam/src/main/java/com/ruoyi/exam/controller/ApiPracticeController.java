@@ -1,5 +1,6 @@
 package com.ruoyi.exam.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
@@ -42,6 +43,7 @@ public class ApiPracticeController extends BaseController {
         List<ExamPracticeVO> list = examPracticeService.selectListFromWeb(examPractice);
         AjaxResult success = success("查询成功");
         success.put("data", list);
+        success.put("total",new PageInfo(list).getTotal());
         return success;
     }
 

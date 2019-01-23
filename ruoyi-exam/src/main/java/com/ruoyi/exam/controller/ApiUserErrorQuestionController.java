@@ -5,6 +5,7 @@ import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import io.swagger.annotations.Api;
@@ -55,8 +56,12 @@ public class ApiUserErrorQuestionController extends BaseController {
         for (String questionId : questionIds) {
             ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
             examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
-            SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+            SysUser sysUser = sysUserService.selectUserByLoginName(ShiroUtils.getLoginName());
             examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
+            List<ExamUserErrorQuestion> db = examUserErrorQuestionService.selectList(examUserErrorQuestion);
+            if(db.size()>0){
+                return success("错题已存在");
+            }
             examUserErrorQuestion.setCreateBy(sysUser.getLoginName());
             examUserErrorQuestion.setCreateDate(new Date());
             examUserErrorQuestion.setDelFlag("0");
