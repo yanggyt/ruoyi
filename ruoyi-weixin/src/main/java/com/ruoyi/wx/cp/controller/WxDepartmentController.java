@@ -70,10 +70,14 @@ public class WxDepartmentController {
     @PostMapping("/insertList")
     public AjaxResult insertList(@RequestBody List<WxCpDepart> wxCpDeparts) {
         this.logger.info("全量新增组织机构");
+        int i=0;
+        int u=0;
+        WxCpDepart temp=null;
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             for (WxCpDepart wxCpDepart : wxCpDeparts) {
                 List<WxCpDepart> list =null;
+                temp=wxCpDepart;
                 try {
                     list = departmentService.list(wxCpDepart.getId());
                 } catch (WxErrorException e) {
@@ -81,13 +85,15 @@ public class WxDepartmentController {
                 }
                 if(list!=null&& list.size()>0){
                     departmentService.update(wxCpDepart);
+                    u++;
                 }else{
                     Integer id = departmentService.create(wxCpDepart);
+                    i++;
                 }
             }
-            return AjaxResult.success(wxCpDeparts.size(),"全量新增组织机构成功");
+            return AjaxResult.success(wxCpDeparts.size(),"全量同步组织机构成功，新增【"+i+"】条，更新【"+u+"】条");
         } catch (WxErrorException e) {
-            return AjaxResult.error("全量新增组织机构失败，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
+            return AjaxResult.error("全量新增组织机构失败，新增成功【\"+i+\"】条，更新成功【\"+u+\"】条。出错部门名称信息【"+(temp!=null?temp.toString():"部门信息为空")+"】，错误码【"+ e.getError().getErrorCode()+"】，原因："+ ErrorCodeText.errorMsg(e.getError().getErrorCode()));
         }
     }
     @Log(title = "获取组织机构", businessType = BusinessType.UPDATE)
