@@ -89,6 +89,7 @@ public class WxUserController {
     public AjaxResult insertList(@RequestBody List<WxCpUser> wxCpUsers) {
         int i = 0;
         int u = 0;
+        WxCpUser temp=null;
         try {
             WxCpUserService userService = WxCpConfiguration.getCpService( 999999 ).getUserService();
             for (WxCpUser wxCpUser : wxCpUsers) {
@@ -98,6 +99,7 @@ public class WxUserController {
                 } catch (WxErrorException e) {
                     this.logger.info( "成员不存在" );
                 }
+                temp=wxCpUser;
                 if (user == null) {
                     i++;
                     userService.create( wxCpUser );
@@ -108,7 +110,7 @@ public class WxUserController {
             }
             return AjaxResult.success( i, "全量新增成员成功【" + i + "】条,更新成员成功【"+u+"】条" );
         } catch (WxErrorException e) {
-            return AjaxResult.error( "全量新增成员成功【" + i + "】条,更新成员成功【"+u+"】条,其余失败，错误码【" + e.getError().getErrorCode() + "】，原因：" + ErrorCodeText.errorMsg( e.getError().getErrorCode() ) );
+            return AjaxResult.error( "全量新增成员成功【" + i + "】条,更新成员成功【"+u+"】条,失败成员信息【"+(temp!=null?temp.toString():"成员信息不存在")+"】，错误码【" + e.getError().getErrorCode() + "】，原因：" + ErrorCodeText.errorMsg( e.getError().getErrorCode() ) );
         }
     }
 
