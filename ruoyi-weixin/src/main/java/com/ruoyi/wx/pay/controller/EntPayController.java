@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiOperation;
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
  */
 @Api("企业付款")
-@RequestMapping("/pay")
+@RequestMapping("/wx/pay")
 @RestController
 public class EntPayController {
   private WxPayService wxService;

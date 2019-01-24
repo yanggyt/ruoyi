@@ -53,7 +53,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api("微信支付")
 @RestController
-@RequestMapping("/pay")
+@RequestMapping("/wx/pay")
 public class WxPayController {
   private WxPayService wxService;
 
