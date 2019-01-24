@@ -17,20 +17,28 @@
                     </div>
 
                     <div class="layui-card" th:each="question:${data}">
-                        <div class="layui-card-header">[[${questionStat.index+1}]]:<span th:text="${question.title}"></span>
+                        <div class="layui-card-header">[[${questionStat.index+1}]]:<span
+                                th:text="${question.title}"></span>
                             <span th:if="${question.type=='1'}">(单选)</span>
                             <span th:if="${question.type=='2'}">(多选)</span>
                             <span th:if="${question.type=='3'}">(判断)</span>
                         </div>
                         <div class="layui-card-body" th:each="item:${question.questionItem}">
-                            <input th:class="${question.id}+'useranswer'" th:if="${question.type=='2'}" type="checkbox" th:name="${question.id}" th:value="${item.number}">
-                            <input th:class="${question.id}+'useranswer'" th:if="${question.type != '2'}" type="radio" th:name="${question.id}" th:value="${item.number}">
+                            <input th:class="${question.id}+'useranswer'" th:if="${question.type=='2'}" type="checkbox"
+                                   th:name="${question.id}" th:value="${item.number}">
+                            <input th:class="${question.id}+'useranswer'" th:if="${question.type != '2'}" type="radio"
+                                   th:name="${question.id}" th:value="${item.number}">
                             [[${item.number}]]:
                             <span th:text="${item.content}" onclick="checkbox(this)"></span>
                         </div>
                         <div class="layui-card-body">
-                            <button class="layui-btn layui-btn-warm" th:onclick="'analysis('+${question.id}+',\''+${question.answer}+'\')'">解析</button>
+                            <button class="layui-btn layui-btn-warm"
+                                    th:onclick="'analysis('+${question.id}+',\''+${question.answer}+'\')'">解析
+                            </button>
+                            <button class="layui-btn layui-btn-warm" th:onclick="'shoucang('+${question.id}+')'">收藏
+                            </button>
                         </div>
+
                         <div class="layui-card-body" hidden th:id="${question.id}+'answer'">
                             解析:正确答案[[${question.answer}]]<br>
                             [[${question.label}]]
@@ -54,28 +62,29 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
 <script type="text/javascript">
 
 
-
     var layer;
-    $(function(){
-        layui.use('layer', function(){
+    $(function () {
+        layui.use('layer', function () {
             layer = layui.layer;
         });
 
     })
 
 
-
-    function analysis(id,answer) {
-        var userAnswer = $("."+id+"useranswer:checked").val();
-        if(userAnswer != answer){
+    function analysis(id, answer) {
+        var userAnswer = ""
+        $("." + id + "useranswer:checked").each(function () {
+            userAnswer+=$(this).val()+","
+        });
+        if (userAnswer != (answer+",")) {
             layer.msg('回答错误', {icon: 2});
 
             $.ajax({
-                type : 'post',
-                url:"/api/v1/practice/answer",
-                contentType:"application/json",
-                data:"["+id+"]",
-                success : function(result) {
+                type: 'post',
+                url: "/api/v1/practice/answer",
+                contentType: "application/json",
+                data: "[" + id + "]",
+                success: function (result) {
                     if (result.code != web_status.SUCCESS) {
                         layer.msg('result.msg', {icon: 2});
                     }
@@ -83,13 +92,15 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
             });
 
 
+        }else{
+            layer.msg('回答正确', {icon: 1})
         }
-        $("#"+id+"answer").show()
+        $("#" + id + "answer").show()
     }
 
-//    function checkbox(value){
-//        $(value).prev().attr("checked", true);
-//    }
+    function checkbox(value) {
+        $(value).prev().prop("checked", !$(value).prev().prop("checked"));
+    }
 
 </script>
 
