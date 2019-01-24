@@ -134,37 +134,17 @@ public class WxPayController {
       "tradeType":"NATIVE",
       "productId":"13652b4a71df2f49e3647c55c8e31a88"
       }
+    返回
+      {
+      "codeUrl": "weixin://wxpay/bizpayurl?pr=pK0R74G"
+      }
    */
   @ApiOperation(value = "统一下单，并组装所需支付参数")
   @PostMapping("/createOrder")
   public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
     return this.wxService.createOrder(request);
   }
-  /**
-   * 调用统一下单接口，并组装生成支付所需参数对象.并返回二维码
-   *
-   * @param request 统一下单请求参数
-   * @param <T>     请使用{@link com.github.binarywang.wxpay.bean.order}包下的类
-   * @return 返回二维码
-   *
-   * 示例参数
-   * {
-  "body":"测试商品",
-  "outTradeNo":"12344324242342342342554",
-  "totalFee":1.01,
-  "spbillCreateIp":"1.80.82.241",
-  "notifyUrl":"http://www.baidu.com",
-  "tradeType":"NATIVE",
-  "productId":"13652b4a71df2f49e3647c55c8e31a88"
-  }
-   */
-  @ApiOperation(value = "统一下单，并组装所需支付参数,返回二维码")
-  @PostMapping("/createOrderQrcode")
-  public <T> T createOrderAndQrcode(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
-    Object order = this.wxService.createOrder(request);
 
-    return null;
-  }
   /**
    * 统一下单(详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1)
    * 在发起微信支付前，需要调用统一下单接口，获取"预支付交易会话标识"
