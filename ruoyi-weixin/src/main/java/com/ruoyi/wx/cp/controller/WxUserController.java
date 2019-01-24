@@ -87,22 +87,28 @@ public class WxUserController {
     @Log(title = "全量新增成员", businessType = BusinessType.INSERT)
     @PostMapping("/insertList")
     public AjaxResult insertList(@RequestBody List<WxCpUser> wxCpUsers) {
-        this.logger.info( "全量新增成员" );
         int i = 0;
+        int u = 0;
         try {
             WxCpUserService userService = WxCpConfiguration.getCpService( 999999 ).getUserService();
             for (WxCpUser wxCpUser : wxCpUsers) {
-                WxCpUser user = userService.getById( wxCpUser.getUserId() );
+                WxCpUser user = null;
+                try {
+                    user = userService.getById( wxCpUser.getUserId() );
+                } catch (WxErrorException e) {
+                    this.logger.info( "成员不存在" );
+                }
                 if (user == null) {
+                    i++;
                     userService.create( wxCpUser );
                 } else {
+                    u++;
                     userService.update( wxCpUser );
                 }
-                i++;
             }
-            return AjaxResult.success( i, "全量新增成员成功" );
+            return AjaxResult.success( i, "全量新增成员成功【" + i + "】条,更新成员成功【"+u+"】条" );
         } catch (WxErrorException e) {
-            return AjaxResult.error( "全量新增成员成功【" + i + "】条,其余失败，错误码【" + e.getError().getErrorCode() + "】，原因：" + ErrorCodeText.errorMsg( e.getError().getErrorCode() ) );
+            return AjaxResult.error( "全量新增成员成功【" + i + "】条,更新成员成功【"+u+"】条,其余失败，错误码【" + e.getError().getErrorCode() + "】，原因：" + ErrorCodeText.errorMsg( e.getError().getErrorCode() ) );
         }
     }
 
