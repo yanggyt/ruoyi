@@ -123,13 +123,48 @@ public class WxPayController {
    * @param request 统一下单请求参数
    * @param <T>     请使用{@link com.github.binarywang.wxpay.bean.order}包下的类
    * @return 返回 {@link com.github.binarywang.wxpay.bean.order}包下的类对象
+   *
+   * 示例参数
+   * {
+      "body":"测试商品",
+      "outTradeNo":"12344324242342342342554",
+      "totalFee":1.01,
+      "spbillCreateIp":"1.80.82.241",
+      "notifyUrl":"http://www.baidu.com",
+      "tradeType":"NATIVE",
+      "productId":"13652b4a71df2f49e3647c55c8e31a88"
+      }
    */
   @ApiOperation(value = "统一下单，并组装所需支付参数")
   @PostMapping("/createOrder")
   public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
     return this.wxService.createOrder(request);
   }
+  /**
+   * 调用统一下单接口，并组装生成支付所需参数对象.并返回二维码
+   *
+   * @param request 统一下单请求参数
+   * @param <T>     请使用{@link com.github.binarywang.wxpay.bean.order}包下的类
+   * @return 返回二维码
+   *
+   * 示例参数
+   * {
+  "body":"测试商品",
+  "outTradeNo":"12344324242342342342554",
+  "totalFee":1.01,
+  "spbillCreateIp":"1.80.82.241",
+  "notifyUrl":"http://www.baidu.com",
+  "tradeType":"NATIVE",
+  "productId":"13652b4a71df2f49e3647c55c8e31a88"
+  }
+   */
+  @ApiOperation(value = "统一下单，并组装所需支付参数,返回二维码")
+  @PostMapping("/createOrderQrcode")
+  public <T> T createOrderAndQrcode(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
+    Object order = this.wxService.createOrder(request);
 
+    return null;
+  }
   /**
    * 统一下单(详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1)
    * 在发起微信支付前，需要调用统一下单接口，获取"预支付交易会话标识"
@@ -298,6 +333,9 @@ public class WxPayController {
    * @param sideLength 要生成的二维码的边长，如果为空，则取默认值400
    * @return 生成的二维码的字节数组
    */
+
+  @ApiOperation(value = "生成二维码")
+  @GetMapping("/createQrcode")
   public byte[] createScanPayQrcodeMode2(String codeUrl, File logoFile, Integer sideLength) {
     return this.wxService.createScanPayQrcodeMode2(codeUrl, logoFile, sideLength);
   }

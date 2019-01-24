@@ -73,7 +73,17 @@ public class WxDepartmentController {
         try {
             WxCpDepartmentService departmentService = WxCpConfiguration.getCpService(999999).getDepartmentService();
             for (WxCpDepart wxCpDepart : wxCpDeparts) {
-                Integer id = departmentService.create(wxCpDepart);
+                List<WxCpDepart> list =null;
+                try {
+                    list = departmentService.list(wxCpDepart.getId());
+                } catch (WxErrorException e) {
+                    this.logger.info( "组织机构不存在" );
+                }
+                if(list!=null&& list.size()>0){
+                    departmentService.update(wxCpDepart);
+                }else{
+                    Integer id = departmentService.create(wxCpDepart);
+                }
             }
             return AjaxResult.success(wxCpDeparts.size(),"全量新增组织机构成功");
         } catch (WxErrorException e) {
