@@ -14,6 +14,7 @@ import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
+import com.ruoyi.train.course.service.ITrainCourseUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class CmsController {
     private ITrainCourseService trainCourseService;
 
     @Autowired
+    private ITrainCourseUserService trainCourseUserService;
+
+    @Autowired
     private ITrainCourseCategoryService trainCourseCategoryService;
 
     @Autowired
@@ -68,21 +72,21 @@ public class CmsController {
             courseCategory.setParentId( parentId );
             courseCategories2 = trainCourseCategoryService.selectCategoryList( courseCategory );
 
-            map.put( "selectCategoryId1",parentId);
+            map.put( "selectCategoryId1", parentId );
         }
         if (StrUtil.isNotBlank( parentIds ) && parentIds.split( "," ).length >= 4) {//三级分类
             Long parentId = new Long( parentIds.split( "," )[3] );
             courseCategory.setParentId( parentId );
             courseCategories3 = trainCourseCategoryService.selectCategoryList( courseCategory );
             //当前选中的分类id
-            map.put( "selectCategoryId2",parentId);
+            map.put( "selectCategoryId2", parentId );
             Long parentId1 = new Long( parentIds.split( "," )[2] );
-            map.put( "selectCategoryId1",parentId1);
+            map.put( "selectCategoryId1", parentId1 );
         }
         if (StrUtil.isNotBlank( parentIds )) {
             trainCourseVO.setTrainCourseCategoryId( new Integer( parentIds.split( "," )[parentIds.split( "," ).length - 1] ) );
             //当前选中的分类id
-            map.put( "selectCategoryId", parentIds.split( "," )[parentIds.split( "," ).length - 1]  );
+            map.put( "selectCategoryId", parentIds.split( "," )[parentIds.split( "," ).length - 1] );
         }
         List<TrainCourseVO> list = trainCourseService.selectTrainCoursePage( trainCourseVO );
         map.put( "trainCourse", list );
@@ -104,10 +108,14 @@ public class CmsController {
         ExamPractice examPractice = new ExamPractice();
         examPractice.setTrainCourseId( id );
         List<ExamPractice> examPractices = examPracticeService.selectExamPracticeList( examPractice );
+        if (ShiroUtils.getSysUser() != null) {
+            boolean b = trainCourseUserService.authority( ShiroUtils.getSysUser().getUserId(), id );
+            map.put( "user", ShiroUtils.getSysUser() );
+            map.put( "courseAuth",b);
+        }
         map.put( "trainCourse", trainCourse );
         map.put( "trainCourseSections", trainCourseSections );
         map.put( "examPractices", examPractices );
-        map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/course/courseInfo";
     }
 

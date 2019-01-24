@@ -35,6 +35,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
          </where>
     </select>
+    <select id="authority"  resultMap="TrainCourseUserResult">
+        select
+        <include refid="selectTrainCourseUserVo"/>
+        from train_course_user
+        <where>
+           train_course_id = #{trainCourseId}
+            and vip_user_id = #{vipUserId}
+            <if test="days>0" >
+                and ABS(DATEDIFF(create_date,now()))  <![CDATA[
+                <=#{days}
+                ]]>
+            </if>
+        </where>
+    </select>
 
-    
+
 </mapper>

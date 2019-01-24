@@ -22,5 +22,12 @@ public interface TrainCourseUserMapper  extends MyMapper<TrainCourseUser>
      * @return 课程使用对象集合
      */
 	public List<TrainCourseUser> selectTrainCourseUserList(TrainCourseUser trainCourseUser);
-	
+
+	/**
+	 * 判断是否有权限
+	 * @param userId
+	 * @param trainCourseId
+	 * @return
+	 */
+    List<TrainCourseUser> authority(Long userId, Integer trainCourseId,Integer days);
 }

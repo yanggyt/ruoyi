@@ -178,8 +178,8 @@
                                 <span class="price-info"><span th:text="'¥'+${trainCourse.price}"></span></span>
                             </div>
                             <div class="button">
-                                <input type="submit" onclick="return Logincart('551')" class="hb-ui-btn" value="立刻购买">
-                                <em>有效期:<span id="shixian">永久</span></em>
+                                <input type="button" onclick="shop()" class="hb-ui-btn" value="立刻购买">
+                                <em>有效期:<span id="shixian">${config.getKey("course.days")}</span>(天)</em>
                             </div>
                             <div class="remark" th:text="${trainCourse.description}">
 
@@ -202,8 +202,11 @@
             <div class="layui-tab-item layui-show">
                 <ul >
                     <li th:each="sections:${trainCourseSections}" >
-                        <a th:href="@{'/web/course/courseSections.html/'+${sections.id}}">
+                        <a th:if="${courseAuth}" th:href="@{'/web/course/courseSections.html/'+${sections.id}}">
                         <span th:text="${sections.name}"> </span>
+                        </a>
+                        <a th:if="!${courseAuth}" onclick="shop()">
+                            <span th:text="${sections.name}"> </span>
                         </a>
                         <hr>
                     </li>
@@ -226,11 +229,79 @@
 
 <div class="fly-footer" th:replace="web/index::cmsBottom">
 </div>
+<link rel="stylesheet" th:href="@{/web/res/layui/css/layui.css}">
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/web/res/layui/layui.js}"></script>
+<script th:src="@{/web/res/layui/qrcode.js}"></script>
+
 <script type="text/javascript">
-    layui.use('element', function(){
-        var element = layui.element;
+    layui.use(['element','layer'], function(){
+            var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
 
     });
+    function shop() {
+        var data={
+            "body":"[[${trainCourse.name}]]",
+            "outTradeNo":"12344324242342342342554",
+            "totalFee":[[${trainCourse.price*100}]],
+            "spbillCreateIp":"1.80.82.241",
+            "notifyUrl":"http://ceshi4.yqhl.cc/api/v1/notify/order",
+            "tradeType":"NATIVE",
+            "productId":"[[${trainCourse.id}]]"
+        };
+        $.ajax({
+            type: 'post',
+            url: "/wx/pay/createOrder",
+            contentType: "application/json",
+            dataType : 'json',
+            data:JSON.stringify(data),
+            success: function (result) {
+                if(!result.code){
+                    alertPayQrcode(result.codeUrl)
+                }else {
+                    layer.msg('生成支付二维码失败',{
+                        time: 2000, //20s后自动关闭
+                        btn: ['明白了']
+                    });
+                }
+            }
+        });
+
+    }
+    function alertPayQrcode(codeUrl) {
+        //弹出购买框
+        layer.open({
+            type: 1
+            ,title: false //不显示标题栏
+            ,closeBtn: false
+            ,area: '300px;'
+            ,shade: 0.8
+            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,btn: ['付款成功', '不购买']
+            ,btnAlign: 'c'
+            ,moveType: 1 //拖拽模式，0或者1
+            ,content: '<div style="padding: 40px; line-height: 22px; background-color: #fff;">' +
+            '<div id="qrcode"></div>' +
+            '<div style="text-align: center;margin-top:10px;">微信扫码支付<span style="color: red;">￥[[${trainCourse.price}]]</span>（元）购买</div>' +
+            '</div>'
+            ,success: function(layero){
+                var btn = layero.find('.layui-layer-btn');
+                btn.click(function(){
+
+                });
+            }
+        });
+        var qrcode = new QRCode('qrcode', {
+            text: codeUrl,
+            width: 200,
+            height: 200,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
 </script>
 </body>
 </html>
+

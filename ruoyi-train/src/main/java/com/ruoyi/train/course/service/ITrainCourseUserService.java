@@ -28,5 +28,10 @@ public interface ITrainCourseUserService extends AbstractBaseService<TrainCourse
      */
     public List<TrainCourseUser> selectTrainCourseUserList(TrainCourseUser trainCourseUser);
 
-	
+    /**
+     * 判断是否有权限
+     * @param userId 会员id
+     * @param trainCourseId 课程id
+     */
+    boolean authority(Long userId, Integer trainCourseId);
 }
