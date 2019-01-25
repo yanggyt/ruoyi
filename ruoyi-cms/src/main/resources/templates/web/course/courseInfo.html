@@ -168,7 +168,9 @@
                         <div class="image" id="courseImage">
                             <div id="view_flv" style="display:none;"></div>
                             <div class="course-pro0"></div>
-                            <img th:src="${trainCourse.cover}" class="course-cover" onerror="this.src='/sysimg/nopic.gif'" width="480" height="290">
+                            <img th:if="${#strings.isEmpty(trainCourse.cover)}" th:src="@{/web/res/images/no_img.png}" th:alt="${trainCourse.name}"  class="course-cover" width="480" height="290">
+                            <img th:if="${not #strings.isEmpty(trainCourse.cover)}" th:src="${trainCourse.cover}" th:alt="${trainCourse.name}"  class="course-cover" width="480" height="290">
+
                         </div>
                         <div class="courseInfo-right">
                             <div class="name" th:text="${trainCourse.name}">
@@ -177,9 +179,9 @@
                             <div class="price">
                                 <span class="price-info"><span th:text="'¥'+${trainCourse.price}"></span></span>
                             </div>
-                            <div class="button">
+                            <div class="button" th:if="${trainCourse.price>0}">
                                 <input type="button" onclick="shop()" class="hb-ui-btn" value="立刻购买">
-                                <em>有效期:<span id="shixian">${config.getKey("course.days")}</span>(天)</em>
+                                <em>有效期:<span id="shixian" th:text="${courseDays}"></span>(天)</em>
                             </div>
                             <div class="remark" th:text="${trainCourse.description}">
 
@@ -241,32 +243,38 @@
 
     });
     function shop() {
-        var data={
-            "body":"[[${trainCourse.name}]]",
-            "outTradeNo":"12344324242342342342554",
-            "totalFee":[[${trainCourse.price*100}]],
-            "spbillCreateIp":"1.80.82.241",
-            "notifyUrl":"http://ceshi4.yqhl.cc/api/v1/wx/pay/notify/order",
-            "tradeType":"NATIVE",
-            "productId":"[[${trainCourse.id}]]"
-        };
-        $.ajax({
-            type: 'post',
-            url: "/api/vi/wx/pay/createOrder",
-            contentType: "application/json",
-            dataType : 'json',
-            data:JSON.stringify(data),
-            success: function (result) {
-                if(!result.code){
-                    alertPayQrcode(result.codeUrl)
-                }else {
-                    layer.msg('生成支付二维码失败',{
-                        time: 2000, //20s后自动关闭
-                        btn: ['明白了']
-                    });
+        var userId="[[${user.userId}]]";
+        if(userId){
+            var data={
+                "body":"[[${trainCourse.name}]]",
+                "outTradeNo":"12344324242342342342554",
+                "totalFee":[[${trainCourse.price*100}]],
+                "spbillCreateIp":"1.80.82.241",
+                "notifyUrl":"http://ceshi4.yqhl.cc/api/v1/wx/pay/notify/order",
+                "tradeType":"NATIVE",
+                "productId":"[[${trainCourse.id}]]",
+                "openid":userId
+            };
+            $.ajax({
+                type: 'post',
+                url: "/api/v1/wx/pay/createOrder",
+                contentType: "application/json",
+                dataType : 'json',
+                data:JSON.stringify(data),
+                success: function (result) {
+                    if(!result.code){
+                        alertPayQrcode(result.codeUrl)
+                    }else {
+                        layer.msg('生成支付二维码失败',{
+                            time: 2000, //20s后自动关闭
+                            btn: ['明白了']
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            location.href="/web/user/login.html"
+        }
 
     }
     function alertPayQrcode(codeUrl) {

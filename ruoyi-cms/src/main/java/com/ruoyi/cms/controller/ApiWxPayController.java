@@ -24,6 +24,8 @@ import com.ruoyi.train.course.service.ITrainCourseUserService;
 import com.ruoyi.vip.domain.VipUserOrders;
 import com.ruoyi.vip.service.IVipUserOrdersService;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +41,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/wx/pay")
 public class ApiWxPayController extends BaseController {
+
+	private static final Logger log = LoggerFactory.getLogger( ApiWxPayController.class );
 	@Autowired
 	private ITrainCourseUserService trainCourseUserService ;
 
@@ -49,7 +53,9 @@ public class ApiWxPayController extends BaseController {
 	private WxPayService wxService;
 	@PostMapping("/notify/order")
 	public String parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
+
 		final WxPayOrderNotifyResult notifyResult = this.wxService.parseOrderNotifyResult(xmlData);
+		log.debug("-------------------------------支付回调中----------------------------");
 		if (null != notifyResult && notifyResult.getReturnCode().equals("SUCCESS")) {
 			VipUserOrders userOrders = new VipUserOrders();
 			userOrders.setId(notifyResult.getOutTradeNo());
@@ -101,12 +107,14 @@ public class ApiWxPayController extends BaseController {
 		request.setSpbillCreateIp( IpUtils.getIpAddr( ServletUtils.getRequest()));
 		VipUserOrders userOrders = new VipUserOrders();
 		userOrders.setId(request.getOutTradeNo());
-		userOrders.setVipUserId(ShiroUtils.getUserId().intValue());
+		userOrders.setVipUserId(Integer.parseInt(request.getOpenid()));
 		userOrders.setTrainCourseId(Integer.parseInt(request.getProductId()));
 		userOrders.setPrice(new BigDecimal(request.getTotalFee().intValue()/100));
 		//未支付订单
 		userOrders.setDelFlag("0");
 		vipUserOrdersService.insert(userOrders);
+		//零时存放我们自己的用户id,这儿清空
+		request.setOpenid(null);
 		return this.wxService.createOrder(request);
 	}
 

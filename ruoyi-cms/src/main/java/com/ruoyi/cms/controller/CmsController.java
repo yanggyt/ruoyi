@@ -6,6 +6,7 @@ import com.ruoyi.common.utils.file.FileUtils;
 import com.ruoyi.exam.domain.ExamPractice;
 import com.ruoyi.exam.service.IExamPracticeService;
 import com.ruoyi.framework.web.util.ShiroUtils;
+import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.train.course.domain.TrainCourse;
 import com.ruoyi.train.course.domain.TrainCourseCategory;
@@ -56,6 +57,9 @@ public class CmsController {
     private ISysUserService sysUserService;
     @Autowired
     private IExamPracticeService examPracticeService;
+
+    @Autowired
+    private ISysConfigService configService;
 
     @RequestMapping({"", "/index", "/index.html"})
     @GetMapping()
@@ -108,11 +112,15 @@ public class CmsController {
         ExamPractice examPractice = new ExamPractice();
         examPractice.setTrainCourseId( id );
         List<ExamPractice> examPractices = examPracticeService.selectExamPracticeList( examPractice );
+
+        boolean courseAuth=false;
+        String s = configService.selectConfigByKey( "course.days" );
         if (ShiroUtils.getSysUser() != null) {
-            boolean b = trainCourseUserService.authority( ShiroUtils.getSysUser().getUserId(), id );
-            map.put( "user", ShiroUtils.getSysUser() );
-            map.put( "courseAuth",b);
+            courseAuth = trainCourseUserService.authority( ShiroUtils.getSysUser().getUserId(), id );
         }
+        map.put( "courseAuth",courseAuth);
+        map.put( "user", ShiroUtils.getSysUser() );
+        map.put( "courseDays", s );
         map.put( "trainCourse", trainCourse );
         map.put( "trainCourseSections", trainCourseSections );
         map.put( "examPractices", examPractices );

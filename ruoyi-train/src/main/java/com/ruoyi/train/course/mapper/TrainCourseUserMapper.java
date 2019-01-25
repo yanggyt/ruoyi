@@ -3,6 +3,7 @@ package com.ruoyi.train.course.mapper;
 
 import com.ruoyi.framework.web.base.MyMapper;
 import com.ruoyi.train.course.domain.TrainCourseUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,9 +26,10 @@ public interface TrainCourseUserMapper  extends MyMapper<TrainCourseUser>
 
 	/**
 	 * 判断是否有权限
-	 * @param userId
+	 * @param vipUserId
 	 * @param trainCourseId
+	 * @param days 有效期
 	 * @return
 	 */
-    List<TrainCourseUser> authority(Long userId, Integer trainCourseId,Integer days);
+    List<TrainCourseUser> authority(@Param("vipUserId") Long vipUserId, @Param("trainCourseId") Integer trainCourseId, @Param("days") Integer days);
 }
