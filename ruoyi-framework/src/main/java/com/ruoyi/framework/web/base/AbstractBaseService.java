@@ -64,19 +64,6 @@ public abstract interface AbstractBaseService<T> {
      * @return
      */
     public int insertSelective(T entity);
-    /**
-     * 保存
-     * @param entity
-     * @return
-     */
-    public int insertNormal(T entity);
-
-    /**
-     * 保存不为null的数据
-     * @param entity
-     * @return
-     */
-    public int insertSelectiveNormal(T entity);
 
     /**
      * 删除符合条件的数据
@@ -101,7 +88,7 @@ public abstract interface AbstractBaseService<T> {
     public int deleteByIds(String ids);
 
     /**
-     * 根据编码ID全部字段更新
+     * 根据编码ID全部字段更新（自动填充用户信息）
      * 包含（NULL）
      * @param entity
      * @return
@@ -109,7 +96,7 @@ public abstract interface AbstractBaseService<T> {
     public int updateById(T entity) ;
 
     /**
-     * 根据编码ID更新
+     * 根据编码ID更新（自动填充用户信息）
      * 不包含（NULL）
      * @param entity
      * @return

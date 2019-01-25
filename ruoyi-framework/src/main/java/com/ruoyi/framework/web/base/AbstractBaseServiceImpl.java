@@ -68,14 +68,7 @@ public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implemen
         EntityUtils.setCreateAndUpdateInfo(entity);
         return  mapper.insertSelective(entity);
     }
-    @Override
-    public int insertNormal(T entity) {
-        return mapper.insert(entity);
-    }
-    @Override
-    public int insertSelectiveNormal(T entity) {
-        return  mapper.insertSelective(entity);
-    }
+
 
     @Override
     public int delete(T entity) {
@@ -104,7 +97,6 @@ public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implemen
         EntityUtils.setUpdatedInfo(entity);
         return mapper.updateByPrimaryKeySelective(entity);
     }
-
     @Override
     public List<T> selectByExample(Object example) {
         return mapper.selectByExample(example);

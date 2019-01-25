@@ -70,7 +70,7 @@ public class ApiWxPayController extends BaseController {
 			courseUser.setCreateDate(new Date());
 			courseUser.setUpdateDate(new Date());
 			courseUser.setRemarks("微信支付成功回调，订单ID:"+vipUserOrders.getId());
-			trainCourseUserService.insertSelectiveNormal(courseUser);
+			trainCourseUserService.insertSelective(courseUser);
 		}
 		return WxPayNotifyResponse.success("成功");
 	}
