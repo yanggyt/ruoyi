@@ -49,7 +49,8 @@ public class ApiWxPayController extends BaseController {
 
 	@Autowired
 	private IVipUserOrdersService vipUserOrdersService;
-
+	@Autowired
+	private ISysUserService sysUserService;
 	@Autowired
 	private WxPayService wxService;
 	@PostMapping("/notify/order")
@@ -110,6 +111,7 @@ public class ApiWxPayController extends BaseController {
 	public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
 		request.setOutTradeNo( IdUtil.simpleUUID());
 		request.setSpbillCreateIp( IpUtils.getIpAddr( ServletUtils.getRequest()));
+
 		VipUserOrders userOrders = new VipUserOrders();
 		userOrders.setId(request.getOutTradeNo());
 		userOrders.setVipUserId(Integer.parseInt(request.getOpenid()));
@@ -129,15 +131,32 @@ public class ApiWxPayController extends BaseController {
 	 * 接口地址：https://api.mch.weixin.qq.com/pay/unifiedorder
 	 *
 	 * @param request 请求对象，注意一些参数如appid、mchid等不用设置，方法内会自动从配置对象中获取到（前提是对应配置中已经设置）
+	 * 示例参数
+	 * {
+		"body":"测试商品",
+		"outTradeNo":"12344324242342342342554",
+		"totalFee":1.01,
+		"spbillCreateIp":"1.80.82.241",
+		"notifyUrl":"http://www.baidu.com",
+		"tradeType":"JSAPI",
+		"productId":"13652b4a71df2f49e3647c55c8e31a88"
+		"openid":''
+		}
+		返回
+		{
+		"codeUrl": "weixin://wxpay/bizpayurl?pr=pK0R74G"
+		}
 	 */
 	@ApiOperation(value = "原生的统一下单接口")
 	@PostMapping("/unifiedOrder")
 	public WxPayUnifiedOrderResult unifiedOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
 		request.setOutTradeNo( IdUtil.simpleUUID());
 		request.setSpbillCreateIp( IpUtils.getIpAddr( ServletUtils.getRequest()));
+		request.setSignType( "MD5" );
 		VipUserOrders userOrders = new VipUserOrders();
 		userOrders.setId(request.getOutTradeNo());
-		userOrders.setVipUserId(ShiroUtils.getUserId().intValue());
+		SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+		userOrders.setVipUserId(sysUser.getUserId().intValue());
 		userOrders.setTrainCourseId(Integer.parseInt(request.getProductId()));
 		userOrders.setPrice(new BigDecimal(request.getTotalFee().intValue()/100));
 		//未支付订单
