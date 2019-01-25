@@ -38,16 +38,10 @@ public class ApiUserCollectionQuestionController extends BaseController {
      */
     @PostMapping("/v1/question/collection/{id}")
     public AjaxResult answer(@PathVariable("id") Integer id) {
-        ExamUserCollectionQuestion examUserCollectionQuestion = new ExamUserCollectionQuestion();
-        examUserCollectionQuestion.setExamQuestionId( id );
+
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-        examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
-        examUserCollectionQuestion.setCreateBy( sysUser.getLoginName() );
-        examUserCollectionQuestion.setCreateDate( new Date() );
-        examUserCollectionQuestion.setDelFlag( "0" );
-        examUserCollectionQuestion.setUpdateBy( sysUser.getLoginName() );
-        examUserCollectionQuestion.setUpdateDate( new Date() );
-        int insert = examUserCollectionQuestionService.insertSelectiveBySelf( examUserCollectionQuestion );
+
+        int insert = examUserCollectionQuestionService.insertSelectiveBySelf(id,sysUser);
         AjaxResult success = success( "插入我的收藏记录成功" );
         return success;
     }

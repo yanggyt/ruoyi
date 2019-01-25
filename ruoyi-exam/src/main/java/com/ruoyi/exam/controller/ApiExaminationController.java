@@ -61,7 +61,7 @@ public class ApiExaminationController extends BaseController {
     @GetMapping("/v1/examination/list")
     public AjaxResult list(ExamExamination examExamination) {
 
-        SysUser sysUser = sysUserService.selectUserByLoginName( ShiroUtils.getLoginName() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
         map.put( "userId", sysUser.getUserId() );

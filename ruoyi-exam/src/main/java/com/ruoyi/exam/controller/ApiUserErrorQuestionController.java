@@ -54,20 +54,9 @@ public class ApiUserErrorQuestionController extends BaseController {
     @PostMapping("/v1/practice/answer")
     public AjaxResult answer(@RequestBody List<String> questionIds) {
         for (String questionId : questionIds) {
-            ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
-            examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
-            SysUser sysUser = sysUserService.selectUserByLoginName(ShiroUtils.getLoginName());
-            examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
-            List<ExamUserErrorQuestion> db = examUserErrorQuestionService.selectList(examUserErrorQuestion);
-            if(db.size()>0){
-                return success("错题已存在");
-            }
-            examUserErrorQuestion.setCreateBy(sysUser.getLoginName());
-            examUserErrorQuestion.setCreateDate(new Date());
-            examUserErrorQuestion.setDelFlag("0");
-            examUserErrorQuestion.setUpdateBy(sysUser.getLoginName());
-            examUserErrorQuestion.setUpdateDate(new Date());
-            int insert = examUserErrorQuestionService.insertError( examUserErrorQuestion );
+            SysUser sysUser = sysUserService.selectUserByLoginName(JwtUtil.getLoginName());
+
+            int insert = examUserErrorQuestionService.insertError(questionId,sysUser );
         }
         AjaxResult success = success("插入错题本成功");
         return success;

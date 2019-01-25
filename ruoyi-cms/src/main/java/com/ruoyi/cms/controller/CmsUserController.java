@@ -1,9 +1,9 @@
 package com.ruoyi.cms.controller;
 
-import com.ruoyi.exam.domain.ExamPractice;
-import com.ruoyi.exam.domain.ExamUserErrorQuestion;
-import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
+import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.IExamPracticeService;
+import com.ruoyi.exam.service.IExamUserCollectionQuestionService;
 import com.ruoyi.exam.service.IExamUserErrorQuestionService;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.util.ShiroUtils;
@@ -23,6 +23,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -43,6 +44,9 @@ public class CmsUserController {
 
     @Autowired
     private IExamUserErrorQuestionService examUserErrorQuestionService;
+
+    @Autowired
+    private IExamUserCollectionQuestionService examUserCollectionQuestionService;
 
 
 
@@ -92,5 +96,61 @@ public class CmsUserController {
         map.put("data", list);
         map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/user/errorquestion";
+    }
+
+    @RequestMapping("/user/collectquestion.html")
+    public String collectQuestion(ModelMap map) {
+        ExamUserCollectionQuestionVO examUserCollectionQuestion = new ExamUserCollectionQuestionVO();
+        SysUser sysUser = ShiroUtils.getSysUser();
+        examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
+        List<ExamUserCollectionQuestionVO> list = examUserCollectionQuestionService.selectExamUserCollectionQuestionList( examUserCollectionQuestion );
+        map.put("data", list);
+        map.put( "user", ShiroUtils.getSysUser() );
+        return prefix + "/user/collectquestion";
+    }
+
+    /**
+     * 增加错题
+     * @param questionId
+     * @return
+     */
+    @RequestMapping("/user/adderrorquestion")
+    @ResponseBody
+    public AjaxResult addErrorquestion(String questionId) {
+        SysUser sysUser = ShiroUtils.getSysUser();
+        examUserErrorQuestionService.insertError(questionId,sysUser);
+        AjaxResult success = AjaxResult.success("插入成功");
+        return success;
+    }
+
+    @RequestMapping("/user/addcollectquestion")
+    @ResponseBody
+    public AjaxResult addCollectionquestion(String questionId) {
+        SysUser sysUser = ShiroUtils.getSysUser();
+        examUserCollectionQuestionService.insertSelectiveBySelf(Integer.parseInt(questionId),sysUser);
+        AjaxResult success = AjaxResult.success("插入成功");
+        return success;
+    }
+
+    @RequestMapping("/user/delerrorquestion")
+    @ResponseBody
+    public AjaxResult delErrorquestion(Integer questionId) {
+        ExamUserErrorQuestion question = new ExamUserErrorQuestion();
+        question.setVipUserId(ShiroUtils.getUserId().intValue());
+        question.setExamQuestionId(questionId);
+        examUserErrorQuestionService.delete(question);
+        AjaxResult success = AjaxResult.success("删除成功");
+        return success;
+    }
+
+    @RequestMapping("/user/delcollectquestion")
+    @ResponseBody
+    public AjaxResult delCollectionquestion(Integer questionId) {
+        ExamUserCollectionQuestion examUserCollectionQuestion = new ExamUserCollectionQuestion();
+        examUserCollectionQuestion.setVipUserId(ShiroUtils.getUserId().intValue());
+        examUserCollectionQuestion.setExamQuestionId(questionId);
+        examUserCollectionQuestionService.delete(examUserCollectionQuestion);
+        AjaxResult success = AjaxResult.success("删除成功");
+        return success;
     }
 }

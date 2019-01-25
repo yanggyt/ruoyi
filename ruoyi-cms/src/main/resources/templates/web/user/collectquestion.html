@@ -14,24 +14,25 @@
 
     <div class="fly-panel fly-panel-user" pad20>
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-            <legend>我的错题</legend>
+            <legend>我的收藏</legend>
         </fieldset>
         <div class="layui-collapse" lay-filter="test">
-                <div class="layui-colla-item" th:each="item:${data}">
-                    <h2 class="layui-colla-title">[[${itemStat.index+1}]]:[[${item.question.title}]]
-                        <span th:if="${item.question.type=='1'}">(单选)</span>
-                        <span th:if="${item.question.type=='2'}">(多选)</span>
-                        <span th:if="${item.question.type=='3'}">(判断)</span>
-                        <button class="layui-btn layui-btn-primary layui-btn-sm" th:onclick="'del('+${item.question.id}+')'">删除</button>
-                    </h2>
-
-                    <div class="layui-colla-content">
-                        <p th:each="qItem:${item.question.questionItem}">[[${qItem.number}]]:[[${qItem.content}]]</p>
-                        <p>解析:正确答案[[${item.question.answer}]]</p>
-                        <p>[[${item.question.label}]]</p>
-                    </div>
+            <div class="layui-colla-item" th:each="item:${data}">
+                <h2 class="layui-colla-title">[[${itemStat.index+1}]]:[[${item.question.title}]]
+                    <span th:if="${item.question.type=='1'}">(单选)</span>
+                    <span th:if="${item.question.type=='2'}">(多选)</span>
+                    <span th:if="${item.question.type=='3'}">(判断)</span>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" th:onclick="'del('+${item.question.id}+')'">删除</button></h2>
+                <div class="layui-colla-content">
+                    <p th:each="qItem:${item.question.questionItem}">[[${qItem.number}]]:[[${qItem.content}]]</p>
+                    <p>解析:正确答案[[${item.question.answer}]]</p>
+                    <p>[[${item.question.label}]]</p>
                 </div>
             </div>
+        </div>
+
+
+
     </div>
 </div>
 
@@ -45,24 +46,25 @@
 document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
 
 <script type="text/javascript">
-    $(function () {
-        $("#errorquestion").addClass("layui-this")
+    $(function(){
+        $("#collectquestion").addClass("layui-this")
     })
 
     function del(id) {
         $.ajax({
             type: 'post',
-            url: "/web/user/delerrorquestion",
+            url: "/web/user/delcollectquestion",
             data: {questionId:id},
             success: function (result) {
                 if (result.code != web_status.SUCCESS) {
                     layer.msg(result.msg, {icon: 2});
                 }else{
-                    window.location="/web/user/errorquestion.html"
+                    window.location="/web/user/collectquestion.html"
                 }
             }
         });
     }
+
 
 
 </script>

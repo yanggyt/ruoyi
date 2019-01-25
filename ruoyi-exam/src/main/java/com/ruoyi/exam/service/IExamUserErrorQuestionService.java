@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
 import com.ruoyi.framework.web.base.AbstractBaseService;
+import com.ruoyi.system.domain.SysUser;
+
 /**
  * 我的错题 服务层
  * 
@@ -44,5 +46,5 @@ public interface IExamUserErrorQuestionService extends AbstractBaseService<ExamU
     List<ExamUserErrorQuestionVO> selectExamUserErrorQuestionDetailList(ExamUserErrorQuestion examUserErrorQuestion);
 
 
-    int insertError(ExamUserErrorQuestion examUserErrorQuestion);
+    int insertError(String questionId, SysUser sysUser);
 }

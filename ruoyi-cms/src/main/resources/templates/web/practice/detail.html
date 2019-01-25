@@ -81,12 +81,11 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
 
             $.ajax({
                 type: 'post',
-                url: "/api/v1/practice/answer",
-                contentType: "application/json",
-                data: "[" + id + "]",
+                url: "/web/user/adderrorquestion",
+                data: {questionId:id},
                 success: function (result) {
                     if (result.code != web_status.SUCCESS) {
-                        layer.msg('result.msg', {icon: 2});
+                        layer.msg(result.msg, {icon: 2});
                     }
                 }
             });
@@ -96,6 +95,19 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
             layer.msg('回答正确', {icon: 1})
         }
         $("#" + id + "answer").show()
+    }
+
+    function shoucang(id){
+        $.ajax({
+            type: 'post',
+            url: "/web/user/addcollectquestion",
+            data: {questionId:id},
+            success: function (result) {
+                if (result.code != web_status.SUCCESS) {
+                    layer.msg(result.msg, {icon: 2});
+                }
+            }
+        });
     }
 
     function checkbox(value) {

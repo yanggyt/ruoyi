@@ -1,8 +1,10 @@
 package com.ruoyi.exam.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
+import com.ruoyi.system.domain.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamUserErrorQuestionMapper;
@@ -20,6 +22,8 @@ public class ExamUserErrorQuestionServiceImpl extends AbstractBaseServiceImpl<Ex
 {
     @Autowired
     private ExamUserErrorQuestionMapper examUserErrorQuestionMapper;
+    @Autowired
+    private IExamUserErrorQuestionService examUserErrorQuestionService;
 
 
     /**
@@ -44,8 +48,20 @@ public class ExamUserErrorQuestionServiceImpl extends AbstractBaseServiceImpl<Ex
         return examUserErrorQuestionMapper.selectExamUserErrorQuestionDetailList(examUserErrorQuestion);
     }
     @Override
-    public int insertError(ExamUserErrorQuestion examUserErrorQuestion) {
+    public int insertError(String questionId, SysUser sysUser) {
 
+        ExamUserErrorQuestion examUserErrorQuestion = new ExamUserErrorQuestion();
+        examUserErrorQuestion.setExamQuestionId(Integer.parseInt(questionId));
+        examUserErrorQuestion.setVipUserId(sysUser.getUserId().intValue());
+        List<ExamUserErrorQuestion> db = examUserErrorQuestionService.selectList(examUserErrorQuestion);
+        if(db.size()>0){
+            return 0;
+        }
+        examUserErrorQuestion.setCreateBy(sysUser.getLoginName());
+        examUserErrorQuestion.setCreateDate(new Date());
+        examUserErrorQuestion.setDelFlag("0");
+        examUserErrorQuestion.setUpdateBy(sysUser.getLoginName());
+        examUserErrorQuestion.setUpdateDate(new Date());
 
         return  examUserErrorQuestionMapper.insert( examUserErrorQuestion );
     }

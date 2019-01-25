@@ -1,5 +1,6 @@
 package com.ruoyi.cms.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
@@ -14,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
@@ -57,6 +59,47 @@ public class CmsExaminationController {
     public String list(ModelMap map) {
         map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "list";
+    }
+
+    /**
+     * 考试列表
+     * @param map
+     * @return
+     */
+    @RequestMapping("/examination/list")
+    @GetMapping()
+    @ResponseBody
+    public AjaxResult list(ExamExamination examExamination) {
+        SysUser sysUser = sysUserService.selectUserByLoginName( ShiroUtils.getLoginName() );
+        Map<String, Object> map = new HashMap<>();
+        map.put( "ination", examExamination );
+        map.put( "userId", sysUser.getUserId() );
+        List<ExamExamination> list = examExaminationService.selectListFromWeb( map );
+        AjaxResult success = AjaxResult.success( "查询成功" );
+        success.put( "data", list );
+        success.put("total",new PageInfo(list).getTotal());
+        return success;
+    }
+
+    /**
+     * 报名列表
+     * @param map
+     * @return
+     */
+    @RequestMapping("/examination/signuplist")
+    @GetMapping()
+    @ResponseBody
+    public AjaxResult signupist(ExamExamination examExamination) {
+        SysUser sysUser = sysUserService.selectUserByLoginName( ShiroUtils.getLoginName() );
+
+        Map<String, Object> map = new HashMap<>();
+        map.put( "ination", examExamination );
+        map.put( "userId", sysUser.getUserId() );
+        List<ExamExamination> list = examExaminationService.selectEnterNameListFromWeb( map );
+        AjaxResult success = AjaxResult.success( "查询成功" );
+        success.put("total",new PageInfo(list).getTotal());
+        success.put( "data", list );
+        return success;
     }
 
     @RequestMapping("/examination/start/{id}")

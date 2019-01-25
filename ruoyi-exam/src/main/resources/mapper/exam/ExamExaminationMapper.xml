@@ -92,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LEFT JOIN exam_examination_user eeu ON eeu.exam_examination_id = exam_examination.id
 
         <where>
-            (exam_examination.type = '1' or eeu.vip_user_id = #{userId})
+            (exam_examination.type = '1' or eeu.vip_user_id = #{userId} or exam_examination.examination_user_limit = '1')
             and
             <![CDATA[((enable_control_time = '1' and end_time > NOW() and start_time < NOW())
             or enable_control_time = '0')  ]]>
@@ -130,7 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         <where>
             exam_examination.type = '2' and exam_examination.id not in (select exam_examination_id from exam_examination_user where vip_user_id = #{userId})
-            and
+            and exam_examination.examination_user_limit = '2' and
             <![CDATA[((enable_control_time = '1' and end_time > NOW() and start_time < NOW())
             or enable_control_time = '0')  ]]>
             <if test="id != null "> and exam_examination.id = #{ination.id}</if>
