@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -102,6 +103,7 @@ public class ApiWxPayController extends BaseController {
 		userOrders.setId(request.getOutTradeNo());
 		userOrders.setVipUserId(ShiroUtils.getUserId().intValue());
 		userOrders.setTrainCourseId(Integer.parseInt(request.getProductId()));
+		userOrders.setPrice(new BigDecimal(request.getTotalFee().intValue()/100));
 		//未支付订单
 		userOrders.setDelFlag("0");
 		vipUserOrdersService.insert(userOrders);
@@ -124,6 +126,7 @@ public class ApiWxPayController extends BaseController {
 		userOrders.setId(request.getOutTradeNo());
 		userOrders.setVipUserId(ShiroUtils.getUserId().intValue());
 		userOrders.setTrainCourseId(Integer.parseInt(request.getProductId()));
+		userOrders.setPrice(new BigDecimal(request.getTotalFee().intValue()/100));
 		//未支付订单
 		userOrders.setDelFlag("0");
 		vipUserOrdersService.insert(userOrders);
