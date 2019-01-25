@@ -246,13 +246,13 @@
             "outTradeNo":"12344324242342342342554",
             "totalFee":[[${trainCourse.price*100}]],
             "spbillCreateIp":"1.80.82.241",
-            "notifyUrl":"http://ceshi4.yqhl.cc/api/v1/notify/order",
+            "notifyUrl":"http://ceshi4.yqhl.cc/api/v1/wx/pay/notify/order",
             "tradeType":"NATIVE",
             "productId":"[[${trainCourse.id}]]"
         };
         $.ajax({
             type: 'post',
-            url: "/wx/pay/createOrder",
+            url: "/api/vi/wx/pay/createOrder",
             contentType: "application/json",
             dataType : 'json',
             data:JSON.stringify(data),
