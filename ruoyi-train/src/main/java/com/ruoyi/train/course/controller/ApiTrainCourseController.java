@@ -1,10 +1,6 @@
 package com.ruoyi.train.course.controller;
 
 import cn.hutool.json.JSONObject;
-import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
-import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
-import com.github.binarywang.wxpay.exception.WxPayException;
-import com.github.binarywang.wxpay.service.WxPayService;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.base.BaseController;
@@ -109,16 +105,5 @@ public class ApiTrainCourseController extends BaseController {
 		success.put( "data", trainCourseSections );
 		return success;
 	}
-	@Autowired
-	private WxPayService wxService;
-	@PostMapping("/notify/order")
-	public AjaxResult parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
-		final WxPayOrderNotifyResult notifyResult = this.wxService.parseOrderNotifyResult(xmlData);
-		TrainCourseUser courseUser = new TrainCourseUser();
-		courseUser.setVipUserId( ShiroUtils.getUserId().intValue() );
 
-		trainCourseUserService.insert(courseUser);
-		// TODO 根据自己业务场景需要构造返回对象
-		return AjaxResult.success("成功");
-	}
 }
