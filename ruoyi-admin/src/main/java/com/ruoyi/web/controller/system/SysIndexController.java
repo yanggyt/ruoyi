@@ -25,7 +25,9 @@ public class SysIndexController extends BaseController
     @GetMapping({"","/"})
     public String cmsindex(ModelMap mmap)
     {
-
+        // 取身份信息
+        SysUser user = getSysUser();
+        mmap.put("user", user);
         return "web";
     }
     // 系统首页

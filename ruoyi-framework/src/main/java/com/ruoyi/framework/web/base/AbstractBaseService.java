@@ -52,14 +52,14 @@ public abstract interface AbstractBaseService<T> {
     public Long selectCount(T entity);
 
     /**
-     * 保存
+     * 保存(并且自动给填充用户信息)
      * @param entity
      * @return
      */
     public int insert(T entity);
 
     /**
-     * 保存不为null的数据
+     * 保存不为null的数据(并且自动给填充用户信息)
      * @param entity
      * @return
      */
@@ -88,7 +88,7 @@ public abstract interface AbstractBaseService<T> {
     public int deleteByIds(String ids);
 
     /**
-     * 根据编码ID全部字段更新
+     * 根据编码ID全部字段更新（自动填充用户信息）
      * 包含（NULL）
      * @param entity
      * @return
@@ -96,7 +96,7 @@ public abstract interface AbstractBaseService<T> {
     public int updateById(T entity) ;
 
     /**
-     * 根据编码ID更新
+     * 根据编码ID更新（自动填充用户信息）
      * 不包含（NULL）
      * @param entity
      * @return

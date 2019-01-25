@@ -2,7 +2,11 @@ package com.ruoyi.wx.pay.controller;
 
 import java.io.File;
 import java.util.Date;
+import java.util.UUID;
 
+import cn.hutool.core.util.IdUtil;
+import com.ruoyi.common.utils.IpUtils;
+import com.ruoyi.framework.web.util.ServletUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -142,6 +146,8 @@ public class WxPayController {
   @ApiOperation(value = "统一下单，并组装所需支付参数")
   @PostMapping("/createOrder")
   public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
+    request.setOutTradeNo( IdUtil.simpleUUID());
+    request.setSpbillCreateIp( IpUtils.getIpAddr( ServletUtils.getRequest()));
     return this.wxService.createOrder(request);
   }
 

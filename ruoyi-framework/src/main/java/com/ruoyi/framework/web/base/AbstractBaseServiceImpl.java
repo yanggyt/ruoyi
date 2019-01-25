@@ -97,7 +97,6 @@ public abstract class AbstractBaseServiceImpl<M extends MyMapper<T>, T> implemen
         EntityUtils.setUpdatedInfo(entity);
         return mapper.updateByPrimaryKeySelective(entity);
     }
-
     @Override
     public List<T> selectByExample(Object example) {
         return mapper.selectByExample(example);

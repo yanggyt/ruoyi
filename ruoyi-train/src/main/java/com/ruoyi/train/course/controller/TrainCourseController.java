@@ -115,7 +115,7 @@ public class TrainCourseController extends BaseController
 	@ResponseBody
 	public AjaxResult editSave(TrainCourse trainCourse)
 	{
-		return toAjax(trainCourseService.updateById(trainCourse));
+		return toAjax(trainCourseService.updateSelectiveById(trainCourse));
 	}
 
 	/**

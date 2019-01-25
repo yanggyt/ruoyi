@@ -21,8 +21,8 @@ public class EntityUtils {
      * @author 王浩彬
      */
     public static <T> void setCreateAndUpdateInfo(T entity) {
-        setCreateInfo( entity );
-        setUpdatedInfo( entity );
+        setCreateInfo(entity);
+        setUpdatedInfo(entity);
     }
 
     /**
@@ -35,12 +35,14 @@ public class EntityUtils {
         try {
             Method[] methods = entity.getClass().getMethods();
             for (Method m : methods) {
-                if (m.getName().equals( "setCreateBy" )) {
-                    m.invoke( entity,com.ruoyi.framework.web.util.ShiroUtils.getLoginName() );
-                } else if (m.getName().equals( "setCreateDate" )) {
-                    m.invoke( entity, new Date() );
-                } else if (m.getName().equals( "setCreateTime" )) {
-                    m.invoke( entity, new Date() );
+                if (m.getName().equals("setCreateBy")) {
+                    if (null != com.ruoyi.framework.web.util.ShiroUtils.getSysUser()) {
+                        m.invoke(entity, com.ruoyi.framework.web.util.ShiroUtils.getLoginName());
+                    }
+                } else if (m.getName().equals("setCreateDate")) {
+                    m.invoke(entity, new Date());
+                } else if (m.getName().equals("setCreateTime")) {
+                    m.invoke(entity, new Date());
                 }
 
 
@@ -60,12 +62,14 @@ public class EntityUtils {
         try {
             Method[] methods = entity.getClass().getMethods();
             for (Method m : methods) {
-                if (m.getName().equals( "setUpdateBy" )) {
-                    m.invoke( entity,com.ruoyi.framework.web.util.ShiroUtils.getLoginName());
-                } else if (m.getName().equals( "setUpdateDate" )) {
-                    m.invoke( entity, new Date() );
-                } else if (m.getName().equals( "setUpdateTime" )) {
-                    m.invoke( entity, new Date() );
+                if (m.getName().equals("setUpdateBy")) {
+                    if (null != com.ruoyi.framework.web.util.ShiroUtils.getSysUser()) {
+                        m.invoke(entity, com.ruoyi.framework.web.util.ShiroUtils.getLoginName());
+                    }
+                } else if (m.getName().equals("setUpdateDate")) {
+                    m.invoke(entity, new Date());
+                } else if (m.getName().equals("setUpdateTime")) {
+                    m.invoke(entity, new Date());
                 }
             }
         } catch (Exception e) {
