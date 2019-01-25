@@ -52,18 +52,31 @@ public abstract interface AbstractBaseService<T> {
     public Long selectCount(T entity);
 
     /**
-     * 保存
+     * 保存(并且自动给填充用户信息)
      * @param entity
      * @return
      */
     public int insert(T entity);
 
     /**
-     * 保存不为null的数据
+     * 保存不为null的数据(并且自动给填充用户信息)
      * @param entity
      * @return
      */
     public int insertSelective(T entity);
+    /**
+     * 保存
+     * @param entity
+     * @return
+     */
+    public int insertNormal(T entity);
+
+    /**
+     * 保存不为null的数据
+     * @param entity
+     * @return
+     */
+    public int insertSelectiveNormal(T entity);
 
     /**
      * 删除符合条件的数据

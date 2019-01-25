@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,7 +66,11 @@ public class ApiWxPayController extends BaseController {
 			TrainCourseUser courseUser = new TrainCourseUser();
 			courseUser.setVipUserId(vipUserOrders.getVipUserId());
 			courseUser.setTrainCourseId(vipUserOrders.getTrainCourseId());
-			trainCourseUserService.insert(courseUser);
+			courseUser.setDelFlag("0");
+			courseUser.setCreateDate(new Date());
+			courseUser.setUpdateDate(new Date());
+			courseUser.setRemarks("微信支付成功回调，订单ID:"+vipUserOrders.getId());
+			trainCourseUserService.insertSelectiveNormal(courseUser);
 		}
 		return WxPayNotifyResponse.success("成功");
 	}
