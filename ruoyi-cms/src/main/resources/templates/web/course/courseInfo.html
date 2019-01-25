@@ -179,9 +179,15 @@
                             <div class="price">
                                 <span class="price-info"><span th:text="'¥'+${trainCourse.price}"></span></span>
                             </div>
-                            <div class="button" th:if="${trainCourse.price>0}">
+                            <div class="button" th:if="${trainCourse.price>0 && !courseAuth}">
                                 <input type="button" onclick="shop()" class="hb-ui-btn" value="立刻购买">
-                                <em>有效期:<span id="shixian" th:text="${courseDays}"></span>(天)</em>
+                            </div>
+                            <div class="button" th:if="${trainCourse.price==0||courseAuth}">
+                                <input type="button" onclick="goStudy()" class="hb-ui-btn" value="加入学习">
+                                <em>有效期:
+                                    <span id="shixian" th:if="${trainCourse.price==0}" th:text="'永久'"></span>
+                                    <span id="shixian" th:if="${trainCourse.price>0}" th:text="${courseDays}"></span>
+                                    (天)</em>
                             </div>
                             <div class="remark" th:text="${trainCourse.description}">
 
@@ -203,8 +209,8 @@
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <ul >
-                    <li th:each="sections:${trainCourseSections}" >
-                        <a th:if="${courseAuth}" th:href="@{'/web/course/courseSections.html/'+${sections.id}}">
+                    <li th:if="trainCourseSections" th:each="sections,obj:${trainCourseSections}" >
+                        <a th:if="${courseAuth}" th:id="'section'+${obj.index+1}" th:href="@{'/web/course/courseSections.html/'+${sections.id}}">
                         <span th:text="${sections.name}"> </span>
                         </a>
                         <a th:if="!${courseAuth}" onclick="shop()">
@@ -239,11 +245,12 @@
 <script type="text/javascript">
     layui.use(['element','layer'], function(){
             var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
-
-
     });
+    function goStudy() {
+        $("#section1").click();
+    }
     function shop() {
-        var userId="[[${user.userId}]]";
+        var userId="[[${user?.userId}]]";
         if(userId){
             var data={
                 "body":"[[${trainCourse.name}]]",
