@@ -26,6 +26,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import java.util.List;
@@ -54,12 +55,6 @@ public class CmsUserController {
     public String login(ModelMap map) {
         map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/user/login";
-    }
-
-    @RequestMapping("/user/out")
-    public String out(ModelMap map) {
-        ShiroUtils.logout();
-        return "redirect:"+prefix+"/index";
     }
 
     @RequestMapping("/user/reg.html")
