@@ -79,6 +79,10 @@
         font-size: 24px;
         color: #e91c35;
     }
+    .courseInfo-right .price-info-free {
+        font-size: 24px;
+        color: #3ab57f;
+    }
 
 
     .courseInfo-right .button {
@@ -177,7 +181,8 @@
                                 安全测试基础课程
                             </div>
                             <div class="price">
-                                <span class="price-info"><span th:text="'¥'+${trainCourse.price}"></span></span>
+                                <span th:if="${trainCourse.price>0}" class="price-info"><span th:text="'¥'+${trainCourse.price}"></span></span>
+                                <span th:if="${trainCourse.price==0}" class="price-info-free"><span th:text="免费"></span></span>
                             </div>
                             <div class="button" th:if="${trainCourse.price>0 && !courseAuth}">
                                 <input type="button" onclick="shop()" class="hb-ui-btn" value="立刻购买">
@@ -257,7 +262,7 @@
                 "outTradeNo":"12344324242342342342554",
                 "totalFee":[[${trainCourse.price*100}]],
                 "spbillCreateIp":"1.80.82.241",
-                "notifyUrl":"http://ceshi4.yqhl.cc/api/v1/wx/pay/notify/order",
+                //"notifyUrl":"http://ceshi4.yqhl.cc/api/v1/wx/pay/notify/order",
                 "tradeType":"NATIVE",
                 "productId":"[[${trainCourse.id}]]",
                 "openid":userId
