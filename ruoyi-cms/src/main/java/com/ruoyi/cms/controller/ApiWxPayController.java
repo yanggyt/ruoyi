@@ -43,125 +43,127 @@ import java.util.List;
 @RequestMapping("/api/v1/wx/pay")
 public class ApiWxPayController extends BaseController {
 
-	private static final Logger log = LoggerFactory.getLogger( ApiWxPayController.class );
-	@Autowired
-	private ITrainCourseUserService trainCourseUserService ;
+    private static final Logger log = LoggerFactory.getLogger( ApiWxPayController.class );
+    @Autowired
+    private ITrainCourseUserService trainCourseUserService;
 
-	@Autowired
-	private IVipUserOrdersService vipUserOrdersService;
-	@Autowired
-	private ISysUserService sysUserService;
-	@Autowired
-	private WxPayService wxService;
-	@PostMapping("/notify/order")
-	public String parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
+    @Autowired
+    private IVipUserOrdersService vipUserOrdersService;
+    @Autowired
+    private ISysUserService sysUserService;
+    @Autowired
+    private WxPayService wxService;
 
-		final WxPayOrderNotifyResult notifyResult = this.wxService.parseOrderNotifyResult(xmlData);
-		log.debug("-------------------------------支付回调中----------------------------");
-		if (null != notifyResult && notifyResult.getReturnCode().equals("SUCCESS")) {
-			VipUserOrders userOrders = new VipUserOrders();
-			userOrders.setId(notifyResult.getOutTradeNo());
-			userOrders.setDelFlag("1");
-			vipUserOrdersService.updateSelectiveById(userOrders);
-			VipUserOrders vipUserOrders = vipUserOrdersService.selectById(notifyResult.getOutTradeNo());
-			TrainCourseUser courseUser = new TrainCourseUser();
-			courseUser.setVipUserId(vipUserOrders.getVipUserId());
-			courseUser.setTrainCourseId(vipUserOrders.getTrainCourseId());
-			courseUser.setDelFlag("0");
-			courseUser.setCreateDate(new Date());
-			courseUser.setUpdateDate(new Date());
-			courseUser.setRemarks("微信支付成功回调，订单ID:"+vipUserOrders.getId());
-			trainCourseUserService.insertSelective(courseUser);
-		}
-		return WxPayNotifyResponse.success("成功");
-	}
+    @PostMapping("/notify/order")
+    public String parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
 
-	@ApiOperation(value = "扫码支付回调通知处理")
-	@PostMapping("/notify/scanpay")
-	public String parseScanPayNotifyResult(String xmlData) throws WxPayException {
-		final WxScanPayNotifyResult result = this.wxService.parseScanPayNotifyResult(xmlData);
+        final WxPayOrderNotifyResult notifyResult = this.wxService.parseOrderNotifyResult( xmlData );
+        log.debug( "-------------------------------支付回调中----------------------------" );
+        if (null != notifyResult && notifyResult.getReturnCode().equals( "SUCCESS" )) {
+            VipUserOrders userOrders = new VipUserOrders();
+            userOrders.setId( notifyResult.getOutTradeNo() );
+            userOrders.setDelFlag( "1" );
+            vipUserOrdersService.updateSelectiveById( userOrders );
+            VipUserOrders vipUserOrders = vipUserOrdersService.selectById( notifyResult.getOutTradeNo() );
+            TrainCourseUser courseUser = new TrainCourseUser();
+            courseUser.setVipUserId( vipUserOrders.getVipUserId() );
+            courseUser.setTrainCourseId( vipUserOrders.getTrainCourseId() );
+            courseUser.setDelFlag( "0" );
+            courseUser.setCreateDate( new Date() );
+            courseUser.setUpdateDate( new Date() );
+            courseUser.setRemarks( "微信支付成功回调，订单ID:" + vipUserOrders.getId() );
+            trainCourseUserService.insertSelective( courseUser );
+        }
+        return WxPayNotifyResponse.success( "成功" );
+    }
 
-		// TODO 根据自己业务场景需要构造返回对象
-		return WxPayNotifyResponse.success("成功");
-	}
-	/**
-	 * 调用统一下单接口，并组装生成支付所需参数对象.
-	 *
-	 * @param request 统一下单请求参数
-	 * @param <T>     请使用{@link com.github.binarywang.wxpay.bean.order}包下的类
-	 * @return 返回 {@link com.github.binarywang.wxpay.bean.order}包下的类对象
-	 *
-	 * 示例参数
-	 * {
-		"body":"测试商品",
-		"outTradeNo":"12344324242342342342554",
-		"totalFee":1.01,
-		"spbillCreateIp":"1.80.82.241",
-		"notifyUrl":"http://www.baidu.com",
-		"tradeType":"NATIVE",
-		"productId":"13652b4a71df2f49e3647c55c8e31a88"
-		}
-	返回
-	{
-	"codeUrl": "weixin://wxpay/bizpayurl?pr=pK0R74G"
-	}
-	 */
-	@ApiOperation(value = "统一下单，并组装所需支付参数")
-	@PostMapping("/createOrder")
-	public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
-		request.setOutTradeNo( IdUtil.simpleUUID());
-		request.setSpbillCreateIp( IpUtils.getIpAddr( ServletUtils.getRequest()));
+    @ApiOperation(value = "扫码支付回调通知处理")
+    @PostMapping("/notify/scanpay")
+    public String parseScanPayNotifyResult(String xmlData) throws WxPayException {
+        final WxScanPayNotifyResult result = this.wxService.parseScanPayNotifyResult( xmlData );
 
-		VipUserOrders userOrders = new VipUserOrders();
-		userOrders.setId(request.getOutTradeNo());
-		userOrders.setVipUserId(Integer.parseInt(request.getOpenid()));
-		userOrders.setTrainCourseId(Integer.parseInt(request.getProductId()));
-		userOrders.setPrice(new BigDecimal(request.getTotalFee().intValue()/100));
-		//未支付订单
-		userOrders.setDelFlag("0");
-		vipUserOrdersService.insert(userOrders);
-		//零时存放我们自己的用户id,这儿清空
-		request.setOpenid(null);
-		return this.wxService.createOrder(request);
-	}
+        // TODO 根据自己业务场景需要构造返回对象
+        return WxPayNotifyResponse.success( "成功" );
+    }
 
-	/**
-	 * 统一下单(详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1)
-	 * 在发起微信支付前，需要调用统一下单接口，获取"预支付交易会话标识"
-	 * 接口地址：https://api.mch.weixin.qq.com/pay/unifiedorder
-	 *
-	 * @param request 请求对象，注意一些参数如appid、mchid等不用设置，方法内会自动从配置对象中获取到（前提是对应配置中已经设置）
-	 * 示例参数
-	 * {
-		"body":"测试商品",
-		"outTradeNo":"12344324242342342342554",
-		"totalFee":1.01,
-		"spbillCreateIp":"1.80.82.241",
-		"notifyUrl":"http://www.baidu.com",
-		"tradeType":"JSAPI",
-		"productId":"13652b4a71df2f49e3647c55c8e31a88"
-		"openid":''
-		}
-		返回
-		{
-		"codeUrl": "weixin://wxpay/bizpayurl?pr=pK0R74G"
-		}
-	 */
-	@ApiOperation(value = "原生的统一下单接口")
-	@PostMapping("/unifiedOrder")
-	public WxPayUnifiedOrderResult unifiedOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
-		request.setOutTradeNo( IdUtil.simpleUUID());
-		request.setSpbillCreateIp( IpUtils.getIpAddr( ServletUtils.getRequest()));
-		request.setSignType( "MD5" );
-		VipUserOrders userOrders = new VipUserOrders();
-		userOrders.setId(request.getOutTradeNo());
-		SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-		userOrders.setVipUserId(sysUser.getUserId().intValue());
-		userOrders.setTrainCourseId(Integer.parseInt(request.getProductId()));
-		userOrders.setPrice(new BigDecimal(request.getTotalFee().intValue()/100));
-		//未支付订单
-		userOrders.setDelFlag("0");
-		vipUserOrdersService.insert(userOrders);
-		return this.wxService.unifiedOrder(request);
-	}
+    /**
+     * 调用统一下单接口，并组装生成支付所需参数对象.
+     *
+     * @param request 统一下单请求参数
+     * @param <T>     请使用{@link com.github.binarywang.wxpay.bean.order}包下的类
+     * @return 返回 {@link com.github.binarywang.wxpay.bean.order}包下的类对象
+     * <p>
+     * 示例参数
+     * {
+     * "body":"测试商品",
+     * "outTradeNo":"12344324242342342342554",
+     * "totalFee":1.01,
+     * "spbillCreateIp":"1.80.82.241",
+     * "notifyUrl":"http://www.baidu.com",
+     * "tradeType":"NATIVE",
+     * "productId":"13652b4a71df2f49e3647c55c8e31a88"
+     * }
+     * 返回
+     * {
+     * "codeUrl": "weixin://wxpay/bizpayurl?pr=pK0R74G"
+     * }
+     */
+    @ApiOperation(value = "统一下单，并组装所需支付参数")
+    @PostMapping("/createOrder")
+    public <T> T createOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
+        request.setOutTradeNo( IdUtil.simpleUUID() );
+        request.setSpbillCreateIp( IpUtils.getIpAddr( ServletUtils.getRequest() ) );
+
+        VipUserOrders userOrders = new VipUserOrders();
+        userOrders.setId( request.getOutTradeNo() );
+        userOrders.setVipUserId( Integer.parseInt( request.getOpenid() ) );
+        userOrders.setTrainCourseId( Integer.parseInt( request.getProductId() ) );
+        userOrders.setPrice( new BigDecimal( request.getTotalFee().intValue() ).divide( new BigDecimal( 100 ) ) );
+        //未支付订单
+        userOrders.setDelFlag( "0" );
+        vipUserOrdersService.insert( userOrders );
+        //零时存放我们自己的用户id,这儿清空
+        request.setOpenid( null );
+        return this.wxService.createOrder( request );
+    }
+
+    /**
+     * 统一下单(详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1)
+     * 在发起微信支付前，需要调用统一下单接口，获取"预支付交易会话标识"
+     * 接口地址：https://api.mch.weixin.qq.com/pay/unifiedorder
+     *
+     * @param request 请求对象，注意一些参数如appid、mchid等不用设置，方法内会自动从配置对象中获取到（前提是对应配置中已经设置）
+     *                示例参数
+     *                {
+     *                "body":"测试商品",
+     *                "outTradeNo":"12344324242342342342554",
+     *                "totalFee":1.01,
+     *                "spbillCreateIp":"1.80.82.241",
+     *                "notifyUrl":"http://www.baidu.com",
+     *                "tradeType":"JSAPI",
+     *                "productId":"13652b4a71df2f49e3647c55c8e31a88"
+     *                "openid":''
+     *                }
+     *                返回
+     *                {
+     *                "codeUrl": "weixin://wxpay/bizpayurl?pr=pK0R74G"
+     *                }
+     */
+    @ApiOperation(value = "原生的统一下单接口")
+    @PostMapping("/unifiedOrder")
+    public WxPayUnifiedOrderResult unifiedOrder(@RequestBody WxPayUnifiedOrderRequest request) throws WxPayException {
+        request.setOutTradeNo( IdUtil.simpleUUID() );
+        request.setSpbillCreateIp( IpUtils.getIpAddr( ServletUtils.getRequest() ) );
+        request.setSignType( "MD5" );
+        VipUserOrders userOrders = new VipUserOrders();
+        userOrders.setId( request.getOutTradeNo() );
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        userOrders.setVipUserId( sysUser.getUserId().intValue() );
+        userOrders.setTrainCourseId( Integer.parseInt( request.getProductId() ) );
+        userOrders.setPrice( new BigDecimal( request.getTotalFee().intValue() ).divide( new BigDecimal( 100 ) ) );
+        //未支付订单
+        userOrders.setDelFlag( "0" );
+        vipUserOrdersService.insert( userOrders );
+        return this.wxService.unifiedOrder( request );
+    }
 }
