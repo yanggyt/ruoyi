@@ -70,7 +70,7 @@ public class CmsExaminationController {
     @GetMapping()
     @ResponseBody
     public AjaxResult list(ExamExamination examExamination) {
-        SysUser sysUser = sysUserService.selectUserByLoginName( ShiroUtils.getLoginName() );
+        SysUser sysUser = ShiroUtils.getSysUser();
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
         map.put( "userId", sysUser.getUserId() );
@@ -90,7 +90,7 @@ public class CmsExaminationController {
     @GetMapping()
     @ResponseBody
     public AjaxResult signupist(ExamExamination examExamination) {
-        SysUser sysUser = sysUserService.selectUserByLoginName( ShiroUtils.getLoginName() );
+        SysUser sysUser = ShiroUtils.getSysUser();
 
         Map<String, Object> map = new HashMap<>();
         map.put( "ination", examExamination );
@@ -102,6 +102,34 @@ public class CmsExaminationController {
         return success;
     }
 
+    @RequestMapping("/examination/signup/{id}")
+    @GetMapping()
+    @ResponseBody
+    public AjaxResult signupist(@PathVariable Integer id) {
+        SysUser sysUser = ShiroUtils.getSysUser();
+        Long userId = sysUser.getUserId();
+
+
+        ExamExaminationUser examExaminationUser = new ExamExaminationUser();
+        examExaminationUser.setVipUserId( Integer.parseInt( userId.toString() ) );
+        examExaminationUser.setDelFlag( "0" );
+        examExaminationUser.setCreateDate( new Date() );
+        examExaminationUser.setCreateBy( sysUser.getLoginName() );
+        examExaminationUser.setExamExaminationId(id);
+        examExaminationUserService.insertOne( examExaminationUser );
+
+        AjaxResult success = AjaxResult.success( "报名成功" );
+        return success;
+    }
+
+
+
+    /**
+     * 开始考试
+     * @param id
+     * @param mmap
+     * @return
+     */
     @RequestMapping("/examination/start/{id}")
     @GetMapping()
     public String start(@PathVariable String id, ModelMap mmap) {
