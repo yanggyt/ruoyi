@@ -1,6 +1,8 @@
 package com.ruoyi.vip.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.vip.domain.vo.VipUserOrdersVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.vip.mapper.VipUserOrdersMapper;
@@ -28,7 +30,7 @@ public class VipUserOrdersServiceImpl extends AbstractBaseServiceImpl<VipUserOrd
      * @return 我的订单集合
      */
 	@Override
-	public List<VipUserOrders> selectVipUserOrdersList(VipUserOrders vipUserOrders)
+	public List<VipUserOrdersVO> selectVipUserOrdersList(VipUserOrdersVO vipUserOrders)
 	{
         return vipUserOrdersMapper.selectVipUserOrdersList(vipUserOrders);
 	}
@@ -39,7 +41,7 @@ public class VipUserOrdersServiceImpl extends AbstractBaseServiceImpl<VipUserOrd
      * @return 我的订单集合
      */
     @Override
-    public List<VipUserOrders> selectVipUserOrdersPage(VipUserOrders vipUserOrders)
+    public List<VipUserOrdersVO> selectVipUserOrdersPage(VipUserOrdersVO vipUserOrders)
     {
         startPage();
         return vipUserOrdersMapper.selectVipUserOrdersList(vipUserOrders);

@@ -3,6 +3,7 @@ package com.ruoyi.vip.mapper;
 import com.ruoyi.vip.domain.VipUserOrders;
 import java.util.List;
 import com.ruoyi.framework.web.base.MyMapper;
+import com.ruoyi.vip.domain.vo.VipUserOrdersVO;
 
 /**
  * 我的订单 数据层
@@ -19,6 +20,6 @@ public interface VipUserOrdersMapper  extends MyMapper<VipUserOrders>
      * @param vipUserOrders 我的订单信息
      * @return 我的订单集合
      */
-	public List<VipUserOrders> selectVipUserOrdersList(VipUserOrders vipUserOrders);
+	public List<VipUserOrdersVO> selectVipUserOrdersList(VipUserOrdersVO vipUserOrders);
 	
 }

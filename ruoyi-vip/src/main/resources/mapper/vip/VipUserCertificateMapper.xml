@@ -31,7 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from vip_user_certificate
         left join sys_user suser on suser.user_id=vip_user_certificate.vip_user_id
         <where>
-            <if test="user != null and user.userName != null and user.userName != ''"> and suser.user_name like CONCAT('%',#{user.userName},'%') </if>
+            <if test="user != null and user.userName != null and user.userName != ''">
+                and suser.user_name like CONCAT('%',#{user.userName},'%') </if>
             <if test="id != null "> and vip_user_certificate.id = #{id}</if>
              <if test="vipUserId != null "> and vip_user_certificate.vip_user_id = #{vipUserId}</if>
              <if test="name != null  and name != '' "> and name like CONCAT('%',#{name},'%')</if>

@@ -1,6 +1,8 @@
 package com.ruoyi.vip.controller;
 
 import java.util.List;
+
+import com.ruoyi.vip.domain.vo.VipUserOrdersVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,9 +49,9 @@ public class VipUserOrdersController extends BaseController
 	@RequiresPermissions("vip:vipUserOrders:list")
 	@PostMapping("/list")
 	@ResponseBody
-	public TableDataInfo list(VipUserOrders vipUserOrders)
+	public TableDataInfo list(VipUserOrdersVO vipUserOrders)
 	{
-        List<VipUserOrders> list = vipUserOrdersService.selectVipUserOrdersPage(vipUserOrders);
+        List<VipUserOrdersVO> list = vipUserOrdersService.selectVipUserOrdersPage(vipUserOrders);
 		return getDataTable(list);
 	}
 	
@@ -60,10 +62,10 @@ public class VipUserOrdersController extends BaseController
 	@RequiresPermissions("vip:vipUserOrders:export")
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(VipUserOrders vipUserOrders)
+    public AjaxResult export(VipUserOrdersVO vipUserOrders)
     {
-    	List<VipUserOrders> list = vipUserOrdersService.selectVipUserOrdersList(vipUserOrders);
-        ExcelUtil<VipUserOrders> util = new ExcelUtil<VipUserOrders>(VipUserOrders.class);
+    	List<VipUserOrdersVO> list = vipUserOrdersService.selectVipUserOrdersList(vipUserOrders);
+        ExcelUtil<VipUserOrdersVO> util = new ExcelUtil<VipUserOrdersVO>(VipUserOrdersVO.class);
         return util.exportExcel(list, "vipUserOrders");
     }
 	
