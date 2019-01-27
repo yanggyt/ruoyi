@@ -2,6 +2,7 @@ package com.ruoyi.exam.service.impl;
 
 import java.util.*;
 
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.web.exception.base.BaseException;
@@ -9,6 +10,7 @@ import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 import com.ruoyi.exam.mapper.ExamExaminationMapper;
 import com.ruoyi.common.support.Convert;
@@ -26,6 +28,9 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     private ExamExaminationMapper examExaminationMapper;
 
     @Autowired
+    private IExamExaminationService examExaminationService;
+
+    @Autowired
     private IExamPaperService examPaperService;
 
     @Autowired
@@ -33,6 +38,18 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
 
     @Autowired
     private ISysUserService sysUserService;
+
+    @Autowired
+    private IExamExaminationUserService examExaminationUserService;
+
+    @Autowired
+    private IExamUserExaminationQuestionService examUserExaminationQuestionService;
+
+    @Autowired
+    private IExamQuestionService examQuestionService;
+
+    @Autowired
+    private IExamPaperQuestionService examPaperQuestionService;
 
     @Autowired
     private IExamPaperTypeNumberService examPaperTypeNumberService;
@@ -168,6 +185,64 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
         return data;
     }
 
+    @Override
+    public Integer finshExamination(List<ExamUserExaminationQuestion> examUserExaminationQuestion,SysUser user ,Integer examUserExaminationId, Integer examinationId, Integer paperId) {
+
+        ArrayList<Map<String, String>> data = new ArrayList<>();
+        Integer userId = user.getUserId().intValue();
+        //如果是模拟考试，考试记录新增数据
+        if (examUserExaminationId == -1) {
+            ExamUserExamination insert = new ExamUserExamination();
+            insert.setExamExaminationId(examinationId);
+            insert.setVipUserId(Integer.parseInt(userId.toString()));
+            insert.setCreateDate(new Date());
+            insert.setExamPaperId(paperId);
+            insert.setDelFlag("0");
+            insert.setScore(0);
+            examUserExaminationService.insertOne(insert);
+            examUserExaminationId = insert.getId();
+        }
+
+        Integer score = 0;
+        for (ExamUserExaminationQuestion item : examUserExaminationQuestion) {
+            HashMap<String, String> returnItem = new HashMap<>();
+            String userAnswer = item.getUserAnswer();
+            //存入用户回答
+            if (StrUtil.isNotBlank(userAnswer)) {
+                returnItem.put("userAnswer", userAnswer);
+            }
+            Integer examQuestionId = item.getExamQuestionId();
+            ExamQuestion examQuestion = examQuestionService.selectById(examQuestionId);
+            //存入正确答案
+            if (StrUtil.isNotBlank(examQuestion.getAnswer())) {
+                returnItem.put("answer", examQuestion.getAnswer());
+            }
+            returnItem.put("title", examQuestion.getTitle());
+            returnItem.put("rightWrong", "错误");
+            if (examQuestion.getAnswer().equals(userAnswer)) {
+                ExamPaperQuestion examPaperQuestion = new ExamPaperQuestion();
+                examPaperQuestion.setExamPaperId(paperId);
+                examPaperQuestion.setExamQuestionId(examQuestionId);
+                score += examPaperQuestionService.selectExamPaperQuestionList(examPaperQuestion).get(0).getScore();
+                returnItem.put("rightWrong", "正确");
+            }
+            item.setExamUserExaminationId(examUserExaminationId);
+            item.setCreateDate(new Date());
+            item.setCreateBy(user.getLoginName());
+            item.setDelFlag("0");
+            item.setId(null);
+            examUserExaminationQuestionService.insertOne(item);
+            data.add(returnItem);
+        }
+        ExamUserExamination examUserExamination = examUserExaminationService.selectById(examUserExaminationId);
+        examUserExamination.setScore(score);
+        examUserExamination.setUpdateDate(new Date());
+        examUserExamination.setCreateBy(user.getLoginName());
+        examUserExaminationService.updateOneSelectiveById(examUserExamination);
+
+        return examUserExaminationId;
+    }
+
     /**
      * 查询考试分页列表
      *
@@ -179,5 +254,8 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
         startPage();
         return examExaminationMapper.selectExamExaminationList(examExamination);
     }
+
+
+
 
 }

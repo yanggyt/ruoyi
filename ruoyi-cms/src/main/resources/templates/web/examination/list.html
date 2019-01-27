@@ -40,6 +40,14 @@
                     </a>
                 </script>
 
+                <script type="text/html" id="type">
+                    {{# if (d.type == "2"){ }}
+                    正式考试
+                    {{# }else { }}
+                    模拟考试
+                    {{# } }}
+                </script>
+
             </div>
 
         </div>
@@ -84,6 +92,7 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
                 {checkbox: true}
                 , {field: 'name', title: '考试名称'}
                 , {field: 'trainCourseName', title: '课程名称'}
+                ,{field: 'type', title: '考试类型',templet: '#type'}
                 , {field: 'timeLength', title: '考试时长'}
                 , {field: 'passMark', title: '及格分数'}
                 , {title: '操作', toolbar: '#barDemo'}
@@ -162,6 +171,7 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
                 {checkbox: true}
                 , {field: 'name', title: '考试名称'}
                 , {field: 'trainCourseName', title: '课程名称'}
+                ,{field: 'type', title: '考试类型',templet: '#type'}
                 , {field: 'timeLength', title: '考试时长'}
                 , {field: 'passMark', title: '及格分数'}
                 , {title: '操作', toolbar: '#signup'}

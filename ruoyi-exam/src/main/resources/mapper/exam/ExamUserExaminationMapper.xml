@@ -159,9 +159,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         eqi.number,
         eqi.id as eqi_id,
         eueq.id as eueq_id,
-        eq.id as eq_id
+        eq.id as eq_id,
+        ee.exam_end as ee_exam_end,
+        ee.finished_paper as ee_finished_paper
         FROM exam_user_examination exam_user_examination
         LEFT JOIN exam_user_examination_question eueq ON exam_user_examination.id = eueq.exam_user_examination_id
+        INNER JOIN exam_examination ee on exam_user_examination.exam_examination_id = ee.id
         INNER JOIN exam_question eq on eueq.exam_question_id = eq.id
         INNER JOIN exam_question_item eqi ON eq.id =eqi.exam_question_id
         WHERE exam_user_examination.id = #{id}
@@ -182,7 +185,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateDate"    column="update_date"    />
         <result property="remarks"    column="remarks"    />
         <result property="delFlag"    column="del_flag"    />
-
+        <association property="examExaminationVO" javaType="com.ruoyi.exam.domain.ExamExaminationVO">
+            <result property="examEnd"    column="ee_exam_End"    />
+            <result property="finishedPaper"    column="ee_finished_paper"    />
+        </association>
 
         <collection property="examUserExaminationQuestions" ofType="com.ruoyi.exam.domain.ExamUserExaminationQuestionVO">
             <result property="id"    column="eueq_id"    />
