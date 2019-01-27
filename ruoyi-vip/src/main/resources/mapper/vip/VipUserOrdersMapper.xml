@@ -35,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="vipUserName != null "> and u.user_name like CONCAT('%',#{vipUserName},'%')</if>
              <if test="trainCourseName != null "> and c.name like CONCAT('%',#{trainCourseName},'%')</if>
              <if test="delFlag != null  and delFlag != '' "> and o.del_flag = #{delFlag}</if>
+
         </where>
     </select>
 
