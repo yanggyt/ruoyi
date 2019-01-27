@@ -19,37 +19,34 @@
       <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
         <div class="layui-tab-item layui-show">
           <div class="layui-form layui-form-pane">
-            <form method="post">
+
               <div class="layui-form-item">
-                <label for="L_email" class="layui-form-label">邮箱</label>
+                <label for="L_email" class="layui-form-label">登录名</label>
                 <div class="layui-input-inline">
-                  <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" class="layui-input">
+                  <input type="text" id="L_email" name="logiName" required lay-verify="email" autocomplete="on" class="layui-input">
                 </div>
-                <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
               </div>
               <div class="layui-form-item">
                 <label for="L_username" class="layui-form-label">昵称</label>
                 <div class="layui-input-inline">
-                  <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off" class="layui-input">
+                  <input type="text" id="L_username" name="userName" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="pass" required lay-verify="required" autocomplete="off" class="layui-input">
+                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-form-mid layui-word-aux">6到16个字符</div>
               </div>
               <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">确认密码</label>
                 <div class="layui-input-inline">
-                  <input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off" class="layui-input">
+                  <input type="password" id="L_repass" name="repassword" required lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-form-item">
-                <button class="layui-btn" lay-filter="*" lay-submit>立即注册</button>
+                <button id="btnSubmit" class="layui-btn" lay-filter="*" onclick="regAccount()"> 立即注册</button>
               </div>
-            </form>
           </div>
         </div>
       </div>
@@ -62,22 +59,42 @@
 <div class="fly-footer" th:replace="web/index::cmsBottom">
 </div>
 
-<script src="../../res/layui/layui.js"></script>
 <script>
-layui.cache.page = 'user';
-layui.cache.user = {
-  username: '游客'
-  ,uid: -1
-  ,avatar: '../../res/images/avatar/00.jpg'
-  ,experience: 83
-  ,sex: '男'
-};
-layui.config({
-  version: "3.0.0"
-  ,base: '../../res/mods/'
-}).extend({
-  fly: 'index'
-}).use('fly');
+    var layer;
+    $(function () {
+        layui.use('layer', function () {
+            layer = layui.layer;
+        });
+
+    })
+
+    function regAccount() {
+        var loginName = $.common.trim($("input[name='logiName']").val());
+        var userName = $.common.trim($("input[name='userName']").val());
+        var password = $.common.trim($("input[name='password']").val());
+        var repassword = $.common.trim($("input[name='repassword']").val());
+        if(password != repassword){
+            layer.msg("密码不一致", {icon: 2});
+            return;
+        }
+        $.ajax({
+            type: "post",
+            url: "/web/user/regaccount",
+            data: {
+                "loginName": loginName,
+                "userName": userName,
+                "password":password
+            },
+            success: function(r) {
+                debugger
+                if (r.code == 200) {
+                    location.href = ctx + 'web/user/login.html';
+                } else {
+                    layer.msg(r.msg, {icon: 2});
+                }
+            }
+        });
+    }
 </script>
 
 </body>

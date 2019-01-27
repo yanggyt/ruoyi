@@ -47,6 +47,14 @@
 <div class="fly-footer" th:replace="web/index::cmsBottom">
 </div>
 <script>
+    var layer;
+    $(function () {
+        layui.use('layer', function () {
+            layer = layui.layer;
+        });
+
+    })
+
     function login() {
         var loginName = $.common.trim($("input[name='loginName']").val());
         var password = $.common.trim($("input[name='password']").val());
@@ -63,7 +71,7 @@
                 if (r.code == 200) {
                     location.href = ctx + 'web/user/index.html';
                 } else {
-                    $.modal.msg(r.msg);
+                    layer.msg(r.msg, {icon: 2});
                 }
             }
         });
