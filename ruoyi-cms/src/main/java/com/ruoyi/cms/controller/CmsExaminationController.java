@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.exam.domain.*;
 import com.ruoyi.exam.service.*;
+import com.ruoyi.exam.service.impl.ExamExaminationServiceImpl;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.exception.base.BaseException;
 import com.ruoyi.framework.web.util.ShiroUtils;
@@ -12,10 +13,7 @@ import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -143,6 +141,19 @@ public class CmsExaminationController {
         mmap.put( "examExamination", examExamination );
         mmap.put("paperId", examPaperId);
         return prefix+"detail";
+    }
+
+    @RequestMapping("/examination/finish/{examUserExaminationId}/{examinationId}/{paperId}")
+    @ResponseBody
+    public AjaxResult finish(@RequestBody List<ExamUserExaminationQuestion> examUserExaminationQuestion,
+                             @PathVariable Integer examUserExaminationId, @PathVariable Integer examinationId, @PathVariable Integer paperId,ModelMap map) {
+        SysUser sysUser = ShiroUtils.getSysUser();
+        //交卷然后返回考试记录id
+        Integer id = examExaminationService.finshExamination(examUserExaminationQuestion,sysUser,examUserExaminationId,examinationId,paperId);
+        ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );
+        AjaxResult success = AjaxResult.success( "报名成功" );
+        success.put("id",id);
+        return success;
     }
 
 

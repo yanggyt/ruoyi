@@ -14,12 +14,14 @@
         <div class="layui-col-md12">
             <div class="fly-panel">
 
-                <div class="layui-col-md9">
+                <div class="layui-col-md12">
                     <div class="layui-col-md12">
                         <div class="layui-card" style="text-align: center;">
-                            <span style="font-size: 30px;line-height: 60px">[[${examExamination.name}]]</span>
+                            <span style="font-size: 30px;line-height: 60px">[[${examExamination.name}]]</span><br>
+                            <button style="width: 100px;margin-bottom: 20px" class="layui-btn layui-btn-warm" onclick="endPaper()" >交卷</button>
                         </div>
                         <div class="layui-card question" th:each="question:${data}">
+                            <input type="hidden" class="questionId" th:value="${question.id}">
                             <div class="layui-card-header">[[${questionStat.index+1}]]:<span
                                     th:text="${question.title}"></span>
                                 <span th:if="${question.type=='1'}">(单选)</span>
@@ -47,13 +49,12 @@
                             <!--</div>-->
                         </div>
 
-                        <div class="layui-card">
-                            <button class="layui-btn layui-btn-warm" onclick="endPaper()" >交卷</button>
-                        </div>
+
                     </div>
 
 
                 </div>
+
 
 
             </div>
@@ -84,18 +85,29 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
     function endPaper() {
         var data = [];
         $(".question").each(function(){
+            var examQuestionId = $(this).find(".questionId").eq(0).val()
+            var userAnswer = "";
+            $(this).find("."+examQuestionId+"useranswer:checked").each(function(){
+                userAnswer+=$(this).val()+",";
+            })
+            userAnswer = userAnswer.substring(0,userAnswer.length-1)
 
+            data.push({examQuestionId:examQuestionId,userAnswer:userAnswer})
         })
         $.ajax({
             type: 'post',
-            url: "/api/v1/examination/finish/"+[[${examUserExaminationId}]]+"/"+[[${examExamination.id}]]+"/"+[[${paperId}]],
+            url: "/web/examination/finish/"+[[${examUserExaminationId}]]+"/"+[[${examExamination.id}]]+"/"+[[${paperId}]],
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (result) {
                 if (result.code != web_status.SUCCESS) {
-                    $.modal.msgError(result.msg);
+                    layer.msg(result.msg, {icon: 2})
+                }else{
+                    layer.msg("已交卷", {icon: 1})
+                    location.href="/web/user/myuserexamination/detail/"+result.id;
                 }
             }
+
         });
     }
 

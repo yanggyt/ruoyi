@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.exam.domain.ExamQuestionVO;
+import com.ruoyi.exam.domain.ExamUserExaminationQuestion;
 import com.ruoyi.framework.web.base.AbstractBaseService;
+import com.ruoyi.system.domain.SysUser;
+
 /**
  * 考试 服务层
  * 
@@ -44,4 +47,6 @@ public interface IExamExaminationService extends AbstractBaseService<ExamExamina
     List<ExamExamination> selectEnterNameListFromWeb(Map<String, Object> map);
 
     List<ExamQuestionVO> queryExaminationQuestion(ExamExamination examExamination,Integer examUserExaminationId);
+
+    Integer finshExamination(List<ExamUserExaminationQuestion> examUserExaminationQuestion, SysUser user, Integer examUserExaminationId, Integer examinationId, Integer paperId);
 }
