@@ -1,8 +1,10 @@
 package com.ruoyi.cms.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.exam.domain.*;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.ruoyi.exam.domain.ExamPractice;
@@ -247,6 +249,28 @@ public class CmsUserController {
         success.put("total",new PageInfo(list).getTotal());
         success.put( "data", list );
         return success;
+    }
+    /**
+     * 保存头像
+     */
+    @Log(title = "个人信息修改", businessType = BusinessType.UPDATE)
+    @RequestMapping("/user/update")
+    @ResponseBody
+    public AjaxResult update(SysUser user) {
+        if (sysUserService.updateUserInfo( user ) > 0) {
+            ShiroUtils.setSysUser( sysUserService.selectUserById( user.getUserId() ) );
+        }
+        return AjaxResult.success();
+    }
+
+    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
+    @RequestMapping("/user/resetPwd")
+    @ResponseBody
+    public AjaxResult resetPwdSave(SysUser user) {
+        user.setSalt( ShiroUtils.randomSalt() );
+        user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
+        sysUserService.resetUserPwd( user );
+        return AjaxResult.success();
     }
 
 }
