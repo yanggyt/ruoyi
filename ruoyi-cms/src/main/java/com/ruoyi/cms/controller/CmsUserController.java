@@ -2,7 +2,6 @@ package com.ruoyi.cms.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.exam.domain.*;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.ruoyi.exam.domain.ExamPractice;
@@ -10,7 +9,6 @@ import com.ruoyi.exam.domain.ExamUserErrorQuestion;
 import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
 import com.ruoyi.exam.service.*;
 import com.ruoyi.framework.jwt.JwtUtil;
-import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.web.util.ServletUtils;
 import com.ruoyi.framework.web.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
@@ -37,7 +35,6 @@ import org.springframework.web.servlet.ModelAndView;
 import sun.awt.image.IntegerComponentRaster;
 
 import javax.servlet.http.Cookie;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,6 +49,8 @@ public class CmsUserController {
 
     private String prefix = "web";
 
+    @Autowired
+    private ISysUserService sysUserService;
 
     @Autowired
     private IExamUserErrorQuestionService examUserErrorQuestionService;
@@ -65,11 +64,6 @@ public class CmsUserController {
     @Autowired
     private IVipUserOrdersService vipUserOrdersService;
 
-    @Autowired
-    private ISysUserService sysUserService;
-
-    @Autowired
-    private SysPasswordService passwordService;
 
 
     @RequestMapping("/user/login.html")
@@ -82,25 +76,6 @@ public class CmsUserController {
     public String reg(ModelMap map) {
         map.put( "user", ShiroUtils.getSysUser() );
         return prefix + "/user/reg";
-    }
-
-    @RequestMapping("/user/regaccount")
-    @ResponseBody
-    public AjaxResult reg(SysUser user) {
-        List<SysUser> sysUsers = sysUserService.selectUserList(user);
-        AjaxResult success = AjaxResult.success("注册成功");
-        if(sysUsers.size()>0){
-            success = AjaxResult.error("账户名已存在");
-            return success;
-        }
-        user.setStatus("0");
-        user.setDelFlag("0");
-        user.setCreateTime(new Date());
-        user.setSalt( ShiroUtils.randomSalt() );
-        user.setUserType( UserConstants.USER_VIP );
-        user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
-        sysUserService.insertUser(user);
-        return success;
     }
 
 
