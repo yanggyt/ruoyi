@@ -1,5 +1,7 @@
 # 数据源配置
 spring:
+    jmx:
+        default-domain: exam
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
