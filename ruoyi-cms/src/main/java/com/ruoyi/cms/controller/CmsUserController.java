@@ -1,13 +1,14 @@
 package com.ruoyi.cms.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.exam.domain.*;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.ruoyi.exam.domain.ExamPractice;
 import com.ruoyi.exam.domain.ExamUserErrorQuestion;
 import com.ruoyi.exam.domain.ExamUserErrorQuestionVO;
-import com.ruoyi.exam.service.*;
+import com.ruoyi.exam.service.IExamPracticeService;
+import com.ruoyi.exam.service.IExamUserCollectionQuestionService;
+import com.ruoyi.exam.service.IExamUserErrorQuestionService;
 import com.ruoyi.framework.jwt.JwtUtil;
 import com.ruoyi.framework.web.util.ServletUtils;
 import com.ruoyi.framework.web.util.ShiroUtils;
@@ -19,8 +20,6 @@ import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
-import com.ruoyi.vip.domain.vo.VipUserOrdersVO;
-import com.ruoyi.vip.service.IVipUserOrdersService;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import sun.awt.image.IntegerComponentRaster;
 
 import javax.servlet.http.Cookie;
 import java.util.List;
@@ -58,9 +56,6 @@ public class CmsUserController {
     @Autowired
     private IExamUserCollectionQuestionService examUserCollectionQuestionService;
 
-    @Autowired
-    private IExamUserExaminationService examUserExaminationService;
-
 
 
     @RequestMapping("/user/login.html")
@@ -80,7 +75,7 @@ public class CmsUserController {
     @RequestMapping("/user/index.html")
     public String webUserIndex(ModelMap map) {
         map.put( "user", ShiroUtils.getSysUser() );
-        return prefix + "/user/set";
+        return prefix + "/user/index";
     }
     @RequestMapping("/user/home.html")
     public String webUserHome(ModelMap map) {
@@ -164,39 +159,4 @@ public class CmsUserController {
         AjaxResult success = AjaxResult.success("删除成功");
         return success;
     }
-
-    @RequestMapping("/user/userexamination.html")
-    public String userExamquestion(ModelMap map) {
-        map.put( "user", ShiroUtils.getSysUser() );
-        return prefix + "/user/userexamination";
-    }
-
-
-    /**
-     * 我的考试记录
-     * @return
-     */
-    @RequestMapping("/user/myuserexamination/list")
-    @ResponseBody
-    public AjaxResult userExamquestionList() {
-        ExamUserExaminationVO examUserExamination = new ExamUserExaminationVO();
-        examUserExamination.setVipUserId(ShiroUtils.getUserId().intValue());
-        List<ExamUserExaminationVO> list = examUserExaminationService.selectMyExamUserExamination(examUserExamination);
-        AjaxResult success = AjaxResult.success("查询成功");
-        success.put("total",new PageInfo(list).getTotal());
-        success.put( "data", list );
-        return success;
-    }
-
-
-
-    @RequestMapping("/user/myuserexamination/detail/{id}")
-    public String userExamquestion(@PathVariable Integer id, ModelMap map) {
-
-        map.put( "user", ShiroUtils.getSysUser() );
-        ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );
-        map.put( "data", data );
-        return prefix + "/user/userexamination_detail";
-    }
-
 }
