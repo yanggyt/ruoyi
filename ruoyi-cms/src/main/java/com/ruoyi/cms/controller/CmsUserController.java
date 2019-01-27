@@ -19,6 +19,8 @@ import com.ruoyi.train.course.domain.TrainCourseVO;
 import com.ruoyi.train.course.service.ITrainCourseCategoryService;
 import com.ruoyi.train.course.service.ITrainCourseSectionService;
 import com.ruoyi.train.course.service.ITrainCourseService;
+import com.ruoyi.vip.domain.vo.VipUserOrdersVO;
+import com.ruoyi.vip.service.IVipUserOrdersService;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +60,9 @@ public class CmsUserController {
 
     @Autowired
     private IExamUserExaminationService examUserExaminationService;
+
+    @Autowired
+    private IVipUserOrdersService vipUserOrdersService;
 
 
 
@@ -187,7 +192,12 @@ public class CmsUserController {
     }
 
 
-
+    /**
+     * 考试记录详情
+     * @param id
+     * @param map
+     * @return
+     */
     @RequestMapping("/user/myuserexamination/detail/{id}")
     public String userExamquestion(@PathVariable Integer id, ModelMap map) {
 
@@ -195,6 +205,23 @@ public class CmsUserController {
         ExamUserExaminationVO data = examUserExaminationService.selectDetailById( id );
         map.put( "data", data );
         return prefix + "/user/userexamination_detail";
+    }
+
+    @RequestMapping("/user/orders.html")
+    public String orders(ModelMap map) {
+        map.put( "user", ShiroUtils.getSysUser() );
+        return prefix + "/user/orders";
+    }
+
+    @RequestMapping("/user/orders/list")
+    @ResponseBody
+    public AjaxResult orders(VipUserOrdersVO vipUserOrders) {
+        AjaxResult success = AjaxResult.success("插入成功");
+        vipUserOrders.setVipUserId(ShiroUtils.getUserId().intValue());
+        List<VipUserOrdersVO> list = vipUserOrdersService.selectVipUserOrdersPage(vipUserOrders);
+        success.put("total",new PageInfo(list).getTotal());
+        success.put( "data", list );
+        return success;
     }
 
 }

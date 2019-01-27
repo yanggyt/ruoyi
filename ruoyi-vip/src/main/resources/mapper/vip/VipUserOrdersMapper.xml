@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         join train_course c on  c.id=o.train_course_id
         <where>  
             <if test="id != null  and id != '' "> and o.id = #{id}</if>
+            <if test="vipUserId != null  and vipUserId != '' "> and o.vip_user_id = #{vipUserId}</if>
              <if test="vipUserName != null "> and u.user_name like CONCAT('%',#{vipUserName},'%')</if>
              <if test="trainCourseName != null "> and c.name like CONCAT('%',#{trainCourseName},'%')</if>
              <if test="delFlag != null  and delFlag != '' "> and o.del_flag = #{delFlag}</if>
