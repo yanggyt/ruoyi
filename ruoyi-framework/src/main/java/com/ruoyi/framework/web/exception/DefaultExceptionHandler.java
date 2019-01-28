@@ -1,5 +1,6 @@
 package com.ruoyi.framework.web.exception;
 
+import com.ruoyi.framework.web.exception.user.UserNotExistsException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,15 @@ public class DefaultExceptionHandler
         log.error(e.getMessage(), e);
         return AjaxResult.error("不支持' " + e.getMethod() + "'请求");
     }
-
+    /**
+     * 拦截未知的运行时异常
+     */
+    @ExceptionHandler(UserNotExistsException.class)
+    public AjaxResult userNotFound(UserNotExistsException e)
+    {
+        log.error("运行时异常:", e);
+        return AjaxResult.error(302,"运行时异常:" + e.getMessage());
+    }
     /**
      * 拦截未知的运行时异常
      */

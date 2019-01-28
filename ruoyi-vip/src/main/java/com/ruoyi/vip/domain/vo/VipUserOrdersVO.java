@@ -10,6 +10,15 @@ public class VipUserOrdersVO extends VipUserOrders {
 
     private String vipUserName;
     private String trainCourseName;
+    private String trainCourseCover;
+
+    public String getTrainCourseCover() {
+        return trainCourseCover;
+    }
+
+    public void setTrainCourseCover(String trainCourseCover) {
+        this.trainCourseCover = trainCourseCover;
+    }
 
     public String getVipUserName() {
         return vipUserName;

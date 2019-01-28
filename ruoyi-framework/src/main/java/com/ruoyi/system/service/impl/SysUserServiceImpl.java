@@ -1,9 +1,12 @@
 package com.ruoyi.system.service.impl;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.ruoyi.framework.web.base.AbstractBaseServiceImpl;
+import com.ruoyi.framework.web.exception.user.UserException;
+import com.ruoyi.framework.web.exception.user.UserNotExistsException;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +60,7 @@ public class SysUserServiceImpl extends AbstractBaseServiceImpl<SysUserMapper, S
      */
     @Override
     public SysUser selectUserByLoginName(String userName) {
+
         return userMapper.selectUserByLoginName( userName );
     }
 
