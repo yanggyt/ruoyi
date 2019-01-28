@@ -118,10 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remarks != null  and remarks != '' "> and exam_examination.remarks = #{ination.remarks}</if>
             <if test="delFlag != null  and delFlag != '' "> and exam_examination.del_flag = #{ination.delFlag}</if>
         </where>
-
     </select>
-
-
     <select id="selectEnterNameListFromWeb" resultMap="ExamExaminationResult">
         select
         <include refid="selectExamExaminationVo"/>,tc.name as traincourse_name

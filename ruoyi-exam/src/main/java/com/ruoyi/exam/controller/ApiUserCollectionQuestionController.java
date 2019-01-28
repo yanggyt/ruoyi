@@ -36,14 +36,23 @@ public class ApiUserCollectionQuestionController extends BaseController {
      * @param id
      * @return
      */
-    @PostMapping("/v1/question/collection/{id}")
+    @GetMapping("/v1/question/collection/{id}")
     public AjaxResult answer(@PathVariable("id") Integer id) {
 
         SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
-
-        int insert = examUserCollectionQuestionService.insertSelectiveBySelf(id,sysUser);
-        AjaxResult success = success( "插入我的收藏记录成功" );
-        return success;
+        ExamUserCollectionQuestionVO examUserCollectionQuestionVO = new ExamUserCollectionQuestionVO();
+        examUserCollectionQuestionVO.setVipUserId( sysUser.getUserId().intValue() );
+        examUserCollectionQuestionVO.setExamQuestionId( id );
+        List<ExamUserCollectionQuestionVO> collectionQuestionVOList = examUserCollectionQuestionService.selectExamUserCollectionQuestionPage( examUserCollectionQuestionVO );
+        if (collectionQuestionVOList != null && collectionQuestionVOList.size() > 0) {
+            //删除收藏记录
+            examUserCollectionQuestionService.delete(examUserCollectionQuestionVO);
+            return success( "取消收藏成功" );
+        } else {
+            //插入收藏记录
+            int insert = examUserCollectionQuestionService.insertSelectiveBySelf( id, sysUser );
+            return success( "收藏成功" );
+        }
     }
 
     /**

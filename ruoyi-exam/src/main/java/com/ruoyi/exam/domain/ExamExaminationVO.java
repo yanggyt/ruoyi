@@ -7,6 +7,7 @@ public class ExamExaminationVO extends ExamExamination {
 
     private String trainCourseName;
 
+    private String examExaminationUserId;
 
     public String getTrainCourseName() {
         return trainCourseName;
