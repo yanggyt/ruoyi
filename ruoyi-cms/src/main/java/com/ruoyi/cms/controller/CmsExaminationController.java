@@ -132,12 +132,13 @@ public class CmsExaminationController {
     @GetMapping()
     public String start(@PathVariable String id, ModelMap mmap) {
         ExamExamination examExamination = examExaminationService.selectById(id);
-        Integer examUserExaminationId = -1;
-        List<ExamQuestionVO> data = examExaminationService.queryExaminationQuestion(examExamination,examUserExaminationId);
+
+        ExamUserExamination eue = new ExamUserExamination();
+        List<ExamQuestionVO> data = examExaminationService.queryExaminationQuestion(examExamination,eue);
         Integer examPaperId = examExamination.getExamPaperId();
 
         mmap.put( "data", data );
-        mmap.put( "examUserExaminationId", examUserExaminationId );
+        mmap.put( "examUserExaminationId", eue.getId()==null?-1:eue.getId());
         mmap.put( "examExamination", examExamination );
         mmap.put("paperId", examPaperId);
         return prefix+"detail";

@@ -79,7 +79,7 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
     }
 
     @Override
-    public List<ExamQuestionVO> queryExaminationQuestion(ExamExamination examExamination, Integer examUserExaminationId) {
+    public List<ExamQuestionVO> queryExaminationQuestion(ExamExamination examExamination, ExamUserExamination eue) {
         String id = examExamination.getId().toString();
         SysUser sysUser = sysUserService.selectUserByLoginName(ShiroUtils.getLoginName());
         Integer userId = Integer.parseInt(sysUser.getUserId().toString());
@@ -92,7 +92,6 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
         //考试时长
         Integer timeLength = examExamination.getTimeLength();
 
-        ExamUserExamination insert = new ExamUserExamination();
         //正式考试
         if (type.equals("2")) {
             ExamUserExamination examUserExamination = new ExamUserExamination();
@@ -125,16 +124,15 @@ public class ExamExaminationServiceImpl extends AbstractBaseServiceImpl<ExamExam
                     || userExamination.get(0).getUpdateDate() != null //最后一次考试已交卷
                     || userExamination.get(0).getCreateDate().getTime() + timeLength * 60 * 1000 < new Date().getTime()//最后一次考试，已超过考过时长
                     ) {
-                insert.setExamExaminationId(Integer.parseInt(id));
-                insert.setVipUserId(userId);
-                insert.setCreateDate(new Date());
-                insert.setExamPaperId(examPaperId);
-                insert.setDelFlag("0");
-                insert.setScore(0);
-                examUserExaminationService.insertOne(insert);
-                examUserExaminationId = insert.getId();
+                eue.setExamExaminationId(Integer.parseInt(id));
+                eue.setVipUserId(userId);
+                eue.setCreateDate(new Date());
+                eue.setExamPaperId(examPaperId);
+                eue.setDelFlag("0");
+                eue.setScore(0);
+                examUserExaminationService.insertOne(eue);
             } else {
-                examUserExaminationId = userExamination.get(0).getId();
+                eue.setId(userExamination.get(0).getId());
             }
 
         }
