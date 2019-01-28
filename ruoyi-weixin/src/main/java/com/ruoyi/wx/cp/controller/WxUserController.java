@@ -144,7 +144,7 @@ public class WxUserController {
         try {
             WxCpUserService userService = WxCpConfiguration.getCpService( 999999 ).getUserService();
             userService.delete( ids );
-            return AjaxResult.success( "批量删除成员" );
+            return AjaxResult.success( "批量删除成员成功" );
         } catch (WxErrorException e) {
             return AjaxResult.error( "删除成员出错，错误码【" + e.getError().getErrorCode() + "】，原因：" + ErrorCodeText.errorMsg( e.getError().getErrorCode() ) );
         }
