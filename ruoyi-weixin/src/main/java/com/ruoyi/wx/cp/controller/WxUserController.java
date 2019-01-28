@@ -12,6 +12,7 @@ import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.api.WxCpUserService;
 import me.chanjar.weixin.cp.bean.WxCpDepart;
 import me.chanjar.weixin.cp.bean.WxCpUser;
+import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +140,7 @@ public class WxUserController {
     }
 
     @Log(title = "批量删除成员", businessType = BusinessType.DELETE)
-    @GetMapping("/deleteByIds")
+    @PostMapping("/deleteByIds")
     public AjaxResult delete(@RequestBody String[] ids) {
         try {
             WxCpUserService userService = WxCpConfiguration.getCpService( 999999 ).getUserService();
