@@ -8,6 +8,15 @@ import java.util.List;
 public class ExamQuestionVO extends ExamQuestion{
     private List<ExamQuestionItem> questionItem;
 
+    private String examUserCollectionQuestionId;
+
+    public String getExamUserCollectionQuestionId() {
+        return examUserCollectionQuestionId;
+    }
+
+    public void setExamUserCollectionQuestionId(String examUserCollectionQuestionId) {
+        this.examUserCollectionQuestionId = examUserCollectionQuestionId;
+    }
     public List<ExamQuestionItem> getQuestionItem() {
         return questionItem;
     }

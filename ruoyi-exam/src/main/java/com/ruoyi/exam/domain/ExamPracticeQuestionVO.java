@@ -9,6 +9,7 @@ public class ExamPracticeQuestionVO extends ExamPracticeQuestion {
 
     private String questionName;
 
+
     public Integer getQuestionType() {
         return questionType;
     }

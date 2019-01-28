@@ -32,6 +32,8 @@ public class ApiPracticeController extends BaseController {
     @Autowired
     private IExamQuestionService examQuestionService;
 
+    @Autowired
+    private ISysUserService sysUserService;
     /**
      * 查询练习列表
      * @param examPractice
@@ -55,6 +57,8 @@ public class ApiPracticeController extends BaseController {
      */
     @GetMapping("/v1/practice/info")
     public AjaxResult queryOne(@RequestParam Map<String, Object> map) {
+        SysUser sysUser = sysUserService.selectUserByLoginName( JwtUtil.getLoginName() );
+        map.put( "vipUserId", sysUser.getUserId() );
         List<ExamQuestionVO> result = examQuestionService.selectQuestionListByPracticeId(map);
         if (map.containsKey("disorder") && map.get("disorder").toString().equals("1")) {
             Collections.shuffle(result);

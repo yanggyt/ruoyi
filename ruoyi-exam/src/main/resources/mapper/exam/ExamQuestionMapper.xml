@@ -33,6 +33,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateDate"    column="update_date"    />
         <result property="remarks"    column="remarks"    />
         <result property="delFlag"    column="del_flag"    />
+        <result property="examUserCollectionQuestionId"    column="examUserCollectionQuestionId"    />
+
         <collection property="questionItem" ofType="com.ruoyi.exam.domain.ExamQuestionItem">
             <result property="id"    column="item_id"    />
             <result property="content"    column="item_content"    />
@@ -102,7 +104,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
           eqi.number AS item_number,
           eqi.exam_question_id AS item_exam_question_id,
           eqi.remarks AS item_remarks
+
+        <if test="vipUserId != null  and vipUserId != '' "> ,eucq.id as examUserCollectionQuestionId</if>
+
           from exam_question eq
+
+        <if test="vipUserId != null  and vipUserId != '' ">
+            left join exam_user_collection_question eucq on eucq.exam_question_id=eq.id and eucq.vip_user_id=#{vipUserId}
+        </if>
+
           INNER JOIN exam_practice_question epq ON eq.id = epq.exam_question_id
           INNER JOIN exam_question_item eqi ON eqi.exam_question_id = eq.id
           where epq.exam_practice_id = #{practiceId}
