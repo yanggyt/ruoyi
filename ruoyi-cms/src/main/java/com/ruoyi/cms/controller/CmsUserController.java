@@ -31,10 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import sun.awt.image.IntegerComponentRaster;
 
@@ -49,6 +46,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/web")
+@SessionAttributes("user")
 public class CmsUserController {
     private static final Logger log = LoggerFactory.getLogger( CmsUserController.class );
 
@@ -110,6 +108,7 @@ public class CmsUserController {
     @RequestMapping("/user/index.html")
     public String webUserIndex(ModelMap map) {
         map.put( "user", ShiroUtils.getSysUser() );
+        map.addAttribute("user", ShiroUtils.getSysUser());
         return prefix + "/user/set";
     }
     @RequestMapping("/user/home.html")
@@ -168,8 +167,11 @@ public class CmsUserController {
     @ResponseBody
     public AjaxResult addCollectionquestion(String questionId) {
         SysUser sysUser = ShiroUtils.getSysUser();
-        examUserCollectionQuestionService.insertSelectiveBySelf(Integer.parseInt(questionId),sysUser);
-        AjaxResult success = AjaxResult.success("插入成功");
+        int i = examUserCollectionQuestionService.insertSelectiveBySelf(Integer.parseInt(questionId), sysUser);
+        AjaxResult success = AjaxResult.success("收藏成功");
+        if(i==0){
+            success = AjaxResult.success("已收藏,无法重复收藏");
+        }
         return success;
     }
 

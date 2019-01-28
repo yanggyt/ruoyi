@@ -52,6 +52,10 @@ public class ExamUserCollectionQuestionServiceImpl extends AbstractBaseServiceIm
         ExamUserCollectionQuestion examUserCollectionQuestion = new ExamUserCollectionQuestion();
         examUserCollectionQuestion.setExamQuestionId( questionId );
         examUserCollectionQuestion.setVipUserId( sysUser.getUserId().intValue() );
+        List<ExamUserCollectionQuestion> db = examUserCollectionQuestionMapper.select(examUserCollectionQuestion);
+        if(db.size()>0){
+            return 0;
+        }
         examUserCollectionQuestion.setCreateBy( sysUser.getLoginName() );
         examUserCollectionQuestion.setCreateDate( new Date() );
         examUserCollectionQuestion.setDelFlag( "0" );

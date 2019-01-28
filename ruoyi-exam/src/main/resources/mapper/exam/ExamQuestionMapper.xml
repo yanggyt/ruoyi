@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, title, answer, type, label, category_id, create_by, create_date, update_by, update_date, remarks, del_flag from exam_question
         <where>
             <if test="id != null  and id != '' "> and id = #{id}</if>
-            <if test="title != null  and title != '' "> and title = #{title}</if>
+            <if test="title != null  and title != '' "> and title like CONCAT('%',#{title},'%')</if>
             <if test="answer != null  and answer != '' "> and answer = #{answer}</if>
             <if test="type != null  and type != '' "> and type = #{type}</if>
             <if test="label != null  and label != '' "> and label = #{label}</if>
