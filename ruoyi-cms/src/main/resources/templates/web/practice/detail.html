@@ -105,6 +105,8 @@ document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Csc
             success: function (result) {
                 if (result.code != web_status.SUCCESS) {
                     layer.msg(result.msg, {icon: 2});
+                }else{
+                    layer.msg(result.msg, {icon: 1});
                 }
             }
         });

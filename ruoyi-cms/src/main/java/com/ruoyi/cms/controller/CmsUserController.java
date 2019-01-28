@@ -168,8 +168,11 @@ public class CmsUserController {
     @ResponseBody
     public AjaxResult addCollectionquestion(String questionId) {
         SysUser sysUser = ShiroUtils.getSysUser();
-        examUserCollectionQuestionService.insertSelectiveBySelf(Integer.parseInt(questionId),sysUser);
-        AjaxResult success = AjaxResult.success("插入成功");
+        int i = examUserCollectionQuestionService.insertSelectiveBySelf(Integer.parseInt(questionId), sysUser);
+        AjaxResult success = AjaxResult.success("收藏成功");
+        if(i==0){
+            success = AjaxResult.success("已收藏,无法重复收藏");
+        }
         return success;
     }
 
