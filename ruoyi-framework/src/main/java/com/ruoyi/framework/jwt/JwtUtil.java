@@ -1,10 +1,12 @@
 package com.ruoyi.framework.jwt;
  
+import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ruoyi.framework.web.exception.user.UserNotExistsException;
 import com.ruoyi.framework.web.util.ServletUtils;
 
 import java.util.Date;
@@ -49,10 +51,14 @@ public class JwtUtil {
         try {
             String token = ServletUtils.getRequest().getHeader("Authorization");
             DecodedJWT jwt = JWT.decode(token);
+            String loginName = jwt.getClaim( "loginName" ).asString();
 //            jwt.getExpiresAt();
-            return jwt.getClaim("loginName").asString();
+            if (StrUtil.isBlank( loginName )) {
+                throw new UserNotExistsException();
+            }
+            return loginName;
         } catch (JWTDecodeException e) {
-            return null;
+            throw new UserNotExistsException();
         }
     }
  
