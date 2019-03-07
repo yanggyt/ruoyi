@@ -36,6 +36,7 @@
         		    rightFixedColumns: false,
         		    rightFixedNumber: 0,
         		    queryParams: $.table.queryParams,
+					showJumpto: false
         		};
             	var options = $.extend(defaults, options);
                 $.table._option = options;
@@ -74,6 +75,7 @@
                     columns: options.columns,                           // 显示列信息（*）
                     responseHandler: $.table.responseHandler,           // 在加载服务器发送来的数据之前处理函数
                     onLoadSuccess: $.table.onLoadSuccess,               // 当所有数据被加载时触发处理函数
+					showJumpto: options.showJumpto,               		// 是否显示跳页
                 });
             },
             // 查询条件
