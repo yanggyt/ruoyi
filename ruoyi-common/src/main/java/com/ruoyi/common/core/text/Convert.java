@@ -5,6 +5,8 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import com.ruoyi.common.utils.StringUtils;
 
@@ -364,6 +366,18 @@ public class Convert
     public static String[] toStrArray(String str)
     {
         return toStrArray(",", str);
+    }
+
+
+    /**
+     * 转换为String数组<br>
+     *
+     * @param str 被转换的值
+     * @return 结果
+     */
+    public static List toList(String str)
+    {
+        return Arrays.asList(toStrArray(",", str));
     }
 
     /**

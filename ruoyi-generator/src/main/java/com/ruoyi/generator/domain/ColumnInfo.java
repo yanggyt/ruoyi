@@ -34,6 +34,11 @@ public class ColumnInfo
     /** 执行计划（包含了与索引相关的一些细节信息） */
     private String extra;
 
+    /** 当PRI值时为这个字段为主键 */
+    private String columnKey;
+
+    private boolean iskey;
+
     public String getColumnName()
     {
         return columnName;
@@ -121,5 +126,22 @@ public class ColumnInfo
     public void setConfigInfo(ColumnConfigInfo configInfo)
     {
         this.configInfo = configInfo;
+    }
+
+    public String getColumnKey() {
+        return columnKey;
+    }
+
+    public void setColumnKey(String columnKey) {
+        this.columnKey = columnKey;
+    }
+
+    public boolean isIskey() {
+        if("PRI".equals(this.getColumnKey())){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 }

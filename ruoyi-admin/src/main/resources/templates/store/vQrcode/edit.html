@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vQrcode-edit" th:object="${vQrcode}">
+
+        	<input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店ID：</label>
+				<div class="col-sm-8">
+					<input id="storeId" name="storeId" th:field="*{storeId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">编码：</label>
+				<div class="col-sm-8">
+					<input id="qrCode" name="qrCode" th:field="*{qrCode}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">二维码地址：</label>
+				<div class="col-sm-8">
+					<input id="qrPath" name="qrPath" th:field="*{qrPath}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">二维码名称：</label>
+				<div class="col-sm-8">
+					<input id="qrName" name="qrName" th:field="*{qrName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="ctime" name="ctime" th:value="*{#dates.format(ctime,'yyyy-MM-dd HH:mm:ss')}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "store/vQrcode";
+		$("#form-vQrcode-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-vQrcode-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

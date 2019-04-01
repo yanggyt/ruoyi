@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Transient;
+
 /**
  * Entity基类
  * 
@@ -16,23 +18,29 @@ public class BaseEntity implements Serializable
     private static final long serialVersionUID = 1L;
 
     /** 搜索值 */
+    @Transient
     private String searchValue;
 
     /** 创建者 */
+    @Transient
     private String createBy;
 
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Transient
     private Date createTime;
 
     /** 更新者 */
+    @Transient
     private String updateBy;
 
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Transient
     private Date updateTime;
 
     /** 备注 */
+    @Transient
     private String remark;
 
     /** 请求参数 */

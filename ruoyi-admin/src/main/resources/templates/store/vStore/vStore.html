@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								门店编号：<input type="text" name="storeCode"/>
+							</li>
+
+							<li>
+								门店名称：<input type="text" name="storeName"/>
+							</li>
+
+							<li>
+								门店联系人：<input type="text" name="storePeople"/>
+							</li>
+
+							<li>
+								门店 联系电话：<input type="text" name="storeTel"/>
+							</li>
+
+							<li>
+								注册的邮箱：<input type="text" name="storeEmail"/>
+							</li>
+
+							<li>
+								门店LOGO：<input type="text" name="storeLogo"/>
+							</li>
+
+							<li>
+								门店地址：<input type="text" name="storeAddress"/>
+							</li>
+
+							<li>
+								门店状态：<select name="storeStatus" th:with="type=${@dict.getType('v_store_status')}">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+								</select>
+							</li>
+							<li class="select-time">
+								<label>创建时间： </label>
+								<input type="text" class="time-input" id="startCtime" placeholder="开始" name="params[beginCtime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endCtime" placeholder="结束" name="params[endCtime]"/>
+							</li>
+							<li class="select-time">
+								<label>门店到期时间： </label>
+								<input type="text" class="time-input" id="startStime" placeholder="开始" name="params[beginStime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endStime" placeholder="结束" name="params[endStime]"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="store:vStore:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="store:vStore:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="store:vStore:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="store:vStore:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('store:vStore:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('store:vStore:remove')}]];
+        var prefix = ctx + "store/vStore";
+        var datas = [[${@dict.getType('v_store_status')}]];
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "门店管理",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'storeId', 
+					title : 'ID',
+					visible: false
+				},
+				{
+					field : 'storeCode', 
+					title : '门店编号',
+					sortable: true
+				},
+				{
+					field : 'storeName', 
+					title : '门店名称',
+					sortable: true
+				},
+				{
+					field : 'storePeople', 
+					title : '门店联系人',
+					sortable: true
+				},
+				{
+					field : 'storeTel', 
+					title : '门店 联系电话',
+					sortable: true
+				},
+				{
+					field : 'storeEmail', 
+					title : '注册的邮箱',
+					sortable: true
+				},
+				{
+					field : 'storeLogo', 
+					title : '门店LOGO',
+					sortable: true
+				},
+				{
+					field : 'storeAddress', 
+					title : '门店地址',
+					sortable: true
+				},
+				{
+					field : 'storeStatus', 
+					title : '门店状态',
+					sortable: true,
+					formatter: function(value, row, index) {
+		            	return $.table.selectDictLabel(datas, value);
+		            }
+				},
+				{
+					field : 'ctime', 
+					title : '创建时间',
+					sortable: true
+				},
+				{
+					field : 'stime', 
+					title : '门店到期时间',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.storeId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.storeId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

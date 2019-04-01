@@ -72,7 +72,7 @@
         var prefix = ctx + "${moduleName}/${classname}";
 #foreach($column in $columns)
 #if(${column.configInfo} && ${column.configInfo.type} == 'dict')
-        var datas = [[${@dict.getType('${column.configInfo.value}')}]];
+        var ${column.attrname}_datas = [[${@dict.getType('${column.configInfo.value}')}]];
 #end
 #end
 
@@ -89,7 +89,7 @@
 		            checkbox: true
 		        },
 #foreach($column in $columns)
-#if($column.columnName == $primaryKey.columnName)
+#if($column.iskey)
 				{
 					field : '${column.attrname}', 
 					title : '${column.columnComment}',
@@ -102,7 +102,7 @@
 					title : '${column.columnComment}',
 					sortable: true,
 					formatter: function(value, row, index) {
-		            	return $.table.selectDictLabel(datas, value);
+		            	return $.table.selectDictLabel(${column.attrname}_datas, value);
 		            }
 				},
 #else

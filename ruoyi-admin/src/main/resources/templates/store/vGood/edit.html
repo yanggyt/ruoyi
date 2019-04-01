@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vGood-edit" th:object="${vGood}">
+
+        	<input id="goodId" name="goodId" th:field="*{goodId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">商品名称：</label>
+				<div class="col-sm-8">
+			<input id="goodName" name="goodName" th:field="*{goodName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">商品价格：</label>
+				<div class="col-sm-8">
+			<input id="goodPrice" name="goodPrice" th:field="*{goodPrice}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">单位：</label>
+				<div class="col-sm-8">
+			<input id="goodNuit" name="goodNuit" th:field="*{goodNuit}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">商品图片：</label>
+				<div class="col-sm-8">
+			<input id="goodPic" name="goodPic" th:field="*{goodPic}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">状态：</label>
+				<div class="col-sm-8">
+					<select name="goodStatus" class="form-control m-b" th:with="type=${@dict.getType('v_good_status')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{goodStatus}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">商品简介：</label>
+				<div class="col-sm-8">
+			<input id="goodDesc" name="goodDesc" th:field="*{goodDesc}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="goodCtime"  name="goodCtime" th:field="*{goodCtime}" class="form-control time-input" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">分类ID：</label>
+				<div class="col-sm-8">
+			<input id="goodItemId" name="goodItemId" th:field="*{goodItemId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店ID：</label>
+				<div class="col-sm-8">
+			<input id="goodStoreId" name="goodStoreId" th:field="*{goodStoreId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">删除状态：</label>
+				<div class="col-sm-8">
+					<select name="delState" class="form-control m-b" th:with="type=${@dict.getType('v_good_delstate')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{delState}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">详细描述：</label>
+				<div class="col-sm-8">
+			<input id="detailDescribe" name="detailDescribe" th:field="*{detailDescribe}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">推荐：</label>
+				<div class="col-sm-8">
+					<select name="recommend" class="form-control m-b" th:with="type=${@dict.getType('v_good_recommend')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{recommend}"></option>
+					</select>
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "store/vGood";
+		$("#form-vGood-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-vGood-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vStore-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店编号：</label>
+				<div class="col-sm-8">
+					<input id="storeCode" name="storeCode" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店名称：</label>
+				<div class="col-sm-8">
+					<input id="storeName" name="storeName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店联系人：</label>
+				<div class="col-sm-8">
+					<input id="storePeople" name="storePeople" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店 联系电话：</label>
+				<div class="col-sm-8">
+					<input id="storeTel" name="storeTel" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">注册的邮箱：</label>
+				<div class="col-sm-8">
+					<input id="storeEmail" name="storeEmail" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店LOGO：</label>
+				<div class="col-sm-8">
+					<input id="storeLogo" name="storeLogo" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店地址：</label>
+				<div class="col-sm-8">
+					<input id="storeAddress" name="storeAddress" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店状态：</label>
+				<div class="col-sm-8">
+					<select name="storeStatus" class="form-control m-b" th:with="type=${@dict.getType('v_store_status')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="ctime" name="ctime" class="form-control time-input" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">门店到期时间：</label>
+				<div class="col-sm-8">
+					<input id="stime" name="stime" class="form-control time-input" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "store/vStore"
+		$("#form-vStore-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-vStore-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -31,6 +31,8 @@ public class TableInfo extends BaseEntity
     /** 类名(第一个字母小写) */
     private String classname;
 
+
+
     public String getTableName()
     {
         return tableName;
@@ -100,4 +102,6 @@ public class TableInfo extends BaseEntity
     {
         this.primaryKey = primaryKey;
     }
+
+
 }
