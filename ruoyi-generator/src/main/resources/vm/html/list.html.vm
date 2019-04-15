@@ -1,7 +1,8 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<meta charset="utf-8">
-<head th:include="include :: header"></head>
+<head>
+	<th:block th:include="include :: header('${tableComment}列表')" />
+</head>
 <body class="gray-bg">
     
      <div class="container-div">
@@ -46,7 +47,7 @@
 				</form>
 			</div>
 			
-	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+	        <div class="btn-group-sm" id="toolbar" role="group">
 				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="${moduleName}:${classname}:add">
 					<i class="fa fa-plus"></i> 添加
 				</a>
@@ -84,7 +85,6 @@
                 removeUrl: prefix + "/remove",
 				exportUrl: prefix + "/export",
                 modalName: "${tableComment}",
-				search: false,
 		        showExport: true,
                 columns: [{
 		            checkbox: true

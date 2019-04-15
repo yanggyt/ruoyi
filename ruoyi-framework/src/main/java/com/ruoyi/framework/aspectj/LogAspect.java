@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessStatus;
 import com.ruoyi.common.json.JSON;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
-import com.ruoyi.framework.util.ServletUtils;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.domain.SysUser;
@@ -41,12 +41,12 @@ public class LogAspect
     }
 
     /**
-     * 前置通知 用于拦截操作
+     * 处理完请求后执行
      *
      * @param joinPoint 切点
      */
     @AfterReturning(pointcut = "logPointCut()")
-    public void doBefore(JoinPoint joinPoint)
+    public void doAfterReturning(JoinPoint joinPoint)
     {
         handleLog(joinPoint, null);
     }
@@ -54,11 +54,11 @@ public class LogAspect
     /**
      * 拦截异常操作
      * 
-     * @param joinPoint
-     * @param e
+     * @param joinPoint 切点
+     * @param e 异常
      */
     @AfterThrowing(value = "logPointCut()", throwing = "e")
-    public void doAfter(JoinPoint joinPoint, Exception e)
+    public void doAfterThrowing(JoinPoint joinPoint, Exception e)
     {
         handleLog(joinPoint, e);
     }
@@ -151,7 +151,7 @@ public class LogAspect
     {
         Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
         String params = JSON.marshal(map);
-        operLog.setOperParam(StringUtils.substring(params, 0, 255));
+        operLog.setOperParam(StringUtils.substring(params, 0, 2000));
     }
 
     /**

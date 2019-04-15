@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.enums.OnlineStatus;
-import com.ruoyi.common.page.TableDataInfo;
 import com.ruoyi.framework.shiro.session.OnlineSession;
 import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.service.ISysUserOnlineService;
-import com.ruoyi.framework.web.base.BaseController;
 
 /**
  * 在线用户监控
@@ -78,6 +78,7 @@ public class SysUserOnlineController extends BaseController
                 return error("当前登陆用户无法强退");
             }
             onlineSession.setStatus(OnlineStatus.off_line);
+            onlineSessionDAO.update(onlineSession);
             online.setStatus(OnlineStatus.off_line);
             userOnlineService.saveOnline(online);
         }
@@ -105,6 +106,7 @@ public class SysUserOnlineController extends BaseController
             return error("用户已下线");
         }
         onlineSession.setStatus(OnlineStatus.off_line);
+        onlineSessionDAO.update(onlineSession);
         online.setStatus(OnlineStatus.off_line);
         userOnlineService.saveOnline(online);
         return success();

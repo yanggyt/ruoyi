@@ -1,7 +1,6 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
-import java.util.Map;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.service.ISysMenuService;
-import com.ruoyi.framework.web.base.BaseController;
 
 /**
  * 菜单信息
@@ -55,17 +55,17 @@ public class SysMenuController extends BaseController
      */
     @Log(title = "菜单管理", businessType = BusinessType.DELETE)
     @RequiresPermissions("system:menu:remove")
-    @PostMapping("/remove/{menuId}")
+    @GetMapping("/remove/{menuId}")
     @ResponseBody
     public AjaxResult remove(@PathVariable("menuId") Long menuId)
     {
         if (menuService.selectCountMenuByParentId(menuId) > 0)
         {
-            return error(1, "存在子菜单,不允许删除");
+            return AjaxResult.warn("存在子菜单,不允许删除");
         }
         if (menuService.selectCountRoleMenuByMenuId(menuId) > 0)
         {
-            return error(1, "菜单已分配,不允许删除");
+            return AjaxResult.warn("菜单已分配,不允许删除");
         }
         ShiroUtils.clearCachedAuthorizationInfo();
         return toAjax(menuService.deleteMenuById(menuId));
@@ -154,10 +154,10 @@ public class SysMenuController extends BaseController
      */
     @GetMapping("/roleMenuTreeData")
     @ResponseBody
-    public List<Map<String, Object>> roleMenuTreeData(SysRole role)
+    public List<Ztree> roleMenuTreeData(SysRole role)
     {
-        List<Map<String, Object>> tree = menuService.roleMenuTreeData(role);
-        return tree;
+        List<Ztree> ztrees = menuService.roleMenuTreeData(role);
+        return ztrees;
     }
 
     /**
@@ -165,10 +165,10 @@ public class SysMenuController extends BaseController
      */
     @GetMapping("/menuTreeData")
     @ResponseBody
-    public List<Map<String, Object>> menuTreeData(SysRole role)
+    public List<Ztree> menuTreeData(SysRole role)
     {
-        List<Map<String, Object>> tree = menuService.menuTreeData();
-        return tree;
+        List<Ztree> ztrees = menuService.menuTreeData();
+        return ztrees;
     }
 
     /**

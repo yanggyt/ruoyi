@@ -1,53 +1,33 @@
 package com.ruoyi.common.utils.poi;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import org.apache.poi.hssf.usermodel.DVConstraint;
-import org.apache.poi.hssf.usermodel.HSSFDataValidation;
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.annotation.Excel.Type;
+import com.ruoyi.common.config.Global;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.exception.BusinessException;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.reflect.ReflectUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFDataValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.annotation.Excel.Type;
-import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.config.Global;
-import com.ruoyi.common.exception.BusinessException;
-import com.ruoyi.common.reflect.ReflectUtils;
-import com.ruoyi.common.support.Convert;
-import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.StringUtils;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.*;
 
 /**
  * Excel相关处理
- * 
+ *
  * @author ruoyi
  */
 public class ExcelUtil<T>
@@ -114,7 +94,7 @@ public class ExcelUtil<T>
 
     /**
      * 对excel表单默认第一个索引名转换成list
-     * 
+     *
      * @param input 输入流
      * @return 转换后集合
      */
@@ -125,7 +105,7 @@ public class ExcelUtil<T>
 
     /**
      * 对excel表单指定表格索引名转换成list
-     * 
+     *
      * @param sheetName 表格索引名
      * @param input 输入流
      * @return 转换后集合
@@ -217,6 +197,10 @@ public class ExcelUtil<T>
                     {
                         val = Convert.toFloat(val);
                     }
+                    else if (BigDecimal.class == fieldType)
+                    {
+                        val = Convert.toBigDecimal(val);
+                    }
                     else if (Date.class == fieldType)
                     {
                         if (val instanceof String)
@@ -251,7 +235,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @param list 导出数据集合
      * @param sheetName 工作表的名称
      * @return 结果
@@ -264,7 +248,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @param sheetName 工作表的名称
      * @return 结果
      */
@@ -276,7 +260,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @return 结果
      */
     public AjaxResult exportExcel()
@@ -336,13 +320,13 @@ public class ExcelUtil<T>
                     if (StringUtils.isNotEmpty(attr.prompt()))
                     {
                         // 这里默认设了2-101列提示.
-                        setHSSFPrompt(sheet, "", attr.prompt(), 1, 100, i, i);
+                        setXSSFPrompt(sheet, "", attr.prompt(), 1, 100, i, i);
                     }
                     // 如果设置了combo属性则本列只能选择不能输入
                     if (attr.combo().length > 0)
                     {
                         // 这里默认设了2-101列只能选择不能输入.
-                        setHSSFValidation(sheet, attr.combo(), 1, 100, i, i);
+                        setXSSFValidation(sheet, attr.combo(), 1, 100, i, i);
                     }
                 }
                 if (Type.EXPORT.equals(type))
@@ -389,7 +373,7 @@ public class ExcelUtil<T>
 
     /**
      * 填充excel数据
-     * 
+     *
      * @param index 序号
      * @param row 单元格行
      * @param cell 类型单元格
@@ -435,11 +419,11 @@ public class ExcelUtil<T>
                         Object value = getTargetValue(vo, field, attr);
                         String dateFormat = attr.dateFormat();
                         String readConverterExp = attr.readConverterExp();
-                        if (StringUtils.isNotEmpty(dateFormat))
+                        if (StringUtils.isNotEmpty(dateFormat) && StringUtils.isNotNull(value))
                         {
                             cell.setCellValue(DateUtils.parseDateToStr(dateFormat, (Date) value));
                         }
-                        else if (StringUtils.isNotEmpty(readConverterExp))
+                        else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value))
                         {
                             cell.setCellValue(convertByExp(String.valueOf(value), readConverterExp));
                         }
@@ -453,41 +437,38 @@ public class ExcelUtil<T>
                 }
                 catch (Exception e)
                 {
-                    log.error("导出Excel失败{}", e.getMessage());
+                    log.error("导出Excel失败{}", e);
                 }
             }
         }
     }
 
     /**
-     * 设置单元格上提示
+     * 设置 POI XSSFSheet 单元格提示
      * 
-     * @param sheet 要设置的sheet.
-     * @param promptTitle 标题
-     * @param promptContent 内容
+     * @param sheet 表单
+     * @param promptTitle 提示标题
+     * @param promptContent 提示内容
      * @param firstRow 开始行
      * @param endRow 结束行
      * @param firstCol 开始列
      * @param endCol 结束列
-     * @return 设置好的sheet.
      */
-    public static Sheet setHSSFPrompt(Sheet sheet, String promptTitle, String promptContent, int firstRow, int endRow,
+    public void setXSSFPrompt(Sheet sheet, String promptTitle, String promptContent, int firstRow, int endRow,
             int firstCol, int endCol)
     {
-        // 构造constraint对象
-        DVConstraint constraint = DVConstraint.createCustomFormulaConstraint("DD1");
-        // 四个参数分别是：起始行、终止行、起始列、终止列
+        DataValidationHelper helper = sheet.getDataValidationHelper();
+        DataValidationConstraint constraint = helper.createCustomConstraint("DD1");
         CellRangeAddressList regions = new CellRangeAddressList(firstRow, endRow, firstCol, endCol);
-        // 数据有效性对象
-        HSSFDataValidation dataValidationView = new HSSFDataValidation(regions, constraint);
-        dataValidationView.createPromptBox(promptTitle, promptContent);
-        sheet.addValidationData(dataValidationView);
-        return sheet;
+        DataValidation dataValidation = helper.createValidation(constraint, regions);
+        dataValidation.createPromptBox(promptTitle, promptContent);
+        dataValidation.setShowPromptBox(true);
+        sheet.addValidationData(dataValidation);
     }
 
     /**
      * 设置某些列的值只能输入预制的数据,显示下拉框.
-     * 
+     *
      * @param sheet 要设置的sheet.
      * @param textlist 下拉框显示的内容
      * @param firstRow 开始行
@@ -496,22 +477,32 @@ public class ExcelUtil<T>
      * @param endCol 结束列
      * @return 设置好的sheet.
      */
-    public static Sheet setHSSFValidation(Sheet sheet, String[] textlist, int firstRow, int endRow, int firstCol,
-            int endCol)
+    public void setXSSFValidation(Sheet sheet, String[] textlist, int firstRow, int endRow, int firstCol, int endCol)
     {
+        DataValidationHelper helper = sheet.getDataValidationHelper();
         // 加载下拉列表内容
-        DVConstraint constraint = DVConstraint.createExplicitListConstraint(textlist);
+        DataValidationConstraint constraint = helper.createExplicitListConstraint(textlist);
         // 设置数据有效性加载在哪个单元格上,四个参数分别是：起始行、终止行、起始列、终止列
         CellRangeAddressList regions = new CellRangeAddressList(firstRow, endRow, firstCol, endCol);
         // 数据有效性对象
-        HSSFDataValidation dataValidationList = new HSSFDataValidation(regions, constraint);
-        sheet.addValidationData(dataValidationList);
-        return sheet;
+        DataValidation dataValidation = helper.createValidation(constraint, regions);
+        // 处理Excel兼容性问题
+        if (dataValidation instanceof XSSFDataValidation)
+        {
+            dataValidation.setSuppressDropDownArrow(true);
+            dataValidation.setShowErrorBox(true);
+        }
+        else
+        {
+            dataValidation.setSuppressDropDownArrow(false);
+        }
+
+        sheet.addValidationData(dataValidation);
     }
 
     /**
      * 解析导出值 0=男,1=女,2=未知
-     * 
+     *
      * @param propertyValue 参数值
      * @param converterExp 翻译注解
      * @return 解析后值
@@ -540,7 +531,7 @@ public class ExcelUtil<T>
 
     /**
      * 反向解析值 男=0,女=1,未知=2
-     * 
+     *
      * @param propertyValue 参数值
      * @param converterExp 翻译注解
      * @return 解析后值
@@ -578,7 +569,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取下载路径
-     * 
+     *
      * @param filename 文件名称
      */
     public String getAbsoluteFile(String filename)
@@ -594,7 +585,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取bean中的属性值
-     * 
+     *
      * @param vo 实体对象
      * @param field 字段
      * @param excel 注解
@@ -625,7 +616,7 @@ public class ExcelUtil<T>
 
     /**
      * 以类的属性的get方法方法形式获取值
-     * 
+     *
      * @param o
      * @param name
      * @return value
@@ -649,14 +640,31 @@ public class ExcelUtil<T>
     private void createExcelField()
     {
         this.fields = new ArrayList<Field>();
-        Field[] allFields = clazz.getDeclaredFields();
-        // 得到所有field并存放到一个list中.
-        for (Field field : allFields)
+        List<Field> tempFields = new ArrayList<>();
+        Class<?> tempClass = clazz;
+        tempFields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        while (tempClass != null)
+        {
+            tempClass = tempClass.getSuperclass();
+            if (tempClass != null)
+            {
+                tempFields.addAll(Arrays.asList(tempClass.getDeclaredFields()));
+            }
+        }
+        putToFields(tempFields);
+    }
+
+    /**
+     * 放到字段集合中
+     */
+    private void putToFields(List<Field> fields)
+    {
+        for (Field field : fields)
         {
             Excel attr = field.getAnnotation(Excel.class);
             if (attr != null && (attr.type() == Type.ALL || attr.type() == type))
             {
-                fields.add(field);
+                this.fields.add(field);
             }
         }
     }
@@ -671,7 +679,7 @@ public class ExcelUtil<T>
 
     /**
      * 创建工作表
-     * 
+     *
      * @param sheetName，指定Sheet名称
      * @param sheetNo sheet数量
      * @param index 序号
@@ -692,7 +700,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取单元格值
-     * 
+     *
      * @param row 获取的行
      * @param column 获取单元格列号
      * @return 单元格值

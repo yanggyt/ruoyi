@@ -3,6 +3,7 @@ package com.ruoyi.framework.datasource;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import com.ruoyi.common.config.datasource.DynamicDataSourceContextHolder;
 
 /**
  * 动态数据源
@@ -21,6 +22,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource
     @Override
     protected Object determineCurrentLookupKey()
     {
-        return DynamicDataSourceContextHolder.getDateSoureType();
+        return DynamicDataSourceContextHolder.getDataSourceType();
     }
 }

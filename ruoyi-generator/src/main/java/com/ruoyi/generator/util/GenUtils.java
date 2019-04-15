@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
-import com.ruoyi.common.config.Global;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.generator.config.GenConfig;
 import com.ruoyi.generator.domain.ColumnInfo;
 import com.ruoyi.generator.domain.TableInfo;
 
@@ -64,7 +64,7 @@ public class GenUtils
     {
         // java对象数据传递到模板文件vm
         VelocityContext velocityContext = new VelocityContext();
-        String packageName = Global.getPackageName();
+        String packageName = GenConfig.getPackageName();
         velocityContext.put("tableName", table.getTableName());
         velocityContext.put("tableComment", replaceKeyword(table.getTableComment()));
         velocityContext.put("primaryKey", table.getPrimaryKey());
@@ -74,7 +74,7 @@ public class GenUtils
         velocityContext.put("columns", table.getColumns());
         velocityContext.put("basePackage", getBasePackage(packageName));
         velocityContext.put("package", packageName);
-        velocityContext.put("author", Global.getAuthor());
+        velocityContext.put("author", GenConfig.getAuthor());
         velocityContext.put("datetime", DateUtils.getDate());
         return velocityContext;
     }
@@ -105,13 +105,11 @@ public class GenUtils
      */
     public static String tableToJava(String tableName)
     {
-        if (Constants.AUTO_REOMVE_PRE.equals(Global.getAutoRemovePre()))
+        String autoRemovePre = GenConfig.getAutoRemovePre();
+        String tablePrefix = GenConfig.getTablePrefix();
+        if (Constants.AUTO_REOMVE_PRE.equals(autoRemovePre) && StringUtils.isNotEmpty(tablePrefix))
         {
-            tableName = tableName.substring(tableName.indexOf("_") + 1);
-        }
-        if (StringUtils.isNotEmpty(Global.getTablePrefix()))
-        {
-            tableName = tableName.replace(Global.getTablePrefix(), "");
+            tableName = tableName.replaceFirst(tablePrefix, "");
         }
         return StringUtils.convertToCamelCase(tableName);
     }
@@ -201,7 +199,7 @@ public class GenUtils
 
     public static String getProjectPath()
     {
-        String packageName = Global.getPackageName();
+        String packageName = GenConfig.getPackageName();
         StringBuffer projectPath = new StringBuffer();
         projectPath.append("main/java/");
         projectPath.append(packageName.replace(".", "/"));
@@ -211,7 +209,7 @@ public class GenUtils
 
     public static String replaceKeyword(String keyword)
     {
-        String keyName = keyword.replaceAll("(?:表|信息)", "");
+        String keyName = keyword.replaceAll("(?:表|信息|管理)", "");
         return keyName;
     }
 
@@ -221,6 +219,7 @@ public class GenUtils
         javaTypeMap.put("smallint", "Integer");
         javaTypeMap.put("mediumint", "Integer");
         javaTypeMap.put("int", "Integer");
+        javaTypeMap.put("number", "Integer");
         javaTypeMap.put("integer", "integer");
         javaTypeMap.put("bigint", "Long");
         javaTypeMap.put("float", "Float");
@@ -229,6 +228,7 @@ public class GenUtils
         javaTypeMap.put("bit", "Boolean");
         javaTypeMap.put("char", "String");
         javaTypeMap.put("varchar", "String");
+        javaTypeMap.put("varchar2", "String");
         javaTypeMap.put("tinytext", "String");
         javaTypeMap.put("text", "String");
         javaTypeMap.put("mediumtext", "String");

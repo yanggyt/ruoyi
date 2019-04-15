@@ -1,12 +1,12 @@
 package com.ruoyi.system.domain;
 
-import java.util.Date;
-import java.util.List;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.Type;
-import com.ruoyi.common.base.BaseEntity;
+import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户对象 sys_user
@@ -18,7 +18,7 @@ public class SysUser extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
-    @Excel(name = "用户序号")
+    @Excel(name = "用户序号", prompt = "用户编号")
     private Long userId;
 
     /** 部门ID */
@@ -27,6 +27,9 @@ public class SysUser extends BaseEntity
 
     /** 部门父ID */
     private Long parentId;
+    
+    /** 角色ID */
+    private Long roleId;
 
     /** 登录名称 */
     @Excel(name = "登录名称")
@@ -122,6 +125,16 @@ public class SysUser extends BaseEntity
     public void setParentId(Long parentId)
     {
         this.parentId = parentId;
+    }
+
+    public Long getRoleId()
+    {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId)
+    {
+        this.roleId = roleId;
     }
 
     public String getLoginName()

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ruoyi</artifactId>
         <groupId>com.ruoyi</groupId>
-        <version>3.2</version>
+        <version>3.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     
@@ -16,12 +16,19 @@
 	</description>
 	
     <dependencies>
-		<!-- 通用工具-->
+    
+    	 <!-- Mysql驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+    
+        <!-- 通用工具-->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common</artifactId>
-            <version>${ruoyi.version}</version>
         </dependency>
+        
     </dependencies>
 	
 </project>
