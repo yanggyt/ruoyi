@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import com.ruoyi.system.domain.SysDictData;
 
 /**
- * 字典表 数据层
+ * 字典表 数据层123
  * 
  * @author ruoyi
  */
