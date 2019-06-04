@@ -21,6 +21,9 @@ import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 登录校验方法
  * 
@@ -132,5 +135,61 @@ public class SysLoginService
         user.setLoginIp(ShiroUtils.getIp());
         user.setLoginDate(DateUtils.getNowDate());
         userService.updateUserInfo(user);
+    }
+
+    /**
+     * 手机验证码登录
+     */
+    public SysUser phoneLogin(String phone, String validCode) {
+
+        //TODO 验证验证码
+//        // 验证码校验
+//        if (!StringUtils.isEmpty(ServletUtils.getRequest().getAttribute(ShiroConstants.CURRENT_CAPTCHA))) {
+//            AsyncManager.me().execute(AsyncFactory.recordLogininfor(phone, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
+//            throw new CaptchaException();
+//        }
+
+        // 手机或验证码为空 错误
+        if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(validCode)) {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(phone, Constants.LOGIN_FAIL, MessageUtils.message("not.null")));
+            throw new UserNotExistsException();
+        }
+
+        String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
+        if (phone.length() != 11) {
+            System.out.println("手机号应为11位数");
+        } else {
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phone);
+            boolean isMatch = m.matches();
+            if (isMatch) {
+                System.out.println("您的手机号" + phone + "是正确格式@——@");
+            } else {
+                System.out.println("您的手机号" + phone + "是错误格式！！！");
+            }
+        }
+
+
+        // 查询用户信息
+        SysUser user = userService.selectUserByPhoneNumber(phone);
+
+        if (user == null) {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(phone, Constants.LOGIN_FAIL, MessageUtils.message("user.not.exists")));
+            throw new UserNotExistsException();
+        }
+
+        if (UserStatus.DELETED.getCode().equals(user.getDelFlag())) {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(phone, Constants.LOGIN_FAIL, MessageUtils.message("user.password.delete")));
+            throw new UserDeleteException();
+        }
+
+        if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(phone, Constants.LOGIN_FAIL, MessageUtils.message("user.blocked", user.getRemark())));
+            throw new UserBlockedException();
+        }
+
+        AsyncManager.me().execute(AsyncFactory.recordLogininfor(phone, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        recordLoginInfo(user);
+        return user;
     }
 }
