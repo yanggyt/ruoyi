@@ -2,6 +2,8 @@ package com.ruoyi.framework.shiro.service;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
+
+import com.ruoyi.framework.shiro.config.RyPasswordEncoder;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -26,6 +28,8 @@ public class SysPasswordService
 {
     @Autowired
     private CacheManager cacheManager;
+    @Autowired
+    private RyPasswordEncoder ryPasswordEncoder;
 
     private Cache<String, AtomicInteger> loginRecordCache;
 
@@ -79,7 +83,7 @@ public class SysPasswordService
 
     public String encryptPassword(String username, String password, String salt)
     {
-        return new Md5Hash(username + password + salt).toHex().toString();
+        return ryPasswordEncoder.encode(username, password, salt);
     }
 
 }
