@@ -2,6 +2,9 @@ package com.ruoyi.web.controller.system;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.framework.shiro.LoginType;
+import com.ruoyi.framework.shiro.UserToken;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -17,7 +20,7 @@ import com.ruoyi.common.utils.StringUtils;
 
 /**
  * 登录验证
- * 
+ *
  * @author ruoyi
  */
 @Controller
@@ -39,27 +42,45 @@ public class SysLoginController extends BaseController
     @ResponseBody
     public AjaxResult ajaxLogin(String username, String password, Boolean rememberMe)
     {
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
-        Subject subject = SecurityUtils.getSubject();
-        try
-        {
-            subject.login(token);
-            return success();
-        }
-        catch (AuthenticationException e)
-        {
-            String msg = "用户或密码错误";
-            if (StringUtils.isNotEmpty(e.getMessage()))
-            {
-                msg = e.getMessage();
-            }
-            return error(msg);
-        }
+//        UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
+        UserToken token = new UserToken(username, password, rememberMe, LoginType.USER_PASSWORD);
+        return shiroLogin(token);
     }
 
     @GetMapping("/unauth")
     public String unauth()
     {
         return "error/unauth";
+    }
+
+    /**
+     * 手机验证码登录
+     * 注：由于是demo演示，此处不添加发送验证码方法；
+     * 正常操作：发送验证码至手机并且将验证码存放在redis中，登录的时候比较用户穿过来的验证码和redis中存放的验证码
+     *
+     * @param phone
+     * @param code
+     * @return
+     */
+    @PostMapping("/phoneLogin")
+    @ResponseBody
+    public AjaxResult phoneLogin(String phone, String code) {
+        // 此处phone替换了username，code替换了password
+        UserToken token = new UserToken(phone, code, LoginType.USER_PHONE);
+        return shiroLogin(token);
+    }
+
+    public AjaxResult shiroLogin(UserToken token) {
+        Subject subject = SecurityUtils.getSubject();
+        try {
+            subject.login(token);
+            return success();
+        } catch (AuthenticationException e) {
+            String msg = "用户或密码错误";
+            if (StringUtils.isNotEmpty(e.getMessage())) {
+                msg = e.getMessage();
+            }
+            return error(msg);
+        }
     }
 }

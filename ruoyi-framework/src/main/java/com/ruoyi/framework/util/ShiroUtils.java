@@ -1,5 +1,6 @@
 package com.ruoyi.framework.util;
 
+import com.ruoyi.framework.shiro.realm.AuthorizationRealm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.mgt.RealmSecurityManager;
@@ -60,7 +61,8 @@ public class ShiroUtils
     public static void clearCachedAuthorizationInfo()
     {
         RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        UserRealm realm = (UserRealm) rsm.getRealms().iterator().next();
+//        UserRealm realm = (UserRealm) rsm.getRealms().iterator().next();
+        AuthorizationRealm realm = (AuthorizationRealm) rsm.getRealms().iterator().next();
         realm.clearCachedAuthorizationInfo();
     }
 
