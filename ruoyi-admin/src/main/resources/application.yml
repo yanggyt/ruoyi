@@ -1,22 +1,22 @@
 # 项目相关配置
 ruoyi:
   # 名称
-  name: RuoYi
+  name: Linglong
   # 版本
   version: 3.4.0
   # 版权年份
   copyrightYear: 2019
   # 实例演示开关
-  demoEnabled: true
+  demoEnabled: false
   # 文件路径
-  profile: D:/profile/
+  profile: D:/linglong/
   # 获取ip地址开关
   addressEnabled: true
 
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 80
+  port: 8080
   servlet:
     # 应用的访问路径
     context-path: /
