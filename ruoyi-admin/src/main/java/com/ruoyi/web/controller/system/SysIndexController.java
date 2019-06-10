@@ -35,6 +35,7 @@ public class SysIndexController extends BaseController
         mmap.put("user", user);
         mmap.put("copyrightYear", Global.getCopyrightYear());
         mmap.put("demoEnabled", Global.isDemoEnabled());
+        mmap.put("version", Global.getVersion());
         return "index";
     }
 
