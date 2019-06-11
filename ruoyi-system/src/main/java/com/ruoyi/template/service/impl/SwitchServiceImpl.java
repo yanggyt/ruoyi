@@ -1,20 +1,18 @@
 package com.ruoyi.template.service.impl;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ruoyi.common.core.text.Convert;
-import com.ruoyi.template.domain.Switch;
 import com.ruoyi.template.mapper.SwitchMapper;
+import com.ruoyi.template.domain.Switch;
 import com.ruoyi.template.service.ISwitchService;
+import com.ruoyi.common.core.text.Convert;
 
 /**
  * 交换机模板 服务层实现
  * 
  * @author TP
- * @date 2019-06-11
+ * @date 2019-06-12
  */
 @Service
 public class SwitchServiceImpl implements ISwitchService 
@@ -25,49 +23,49 @@ public class SwitchServiceImpl implements ISwitchService
 	/**
      * 查询交换机模板信息
      * 
-     * @param serverId 交换机模板ID
+     * @param switchId 交换机模板ID
      * @return 交换机模板信息
      */
     @Override
-	public Switch selectSwitchById(Integer serverId)
+	public Switch selectSwitchById(Integer switchId)
 	{
-	    return switchMapper.selectSwitchById(serverId);
+	    return switchMapper.selectSwitchById(switchId);
 	}
 	
 	/**
      * 查询交换机模板列表
      * 
-     * @param switchTempalte 交换机模板信息
+     * @param switchTemplate 交换机模板信息
      * @return 交换机模板集合
      */
 	@Override
-	public List<Switch> selectSwitchList(Switch switchTempalte)
+	public List<Switch> selectSwitchList(Switch switchTemplate)
 	{
-	    return switchMapper.selectSwitchList(switchTempalte);
+	    return switchMapper.selectSwitchList(switchTemplate);
 	}
 	
     /**
      * 新增交换机模板
      * 
-     * @param switchTempalte 交换机模板信息
+     * @param switchTemplate 交换机模板信息
      * @return 结果
      */
 	@Override
-	public int insertSwitch(Switch switchTempalte)
+	public int insertSwitch(Switch switchTemplate)
 	{
-	    return switchMapper.insertSwitch(switchTempalte);
+	    return switchMapper.insertSwitch(switchTemplate);
 	}
 	
 	/**
      * 修改交换机模板
      * 
-     * @param switchTempalte 交换机模板信息
+     * @param switchTemplate 交换机模板信息
      * @return 结果
      */
 	@Override
-	public int updateSwitch(Switch switchTempalte)
+	public int updateSwitch(Switch switchTemplate)
 	{
-	    return switchMapper.updateSwitch(switchTempalte);
+	    return switchMapper.updateSwitch(switchTemplate);
 	}
 
 	/**

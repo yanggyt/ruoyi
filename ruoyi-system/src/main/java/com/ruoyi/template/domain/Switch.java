@@ -8,47 +8,47 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 交换机模板表 tmpl_switch
  * 
  * @author TP
- * @date 2019-06-11
+ * @date 2019-06-12
  */
 public class Switch extends BaseEntity
 {
 	private static final long serialVersionUID = 1L;
 	
 	/** 交换机模板编号 */
-	private Integer serverId;
+	private Integer switchId;
 	/** 交换机品牌 */
-	private String serverBrand;
+	private String switchBrand;
 	/** 交换机型号 */
-	private String serverType;
+	private String switchType;
 	/** 交换机电源数量 */
 	private Integer powerNum;
 
-	public void setServerId(Integer serverId) 
+	public void setSwitchId(Integer switchId) 
 	{
-		this.serverId = serverId;
+		this.switchId = switchId;
 	}
 
-	public Integer getServerId() 
+	public Integer getSwitchId() 
 	{
-		return serverId;
+		return switchId;
 	}
-	public void setServerBrand(String serverBrand) 
+	public void setSwitchBrand(String switchBrand) 
 	{
-		this.serverBrand = serverBrand;
-	}
-
-	public String getServerBrand() 
-	{
-		return serverBrand;
-	}
-	public void setServerType(String serverType) 
-	{
-		this.serverType = serverType;
+		this.switchBrand = switchBrand;
 	}
 
-	public String getServerType() 
+	public String getSwitchBrand() 
 	{
-		return serverType;
+		return switchBrand;
+	}
+	public void setSwitchType(String switchType) 
+	{
+		this.switchType = switchType;
+	}
+
+	public String getSwitchType() 
+	{
+		return switchType;
 	}
 	public void setPowerNum(Integer powerNum) 
 	{
@@ -60,12 +60,11 @@ public class Switch extends BaseEntity
 		return powerNum;
 	}
 
-	@Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("serverId", getServerId())
-            .append("serverBrand", getServerBrand())
-            .append("serverType", getServerType())
+            .append("switchId", getSwitchId())
+            .append("switchBrand", getSwitchBrand())
+            .append("switchType", getSwitchType())
             .append("powerNum", getPowerNum())
             .toString();
     }

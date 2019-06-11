@@ -11,11 +11,11 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								交换机品牌：<input type="text" name="serverBrand"/>
+								交换机品牌：<input type="text" name="switchBrand"/>
 							</li>
 
 							<li>
-								交换机型号：<input type="text" name="serverType"/>
+								交换机型号：<input type="text" name="switchType"/>
 							</li>
 
 							<li>
@@ -69,17 +69,17 @@
 		            checkbox: true
 		        },
 				{
-					field : 'serverId', 
+					field : 'switchId', 
 					title : '交换机模板编号',
 					visible: false
 				},
 				{
-					field : 'serverBrand', 
+					field : 'switchBrand', 
 					title : '交换机品牌',
 					sortable: true
 				},
 				{
-					field : 'serverType', 
+					field : 'switchType', 
 					title : '交换机型号',
 					sortable: true
 				},
@@ -93,8 +93,8 @@
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		            	var actions = [];
-		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.serverId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.serverId + '\')"><i class="fa fa-remove"></i>删除</a>');
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.switchId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.switchId + '\')"><i class="fa fa-remove"></i>删除</a>');
 						return actions.join('');
 		            }
 		        }]
