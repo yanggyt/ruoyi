@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('服务器模板列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								服务器品牌：<input type="text" name="serverBrand"/>
+							</li>
+
+							<li>
+								服务器型号：<input type="text" name="serverType"/>
+							</li>
+
+							<li>
+								CPU主频：<input type="text" name="cpuFreq"/>
+							</li>
+
+							<li>
+								CPU数量：<input type="text" name="cpuNum"/>
+							</li>
+
+							<li>
+								IPMI端口：<input type="text" name="ipmiPort"/>
+							</li>
+
+							<li>
+								服务器电源数量：<input type="text" name="powerNum"/>
+							</li>
+
+							<li>
+								服务器raid卡：<input type="text" name="raidCard"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="template:server:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="template:server:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="template:server:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="template:server:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('template:server:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('template:server:remove')}]];
+        var prefix = ctx + "template/server";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "服务器模板",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'serverId', 
+					title : '服务器模板编号',
+					visible: false
+				},
+				{
+					field : 'serverBrand', 
+					title : '服务器品牌',
+					sortable: true
+				},
+				{
+					field : 'serverType', 
+					title : '服务器型号',
+					sortable: true
+				},
+				{
+					field : 'cpuFreq', 
+					title : 'CPU主频',
+					sortable: true
+				},
+				{
+					field : 'cpuNum', 
+					title : 'CPU数量',
+					sortable: true
+				},
+				{
+					field : 'ipmiPort', 
+					title : 'IPMI端口',
+					sortable: true
+				},
+				{
+					field : 'powerNum', 
+					title : '服务器电源数量',
+					sortable: true
+				},
+				{
+					field : 'raidCard', 
+					title : '服务器raid卡',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.serverId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.serverId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>
