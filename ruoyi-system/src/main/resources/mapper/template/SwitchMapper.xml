@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.template.mapper.SwitchMapper">
+    
+    <resultMap type="Switch" id="SwitchResult">
+        <result property="serverId"    column="server_id"    />
+        <result property="serverBrand"    column="server_brand"    />
+        <result property="serverType"    column="server_type"    />
+        <result property="powerNum"    column="power_num"    />
+    </resultMap>
+	
+	<sql id="selectSwitchVo">
+        select server_id, server_brand, server_type, power_num from tmpl_switch
+    </sql>
+	
+    <select id="selectSwitchList" parameterType="Switch" resultMap="SwitchResult">
+        <include refid="selectSwitchVo"/>
+        <where>  
+            <if test="serverId != null "> and server_id = #{serverId}</if>
+             <if test="serverBrand != null  and serverBrand != '' "> and server_brand = #{serverBrand}</if>
+             <if test="serverType != null  and serverType != '' "> and server_type = #{serverType}</if>
+             <if test="powerNum != null "> and power_num = #{powerNum}</if>
+         </where>
+    </select>
+    
+    <select id="selectSwitchById" parameterType="Integer" resultMap="SwitchResult">
+        <include refid="selectSwitchVo"/>
+        where server_id = #{serverId}
+    </select>
+        
+    <insert id="insertSwitch" parameterType="Switch" useGeneratedKeys="true" keyProperty="serverId">
+        insert into tmpl_switch
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serverBrand != null  and serverBrand != ''  ">server_brand,</if>
+			<if test="serverType != null  and serverType != ''  ">server_type,</if>
+			<if test="powerNum != null  ">power_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serverBrand != null  and serverBrand != ''  ">#{serverBrand},</if>
+			<if test="serverType != null  and serverType != ''  ">#{serverType},</if>
+			<if test="powerNum != null  ">#{powerNum},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSwitch" parameterType="Switch">
+        update tmpl_switch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serverBrand != null  and serverBrand != ''  ">server_brand = #{serverBrand},</if>
+            <if test="serverType != null  and serverType != ''  ">server_type = #{serverType},</if>
+            <if test="powerNum != null  ">power_num = #{powerNum},</if>
+        </trim>
+        where server_id = #{serverId}
+    </update>
+
+	<delete id="deleteSwitchById" parameterType="Integer">
+        delete from tmpl_switch where server_id = #{serverId}
+    </delete>
+	
+    <delete id="deleteSwitchByIds" parameterType="String">
+        delete from tmpl_switch where server_id in 
+        <foreach item="serverId" collection="array" open="(" separator="," close=")">
+            #{serverId}
+        </foreach>
+    </delete>
+    
+</mapper>
