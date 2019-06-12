@@ -44,9 +44,22 @@
 <script type="text/javascript">
     var prefix = ctx + "template/tmplSwitch"
     $("#form-tmplSwitch-add").validate({
+        onkeyup: false,
         rules: {
-            xxxx: {
+            switchBrand: {
                 required: true,
+                minlength: 2,
+                maxlength: 20
+            },
+            switchType: {
+                required: true,
+                minlength: 2,
+                maxlength: 20
+            },
+            powerNum: {
+                required: true,
+                minlength: 1,
+                maxlength: 2
             },
         },
         focusCleanup: true

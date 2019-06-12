@@ -54,10 +54,43 @@
     <div th:include="include::footer"></div>
     <script type="text/javascript">
 		var prefix = ctx + "template/tmplServer";
-		$("#form-tmplServer-edit").validate({
-			rules:{
-				xxxx:{
-					required:true,
+		$("#form-tmplServer-add").validate({
+			onkeyup: false,
+			rules: {
+				serverBrand: {
+					required: true,
+					minlength: 2,
+					maxlength: 20
+				},
+				serverType: {
+					required: true,
+					minlength: 2,
+					maxlength: 20
+				},
+				cpuFreq: {
+					required: true,
+					minlength: 1,
+					maxlength: 10
+				},
+				cpuNum: {
+					required: true,
+					minlength: 1,
+					maxlength: 2
+				},
+				ipmiPort: {
+					required: true,
+					minlength: 1,
+					maxlength: 2
+				},
+				powerNum: {
+					required: true,
+					minlength: 1,
+					maxlength: 2
+				},
+				raidCard: {
+					required: true,
+					minlength: 1,
+					maxlength: 2
 				},
 			},
 			focusCleanup: true
