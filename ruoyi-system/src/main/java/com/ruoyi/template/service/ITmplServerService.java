@@ -1,15 +1,15 @@
 package com.ruoyi.template.service;
 
-import com.ruoyi.template.domain.Server;
+import com.ruoyi.template.domain.TmplServer;
 import java.util.List;
 
 /**
  * 服务器模板 服务层
  * 
  * @author TP
- * @date 2019-06-11
+ * @date 2019-06-12
  */
-public interface IServerService 
+public interface ITmplServerService 
 {
 	/**
      * 查询服务器模板信息
@@ -17,31 +17,31 @@ public interface IServerService
      * @param serverId 服务器模板ID
      * @return 服务器模板信息
      */
-	public Server selectServerById(Integer serverId);
+	public TmplServer selectTmplServerById(Integer serverId);
 	
 	/**
      * 查询服务器模板列表
      * 
-     * @param server 服务器模板信息
+     * @param tmplServer 服务器模板信息
      * @return 服务器模板集合
      */
-	public List<Server> selectServerList(Server server);
+	public List<TmplServer> selectTmplServerList(TmplServer tmplServer);
 	
 	/**
      * 新增服务器模板
      * 
-     * @param server 服务器模板信息
+     * @param tmplServer 服务器模板信息
      * @return 结果
      */
-	public int insertServer(Server server);
+	public int insertTmplServer(TmplServer tmplServer);
 	
 	/**
      * 修改服务器模板
      * 
-     * @param server 服务器模板信息
+     * @param tmplServer 服务器模板信息
      * @return 结果
      */
-	public int updateServer(Server server);
+	public int updateTmplServer(TmplServer tmplServer);
 		
 	/**
      * 删除服务器模板信息
@@ -49,6 +49,6 @@ public interface IServerService
      * @param ids 需要删除的数据ID
      * @return 结果
      */
-	public int deleteServerByIds(String ids);
+	public int deleteTmplServerByIds(String ids);
 	
 }

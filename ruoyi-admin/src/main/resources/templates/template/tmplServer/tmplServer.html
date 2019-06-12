@@ -48,16 +48,16 @@
 			</div>
 			
 	        <div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="template:server:add">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="template:tmplServer:add">
 					<i class="fa fa-plus"></i> 添加
 				</a>
-				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="template:server:edit">
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="template:tmplServer:edit">
 					<i class="fa fa-edit"></i> 修改
 				</a>
-				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="template:server:remove">
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="template:tmplServer:remove">
 					<i class="fa fa-remove"></i> 删除
 				</a>
-				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="template:server:export">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="template:tmplServer:export">
 						<i class="fa fa-download"></i> 导出
 				 </a>
 			</div>
@@ -68,9 +68,9 @@
 	</div>
     <div th:include="include :: footer"></div>
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('template:server:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('template:server:remove')}]];
-        var prefix = ctx + "template/server";
+        var editFlag = [[${@permission.hasPermi('template:tmplServer:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('template:tmplServer:remove')}]];
+        var prefix = ctx + "template/tmplServer";
 
         $(function() {
             var options = {

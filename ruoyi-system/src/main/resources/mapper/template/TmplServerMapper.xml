@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.template.mapper.ServerMapper">
+<mapper namespace="com.ruoyi.template.mapper.TmplServerMapper">
     
-    <resultMap type="serverTemplte" id="ServerResult">
+    <resultMap type="TmplServer" id="TmplServerResult">
         <result property="serverId"    column="server_id"    />
         <result property="serverBrand"    column="server_brand"    />
         <result property="serverType"    column="server_type"    />
@@ -15,12 +15,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="raidCard"    column="raid_card"    />
     </resultMap>
 	
-	<sql id="selectServerVo">
+	<sql id="selectTmplServerVo">
         select server_id, server_brand, server_type, cpu_freq, cpu_num, ipmi_port, power_num, raid_card from tmpl_server
     </sql>
 	
-    <select id="selectServerList" parameterType="serverTemplte" resultMap="ServerResult">
-        <include refid="selectServerVo"/>
+    <select id="selectTmplServerList" parameterType="TmplServer" resultMap="TmplServerResult">
+        <include refid="selectTmplServerVo"/>
         <where>  
             <if test="serverId != null "> and server_id = #{serverId}</if>
              <if test="serverBrand != null  and serverBrand != '' "> and server_brand = #{serverBrand}</if>
@@ -33,15 +33,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </where>
     </select>
     
-    <select id="selectServerById" parameterType="Integer" resultMap="ServerResult">
-        <include refid="selectServerVo"/>
+    <select id="selectTmplServerById" parameterType="Integer" resultMap="TmplServerResult">
+        <include refid="selectTmplServerVo"/>
         where server_id = #{serverId}
     </select>
         
-    <insert id="insertServer" parameterType="serverTemplte">
+    <insert id="insertTmplServer" parameterType="TmplServer" useGeneratedKeys="true" keyProperty="serverId">
         insert into tmpl_server
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="serverId != null  ">server_id,</if>
 			<if test="serverBrand != null  and serverBrand != ''  ">server_brand,</if>
 			<if test="serverType != null  and serverType != ''  ">server_type,</if>
 			<if test="cpuFreq != null  and cpuFreq != ''  ">cpu_freq,</if>
@@ -51,7 +50,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="raidCard != null  and raidCard != ''  ">raid_card,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="serverId != null  ">#{serverId},</if>
 			<if test="serverBrand != null  and serverBrand != ''  ">#{serverBrand},</if>
 			<if test="serverType != null  and serverType != ''  ">#{serverType},</if>
 			<if test="cpuFreq != null  and cpuFreq != ''  ">#{cpuFreq},</if>
@@ -62,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 	 
-    <update id="updateServer" parameterType="serverTemplte">
+    <update id="updateTmplServer" parameterType="TmplServer">
         update tmpl_server
         <trim prefix="SET" suffixOverrides=",">
             <if test="serverBrand != null  and serverBrand != ''  ">server_brand = #{serverBrand},</if>
@@ -76,11 +74,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where server_id = #{serverId}
     </update>
 
-	<delete id="deleteServerById" parameterType="Integer">
+	<delete id="deleteTmplServerById" parameterType="Integer">
         delete from tmpl_server where server_id = #{serverId}
     </delete>
 	
-    <delete id="deleteServerByIds" parameterType="String">
+    <delete id="deleteTmplServerByIds" parameterType="String">
         delete from tmpl_server where server_id in 
         <foreach item="serverId" collection="array" open="(" separator="," close=")">
             #{serverId}

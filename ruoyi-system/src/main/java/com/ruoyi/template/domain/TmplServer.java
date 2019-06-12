@@ -2,18 +2,15 @@ package com.ruoyi.template.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.ibatis.type.Alias;
-
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 服务器模板表 tmpl_server
  * 
  * @author TP
- * @date 2019-06-11
+ * @date 2019-06-12
  */
-@Alias("serverTemplte")
-public class Server extends BaseEntity
+public class TmplServer extends BaseEntity
 {
 	private static final long serialVersionUID = 1L;
 	

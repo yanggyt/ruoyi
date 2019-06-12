@@ -10,7 +10,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author TP
  * @date 2019-06-12
  */
-public class Switch extends BaseEntity
+public class TmplSwitch extends BaseEntity
 {
 	private static final long serialVersionUID = 1L;
 	

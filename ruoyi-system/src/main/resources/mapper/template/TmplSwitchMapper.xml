@@ -2,21 +2,21 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.template.mapper.SwitchMapper">
+<mapper namespace="com.ruoyi.template.mapper.TmplSwitchMapper">
     
-    <resultMap type="Switch" id="SwitchResult">
+    <resultMap type="TmplSwitch" id="TmplSwitchResult">
         <result property="switchId"    column="switch_id"    />
         <result property="switchBrand"    column="switch_brand"    />
         <result property="switchType"    column="switch_type"    />
         <result property="powerNum"    column="power_num"    />
     </resultMap>
 	
-	<sql id="selectSwitchVo">
+	<sql id="selectTmplSwitchVo">
         select switch_id, switch_brand, switch_type, power_num from tmpl_switch
     </sql>
 	
-    <select id="selectSwitchList" parameterType="Switch" resultMap="SwitchResult">
-        <include refid="selectSwitchVo"/>
+    <select id="selectTmplSwitchList" parameterType="TmplSwitch" resultMap="TmplSwitchResult">
+        <include refid="selectTmplSwitchVo"/>
         <where>  
             <if test="switchId != null "> and switch_id = #{switchId}</if>
              <if test="switchBrand != null  and switchBrand != '' "> and switch_brand = #{switchBrand}</if>
@@ -25,12 +25,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </where>
     </select>
     
-    <select id="selectSwitchById" parameterType="Integer" resultMap="SwitchResult">
-        <include refid="selectSwitchVo"/>
+    <select id="selectTmplSwitchById" parameterType="Integer" resultMap="TmplSwitchResult">
+        <include refid="selectTmplSwitchVo"/>
         where switch_id = #{switchId}
     </select>
         
-    <insert id="insertSwitch" parameterType="Switch" useGeneratedKeys="true" keyProperty="switchId">
+    <insert id="insertTmplSwitch" parameterType="TmplSwitch" useGeneratedKeys="true" keyProperty="switchId">
         insert into tmpl_switch
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="switchBrand != null  and switchBrand != ''  ">switch_brand,</if>
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 	 
-    <update id="updateSwitch" parameterType="Switch">
+    <update id="updateTmplSwitch" parameterType="TmplSwitch">
         update tmpl_switch
         <trim prefix="SET" suffixOverrides=",">
             <if test="switchBrand != null  and switchBrand != ''  ">switch_brand = #{switchBrand},</if>
@@ -54,11 +54,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where switch_id = #{switchId}
     </update>
 
-	<delete id="deleteSwitchById" parameterType="Integer">
+	<delete id="deleteTmplSwitchById" parameterType="Integer">
         delete from tmpl_switch where switch_id = #{switchId}
     </delete>
 	
-    <delete id="deleteSwitchByIds" parameterType="String">
+    <delete id="deleteTmplSwitchByIds" parameterType="String">
         delete from tmpl_switch where switch_id in 
         <foreach item="switchId" collection="array" open="(" separator="," close=")">
             #{switchId}

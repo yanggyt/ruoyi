@@ -1,6 +1,6 @@
 package com.ruoyi.template.service;
 
-import com.ruoyi.template.domain.Switch;
+import com.ruoyi.template.domain.TmplSwitch;
 import java.util.List;
 
 /**
@@ -9,7 +9,7 @@ import java.util.List;
  * @author TP
  * @date 2019-06-12
  */
-public interface ISwitchService 
+public interface ITmplSwitchService 
 {
 	/**
      * 查询交换机模板信息
@@ -17,31 +17,31 @@ public interface ISwitchService
      * @param switchId 交换机模板ID
      * @return 交换机模板信息
      */
-	public Switch selectSwitchById(Integer switchId);
+	public TmplSwitch selectTmplSwitchById(Integer switchId);
 	
 	/**
      * 查询交换机模板列表
      * 
-     * @param switchTemplate 交换机模板信息
+     * @param tmplSwitch 交换机模板信息
      * @return 交换机模板集合
      */
-	public List<Switch> selectSwitchList(Switch switchTemplate);
+	public List<TmplSwitch> selectTmplSwitchList(TmplSwitch tmplSwitch);
 	
 	/**
      * 新增交换机模板
      * 
-     * @param switchTemplate 交换机模板信息
+     * @param tmplSwitch 交换机模板信息
      * @return 结果
      */
-	public int insertSwitch(Switch switchTemplate);
+	public int insertTmplSwitch(TmplSwitch tmplSwitch);
 	
 	/**
      * 修改交换机模板
      * 
-     * @param switchTemplate 交换机模板信息
+     * @param tmplSwitch 交换机模板信息
      * @return 结果
      */
-	public int updateSwitch(Switch switchTemplate);
+	public int updateTmplSwitch(TmplSwitch tmplSwitch);
 		
 	/**
      * 删除交换机模板信息
@@ -49,6 +49,6 @@ public interface ISwitchService
      * @param ids 需要删除的数据ID
      * @return 结果
      */
-	public int deleteSwitchByIds(String ids);
+	public int deleteTmplSwitchByIds(String ids);
 	
 }
