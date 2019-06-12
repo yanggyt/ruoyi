@@ -82,4 +82,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     
+    <select id="selectMainNotices" parameterType="SysNotice" resultMap="SysNoticeResult">
+        <include refid="selectNoticeVo"/>
+        <where>
+			and notice_type = #{noticeType} and status = '0' order by create_time desc
+		</where>
+    </select>
+    
 </mapper>
