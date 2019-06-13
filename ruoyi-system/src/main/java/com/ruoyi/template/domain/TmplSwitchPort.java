@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 交换机端口类型(不用代码生成工具)表 tmpl_switch_port
+ * 交换机端口类型表 tmpl_switch_port
  *
  * @author TP
  * @date 2019-06-12

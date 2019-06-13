@@ -67,4 +67,11 @@
         </foreach>
     </delete>
 
+    <insert id="batchTmplSwitchPort">
+        insert into tmpl_switch_port(switch_id, switch_port_type,switch_port_num) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.switchId},#{item.switchPortType},#{item.switchPortNum})
+        </foreach>
+    </insert>
+
 </mapper>
