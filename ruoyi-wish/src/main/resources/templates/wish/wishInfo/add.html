@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增记录微心愿的')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-wishInfo-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿名称：</label>
+				<div class="col-sm-8">
+					<input id="wishName" name="wishName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿归属地区：</label>
+				<div class="col-sm-8">
+					<input id="wishOrg" name="wishOrg" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿状态 01.未认领02.已认领03.已完成：</label>
+				<div class="col-sm-8">
+					<input id="wishStatus" name="wishStatus" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿对象 01党组织团体02党员个体：</label>
+				<div class="col-sm-8">
+					<input id="wishTarget" name="wishTarget" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿类型 01.组织建设类02.党员需求类03.初心教育类04.业务合作类：</label>
+				<div class="col-sm-8">
+					<input id="wishType" name="wishType" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请认领次数：</label>
+				<div class="col-sm-8">
+					<input id="wishCount" name="wishCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是不是推荐 0.是 1.不是：</label>
+				<div class="col-sm-8">
+					<input id="isRecommend" name="isRecommend" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿项目进展：</label>
+				<div class="col-sm-8">
+					<input id="wishProgress" name="wishProgress" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿详细描述：</label>
+				<div class="col-sm-8">
+					<input id="wishDesc" name="wishDesc" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请人姓名：</label>
+				<div class="col-sm-8">
+					<input id="applyerName" name="applyerName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请人联系方式：</label>
+				<div class="col-sm-8">
+					<input id="applyerPhone" name="applyerPhone" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请人所在党组织：</label>
+				<div class="col-sm-8">
+					<input id="applyerComp" name="applyerComp" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">失效日期：</label>
+				<div class="col-sm-8">
+					<input id="expireDate" name="expireDate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生效日期：</label>
+				<div class="col-sm-8">
+					<input id="effectDate" name="effectDate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">认领日期：</label>
+				<div class="col-sm-8">
+					<input id="claimDate" name="claimDate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">完成日期：</label>
+				<div class="col-sm-8">
+					<input id="completeDate" name="completeDate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图片存储路径：</label>
+				<div class="col-sm-8">
+					<input id="savePath" name="savePath" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建日期(YYYY-MM-DD hh:mm:ss UUUUUU)：</label>
+				<div class="col-sm-8">
+					<input id="gmtCreate" name="gmtCreate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建操作员：</label>
+				<div class="col-sm-8">
+					<input id="createOperId" name="createOperId" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改日期(YYYY-MM-DD hh:mm:ss UUUUUU)：</label>
+				<div class="col-sm-8">
+					<input id="gmtModified" name="gmtModified" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改操作员：</label>
+				<div class="col-sm-8">
+					<input id="modifiedOperId" name="modifiedOperId" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核时间(YYYY-MM-DD hh:mm:ss UUUUUU)：</label>
+				<div class="col-sm-8">
+					<input id="gmtAudit" name="gmtAudit" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核操作员：</label>
+				<div class="col-sm-8">
+					<input id="auditOperId" name="auditOperId" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "wish/wishInfo"
+		$("#form-wishInfo-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-wishInfo-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

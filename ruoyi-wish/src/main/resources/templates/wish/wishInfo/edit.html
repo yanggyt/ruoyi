@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改记录微心愿的')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-wishInfo-edit" th:object="${wishInfo}">
+            <input id="wishId" name="wishId" th:field="*{wishId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿名称：</label>
+				<div class="col-sm-8">
+					<input id="wishName" name="wishName" th:field="*{wishName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿归属地区：</label>
+				<div class="col-sm-8">
+					<input id="wishOrg" name="wishOrg" th:field="*{wishOrg}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿状态 01.未认领02.已认领03.已完成：</label>
+				<div class="col-sm-8">
+					<input id="wishStatus" name="wishStatus" th:field="*{wishStatus}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿对象 01党组织团体02党员个体：</label>
+				<div class="col-sm-8">
+					<input id="wishTarget" name="wishTarget" th:field="*{wishTarget}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿类型 01.组织建设类02.党员需求类03.初心教育类04.业务合作类：</label>
+				<div class="col-sm-8">
+					<input id="wishType" name="wishType" th:field="*{wishType}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请认领次数：</label>
+				<div class="col-sm-8">
+					<input id="wishCount" name="wishCount" th:field="*{wishCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是不是推荐 0.是 1.不是：</label>
+				<div class="col-sm-8">
+					<input id="isRecommend" name="isRecommend" th:field="*{isRecommend}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿项目进展：</label>
+				<div class="col-sm-8">
+					<input id="wishProgress" name="wishProgress" th:field="*{wishProgress}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">微心愿详细描述：</label>
+				<div class="col-sm-8">
+					<input id="wishDesc" name="wishDesc" th:field="*{wishDesc}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请人姓名：</label>
+				<div class="col-sm-8">
+					<input id="applyerName" name="applyerName" th:field="*{applyerName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请人联系方式：</label>
+				<div class="col-sm-8">
+					<input id="applyerPhone" name="applyerPhone" th:field="*{applyerPhone}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请人所在党组织：</label>
+				<div class="col-sm-8">
+					<input id="applyerComp" name="applyerComp" th:field="*{applyerComp}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">失效日期：</label>
+				<div class="col-sm-8">
+					<input id="expireDate" name="expireDate" th:field="*{expireDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生效日期：</label>
+				<div class="col-sm-8">
+					<input id="effectDate" name="effectDate" th:field="*{effectDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">认领日期：</label>
+				<div class="col-sm-8">
+					<input id="claimDate" name="claimDate" th:field="*{claimDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">完成日期：</label>
+				<div class="col-sm-8">
+					<input id="completeDate" name="completeDate" th:field="*{completeDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图片存储路径：</label>
+				<div class="col-sm-8">
+					<input id="savePath" name="savePath" th:field="*{savePath}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建日期(YYYY-MM-DD hh:mm:ss UUUUUU)：</label>
+				<div class="col-sm-8">
+					<input id="gmtCreate" name="gmtCreate" th:field="*{gmtCreate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建操作员：</label>
+				<div class="col-sm-8">
+					<input id="createOperId" name="createOperId" th:field="*{createOperId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改日期(YYYY-MM-DD hh:mm:ss UUUUUU)：</label>
+				<div class="col-sm-8">
+					<input id="gmtModified" name="gmtModified" th:field="*{gmtModified}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改操作员：</label>
+				<div class="col-sm-8">
+					<input id="modifiedOperId" name="modifiedOperId" th:field="*{modifiedOperId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核时间(YYYY-MM-DD hh:mm:ss UUUUUU)：</label>
+				<div class="col-sm-8">
+					<input id="gmtAudit" name="gmtAudit" th:field="*{gmtAudit}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核操作员：</label>
+				<div class="col-sm-8">
+					<input id="auditOperId" name="auditOperId" th:field="*{auditOperId}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "wish/wishInfo";
+		$("#form-wishInfo-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-wishInfo-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

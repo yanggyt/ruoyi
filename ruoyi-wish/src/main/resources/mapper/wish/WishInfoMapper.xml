@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wish.mapper.WishInfoMapper">
+    
+    <resultMap type="WishInfo" id="WishInfoResult">
+        <result property="wishId"    column="WISH_ID"    />
+        <result property="wishName"    column="WISH_NAME"    />
+        <result property="wishOrg"    column="WISH_ORG"    />
+        <result property="wishStatus"    column="WISH_STATUS"    />
+        <result property="wishTarget"    column="WISH_TARGET"    />
+        <result property="wishType"    column="WISH_TYPE"    />
+        <result property="wishCount"    column="WISH_COUNT"    />
+        <result property="isRecommend"    column="IS_RECOMMEND"    />
+        <result property="wishProgress"    column="WISH_PROGRESS"    />
+        <result property="wishDesc"    column="WISH_DESC"    />
+        <result property="applyerName"    column="APPLYER_NAME"    />
+        <result property="applyerPhone"    column="APPLYER__PHONE"    />
+        <result property="applyerComp"    column="APPLYER_COMP"    />
+        <result property="expireDate"    column="EXPIRE_DATE"    />
+        <result property="effectDate"    column="EFFECT_DATE"    />
+        <result property="claimDate"    column="CLAIM_DATE"    />
+        <result property="completeDate"    column="COMPLETE_DATE"    />
+        <result property="savePath"    column="SAVE_PATH"    />
+        <result property="gmtCreate"    column="GMT_CREATE"    />
+        <result property="createOperId"    column="CREATE_OPER_ID"    />
+        <result property="gmtModified"    column="GMT_MODIFIED"    />
+        <result property="modifiedOperId"    column="MODIFIED_OPER_ID"    />
+        <result property="gmtAudit"    column="GMT_AUDIT"    />
+        <result property="auditOperId"    column="AUDIT_OPER_ID"    />
+    </resultMap>
+	
+	<sql id="selectWishInfoVo">
+        select WISH_ID, WISH_NAME, WISH_ORG, WISH_STATUS, WISH_TARGET, WISH_TYPE, WISH_COUNT, IS_RECOMMEND, WISH_PROGRESS, WISH_DESC, APPLYER_NAME, APPLYER__PHONE, APPLYER_COMP, EXPIRE_DATE, EFFECT_DATE, CLAIM_DATE, COMPLETE_DATE, SAVE_PATH, GMT_CREATE, CREATE_OPER_ID, GMT_MODIFIED, MODIFIED_OPER_ID, GMT_AUDIT, AUDIT_OPER_ID from wish_info
+    </sql>
+	
+    <select id="selectWishInfoList" parameterType="WishInfo" resultMap="WishInfoResult">
+        <include refid="selectWishInfoVo"/>
+        <where>  
+            <if test="wishId != null "> and WISH_ID = #{wishId}</if>
+             <if test="wishName != null  and wishName != '' "> and WISH_NAME = #{wishName}</if>
+             <if test="wishOrg != null  and wishOrg != '' "> and WISH_ORG = #{wishOrg}</if>
+             <if test="wishStatus != null  and wishStatus != '' "> and WISH_STATUS = #{wishStatus}</if>
+             <if test="wishTarget != null  and wishTarget != '' "> and WISH_TARGET = #{wishTarget}</if>
+             <if test="wishType != null  and wishType != '' "> and WISH_TYPE = #{wishType}</if>
+             <if test="wishCount != null "> and WISH_COUNT = #{wishCount}</if>
+             <if test="isRecommend != null  and isRecommend != '' "> and IS_RECOMMEND = #{isRecommend}</if>
+             <if test="wishProgress != null  and wishProgress != '' "> and WISH_PROGRESS = #{wishProgress}</if>
+             <if test="wishDesc != null  and wishDesc != '' "> and WISH_DESC = #{wishDesc}</if>
+             <if test="applyerName != null  and applyerName != '' "> and APPLYER_NAME = #{applyerName}</if>
+             <if test="applyerPhone != null  and applyerPhone != '' "> and APPLYER__PHONE = #{applyerPhone}</if>
+             <if test="applyerComp != null  and applyerComp != '' "> and APPLYER_COMP = #{applyerComp}</if>
+             <if test="expireDate != null "> and EXPIRE_DATE = #{expireDate}</if>
+             <if test="effectDate != null "> and EFFECT_DATE = #{effectDate}</if>
+             <if test="claimDate != null "> and CLAIM_DATE = #{claimDate}</if>
+             <if test="completeDate != null "> and COMPLETE_DATE = #{completeDate}</if>
+             <if test="savePath != null  and savePath != '' "> and SAVE_PATH = #{savePath}</if>
+             <if test="gmtCreate != null "> and GMT_CREATE = #{gmtCreate}</if>
+             <if test="createOperId != null  and createOperId != '' "> and CREATE_OPER_ID = #{createOperId}</if>
+             <if test="gmtModified != null "> and GMT_MODIFIED = #{gmtModified}</if>
+             <if test="modifiedOperId != null  and modifiedOperId != '' "> and MODIFIED_OPER_ID = #{modifiedOperId}</if>
+             <if test="gmtAudit != null "> and GMT_AUDIT = #{gmtAudit}</if>
+             <if test="auditOperId != null  and auditOperId != '' "> and AUDIT_OPER_ID = #{auditOperId}</if>
+         </where>
+    </select>
+    
+    <select id="selectWishInfoById" parameterType="Integer" resultMap="WishInfoResult">
+        <include refid="selectWishInfoVo"/>
+        where WISH_ID = #{wishId}
+    </select>
+        
+    <insert id="insertWishInfo" parameterType="WishInfo">
+        insert into wish_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="wishId != null  ">WISH_ID,</if>
+			<if test="wishName != null  and wishName != ''  ">WISH_NAME,</if>
+			<if test="wishOrg != null  and wishOrg != ''  ">WISH_ORG,</if>
+			<if test="wishStatus != null  and wishStatus != ''  ">WISH_STATUS,</if>
+			<if test="wishTarget != null  and wishTarget != ''  ">WISH_TARGET,</if>
+			<if test="wishType != null  and wishType != ''  ">WISH_TYPE,</if>
+			<if test="wishCount != null  ">WISH_COUNT,</if>
+			<if test="isRecommend != null  and isRecommend != ''  ">IS_RECOMMEND,</if>
+			<if test="wishProgress != null  and wishProgress != ''  ">WISH_PROGRESS,</if>
+			<if test="wishDesc != null  and wishDesc != ''  ">WISH_DESC,</if>
+			<if test="applyerName != null  and applyerName != ''  ">APPLYER_NAME,</if>
+			<if test="applyerPhone != null  and applyerPhone != ''  ">APPLYER__PHONE,</if>
+			<if test="applyerComp != null  and applyerComp != ''  ">APPLYER_COMP,</if>
+			<if test="expireDate != null  ">EXPIRE_DATE,</if>
+			<if test="effectDate != null  ">EFFECT_DATE,</if>
+			<if test="claimDate != null  ">CLAIM_DATE,</if>
+			<if test="completeDate != null  ">COMPLETE_DATE,</if>
+			<if test="savePath != null  and savePath != ''  ">SAVE_PATH,</if>
+			<if test="gmtCreate != null  ">GMT_CREATE,</if>
+			<if test="createOperId != null  and createOperId != ''  ">CREATE_OPER_ID,</if>
+			<if test="gmtModified != null  ">GMT_MODIFIED,</if>
+			<if test="modifiedOperId != null  and modifiedOperId != ''  ">MODIFIED_OPER_ID,</if>
+			<if test="gmtAudit != null  ">GMT_AUDIT,</if>
+			<if test="auditOperId != null  and auditOperId != ''  ">AUDIT_OPER_ID,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="wishId != null  ">#{wishId},</if>
+			<if test="wishName != null  and wishName != ''  ">#{wishName},</if>
+			<if test="wishOrg != null  and wishOrg != ''  ">#{wishOrg},</if>
+			<if test="wishStatus != null  and wishStatus != ''  ">#{wishStatus},</if>
+			<if test="wishTarget != null  and wishTarget != ''  ">#{wishTarget},</if>
+			<if test="wishType != null  and wishType != ''  ">#{wishType},</if>
+			<if test="wishCount != null  ">#{wishCount},</if>
+			<if test="isRecommend != null  and isRecommend != ''  ">#{isRecommend},</if>
+			<if test="wishProgress != null  and wishProgress != ''  ">#{wishProgress},</if>
+			<if test="wishDesc != null  and wishDesc != ''  ">#{wishDesc},</if>
+			<if test="applyerName != null  and applyerName != ''  ">#{applyerName},</if>
+			<if test="applyerPhone != null  and applyerPhone != ''  ">#{applyerPhone},</if>
+			<if test="applyerComp != null  and applyerComp != ''  ">#{applyerComp},</if>
+			<if test="expireDate != null  ">#{expireDate},</if>
+			<if test="effectDate != null  ">#{effectDate},</if>
+			<if test="claimDate != null  ">#{claimDate},</if>
+			<if test="completeDate != null  ">#{completeDate},</if>
+			<if test="savePath != null  and savePath != ''  ">#{savePath},</if>
+			<if test="gmtCreate != null  ">#{gmtCreate},</if>
+			<if test="createOperId != null  and createOperId != ''  ">#{createOperId},</if>
+			<if test="gmtModified != null  ">#{gmtModified},</if>
+			<if test="modifiedOperId != null  and modifiedOperId != ''  ">#{modifiedOperId},</if>
+			<if test="gmtAudit != null  ">#{gmtAudit},</if>
+			<if test="auditOperId != null  and auditOperId != ''  ">#{auditOperId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateWishInfo" parameterType="WishInfo">
+        update wish_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wishName != null  and wishName != ''  ">WISH_NAME = #{wishName},</if>
+            <if test="wishOrg != null  and wishOrg != ''  ">WISH_ORG = #{wishOrg},</if>
+            <if test="wishStatus != null  and wishStatus != ''  ">WISH_STATUS = #{wishStatus},</if>
+            <if test="wishTarget != null  and wishTarget != ''  ">WISH_TARGET = #{wishTarget},</if>
+            <if test="wishType != null  and wishType != ''  ">WISH_TYPE = #{wishType},</if>
+            <if test="wishCount != null  ">WISH_COUNT = #{wishCount},</if>
+            <if test="isRecommend != null  and isRecommend != ''  ">IS_RECOMMEND = #{isRecommend},</if>
+            <if test="wishProgress != null  and wishProgress != ''  ">WISH_PROGRESS = #{wishProgress},</if>
+            <if test="wishDesc != null  and wishDesc != ''  ">WISH_DESC = #{wishDesc},</if>
+            <if test="applyerName != null  and applyerName != ''  ">APPLYER_NAME = #{applyerName},</if>
+            <if test="applyerPhone != null  and applyerPhone != ''  ">APPLYER__PHONE = #{applyerPhone},</if>
+            <if test="applyerComp != null  and applyerComp != ''  ">APPLYER_COMP = #{applyerComp},</if>
+            <if test="expireDate != null  ">EXPIRE_DATE = #{expireDate},</if>
+            <if test="effectDate != null  ">EFFECT_DATE = #{effectDate},</if>
+            <if test="claimDate != null  ">CLAIM_DATE = #{claimDate},</if>
+            <if test="completeDate != null  ">COMPLETE_DATE = #{completeDate},</if>
+            <if test="savePath != null  and savePath != ''  ">SAVE_PATH = #{savePath},</if>
+            <if test="gmtCreate != null  ">GMT_CREATE = #{gmtCreate},</if>
+            <if test="createOperId != null  and createOperId != ''  ">CREATE_OPER_ID = #{createOperId},</if>
+            <if test="gmtModified != null  ">GMT_MODIFIED = #{gmtModified},</if>
+            <if test="modifiedOperId != null  and modifiedOperId != ''  ">MODIFIED_OPER_ID = #{modifiedOperId},</if>
+            <if test="gmtAudit != null  ">GMT_AUDIT = #{gmtAudit},</if>
+            <if test="auditOperId != null  and auditOperId != ''  ">AUDIT_OPER_ID = #{auditOperId},</if>
+        </trim>
+        where WISH_ID = #{wishId}
+    </update>
+
+	<delete id="deleteWishInfoById" parameterType="Integer">
+        delete from wish_info where WISH_ID = #{wishId}
+    </delete>
+	
+    <delete id="deleteWishInfoByIds" parameterType="String">
+        delete from wish_info where WISH_ID in 
+        <foreach item="wishId" collection="array" open="(" separator="," close=")">
+            #{wishId}
+        </foreach>
+    </delete>
+    
+</mapper>
