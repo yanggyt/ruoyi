@@ -8,7 +8,7 @@
 		<form class="form-horizontal m" id="form-dept-add">
 			<input id="treeId" name="parentId" type="hidden" th:value="${dept.deptId}"   />
 			<div class="form-group">
-				<label class="col-sm-3 control-label ">上级：</label>
+				<label class="col-sm-3 control-label ">所属系级：</label>
 				<div class="col-sm-8">
 				    <div class="input-group">
 						<input class="form-control" type="text" onclick="selectDeptTree()" id="treeName" readonly="true" th:value="${dept.deptName}">
