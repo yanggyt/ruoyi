@@ -56,9 +56,9 @@
             <if test="raidCard != null  and raidCard != '' ">and raid_card = #{raidCard}</if>
         </where>
     </select>
-    <select id="selectTmplServerList_COUNT" resultType="Long">
-         select count(0) from tmpl_server
-    </select>
+<!--    <select id="selectTmplServerList_COUNT" resultType="Long">-->
+<!--         select count(0) from tmpl_server-->
+<!--    </select>-->
 
 
     <select id="selectTmplServerById" parameterType="Integer" resultMap="TmplServerResult">

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.network.mapper.NetIpAddressMapper">
+
+    <resultMap type="NetIpAddress" id="NetIpAddressResult">
+        <result property="ipAddressId" column="ip_address_id"/>
+        <result property="ipAddressType" column="ip_address_type"/>
+        <result property="ipAddressSection" column="ip_address_section"/>
+        <result property="machingRoomId" column="maching_room_id"/>
+        <result property="ipUseRule" column="ip_use_rule"/>
+        <result property="ipAllocRule" column="ip_alloc_rule"/>
+    </resultMap>
+
+    <sql id="selectNetIpAddressVo">
+        select ip_address_id, ip_address_type, ip_address_section, maching_room_id, ip_use_rule, ip_alloc_rule from net_ip_address
+    </sql>
+
+    <select id="selectNetIpAddressList" parameterType="NetIpAddress" resultMap="NetIpAddressResult">
+        <include refid="selectNetIpAddressVo"/>
+        <where>
+            <if test="ipAddressId != null ">and ip_address_id = #{ipAddressId}</if>
+            <if test="ipAddressType != null  and ipAddressType != '' ">and ip_address_type = #{ipAddressType}</if>
+            <if test="ipAddressSection != null  and ipAddressSection != '' ">and ip_address_section =
+                #{ipAddressSection}
+            </if>
+            <if test="machingRoomId != null  and machingRoomId != '' ">and maching_room_id = #{machingRoomId}</if>
+            <if test="ipUseRule != null  and ipUseRule != '' ">and ip_use_rule = #{ipUseRule}</if>
+            <if test="ipAllocRule != null and ipAllocRule != '' ">and ip_alloc_rule = #{ipAllocRule}</if>
+        </where>
+    </select>
+
+    <select id="selectNetIpAddressById" parameterType="Integer" resultMap="NetIpAddressResult">
+        <include refid="selectNetIpAddressVo"/>
+        where ip_address_id = #{ipAddressId}
+    </select>
+
+    <insert id="insertNetIpAddress" parameterType="NetIpAddress" useGeneratedKeys="true" keyProperty="ipAddressId">
+        insert into net_ip_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ipAddressType != null  and ipAddressType != ''  ">ip_address_type,</if>
+            <if test="ipAddressSection != null  and ipAddressSection != ''  ">ip_address_section,</if>
+            <if test="machingRoomId != null  and machingRoomId != ''  ">maching_room_id,</if>
+            <if test="ipUseRule != null  and ipUseRule != ''  ">ip_use_rule,</if>
+            <if test="ipAllocRule != null and ipAllocRule != ''  ">ip_alloc_rule,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ipAddressType != null  and ipAddressType != ''  ">#{ipAddressType},</if>
+            <if test="ipAddressSection != null  and ipAddressSection != ''  ">#{ipAddressSection},</if>
+            <if test="machingRoomId != null  and machingRoomId != ''  ">#{machingRoomId},</if>
+            <if test="ipUseRule != null  and ipUseRule != ''  ">#{ipUseRule},</if>
+            <if test="ipAllocRule != null and ip AllocRule != '' ">#{ipAllocRule},</if>
+        </trim>
+    </insert>
+
+    <update id="updateNetIpAddress" parameterType="NetIpAddress">
+        update net_ip_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ipAddressType != null  and ipAddressType != ''  ">ip_address_type = #{ipAddressType},</if>
+            <if test="ipAddressSection != null  and ipAddressSection != ''  ">ip_address_section =
+                #{ipAddressSection},
+            </if>
+            <if test="machingRoomId != null  and machingRoomId != ''  ">maching_room_id = #{machingRoomId},</if>
+            <if test="ipUseRule != null  and ipUseRule != ''  ">ip_use_rule = #{ipUseRule},</if>
+            <if test="ipAllocRule != null  and ipAllocRule != ''  ">ip_alloc_rule = #{ipAllocRule},</if>
+        </trim>
+        where ip_address_id = #{ipAddressId}
+    </update>
+
+    <delete id="deleteNetIpAddressById" parameterType="Integer">
+        delete from net_ip_address where ip_address_id = #{ipAddressId}
+    </delete>
+
+    <delete id="deleteNetIpAddressByIds" parameterType="String">
+        delete from net_ip_address where ip_address_id in
+        <foreach item="ipAddressId" collection="array" open="(" separator="," close=")">
+            #{ipAddressId}
+        </foreach>
+    </delete>
+
+</mapper>

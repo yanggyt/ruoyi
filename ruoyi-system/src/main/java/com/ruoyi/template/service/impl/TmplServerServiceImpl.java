@@ -7,6 +7,7 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.mapper.SysDictDataMapper;
 import com.ruoyi.template.domain.TmplServer;
+import com.ruoyi.template.domain.TmplServerDisk;
 import com.ruoyi.template.domain.TmplServerNetcard;
 import com.ruoyi.template.mapper.TmplServerDiskMapper;
 import com.ruoyi.template.mapper.TmplServerMapper;
@@ -78,8 +79,13 @@ public class TmplServerServiceImpl implements ITmplServerService {
         if (affectRow > 0) {
             JSONObject jsonObject = JSONObject.parseObject(tmplServer.getForeignKeyInfo());
             if (jsonObject != null) {
+                //保存网卡信息
                 if (jsonObject.containsKey("serverNetcards")) {
                     saveServerNetcard(tmplServer.getServerId(), jsonObject.getJSONArray("serverNetcards"));
+                }
+                //保存硬盘信息
+                if (jsonObject.containsKey("serverDisks")) {
+                    saveServerDisk(tmplServer.getServerId(), jsonObject.getJSONArray("serverDisks"));
                 }
             }
         }
@@ -116,26 +122,26 @@ public class TmplServerServiceImpl implements ITmplServerService {
     /**
      * 新增硬盘
      *
-     * @param tmplServer
+     * @param id
      * @param jsonArray
      */
-    private void saveServerDisk(TmplServer tmplServer, JSONArray jsonArray) {
-        List<TmplServerNetcard> list = new ArrayList<>();
+    private void saveServerDisk(Integer id, JSONArray jsonArray) {
+        List<TmplServerDisk> list = new ArrayList<>();
         jsonArray.forEach((i) -> {
             JSONObject jsonObject = (JSONObject) i;
             String valueStr = jsonObject.getString("value");
             int num = 0;
             if (StringUtils.isNotBlank(valueStr) && (num = Convert.toInt(valueStr)) > 0) {
                 SysDictData dictData = sysDictDataMapper.selectDictDataById(Convert.toLong(jsonObject.getString("id")));
-                TmplServerNetcard tmplServerNetcard = new TmplServerNetcard();
-                tmplServerNetcard.setServerId(tmplServer.getServerId());
-                tmplServerNetcard.setServerNetcardType(Convert.toLong(dictData.getDictCode()));
-                tmplServerNetcard.setServerNetcardNum(num);
-                list.add(tmplServerNetcard);
+                TmplServerDisk tmplServerDisk = new TmplServerDisk();
+                tmplServerDisk.setServerId(id);
+                tmplServerDisk.setServerDiskType(Convert.toLong(dictData.getDictCode()));
+				tmplServerDisk.setServerDiskNum(num);
+                list.add(tmplServerDisk);
             }
         });
-        int serverNetcardNums = list.size() > 0 ? tmplServerNetcardMapper.batchTmplServerNetcard(list) : 0;
-        if (serverNetcardNums == 0) {
+        int serverDiskNums = list.size() > 0 ? tmplServerDiskMapper.batchTmplServerDisk(list) : 0;
+        if (serverDiskNums == 0) {
             throw new BusinessException("至少输入一个硬盘数量");
         }
     }
