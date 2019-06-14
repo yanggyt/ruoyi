@@ -30,6 +30,13 @@
         where switch_port_id = #{switchPortId}
     </select>
 
+    <select id="selectBySwitchIdAndPortType" parameterType="Integer" resultMap="TmplSwitchPortResult">
+        <include refid="selectTmplSwitchPortVo"/>
+        where switch_id = #{switchPortId}
+        and switch_port_type = #{switchPortType}
+    </select>
+
+
     <insert id="insertTmplSwitchPort" parameterType="TmplSwitchPort">
         insert into tmpl_switch_port
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -46,6 +53,13 @@
         </trim>
     </insert>
 
+    <insert id="batchTmplSwitchPort">
+        insert into tmpl_switch_port(switch_id, switch_port_type,switch_port_num) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.switchId},#{item.switchPortType},#{item.switchPortNum})
+        </foreach>
+    </insert>
+
     <update id="updateTmplSwitchPort" parameterType="TmplSwitchPort">
         update tmpl_switch_port
         <trim prefix="SET" suffixOverrides=",">
@@ -60,18 +74,15 @@
         delete from tmpl_switch_port where switch_port_id = #{switchPortId}
     </delete>
 
+    <delete id="deleteTmplSwitchPortBySwitchId" parameterType="Integer">
+        delete from tmpl_switch_port where switch_id = #{switchId}
+    </delete>
+
     <delete id="deleteTmplSwitchPortByIds" parameterType="String">
         delete from tmpl_switch_port where switch_port_id in
         <foreach item="switchPortId" collection="array" open="(" separator="," close=")">
             #{switchPortId}
         </foreach>
     </delete>
-
-    <insert id="batchTmplSwitchPort">
-        insert into tmpl_switch_port(switch_id, switch_port_type,switch_port_num) values
-        <foreach item="item" index="index" collection="list" separator=",">
-            (#{item.switchId},#{item.switchPortType},#{item.switchPortNum})
-        </foreach>
-    </insert>
 
 </mapper>

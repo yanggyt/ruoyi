@@ -65,8 +65,14 @@ public class TmplSwitchServiceImpl implements ITmplSwitchService {
      */
     @Override
     public int insertTmplSwitch(TmplSwitch tmplSwitch) {
+        return saveOrUpdate(tmplSwitch);
+    }
+
+    private int saveOrUpdate(TmplSwitch tmplSwitch) {
         JSONArray jsonArray = JSONArray.parseArray(tmplSwitch.getForeignKeyInfo());
-        int affectRow = tmplSwitchMapper.insertTmplSwitch(tmplSwitch);
+        int affectRow = tmplSwitchMapper.selectTmplSwitchById(tmplSwitch.getSwitchId()) != null
+                ? tmplSwitchMapper.updateTmplSwitch(tmplSwitch)
+                : tmplSwitchMapper.insertTmplSwitch(tmplSwitch);
         if (affectRow > 0) {
             List<TmplSwitchPort> list = new ArrayList<>();
             jsonArray.forEach((i) -> {
@@ -95,11 +101,14 @@ public class TmplSwitchServiceImpl implements ITmplSwitchService {
      * 修改交换机模板
      *
      * @param tmplSwitch 交换机模板信息
-     * @return 结果
+     * @return 更新后数据库中存在的值个数
      */
     @Override
     public int updateTmplSwitch(TmplSwitch tmplSwitch) {
-        return tmplSwitchMapper.updateTmplSwitch(tmplSwitch);
+        //1.清空数据库中已存的值
+        tmplSwitchPortMapper.deleteTmplSwitchPortBySwitchId(tmplSwitch.getSwitchId());
+        //2.更新主表
+        return insertTmplSwitch(tmplSwitch);
     }
 
     /**

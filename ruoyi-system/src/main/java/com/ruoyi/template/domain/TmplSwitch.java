@@ -36,36 +36,36 @@ public class TmplSwitch extends BaseEntity {
      */
     private List<TmplSwitchPort> switchPorts;
 
-    public void setSwitchId(Integer switchId) {
-        this.switchId = switchId;
-    }
-
     public Integer getSwitchId() {
         return switchId;
     }
 
-    public void setSwitchBrand(String switchBrand) {
-        this.switchBrand = switchBrand;
+    public void setSwitchId(Integer switchId) {
+        this.switchId = switchId;
     }
 
     public String getSwitchBrand() {
         return switchBrand;
     }
 
-    public void setSwitchType(String switchType) {
-        this.switchType = switchType;
+    public void setSwitchBrand(String switchBrand) {
+        this.switchBrand = switchBrand;
     }
 
     public String getSwitchType() {
         return switchType;
     }
 
-    public void setPowerNum(Integer powerNum) {
-        this.powerNum = powerNum;
+    public void setSwitchType(String switchType) {
+        this.switchType = switchType;
     }
 
     public Integer getPowerNum() {
         return powerNum;
+    }
+
+    public void setPowerNum(Integer powerNum) {
+        this.powerNum = powerNum;
     }
 
     public List<TmplSwitchPort> getSwitchPorts() {
@@ -87,3 +87,5 @@ public class TmplSwitch extends BaseEntity {
                 .toString();
     }
 }
+
+
