@@ -100,14 +100,16 @@
         $.each([[${@dict.getType('dict_port_type')}]], function (index, dict) {
             options.columns.push({
                 field: dict.dictCode,
-                title: dict.dictLabel+"(个)",
+                title: dict.dictLabel + "(个)",
                 align: 'center',
                 formatter: function (value, row, index) {
-                    $.each(row.switchPorts, function (index, switchPort) {
-                        if (switchPort.switchPortType == dict.dictCode) {
-                            value = switchPort.switchPortNum;
-                        }
-                    });
+                    if (row.switchPorts) {
+                        $.each(row.switchPorts, function (index, switchPort) {
+                            if (switchPort.switchPortType == dict.dictCode) {
+                                value = switchPort.switchPortNum;
+                            }
+                        });
+                    }
                     return value;
                 }
             });

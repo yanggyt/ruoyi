@@ -1,8 +1,10 @@
 package com.ruoyi.template.domain;
 
+import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.util.List;
 
 /**
  * 服务器模板表 tmpl_server
@@ -45,69 +47,81 @@ public class TmplServer extends BaseEntity {
      * 服务器raid卡
      */
     private String raidCard;
-
-    public void setServerId(Integer serverId) {
-        this.serverId = serverId;
-    }
+    /**
+     * 服务器网卡类型
+     */
+    private List<TmplServerNetcard> serverNetcards;
 
     public Integer getServerId() {
         return serverId;
     }
 
-    public void setServerBrand(String serverBrand) {
-        this.serverBrand = serverBrand;
+    public void setServerId(Integer serverId) {
+        this.serverId = serverId;
     }
 
     public String getServerBrand() {
         return serverBrand;
     }
 
-    public void setServerType(String serverType) {
-        this.serverType = serverType;
+    public void setServerBrand(String serverBrand) {
+        this.serverBrand = serverBrand;
     }
 
     public String getServerType() {
         return serverType;
     }
 
-    public void setCpuFreq(String cpuFreq) {
-        this.cpuFreq = cpuFreq;
+    public void setServerType(String serverType) {
+        this.serverType = serverType;
     }
 
     public String getCpuFreq() {
         return cpuFreq;
     }
 
-    public void setCpuNum(Integer cpuNum) {
-        this.cpuNum = cpuNum;
+    public void setCpuFreq(String cpuFreq) {
+        this.cpuFreq = cpuFreq;
     }
 
     public Integer getCpuNum() {
         return cpuNum;
     }
 
-    public void setIpmiPort(Integer ipmiPort) {
-        this.ipmiPort = ipmiPort;
+    public void setCpuNum(Integer cpuNum) {
+        this.cpuNum = cpuNum;
     }
 
     public Integer getIpmiPort() {
         return ipmiPort;
     }
 
-    public void setPowerNum(Integer powerNum) {
-        this.powerNum = powerNum;
+    public void setIpmiPort(Integer ipmiPort) {
+        this.ipmiPort = ipmiPort;
     }
 
     public Integer getPowerNum() {
         return powerNum;
     }
 
-    public void setRaidCard(String raidCard) {
-        this.raidCard = raidCard;
+    public void setPowerNum(Integer powerNum) {
+        this.powerNum = powerNum;
     }
 
     public String getRaidCard() {
         return raidCard;
+    }
+
+    public void setRaidCard(String raidCard) {
+        this.raidCard = raidCard;
+    }
+
+    public List<TmplServerNetcard> getServerNetcards() {
+        return serverNetcards;
+    }
+
+    public void setServerNetcards(List<TmplServerNetcard> serverNetcards) {
+        this.serverNetcards = serverNetcards;
     }
 
     @Override

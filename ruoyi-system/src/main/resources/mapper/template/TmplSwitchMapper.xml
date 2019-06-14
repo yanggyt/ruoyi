@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.template.mapper.TmplSwitchMapper">
 
-    <resultMap type="TmplSwitch" id="TmplSwitchResult">
+    <resultMap type="com.ruoyi.template.domain.TmplSwitch" id="TmplSwitchResult">
         <result property="switchId" column="switch_id"/>
         <result property="switchBrand" column="switch_brand"/>
         <result property="switchType" column="switch_type"/>
         <result property="powerNum" column="power_num"/>
 
-        <collection property="switchPorts" ofType="TmplSwitchPort" column="switch_id">
+        <collection property="switchPorts" ofType="com.ruoyi.template.domain.TmplSwitchPort" column="switch_id">
             <id column="pid" property="switchPortId"/><!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
             <result column="ptype" property="switchPortType"/><!-- property对应JavaBean中的属性名 -->
             <result column="pnum" property="switchPortNum"/>
@@ -37,7 +37,7 @@
             s.switch_id = p.switch_id
     </sql>
 
-    <select id="selectTmplSwitchList" parameterType="TmplSwitch" resultMap="TmplSwitchResult">
+    <select id="selectTmplSwitchList" parameterType="com.ruoyi.template.domain.TmplSwitch" resultMap="TmplSwitchResult">
         <include refid="selectTmplSwitchVo"/>
         <where>
             <if test="switchId != null ">and switch_id = #{switchId}</if>
@@ -52,7 +52,8 @@
         where s.switch_id = #{switchId}
     </select>
 
-    <insert id="insertTmplSwitch" parameterType="TmplSwitch" useGeneratedKeys="true" keyProperty="switchId">
+    <insert id="insertTmplSwitch" parameterType="com.ruoyi.template.domain.TmplSwitch" useGeneratedKeys="true"
+            keyProperty="switchId">
         insert into tmpl_switch
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="switchBrand != null  and switchBrand != ''  ">switch_brand,</if>
@@ -66,7 +67,7 @@
         </trim>
     </insert>
 
-    <update id="updateTmplSwitch" parameterType="TmplSwitch">
+    <update id="updateTmplSwitch" parameterType="com.ruoyi.template.domain.TmplSwitch">
         update tmpl_switch
         <trim prefix="SET" suffixOverrides=",">
             <if test="switchBrand != null  and switchBrand != ''  ">switch_brand = #{switchBrand},</if>
