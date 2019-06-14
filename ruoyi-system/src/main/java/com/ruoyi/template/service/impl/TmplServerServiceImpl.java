@@ -8,6 +8,7 @@ import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.mapper.SysDictDataMapper;
 import com.ruoyi.template.domain.TmplServer;
 import com.ruoyi.template.domain.TmplServerNetcard;
+import com.ruoyi.template.mapper.TmplServerDiskMapper;
 import com.ruoyi.template.mapper.TmplServerMapper;
 import com.ruoyi.template.mapper.TmplServerNetcardMapper;
 import com.ruoyi.template.service.ITmplServerService;
@@ -32,6 +33,8 @@ public class TmplServerServiceImpl implements ITmplServerService {
     private TmplServerMapper tmplServerMapper;
     @Autowired
     private TmplServerNetcardMapper tmplServerNetcardMapper;
+    @Autowired
+    private TmplServerDiskMapper tmplServerDiskMapper;
     @Autowired
     private SysDictDataMapper sysDictDataMapper;
 
@@ -69,32 +72,72 @@ public class TmplServerServiceImpl implements ITmplServerService {
     }
 
     private int saveOrUpdate(TmplServer tmplServer) {
-        JSONArray jsonArray = JSONArray.parseArray(tmplServer.getForeignKeyInfo());
         int affectRow = tmplServerMapper.selectTmplServerById(tmplServer.getServerId()) != null
                 ? tmplServerMapper.updateTmplServer(tmplServer)
                 : tmplServerMapper.insertTmplServer(tmplServer);
         if (affectRow > 0) {
-            List<TmplServerNetcard> list = new ArrayList<>();
-            jsonArray.forEach((i) -> {
-                JSONObject jsonObject = (JSONObject) i;
-                String valueStr = jsonObject.getString("value");
-                int num = 0;
-                if (StringUtils.isNotBlank(valueStr) && (num = Convert.toInt(valueStr)) > 0) {
-                    SysDictData dictData = sysDictDataMapper
-                            .selectDictDataById(Convert.toLong(jsonObject.getString("id")));
-                    TmplServerNetcard tmplServerNetcard = new TmplServerNetcard();
-                    tmplServerNetcard.setServerId(tmplServer.getServerId());
-                    tmplServerNetcard.setServerNetcardType(Convert.toLong(dictData.getDictCode()));
-                    tmplServerNetcard.setServerNetcardNum(num);
-                    list.add(tmplServerNetcard);
+            JSONObject jsonObject = JSONObject.parseObject(tmplServer.getForeignKeyInfo());
+            if (jsonObject != null) {
+                if (jsonObject.containsKey("serverNetcards")) {
+                    saveServerNetcard(tmplServer.getServerId(), jsonObject.getJSONArray("serverNetcards"));
                 }
-            });
-            int serverNetcardNums = list.size() > 0 ? tmplServerNetcardMapper.batchTmplServerNetcard(list) : 0;
-            if (serverNetcardNums == 0) {
-                throw new BusinessException("至少输入一个网卡数量");
             }
         }
         return affectRow;
+    }
+
+    /**
+     * 新增网卡
+     *
+     * @param id
+     * @param jsonArray
+     */
+    private void saveServerNetcard(Integer id, JSONArray jsonArray) {
+        List<TmplServerNetcard> list = new ArrayList<>();
+        jsonArray.forEach((i) -> {
+            JSONObject jsonObject = (JSONObject) i;
+            String valueStr = jsonObject.getString("value");
+            int num = 0;
+            if (StringUtils.isNotBlank(valueStr) && (num = Convert.toInt(valueStr)) > 0) {
+                SysDictData dictData = sysDictDataMapper.selectDictDataById(Convert.toLong(jsonObject.getString("id")));
+                TmplServerNetcard tmplServerNetcard = new TmplServerNetcard();
+                tmplServerNetcard.setServerId(id);
+                tmplServerNetcard.setServerNetcardType(Convert.toLong(dictData.getDictCode()));
+                tmplServerNetcard.setServerNetcardNum(num);
+                list.add(tmplServerNetcard);
+            }
+        });
+        int serverNetcardNums = list.size() > 0 ? tmplServerNetcardMapper.batchTmplServerNetcard(list) : 0;
+        if (serverNetcardNums == 0) {
+            throw new BusinessException("至少输入一个网卡数量");
+        }
+    }
+
+    /**
+     * 新增硬盘
+     *
+     * @param tmplServer
+     * @param jsonArray
+     */
+    private void saveServerDisk(TmplServer tmplServer, JSONArray jsonArray) {
+        List<TmplServerNetcard> list = new ArrayList<>();
+        jsonArray.forEach((i) -> {
+            JSONObject jsonObject = (JSONObject) i;
+            String valueStr = jsonObject.getString("value");
+            int num = 0;
+            if (StringUtils.isNotBlank(valueStr) && (num = Convert.toInt(valueStr)) > 0) {
+                SysDictData dictData = sysDictDataMapper.selectDictDataById(Convert.toLong(jsonObject.getString("id")));
+                TmplServerNetcard tmplServerNetcard = new TmplServerNetcard();
+                tmplServerNetcard.setServerId(tmplServer.getServerId());
+                tmplServerNetcard.setServerNetcardType(Convert.toLong(dictData.getDictCode()));
+                tmplServerNetcard.setServerNetcardNum(num);
+                list.add(tmplServerNetcard);
+            }
+        });
+        int serverNetcardNums = list.size() > 0 ? tmplServerNetcardMapper.batchTmplServerNetcard(list) : 0;
+        if (serverNetcardNums == 0) {
+            throw new BusinessException("至少输入一个硬盘数量");
+        }
     }
 
     /**
@@ -105,9 +148,9 @@ public class TmplServerServiceImpl implements ITmplServerService {
      */
     @Override
     public int updateTmplServer(TmplServer tmplServer) {
-        //1.清空数据库中已存的值
+        // 1.清空数据库中已存的值
         tmplServerNetcardMapper.deleteTmplServerNetcardByServerId(tmplServer.getServerId());
-        //2.更新主表
+        // 2.更新主表
         return insertTmplServer(tmplServer);
     }
 

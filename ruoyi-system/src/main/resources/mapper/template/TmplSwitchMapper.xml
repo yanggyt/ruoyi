@@ -46,6 +46,10 @@
             <if test="powerNum != null ">and power_num = #{powerNum}</if>
         </where>
     </select>
+    <select id="selectTmplSwitchList_COUNT" resultType="Long">
+         select count(0) from tmpl_switch
+    </select>
+
 
     <select id="selectTmplSwitchById" parameterType="Integer" resultMap="TmplSwitchResult">
         <include refid="selectTmplSwitchVo"/>

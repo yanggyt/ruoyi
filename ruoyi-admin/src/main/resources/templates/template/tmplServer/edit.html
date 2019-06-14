@@ -58,7 +58,7 @@
                         <label class="col-sm-6 control-label" th:text="${dict.dictLabel}"></label>
                         <div class="col-sm-5">
                             <input type="number" min="0" max="100" th:id="${dict.dictCode}"
-                                   class="form-control switchPort"
+                                   class="form-control serverNetcard"
                                    placeholder="单位(个)">
                         </div>
                     </div>
@@ -115,18 +115,26 @@
     function submitHandler() {
         if ($.validate.form()) {
             var data = $('#form-tmplServer-edit').serializeArray();
-            var params = [];
-            $(".switchPort").each(function () {
-                params.push({"id": $(this).attr("id"), "value": $(this).val()});
+            var serverNetcards = [];
+            $(".serverNetcard").each(function () {
+                serverNetcards.push({"id": $(this).attr("id"), "value": $(this).val()});
+            });
+            var serverDisks = [];
+            $(".serverDisk").each(function () {
+                serverDisks.push({"id": $(this).attr("id"), "value": $(this).val()});
             });
             var obj = {
                 "name": "foreignKeyInfo",
-                "value": JSON.stringify(params)
+                "value": JSON.stringify({
+                    "serverNetcards": serverNetcards,
+                    "serverDisks": serverDisks
+                })
             };
             data.push(obj);
             $.operate.save(prefix + "/edit", data);
         }
     }
+
 
     /*
      *  修改时手动回显ServerNetcardNum

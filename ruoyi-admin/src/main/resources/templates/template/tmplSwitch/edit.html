@@ -71,13 +71,15 @@
     function submitHandler() {
         if ($.validate.form()) {
             var data = $('#form-tmplSwitch-edit').serializeArray();
-            var params = [];
+            var switchPorts = [];
             $(".switchPort").each(function () {
-                params.push({"id": $(this).attr("id"), "value": $(this).val()});
+                switchPorts.push({"id": $(this).attr("id"), "value": $(this).val()});
             });
             var obj = {
                 "name": "foreignKeyInfo",
-                "value": JSON.stringify(params)
+                "value": JSON.stringify({
+                    "switchPorts": switchPorts
+                })
             };
             data.push(obj);
             $.operate.save(prefix + "/edit", data);

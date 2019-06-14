@@ -64,6 +64,22 @@
                 </div>
             </div>
         </div>
+        <!--服务器硬盘类型字典-->
+        <div class="form-group" th:with="type=${@dict.getType('dict_disk_type')}">
+            <div class="col-sm-6" th:each="dict : ${type}">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label" th:text="${dict.dictLabel}"></label>
+                        <div class="col-sm-5">
+                            <input type="number" min="0" max="100" th:id="${dict.dictCode}"
+                                   class="form-control serverDisk"
+                                   placeholder="单位(个)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </form>
 </div>
 <div th:include="include::footer"></div>
@@ -114,13 +130,20 @@
     function submitHandler() {
         if ($.validate.form()) {
             var data = $('#form-tmplServer-add').serializeArray();
-            var params = [];
+            var serverNetcards = [];
             $(".serverNetcard").each(function () {
-                params.push({"id": $(this).attr("id"), "value": $(this).val()});
+                serverNetcards.push({"id": $(this).attr("id"), "value": $(this).val()});
+            });
+            var serverDisks = [];
+            $(".serverDisk").each(function () {
+                serverDisks.push({"id": $(this).attr("id"), "value": $(this).val()});
             });
             var obj = {
                 "name": "foreignKeyInfo",
-                "value": JSON.stringify(params)
+                "value": JSON.stringify({
+                    "serverNetcards": serverNetcards,
+                    "serverDisks": serverDisks
+                })
             };
             data.push(obj);
             $.operate.save(prefix + "/add", data);

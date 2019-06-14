@@ -69,32 +69,45 @@ public class TmplSwitchServiceImpl implements ITmplSwitchService {
     }
 
     private int saveOrUpdate(TmplSwitch tmplSwitch) {
-        JSONArray jsonArray = JSONArray.parseArray(tmplSwitch.getForeignKeyInfo());
         int affectRow = tmplSwitchMapper.selectTmplSwitchById(tmplSwitch.getSwitchId()) != null
                 ? tmplSwitchMapper.updateTmplSwitch(tmplSwitch)
                 : tmplSwitchMapper.insertTmplSwitch(tmplSwitch);
         if (affectRow > 0) {
-            List<TmplSwitchPort> list = new ArrayList<>();
-            jsonArray.forEach((i) -> {
-                JSONObject jsonObject = (JSONObject) i;
-                String valueStr = jsonObject.getString("value");
-                int num = 0;
-                if (StringUtils.isNotBlank(valueStr) && (num = Convert.toInt(valueStr)) > 0) {
-                    SysDictData dictData = sysDictDataMapper
-                            .selectDictDataById(Convert.toLong(jsonObject.getString("id")));
-                    TmplSwitchPort tmplSwitchPort = new TmplSwitchPort();
-                    tmplSwitchPort.setSwitchId(tmplSwitch.getSwitchId());
-                    tmplSwitchPort.setSwitchPortType(Convert.toInt(dictData.getDictCode()));
-                    tmplSwitchPort.setSwitchPortNum(num);
-                    list.add(tmplSwitchPort);
+            JSONObject jsonObject = JSONObject.parseObject(tmplSwitch.getForeignKeyInfo());
+            if (jsonObject != null) {
+                if (jsonObject.containsKey("switchPorts")) {
+                    saveSwitchPort(tmplSwitch.getSwitchId(), jsonObject.getJSONArray("switchPorts"));
                 }
-            });
-            int switchPorts = list.size() > 0 ? tmplSwitchPortMapper.batchTmplSwitchPort(list) : 0;
-            if (switchPorts == 0) {
-                throw new BusinessException("至少输入一个端口数量");
             }
         }
         return affectRow;
+    }
+
+    /**
+     * 新增端口
+     *
+     * @param id
+     * @param jsonArray
+     */
+    private void saveSwitchPort(Integer id, JSONArray jsonArray) {
+        List<TmplSwitchPort> list = new ArrayList<>();
+        jsonArray.forEach((i) -> {
+            JSONObject jsonObject = (JSONObject) i;
+            String valueStr = jsonObject.getString("value");
+            int num = 0;
+            if (StringUtils.isNotBlank(valueStr) && (num = Convert.toInt(valueStr)) > 0) {
+                SysDictData dictData = sysDictDataMapper.selectDictDataById(Convert.toLong(jsonObject.getString("id")));
+                TmplSwitchPort tmplSwitchPort = new TmplSwitchPort();
+                tmplSwitchPort.setSwitchId(id);
+                tmplSwitchPort.setSwitchPortType(Convert.toInt(dictData.getDictCode()));
+                tmplSwitchPort.setSwitchPortNum(num);
+                list.add(tmplSwitchPort);
+            }
+        });
+        int switchPortNums = list.size() > 0 ? tmplSwitchPortMapper.batchTmplSwitchPort(list) : 0;
+        if (switchPortNums == 0) {
+            throw new BusinessException("至少输入一个端口数量");
+        }
     }
 
     /**
