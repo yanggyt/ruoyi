@@ -20,9 +20,6 @@
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">${column.columnComment}：</label>
 				<div class="col-sm-8">
-					<select name="${column.attrname}" class="form-control m-b" th:with="type=${@dict.getType('${column.configInfo.value}')}">
-						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-					</select>
 				</div>
 			</div>
 #elseif(${column.configInfo.type} == "date")

@@ -7,10 +7,6 @@
     <groupId>com.ruoyi</groupId>
     <artifactId>ruoyi</artifactId>
     <version>3.4</version>
-
-    <name>ruoyi</name>
-	<url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
     
     <properties>
 	    <ruoyi.version>3.4</ruoyi.version>
@@ -36,7 +32,7 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-        
+
             <!-- SpringBoot的依赖配置-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -45,7 +41,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!--阿里数据库连接池 -->
 			<dependency>
 	            <groupId>com.alibaba</groupId>
@@ -202,6 +198,13 @@
 	            <artifactId>ruoyi-common</artifactId>
 	            <version>${ruoyi.version}</version>
 	        </dependency>
+
+			<!-- 系统模块-->
+			<dependency>
+				<groupId>com.ruoyi</groupId>
+				<artifactId>ruoyi-wish</artifactId>
+				<version>${ruoyi.version}</version>
+			</dependency>
 	        
         </dependencies>
     </dependencyManagement>
@@ -213,6 +216,7 @@
 		<module>ruoyi-quartz</module>
 		<module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+		<module>ruoyi-wish</module>
     </modules>
     <packaging>pom</packaging>
 
