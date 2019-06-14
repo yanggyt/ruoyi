@@ -26,6 +26,12 @@ public class SysLoginController extends BaseController
     @GetMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response)
     {
+        Subject subject = SecurityUtils.getSubject();
+        // 登录了直接转到主页
+        if (subject.isAuthenticated()) 
+        {
+            return "redirect:/index";
+        }
         // 如果是Ajax请求，返回Json字符串。
         if (ServletUtils.isAjaxRequest(request))
         {
