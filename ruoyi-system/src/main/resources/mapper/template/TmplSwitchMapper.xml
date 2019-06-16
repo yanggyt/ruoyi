@@ -4,40 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.template.mapper.TmplSwitchMapper">
 
-    <resultMap type="com.ruoyi.template.domain.TmplSwitch" id="TmplSwitchResult">
+    <resultMap type="com.ruoyi.template.domain.TmplSwitch"
+               id="TmplSwitchResult">
         <result property="switchId" column="switch_id"/>
         <result property="switchBrand" column="switch_brand"/>
         <result property="switchType" column="switch_type"/>
         <result property="powerNum" column="power_num"/>
 
-        <collection property="switchPorts" ofType="com.ruoyi.template.domain.TmplSwitchPort" column="switch_id">
-            <id column="pid" property="switchPortId"/><!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
-            <result column="ptype" property="switchPortType"/><!-- property对应JavaBean中的属性名 -->
-            <result column="pnum" property="switchPortNum"/>
+        <collection property="switchPorts" column="switch_id"
+                    select="com.ruoyi.template.mapper.TmplSwitchPortMapper.selectBySwitchId">
         </collection>
     </resultMap>
 
-    <!--    <sql id="selectTmplSwitchVo">-->
-    <!--        select switch_id, switch_brand, switch_type, power_num from tmpl_switch-->
-    <!--    </sql>-->
     <sql id="selectTmplSwitchVo">
-        select
-            s.switch_id,
-            s.switch_brand,
-            s.switch_type,
-            s.power_num,
-            p.switch_port_id as pid,
-            p.switch_port_type as ptype,
-            p.switch_port_num as pnum
-        from
-            tmpl_switch s
-        left join
-            tmpl_switch_port p
-        on
-            s.switch_id = p.switch_id
-    </sql>
+		select switch_id, switch_brand, switch_type, power_num from
+		tmpl_switch
+	</sql>
 
-    <select id="selectTmplSwitchList" parameterType="com.ruoyi.template.domain.TmplSwitch" resultMap="TmplSwitchResult">
+    <select id="selectTmplSwitchList"
+            parameterType="com.ruoyi.template.domain.TmplSwitch"
+            resultMap="TmplSwitchResult">
         <include refid="selectTmplSwitchVo"/>
         <where>
             <if test="switchId != null ">and switch_id = #{switchId}</if>
@@ -46,18 +32,16 @@
             <if test="powerNum != null ">and power_num = #{powerNum}</if>
         </where>
     </select>
-<!--    <select id="selectTmplSwitchList_COUNT" resultType="Long">-->
-<!--         select count(0) from tmpl_switch-->
-<!--    </select>-->
 
-
-    <select id="selectTmplSwitchById" parameterType="Integer" resultMap="TmplSwitchResult">
+    <select id="selectTmplSwitchById" parameterType="Integer"
+            resultMap="TmplSwitchResult">
         <include refid="selectTmplSwitchVo"/>
-        where s.switch_id = #{switchId}
+        where switch_id = #{switchId}
     </select>
 
-    <insert id="insertTmplSwitch" parameterType="com.ruoyi.template.domain.TmplSwitch" useGeneratedKeys="true"
-            keyProperty="switchId">
+    <insert id="insertTmplSwitch"
+            parameterType="com.ruoyi.template.domain.TmplSwitch"
+            useGeneratedKeys="true" keyProperty="switchId">
         insert into tmpl_switch
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="switchBrand != null  and switchBrand != ''  ">switch_brand,</if>
@@ -71,7 +55,8 @@
         </trim>
     </insert>
 
-    <update id="updateTmplSwitch" parameterType="com.ruoyi.template.domain.TmplSwitch">
+    <update id="updateTmplSwitch"
+            parameterType="com.ruoyi.template.domain.TmplSwitch">
         update tmpl_switch
         <trim prefix="SET" suffixOverrides=",">
             <if test="switchBrand != null  and switchBrand != ''  ">switch_brand = #{switchBrand},</if>
@@ -82,12 +67,14 @@
     </update>
 
     <delete id="deleteTmplSwitchById" parameterType="Integer">
-        delete from tmpl_switch where switch_id = #{switchId}
-    </delete>
+		delete from
+		tmpl_switch where switch_id = #{switchId}
+	</delete>
 
     <delete id="deleteTmplSwitchByIds" parameterType="String">
         delete from tmpl_switch where switch_id in
-        <foreach item="switchId" collection="array" open="(" separator="," close=")">
+        <foreach item="switchId" collection="array" open="("
+                 separator="," close=")">
             #{switchId}
         </foreach>
     </delete>

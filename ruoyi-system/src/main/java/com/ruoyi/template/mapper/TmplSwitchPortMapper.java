@@ -1,6 +1,7 @@
 package com.ruoyi.template.mapper;
 
 import com.ruoyi.template.domain.TmplSwitchPort;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public interface TmplSwitchPortMapper {
      * @return 交换机端口类型信息
      */
     public TmplSwitchPort selectBySwitchIdAndPortType(Integer switchId, Integer switchPortType);
+
+    public TmplSwitchPort selectBySwitchId(@Param("switchId") Integer switchId);
 
     /**
      * 查询交换机端口类型列表
