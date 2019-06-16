@@ -31,6 +31,12 @@
         where server_netcard_id = #{serverNetcardId}
     </select>
 
+    <select id="selectByServerId" parameterType="java.lang.Integer"
+            resultMap="TmplServerNetcardResult">
+        <include refid="selectTmplServerNetcardVo"/>
+        where server_id=#{serverId};
+    </select>
+
     <insert id="insertTmplServerNetcard" parameterType="com.ruoyi.template.domain.TmplServerNetcard"
             useGeneratedKeys="true"
             keyProperty="serverNetcardId">

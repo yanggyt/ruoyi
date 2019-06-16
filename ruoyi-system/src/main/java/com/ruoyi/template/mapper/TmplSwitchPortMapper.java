@@ -29,6 +29,12 @@ public interface TmplSwitchPortMapper {
      */
     public TmplSwitchPort selectBySwitchIdAndPortType(Integer switchId, Integer switchPortType);
 
+    /**
+     * 查询交换机端口类型信息
+     *
+     * @param switchId 交换机ID
+     * @return 交换机端口类型信息
+     */
     public TmplSwitchPort selectBySwitchId(@Param("switchId") Integer switchId);
 
     /**

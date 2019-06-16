@@ -14,34 +14,14 @@
         <result property="powerNum" column="power_num"/>
         <result property="raidCard" column="raid_card"/>
 
-        <collection property="serverNetcards" ofType="com.ruoyi.template.domain.TmplServerNetcard" column="server_id">
-            <id column="pid" property="serverNetcardId"/><!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
-            <result column="ptype" property="serverNetcardType"/><!-- property对应JavaBean中的属性名 -->
-            <result column="pnum" property="serverNetcardNum"/>
+        <collection property="serverNetcards" column="server_id"
+                    select="com.ruoyi.template.mapper.TmplServerNetcardMapper.selectByServerId">
         </collection>
     </resultMap>
 
-    <!--	<sql id="selectTmplServerVo">-->
-    <!--        select server_id, server_brand, server_type, cpu_freq, cpu_num, ipmi_port, power_num, raid_card from tmpl_server-->
-    <!--    </sql>-->
     <sql id="selectTmplServerVo">
-        select
-            s.server_id,
-            s.server_brand,
-            s.server_type,
-            s.cpu_freq, cpu_num,
-            s.ipmi_port, power_num,
-            s.raid_card,
-            p.server_netcard_id as pid,
-            p.server_netcard_type as ptype,
-            p.server_netcard_num as pnum
-        from
-            tmpl_server s
-        left join
-            tmpl_server_netcard p
-        on
-            s.server_id = p.server_id
-    </sql>
+            select server_id, server_brand, server_type, cpu_freq, cpu_num, ipmi_port, power_num, raid_card from tmpl_server
+        </sql>
 
     <select id="selectTmplServerList" parameterType="com.ruoyi.template.domain.TmplServer" resultMap="TmplServerResult">
         <include refid="selectTmplServerVo"/>
@@ -56,14 +36,10 @@
             <if test="raidCard != null  and raidCard != '' ">and raid_card = #{raidCard}</if>
         </where>
     </select>
-<!--    <select id="selectTmplServerList_COUNT" resultType="Long">-->
-<!--         select count(0) from tmpl_server-->
-<!--    </select>-->
-
 
     <select id="selectTmplServerById" parameterType="Integer" resultMap="TmplServerResult">
         <include refid="selectTmplServerVo"/>
-        where s.server_id = #{serverId}
+        where server_id = #{serverId}
     </select>
 
     <insert id="insertTmplServer" parameterType="com.ruoyi.template.domain.TmplServer" useGeneratedKeys="true"
