@@ -17,6 +17,9 @@
         <collection property="serverNetcards" column="server_id"
                     select="com.ruoyi.template.mapper.TmplServerNetcardMapper.selectByServerId">
         </collection>
+        <collection property="serverDisks" column="server_id"
+                    select="com.ruoyi.template.mapper.TmplServerDiskMapper.selectByServerId">
+        </collection>
     </resultMap>
 
     <sql id="selectTmplServerVo">

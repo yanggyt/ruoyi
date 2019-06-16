@@ -65,12 +65,27 @@
                 </div>
             </div>
         </div>
+        <!--硬盘类型字典-->
+        <div class="form-group" th:with="type=${@dict.getType('dict_disk_type')}">
+            <div class="col-sm-6" th:each="dict : ${type}">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label" th:text="${dict.dictLabel}"></label>
+                        <div class="col-sm-5">
+                            <input type="number" min="0" max="100" th:id="${dict.dictCode}"
+                                   class="form-control serverDisk"
+                                   placeholder="单位(个)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 <div th:include="include::footer"></div>
 <script type="text/javascript" th:inline="javascript">
     var prefix = ctx + "template/tmplServer";
-    $("#form-tmplServer-add").validate({
+    $("#form-tmplServer-edit").validate({
         onkeyup: false,
         rules: {
             serverBrand: {
@@ -107,7 +122,7 @@
                 required: true,
                 minlength: 1,
                 maxlength: 2
-            },
+            }
         },
         focusCleanup: true
     });
@@ -135,14 +150,17 @@
         }
     }
 
-
     /*
-     *  修改时手动回显ServerNetcardNum
+     *  修改时手动回显ServerNetcardNum、ServerDiskNum
      */
     $(function () {
         var serverNetcards = [[${tmplServer}]].serverNetcards;
         $.each(serverNetcards, function (index, netcard) {
             $("#" + netcard.serverNetcardType).val(netcard.serverNetcardNum);
+        });
+        var serverDisks = [[${tmplServer}]].serverDisks;
+        $.each(serverDisks, function (index, disk) {
+            $("#" + disk.serverDiskType).val(disk.serverDiskNum);
         });
     });
 </script>

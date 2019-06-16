@@ -1,6 +1,8 @@
 package com.ruoyi.template.mapper;
 
 import com.ruoyi.template.domain.TmplServerDisk;
+import com.ruoyi.template.domain.TmplServerNetcard;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,6 +20,15 @@ public interface TmplServerDiskMapper {
      * @return 服务器硬盘类型信息
      */
     public TmplServerDisk selectTmplServerDiskById(Integer serverDiskId);
+
+    /**
+     * 查询服务器硬盘类型信息
+     *
+     * @param serverId 服务器ID
+     * @return 服务器硬盘类型信息
+     */
+    public TmplServerNetcard selectByServerId(@Param("serverId") Integer serverId);
+
 
     /**
      * 查询服务器硬盘类型列表

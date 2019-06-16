@@ -154,7 +154,7 @@
                 formatter: function (value, row, index) {
                     if (row.serverDisks) {
                         $.each(row.serverDisks, function (index, serverDisk) {
-                            if (serverDisk.serverNetcardType == dict.dictCode) {
+                            if (serverDisk.serverDiskType == dict.dictCode) {
                                 value = serverDisk.serverDiskNum;
                             }
                         });

@@ -30,6 +30,12 @@
         where server_disk_id = #{serverDiskId}
     </select>
 
+    <select id="selectByServerId" parameterType="java.lang.Integer"
+            resultMap="TmplServerDiskResult">
+        <include refid="selectTmplServerDiskVo"/>
+        where server_id=#{serverId};
+    </select>
+
     <insert id="insertTmplServerDisk" parameterType="TmplServerDisk" useGeneratedKeys="true" keyProperty="serverDiskId">
         insert into tmpl_server_disk
         <trim prefix="(" suffix=")" suffixOverrides=",">
