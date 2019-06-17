@@ -109,7 +109,7 @@ public class PermissionUtils
             }
             catch (Exception e)
             {
-                log.error("Error reading property [{}] from principal of type [{}]", property,
+                log.error("Error reading assets [{}] from principal of type [{}]", property,
                         principal.getClass().getName());
             }
         }

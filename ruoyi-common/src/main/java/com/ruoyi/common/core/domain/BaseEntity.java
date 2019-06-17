@@ -1,16 +1,16 @@
 package com.ruoyi.common.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * Entity基类
- * 
+ *
  * @author ruoyi
  */
 public class BaseEntity implements Serializable {

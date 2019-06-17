@@ -63,7 +63,7 @@ if (!String.prototype.format)
  *
  * @static
  * @private
- * @property _uniqueId
+ * @assets _uniqueId
  * @type Integer
  **/
 var _uniqueId = 0;
@@ -73,7 +73,7 @@ var _uniqueId = 0;
  *
  * @final
  * @private
- * @property _cookiePrefix
+ * @assets _cookiePrefix
  * @type String
  **/
 var _cookiePrefix = "jQu3ry_5teps_St@te_";
@@ -83,7 +83,7 @@ var _cookiePrefix = "jQu3ry_5teps_St@te_";
  *
  * @final
  * @private
- * @property _tabSuffix
+ * @assets _tabSuffix
  * @type String
  * @since 0.9.7
  **/
@@ -94,7 +94,7 @@ var _tabSuffix = "-t-";
  *
  * @final
  * @private
- * @property _tabpanelSuffix
+ * @assets _tabpanelSuffix
  * @type String
  * @since 0.9.7
  **/
@@ -105,7 +105,7 @@ var _tabpanelSuffix = "-p-";
  *
  * @final
  * @private
- * @property _titleSuffix
+ * @assets _titleSuffix
  * @type String
  * @since 0.9.7
  **/
@@ -116,7 +116,7 @@ var _titleSuffix = "-h-";
  *
  * @final
  * @private
- * @property _indexOutOfRangeErrorMessage
+ * @assets _indexOutOfRangeErrorMessage
  * @type String
  **/
 var _indexOutOfRangeErrorMessage = "Index out of range.";
@@ -126,7 +126,7 @@ var _indexOutOfRangeErrorMessage = "Index out of range.";
  *
  * @final
  * @private
- * @property _missingCorrespondingElementErrorMessage
+ * @assets _missingCorrespondingElementErrorMessage
  * @type String
  **/
 var _missingCorrespondingElementErrorMessage = "One or more corresponding step {0} are missing.";
@@ -1485,7 +1485,7 @@ var contentMode = $.fn.steps.contentMode = {
      * HTML embedded content
      *
      * @readOnly
-     * @property html
+     * @assets html
      * @type Integer
      * @for contentMode
      **/
@@ -1495,7 +1495,7 @@ var contentMode = $.fn.steps.contentMode = {
      * IFrame embedded content
      *
      * @readOnly
-     * @property iframe
+     * @assets iframe
      * @type Integer
      * @for contentMode
      **/
@@ -1505,7 +1505,7 @@ var contentMode = $.fn.steps.contentMode = {
      * Async embedded content
      *
      * @readOnly
-     * @property async
+     * @assets async
      * @type Integer
      * @for contentMode
      **/
@@ -1523,7 +1523,7 @@ var stepsOrientation = $.fn.steps.stepsOrientation = {
      * Horizontal orientation
      *
      * @readOnly
-     * @property horizontal
+     * @assets horizontal
      * @type Integer
      * @for stepsOrientation
      **/
@@ -1533,7 +1533,7 @@ var stepsOrientation = $.fn.steps.stepsOrientation = {
      * Vertical orientation
      *
      * @readOnly
-     * @property vertical
+     * @assets vertical
      * @type Integer
      * @for stepsOrientation
      **/
@@ -1551,7 +1551,7 @@ var transitionEffect = $.fn.steps.transitionEffect = {
      * No transition animation
      *
      * @readOnly
-     * @property none
+     * @assets none
      * @type Integer
      * @for transitionEffect
      **/
@@ -1561,7 +1561,7 @@ var transitionEffect = $.fn.steps.transitionEffect = {
      * Fade in transition
      *
      * @readOnly
-     * @property fade
+     * @assets fade
      * @type Integer
      * @for transitionEffect
      **/
@@ -1571,7 +1571,7 @@ var transitionEffect = $.fn.steps.transitionEffect = {
      * Slide up transition
      *
      * @readOnly
-     * @property slide
+     * @assets slide
      * @type Integer
      * @for transitionEffect
      **/
@@ -1581,7 +1581,7 @@ var transitionEffect = $.fn.steps.transitionEffect = {
      * Slide left transition
      *
      * @readOnly
-     * @property slideLeft
+     * @assets slideLeft
      * @type Integer
      * @for transitionEffect
      **/
@@ -1615,7 +1615,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The header tag is used to find the step button text within the declared wizard area.
      *
-     * @property headerTag
+     * @assets headerTag
      * @type String
      * @default "h1"
      * @for defaults
@@ -1625,7 +1625,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The body tag is used to find the step content within the declared wizard area.
      *
-     * @property bodyTag
+     * @assets bodyTag
      * @type String
      * @default "div"
      * @for defaults
@@ -1635,7 +1635,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The content container tag which will be used to wrap all step contents.
      *
-     * @property contentContainerTag
+     * @assets contentContainerTag
      * @type String
      * @default "div"
      * @for defaults
@@ -1645,7 +1645,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The action container tag which will be used to wrap the pagination navigation.
      *
-     * @property actionContainerTag
+     * @assets actionContainerTag
      * @type String
      * @default "div"
      * @for defaults
@@ -1655,7 +1655,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The steps container tag which will be used to wrap the steps navigation.
      *
-     * @property stepsContainerTag
+     * @assets stepsContainerTag
      * @type String
      * @default "div"
      * @for defaults
@@ -1665,7 +1665,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The css class which will be added to the outer component wrapper.
      *
-     * @property cssClass
+     * @assets cssClass
      * @type String
      * @default "wizard"
      * @for defaults
@@ -1679,7 +1679,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The css class which will be used for floating scenarios.
      *
-     * @property clearFixCssClass
+     * @assets clearFixCssClass
      * @type String
      * @default "clearfix"
      * @for defaults
@@ -1689,7 +1689,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Determines whether the steps are vertically or horizontally oriented.
      *
-     * @property stepsOrientation
+     * @assets stepsOrientation
      * @type stepsOrientation
      * @default horizontal
      * @for defaults
@@ -1704,7 +1704,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The title template which will be used to create a step button.
      *
-     * @property titleTemplate
+     * @assets titleTemplate
      * @type String
      * @default "<span class=\"number\">#index#.</span> #title#"
      * @for defaults
@@ -1714,7 +1714,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The loading template which will be used to create the loading animation.
      *
-     * @property loadingTemplate
+     * @assets loadingTemplate
      * @type String
      * @default "<span class=\"spinner\"></span> #text#"
      * @for defaults
@@ -1728,7 +1728,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Sets the focus to the first wizard instance in order to enable the key navigation from the begining if `true`. 
      *
-     * @property autoFocus
+     * @assets autoFocus
      * @type Boolean
      * @default false
      * @for defaults
@@ -1739,7 +1739,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Enables all steps from the begining if `true` (all steps are clickable).
      *
-     * @property enableAllSteps
+     * @assets enableAllSteps
      * @type Boolean
      * @default false
      * @for defaults
@@ -1749,7 +1749,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Enables keyboard navigation if `true` (arrow left and arrow right).
      *
-     * @property enableKeyNavigation
+     * @assets enableKeyNavigation
      * @type Boolean
      * @default true
      * @for defaults
@@ -1759,7 +1759,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Enables pagination if `true`.
      *
-     * @property enablePagination
+     * @assets enablePagination
      * @type Boolean
      * @default true
      * @for defaults
@@ -1769,7 +1769,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Suppresses pagination if a form field is focused.
      *
-     * @property suppressPaginationOnFocus
+     * @assets suppressPaginationOnFocus
      * @type Boolean
      * @default true
      * @for defaults
@@ -1779,7 +1779,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Enables cache for async loaded or iframe embedded content.
      *
-     * @property enableContentCache
+     * @assets enableContentCache
      * @type Boolean
      * @default true
      * @for defaults
@@ -1789,7 +1789,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Shows the cancel button if enabled.
      *
-     * @property enableCancelButton
+     * @assets enableCancelButton
      * @type Boolean
      * @default false
      * @for defaults
@@ -1799,7 +1799,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Shows the finish button if enabled.
      *
-     * @property enableFinishButton
+     * @assets enableFinishButton
      * @type Boolean
      * @default true
      * @for defaults
@@ -1809,7 +1809,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Not yet implemented.
      *
-     * @property preloadContent
+     * @assets preloadContent
      * @type Boolean
      * @default false
      * @for defaults
@@ -1820,7 +1820,7 @@ var defaults = $.fn.steps.defaults = {
      * Shows the finish button always (on each step; right beside the next button) if `true`. 
      * Otherwise the next button will be replaced by the finish button if the last step becomes active.
      *
-     * @property showFinishButtonAlways
+     * @assets showFinishButtonAlways
      * @type Boolean
      * @default false
      * @for defaults
@@ -1830,7 +1830,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Prevents jumping to a previous step.
      *
-     * @property forceMoveForward
+     * @assets forceMoveForward
      * @type Boolean
      * @default false
      * @for defaults
@@ -1841,7 +1841,7 @@ var defaults = $.fn.steps.defaults = {
      * Saves the current state (step position) to a cookie.
      * By coming next time the last active step becomes activated.
      *
-     * @property saveState
+     * @assets saveState
      * @type Boolean
      * @default false
      * @for defaults
@@ -1851,7 +1851,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The position to start on (zero-based).
      *
-     * @property startIndex
+     * @assets startIndex
      * @type Integer
      * @default 0
      * @for defaults
@@ -1865,7 +1865,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * The animation effect which will be used for step transitions.
      *
-     * @property transitionEffect
+     * @assets transitionEffect
      * @type transitionEffect
      * @default none
      * @for defaults
@@ -1875,7 +1875,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Animation speed for step transitions (in milliseconds).
      *
-     * @property transitionEffectSpeed
+     * @assets transitionEffectSpeed
      * @type Integer
      * @default 200
      * @for defaults
@@ -1890,7 +1890,7 @@ var defaults = $.fn.steps.defaults = {
      * Fires before the step changes and can be used to prevent step changing by returning `false`. 
      * Very useful for form validation. 
      *
-     * @property onStepChanging
+     * @assets onStepChanging
      * @type Event
      * @default function (event, currentIndex, newIndex) { return true; }
      * @for defaults
@@ -1900,7 +1900,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Fires after the step has change. 
      *
-     * @property onStepChanged
+     * @assets onStepChanged
      * @type Event
      * @default function (event, currentIndex, priorIndex) { }
      * @for defaults
@@ -1910,7 +1910,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Fires after cancelation. 
      *
-     * @property onCanceled
+     * @assets onCanceled
      * @type Event
      * @default function (event) { }
      * @for defaults
@@ -1921,7 +1921,7 @@ var defaults = $.fn.steps.defaults = {
      * Fires before finishing and can be used to prevent completion by returning `false`. 
      * Very useful for form validation. 
      *
-     * @property onFinishing
+     * @assets onFinishing
      * @type Event
      * @default function (event, currentIndex) { return true; }
      * @for defaults
@@ -1931,7 +1931,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Fires after completion. 
      *
-     * @property onFinished
+     * @assets onFinished
      * @type Event
      * @default function (event, currentIndex) { }
      * @for defaults
@@ -1941,7 +1941,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Fires after async content is loaded. 
      *
-     * @property onContentLoaded
+     * @assets onContentLoaded
      * @type Event
      * @default function (event, index) { }
      * @for defaults
@@ -1951,7 +1951,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Fires when the wizard is initialized. 
      *
-     * @property onInit
+     * @assets onInit
      * @type Event
      * @default function (event) { }
      * @for defaults
@@ -1961,7 +1961,7 @@ var defaults = $.fn.steps.defaults = {
     /**
      * Contains all labels. 
      *
-     * @property labels
+     * @assets labels
      * @type Object
      * @for defaults
      **/
@@ -1969,7 +1969,7 @@ var defaults = $.fn.steps.defaults = {
         /**
          * Label for the cancel button.
          *
-         * @property cancel
+         * @assets cancel
          * @type String
          * @default "Cancel"
          * @for defaults
@@ -1980,7 +1980,7 @@ var defaults = $.fn.steps.defaults = {
          * This label is important for accessability reasons.
          * Indicates which step is activated.
          *
-         * @property current
+         * @assets current
          * @type String
          * @default "current step:"
          * @for defaults
@@ -1990,7 +1990,7 @@ var defaults = $.fn.steps.defaults = {
         /**
          * This label is important for accessability reasons and describes the kind of navigation.
          *
-         * @property pagination
+         * @assets pagination
          * @type String
          * @default "Pagination"
          * @for defaults
@@ -2001,7 +2001,7 @@ var defaults = $.fn.steps.defaults = {
         /**
          * Label for the finish button.
          *
-         * @property finish
+         * @assets finish
          * @type String
          * @default "Finish"
          * @for defaults
@@ -2011,7 +2011,7 @@ var defaults = $.fn.steps.defaults = {
         /**
          * Label for the next button.
          *
-         * @property next
+         * @assets next
          * @type String
          * @default "Next"
          * @for defaults
@@ -2021,7 +2021,7 @@ var defaults = $.fn.steps.defaults = {
         /**
          * Label for the previous button.
          *
-         * @property previous
+         * @assets previous
          * @type String
          * @default "Previous"
          * @for defaults
@@ -2031,7 +2031,7 @@ var defaults = $.fn.steps.defaults = {
         /**
          * Label for the loading animation.
          *
-         * @property loading
+         * @assets loading
          * @type String
          * @default "Loading ..."
          * @for defaults

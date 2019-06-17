@@ -1797,13 +1797,13 @@
       return node && !isText(node) && lists.contains(node.classList, 'note-styletag');
   }
   var dom = {
-      /** @property {String} NBSP_CHAR */
+      /** @assets {String} NBSP_CHAR */
       NBSP_CHAR: NBSP_CHAR,
-      /** @property {String} ZERO_WIDTH_NBSP_CHAR */
+      /** @assets {String} ZERO_WIDTH_NBSP_CHAR */
       ZERO_WIDTH_NBSP_CHAR: ZERO_WIDTH_NBSP_CHAR,
-      /** @property {String} blank */
+      /** @assets {String} blank */
       blank: blankHTML,
-      /** @property {String} emptyPara */
+      /** @assets {String} emptyPara */
       emptyPara: "<p>" + blankHTML + "</p>",
       makePredByNodeName: makePredByNodeName,
       isEditable: isEditable,
@@ -2885,8 +2885,8 @@
           ], keyCode);
       },
       /**
-       * @property {Object} nameFromCode
-       * @property {String} nameFromCode.8 "BACKSPACE"
+       * @assets {Object} nameFromCode
+       * @assets {String} nameFromCode.8 "BACKSPACE"
        */
       nameFromCode: func.invertObject(KEY_MAP),
       code: KEY_MAP
@@ -3045,7 +3045,7 @@
        *
        * [workaround] for old jQuery
        * passing an array of style properties to .css()
-       * will result in an object of property-value pairs.
+       * will result in an object of assets-value pairs.
        * (compability with version < 1.9)
        *
        * @private

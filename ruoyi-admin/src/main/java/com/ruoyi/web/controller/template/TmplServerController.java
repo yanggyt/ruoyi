@@ -48,7 +48,6 @@ public class TmplServerController extends BaseController {
         return getDataTable(list);
     }
 
-
     /**
      * 导出服务器模板列表
      */

@@ -281,7 +281,7 @@ var requirejs, require, define;
             }
         }
 
-        //Using ridiculous property names for space reasons
+        //Using ridiculous assets names for space reasons
         return {
             f: prefix ? prefix + '!' + name : name, //fullName
             n: name,
@@ -2024,10 +2024,10 @@ S2.define('select2/selection/search',[
       }
     });
 
-    // Try to detect the IE version should the `documentMode` property that
+    // Try to detect the IE version should the `documentMode` assets that
     // is stored on the document. This is only implemented in IE and is
     // slightly cleaner than doing a user agent check.
-    // This property is not available in Edge, but Edge also doesn't have
+    // This assets is not available in Edge, but Edge also doesn't have
     // this bug.
     var msie = document.documentMode;
     var disableInputEvents = msie && msie <= 11;
@@ -3588,7 +3588,7 @@ S2.define('select2/data/ajax',[
         callback(results);
       }, function () {
         // Attempt to detect if a request was aborted
-        // Only works if the transport exposes a status property
+        // Only works if the transport exposes a status assets
         if ('status' in $request &&
             ($request.status === 0 || $request.status === '0')) {
           return;
@@ -5679,7 +5679,7 @@ S2.define('select2/core',[
     if (this.options.get('debug') && window.console && console.warn) {
       console.warn(
         'Select2: The `select2("enable")` method has been deprecated and will' +
-        ' be removed in later Select2 versions. Use $element.prop("disabled")' +
+        ' be removed in later Select2 versions. Use $element.assets("disabled")' +
         ' instead.'
       );
     }
