@@ -55,6 +55,10 @@ public class TmplServer extends BaseEntity {
      * 服务器硬盘类型
      */
     private List<TmplServerDisk> serverDisks;
+    /**
+     * 服务器内存类型
+     */
+    private List<TmplServerMemory> serverMemorys;
 
     public Integer getServerId() {
         return serverId;
@@ -134,6 +138,14 @@ public class TmplServer extends BaseEntity {
 
     public void setServerDisks(List<TmplServerDisk> serverDisks) {
         this.serverDisks = serverDisks;
+    }
+
+    public List<TmplServerMemory> getServerMemorys() {
+        return serverMemorys;
+    }
+
+    public void setServerMemorys(List<TmplServerMemory> serverMemorys) {
+        this.serverMemorys = serverMemorys;
     }
 
     @Override

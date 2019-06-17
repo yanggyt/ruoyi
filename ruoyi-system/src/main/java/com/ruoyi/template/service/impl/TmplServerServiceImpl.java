@@ -8,9 +8,11 @@ import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.mapper.SysDictDataMapper;
 import com.ruoyi.template.domain.TmplServer;
 import com.ruoyi.template.domain.TmplServerDisk;
+import com.ruoyi.template.domain.TmplServerMemory;
 import com.ruoyi.template.domain.TmplServerNetcard;
 import com.ruoyi.template.mapper.TmplServerDiskMapper;
 import com.ruoyi.template.mapper.TmplServerMapper;
+import com.ruoyi.template.mapper.TmplServerMemoryMapper;
 import com.ruoyi.template.mapper.TmplServerNetcardMapper;
 import com.ruoyi.template.service.ITmplServerService;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +38,8 @@ public class TmplServerServiceImpl implements ITmplServerService {
     private TmplServerNetcardMapper tmplServerNetcardMapper;
     @Autowired
     private TmplServerDiskMapper tmplServerDiskMapper;
+    @Autowired
+    private TmplServerMemoryMapper tmplServerMemoryMapper;
     @Autowired
     private SysDictDataMapper sysDictDataMapper;
 
@@ -87,6 +91,10 @@ public class TmplServerServiceImpl implements ITmplServerService {
                 if (jsonObject.containsKey("serverDisks")) {
                     saveServerDisk(tmplServer.getServerId(), jsonObject.getJSONArray("serverDisks"));
                 }
+                //保存内存信息
+                if (jsonObject.containsKey("serverMemorys")) {
+                    saveServerMemory(tmplServer.getServerId(), jsonObject.getJSONArray("serverMemorys"));
+                }
             }
         }
         return affectRow;
@@ -136,13 +144,40 @@ public class TmplServerServiceImpl implements ITmplServerService {
                 TmplServerDisk tmplServerDisk = new TmplServerDisk();
                 tmplServerDisk.setServerId(id);
                 tmplServerDisk.setServerDiskType(Convert.toLong(dictData.getDictCode()));
-				tmplServerDisk.setServerDiskNum(num);
+                tmplServerDisk.setServerDiskNum(num);
                 list.add(tmplServerDisk);
             }
         });
         int serverDiskNums = list.size() > 0 ? tmplServerDiskMapper.batchTmplServerDisk(list) : 0;
         if (serverDiskNums == 0) {
             throw new BusinessException("至少输入一个硬盘数量");
+        }
+    }
+
+    /**
+     * 新增内存
+     *
+     * @param id
+     * @param jsonArray
+     */
+    private void saveServerMemory(Integer id, JSONArray jsonArray) {
+        List<TmplServerMemory> list = new ArrayList<>();
+        jsonArray.forEach((i) -> {
+            JSONObject jsonObject = (JSONObject) i;
+            String valueStr = jsonObject.getString("value");
+            int num = 0;
+            if (StringUtils.isNotBlank(valueStr) && (num = Convert.toInt(valueStr)) > 0) {
+                SysDictData dictData = sysDictDataMapper.selectDictDataById(Convert.toLong(jsonObject.getString("id")));
+                TmplServerMemory tmplServerMemory = new TmplServerMemory();
+                tmplServerMemory.setServerId(id);
+                tmplServerMemory.setServerMemoryType(Convert.toLong(dictData.getDictCode()));
+                tmplServerMemory.setServerMemoryNum(num);
+                list.add(tmplServerMemory);
+            }
+        });
+        int serverDiskNums = list.size() > 0 ? tmplServerMemoryMapper.batchTmplServerMemory(list) : 0;
+        if (serverDiskNums == 0) {
+            throw new BusinessException("至少输入一个内存数量");
         }
     }
 

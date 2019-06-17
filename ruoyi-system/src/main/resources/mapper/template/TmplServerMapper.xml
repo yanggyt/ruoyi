@@ -20,6 +20,9 @@
         <collection property="serverDisks" column="server_id"
                     select="com.ruoyi.template.mapper.TmplServerDiskMapper.selectByServerId">
         </collection>
+        <collection property="serverMemorys" column="server_id"
+                    select="com.ruoyi.template.mapper.TmplServerMemoryMapper.selectByServerId">
+        </collection>
     </resultMap>
 
     <sql id="selectTmplServerVo">
