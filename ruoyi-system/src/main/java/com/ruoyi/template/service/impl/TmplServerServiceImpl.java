@@ -170,7 +170,7 @@ public class TmplServerServiceImpl implements ITmplServerService {
                 SysDictData dictData = sysDictDataMapper.selectDictDataById(Convert.toLong(jsonObject.getString("id")));
                 TmplServerMemory tmplServerMemory = new TmplServerMemory();
                 tmplServerMemory.setServerId(id);
-                tmplServerMemory.setServerMemoryType(Convert.toLong(dictData.getDictCode()));
+                tmplServerMemory.setServerMemoryType(dictData);
                 tmplServerMemory.setServerMemoryNum(num);
                 list.add(tmplServerMemory);
             }

@@ -114,9 +114,17 @@
                     sortable: true
                 },
                 {
-                    field: 'memoryTotal',
+                    // field: 'memoryTotal',
                     title: '总内存(G)',
-                    sortable: true
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (row.serverMemorys[index] && row.serverMemorys[index].serverMemoryType) {
+                            var num = row.serverMemorys[index].serverMemoryNum;
+                            var singleVaule = row.serverMemorys[index].serverMemoryType.dictValue;
+                            value = num * singleVaule + "(" + singleVaule + "Gx" + num + ")";
+                        }
+                        return value;
+                    }
                 },
                 {
                     field: 'ipmiPort',

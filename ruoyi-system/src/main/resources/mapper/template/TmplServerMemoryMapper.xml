@@ -7,8 +7,10 @@
     <resultMap type="TmplServerMemory" id="TmplServerMemoryResult">
         <result property="serverMemoryId" column="server_memory_id"/>
         <result property="serverId" column="server_id"/>
-        <result property="serverMemoryType" column="server_memory_type"/>
         <result property="serverMemoryNum" column="server_memory_num"/>
+        <association property="serverMemoryType" column="server_memory_type"
+                     select="com.ruoyi.system.mapper.SysDictDataMapper.selectDictDataById">
+        </association>
     </resultMap>
 
     <sql id="selectTmplServerMemoryVo">
@@ -54,7 +56,7 @@
     <insert id="batchTmplServerMemory">
         insert into tmpl_server_memory(server_id, server_memory_type,server_memory_num) values
         <foreach item="item" index="index" collection="list" separator=",">
-            (#{item.serverId},#{item.serverMemoryType},#{item.serverMemoryNum})
+            (#{item.serverId},#{item.serverMemoryType.dictCode},#{item.serverMemoryNum})
         </foreach>
     </insert>
 
