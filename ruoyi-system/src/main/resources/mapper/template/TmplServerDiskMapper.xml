@@ -71,6 +71,10 @@
         delete from tmpl_server_disk where server_disk_id = #{serverDiskId}
     </delete>
 
+    <delete id="deleteTmplServerDiskByServerId" parameterType="Integer">
+        delete from tmpl_server_disk where server_id = #{serverId}
+    </delete>
+
     <delete id="deleteTmplServerDiskByIds" parameterType="String">
         delete from tmpl_server_disk where server_disk_id in
         <foreach item="serverDiskId" collection="array" open="(" separator="," close=")">

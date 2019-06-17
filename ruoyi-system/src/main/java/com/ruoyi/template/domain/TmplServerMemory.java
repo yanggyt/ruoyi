@@ -5,8 +5,6 @@ import com.ruoyi.system.domain.SysDictData;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.beans.Transient;
-
 /**
  * 服务器内存类型表 tmpl_server_memory
  *
@@ -27,17 +25,11 @@ public class TmplServerMemory extends BaseEntity {
     /**
      * 服务器内存类型
      */
-//    private Long serverMemoryType;
     private SysDictData serverMemoryType;
     /**
      * 服务器内存数量
      */
     private Integer serverMemoryNum;
-
-    /**
-     * 服务器内存总数 @Transient
-     */
-    private Integer serverMemoryTotal;
 
     public Integer getServerMemoryId() {
         return serverMemoryId;
@@ -55,14 +47,6 @@ public class TmplServerMemory extends BaseEntity {
         this.serverId = serverId;
     }
 
-//    public Long getServerMemoryType() {
-//        return serverMemoryType;
-//    }
-
-//    public void setServerMemoryType(Long serverMemoryType) {
-//        this.serverMemoryType = serverMemoryType;
-//    }
-
     public SysDictData getServerMemoryType() {
         return serverMemoryType;
     }
@@ -77,15 +61,6 @@ public class TmplServerMemory extends BaseEntity {
 
     public void setServerMemoryNum(Integer serverMemoryNum) {
         this.serverMemoryNum = serverMemoryNum;
-    }
-
-    @Transient
-    public Integer getServerMemoryTotal() {
-        return serverMemoryTotal;
-    }
-
-    public void setServerMemoryTotal(Integer serverMemoryTotal) {
-        this.serverMemoryTotal = serverMemoryTotal;
     }
 
     @Override

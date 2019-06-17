@@ -74,6 +74,10 @@
         delete from tmpl_server_memory where server_memory_id = #{serverMemoryId}
     </delete>
 
+    <delete id="deleteTmplServerMemoryByServerId" parameterType="Integer">
+        delete from tmpl_server_memory where server_id = #{serverId}
+    </delete>
+
     <delete id="deleteTmplServerMemoryByIds" parameterType="String">
         delete from tmpl_server_memory where server_memory_id in
         <foreach item="serverMemoryId" collection="array" open="(" separator="," close=")">

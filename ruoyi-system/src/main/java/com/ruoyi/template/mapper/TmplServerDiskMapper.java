@@ -71,6 +71,14 @@ public interface TmplServerDiskMapper {
     public int deleteTmplServerDiskByIds(String[] serverDiskIds);
 
     /**
+     * 通过服务器ID批量删除服务器硬盘类型
+     *
+     * @param serverId 服务器ID
+     * @return 结果
+     */
+    public int deleteTmplServerDiskByServerId(Integer serverId);
+
+    /**
      * 批量新增服务器硬盘类型信息
      *
      * @param tmplServerDiskList 服务器硬盘类型列表

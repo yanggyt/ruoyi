@@ -61,6 +61,14 @@ public interface TmplServerMemoryMapper {
     public int deleteTmplServerMemoryById(Integer serverMemoryId);
 
     /**
+     * 通过服务器ID批量删除服务器内存类型
+     *
+     * @param serverId 服务器ID
+     * @return 结果
+     */
+    public int deleteTmplServerMemoryByServerId(Integer serverId);
+
+    /**
      * 批量删除服务器内存类型
      *
      * @param serverMemoryIds 需要删除的数据ID

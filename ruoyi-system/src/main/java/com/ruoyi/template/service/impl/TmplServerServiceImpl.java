@@ -189,8 +189,10 @@ public class TmplServerServiceImpl implements ITmplServerService {
      */
     @Override
     public int updateTmplServer(TmplServer tmplServer) {
-        // 1.清空数据库中已存的值
+        // 1.采取简单的做法直接删除关联的所有外键值(一定不能删除原对象tmplServer!!!)
         tmplServerNetcardMapper.deleteTmplServerNetcardByServerId(tmplServer.getServerId());
+        tmplServerDiskMapper.deleteTmplServerDiskByServerId(tmplServer.getServerId());
+        tmplServerMemoryMapper.deleteTmplServerMemoryByServerId(tmplServer.getServerId());
         // 2.更新主表
         return insertTmplServer(tmplServer);
     }
