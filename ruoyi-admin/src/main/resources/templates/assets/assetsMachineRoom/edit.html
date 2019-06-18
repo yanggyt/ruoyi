@@ -17,8 +17,14 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">带宽类型：</label>
             <div class="col-sm-8">
-                <input id="bandwidthType" name="bandwidthType" th:field="*{bandwidthType}" class="form-control"
-                       type="text">
+                <select id="bandwidthType" name="bandwidthType.dictCode"
+                        th:with="type=${@dict.getType('dict_bandwidth_type')}">
+                    <option value="">请选择带宽类型</option>
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            th:value="${dict.dictCode}"
+                            th:selected="*{bandwidthType.dictCode} == ${dict.dictCode} ? true :false">
+                    </option>
+                </select>
             </div>
         </div>
         <div class="form-group">
@@ -85,9 +91,47 @@
     var prefix = ctx + "assets/assetsMachineRoom";
     $("#form-assetsMachineRoom-edit").validate({
         rules: {
-            xxxx: {
-                required: true,
+            "bandwidthType.dictCode": {
+                required: true
             },
+            machineRoomName: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            bandwidthSize: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            country: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            province: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            city: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            area: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            email: {
+                required: false,
+                email: true
+            },
+            contactPhone: {
+                required: false,
+                isPhone: true
+            }
         },
         focusCleanup: true
     });

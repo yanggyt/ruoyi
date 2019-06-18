@@ -20,7 +20,12 @@ public class AssetsCabinet extends BaseEntity {
     /**
      * 机房编号
      */
+    private Integer dictCode;
+    /**
+     * 机房对象
+     */
     private AssetsMachineRoom machineRoom;
+
     /**
      * 机柜名称
      */
@@ -44,6 +49,14 @@ public class AssetsCabinet extends BaseEntity {
 
     public void setCabinetId(Integer cabinetId) {
         this.cabinetId = cabinetId;
+    }
+
+    public Integer getDictCode() {
+        return dictCode;
+    }
+
+    public void setDictCode(Integer dictCode) {
+        this.dictCode = dictCode;
     }
 
     public AssetsMachineRoom getMachineRoom() {

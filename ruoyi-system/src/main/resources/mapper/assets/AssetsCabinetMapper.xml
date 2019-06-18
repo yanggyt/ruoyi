@@ -6,7 +6,6 @@
 
     <resultMap type="AssetsCabinet" id="AssetsCabinetResult">
         <result property="cabinetId" column="cabinet_id"/>
-        <!--        <result property="machineRoom" column="machine_room_id"/>-->
         <result property="cabinetName" column="cabinet_name"/>
         <result property="cabinetArea" column="cabinet_area"/>
         <result property="cabinetAvailU" column="cabinet_avail_u"/>
@@ -25,7 +24,7 @@
         <include refid="selectAssetsCabinetVo"/>
         <where>
             <if test="cabinetId != null ">and cabinet_id = #{cabinetId}</if>
-            <if test="machineRoom != null ">and machine_room_id = #{machineRoom.machineRoomId}</if>
+            <if test="dictCode != null ">and machine_room_id = #{dictCode}</if>
             <if test="cabinetName != null  and cabinetName != '' ">and cabinet_name = #{cabinetName}</if>
             <if test="cabinetArea != null ">and cabinet_area = #{cabinetArea}</if>
             <if test="cabinetAvailU != null ">and cabinet_avail_u = #{cabinetAvailU}</if>

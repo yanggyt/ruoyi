@@ -11,13 +11,11 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            机房：<input type="text" name="machineRoomId"/>
-                        </li>
-
-                        <li>
                             机柜名称：<input type="text" name="cabinetName"/>
                         </li>
-
+                        <li>
+                            机房：<input type="text" name="dictCode"/>
+                        </li>
                         <li>
                             机柜所在区域：<input type="text" name="cabinetArea"/>
                         </li>
@@ -91,7 +89,12 @@
                     visible: false
                 },
                 {
-                    field: 'machineRoomId',
+                    field: 'cabinetName',
+                    title: '机柜名称',
+                    sortable: true
+                },
+                {
+                    field: 'machineRoom',
                     title: '所属机房',
                     sortable: true,
                     formatter: function (value, row, index) {
@@ -101,11 +104,6 @@
                         }
                         return value;
                     }
-                },
-                {
-                    field: 'cabinetName',
-                    title: '机柜名称',
-                    sortable: true
                 },
                 {
                     field: 'cabinetArea',

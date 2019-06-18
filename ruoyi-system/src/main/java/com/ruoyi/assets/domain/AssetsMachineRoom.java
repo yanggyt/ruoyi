@@ -1,8 +1,11 @@
 package com.ruoyi.assets.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.system.domain.SysDictData;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.beans.Transient;
 
 /**
  * 机房表 assets_machine_room
@@ -24,7 +27,11 @@ public class AssetsMachineRoom extends BaseEntity {
     /**
      * 带宽类型
      */
-    private Long bandwidthType;
+    private Integer dictCode;
+    /**
+     * 带宽类型 实体关联
+     */
+    private SysDictData bandwidthType;
     /**
      * 带宽大小
      */
@@ -78,11 +85,20 @@ public class AssetsMachineRoom extends BaseEntity {
         this.machineRoomName = machineRoomName;
     }
 
-    public Long getBandwidthType() {
+    @Transient
+    public Integer getDictCode() {
+        return dictCode;
+    }
+
+    public void setDictCode(Integer dictCode) {
+        this.dictCode = dictCode;
+    }
+
+    public SysDictData getBandwidthType() {
         return bandwidthType;
     }
 
-    public void setBandwidthType(Long bandwidthType) {
+    public void setBandwidthType(SysDictData bandwidthType) {
         this.bandwidthType = bandwidthType;
     }
 
