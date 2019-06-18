@@ -130,20 +130,29 @@
                     title: '所在国家',
                     sortable: true
                 },
+                // {
+                //     field: 'province',
+                //     title: '所在省',
+                //     sortable: true
+                // },
+                // {
+                //     field: 'city',
+                //     title: '所在市',
+                //     sortable: true
+                // },
+                // {
+                //     field: 'area',
+                //     title: '所在区',
+                //     sortable: true
+                // },
                 {
-                    field: 'province',
-                    title: '所在省',
-                    sortable: true
-                },
-                {
-                    field: 'city',
-                    title: '所在市',
-                    sortable: true
-                },
-                {
-                    field: 'area',
-                    title: '所在区',
-                    sortable: true
+                    title: '省市区',
+                    formatter: function (value, row, index) {
+                        if (row) {
+                            value = row.province + row.city + row.area;
+                        }
+                        return value;
+                    }
                 },
                 {
                     field: 'location',

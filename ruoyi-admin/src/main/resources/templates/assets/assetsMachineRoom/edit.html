@@ -40,22 +40,12 @@
                 <input id="country" name="country" th:field="*{country}" class="form-control" type="text">
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">所在省：</label>
+        <div class="form-group" data-toggle="distpicker"><!-- container -->
+            <label class="col-sm-3 control-label">省市区：</label>
             <div class="col-sm-8">
-                <input id="province" name="province" th:field="*{province}" class="form-control" type="text">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">所在市：</label>
-            <div class="col-sm-8">
-                <input id="city" name="city" th:field="*{city}" class="form-control" type="text">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">所在区：</label>
-            <div class="col-sm-8">
-                <input id="area" name="area" th:field="*{area}" class="form-control" type="text">
+                <select id="province" name="province" th:field="*{province}" data-province="---- 选择省 ----"></select>
+                <select id="city" name="city" th:field="*{city}" data-city="---- 选择市 ----"></select>
+                <select id="area" name="area" th:field="*{area}" data-district="---- 选择区 ----"></select>
             </div>
         </div>
         <div class="form-group">
@@ -141,6 +131,18 @@
             $.operate.save(prefix + "/edit", $('#form-assetsMachineRoom-edit').serialize());
         }
     }
+
+    /*
+     *  修改时手动回显省市区
+     */
+    $(function () {
+        var machineRoom = [[${assetsMachineRoom}]];
+        $("#province").val(machineRoom.province);
+        $("#province").trigger("change");
+        $("#city").val(machineRoom.city);
+        $("#city").trigger("change");
+        $("#area").val(machineRoom.area);
+    });
 </script>
 </body>
 </html>

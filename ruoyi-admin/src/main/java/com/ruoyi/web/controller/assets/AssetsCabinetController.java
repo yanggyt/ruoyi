@@ -71,7 +71,7 @@ public class AssetsCabinetController extends BaseController {
     @GetMapping("/add")
     public String add(ModelMap mmap) {
         List<AssetsMachineRoom> list = assetsMachineRoomService.selectAssetsMachineRoomList(new AssetsMachineRoom());
-        mmap.put("machineRooms",list);
+        mmap.put("machineRooms", list);
         return prefix + "/add";
     }
 
@@ -79,7 +79,7 @@ public class AssetsCabinetController extends BaseController {
      * 新增保存机柜类型
      */
     @RequiresPermissions("assets:assetsCabinet:add")
-    @Log(title = "机柜类型", businessType = BusinessType.INSERT)
+    @Log(title = "机柜管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(AssetsCabinet assetsCabinet) {
@@ -93,7 +93,7 @@ public class AssetsCabinetController extends BaseController {
     public String edit(@PathVariable("cabinetId") Integer cabinetId, ModelMap mmap) {
         AssetsCabinet assetsCabinet = assetsCabinetService.selectAssetsCabinetById(cabinetId);
         List<AssetsMachineRoom> list = assetsMachineRoomService.selectAssetsMachineRoomList(new AssetsMachineRoom());
-        mmap.put("machineRooms",list);
+        mmap.put("machineRooms", list);
         mmap.put("assetsCabinet", assetsCabinet);
         return prefix + "/edit";
     }
@@ -102,7 +102,7 @@ public class AssetsCabinetController extends BaseController {
      * 修改保存机柜类型
      */
     @RequiresPermissions("assets:assetsCabinet:edit")
-    @Log(title = "机柜类型", businessType = BusinessType.UPDATE)
+    @Log(title = "机柜管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(AssetsCabinet assetsCabinet) {
@@ -113,7 +113,7 @@ public class AssetsCabinetController extends BaseController {
      * 删除机柜类型
      */
     @RequiresPermissions("assets:assetsCabinet:remove")
-    @Log(title = "机柜类型", businessType = BusinessType.DELETE)
+    @Log(title = "机柜管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult remove(String ids) {
