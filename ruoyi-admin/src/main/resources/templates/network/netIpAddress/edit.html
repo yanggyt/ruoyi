@@ -1,61 +1,82 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<th:block th:include="include :: header('修改网络IP')" />
+    <th:block th:include="include :: header('修改网络IP')"/>
 </head>
 <body class="white-bg">
-    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-netIpAddress-edit" th:object="${netIpAddress}">
-            <input id="ipAddressId" name="ipAddressId" th:field="*{ipAddressId}"  type="hidden">
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">IP地址类型：</label>
-				<div class="col-sm-8">
-					<input id="ipAddressType" name="ipAddressType" th:field="*{ipAddressType}" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">IP地址段：</label>
-				<div class="col-sm-8">
-					<input id="ipAddressSection" name="ipAddressSection" th:field="*{ipAddressSection}" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">所属机房编号：</label>
-				<div class="col-sm-8">
-					<input id="machingRoomId" name="machingRoomId" th:field="*{machingRoomId}" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">IP使用规则：</label>
-				<div class="col-sm-8">
-					<input id="ipUseRule" name="ipUseRule" th:field="*{ipUseRule}" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">IP地址分配规则：</label>
-				<div class="col-sm-8">
-					<input id="ipAllocRule" name="ipAllocRule" th:field="*{ipAllocRule}" class="form-control" type="text">
-				</div>
-			</div>
-		</form>
-    </div>
-    <div th:include="include::footer"></div>
-	<script type="text/javascript" th:inline="javascript">
-		var prefix = ctx + "network/netIpAddress";
-		$("#form-netIpAddress-edit").validate({
-			rules:{
-				xxxx:{
-					required:true,
-				},
-			},
-			focusCleanup: true
-		});
-		
-		function submitHandler() {
-	        if ($.validate.form()) {
-	            $.operate.save(prefix + "/edit", $('#form-netIpAddress-edit').serialize());
-	        }
-	    }
-	</script>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-netIpAddress-edit" th:object="${netIpAddress}">
+        <input id="ipAddressId" name="ipAddressId" th:field="*{ipAddressId}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">IP地址类型：</label>
+            <div class="col-sm-8">
+                <select id="ipAddressType" name="ipAddressType.dictCode"
+                        th:with="type=${@dict.getType('dict_net_ip_type')}">
+                    <option value="">请选择IP地址类型</option>
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            th:value="${dict.dictCode}"
+                            th:selected="*{ipAddressType.dictCode} == ${dict.dictCode} ? true :false">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">IP地址段：</label>
+            <div class="col-sm-8">
+                <input id="ipAddressSection" name="ipAddressSection" th:field="*{ipAddressSection}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属机房编号：</label>
+            <div class="col-sm-8">
+                <input id="machineRoomId" name="machineRoomId" th:field="*{machineRoomId}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">IP使用规则：</label>
+            <div class="col-sm-8">
+                <input id="ipUseRule" name="ipUseRule" th:field="*{ipUseRule}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">IP地址分配规则：</label>
+            <div class="col-sm-8">
+                <input id="ipAllocRule" name="ipAllocRule" th:field="*{ipAllocRule}" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" th:inline="javascript">
+    var prefix = ctx + "network/netIpAddress";
+    $("#form-netIpAddress-edit").validate({
+        rules: {
+            machineRoomId: {
+                required: true,
+                minlength: 1,
+                maxlength: 2
+            },
+            ipAddressType: {
+                required: true,
+                minlength: 1,
+                maxlength: 20
+            },
+            ipAddressSection: {
+                required: true,
+                minlength: 1,
+                maxlength: 20
+            }
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-netIpAddress-edit').serialize());
+        }
+    }
+</script>
 </body>
 </html>

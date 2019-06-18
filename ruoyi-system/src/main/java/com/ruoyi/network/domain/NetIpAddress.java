@@ -1,6 +1,7 @@
 package com.ruoyi.network.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.system.domain.SysDictData;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,86 +12,98 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @date 2019-06-15
  */
 public class NetIpAddress extends BaseEntity {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * IP地址编号
-	 */
-	private Integer ipAddressId;
-	/**
-	 * IP地址类型
-	 */
-	private String ipAddressType;
-	/**
-	 * IP地址段
-	 */
-	private String ipAddressSection;
-	/**
-	 * 所属机房编号
-	 */
-	private String machingRoomId;
-	/**
-	 * IP使用规则
-	 */
-	private String ipUseRule;
-	/**
-	 * IP地址分配规则
-	 */
-	private String ipAllocRule;
+    /**
+     * IP地址编号
+     */
+    private Integer ipAddressId;
+    /**
+     * IP地址类型
+     */
+    private Integer dictCode;
+    /**
+     * IP地址类型   实体关联
+     */
+    private SysDictData ipAddressType;
+    /**
+     * IP地址段
+     */
+    private String ipAddressSection;
+    /**
+     * 所属机房编号
+     */
+    private Integer machineRoomId;
+    /**
+     * IP使用规则
+     */
+    private String ipUseRule;
+    /**
+     * IP地址分配规则
+     */
+    private String ipAllocRule;
 
-	public Integer getIpAddressId() {
-		return ipAddressId;
-	}
+    public Integer getIpAddressId() {
+        return ipAddressId;
+    }
 
-	public void setIpAddressId(Integer ipAddressId) {
-		this.ipAddressId = ipAddressId;
-	}
+    public void setIpAddressId(Integer ipAddressId) {
+        this.ipAddressId = ipAddressId;
+    }
 
-	public String getIpAddressType() {
-		return ipAddressType;
-	}
+    public Integer getDictCode() {
+        return dictCode;
+    }
 
-	public void setIpAddressType(String ipAddressType) {
-		this.ipAddressType = ipAddressType;
-	}
+    public void setDictCode(Integer dictCode) {
+        this.dictCode = dictCode;
+    }
 
-	public String getIpAddressSection() {
-		return ipAddressSection;
-	}
+    public SysDictData getIpAddressType() {
+        return ipAddressType;
+    }
 
-	public void setIpAddressSection(String ipAddressSection) {
-		this.ipAddressSection = ipAddressSection;
-	}
+    public void setIpAddressType(SysDictData ipAddressType) {
+        this.ipAddressType = ipAddressType;
+    }
 
-	public String getMachingRoomId() {
-		return machingRoomId;
-	}
+    public String getIpAddressSection() {
+        return ipAddressSection;
+    }
 
-	public void setMachingRoomId(String machingRoomId) {
-		this.machingRoomId = machingRoomId;
-	}
+    public void setIpAddressSection(String ipAddressSection) {
+        this.ipAddressSection = ipAddressSection;
+    }
 
-	public String getIpUseRule() {
-		return ipUseRule;
-	}
+    public Integer getMachineRoomId() {
+        return machineRoomId;
+    }
 
-	public void setIpUseRule(String ipUseRule) {
-		this.ipUseRule = ipUseRule;
-	}
+    public void setMachineRoomId(Integer machineRoomId) {
+        this.machineRoomId = machineRoomId;
+    }
 
-	public String getIpAllocRule() {
-		return ipAllocRule;
-	}
+    public String getIpUseRule() {
+        return ipUseRule;
+    }
 
-	public void setIpAllocRule(String ipAllocRule) {
-		this.ipAllocRule = ipAllocRule;
-	}
+    public void setIpUseRule(String ipUseRule) {
+        this.ipUseRule = ipUseRule;
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("ipAddressId", getIpAddressId())
-				.append("ipAddressType", getIpAddressType()).append("ipAddressSection", getIpAddressSection())
-				.append("machingRoomId", getMachingRoomId()).append("ipUseRule", getIpUseRule())
-				.append("ipAllocRule", getIpAllocRule()).toString();
-	}
+    public String getIpAllocRule() {
+        return ipAllocRule;
+    }
+
+    public void setIpAllocRule(String ipAllocRule) {
+        this.ipAllocRule = ipAllocRule;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("ipAddressId", getIpAddressId())
+                .append("ipAddressType", getIpAddressType()).append("ipAddressSection", getIpAddressSection())
+                .append("machineRoomId", getMachineRoomId()).append("ipUseRule", getIpUseRule())
+                .append("ipAllocRule", getIpAllocRule()).toString();
+    }
 }
