@@ -2,6 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
 	<th:block th:include="include :: header('记录微心愿的列表')" />
+	<th:block th:include="include :: bootstrap-select-css" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -11,101 +12,84 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								微心愿id：<input type="text" name="wishId"/>
+								<p>微心愿id：</p>
+								<input type="text" name="wishId"/>
 							</li>
 							<li>
-								微心愿名称2：<input type="text" name="wishName"/>
-							</li>
-
-							<li>
-								微心愿归属地区：<input type="text" name="wishOrg"/>
+								<p>微心愿名称：</p>
+								<input type="text" name="wishName"/>
 							</li>
 
 							<li>
-								微心愿状态 01.未认领02.已认领03.已完成：<input type="text" name="wishStatus"/>
+								<p>归属地区：</p>
+								<select name="wishOrg">
+									<option value="">所有</option>
+									<option value="3310">杭州市</option>
+									<option value="3320">宁波市</option>
+									<option value="3330">温州市</option>
+									<option value="3350">嘉兴市</option>
+									<option value="3360">湖州市</option>
+									<option value="3370">绍兴市</option>
+									<option value="3380">金华市</option>
+									<option value="3410">衢州市</option>
+									<option value="3420">舟山市</option>
+									<option value="3430">丽水市</option>
+									<option value="3450">台州市</option>
+								</select>
 							</li>
 
 							<li>
-								微心愿对象 01党组织团体02党员个体：<input type="text" name="wishTarget"/>
+								<p>状态：</p>
+								<select name="wishStatus">
+									<option value="">所有</option>
+									<option value="01">未认领</option>
+									<option value="02">已认领</option>
+									<option value="03">已完成</option>
+								</select>
 							</li>
 
 							<li>
-								微心愿类型 01.组织建设类02.党员需求类03.初心教育类04.业务合作类：<input type="text" name="wishType"/>
+								<p>微心愿对象：</p>
+								<select name="wishTarget">
+									<option value="">所有</option>
+									<option value="01">党组织团体</option>
+									<option value="02">党员个体</option>
+								</select>
 							</li>
 
 							<li>
-								申请认领次数：<input type="text" name="wishCount"/>
+								<p>微心愿类型：</p>
+								<select name="wishType">
+									<option value="">所有</option>
+									<option value="01">组织建设类</option>
+									<option value="02">党员需求类</option>
+									<option value="03">初心教育类</option>
+									<option value="04">业务合作类</option>
+								</select>
 							</li>
 
 							<li>
-								是不是推荐 0.是 1.不是：<input type="text" name="isRecommend"/>
+								<p>认领次数：</p>
+								<select name="wishCount">
+									<option value="">所有</option>
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+								</select>
 							</li>
 
 							<li>
-								微心愿项目进展：<input type="text" name="wishProgress"/>
+								<p>是否推荐：</p>
+								<select name="isRecommend">
+									<option value="">所有</option>
+									<option value="0">是</option>
+									<option value="1">否</option>
+								</select>
 							</li>
 
 							<li>
-								微心愿详细描述：<input type="text" name="wishDesc"/>
-							</li>
-
-							<li>
-								申请人姓名：<input type="text" name="applyerName"/>
-							</li>
-
-							<li>
-								申请人联系方式：<input type="text" name="applyerPhone"/>
-							</li>
-
-							<li>
-								申请人所在党组织：<input type="text" name="applyerComp"/>
-							</li>
-
-							<li>
-								失效日期：<input type="text" name="expireDate"/>
-							</li>
-
-							<li>
-								生效日期：<input type="text" name="effectDate"/>
-							</li>
-
-							<li>
-								认领日期：<input type="text" name="claimDate"/>
-							</li>
-
-							<li>
-								完成日期：<input type="text" name="completeDate"/>
-							</li>
-
-							<li>
-								图片存储路径：<input type="text" name="savePath"/>
-							</li>
-
-							<li>
-								创建日期(YYYY-MM-DD hh:mm:ss UUUUUU)：<input type="text" name="gmtCreate"/>
-							</li>
-
-							<li>
-								创建操作员：<input type="text" name="createOperId"/>
-							</li>
-
-							<li>
-								修改日期(YYYY-MM-DD hh:mm:ss UUUUUU)：<input type="text" name="gmtModified"/>
-							</li>
-
-							<li>
-								修改操作员：<input type="text" name="modifiedOperId"/>
-							</li>
-
-							<li>
-								审核时间(YYYY-MM-DD hh:mm:ss UUUUUU)：<input type="text" name="gmtAudit"/>
-							</li>
-
-							<li>
-								审核操作员：<input type="text" name="auditOperId"/>
-							</li>
-
-							<li>
+								<p> </p>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
 							</li>
@@ -114,43 +98,57 @@
 				</form>
 			</div>
 			
-	        <div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="wish:wishInfo:add">
-					<i class="fa fa-plus"></i> 添加
-				</a>
-				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="wish:wishInfo:edit">
-					<i class="fa fa-edit"></i> 修改
-				</a>
-				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="wish:wishInfo:remove">
-					<i class="fa fa-remove"></i> 删除
-				</a>
-				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="wish:wishInfo:export">
-						<i class="fa fa-download"></i> 导出
-				 </a>
-			</div>
+<!--	        <div class="btn-group-sm" id="toolbar" role="group">-->
+<!--				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="wish:wishInfo:add">-->
+<!--					<i class="fa fa-plus"></i> 添加-->
+<!--				</a>-->
+<!--				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="wish:wishInfo:edit">-->
+<!--					<i class="fa fa-edit"></i> 修改-->
+<!--				</a>-->
+<!--				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="wish:wishInfo:remove">-->
+<!--					<i class="fa fa-remove"></i> 删除-->
+<!--				</a>-->
+<!--				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="wish:wishInfo:export">-->
+<!--						<i class="fa fa-download"></i> 导出-->
+<!--				 </a>-->
+<!--			</div>-->
 			<div class="col-sm-12 select-table table-striped">
 				<table id="bootstrap-table" data-mobile-responsive="true"></table>
 			</div>
 		</div>
 	</div>
-    <div th:include="include :: footer"></div>
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: bootstrap-select-js" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('wish:wishInfo:edit')}]];
         var removeFlag = [[${@permission.hasPermi('wish:wishInfo:remove')}]];
         var prefix = ctx + "wish/wishInfo";
 
+		function selectUsersToParent(){
+			$.modal.open("选择用户", "/demo/modal/parent");
+		}
+
         $(function() {
             var options = {
                 url: prefix + "/list",
-                createUrl: prefix + "/add",
+                // createUrl: prefix + "/add",
                 updateUrl: prefix + "/edit/{id}",
-                removeUrl: prefix + "/remove",
-				exportUrl: prefix + "/export",
-                modalName: "记录微心愿的",
-		        showExport: true,
+                // removeUrl: prefix + "/remove",
+				showSearch: false,
+				showRefresh: false,
+				showToggle: false,
+				showColumns: false,
+                modalName: "微心愿",
                 columns: [{
-		            checkbox: true
-		        },
+					title: '操作',
+					align: 'center',
+					formatter: function(value, row, index) {
+						var actions = [];
+						// actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.wishId + '\')"><i class="fa fa-edit"></i>操作</a> ');
+						actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="selectUsersToParent()"><i class="fa fa-edit"></i>操作</a> ');
+						return actions.join('');
+					}
+				},
 				{
 					field : 'wishId', 
 					title : '微心愿ID',
@@ -159,62 +157,62 @@
 				{
 					field : 'wishName', 
 					title : '微心愿名称',
-					sortable: true
+					sortable: false
 				},
 				{
 					field : 'wishOrg', 
-					title : '微心愿归属地区',
+					title : '归属地区',
 					sortable: true
 				},
 				{
 					field : 'wishStatus', 
-					title : '微心愿状态 01.未认领02.已认领03.已完成',
+					title : '状态',
 					sortable: true
 				},
 				{
 					field : 'wishTarget', 
-					title : '微心愿对象 01党组织团体02党员个体',
+					title : '微心愿对象',
 					sortable: true
 				},
 				{
 					field : 'wishType', 
-					title : '微心愿类型 01.组织建设类02.党员需求类03.初心教育类04.业务合作类',
+					title : '微心愿类型',
 					sortable: true
 				},
 				{
 					field : 'wishCount', 
-					title : '申请认领次数',
+					title : '认领次数',
 					sortable: true
 				},
 				{
 					field : 'isRecommend', 
-					title : '是不是推荐 0.是 1.不是',
+					title : '是否推荐',
 					sortable: true
 				},
 				{
 					field : 'wishProgress', 
-					title : '微心愿项目进展',
-					sortable: true
+					title : '项目进展',
+					sortable: false
 				},
 				{
 					field : 'wishDesc', 
-					title : '微心愿详细描述',
-					sortable: true
+					title : '详细描述',
+					sortable: false
 				},
 				{
 					field : 'applyerName', 
 					title : '申请人姓名',
-					sortable: true
+					sortable: false
 				},
 				{
 					field : 'applyerPhone', 
 					title : '申请人联系方式',
-					sortable: true
+					sortable: false
 				},
 				{
 					field : 'applyerComp', 
 					title : '申请人所在党组织',
-					sortable: true
+					sortable: false
 				},
 				{
 					field : 'expireDate', 
@@ -235,52 +233,7 @@
 					field : 'completeDate', 
 					title : '完成日期',
 					sortable: true
-				},
-				{
-					field : 'savePath', 
-					title : '图片存储路径',
-					sortable: true
-				},
-				{
-					field : 'gmtCreate', 
-					title : '创建日期(YYYY-MM-DD hh:mm:ss UUUUUU)',
-					sortable: true
-				},
-				{
-					field : 'createOperId', 
-					title : '创建操作员',
-					sortable: true
-				},
-				{
-					field : 'gmtModified', 
-					title : '修改日期(YYYY-MM-DD hh:mm:ss UUUUUU)',
-					sortable: true
-				},
-				{
-					field : 'modifiedOperId', 
-					title : '修改操作员',
-					sortable: true
-				},
-				{
-					field : 'gmtAudit', 
-					title : '审核时间(YYYY-MM-DD hh:mm:ss UUUUUU)',
-					sortable: true
-				},
-				{
-					field : 'auditOperId', 
-					title : '审核操作员',
-					sortable: true
-				},
-		        {
-		            title: '操作',
-		            align: 'center',
-		            formatter: function(value, row, index) {
-		            	var actions = [];
-		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.wishId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.wishId + '\')"><i class="fa fa-remove"></i>删除</a>');
-						return actions.join('');
-		            }
-		        }]
+				}]
             };
             $.table.init(options);
         });
