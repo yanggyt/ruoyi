@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.template.mapper.TmplServerMemoryMapper">
+
+    <resultMap type="TmplServerMemory" id="TmplServerMemoryResult">
+        <result property="serverMemoryId" column="server_memory_id"/>
+        <result property="serverId" column="server_id"/>
+        <result property="serverMemoryNum" column="server_memory_num"/>
+        <association property="serverMemoryType" column="server_memory_type"
+                     select="com.ruoyi.system.mapper.SysDictDataMapper.selectDictDataById">
+        </association>
+    </resultMap>
+
+    <sql id="selectTmplServerMemoryVo">
+        select server_memory_id, server_id, server_memory_type, server_memory_num from tmpl_server_memory
+    </sql>
+
+    <select id="selectTmplServerMemoryList" parameterType="TmplServerMemory" resultMap="TmplServerMemoryResult">
+        <include refid="selectTmplServerMemoryVo"/>
+        <where>
+            <if test="serverMemoryId != null ">and server_memory_id = #{serverMemoryId}</if>
+            <if test="serverId != null ">and server_id = #{serverId}</if>
+            <if test="serverMemoryType != null ">and server_memory_type = #{serverMemoryType}</if>
+            <if test="serverMemoryNum != null ">and server_memory_num = #{serverMemoryNum}</if>
+        </where>
+    </select>
+
+    <select id="selectTmplServerMemoryById" parameterType="Integer" resultMap="TmplServerMemoryResult">
+        <include refid="selectTmplServerMemoryVo"/>
+        where server_memory_id = #{serverMemoryId}
+    </select>
+
+    <select id="selectByServerId" parameterType="java.lang.Integer"
+            resultMap="TmplServerMemoryResult">
+        <include refid="selectTmplServerMemoryVo"/>
+        where server_id=#{serverId};
+    </select>
+
+    <insert id="insertTmplServerMemory" parameterType="TmplServerMemory" useGeneratedKeys="true"
+            keyProperty="serverMemoryId">
+        insert into tmpl_server_memory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serverId != null  ">server_id,</if>
+            <if test="serverMemoryType != null  ">server_memory_type,</if>
+            <if test="serverMemoryNum != null  ">server_memory_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serverId != null  ">#{serverId},</if>
+            <if test="serverMemoryType != null  ">#{serverMemoryType},</if>
+            <if test="serverMemoryNum != null  ">#{serverMemoryNum},</if>
+        </trim>
+    </insert>
+
+    <insert id="batchTmplServerMemory">
+        insert into tmpl_server_memory(server_id, server_memory_type,server_memory_num) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.serverId},#{item.serverMemoryType.dictCode},#{item.serverMemoryNum})
+        </foreach>
+    </insert>
+
+    <update id="updateTmplServerMemory" parameterType="TmplServerMemory">
+        update tmpl_server_memory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serverId != null  ">server_id = #{serverId},</if>
+            <if test="serverMemoryType != null  ">server_memory_type = #{serverMemoryType},</if>
+            <if test="serverMemoryNum != null  ">server_memory_num = #{serverMemoryNum},</if>
+        </trim>
+        where server_memory_id = #{serverMemoryId}
+    </update>
+
+    <delete id="deleteTmplServerMemoryById" parameterType="Integer">
+        delete from tmpl_server_memory where server_memory_id = #{serverMemoryId}
+    </delete>
+
+    <delete id="deleteTmplServerMemoryByServerId" parameterType="Integer">
+        delete from tmpl_server_memory where server_id = #{serverId}
+    </delete>
+
+    <delete id="deleteTmplServerMemoryByIds" parameterType="String">
+        delete from tmpl_server_memory where server_memory_id in
+        <foreach item="serverMemoryId" collection="array" open="(" separator="," close=")">
+            #{serverMemoryId}
+        </foreach>
+    </delete>
+
+</mapper>

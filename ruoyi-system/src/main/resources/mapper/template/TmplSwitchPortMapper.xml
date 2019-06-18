@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ruoyi.template.mapper.TmplSwitchPortMapper">
+
+	<resultMap type="com.ruoyi.template.domain.TmplSwitchPort"
+		id="TmplSwitchPortResult">
+		<result property="switchPortId" column="switch_port_id" />
+		<result property="switchId" column="switch_id" />
+		<result property="switchPortType" column="switch_port_type" />
+		<result property="switchPortNum" column="switch_port_num" />
+	</resultMap>
+
+	<sql id="selectTmplSwitchPortVo">
+		select switch_port_id, switch_id, switch_port_type,
+		switch_port_num from
+		tmpl_switch_port
+	</sql>
+
+	<select id="selectBySwitchId" parameterType="java.lang.Integer"
+		resultMap="TmplSwitchPortResult">
+		<include refid="selectTmplSwitchPortVo" />
+		where switch_id=#{switchId};
+	</select>
+
+	<select id="selectTmplSwitchPortList"
+		parameterType="com.ruoyi.template.domain.TmplSwitchPort"
+		resultMap="TmplSwitchPortResult">
+		<include refid="selectTmplSwitchPortVo" />
+		<where>
+			<if test="switchPortId != null ">and switch_port_id = #{switchPortId}</if>
+			<if test="switchId != null ">and switch_id = #{switchId}</if>
+			<if test="switchPortType != null ">and switch_port_type = #{switchPortType}</if>
+			<if test="switchPortNum != null ">and switch_port_num = #{switchPortNum}</if>
+		</where>
+	</select>
+
+	<select id="selectTmplSwitchPortById" parameterType="Integer"
+		resultMap="TmplSwitchPortResult">
+		<include refid="selectTmplSwitchPortVo" />
+		-- where switch_port_id = #{switchPortId}
+		<where>
+			<if test="switchPortId != null ">and switch_port_id = #{switchPortId}</if>
+			<if test="switchId != null ">and switch_id = #{switchId}</if>
+		</where>
+	</select>
+
+	<select id="selectBySwitchIdAndPortType" parameterType="Integer"
+		resultMap="TmplSwitchPortResult">
+		<include refid="selectTmplSwitchPortVo" />
+		<if test="switchId != null ">and switch_id = #{switchId}</if>
+		<if test="switchPortType != null ">and switch_port_type = #{switchPortType}</if>
+	</select>
+
+
+	<insert id="insertTmplSwitchPort"
+		parameterType="com.ruoyi.template.domain.TmplSwitchPort">
+		insert into tmpl_switch_port
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="switchPortId != null  ">switch_port_id,</if>
+			<if test="switchId != null  ">switch_id,</if>
+			<if test="switchPortType != null  ">switch_port_type,</if>
+			<if test="switchPortNum != null  ">switch_port_num,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="switchPortId != null  ">#{switchPortId},</if>
+			<if test="switchId != null  ">#{switchId},</if>
+			<if test="switchPortType != null  ">#{switchPortType},</if>
+			<if test="switchPortNum != null  ">#{switchPortNum},</if>
+		</trim>
+	</insert>
+
+	<insert id="batchTmplSwitchPort">
+		insert into tmpl_switch_port(switch_id,
+		switch_port_type,switch_port_num) values
+		<foreach item="item" index="index" collection="list"
+			separator=",">
+			(#{item.switchId},#{item.switchPortType},#{item.switchPortNum})
+		</foreach>
+	</insert>
+
+	<update id="updateTmplSwitchPort"
+		parameterType="com.ruoyi.template.domain.TmplSwitchPort">
+		update tmpl_switch_port
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="switchId != null  ">switch_id = #{switchId},</if>
+			<if test="switchPortType != null  ">switch_port_type = #{switchPortType},</if>
+			<if test="switchPortNum != null  ">switch_port_num = #{switchPortNum},</if>
+		</trim>
+		where switch_port_id = #{switchPortId}
+	</update>
+
+	<delete id="deleteTmplSwitchPortById" parameterType="Integer">
+		delete from
+		tmpl_switch_port where switch_port_id = #{switchPortId}
+	</delete>
+
+	<delete id="deleteTmplSwitchPortBySwitchId"
+		parameterType="Integer">
+		delete from tmpl_switch_port where switch_id =
+		#{switchId}
+	</delete>
+
+	<delete id="deleteTmplSwitchPortByIds" parameterType="String">
+		delete from tmpl_switch_port where switch_port_id in
+		<foreach item="switchPortId" collection="array" open="("
+			separator="," close=")">
+			#{switchPortId}
+		</foreach>
+	</delete>
+
+</mapper>

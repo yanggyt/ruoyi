@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.template.mapper.TmplServerMapper">
+
+    <resultMap type="com.ruoyi.template.domain.TmplServer" id="TmplServerResult">
+        <result property="serverId" column="server_id"/>
+        <result property="serverBrand" column="server_brand"/>
+        <result property="serverType" column="server_type"/>
+        <result property="cpuFreq" column="cpu_freq"/>
+        <result property="cpuNum" column="cpu_num"/>
+        <result property="ipmiPort" column="ipmi_port"/>
+        <result property="powerNum" column="power_num"/>
+        <result property="raidCard" column="raid_card"/>
+
+        <collection property="serverNetcards" column="server_id"
+                    select="com.ruoyi.template.mapper.TmplServerNetcardMapper.selectByServerId">
+        </collection>
+        <collection property="serverDisks" column="server_id"
+                    select="com.ruoyi.template.mapper.TmplServerDiskMapper.selectByServerId">
+        </collection>
+        <collection property="serverMemorys" column="server_id"
+                    select="com.ruoyi.template.mapper.TmplServerMemoryMapper.selectByServerId">
+        </collection>
+    </resultMap>
+
+    <sql id="selectTmplServerVo">
+            select server_id, server_brand, server_type, cpu_freq, cpu_num, ipmi_port, power_num, raid_card from tmpl_server
+        </sql>
+
+    <select id="selectTmplServerList" parameterType="com.ruoyi.template.domain.TmplServer" resultMap="TmplServerResult">
+        <include refid="selectTmplServerVo"/>
+        <where>
+            <if test="serverId != null ">and server_id = #{serverId}</if>
+            <if test="serverBrand != null  and serverBrand != '' ">and server_brand = #{serverBrand}</if>
+            <if test="serverType != null  and serverType != '' ">and server_type = #{serverType}</if>
+            <if test="cpuFreq != null  and cpuFreq != '' ">and cpu_freq = #{cpuFreq}</if>
+            <if test="cpuNum != null ">and cpu_num = #{cpuNum}</if>
+            <if test="ipmiPort != null ">and ipmi_port = #{ipmiPort}</if>
+            <if test="powerNum != null ">and power_num = #{powerNum}</if>
+            <if test="raidCard != null  and raidCard != '' ">and raid_card = #{raidCard}</if>
+        </where>
+    </select>
+
+    <select id="selectTmplServerById" parameterType="Integer" resultMap="TmplServerResult">
+        <include refid="selectTmplServerVo"/>
+        where server_id = #{serverId}
+    </select>
+
+    <insert id="insertTmplServer" parameterType="com.ruoyi.template.domain.TmplServer" useGeneratedKeys="true"
+            keyProperty="serverId">
+        insert into tmpl_server
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serverBrand != null  and serverBrand != ''  ">server_brand,</if>
+            <if test="serverType != null  and serverType != ''  ">server_type,</if>
+            <if test="cpuFreq != null  and cpuFreq != ''  ">cpu_freq,</if>
+            <if test="cpuNum != null  ">cpu_num,</if>
+            <if test="ipmiPort != null  ">ipmi_port,</if>
+            <if test="powerNum != null  ">power_num,</if>
+            <if test="raidCard != null  and raidCard != ''  ">raid_card,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serverBrand != null  and serverBrand != ''  ">#{serverBrand},</if>
+            <if test="serverType != null  and serverType != ''  ">#{serverType},</if>
+            <if test="cpuFreq != null  and cpuFreq != ''  ">#{cpuFreq},</if>
+            <if test="cpuNum != null  ">#{cpuNum},</if>
+            <if test="ipmiPort != null  ">#{ipmiPort},</if>
+            <if test="powerNum != null  ">#{powerNum},</if>
+            <if test="raidCard != null  and raidCard != ''  ">#{raidCard},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTmplServer" parameterType="com.ruoyi.template.domain.TmplServer">
+        update tmpl_server
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serverBrand != null  and serverBrand != ''  ">server_brand = #{serverBrand},</if>
+            <if test="serverType != null  and serverType != ''  ">server_type = #{serverType},</if>
+            <if test="cpuFreq != null  and cpuFreq != ''  ">cpu_freq = #{cpuFreq},</if>
+            <if test="cpuNum != null  ">cpu_num = #{cpuNum},</if>
+            <if test="ipmiPort != null  ">ipmi_port = #{ipmiPort},</if>
+            <if test="powerNum != null  ">power_num = #{powerNum},</if>
+            <if test="raidCard != null  and raidCard != ''  ">raid_card = #{raidCard},</if>
+        </trim>
+        where server_id = #{serverId}
+    </update>
+
+    <delete id="deleteTmplServerById" parameterType="Integer">
+        delete from tmpl_server where server_id = #{serverId}
+    </delete>
+
+    <delete id="deleteTmplServerByIds" parameterType="String">
+        delete from tmpl_server where server_id in
+        <foreach item="serverId" collection="array" open="(" separator="," close=")">
+            #{serverId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.template.mapper.TmplServerDiskMapper">
+
+    <resultMap type="TmplServerDisk" id="TmplServerDiskResult">
+        <result property="serverDiskId" column="server_disk_id"/>
+        <result property="serverId" column="server_id"/>
+        <result property="serverDiskType" column="server_disk_type"/>
+        <result property="serverDiskNum" column="server_disk_num"/>
+    </resultMap>
+
+    <sql id="selectTmplServerDiskVo">
+        select server_disk_id, server_id, server_disk_type, server_disk_num from tmpl_server_disk
+    </sql>
+
+    <select id="selectTmplServerDiskList" parameterType="TmplServerDisk" resultMap="TmplServerDiskResult">
+        <include refid="selectTmplServerDiskVo"/>
+        <where>
+            <if test="serverDiskId != null ">and server_disk_id = #{serverDiskId}</if>
+            <if test="serverId != null ">and server_id = #{serverId}</if>
+            <if test="serverDiskType != null ">and server_disk_type = #{serverDiskType}</if>
+            <if test="serverDiskNum != null ">and server_disk_num = #{serverDiskNum}</if>
+        </where>
+    </select>
+
+    <select id="selectTmplServerDiskById" parameterType="Integer" resultMap="TmplServerDiskResult">
+        <include refid="selectTmplServerDiskVo"/>
+        where server_disk_id = #{serverDiskId}
+    </select>
+
+    <select id="selectByServerId" parameterType="java.lang.Integer"
+            resultMap="TmplServerDiskResult">
+        <include refid="selectTmplServerDiskVo"/>
+        where server_id=#{serverId};
+    </select>
+
+    <insert id="insertTmplServerDisk" parameterType="TmplServerDisk" useGeneratedKeys="true" keyProperty="serverDiskId">
+        insert into tmpl_server_disk
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serverId != null  ">server_id,</if>
+            <if test="serverDiskType != null  ">server_disk_type,</if>
+            <if test="serverDiskNum != null  ">server_disk_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serverId != null  ">#{serverId},</if>
+            <if test="serverDiskType != null  ">#{serverDiskType},</if>
+            <if test="serverDiskNum != null  ">#{serverDiskNum},</if>
+        </trim>
+    </insert>
+
+    <insert id="batchTmplServerDisk">
+        insert into tmpl_server_disk(server_id, server_disk_type,server_disk_num) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.serverId},#{item.serverDiskType},#{item.serverDiskNum})
+        </foreach>
+    </insert>
+
+    <update id="updateTmplServerDisk" parameterType="TmplServerDisk">
+        update tmpl_server_disk
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serverId != null  ">server_id = #{serverId},</if>
+            <if test="serverDiskType != null  ">server_disk_type = #{serverDiskType},</if>
+            <if test="serverDiskNum != null  ">server_disk_num = #{serverDiskNum},</if>
+        </trim>
+        where server_disk_id = #{serverDiskId}
+    </update>
+
+    <delete id="deleteTmplServerDiskById" parameterType="Integer">
+        delete from tmpl_server_disk where server_disk_id = #{serverDiskId}
+    </delete>
+
+    <delete id="deleteTmplServerDiskByServerId" parameterType="Integer">
+        delete from tmpl_server_disk where server_id = #{serverId}
+    </delete>
+
+    <delete id="deleteTmplServerDiskByIds" parameterType="String">
+        delete from tmpl_server_disk where server_disk_id in
+        <foreach item="serverDiskId" collection="array" open="(" separator="," close=")">
+            #{serverDiskId}
+        </foreach>
+    </delete>
+
+</mapper>

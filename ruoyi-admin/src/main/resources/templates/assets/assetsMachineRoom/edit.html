@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改机房')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-assetsMachineRoom-edit" th:object="${assetsMachineRoom}">
+        <input id="machineRoomId" name="machineRoomId" th:field="*{machineRoomId}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">机房名称：</label>
+            <div class="col-sm-8">
+                <input id="machineRoomName" name="machineRoomName" th:field="*{machineRoomName}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">带宽类型：</label>
+            <div class="col-sm-8">
+                <select id="bandwidthType" name="bandwidthType.dictCode"
+                        th:with="type=${@dict.getType('dict_bandwidth_type')}">
+                    <option value="">请选择带宽类型</option>
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            th:value="${dict.dictCode}"
+                            th:selected="*{bandwidthType.dictCode} == ${dict.dictCode} ? true :false">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">带宽大小(M)：</label>
+            <div class="col-sm-8">
+                <input id="bandwidthSize" name="bandwidthSize" th:field="*{bandwidthSize}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所在国家：</label>
+            <div class="col-sm-8">
+                <input id="country" name="country" th:field="*{country}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group" data-toggle="distpicker"><!-- container -->
+            <label class="col-sm-3 control-label">省市区：</label>
+            <div class="col-sm-8">
+                <select id="province" name="province" th:field="*{province}" data-province="---- 选择省 ----"></select>
+                <select id="city" name="city" th:field="*{city}" data-city="---- 选择市 ----"></select>
+                <select id="area" name="area" th:field="*{area}" data-district="---- 选择区 ----"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">地址：</label>
+            <div class="col-sm-8">
+                <input id="location" name="location" th:field="*{location}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人：</label>
+            <div class="col-sm-8">
+                <input id="contactPerson" name="contactPerson" th:field="*{contactPerson}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系电话：</label>
+            <div class="col-sm-8">
+                <input id="contactPhone" name="contactPhone" th:field="*{contactPhone}" class="form-control"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">邮箱：</label>
+            <div class="col-sm-8">
+                <input id="email" name="email" th:field="*{email}" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" th:inline="javascript">
+    var prefix = ctx + "assets/assetsMachineRoom";
+    $("#form-assetsMachineRoom-edit").validate({
+        rules: {
+            "bandwidthType.dictCode": {
+                required: true
+            },
+            machineRoomName: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            bandwidthSize: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            country: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            province: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            city: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            area: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            email: {
+                required: false,
+                email: true
+            },
+            contactPhone: {
+                required: false,
+                isPhone: true
+            }
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-assetsMachineRoom-edit').serialize());
+        }
+    }
+
+    /*
+     *  修改时手动回显省市区
+     */
+    $(function () {
+        var machineRoom = [[${assetsMachineRoom}]];
+        $("#province").val(machineRoom.province);
+        $("#province").trigger("change");
+        $("#city").val(machineRoom.city);
+        $("#city").trigger("change");
+        $("#area").val(machineRoom.area);
+    });
+</script>
+</body>
+</html>

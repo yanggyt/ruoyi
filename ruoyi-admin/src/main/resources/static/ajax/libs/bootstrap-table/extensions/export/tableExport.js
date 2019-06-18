@@ -2019,7 +2019,7 @@
         return result;
       }
 
-      // get computed style property
+      // get computed style assets
       function getStyle (target, prop) {
         try {
           if ( window.getComputedStyle ) { // gecko and webkit

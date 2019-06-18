@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.assets.mapper.AssetsCabinetMapper">
+
+    <resultMap type="AssetsCabinet" id="AssetsCabinetResult">
+        <result property="cabinetId" column="cabinet_id"/>
+        <result property="cabinetName" column="cabinet_name"/>
+        <result property="cabinetArea" column="cabinet_area"/>
+        <result property="cabinetAvailU" column="cabinet_avail_u"/>
+        <result property="cabinetAvailElec" column="cabinet_avail_elec"/>
+        <result property="remark" column="remark"/>
+        <association property="machineRoom" column="machine_room_id"
+                     select="com.ruoyi.assets.mapper.AssetsMachineRoomMapper.selectAssetsMachineRoomById">
+        </association>
+    </resultMap>
+
+    <sql id="selectAssetsCabinetVo">
+        select cabinet_id, machine_room_id, cabinet_name, cabinet_area, cabinet_avail_u, cabinet_avail_elec, remark from assets_cabinet
+    </sql>
+
+    <select id="selectAssetsCabinetList" parameterType="AssetsCabinet" resultMap="AssetsCabinetResult">
+        <include refid="selectAssetsCabinetVo"/>
+        <where>
+            <if test="cabinetId != null ">and cabinet_id = #{cabinetId}</if>
+            <if test="dictCode != null ">and machine_room_id = #{dictCode}</if>
+            <if test="cabinetName != null  and cabinetName != '' ">and cabinet_name = #{cabinetName}</if>
+            <if test="cabinetArea != null ">and cabinet_area = #{cabinetArea}</if>
+            <if test="cabinetAvailU != null ">and cabinet_avail_u = #{cabinetAvailU}</if>
+            <if test="cabinetAvailElec != null ">and cabinet_avail_elec = #{cabinetAvailElec}</if>
+            <if test="remark != null  and remark != '' ">and remark = #{remark}</if>
+        </where>
+    </select>
+
+    <select id="selectAssetsCabinetById" parameterType="Integer" resultMap="AssetsCabinetResult">
+        <include refid="selectAssetsCabinetVo"/>
+        where cabinet_id = #{cabinetId}
+    </select>
+
+    <insert id="insertAssetsCabinet" parameterType="AssetsCabinet" useGeneratedKeys="true" keyProperty="cabinetId">
+        insert into assets_cabinet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="machineRoom != null  ">machine_room_id,</if>
+            <if test="cabinetName != null  and cabinetName != ''  ">cabinet_name,</if>
+            <if test="cabinetArea != null  ">cabinet_area,</if>
+            <if test="cabinetAvailU != null  ">cabinet_avail_u,</if>
+            <if test="cabinetAvailElec != null  ">cabinet_avail_elec,</if>
+            <if test="remark != null  and remark != ''  ">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="machineRoom != null  ">#{machineRoom.machineRoomId},</if>
+            <if test="cabinetName != null  and cabinetName != ''  ">#{cabinetName},</if>
+            <if test="cabinetArea != null  ">#{cabinetArea},</if>
+            <if test="cabinetAvailU != null  ">#{cabinetAvailU},</if>
+            <if test="cabinetAvailElec != null  ">#{cabinetAvailElec},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAssetsCabinet" parameterType="AssetsCabinet">
+        update assets_cabinet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="machineRoom != null  ">machine_room_id = #{machineRoom.machineRoomId},</if>
+            <if test="cabinetName != null  and cabinetName != ''  ">cabinet_name = #{cabinetName},</if>
+            <if test="cabinetArea != null  ">cabinet_area = #{cabinetArea},</if>
+            <if test="cabinetAvailU != null  ">cabinet_avail_u = #{cabinetAvailU},</if>
+            <if test="cabinetAvailElec != null  ">cabinet_avail_elec = #{cabinetAvailElec},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+        </trim>
+        where cabinet_id = #{cabinetId}
+    </update>
+
+    <delete id="deleteAssetsCabinetById" parameterType="Integer">
+        delete from assets_cabinet where cabinet_id = #{cabinetId}
+    </delete>
+
+    <delete id="deleteAssetsCabinetByIds" parameterType="String">
+        delete from assets_cabinet where cabinet_id in
+        <foreach item="cabinetId" collection="array" open="(" separator="," close=")">
+            #{cabinetId}
+        </foreach>
+    </delete>
+
+</mapper>

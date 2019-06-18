@@ -232,7 +232,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Jasny Bootstrap\'s JavaScr
     if (elements.index(this.$element) !== -1) {
       $(this.$element).data('offcanvas-style', $(this.$element).attr('style') || '')
       this.$element.css(placement, -1 * offset)
-      this.$element.css(placement); // Workaround: Need to get the CSS property for it to be applied before the next line of code
+      this.$element.css(placement); // Workaround: Need to get the CSS assets for it to be applied before the next line of code
     }
 
     elements.addClass('canvas-sliding').each(function() {

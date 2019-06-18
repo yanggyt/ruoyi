@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.template.mapper.TmplServerNetcardMapper">
+
+    <resultMap type="com.ruoyi.template.domain.TmplServerNetcard" id="TmplServerNetcardResult">
+        <result property="serverNetcardId" column="server_netcard_id"/>
+        <result property="serverId" column="server_id"/>
+        <result property="serverNetcardType" column="server_netcard_type"/>
+        <result property="serverNetcardNum" column="server_netcard_num"/>
+    </resultMap>
+
+    <sql id="selectTmplServerNetcardVo">
+        select server_netcard_id, server_id, server_netcard_type, server_netcard_num from tmpl_server_netcard
+    </sql>
+
+    <select id="selectTmplServerNetcardList" parameterType="com.ruoyi.template.domain.TmplServerNetcard"
+            resultMap="TmplServerNetcardResult">
+        <include refid="selectTmplServerNetcardVo"/>
+        <where>
+            <if test="serverNetcardId != null ">and server_netcard_id = #{serverNetcardId}</if>
+            <if test="serverId != null ">and server_id = #{serverId}</if>
+            <if test="serverNetcardType != null ">and server_netcard_type = #{serverNetcardType}</if>
+            <if test="serverNetcardNum != null ">and server_netcard_num = #{serverNetcardNum}</if>
+        </where>
+    </select>
+
+    <select id="selectTmplServerNetcardById" parameterType="Integer" resultMap="TmplServerNetcardResult">
+        <include refid="selectTmplServerNetcardVo"/>
+        where server_netcard_id = #{serverNetcardId}
+    </select>
+
+    <select id="selectByServerId" parameterType="java.lang.Integer"
+            resultMap="TmplServerNetcardResult">
+        <include refid="selectTmplServerNetcardVo"/>
+        where server_id=#{serverId};
+    </select>
+
+    <insert id="insertTmplServerNetcard" parameterType="com.ruoyi.template.domain.TmplServerNetcard"
+            useGeneratedKeys="true"
+            keyProperty="serverNetcardId">
+        insert into tmpl_server_netcard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serverId != null  ">server_id,</if>
+            <if test="serverNetcardType != null  ">server_netcard_type,</if>
+            <if test="serverNetcardNum != null  ">server_netcard_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serverId != null  ">#{serverId},</if>
+            <if test="serverNetcardType != null  ">#{serverNetcardType},</if>
+            <if test="serverNetcardNum != null  ">#{serverNetcardNum},</if>
+        </trim>
+    </insert>
+
+    <insert id="batchTmplServerNetcard">
+        insert into tmpl_server_netcard(server_id, server_netcard_type,server_netcard_num) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.serverId},#{item.serverNetcardType},#{item.serverNetcardNum})
+        </foreach>
+    </insert>
+
+    <update id="updateTmplServerNetcard" parameterType="com.ruoyi.template.domain.TmplServerNetcard">
+        update tmpl_server_netcard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serverId != null  ">server_id = #{serverId},</if>
+            <if test="serverNetcardType != null  ">server_netcard_type = #{serverNetcardType},</if>
+            <if test="serverNetcardNum != null  ">server_netcard_num = #{serverNetcardNum},</if>
+        </trim>
+        where server_netcard_id = #{serverNetcardId}
+    </update>
+
+    <delete id="deleteTmplServerNetcardById" parameterType="Integer">
+        delete from tmpl_server_netcard where server_netcard_id = #{serverNetcardId}
+    </delete>
+
+    <delete id="deleteTmplServerNetcardByServerId" parameterType="Integer">
+        delete from tmpl_server_netcard where server_id = #{serverId}
+    </delete>
+
+    <delete id="deleteTmplServerNetcardByIds" parameterType="String">
+        delete from tmpl_server_netcard where server_netcard_id in
+        <foreach item="serverNetcardId" collection="array" open="(" separator="," close=")">
+            #{serverNetcardId}
+        </foreach>
+    </delete>
+
+</mapper>

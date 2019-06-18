@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.SysNotice;
+import com.ruoyi.system.service.ISysNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +25,9 @@ public class SysIndexController extends BaseController
 {
     @Autowired
     private ISysMenuService menuService;
+    @Autowired
+    private ISysNoticeService noticeService;
+
 
     // 系统首页
     @GetMapping("/index")
@@ -35,6 +41,7 @@ public class SysIndexController extends BaseController
         mmap.put("user", user);
         mmap.put("copyrightYear", Global.getCopyrightYear());
         mmap.put("demoEnabled", Global.isDemoEnabled());
+        mmap.put("version", Global.getVersion());
         return "index";
     }
 
@@ -43,6 +50,7 @@ public class SysIndexController extends BaseController
     public String main(ModelMap mmap)
     {
         mmap.put("version", Global.getVersion());
+        mmap.put("notices",noticeService.selectNoticeList(new SysNotice()));
         return "main";
     }
 }

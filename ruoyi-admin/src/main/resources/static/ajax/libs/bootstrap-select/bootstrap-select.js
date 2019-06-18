@@ -2495,7 +2495,7 @@
           // Trigger select 'change'
           if (triggerChange) {
             if (that.multiple || prevIndex !== element.selectedIndex) {
-              // $option.prop('selected') is current option state (selected/unselected). prevValue is the value of the select prior to being changed.
+              // $option.assets('selected') is current option state (selected/unselected). prevValue is the value of the select prior to being changed.
               changedArguments = [option.index, $option.prop('selected'), prevValue];
               that.$element
                 .triggerNative('change');

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.assets.mapper.AssetsMachineRoomMapper">
+
+    <resultMap type="AssetsMachineRoom" id="AssetsMachineRoomResult">
+        <result property="machineRoomId" column="machine_room_id"/>
+        <result property="machineRoomName" column="machine_room_name"/>
+        <result property="bandwidthSize" column="bandwidth_size"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="area" column="area"/>
+        <result property="location" column="location"/>
+        <result property="contactPerson" column="contact_person"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="email" column="email"/>
+        <association property="bandwidthType" column="bandwidth_type"
+                     select="com.ruoyi.system.mapper.SysDictDataMapper.selectDictDataById">
+        </association>
+    </resultMap>
+
+    <sql id="selectAssetsMachineRoomVo">
+        select machine_room_id, machine_room_name, bandwidth_type, bandwidth_size, country, province, city, area, location, contact_person, contact_phone, email from assets_machine_room
+    </sql>
+
+    <select id="selectAssetsMachineRoomList" parameterType="AssetsMachineRoom" resultMap="AssetsMachineRoomResult">
+        <include refid="selectAssetsMachineRoomVo"/>
+        <where>
+            <if test="machineRoomId != null ">and machine_room_id = #{machineRoomId}</if>
+            <if test="machineRoomName != null  and machineRoomName != '' ">and machine_room_name = #{machineRoomName}
+            </if>
+            <if test="dictCode != null ">and bandwidth_type = #{dictCode}</if>
+            <if test="bandwidthSize != null ">and bandwidth_size = #{bandwidthSize}</if>
+            <if test="country != null  and country != '' ">and country = #{country}</if>
+            <if test="province != null  and province != '' ">and province = #{province}</if>
+            <if test="city != null  and city != '' ">and city = #{city}</if>
+            <if test="area != null  and area != '' ">and area = #{area}</if>
+            <if test="location != null  and location != '' ">and location = #{location}</if>
+            <if test="contactPerson != null  and contactPerson != '' ">and contact_person = #{contactPerson}</if>
+            <if test="contactPhone != null  and contactPhone != '' ">and contact_phone = #{contactPhone}</if>
+            <if test="email != null  and email != '' ">and email = #{email}</if>
+        </where>
+    </select>
+
+    <select id="selectAssetsMachineRoomById" parameterType="Integer" resultMap="AssetsMachineRoomResult">
+        <include refid="selectAssetsMachineRoomVo"/>
+        where machine_room_id = #{machineRoomId}
+    </select>
+
+    <insert id="insertAssetsMachineRoom" parameterType="AssetsMachineRoom" useGeneratedKeys="true"
+            keyProperty="machineRoomId">
+        insert into assets_machine_room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="machineRoomName != null  and machineRoomName != ''  ">machine_room_name,</if>
+            <if test="bandwidthType != null  ">bandwidth_type,</if>
+            <if test="bandwidthSize != null  ">bandwidth_size,</if>
+            <if test="country != null  and country != ''  ">country,</if>
+            <if test="province != null  and province != ''  ">province,</if>
+            <if test="city != null  and city != ''  ">city,</if>
+            <if test="area != null  and area != ''  ">area,</if>
+            <if test="location != null  and location != ''  ">location,</if>
+            <if test="contactPerson != null  and contactPerson != ''  ">contact_person,</if>
+            <if test="contactPhone != null  and contactPhone != ''  ">contact_phone,</if>
+            <if test="email != null  and email != ''  ">email,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="machineRoomName != null  and machineRoomName != ''  ">#{machineRoomName},</if>
+            <if test="bandwidthType != null  ">#{bandwidthType.dictCode},</if>
+            <if test="bandwidthSize != null  ">#{bandwidthSize},</if>
+            <if test="country != null  and country != ''  ">#{country},</if>
+            <if test="province != null  and province != ''  ">#{province},</if>
+            <if test="city != null  and city != ''  ">#{city},</if>
+            <if test="area != null  and area != ''  ">#{area},</if>
+            <if test="location != null  and location != ''  ">#{location},</if>
+            <if test="contactPerson != null  and contactPerson != ''  ">#{contactPerson},</if>
+            <if test="contactPhone != null  and contactPhone != ''  ">#{contactPhone},</if>
+            <if test="email != null  and email != ''  ">#{email},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAssetsMachineRoom" parameterType="AssetsMachineRoom">
+        update assets_machine_room
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="machineRoomName != null  and machineRoomName != ''  ">machine_room_name = #{machineRoomName},</if>
+            <if test="bandwidthType != null  ">bandwidth_type = #{bandwidthType.dictCode},</if>
+            <if test="bandwidthSize != null  ">bandwidth_size = #{bandwidthSize},</if>
+            <if test="country != null  and country != ''  ">country = #{country},</if>
+            <if test="province != null  and province != ''  ">province = #{province},</if>
+            <if test="city != null  and city != ''  ">city = #{city},</if>
+            <if test="area != null  and area != ''  ">area = #{area},</if>
+            <if test="location != null  and location != ''  ">location = #{location},</if>
+            <if test="contactPerson != null  and contactPerson != ''  ">contact_person = #{contactPerson},</if>
+            <if test="contactPhone != null  and contactPhone != ''  ">contact_phone = #{contactPhone},</if>
+            <if test="email != null  and email != ''  ">email = #{email},</if>
+        </trim>
+        where machine_room_id = #{machineRoomId}
+    </update>
+
+    <delete id="deleteAssetsMachineRoomById" parameterType="Integer">
+        delete from assets_machine_room where machine_room_id = #{machineRoomId}
+    </delete>
+
+    <delete id="deleteAssetsMachineRoomByIds" parameterType="String">
+        delete from assets_machine_room where machine_room_id in
+        <foreach item="machineRoomId" collection="array" open="(" separator="," close=")">
+            #{machineRoomId}
+        </foreach>
+    </delete>
+
+</mapper>

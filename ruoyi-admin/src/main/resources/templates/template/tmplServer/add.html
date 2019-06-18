@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增服务器模板')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-tmplServer-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">服务器品牌：</label>
+            <div class="col-sm-8">
+                <input id="serverBrand" name="serverBrand" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">服务器型号：</label>
+            <div class="col-sm-8">
+                <input id="serverType" name="serverType" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">CPU主频：</label>
+            <div class="col-sm-8">
+                <input id="cpuFreq" name="cpuFreq" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">CPU数量：</label>
+            <div class="col-sm-8">
+                <input id="cpuNum" name="cpuNum" class="form-control" min=1 type="number">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">内存类型：</label>
+            <div class="col-sm-8">
+                <select name="memoryType" th:with="type=${@dict.getType('dict_memory_type')}">
+                    <option value="">请选择单根内存大小</option>
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            th:value="${dict.dictCode}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">内存个数：</label>
+            <div class="col-sm-8">
+                <input name="memoryNum" type="number"
+                       class="form-control"
+                       placeholder="单位(个)">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">IPMI端口：</label>
+            <div class="col-sm-8">
+                <input id="ipmiPort" name="ipmiPort" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">服务器电源数量：</label>
+            <div class="col-sm-8">
+                <input id="powerNum" name="powerNum" class="form-control" min=1 type="number">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">服务器raid卡：</label>
+            <div class="col-sm-8">
+                <input id="raidCard" name="raidCard" class="form-control" type="text">
+            </div>
+        </div>
+
+        <!--服务器网卡类型字典-->
+        <div class="form-group" th:with="type=${@dict.getType('dict_netcard_type')}">
+            <div class="col-sm-6" th:each="dict : ${type}">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label" th:text="${dict.dictLabel}"></label>
+                        <div class="col-sm-5">
+                            <input type="number" min="0" max="100" th:id="${dict.dictCode}"
+                                   class="form-control serverNetcard"
+                                   placeholder="单位(个)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--服务器硬盘类型字典-->
+        <div class="form-group" th:with="type=${@dict.getType('dict_disk_type')}">
+            <div class="col-sm-6" th:each="dict : ${type}">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label" th:text="${dict.dictLabel}"></label>
+                        <div class="col-sm-5">
+                            <input type="number" min="0" max="100" th:id="${dict.dictCode}"
+                                   class="form-control serverDisk"
+                                   placeholder="单位(个)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "template/tmplServer";
+    $("#form-tmplServer-add").validate({
+        onkeyup: false,
+        rules: {
+            serverBrand: {
+                required: true,
+                minlength: 1,
+                maxlength: 20
+            },
+            serverType: {
+                required: true,
+                minlength: 1,
+                maxlength: 20
+            },
+            cpuFreq: {
+                required: true,
+                minlength: 1,
+                maxlength: 10
+            },
+            cpuNum: {
+                required: true,
+                minlength: 1,
+                maxlength: 2
+            },
+            memoryType: {
+                required: true
+            },
+            memoryNum: {
+                required: true,
+                minlength: 1,
+                maxlength: 2,
+                min: 1
+            },
+            ipmiPort: {
+                required: true,
+                minlength: 1,
+                maxlength: 2
+            },
+            powerNum: {
+                required: true,
+                minlength: 1,
+                maxlength: 2
+            },
+            raidCard: {
+                required: true,
+                minlength: 1,
+                maxlength: 2
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $('#form-tmplServer-add').serializeArray();
+            var serverNetcards = [];
+            $(".serverNetcard").each(function () {
+                serverNetcards.push({"id": $(this).attr("id"), "value": $(this).val()});
+            });
+            var serverDisks = [];
+            $(".serverDisk").each(function () {
+                serverDisks.push({"id": $(this).attr("id"), "value": $(this).val()});
+            });
+            var serverMemorys = [];
+            serverMemorys.push({
+                "id": $("select[name='memoryType']").val(),
+                "value": $("input[name='memoryNum']").val()
+            });
+            var obj = {
+                "name": "foreignKeyInfo",
+                "value": JSON.stringify({
+                    "serverNetcards": serverNetcards,
+                    "serverDisks": serverDisks,
+                    "serverMemorys": serverMemorys
+                })
+            };
+            data.push(obj);
+            $.operate.save(prefix + "/add", data);
+        }
+    }
+</script>
+</body>
+</html>

@@ -104,7 +104,7 @@
       for (prop in object) {
         value = object[prop];
         hasContents = true;
-        output += "<li><span class=\"prop\"><span class=\"q\">\"</span>" + (this.jsString(prop)) + "<span class=\"q\">\"</span></span>: " + (this.valueToHTML(value, level + 1));
+        output += "<li><span class=\"assets\"><span class=\"q\">\"</span>" + (this.jsString(prop)) + "<span class=\"q\">\"</span></span>: " + (this.valueToHTML(value, level + 1));
         if (numProps > 1) {
           output += ',';
         }

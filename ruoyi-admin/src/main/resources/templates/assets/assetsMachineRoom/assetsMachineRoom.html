@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('机房列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            机房名称：<input type="text" name="machineRoomName"/>
+                        </li>
+
+                        <li>
+                            带宽类型：<input type="text" name="dictCode"/>
+                        </li>
+
+                        <li>
+                            带宽大小：<input type="text" name="bandwidthSize"/>
+                        </li>
+
+                        <li>
+                            所在国家：<input type="text" name="country"/>
+                        </li>
+
+                        <li>
+                            所在省：<input type="text" name="province"/>
+                        </li>
+
+                        <li>
+                            所在市：<input type="text" name="city"/>
+                        </li>
+
+                        <li>
+                            所在区：<input type="text" name="area"/>
+                        </li>
+
+                        <li>
+                            地址：<input type="text" name="location"/>
+                        </li>
+
+                        <li>
+                            联系人：<input type="text" name="contactPerson"/>
+                        </li>
+
+                        <li>
+                            联系电话：<input type="text" name="contactPhone"/>
+                        </li>
+
+                        <li>
+                            邮箱：<input type="text" name="email"/>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="assets:assetsMachineRoom:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()"
+               shiro:hasPermission="assets:assetsMachineRoom:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="assets:assetsMachineRoom:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()"
+               shiro:hasPermission="assets:assetsMachineRoom:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('assets:assetsMachineRoom:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('assets:assetsMachineRoom:remove')}]];
+    var prefix = ctx + "assets/assetsMachineRoom";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "机房",
+            showExport: true,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'machineRoomId',
+                    title: '机房编号',
+                    visible: false
+                },
+                {
+                    field: 'machineRoomName',
+                    title: '机房名称',
+                    sortable: true
+                },
+                {
+                    field: 'bandwidthType.dictLabel',
+                    title: '带宽类型',
+                    sortable: true
+                },
+                {
+                    field: 'bandwidthSize',
+                    title: '带宽(M)',
+                    sortable: true
+                },
+                {
+                    field: 'country',
+                    title: '国家',
+                    sortable: true
+                },
+                {
+                    title: '省市区',
+                    formatter: function (value, row, index) {
+                        if (row) {
+                            value = row.province + row.city + row.area;
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'location',
+                    title: '地址',
+                    sortable: true
+                },
+                {
+                    field: 'contactPerson',
+                    title: '联系人',
+                    sortable: true
+                },
+                {
+                    field: 'contactPhone',
+                    title: '联系电话',
+                    sortable: true
+                },
+                {
+                    field: 'email',
+                    title: '邮箱',
+                    sortable: true
+                }]
+        };
+        $.each([[${@dict.getType('dict_net_ip_type')}]], function (index, dict) {
+            options.columns.push({
+                field: dict.dictCode,
+                title: dict.dictLabel,
+                align: 'center',
+                formatter: function (value, row, index) {
+                    if (row.switchPorts) {
+                        $.each(row.switchPorts, function (index, switchPort) {
+                            if (switchPort.switchPortType == dict.dictCode) {
+                                value = switchPort.switchPortNum;
+                            } else {
+
+                            }
+                        });
+                    }
+                    var title = "'新增" + dict.dictLabel + "IP'";
+                    var url = "/network/netIpAddress/add?";
+                    value = "<a class=\"btn btn-primary btn-xs \" href=\"javascript:void(0)\" " +
+                        "onclick=\"$.modal.open(" + title + ",'" + url + "');\"><i class=\"fa fa-create\"></i>新增</a>";
+                    return value;
+                }
+            });
+        });
+        options.columns.push({
+            title: '操作',
+            align: 'center',
+            formatter: function (value, row, index) {
+                var actions = [];
+                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.machineRoomId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.machineRoomId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                return actions.join('');
+            }
+        });
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>
