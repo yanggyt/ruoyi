@@ -202,7 +202,13 @@
 	            <artifactId>ruoyi-common</artifactId>
 	            <version>${ruoyi.version}</version>
 	        </dependency>
-	        
+
+			<!-- new-->
+			<dependency>
+				<groupId>com.fri3nds</groupId>
+				<artifactId>s1mple</artifactId>
+				<version>${ruoyi.version}</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -213,6 +219,7 @@
 		<module>ruoyi-quartz</module>
 		<module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+		<module>s1mple</module>
     </modules>
     <packaging>pom</packaging>
 

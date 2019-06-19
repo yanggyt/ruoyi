@@ -72,6 +72,12 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
+
+        <!-- new-->
+        <dependency>
+            <groupId>com.fri3nds</groupId>
+            <artifactId>s1mple</artifactId>
+        </dependency>
         
     </dependencies>
 
