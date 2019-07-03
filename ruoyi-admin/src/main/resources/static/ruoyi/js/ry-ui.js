@@ -86,6 +86,7 @@
                     fixedNumber: options.fixedNumber,                   // 列冻结的个数（左侧）
                     rightFixedColumns: options.rightFixedColumns,       // 是否启用冻结列（右侧）
                     rightFixedNumber: options.rightFixedNumber,         // 列冻结的个数（右侧）
+                    onReorderRow: options.onReorderRow,                 // 当拖拽结束后处理函数
                     queryParams: options.queryParams,                   // 传递参数（*）
                     rowStyle: options.rowStyle,                         // 通过自定义函数设置行样式
                     columns: options.columns,                           // 显示列信息（*）
@@ -427,15 +428,15 @@
             search: function(formId) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
             	var params = $.common.formToJSON(currentId);
-            	$.bttTable('refresh', params);
+                $.bttTable.bootstrapTreeTable('refresh', params);
             },
             // 刷新
             refresh: function() {
-            	$.bttTable('refresh');
+            	$.bttTable.bootstrapTreeTable('refresh');
             },
             // 查询表格树指定列值
             selectColumns: function(column) {
-            	var rows = $.map($.btTable.bootstrapTreeTable('getSelections'), function (row) {
+            	var rows = $.map($.bttTable.bootstrapTreeTable('getSelections'), function (row) {
         	        return row[column];
         	    });
             	return $.common.uniqueFn(rows);
@@ -821,7 +822,7 @@
             // 修改信息
             edit: function(id) {
             	if($.common.isEmpty(id) && $.table._option.type == table_type.bootstrapTreeTable) {
-            		var row = $.btTable.bootstrapTreeTable('getSelections')[0];
+            		var row = $.bttTable.bootstrapTreeTable('getSelections')[0];
                 	if ($.common.isEmpty(row)) {
             			$.modal.alertWarning("请至少选择一条记录");
             			return;
