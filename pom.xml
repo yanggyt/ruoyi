@@ -207,12 +207,12 @@
     </dependencyManagement>
 
     <modules>
-	    <module>ruoyi-admin</module>
-		<module>ruoyi-framework</module>
-		<module>ruoyi-system</module>
-		<module>ruoyi-quartz</module>
-		<module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
+	    <module>bmw-admin</module>
+		<module>bmw-framework</module>
+		<module>bmw-system</module>
+		<module>bmw-quartz</module>
+		<module>bmw-generator</module>
+        <module>bmw-common</module>
     </modules>
     <packaging>pom</packaging>
 
