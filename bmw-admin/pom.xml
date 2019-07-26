@@ -72,6 +72,12 @@
             <groupId>com.bmw</groupId>
             <artifactId>bmw-generator</artifactId>
         </dependency>
+
+        <!-- 服务中心-->
+        <dependency>
+            <groupId>com.bmw</groupId>
+            <artifactId>bmw-servicecenter</artifactId>
+        </dependency>
         
     </dependencies>
 

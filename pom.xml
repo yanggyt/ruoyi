@@ -202,6 +202,13 @@
 	            <artifactId>bmw-common</artifactId>
 	            <version>${bmw.version}</version>
 	        </dependency>
+
+            <!-- 服务中心模块-->
+            <dependency>
+                <groupId>com.bmw</groupId>
+                <artifactId>bmw-servicecenter</artifactId>
+                <version>${bmw.version}</version>
+            </dependency>
 	        
         </dependencies>
     </dependencyManagement>
