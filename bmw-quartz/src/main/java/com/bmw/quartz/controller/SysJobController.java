@@ -25,7 +25,7 @@ import com.bmw.quartz.service.ISysJobService;
 /**
  * 调度任务信息操作处理
  * 
- * @author ruoyi
+ * @author bmw
  */
 @Controller
 @RequestMapping("/monitor/job")

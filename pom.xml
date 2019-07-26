@@ -213,6 +213,7 @@
 		<module>bmw-quartz</module>
 		<module>bmw-generator</module>
         <module>bmw-common</module>
+        <module>bmw-servicecenter</module>
     </modules>
     <packaging>pom</packaging>
 
