@@ -1,0 +1,116 @@
+drop table if exists sc_order;
+CREATE TABLE
+    sc_order
+    (
+        order_id bigint NOT NULL AUTO_INCREMENT COMMENT '订单ID',
+        member_id bigint COMMENT '客户ID',
+        attendant_id bigint COMMENT '服务员ID',
+        remark VARCHAR(500) COMMENT '备注',
+        create_time DATETIME COMMENT '创建时间',
+        PRIMARY KEY (order_id)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单信息表';
+
+drop table if exists sc_member;
+CREATE TABLE
+    sc_member
+    (
+        member_id bigint NOT NULL AUTO_INCREMENT COMMENT '客户ID',
+        member_name VARCHAR(30) NOT NULL COMMENT '用户昵称',
+        email VARCHAR(50) COMMENT '用户邮箱',
+        phonenumber VARCHAR(11) COMMENT '手机号码',
+        sex CHAR(1) DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
+        avatar VARCHAR(100) COMMENT '头像路径',
+        password VARCHAR(50) COMMENT '密码',
+        salt VARCHAR(20) COMMENT '盐加密',
+        status CHAR(1) DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
+        del_flag CHAR(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+        login_ip VARCHAR(50) COMMENT '最后登陆IP',
+        login_date DATETIME COMMENT '最后登陆时间',
+        create_time DATETIME COMMENT '创建时间',
+        remark VARCHAR(500) COMMENT '备注',
+        PRIMARY KEY (member_id)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户信息表';
+
+drop table if exists sc_attendant;
+CREATE TABLE
+    sc_attendant
+    (
+        attendant_id bigint NOT NULL AUTO_INCREMENT COMMENT '客户ID',
+        attendant_name VARCHAR(30) NOT NULL COMMENT '用户昵称',
+        email VARCHAR(50) COMMENT '用户邮箱',
+        phonenumber VARCHAR(11) COMMENT '手机号码',
+        sex CHAR(1) DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
+        avatar VARCHAR(100) COMMENT '头像路径',
+        password VARCHAR(50) COMMENT '密码',
+        salt VARCHAR(20) COMMENT '盐加密',
+        status CHAR(1) DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
+        del_flag CHAR(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+        login_ip VARCHAR(50) COMMENT '最后登陆IP',
+        login_date DATETIME COMMENT '最后登陆时间',
+        create_time DATETIME COMMENT '创建时间',
+        remark VARCHAR(500) COMMENT '备注',
+        PRIMARY KEY (attendant_id)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='服务员信息表';
+
+    -- 菜单 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('客户', '3', '1', '/servicecenter/member', 'C', '0', 'servicecenter:member:view', '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '客户菜单');
+
+-- 按钮父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
+-- 按钮 SQL
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('客户查询', @parentId, '1',  '#',  'F', '0', 'servicecenter:member:list',         '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('客户新增', @parentId, '2',  '#',  'F', '0', 'servicecenter:member:add',          '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('客户修改', @parentId, '3',  '#',  'F', '0', 'servicecenter:member:edit',         '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('客户删除', @parentId, '4',  '#',  'F', '0', 'servicecenter:member:remove',       '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+-- 菜单 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单', '3', '1', '/servicecenter/order', 'C', '0', 'servicecenter:order:view', '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '订单菜单');
+
+-- 按钮父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
+-- 按钮 SQL
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单查询', @parentId, '1',  '#',  'F', '0', 'servicecenter:order:list',         '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单新增', @parentId, '2',  '#',  'F', '0', 'servicecenter:order:add',          '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单修改', @parentId, '3',  '#',  'F', '0', 'servicecenter:order:edit',         '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单删除', @parentId, '4',  '#',  'F', '0', 'servicecenter:order:remove',       '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+-- 菜单 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('服务员', '3', '1', '/servicecenter/attendant', 'C', '0', 'servicecenter:attendant:view', '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '服务员菜单');
+
+-- 按钮父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
+-- 按钮 SQL
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('服务员查询', @parentId, '1',  '#',  'F', '0', 'servicecenter:attendant:list',         '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('服务员新增', @parentId, '2',  '#',  'F', '0', 'servicecenter:attendant:add',          '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('服务员修改', @parentId, '3',  '#',  'F', '0', 'servicecenter:attendant:edit',         '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu  (menu_name, parent_id, order_num, url,menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('服务员删除', @parentId, '4',  '#',  'F', '0', 'servicecenter:attendant:remove',       '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
