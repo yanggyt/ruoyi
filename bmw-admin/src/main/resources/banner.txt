@@ -1,0 +1,8 @@
+Application Version: ${ruoyi.version}
+Spring Boot Version: ${spring-boot.version}
+______ ___  ___ _    _
+| ___ \|  \/  || |  | |
+| |_/ /| .  . || |  | |
+| ___ \| |\/| || |/\| |
+| |_/ /| |  | |\  /\  /
+\____/ \_|  |_/ \/  \/

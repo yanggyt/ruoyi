@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bmw.servicecenter.mapper.OrderMapper">
+    
+    <resultMap type="Order" id="OrderResult">
+        <result property="orderId"    column="order_id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="attendantId"    column="attendant_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+	
+	<sql id="selectOrderVo">
+        select order_id, member_id, attendant_id, remark, create_time from sc_order
+    </sql>
+	
+    <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>  
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+             <if test="memberId != null "> and member_id = #{memberId}</if>
+             <if test="attendantId != null "> and attendant_id = #{attendantId}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectOrderById" parameterType="Long" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where order_id = #{orderId}
+    </select>
+        
+    <insert id="insertOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="orderId">
+        insert into sc_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="memberId != null  ">member_id,</if>
+			<if test="attendantId != null  ">attendant_id,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createTime != null  ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="memberId != null  ">#{memberId},</if>
+			<if test="attendantId != null  ">#{attendantId},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateOrder" parameterType="Order">
+        update sc_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null  ">member_id = #{memberId},</if>
+            <if test="attendantId != null  ">attendant_id = #{attendantId},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+	<delete id="deleteOrderById" parameterType="Long">
+        delete from sc_order where order_id = #{orderId}
+    </delete>
+	
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from sc_order where order_id in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bmw.servicecenter.mapper.MemberMapper">
+    
+    <resultMap type="Member" id="MemberResult">
+        <result property="memberId"    column="member_id"    />
+        <result property="memberName"    column="member_name"    />
+        <result property="email"    column="email"    />
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="sex"    column="sex"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="password"    column="password"    />
+        <result property="salt"    column="salt"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+	
+	<sql id="selectMemberVo">
+        select member_id, member_name, email, phonenumber, sex, avatar, password, salt, status, del_flag, login_ip, login_date, create_time, remark from sc_member
+    </sql>
+	
+    <select id="selectMemberList" parameterType="Member" resultMap="MemberResult">
+        <include refid="selectMemberVo"/>
+        <where>  
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+             <if test="memberName != null  and memberName != '' "> and member_name = #{memberName}</if>
+             <if test="email != null  and email != '' "> and email = #{email}</if>
+             <if test="phonenumber != null  and phonenumber != '' "> and phonenumber = #{phonenumber}</if>
+             <if test="sex != null  and sex != '' "> and sex = #{sex}</if>
+             <if test="avatar != null  and avatar != '' "> and avatar = #{avatar}</if>
+             <if test="password != null  and password != '' "> and password = #{password}</if>
+             <if test="salt != null  and salt != '' "> and salt = #{salt}</if>
+             <if test="status != null  and status != '' "> and status = #{status}</if>
+             <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+             <if test="loginIp != null  and loginIp != '' "> and login_ip = #{loginIp}</if>
+             <if test="loginDate != null "> and login_date = #{loginDate}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+         </where>
+    </select>
+    
+    <select id="selectMemberById" parameterType="Long" resultMap="MemberResult">
+        <include refid="selectMemberVo"/>
+        where member_id = #{memberId}
+    </select>
+        
+    <insert id="insertMember" parameterType="Member" useGeneratedKeys="true" keyProperty="memberId">
+        insert into sc_member
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="memberName != null  and memberName != ''  ">member_name,</if>
+			<if test="email != null  and email != ''  ">email,</if>
+			<if test="phonenumber != null  and phonenumber != ''  ">phonenumber,</if>
+			<if test="sex != null  and sex != ''  ">sex,</if>
+			<if test="avatar != null  and avatar != ''  ">avatar,</if>
+			<if test="password != null  and password != ''  ">password,</if>
+			<if test="salt != null  and salt != ''  ">salt,</if>
+			<if test="status != null  and status != ''  ">status,</if>
+			<if test="delFlag != null  and delFlag != ''  ">del_flag,</if>
+			<if test="loginIp != null  and loginIp != ''  ">login_ip,</if>
+			<if test="loginDate != null  ">login_date,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="memberName != null  and memberName != ''  ">#{memberName},</if>
+			<if test="email != null  and email != ''  ">#{email},</if>
+			<if test="phonenumber != null  and phonenumber != ''  ">#{phonenumber},</if>
+			<if test="sex != null  and sex != ''  ">#{sex},</if>
+			<if test="avatar != null  and avatar != ''  ">#{avatar},</if>
+			<if test="password != null  and password != ''  ">#{password},</if>
+			<if test="salt != null  and salt != ''  ">#{salt},</if>
+			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
+			<if test="loginIp != null  and loginIp != ''  ">#{loginIp},</if>
+			<if test="loginDate != null  ">#{loginDate},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateMember" parameterType="Member">
+        update sc_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberName != null  and memberName != ''  ">member_name = #{memberName},</if>
+            <if test="email != null  and email != ''  ">email = #{email},</if>
+            <if test="phonenumber != null  and phonenumber != ''  ">phonenumber = #{phonenumber},</if>
+            <if test="sex != null  and sex != ''  ">sex = #{sex},</if>
+            <if test="avatar != null  and avatar != ''  ">avatar = #{avatar},</if>
+            <if test="password != null  and password != ''  ">password = #{password},</if>
+            <if test="salt != null  and salt != ''  ">salt = #{salt},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
+            <if test="loginIp != null  and loginIp != ''  ">login_ip = #{loginIp},</if>
+            <if test="loginDate != null  ">login_date = #{loginDate},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+        </trim>
+        where member_id = #{memberId}
+    </update>
+
+	<delete id="deleteMemberById" parameterType="Long">
+        delete from sc_member where member_id = #{memberId}
+    </delete>
+	
+    <delete id="deleteMemberByIds" parameterType="String">
+        delete from sc_member where member_id in 
+        <foreach item="memberId" collection="array" open="(" separator="," close=")">
+            #{memberId}
+        </foreach>
+    </delete>
+    
+</mapper>
