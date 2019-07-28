@@ -17,7 +17,7 @@
     <link th:href="@{/css/skins.css}" rel="stylesheet"/>
     <link th:href="@{/ruoyi/css/ry-ui.css?v=3.4.0}" rel="stylesheet"/>
 </head>
-<body class="fixed-sidebar full-height-layout gray-bg" style="overflow: hidden" th:classappend="${@config.getKey('sys.index.skinName')}">
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow: hidden" th:classappend="|${@config.getKey('sys.index.sideTheme')} ${@config.getKey('sys.index.skinName')}|">
 <div id="wrapper">
 
     <!--左侧导航开始-->
@@ -52,12 +52,12 @@
                     </ul>
                 </li>
                 <li th:each="menu : ${menus}">
-                	<a href="#">
+                	<a th:class="@{${menu.url != '' && menu.url != '#'} ? ${menu.target}}" th:href="@{${menu.url == ''} ? |#| : ${menu.url}}">
                 		<i class="fa fa-bar-chart-o" th:class="${menu.icon}"></i>
                     	<span class="nav-label" th:text="${menu.menuName}">一级菜单</span> 
-                    	<span class="fa arrow"></span>
+                    	<span th:class="${menu.url == '' || menu.url == '#'} ? |fa arrow|"></span>
                 	</a>
-                   <ul class="nav nav-second-level collapse">
+                    <ul class="nav nav-second-level collapse">
 						<li th:each="cmenu : ${menu.children}">
 							<a th:if="${#lists.isEmpty(cmenu.children)}" th:class="${cmenu.target == ''} ? |menuItem| : ${cmenu.target}" th:utext="${cmenu.menuName}" th:href="@{${cmenu.url}}">二级菜单</a>
 							<a th:if="${not #lists.isEmpty(cmenu.children)}" href="#">[[${cmenu.menuName}]]<span class="fa arrow"></span></a>
@@ -84,6 +84,7 @@
 								<li><a class="menuItem" th:href="@{/demo/form/wizard}">表单向导</a></li>
 								<li><a class="menuItem" th:href="@{/demo/form/upload}">文件上传</a></li>
 								<li><a class="menuItem" th:href="@{/demo/form/datetime}">日期和时间</a></li>
+								<li><a class="menuItem" th:href="@{/demo/form/summernote}">富文本编辑器</a></li>
 								<li><a class="menuItem" th:href="@{/demo/form/duallistbox}">左右互选组件</a></li>
 								<li><a class="menuItem" th:href="@{/demo/form/autocomplete}">搜索自动补全</a></li>
 							</ul>
