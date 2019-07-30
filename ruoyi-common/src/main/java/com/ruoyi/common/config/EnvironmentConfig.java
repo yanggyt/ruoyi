@@ -41,7 +41,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取项目名称
      */
-    public String getName()
+    public static String getName()
     {
         return StringUtils.nvl(getConfig("ruoyi.name"), "RuoYi");
     }
@@ -49,7 +49,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取项目版本
      */
-    public String getVersion()
+    public static String getVersion()
     {
         return StringUtils.nvl(getConfig("ruoyi.version"), "3.2.0");
     }
@@ -57,7 +57,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取版权年份
      */
-    public String getCopyrightYear()
+    public static String getCopyrightYear()
     {
         return StringUtils.nvl(getConfig("ruoyi.copyrightYear"), "2018");
     }
@@ -65,7 +65,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取ip地址开关
      */
-    public Boolean isAddressEnabled()
+    public static Boolean isAddressEnabled()
     {
         return Boolean.valueOf(getConfig("ruoyi.addressEnabled"));
     }
@@ -73,7 +73,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取文件上传路径
      */
-    public String getProfile()
+    public static String getProfile()
     {
         return getConfig("ruoyi.profile");
     }
@@ -81,7 +81,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取头像上传路径
      */
-    public String getAvatarPath()
+    public static String getAvatarPath()
     {
         return getConfig("ruoyi.profile") + "avatar/";
     }
@@ -89,7 +89,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取下载路径
      */
-    public String getDownloadPath()
+    public static String getDownloadPath()
     {
         //下载目录
         // return getConfig("ruoyi.profile") + "download/";
@@ -97,7 +97,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
         return getConfig("ruoyi.profile") + "upload/";
     }
 
-    public String seeProfile()
+    public static String seeProfile()
     {
         //下载目录
         // return getConfig("ruoyi.profile") + "download/";
@@ -108,7 +108,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取上传路径
      */
-    public String getUploadPath()
+    public static String getUploadPath()
     {
         return getConfig("ruoyi.profile") + "upload/";
     }
@@ -116,7 +116,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 获取作者
      */
-    public String getAuthor()
+    public static String getAuthor()
     {
         return StringUtils.nvl(getConfig("gen.author"), "ruoyi");
     }
@@ -124,7 +124,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 生成包路径
      */
-    public String getPackageName()
+    public static String getPackageName()
     {
         return StringUtils.nvl(getConfig("gen.packageName"), "com.ruoyi.project.module");
     }
@@ -132,7 +132,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 是否自动去除表前缀
      */
-    public String getAutoRemovePre()
+    public static String getAutoRemovePre()
     {
         return StringUtils.nvl(getConfig("gen.autoRemovePre"), "true");
     }
@@ -140,7 +140,7 @@ public class EnvironmentConfig implements ApplicationContextAware {
     /**
      * 表前缀(类名不会包含表前缀)
      */
-    public String getTablePrefix()
+    public static String getTablePrefix()
     {
         return StringUtils.nvl(getConfig("gen.tablePrefix"), "sys_");
     }
