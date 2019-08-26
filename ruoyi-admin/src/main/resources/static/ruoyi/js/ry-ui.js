@@ -1363,7 +1363,7 @@ modal_status = {
 };
 
 document.onkeydown = function (event) {
-  var e = event ? event : (window.event ? window.event : null);
+  var e = e || window.event;
   if (e.keyCode === 13) {
     var hasTable = document.getElementById("bootstrap-table");
     if (hasTable == null) {
