@@ -13,14 +13,14 @@ import java.util.Map;
  * @author solo
  * @date 2019/09/05.
  */
-public class Ztree extends BaseBean {
+public class Ztree2 extends BaseBean {
     private String id;
     private String text;
     private String state;
     private boolean isParent;
     private boolean checked;;
     private int locked;
-    private List<Ztree> children;
+    private List<Ztree2> children;
     private String iconCls;
     private String pid;
     private Map<String, Object> attributes = new HashMap<String, Object>();
@@ -86,11 +86,11 @@ public class Ztree extends BaseBean {
         this.locked = locked;
     }
 
-    public List<Ztree> getChildren() {
+    public List<Ztree2> getChildren() {
         return children;
     }
 
-    public void setChildren(List<Ztree> children) {
+    public void setChildren(List<Ztree2> children) {
         this.children = children;
     }
 
