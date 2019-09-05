@@ -1,25 +1,20 @@
 package com.ruoyi.common.utils.http;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 通用http发送方法
@@ -316,10 +311,6 @@ public class HttpUtils
             String xreq = request.getHeader("X-Requested-With");
             // 判断referer是不是为空
             if (StringUtils.isNotEmpty(referer)) {
-                //线上入金通知接口不做拦截判断，特殊处理
-                if (reqUrl.indexOf("/notice/inMoneySuccessNotice") > 0) {
-                    return false;
-                }
                 // referer不为空，判断referer和当前请求是否同站点
                 if (!referer.startsWith(url, 8) && !referer.startsWith(url, 7)) {
                     // 不同站点--跨站请求

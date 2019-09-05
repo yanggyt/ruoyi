@@ -1,6 +1,8 @@
 package com.ruoyi.common.utils.file;
 
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.checkImgPath.CheckImgPath;
+import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
@@ -103,13 +105,26 @@ public class UploadFileUtil {
         String relativePath = getRelativePath(rootPath);
         // 文件存储路径
         String fullPath = rootPath + relativePath + fileName;
-        try (
-                FileOutputStream fileOutputStream = new FileOutputStream(new File(fullPath));
-                BufferedOutputStream out = new BufferedOutputStream(fileOutputStream);
-        ) {
+        BufferedOutputStream out=null;
+        File targetFile =  new File(fullPath);
+        try{
+            FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
+            out = new BufferedOutputStream(fileOutputStream);
             out.write(fileBytes);
             out.flush();
         } catch (IOException e) {
+            return null;
+        }finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (!CheckImgPath.isImageFile(targetFile)&&!CheckImgPath.isICON(targetFile)){
+            FileUtils.deleteQuietly(targetFile);
             return null;
         }
         // 访问的url
@@ -117,6 +132,7 @@ public class UploadFileUtil {
         // 转换url的分隔符
         return fileUrl.replaceAll(BACKSLASH_REGEX, SLASH);
     }
+
 
     /**
      * 获取文件名称
