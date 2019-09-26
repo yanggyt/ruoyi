@@ -92,6 +92,8 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO
         }
         // 更新上次同步数据库时间
         onlineSession.setAttribute(LAST_SYNC_DB_TIMESTAMP, onlineSession.getLastAccessTime());
+        // 保存数据更新到缓存，避免每次都同步到数据库
+        cache(onlineSession, onlineSession.getId());
         // 更新完后 重置标识
         if (onlineSession.isAttributeChanged())
         {

@@ -69,6 +69,22 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  # redis配置
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    timeout: 1500ms
+    # redis连接池配置
+    jedis:
+      pool:
+        min-idle: 1
+    # redis集群配置，逗号分隔多个host:port
+#    cluster:
+#      nodes: 127.0.0.1:6381,127.0.0.1:6382
+    # 默认缓存超时1小时，启动时可初始化多个缓存并指定超时N秒
+    defaultExpiration: 1h
+    expires: '{ "loginRecordCache": "600" }'
 
 # MyBatis
 mybatis:
