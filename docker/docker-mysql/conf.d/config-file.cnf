@@ -12,12 +12,10 @@ character-set-server=utf8
 collation-server=utf8_unicode_ci
 
 # 表名不区分大小写
-lower_case_table_names=1 
-#server-id=1
+lower_case_table_names=1
+
+#数据库数据存储目录
 datadir=/var/lib/mysql
-#socket=/var/lib/mysql/mysqlx.sock
-#symbolic-links=0
-# sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES 
 
 ## Mysql 最大连接数，直接影响 Mysql 应用的并发处理能力（ 500~1000 是个比较合适的值，注意每建立的连接都会占用一定的内存空间，直到连接被关闭才释放内存 ）
 max_connections = 1000
