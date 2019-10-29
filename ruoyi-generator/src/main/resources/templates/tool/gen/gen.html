@@ -23,6 +23,12 @@
 									<option th:each="table : ${genTables}" th:text="${table.tableComment}" th:value="${table.tableComment}"></option>
 								</select>
 							</li>
+							<li>
+								表名称：<input name="tableName" />
+							</li>
+							<li>
+								表描述：<input name="tableComment" />
+							</li>
 							<li class="select-time">
 								<label>表时间： </label>
 								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
@@ -37,22 +43,22 @@
 					</div>
 				</form>
 			</div>
-			
+
 			<div class="btn-group-sm" id="toolbar" role="group">
-			     <a class="btn btn-success multiple disabled" onclick="javascript:batchGenCode()" shiro:hasPermission="tool:gen:code">
-			        <i class="fa fa-download"></i> 生成
-			    </a>
+				<a class="btn btn-primary multiple disabled" onclick="batchGenCode()" shiro:hasPermission="tool:gen:code">
+					<i class="fa fa-bug"></i> 生成
+				</a>
 				<a class="btn btn-info" onclick="importTable()">
-			        <i class="fa fa-upload"></i> 导入
-			    </a>
-			    <a class="btn btn-primary single disabled" onclick="$.operate.editTab()" shiro:hasPermission="tool:gen:edit">
-		            <i class="fa fa-edit"></i> 修改
-		        </a>
+					<i class="fa fa-upload"></i> 导入
+				</a>
+				<a class="btn btn-success single disabled" onclick="$.operate.editTab()" shiro:hasPermission="tool:gen:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
 			    <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="tool:gen:remove">
 		            <i class="fa fa-remove"></i> 删除
 		        </a>
 		    </div>
-		
+
 		    <div class="col-sm-12 select-table table-striped">
 			    <table id="bootstrap-table"></table>
 			</div>
@@ -66,7 +72,7 @@
 		var removeFlag = [[${@permission.hasPermi('tool:gen:remove')}]];
 		var previewFlag = [[${@permission.hasPermi('tool:gen:preview')}]];
 		var codeFlag = [[${@permission.hasPermi('tool:gen:code')}]];
-	
+
 		$(function() {
 		    var options = {
 		        url: prefix + "/list",
@@ -130,7 +136,7 @@
 		    };
 		    $.table.init(options);
 		});
-		
+
 		// 预览代码
 		function preview(tableId) {
 			var preViewUrl = prefix + "/preview/" + tableId;
@@ -159,7 +165,7 @@
 				$.modal.closeLoading();
 			});
 		}
-	
+
 		// 生成代码
 		function genCode(tableName) {
 		    $.modal.confirm("确定要生成" + tableName + "表代码吗？", function() {
@@ -167,7 +173,7 @@
 		        layer.msg('执行成功,正在生成代码请稍后…', { icon: 1 });
 		    })
 		}
-	
+
 		//批量生成代码
 		function batchGenCode() {
 		    var rows = $.table.selectColumns("tableName");
@@ -180,13 +186,13 @@
 		        layer.msg('执行成功,正在生成代码请稍后…', { icon: 1 });
 		    });
 		}
-		
+
 		// 导入表结构
 		function importTable() {
 			var importTableUrl = prefix + "/importTable";
 			$.modal.open("导入表结构", importTableUrl);
 		}
-		
+
 		function resetPre() {
 			$.form.reset();
 			$("select[name='tableName']").val(null).trigger("change");
