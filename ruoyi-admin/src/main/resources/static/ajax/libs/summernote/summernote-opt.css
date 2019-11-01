@@ -1,0 +1,4 @@
+/*让编辑器点击toolbar时的弹出模块位置以编辑器为基准*/
+.modal.in {
+    position: absolute;
+}
