@@ -224,6 +224,13 @@ public class ExcelUtil<T>
                         }
                         else
                         {
+                            //时间是字符串类型
+                            String dateFormat = field.getAnnotation(Excel.class).dateFormat();
+                            if(StringUtils.isNotEmpty(dateFormat)){
+                                val=DateUtils.parseDateToStr(dateFormat,(Date) val);
+                            }else {
+                                val = Convert.toStr(val);
+                            }
                             val = Convert.toStr(val);
                         }
                     }
