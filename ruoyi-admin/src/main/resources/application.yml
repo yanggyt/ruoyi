@@ -31,8 +31,8 @@ server:
 # 日志配置
 logging:
   level:
+    root: warn
     com.ruoyi: debug
-    org.springframework: warn
 
 # 用户配置
 user:

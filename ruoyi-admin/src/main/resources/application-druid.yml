@@ -1,3 +1,10 @@
+#flyway会自动建立该数据库
+db:
+    # mysql, oracle, sqlserver
+    type: mysql
+    name: ry
+    username: root
+    password: root
 # 数据源配置
 spring:
     datasource:
@@ -6,9 +13,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                username: root
-                password: password
+                url: jdbc:mysql://localhost:3306/${db.name}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: ${db.username}
+                password: ${db.password}
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -55,3 +62,22 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+
+    flyway:
+        enabled: true
+        url: jdbc:mysql://localhost:3306/mysql?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        user: ${db.username}
+        password: ${db.password}
+        #需要目标数据库已经存在，不自动升级
+        baseline-on-migrate: false
+        encoding: utf-8
+        clean-on-validation-error: false
+        clean-disabled: true
+        #数据库自动迁移的位置
+        locations: classpath:db/migration/${db.type}
+        # 需要管理的数据库
+        schemas: ${db.name}
+    quartz:
+        job-store-type: jdbc
+        jdbc:
+            initialize-schema: never

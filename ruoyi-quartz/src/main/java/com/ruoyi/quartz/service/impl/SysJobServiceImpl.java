@@ -37,8 +37,7 @@ public class SysJobServiceImpl implements ISysJobService
      * 主要是防止手动修改数据库导致未同步到定时任务处理（注：不能手动修改数据库ID和任务组名，否则会导致脏数据）
      */
     @PostConstruct
-    public void init() throws SchedulerException, TaskException
-    {
+    public void init() throws SchedulerException, TaskException {
         List<SysJob> jobList = jobMapper.selectJobAll();
         for (SysJob job : jobList)
         {
