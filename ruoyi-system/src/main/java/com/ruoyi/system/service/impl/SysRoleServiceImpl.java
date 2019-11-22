@@ -162,7 +162,6 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     /**
      * 修改保存角色信息
-     *
      * @param role 角色信息
      * @return 结果
      */
@@ -178,7 +177,6 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     /**
      * 修改数据权限信息
-     *
      * @param role 角色信息
      * @return 结果
      */
@@ -195,7 +193,6 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     /**
      * 新增角色菜单信息
-     *
      * @param role 角色对象
      */
     public int insertRoleMenu(SysRole role) {

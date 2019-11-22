@@ -77,7 +77,3 @@ spring:
         locations: classpath:db/migration/${db.type}
         # 需要管理的数据库
         schemas: ${db.name}
-    quartz:
-        job-store-type: jdbc
-        jdbc:
-            initialize-schema: never

@@ -33,6 +33,7 @@ logging:
   level:
     root: warn
     com.ruoyi: debug
+    com.ruoyi.quartz.mapper: warn
 
 # 用户配置
 user:
@@ -69,6 +70,16 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQL55Dialect
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
 
 # MyBatis
 mybatis:
