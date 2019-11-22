@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * 启动程序
- * 
+ *
  * @author ruoyi
  */
-@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class RuoYiApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         // System.setProperty("spring.devtools.restart.enabled", "false");
@@ -26,7 +26,7 @@ public class RuoYiApplication extends SpringBootServletInitializer {
     }
 
     @Bean
-    public CommandLineRunner startupCommandLineRunner(){
+    public CommandLineRunner startupCommandLineRunner() {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
