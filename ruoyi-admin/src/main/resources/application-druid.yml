@@ -2,7 +2,7 @@
 db:
     # mysql, oracle, sqlserver
     type: mysql
-    name: ry
+    name: framework
     username: root
     password: root
 # 数据源配置

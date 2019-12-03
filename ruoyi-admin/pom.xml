@@ -58,7 +58,8 @@
 		<!-- 核心模块-->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-framework</artifactId>
+            <artifactId>business</artifactId>
+            <version>${ruoyi.version}</version>
         </dependency>
         
         <!-- 定时任务-->
