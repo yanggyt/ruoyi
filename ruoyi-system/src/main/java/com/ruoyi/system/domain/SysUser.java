@@ -2,6 +2,9 @@ package com.ruoyi.system.domain;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -120,6 +123,13 @@ public class SysUser extends BaseEntity {
     private SysDept dept;
 
     private List<SysRole> roles;
+
+    @ManyToMany
+    @JoinTable(name = "sys_user_post",
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "post_id"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
+    @org.hibernate.annotations.ForeignKey(name = "none")
+    private List<SysPost> posts;
 
     /**
      * 角色组
@@ -314,6 +324,14 @@ public class SysUser extends BaseEntity {
 
     public void setPostIds(Long[] postIds) {
         this.postIds = postIds;
+    }
+
+    public List<SysPost> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<SysPost> posts) {
+        this.posts = posts;
     }
 
     @Override

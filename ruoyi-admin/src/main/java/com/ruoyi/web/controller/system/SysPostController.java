@@ -1,17 +1,5 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -22,6 +10,14 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.service.ISysPostService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 岗位信息操作处理
@@ -47,8 +43,8 @@ public class SysPostController extends BaseController {
     @ResponseBody
     public TableDataInfo list(SysPost post) {
         startPage();
-        List<SysPost> list = postService.selectPostList(post);
-        return getDataTable(list);
+        Page<SysPost> page = postService.selectPostList(post, getPageRequest());
+        return getDataTable(page);
     }
 
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
@@ -56,9 +52,9 @@ public class SysPostController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysPost post) {
-        List<SysPost> list = postService.selectPostList(post);
+        Page<SysPost> list = postService.selectPostList(post, Pageable.unpaged());
         ExcelUtil<SysPost> util = new ExcelUtil<SysPost>(SysPost.class);
-        return util.exportExcel(list, "岗位数据");
+        return util.exportExcel(list.getContent(), "岗位数据");
     }
 
     @RequiresPermissions("system:post:remove")
@@ -95,7 +91,7 @@ public class SysPostController extends BaseController {
             return error("新增岗位'" + post.getPostName() + "'失败，岗位编码已存在");
         }
         post.setCreateBy(ShiroUtils.getLoginName());
-        return toAjax(postService.insertPost(post));
+        return success(postService.insertPost(post));
     }
 
     /**
@@ -121,7 +117,7 @@ public class SysPostController extends BaseController {
             return error("修改岗位'" + post.getPostName() + "'失败，岗位编码已存在");
         }
         post.setUpdateBy(ShiroUtils.getLoginName());
-        return toAjax(postService.updatePost(post));
+        return success(postService.updatePost(post));
     }
 
     /**

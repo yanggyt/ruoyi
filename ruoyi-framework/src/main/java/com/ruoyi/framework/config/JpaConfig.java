@@ -16,14 +16,13 @@ import java.util.Optional;
 public class JpaConfig {
 
     @Bean
-    public AuditorAware<Long> auditorAware(){
+    public AuditorAware<String> auditorAware(){
         return () ->{
             SysUser sysUser = ShiroUtils.getSysUser();
             if(sysUser != null){
-                return Optional.of(sysUser.getUserId());
+                return Optional.of(sysUser.getUserId().toString());
             }
             return Optional.empty();
         };
     }
-
 }

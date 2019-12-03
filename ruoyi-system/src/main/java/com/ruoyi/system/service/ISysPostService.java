@@ -1,8 +1,10 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-
 import com.ruoyi.system.domain.SysPost;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * 岗位信息 服务层
@@ -14,9 +16,10 @@ public interface ISysPostService {
      * 查询岗位信息集合
      *
      * @param post 岗位信息
+     * @param pageRequest
      * @return 岗位信息集合
      */
-    public List<SysPost> selectPostList(SysPost post);
+    public Page<SysPost> selectPostList(SysPost post, Pageable pageRequest);
 
     /**
      * 查询所有岗位
@@ -24,14 +27,6 @@ public interface ISysPostService {
      * @return 岗位列表
      */
     public List<SysPost> selectPostAll();
-
-    /**
-     * 根据用户ID查询岗位
-     *
-     * @param userId 用户ID
-     * @return 岗位列表
-     */
-    public List<SysPost> selectPostsByUserId(Long userId);
 
     /**
      * 通过岗位ID查询岗位信息
@@ -56,7 +51,7 @@ public interface ISysPostService {
      * @param post 岗位信息
      * @return 结果
      */
-    public int insertPost(SysPost post);
+    public SysPost insertPost(SysPost post);
 
     /**
      * 修改保存岗位信息
@@ -64,7 +59,7 @@ public interface ISysPostService {
      * @param post 岗位信息
      * @return 结果
      */
-    public int updatePost(SysPost post);
+    public SysPost updatePost(SysPost post);
 
     /**
      * 通过岗位ID查询岗位使用数量

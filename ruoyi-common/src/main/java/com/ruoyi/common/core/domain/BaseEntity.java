@@ -1,44 +1,67 @@
 package com.ruoyi.common.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Entity基类
  *
  * @author ruoyi
  */
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+@SelectBeforeUpdate
+@DynamicUpdate
 public class BaseEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /**
      * 搜索值
      */
+    @Transient
     private String searchValue;
 
     /**
      * 创建者
      */
+    @CreatedBy
+    @Column(updatable = false)
     private String createBy;
 
     /**
      * 创建时间
      */
+    @CreatedDate
+    @Column(updatable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * 更新者
      */
+    @LastModifiedBy
     private String updateBy;
 
     /**
      * 更新时间
      */
+    @LastModifiedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
@@ -50,6 +73,7 @@ public class BaseEntity implements Serializable {
     /**
      * 请求参数
      */
+    @Transient
     private Map<String, Object> params;
 
     public String getSearchValue() {

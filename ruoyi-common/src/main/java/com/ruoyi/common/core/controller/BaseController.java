@@ -1,16 +1,5 @@
 package com.ruoyi.common.core.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -22,6 +11,20 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.sql.SqlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.beans.PropertyEditorSupport;
+import java.util.Date;
+import java.util.List;
 
 /**
  * web层通用数据处理
@@ -92,6 +95,43 @@ public class BaseController {
     }
 
     /**
+     * 设置请求分页数据
+     */
+    protected Pageable getPageRequest() {
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize)) {
+            String attribute = pageDomain.getOrderByColumn();
+            if(StringUtils.isNotEmpty(attribute)){
+                Sort.Order order = null;
+                if("desc".equals(pageDomain.getIsAsc())){
+                    order = Sort.Order.desc(attribute);
+                }else{
+                    order = Sort.Order.asc(attribute);
+                }
+                return PageRequest.of(pageNum-1, pageSize, Sort.by(order));
+            }else{
+                return PageRequest.of(pageNum-1, pageSize);
+            }
+        }else{
+            return PageRequest.of(0,10);
+        }
+    }
+
+    /**
+     * 响应请求分页数据
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    protected TableDataInfo getDataTable(org.springframework.data.domain.Page<?> page) {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(0);
+        rspData.setRows(page.getContent());
+        rspData.setTotal(page.getTotalElements());
+        return rspData;
+    }
+
+    /**
      * 响应返回结果
      *
      * @param rows 影响行数
@@ -116,6 +156,12 @@ public class BaseController {
      */
     public AjaxResult success() {
         return AjaxResult.success();
+    }
+
+    public <T> AjaxResult success(T data) {
+        AjaxResult result = AjaxResult.success();
+        result.put("data", data);
+        return result;
     }
 
     /**
