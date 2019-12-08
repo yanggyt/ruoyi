@@ -28,13 +28,18 @@ var table = {
 };
 
 (function ($) {
+	var ry_ui_reset_margin_timer = null;
     $.extend({
     	_tree: {},
     	bttTable: {},
     	// 表格封装处理
     	table: {
+			_option: {},
             // 初始化表格参数
             init: function(options) {
+				_height = $.common.isEmpty(options.height) ? ($.common.isEmpty(options.resizeTableContainer) ? 'auto' : undefined) : options.height;
+				_resizeTableContainer = $.common.isEmpty(options.resizeTableContainer) ? true : options.resizeTableContainer;
+				_resizable = $.common.isEmpty(options.resizable) ? true : options.resizable;
             	var defaults = {
             		id: "bootstrap-table",
             		type: 0, // 0 代表bootstrapTable 1代表bootstrapTreeTable
@@ -70,6 +75,7 @@ var table = {
             	var options = $.extend(defaults, options);
             	table.options = options;
             	table.config[options.id] = options;
+				$.table._option = options;
                 $.table.initEvent();
                 $('#' + options.id).bootstrapTable({
                 	id: options.id,
@@ -77,7 +83,7 @@ var table = {
                     contentType: "application/x-www-form-urlencoded",   // 编码类型
                     method: 'post',                                     // 请求方式（*）
                     cache: false,                                       // 是否使用缓存
-                    height: options.height,                             // 表格的高度
+                    height: _height,                             		// 表格的高度
                     striped: options.striped,                           // 是否显示行间隔色
                     sortable: true,                                     // 是否启用排序
                     sortStable: true,                                   // 设置为 true 将获得稳定的排序
@@ -124,6 +130,36 @@ var table = {
                     onLoadSuccess: $.table.onLoadSuccess,               // 当所有数据被加载时触发处理函数
                     exportOptions: options.exportOptions,               // 前端导出忽略列索引
                     detailFormatter: options.detailFormatter,           // 在行下面展示其他数据列表
+					resizable:_resizable,                               // 表格宽度可以改变
+					// table加载成功后回调
+					onLoadSuccess: function() {
+						// 设置table容器大小，使分页插件在页面最底端
+						if (_resizeTableContainer && (_height === 'auto' || _height === undefined)) {
+							// 重置table容器高度，使分页栏在页面底部
+							$.common.resizeTableContainer()
+							$(window).resize(function() {
+								$.common.resizeTableContainer()
+							})
+
+							// 打开或者关闭搜索工具栏时计算table容器的大小，使分页插件在页面最底端
+							let resizeConTimer = null
+							$('.fixed-table-toolbar button[name="showSearch"]').on('click', function() {
+								clearTimeout(resizeConTimer)
+								resizeConTimer = setTimeout(function() {
+									$.common.resizeTableContainer()
+									clearTimeout(resizeConTimer)
+								}, 450)
+							})
+						}
+
+						// 配置拖动更改列宽度
+						$('#bootstrap-table').colResizable({
+							liveDrag:true,
+							postbackSafe:true,
+							partialRefresh:true,
+							resizeMode: 'overflow'
+						});
+					}
                 });
             },
             // 获取实例ID，如存在多个返回#id1,#id2 delimeter分隔符
@@ -498,6 +534,7 @@ var table = {
         treeTable: {
             // 初始化表格
             init: function(options) {
+				_resizeTreeTableContainer = $.common.isEmpty(options.resizeTreeTableContainer) ? true : options.resizeTreeTableContainer;
             	var defaults = {
             		id: "bootstrap-tree-table",
                     type: 1, // 0 代表bootstrapTable 1代表bootstrapTreeTable
@@ -537,6 +574,23 @@ var table = {
         	        columns: options.columns,                           // 显示列信息（*）
         	        responseHandler: $.treeTable.responseHandler        // 当所有数据被加载时触发处理函数
         	    });
+				if (_resizeTreeTableContainer) {
+					// 重置treeTable容器大小
+					$.common.resizeTreeTable()
+					$(window).resize(function() {
+						$.common.resizeTreeTable()
+					})
+
+					// 打开或者关闭搜索工具栏时计算table容器的大小，使分页插件在页面最底端
+					let resizeConTimer = null
+					$('.glyphicon-search').on('click', function() {
+						clearTimeout(resizeConTimer)
+						resizeConTimer = setTimeout(function() {
+							$.common.resizeTreeTable()
+							clearTimeout(resizeConTimer)
+						}, 450)
+					})
+				}
             },
             // 条件查询
             search: function(formId) {
@@ -1470,7 +1524,66 @@ var table = {
                     }　　
                 }
                 return count;
-            }
+			},
+			// 重置table容器的大小，使table分页插件位于页面最底部
+			resizeTableContainer: function() {
+				$('.select-table').css('padding-bottom', 0)
+				// 视窗高度
+				var wh = $(window).height()
+				// 搜索栏高度
+				var sh = 0
+				if ($('.search-collapse').is(':visible')) {
+					sh = $('.search-collapse').outerHeight(true)
+				}
+				// table上工具栏高度
+				var th = $('.bootstrap-table').height() - $('.fixed-table-container').outerHeight() + 16
+				// 分页栏的高度(有分页栏48，没有的话为0)
+				var pageH = 0
+				if ($.common.visible($.table._option.pagination) && $('.fixed-table-pagination').is(':visible')) {
+					pageH = $('.fixed-table-pagination .pagination-detail').outerHeight(true)
+				}
+				// 设置的容器高度
+				var rh = wh - sh - th - pageH - 1
+				$('.fixed-table-container').css({
+					'transition': 'height 0.1s',
+					'height': rh
+				})
+
+				$('.fixed-table-body').css('overflow-x', 'hidden')
+
+				// 设置table表格margin-top值，适配固定table表头后，表头下边框粗的问题
+				var method_id = $.common.isEmpty($.table._option.id) ? "#bootstrap-table" : $.table._option.id;
+				var method_height = $.common.isEmpty($.table._option.height) ? ($.common.isEmpty($.table._option.resizeTableContainer) ? 'auto' : undefined) : $.table._option.height;
+				var newOptionData = $(method_id).bootstrapTable('getOptions');
+				// 设置了高度的时候, 并且为非卡片视图的时候
+				if (method_height !== undefined && !newOptionData.cardView) {
+					clearTimeout(ry_ui_reset_margin_timer)
+					ry_ui_reset_margin_timer = setTimeout(function() {
+						$(method_id).css('margin-top', '-41px')
+						clearTimeout(ry_ui_reset_margin_timer)
+					}, 300)
+				}
+			},
+			// 重置treeTable容器的大小
+			resizeTreeTable: function() {
+				$('.treetable-bars').addClass('clearft')
+				// 视窗高度
+				var wh = $(window).height()
+				// 搜索栏高度
+				var sh = 0
+				if ($('.search-collapse').is(':visible')) {
+					sh = $('.search-collapse').outerHeight(true)
+				}
+				// table上工具栏高度
+				var th = $('.treetable-bars').height() + 15
+				// 设置的tbody的高度
+				var rh = wh - sh - th - 75
+				$('.treetable-tbody').css({
+					'transition': 'height 0.1s',
+					'height': rh,
+					'overflow': 'auto'
+				})
+			},
         }
     });
 })(jQuery);
