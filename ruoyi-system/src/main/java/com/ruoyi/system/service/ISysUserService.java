@@ -1,8 +1,10 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-
 import com.ruoyi.system.domain.SysUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * 用户 业务层
@@ -14,17 +16,19 @@ public interface ISysUserService {
      * 根据条件分页查询用户列表
      *
      * @param user 用户信息
+     * @param pageRequest
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectUserList(SysUser user);
+    public Page<SysUser> selectUserList(SysUser user, Pageable pageRequest);
 
     /**
      * 根据条件分页查询已分配用户角色列表
      *
      * @param user 用户信息
+     * @param pageRequest
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectAllocatedList(SysUser user);
+    public Page<SysUser> selectAllocatedList(SysUser user, Pageable pageRequest);
 
     /**
      * 根据条件分页查询未分配用户角色列表

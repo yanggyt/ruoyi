@@ -29,6 +29,9 @@ import java.util.Map;
 @DynamicUpdate
 public class BaseEntity implements Serializable {
 
+    public static final String NOT_DELETED = "0";
+    public static final String DELETED = "1";
+
     private static final long serialVersionUID = 1L;
 
     /**

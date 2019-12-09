@@ -60,6 +60,22 @@ public class SysPost extends BaseEntity {
     @Transient
     private boolean flag = false;
 
+//    @JsonIgnore
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "sys_user_post",
+//            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "post_id"),
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
+//    @org.hibernate.annotations.ForeignKey(name = "none")
+//    private List<SysUser> users;
+
+//    public List<SysUser> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(List<SysUser> users) {
+//        this.users = users;
+//    }
+
     public Long getPostId() {
         return postId;
     }

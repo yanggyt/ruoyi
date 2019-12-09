@@ -1,18 +1,5 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -26,6 +13,17 @@ import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 用户信息
@@ -59,9 +57,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(SysUser user) {
-        startPage();
-        List<SysUser> list = userService.selectUserList(user);
-        return getDataTable(list);
+        return getDataTable(userService.selectUserList(user, getPageRequest()));
     }
 
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
@@ -69,9 +65,9 @@ public class SysUserController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysUser user) {
-        List<SysUser> list = userService.selectUserList(user);
+        Page<SysUser> page = userService.selectUserList(user, Pageable.unpaged());
         ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
-        return util.exportExcel(list, "用户数据");
+        return util.exportExcel(page.getContent(), "用户数据");
     }
 
     @Log(title = "用户管理", businessType = BusinessType.IMPORT)
@@ -122,7 +118,7 @@ public class SysUserController extends BaseController {
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         user.setCreateBy(ShiroUtils.getLoginName());
-        return toAjax(userService.insertUser(user));
+        return success(userService.insertUser(user));
     }
 
     /**

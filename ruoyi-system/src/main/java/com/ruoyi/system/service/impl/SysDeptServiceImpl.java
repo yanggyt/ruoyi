@@ -1,20 +1,22 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.mapper.SysDeptMapper;
+import com.ruoyi.system.repository.SysDeptRepository;
 import com.ruoyi.system.service.ISysDeptService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 部门管理 服务实现
@@ -25,6 +27,8 @@ import com.ruoyi.system.service.ISysDeptService;
 public class SysDeptServiceImpl implements ISysDeptService {
     @Autowired
     private SysDeptMapper deptMapper;
+    @Autowired
+    private SysDeptRepository sysDeptRepository;
 
     /**
      * 查询部门管理数据
@@ -117,9 +121,9 @@ public class SysDeptServiceImpl implements ISysDeptService {
      */
     @Override
     public int selectDeptCount(Long parentId) {
-        SysDept dept = new SysDept();
-        dept.setParentId(parentId);
-        return deptMapper.selectDeptCount(dept);
+        SysDept parent = new SysDept();
+        parent.setDeptId(parentId);
+        return sysDeptRepository.countByDelFlagAndParent(BaseEntity.NOT_DELETED, parent);
     }
 
     /**

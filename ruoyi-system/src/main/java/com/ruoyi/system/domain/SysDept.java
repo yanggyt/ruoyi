@@ -1,28 +1,30 @@
 package com.ruoyi.system.domain;
 
-import javax.validation.constraints.*;
-
+import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.core.domain.BaseEntity;
+import org.hibernate.annotations.ForeignKey;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * 部门表 sys_dept
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_dept")
 public class SysDept extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 部门ID
      */
+    @Id
     private Long deptId;
-
-    /**
-     * 父部门ID
-     */
-    private Long parentId;
 
     /**
      * 祖级列表
@@ -64,10 +66,10 @@ public class SysDept extends BaseEntity {
      */
     private String delFlag;
 
-    /**
-     * 父部门名称
-     */
-    private String parentName;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    @ForeignKey(name = "none")
+    private SysDept parent;
 
     public Long getDeptId() {
         return deptId;
@@ -75,14 +77,6 @@ public class SysDept extends BaseEntity {
 
     public void setDeptId(Long deptId) {
         this.deptId = deptId;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
     }
 
     public String getAncestors() {
@@ -155,19 +149,18 @@ public class SysDept extends BaseEntity {
         this.delFlag = delFlag;
     }
 
-    public String getParentName() {
-        return parentName;
+    public SysDept getParent() {
+        return parent;
     }
 
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
+    public void setParent(SysDept parent) {
+        this.parent = parent;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("deptId", getDeptId())
-                .append("parentId", getParentId())
                 .append("ancestors", getAncestors())
                 .append("deptName", getDeptName())
                 .append("orderNum", getOrderNum())
@@ -181,5 +174,13 @@ public class SysDept extends BaseEntity {
                 .append("updateBy", getUpdateBy())
                 .append("updateTime", getUpdateTime())
                 .toString();
+    }
+
+    @Transient
+    public Long getParentId() {
+        if(this.parent == null){
+            return null;
+        }
+        return parent.getDeptId();
     }
 }

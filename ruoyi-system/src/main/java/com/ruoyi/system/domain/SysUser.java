@@ -1,19 +1,20 @@
 package com.ruoyi.system.domain;
 
-import java.util.Date;
-import java.util.List;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.*;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.annotation.Excel.Type;
 import com.ruoyi.common.annotation.Excels;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.ForeignKey;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户对象 sys_user
@@ -120,8 +121,16 @@ public class SysUser extends BaseEntity {
             @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
             @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
     })
+    @ManyToOne
+    @JoinColumn(name = "dept_id", referencedColumnName = "dept_id")
+    @ForeignKey(name = "none")
     private SysDept dept;
 
+    @ManyToMany
+    @JoinTable(name = "sys_user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+    @ForeignKey(name = "none")
     private List<SysRole> roles;
 
     @ManyToMany
@@ -140,6 +149,12 @@ public class SysUser extends BaseEntity {
      * 岗位组
      */
     private Long[] postIds;
+
+    @Transient
+    private Date startTime;
+
+    @Transient
+    private Date endTime;
 
     public SysUser() {
 
@@ -332,6 +347,22 @@ public class SysUser extends BaseEntity {
 
     public void setPosts(List<SysPost> posts) {
         this.posts = posts;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     @Override

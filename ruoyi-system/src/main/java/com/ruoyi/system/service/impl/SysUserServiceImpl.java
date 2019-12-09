@@ -1,31 +1,33 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
-import com.ruoyi.system.domain.SysPost;
-import com.ruoyi.system.domain.SysRole;
-import com.ruoyi.system.domain.SysUser;
-import com.ruoyi.system.domain.SysUserPost;
-import com.ruoyi.system.domain.SysUserRole;
-import com.ruoyi.system.mapper.SysPostMapper;
-import com.ruoyi.system.mapper.SysRoleMapper;
-import com.ruoyi.system.mapper.SysUserMapper;
-import com.ruoyi.system.mapper.SysUserPostMapper;
-import com.ruoyi.system.mapper.SysUserRoleMapper;
+import com.ruoyi.system.domain.*;
+import com.ruoyi.system.mapper.*;
+import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户 业务层处理
@@ -38,6 +40,9 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Autowired
     private SysUserMapper userMapper;
+
+    @Autowired
+    private SysUserRepository sysUserRepository;
 
     @Autowired
     private SysRoleMapper roleMapper;
@@ -58,23 +63,56 @@ public class SysUserServiceImpl implements ISysUserService {
      * 根据条件分页查询用户列表
      *
      * @param user 用户信息
+     * @param pageRequest
      * @return 用户信息集合信息
      */
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectUserList(SysUser user) {
-        return userMapper.selectUserList(user);
+    public Page<SysUser> selectUserList(SysUser user, Pageable pageRequest) {
+        return sysUserRepository.findAll(getSpecification(user), pageRequest);
+    }
+
+    private Specification<SysUser> getSpecification(SysUser sysUser){
+        return new Specification<SysUser>() {
+            @Override
+            public Predicate toPredicate(Root<SysUser> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if(StringUtils.isNotEmpty(sysUser.getDelFlag())){
+                    predicates.add(criteriaBuilder.equal(root.get("delFlag").as(String.class), sysUser.getDelFlag()));
+                }
+                if(StringUtils.isNotEmpty(sysUser.getLoginName())){
+                    predicates.add(criteriaBuilder.like(root.get("loginName").as(String.class), "%" + sysUser.getLoginName() + "%"));
+                }
+                if(StringUtils.isNotEmpty(sysUser.getStatus())){
+                    predicates.add(criteriaBuilder.equal(root.get("status").as(String.class), sysUser.getStatus()));
+                }
+                if(StringUtils.isNotEmpty(sysUser.getPhonenumber())){
+                    predicates.add(criteriaBuilder.like(root.get("phonenumber").as(String.class), "%" + sysUser.getPhonenumber() + "%"));
+                }
+                if(sysUser.getStartTime() != null){
+                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class), sysUser.getStartTime()));
+                }
+                if(sysUser.getEndTime() != null){
+                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("endTime").as(Date.class), sysUser.getEndTime()));
+                }
+                if(sysUser.getDept() != null){
+                    predicates.add(criteriaBuilder.equal(root.get("dept").get("id").as(Long.class), sysUser.getDept().getDeptId()));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
     }
 
     /**
      * 根据条件分页查询已分配用户角色列表
      *
      * @param user 用户信息
+     * @param pageRequest
      * @return 用户信息集合信息
      */
     @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectAllocatedList(SysUser user) {
-        return userMapper.selectAllocatedList(user);
+    public Page<SysUser> selectAllocatedList(SysUser user, Pageable pageRequest) {
+        return sysUserRepository.findAll(getSpecification(user), pageRequest);
     }
 
     /**
@@ -96,7 +134,7 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public SysUser selectUserByLoginName(String userName) {
-        return userMapper.selectUserByLoginName(userName);
+        return sysUserRepository.findFirstByDelFlagAndLoginName(BaseEntity.NOT_DELETED, userName);
     }
 
     /**
@@ -107,7 +145,7 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public SysUser selectUserByPhoneNumber(String phoneNumber) {
-        return userMapper.selectUserByPhoneNumber(phoneNumber);
+        return sysUserRepository.findFirstByDelFlagAndAndPhonenumber(BaseEntity.NOT_DELETED, phoneNumber);
     }
 
     /**
@@ -118,7 +156,7 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public SysUser selectUserByEmail(String email) {
-        return userMapper.selectUserByEmail(email);
+        return sysUserRepository.findFirstByDelFlagAndEmail(BaseEntity.NOT_DELETED, email);
     }
 
     /**
@@ -129,7 +167,7 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public SysUser selectUserById(Long userId) {
-        return userMapper.selectUserById(userId);
+        return sysUserRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("无效的数据"));
     }
 
     /**
@@ -138,13 +176,11 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param userId 用户ID
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteUserById(Long userId) {
-        // 删除用户与角色关联
-        userRoleMapper.deleteUserRoleByUserId(userId);
-        // 删除用户与岗位表
-        userPostMapper.deleteUserPostByUserId(userId);
-        return userMapper.deleteUserById(userId);
+        sysUserRepository.deleteById(userId);
+        return 1;
     }
 
     /**
@@ -153,13 +189,15 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param ids 需要删除的数据ID
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteUserByIds(String ids) throws BusinessException {
         Long[] userIds = Convert.toLongArray(ids);
         for (Long userId : userIds) {
             checkUserAllowed(new SysUser(userId));
+            deleteUserById(userId);
         }
-        return userMapper.deleteUserByIds(userIds);
+        return userIds.length;
     }
 
     /**
@@ -170,14 +208,10 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     @Transactional
-    public int insertUser(SysUser user) {
+    public SysUser insertUser(SysUser user) {
         // 新增用户信息
         int rows = userMapper.insertUser(user);
-        // 新增用户岗位关联
-        insertUserPost(user);
-        // 新增用户与角色管理
-        insertUserRole(user);
-        return rows;
+        return sysUserRepository.save(user);
     }
 
     /**

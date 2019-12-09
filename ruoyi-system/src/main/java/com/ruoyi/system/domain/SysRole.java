@@ -1,24 +1,33 @@
 package com.ruoyi.system.domain;
 
-import javax.validation.constraints.*;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * 角色表 sys_role
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_role")
 public class SysRole extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 角色ID
      */
+    @Id
     @Excel(name = "角色序号", cellType = ColumnType.NUMERIC)
     private Long roleId;
 
@@ -38,7 +47,7 @@ public class SysRole extends BaseEntity {
      * 角色排序
      */
     @Excel(name = "角色排序", cellType = ColumnType.NUMERIC)
-    private String roleSort;
+    private Integer roleSort;
 
     /**
      * 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限）
@@ -60,6 +69,7 @@ public class SysRole extends BaseEntity {
     /**
      * 用户是否存在此角色标识 默认不存在
      */
+    @Transient
     private boolean flag = false;
 
     /**
@@ -124,12 +134,12 @@ public class SysRole extends BaseEntity {
         this.roleKey = roleKey;
     }
 
-    @NotBlank(message = "显示顺序不能为空")
-    public String getRoleSort() {
+    @NotNull(message = "显示顺序不能为空")
+    public Integer getRoleSort() {
         return roleSort;
     }
 
-    public void setRoleSort(String roleSort) {
+    public void setRoleSort(Integer roleSort) {
         this.roleSort = roleSort;
     }
 
