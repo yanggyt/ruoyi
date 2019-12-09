@@ -93,7 +93,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int insertUser(SysUser user);
+    public SysUser insertUser(SysUser user);
 
     /**
      * 保存用户信息
