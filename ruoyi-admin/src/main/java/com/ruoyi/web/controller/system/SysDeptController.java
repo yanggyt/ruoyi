@@ -5,7 +5,6 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.Ztree;
-import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysDept;
@@ -13,6 +12,7 @@ import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.service.ISysDeptService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -42,8 +42,8 @@ public class SysDeptController extends BaseController {
     @RequiresPermissions("system:dept:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysDept dept) {
-        return getDataTable(deptService.selectDeptList(dept, getPageRequest()));
+    public List<SysDept> list(SysDept dept) {
+        return deptService.selectDeptList(dept, Pageable.unpaged()).getContent();
     }
 
     /**
