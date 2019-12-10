@@ -5,6 +5,7 @@ drop table if exists sys_dept;
 create table sys_dept (
   dept_id           bigint(20)      not null auto_increment    comment '部门id',
   parent_id         bigint(20)      default 0                  comment '父部门id',
+  code              varchar(128)    not null                   comment '部门编码',
   ancestors         varchar(50)     default ''                 comment '祖级列表',
   dept_name         varchar(30)     default ''                 comment '部门名称',
   order_num         int(4)          default 0                  comment '显示顺序',
@@ -23,7 +24,7 @@ create table sys_dept (
 -- ----------------------------
 -- 初始化-部门表数据
 -- ----------------------------
-insert into sys_dept values(1,  NULL,   NULL,          '根',   0, 'Admin', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2018-03-16 11-33-00', 'ry', '2018-03-16 11-33-00');
+insert into sys_dept values(1,  NULL, '001', NULL, '根', 0, 'Admin', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2018-03-16 11-33-00', 'ry', '2018-03-16 11-33-00');
 
 -- ----------------------------
 -- 2、用户信息表

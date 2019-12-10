@@ -28,6 +28,11 @@ public class SysDept extends BaseEntity {
     private Long deptId;
 
     /**
+     * 编码，父001 -> 子001001 -> 孙 001001001 格式编码
+     */
+    private String code;
+
+    /**
      * 祖级列表
      */
     private String ancestors;
@@ -156,6 +161,14 @@ public class SysDept extends BaseEntity {
 
     public void setParent(SysDept parent) {
         this.parent = parent;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override

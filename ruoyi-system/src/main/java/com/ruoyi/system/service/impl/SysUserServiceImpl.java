@@ -97,8 +97,11 @@ public class SysUserServiceImpl implements ISysUserService {
                 if(sysUser.getEndTime() != null){
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("endTime").as(Date.class), sysUser.getEndTime()));
                 }
-                if(sysUser.getDept() != null){
-                    predicates.add(criteriaBuilder.equal(root.get("dept").get("id").as(Long.class), sysUser.getDept().getDeptId()));
+                if(sysUser.getDept() != null && sysUser.getDept().getDeptId() != null){
+                    predicates.add(criteriaBuilder.equal(root.get("dept").get("deptId").as(Long.class), sysUser.getDept().getDeptId()));
+                }
+                if(sysUser.getDept() != null && StringUtils.isNotEmpty(sysUser.getDept().getCode())){
+                    predicates.add(criteriaBuilder.equal(root.get("dept").get("code").as(String.class), "%" + sysUser.getDept().getCode() + "%"));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }

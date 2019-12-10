@@ -77,3 +77,4 @@ spring:
         locations: classpath:db/migration/${db.type}
         # 需要管理的数据库
         schemas: ${db.name}
+        sql-migration-prefix: v
