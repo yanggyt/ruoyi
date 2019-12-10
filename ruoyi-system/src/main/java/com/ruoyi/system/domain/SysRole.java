@@ -6,10 +6,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,6 +25,7 @@ public class SysRole extends BaseEntity {
      * 角色ID
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Excel(name = "角色序号", cellType = ColumnType.NUMERIC)
     private Long roleId;
 

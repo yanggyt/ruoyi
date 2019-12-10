@@ -24,6 +24,7 @@ public class SysDept extends BaseEntity {
      * 部门ID
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deptId;
 
     /**

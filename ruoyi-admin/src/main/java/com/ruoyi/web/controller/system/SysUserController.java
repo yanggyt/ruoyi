@@ -166,13 +166,11 @@ public class SysUserController extends BaseController {
         userService.checkUserAllowed(user);
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
-        if (userService.resetUserPwd(user) > 0) {
-            if (ShiroUtils.getUserId() == user.getUserId()) {
-                ShiroUtils.setSysUser(userService.selectUserById(user.getUserId()));
-            }
-            return success();
+        userService.resetUserPwd(user);
+        if (ShiroUtils.getUserId() == user.getUserId()) {
+            ShiroUtils.setSysUser(userService.selectUserById(user.getUserId()));
         }
-        return error();
+        return success();
     }
 
     @RequiresPermissions("system:user:remove")

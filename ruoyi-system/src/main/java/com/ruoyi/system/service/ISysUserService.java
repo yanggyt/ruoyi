@@ -109,7 +109,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int updateUserInfo(SysUser user);
+    public SysUser updateUserInfo(SysUser user);
 
     /**
      * 修改用户密码信息
@@ -117,7 +117,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int resetUserPwd(SysUser user);
+    public SysUser resetUserPwd(SysUser user);
 
     /**
      * 校验用户名称是否唯一

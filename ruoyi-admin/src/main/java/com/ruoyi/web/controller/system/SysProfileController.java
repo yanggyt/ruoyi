@@ -1,16 +1,5 @@
 package com.ruoyi.web.controller.system;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.config.Global;
 import com.ruoyi.common.core.controller.BaseController;
@@ -22,6 +11,13 @@ import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 个人信息 业务处理
@@ -78,11 +74,9 @@ public class SysProfileController extends BaseController {
         if (StringUtils.isNotEmpty(newPassword) && passwordService.matches(user, oldPassword)) {
             user.setSalt(ShiroUtils.randomSalt());
             user.setPassword(passwordService.encryptPassword(user.getLoginName(), newPassword, user.getSalt()));
-            if (userService.resetUserPwd(user) > 0) {
-                ShiroUtils.setSysUser(userService.selectUserById(user.getUserId()));
-                return success();
-            }
-            return error();
+            user = userService.resetUserPwd(user);
+            ShiroUtils.setSysUser(user);
+            return success();
         } else {
             return error("修改密码失败，旧密码错误");
         }
@@ -120,11 +114,9 @@ public class SysProfileController extends BaseController {
         currentUser.setEmail(user.getEmail());
         currentUser.setPhonenumber(user.getPhonenumber());
         currentUser.setSex(user.getSex());
-        if (userService.updateUserInfo(currentUser) > 0) {
-            ShiroUtils.setSysUser(userService.selectUserById(currentUser.getUserId()));
-            return success();
-        }
-        return error();
+        userService.updateUserInfo(currentUser);
+        ShiroUtils.setSysUser(currentUser);
+        return success();
     }
 
     /**
@@ -139,10 +131,9 @@ public class SysProfileController extends BaseController {
             if (!file.isEmpty()) {
                 String avatar = FileUploadUtils.upload(Global.getAvatarPath(), file);
                 currentUser.setAvatar(avatar);
-                if (userService.updateUserInfo(currentUser) > 0) {
-                    ShiroUtils.setSysUser(userService.selectUserById(currentUser.getUserId()));
-                    return success();
-                }
+                userService.updateUserInfo(currentUser);
+                ShiroUtils.setSysUser(currentUser);
+                return success();
             }
             return error();
         } catch (Exception e) {

@@ -21,30 +21,18 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_user")
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
     private Long userId;
-
-    /**
-     * 部门ID
-     */
-    @Excel(name = "部门编号", type = Type.IMPORT)
-    private Long deptId;
-
-    /**
-     * 部门父ID
-     */
-    private Long parentId;
-
-    /**
-     * 角色ID
-     */
-    private Long roleId;
 
     /**
      * 登录名称
@@ -122,33 +110,23 @@ public class SysUser extends BaseEntity {
             @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
     })
     @ManyToOne
-    @JoinColumn(name = "dept_id", referencedColumnName = "dept_id")
+    @JoinColumn(name = "dept_id", referencedColumnName = "deptId")
     @ForeignKey(name = "none")
     private SysDept dept;
 
     @ManyToMany
     @JoinTable(name = "sys_user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+            joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "roleId"))
     @ForeignKey(name = "none")
     private List<SysRole> roles;
 
     @ManyToMany
     @JoinTable(name = "sys_user_post",
-            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "post_id"),
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
+            inverseJoinColumns = @JoinColumn(name = "postId", referencedColumnName = "postId"),
+            joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
     @org.hibernate.annotations.ForeignKey(name = "none")
     private List<SysPost> posts;
-
-    /**
-     * 角色组
-     */
-    private Long[] roleIds;
-
-    /**
-     * 岗位组
-     */
-    private Long[] postIds;
 
     @Transient
     private Date startTime;
@@ -178,30 +156,6 @@ public class SysUser extends BaseEntity {
 
     public static boolean isAdmin(Long userId) {
         return userId != null && 1L == userId;
-    }
-
-    public Long getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
     }
 
     @NotBlank(message = "登录账号不能为空")
@@ -325,22 +279,6 @@ public class SysUser extends BaseEntity {
         this.roles = roles;
     }
 
-    public Long[] getRoleIds() {
-        return roleIds;
-    }
-
-    public void setRoleIds(Long[] roleIds) {
-        this.roleIds = roleIds;
-    }
-
-    public Long[] getPostIds() {
-        return postIds;
-    }
-
-    public void setPostIds(Long[] postIds) {
-        this.postIds = postIds;
-    }
-
     public List<SysPost> getPosts() {
         return posts;
     }
@@ -369,7 +307,6 @@ public class SysUser extends BaseEntity {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("userId", getUserId())
-                .append("deptId", getDeptId())
                 .append("loginName", getLoginName())
                 .append("userName", getUserName())
                 .append("email", getEmail())
