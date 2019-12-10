@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * 角色表 sys_role
@@ -79,6 +80,13 @@ public class SysRole extends BaseEntity {
      * 部门组（数据权限）
      */
     private Long[] deptIds;
+
+    @OneToMany
+    @JoinTable(name = "sys_role_dept",
+            joinColumns = @JoinColumn(name = "roleId", referencedColumnName = "roleId"),
+            inverseJoinColumns = @JoinColumn(name = "deptId", referencedColumnName = "deptId"))
+    @org.hibernate.annotations.ForeignKey(name = "none")
+    private List<SysDept> depts;
 
     public SysRole() {
 
@@ -179,6 +187,14 @@ public class SysRole extends BaseEntity {
 
     public void setDeptIds(Long[] deptIds) {
         this.deptIds = deptIds;
+    }
+
+    public List<SysDept> getDepts() {
+        return depts;
+    }
+
+    public void setDepts(List<SysDept> depts) {
+        this.depts = depts;
     }
 
     public String toString() {

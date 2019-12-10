@@ -5,6 +5,7 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.Ztree;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysDept;
@@ -41,9 +42,8 @@ public class SysDeptController extends BaseController {
     @RequiresPermissions("system:dept:list")
     @PostMapping("/list")
     @ResponseBody
-    public List<SysDept> list(SysDept dept) {
-        List<SysDept> deptList = deptService.selectDeptList(dept);
-        return deptList;
+    public TableDataInfo list(SysDept dept) {
+        return getDataTable(deptService.selectDeptList(dept, getPageRequest()));
     }
 
     /**
@@ -67,7 +67,7 @@ public class SysDeptController extends BaseController {
             return error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
         }
         dept.setCreateBy(ShiroUtils.getLoginName());
-        return toAjax(deptService.insertDept(dept));
+        return success(deptService.insertDept(dept));
     }
 
     /**
@@ -94,7 +94,8 @@ public class SysDeptController extends BaseController {
             return error("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
         }
         dept.setUpdateBy(ShiroUtils.getLoginName());
-        return toAjax(deptService.updateDept(dept));
+        deptService.updateDept(dept);
+        return success();
     }
 
     /**
@@ -105,13 +106,14 @@ public class SysDeptController extends BaseController {
     @GetMapping("/remove/{deptId}")
     @ResponseBody
     public AjaxResult remove(@PathVariable("deptId") Long deptId) {
-        if (deptService.selectDeptCount(deptId) > 0) {
+        if (deptService.countChildren(deptId) > 0) {
             return AjaxResult.warn("存在下级部门,不允许删除");
         }
         if (deptService.checkDeptExistUser(deptId)) {
             return AjaxResult.warn("部门存在用户,不允许删除");
         }
-        return toAjax(deptService.deleteDeptById(deptId));
+        deptService.deleteDeptById(deptId);
+        return success();
     }
 
     /**

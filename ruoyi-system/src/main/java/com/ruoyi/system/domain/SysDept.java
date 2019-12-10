@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 /**
  * 部门表 sys_dept
@@ -18,6 +19,11 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "sys_dept")
 public class SysDept extends BaseEntity {
+
+    public static final Long ROOT_ID = 1L;
+    public static final String STATUS_NORMAL = "0";
+    public static final String STATUS_DISABLED = "1";
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -31,11 +37,6 @@ public class SysDept extends BaseEntity {
      * 编码，父001 -> 子001001 -> 孙 001001001 格式编码
      */
     private String code;
-
-    /**
-     * 祖级列表
-     */
-    private String ancestors;
 
     /**
      * 部门名称
@@ -70,7 +71,7 @@ public class SysDept extends BaseEntity {
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    private String delFlag;
+    private String delFlag = NOT_DELETED;
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
@@ -83,14 +84,6 @@ public class SysDept extends BaseEntity {
 
     public void setDeptId(Long deptId) {
         this.deptId = deptId;
-    }
-
-    public String getAncestors() {
-        return ancestors;
-    }
-
-    public void setAncestors(String ancestors) {
-        this.ancestors = ancestors;
     }
 
     @NotBlank(message = "部门名称不能为空")
@@ -175,7 +168,7 @@ public class SysDept extends BaseEntity {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("deptId", getDeptId())
-                .append("ancestors", getAncestors())
+                .append("code", getCode())
                 .append("deptName", getDeptName())
                 .append("orderNum", getOrderNum())
                 .append("leader", getLeader())
@@ -196,5 +189,27 @@ public class SysDept extends BaseEntity {
             return null;
         }
         return parent.getDeptId();
+    }
+
+    public SysDept(){
+        super();
+    }
+
+    public SysDept(Long deptId){
+        this();
+        setDeptId(deptId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SysDept dept = (SysDept) o;
+        return Objects.equals(deptId, dept.deptId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deptId);
     }
 }

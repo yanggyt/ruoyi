@@ -1,5 +1,6 @@
 package com.ruoyi.system.repository;
 
+import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.repository.base.BaseRepository;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,5 @@ public interface SysUserRepository extends BaseRepository<SysUser, Long> {
 
     SysUser findFirstByDelFlagAndEmail(String delFlag, String email);
 
+    int countByDelFlagAndDept(String delFlag, SysDept dept);
 }

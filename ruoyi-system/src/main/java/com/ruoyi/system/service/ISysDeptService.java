@@ -1,10 +1,12 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysRole;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * 部门管理 服务层
@@ -18,7 +20,7 @@ public interface ISysDeptService {
      * @param dept 部门信息
      * @return 部门信息集合
      */
-    public List<SysDept> selectDeptList(SysDept dept);
+    public Page<SysDept> selectDeptList(SysDept dept, Pageable pageable);
 
     /**
      * 查询部门管理树
@@ -37,12 +39,12 @@ public interface ISysDeptService {
     public List<Ztree> roleDeptTreeData(SysRole role);
 
     /**
-     * 查询部门人数
+     * 查询下级部门数量
      *
-     * @param parentId 父部门ID
+     * @param deptId 部门ID
      * @return 结果
      */
-    public int selectDeptCount(Long parentId);
+    public int countChildren(Long deptId);
 
     /**
      * 查询部门是否存在用户
@@ -58,7 +60,7 @@ public interface ISysDeptService {
      * @param deptId 部门ID
      * @return 结果
      */
-    public int deleteDeptById(Long deptId);
+    public void deleteDeptById(Long deptId);
 
     /**
      * 新增保存部门信息
@@ -66,7 +68,7 @@ public interface ISysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    public int insertDept(SysDept dept);
+    public SysDept insertDept(SysDept dept);
 
     /**
      * 修改保存部门信息
@@ -74,7 +76,7 @@ public interface ISysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    public int updateDept(SysDept dept);
+    public SysDept updateDept(SysDept dept);
 
     /**
      * 根据部门ID查询信息
