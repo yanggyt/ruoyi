@@ -1,12 +1,13 @@
 package com.ruoyi.system.service.impl;
 
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysPost;
-import com.ruoyi.system.mapper.SysUserPostMapper;
 import com.ruoyi.system.repository.SysPostRepository;
+import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,9 +33,8 @@ public class SysPostServiceImpl implements ISysPostService {
 
     @Autowired
     private SysPostRepository sysPostRepository;
-
     @Autowired
-    private SysUserPostMapper userPostMapper;
+    private SysUserRepository sysUserRepository;
 
     /**
      * 查询岗位信息集合
@@ -140,7 +140,7 @@ public class SysPostServiceImpl implements ISysPostService {
      */
     @Override
     public int countUserPostById(Long postId) {
-        return userPostMapper.countUserPostById(postId);
+        return sysUserRepository.countByDelFlagAndPostsContaining(BaseEntity.NOT_DELETED, new SysPost(postId));
     }
 
     /**

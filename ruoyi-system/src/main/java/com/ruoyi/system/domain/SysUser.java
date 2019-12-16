@@ -14,7 +14,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 用户对象 sys_user
@@ -114,19 +115,19 @@ public class SysUser extends BaseEntity {
     @ForeignKey(name = "none")
     private SysDept dept;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sys_user_role",
             joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"),
             inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "roleId"))
     @ForeignKey(name = "none")
-    private List<SysRole> roles;
+    private Set<SysRole> roles = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sys_user_post",
             inverseJoinColumns = @JoinColumn(name = "postId", referencedColumnName = "postId"),
             joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
     @org.hibernate.annotations.ForeignKey(name = "none")
-    private List<SysPost> posts;
+    private Set<SysPost> posts = new HashSet<>();
 
     @Transient
     private Date startTime;
@@ -271,19 +272,19 @@ public class SysUser extends BaseEntity {
         this.dept = dept;
     }
 
-    public List<SysRole> getRoles() {
+    public Set<SysRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<SysRole> roles) {
+    public void setRoles(Set<SysRole> roles) {
         this.roles = roles;
     }
 
-    public List<SysPost> getPosts() {
+    public Set<SysPost> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<SysPost> posts) {
+    public void setPosts(Set<SysPost> posts) {
         this.posts = posts;
     }
 

@@ -175,6 +175,11 @@ public class SysUserServiceImpl implements ISysUserService {
         return sysUserRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("无效的数据"));
     }
 
+    @Override
+    public SysUser selectUserWithRolesAndPostsById(Long userId) {
+        return sysUserRepository.findSysUserByDelFlagAndUserId(BaseEntity.NOT_DELETED, userId);
+    }
+
     /**
      * 通过用户ID删除用户
      *

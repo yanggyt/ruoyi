@@ -70,6 +70,8 @@ public interface ISysUserService {
      */
     public SysUser selectUserById(Long userId);
 
+    public SysUser selectUserWithRolesAndPostsById(Long userId);
+
     /**
      * 通过用户ID删除用户
      *

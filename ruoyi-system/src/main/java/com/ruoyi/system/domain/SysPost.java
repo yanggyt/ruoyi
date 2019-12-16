@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 /**
  * 岗位表 sys_post
@@ -143,5 +144,26 @@ public class SysPost extends BaseEntity {
                 .append("updateTime", getUpdateTime())
                 .append("remark", getRemark())
                 .toString();
+    }
+
+    public SysPost() {
+    }
+
+    public SysPost(Long postId){
+        super();
+        setPostId(postId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SysPost sysPost = (SysPost) o;
+        return Objects.equals(postId, sysPost.postId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(postId);
     }
 }
