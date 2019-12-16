@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import org.slf4j.Logger;
@@ -42,11 +43,21 @@ public class SysProfileController extends BaseController {
      */
     @GetMapping()
     public String profile(ModelMap mmap) {
-        SysUser user = ShiroUtils.getSysUser();
+        SysUser user = userService.selectUserWithRolesAndPostsById(ShiroUtils.getUserId());
         mmap.put("user", user);
-        mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
-        mmap.put("postGroup", userService.selectUserPostGroup(user.getUserId()));
+        mmap.put("postGroup", concat(user));
         return prefix + "/profile";
+    }
+
+    private String concat(SysUser user){
+        StringBuffer idsStr = new StringBuffer();
+        for (SysPost post : user.getPosts()) {
+            idsStr.append(post.getPostName()).append(",");
+        }
+        if (StringUtils.isNotEmpty(idsStr.toString())) {
+            return idsStr.substring(0, idsStr.length() - 1);
+        }
+        return idsStr.toString();
     }
 
     @GetMapping("/checkPassword")

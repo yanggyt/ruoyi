@@ -36,7 +36,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectUnallocatedList(SysUser user);
+    public Page<SysUser> selectUnallocatedList(SysUser user, Pageable pageable);
 
     /**
      * 通过用户名查询用户
@@ -103,7 +103,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int updateUser(SysUser user);
+    public SysUser updateUser(SysUser user);
 
     /**
      * 修改用户详细信息
@@ -153,22 +153,6 @@ public interface ISysUserService {
     public void checkUserAllowed(SysUser user);
 
     /**
-     * 根据用户ID查询用户所属角色组
-     *
-     * @param userId 用户ID
-     * @return 结果
-     */
-    public String selectUserRoleGroup(Long userId);
-
-    /**
-     * 根据用户ID查询用户所属岗位组
-     *
-     * @param userId 用户ID
-     * @return 结果
-     */
-    public String selectUserPostGroup(Long userId);
-
-    /**
      * 导入用户数据
      *
      * @param userList        用户数据列表
@@ -184,5 +168,5 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int changeStatus(SysUser user);
+    public void changeStatus(SysUser user);
 }

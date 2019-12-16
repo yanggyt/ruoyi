@@ -5,6 +5,8 @@ import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -22,4 +24,16 @@ public interface SysUserRepository extends BaseRepository<SysUser, Long> {
 
     @EntityGraph(attributePaths = {"roles", "posts"})
     SysUser findSysUserByDelFlagAndUserId(String delFlag, Long userId);
+
+    int countByLoginName(String loginName);
+
+    SysUser findFirstByPhonenumber(String phone);
+
+    SysUser findFirstByEmail(String email);
+
+    SysUser findFirstByLoginName(String loginName);
+
+    @Modifying
+    @Query("update SysUser u set u.status = ?1 where u.userId = ?2")
+    void changeStatus(String status, Long userId);
 }

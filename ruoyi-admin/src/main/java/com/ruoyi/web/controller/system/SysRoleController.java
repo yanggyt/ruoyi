@@ -250,9 +250,7 @@ public class SysRoleController extends BaseController {
     @PostMapping("/authUser/unallocatedList")
     @ResponseBody
     public TableDataInfo unallocatedList(SysUser user) {
-        startPage();
-        List<SysUser> list = userService.selectUnallocatedList(user);
-        return getDataTable(list);
+        return getDataTable(userService.selectUnallocatedList(user, getPageRequest()));
     }
 
     /**
