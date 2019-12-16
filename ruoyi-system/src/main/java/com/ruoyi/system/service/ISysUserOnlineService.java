@@ -1,9 +1,11 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.SysUserOnline;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Date;
 import java.util.List;
-
-import com.ruoyi.system.domain.SysUserOnline;
 
 /**
  * 在线用户 服务层
@@ -40,7 +42,7 @@ public interface ISysUserOnlineService {
      *
      * @param online 会话信息
      */
-    public void saveOnline(SysUserOnline online);
+    public SysUserOnline saveOnline(SysUserOnline online);
 
     /**
      * 查询会话集合
@@ -48,7 +50,7 @@ public interface ISysUserOnlineService {
      * @param userOnline 分页参数
      * @return 会话集合
      */
-    public List<SysUserOnline> selectUserOnlineList(SysUserOnline userOnline);
+    public Page<SysUserOnline> selectUserOnlineList(SysUserOnline userOnline, Pageable pageable);
 
     /**
      * 强退用户

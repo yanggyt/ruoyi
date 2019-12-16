@@ -1,15 +1,5 @@
 package com.ruoyi.web.controller.monitor;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -21,6 +11,10 @@ import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.service.ISysUserOnlineService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 在线用户监控
@@ -48,9 +42,7 @@ public class SysUserOnlineController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(SysUserOnline userOnline) {
-        startPage();
-        List<SysUserOnline> list = userOnlineService.selectUserOnlineList(userOnline);
-        return getDataTable(list);
+        return getDataTable(userOnlineService.selectUserOnlineList(userOnline, getPageRequest()));
     }
 
     @RequiresPermissions("monitor:online:batchForceLogout")

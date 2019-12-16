@@ -1,15 +1,23 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysUserOnline;
-import com.ruoyi.system.mapper.SysUserOnlineMapper;
+import com.ruoyi.system.repository.SysUserOnlineRepository;
 import com.ruoyi.system.service.ISysUserOnlineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 在线用户 服务层处理
@@ -18,8 +26,9 @@ import com.ruoyi.system.service.ISysUserOnlineService;
  */
 @Service
 public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
+
     @Autowired
-    private SysUserOnlineMapper userOnlineDao;
+    private SysUserOnlineRepository sysUserOnlineRepository;
 
     /**
      * 通过会话序号查询信息
@@ -29,7 +38,7 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
      */
     @Override
     public SysUserOnline selectOnlineById(String sessionId) {
-        return userOnlineDao.selectOnlineById(sessionId);
+        return sysUserOnlineRepository.findById(sessionId).orElse(null);
     }
 
     /**
@@ -38,12 +47,10 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
      * @param sessionId 会话ID
      * @return 在线用户信息
      */
+    @Transactional
     @Override
     public void deleteOnlineById(String sessionId) {
-        SysUserOnline userOnline = selectOnlineById(sessionId);
-        if (StringUtils.isNotNull(userOnline)) {
-            userOnlineDao.deleteOnlineById(sessionId);
-        }
+        sysUserOnlineRepository.deleteById(sessionId);
     }
 
     /**
@@ -52,13 +59,11 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
      * @param sessions 会话ID集合
      * @return 在线用户信息
      */
+    @Transactional
     @Override
     public void batchDeleteOnline(List<String> sessions) {
         for (String sessionId : sessions) {
-            SysUserOnline userOnline = selectOnlineById(sessionId);
-            if (StringUtils.isNotNull(userOnline)) {
-                userOnlineDao.deleteOnlineById(sessionId);
-            }
+            deleteOnlineById(sessionId);
         }
     }
 
@@ -68,8 +73,8 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
      * @param online 会话信息
      */
     @Override
-    public void saveOnline(SysUserOnline online) {
-        userOnlineDao.saveOnline(online);
+    public SysUserOnline saveOnline(SysUserOnline online) {
+        return sysUserOnlineRepository.save(online);
     }
 
     /**
@@ -78,8 +83,24 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
      * @param userOnline 在线用户
      */
     @Override
-    public List<SysUserOnline> selectUserOnlineList(SysUserOnline userOnline) {
-        return userOnlineDao.selectUserOnlineList(userOnline);
+    public Page<SysUserOnline> selectUserOnlineList(SysUserOnline userOnline, Pageable pageable) {
+        return sysUserOnlineRepository.findAll(getSpecification(userOnline), pageable);
+    }
+
+    private Specification<SysUserOnline> getSpecification(SysUserOnline userOnline){
+        return new Specification<SysUserOnline>() {
+            @Override
+            public Predicate toPredicate(Root<SysUserOnline> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if(StringUtils.isNotEmpty(userOnline.getIpaddr())){
+                    predicates.add(criteriaBuilder.like(root.get("ipaddr").as(String.class), "%" + userOnline.getIpaddr() + "%"));
+                }
+                if(StringUtils.isNotEmpty(userOnline.getLoginName())){
+                    predicates.add(criteriaBuilder.like(root.get("loginName").as(String.class), "%" + userOnline.getLoginName() + "%"));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
     }
 
     /**
@@ -87,9 +108,10 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
      *
      * @param sessionId 会话ID
      */
+    @Transactional
     @Override
     public void forceLogout(String sessionId) {
-        userOnlineDao.deleteOnlineById(sessionId);
+        deleteOnlineById(sessionId);
     }
 
     /**
@@ -99,7 +121,6 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
      */
     @Override
     public List<SysUserOnline> selectOnlineByExpired(Date expiredDate) {
-        String lastAccessTime = DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, expiredDate);
-        return userOnlineDao.selectOnlineByExpired(lastAccessTime);
+        return sysUserOnlineRepository.findByLastAccessTimeLessThanEqual(expiredDate);
     }
 }

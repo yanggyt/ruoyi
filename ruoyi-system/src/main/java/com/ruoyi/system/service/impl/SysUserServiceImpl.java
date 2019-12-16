@@ -9,7 +9,6 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
-import com.ruoyi.system.mapper.SysUserMapper;
 import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
@@ -39,9 +38,6 @@ import java.util.Set;
 @Service
 public class SysUserServiceImpl implements ISysUserService {
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
-
-    @Autowired
-    private SysUserMapper userMapper;
 
     @Autowired
     private SysUserRepository sysUserRepository;

@@ -547,7 +547,7 @@ create table sys_logininfor (
 -- ----------------------------
 drop table if exists sys_user_online;
 create table sys_user_online (
-  sessionId         varchar(50)   default ''                comment '用户会话id',
+  session_id         varchar(50)   default ''                comment '用户会话id',
   login_name        varchar(50)   default ''                comment '登录账号',
   dept_name         varchar(50)   default ''                comment '部门名称',
   ipaddr            varchar(50)   default ''                comment '登录IP地址',
@@ -558,7 +558,7 @@ create table sys_user_online (
   start_timestamp   datetime                                comment 'session创建时间',
   last_access_time  datetime                                comment 'session最后访问时间',
   expire_time       int(5)        default 0                 comment '超时时间，单位为分钟',
-  primary key (sessionId)
+  primary key (session_id)
 ) engine=innodb comment = '在线用户记录';
 
 

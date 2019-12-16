@@ -1,23 +1,29 @@
 package com.ruoyi.system.domain;
 
-import java.util.Date;
-
+import com.ruoyi.common.enums.OnlineStatus;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.common.enums.OnlineStatus;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 当前在线会话 sys_user_online
  *
  * @author ruoyi
  */
-public class SysUserOnline extends BaseEntity {
+@Entity
+@Table(name = "sys_user_online")
+public class SysUserOnline implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户会话id
      */
+    @Id
     private String sessionId;
 
     /**
