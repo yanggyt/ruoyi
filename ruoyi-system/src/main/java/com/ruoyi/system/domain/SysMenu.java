@@ -1,35 +1,36 @@
 package com.ruoyi.system.domain;
 
-import java.util.List;
-import java.util.ArrayList;
-import javax.validation.constraints.*;
-
+import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.core.domain.BaseEntity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 菜单权限表 sys_menu
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_menu")
 public class SysMenu extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 菜单ID
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long menuId;
 
     /**
      * 菜单名称
      */
     private String menuName;
-
-    /**
-     * 父菜单名称
-     */
-    private String parentName;
 
     /**
      * 父菜单ID
@@ -74,6 +75,9 @@ public class SysMenu extends BaseEntity {
     /**
      * 子菜单
      */
+    @OneToMany
+    @JoinColumn(name = "parentId")
+    @org.hibernate.annotations.ForeignKey(name = "none")
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
     public Long getMenuId() {
@@ -92,14 +96,6 @@ public class SysMenu extends BaseEntity {
 
     public void setMenuName(String menuName) {
         this.menuName = menuName;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
     }
 
     public Long getParentId() {
