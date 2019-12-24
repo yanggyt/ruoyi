@@ -149,9 +149,11 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public List<SysMenu> selectMenuAll(Long userId) {
         List<SysMenu> menuList = null;
         if (SysUser.isAdmin(userId)) {
-            menuList = menuMapper.selectMenuAll();
+            menuList = sysMenuRepository.findAll();
         } else {
-            menuList = menuMapper.selectMenuAllByUserId(userId);
+            SysUser user = sysUserRepository.findSysUserByDelFlagAndUserId(BaseEntity.NOT_DELETED, userId);
+            Set<SysRole> roles = user.getRoles();
+            menuList = sysMenuRepository.findAll(getSpecification(new SysMenu(), roles));
         }
         return menuList;
     }

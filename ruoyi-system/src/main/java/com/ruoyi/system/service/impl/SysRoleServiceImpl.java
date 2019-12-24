@@ -9,8 +9,8 @@ import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.mapper.SysRoleDeptMapper;
 import com.ruoyi.system.mapper.SysRoleMapper;
-import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.mapper.SysUserRoleMapper;
+import com.ruoyi.system.repository.SysRoleRepository;
 import com.ruoyi.system.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,13 +29,13 @@ public class SysRoleServiceImpl implements ISysRoleService {
     private SysRoleMapper roleMapper;
 
     @Autowired
-    private SysRoleMenuMapper roleMenuMapper;
-
-    @Autowired
     private SysUserRoleMapper userRoleMapper;
 
     @Autowired
     private SysRoleDeptMapper roleDeptMapper;
+
+    @Autowired
+    private SysRoleRepository sysRoleRepository;
 
     /**
      * 根据条件分页查询角色数据
@@ -105,7 +105,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      */
     @Override
     public SysRole selectRoleById(Long roleId) {
-        return roleMapper.selectRoleById(roleId);
+        return sysRoleRepository.findById(roleId).get();
     }
 
     /**
@@ -161,10 +161,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Transactional
     public int updateRole(SysRole role) {
         // 修改角色信息
-        roleMapper.updateRole(role);
-        // 删除角色与菜单关联
-        roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
-        return insertRoleMenu(role);
+        sysRoleRepository.save(role);
+        return 1;
     }
 
     /**
