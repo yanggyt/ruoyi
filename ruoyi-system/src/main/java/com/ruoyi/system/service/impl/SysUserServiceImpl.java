@@ -13,6 +13,7 @@ import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -228,7 +229,9 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     @Transactional
     public SysUser updateUser(SysUser user) {
-        return sysUserRepository.save(user);
+        SysUser db = sysUserRepository.findById(user.getUserId()).get();
+        BeanUtils.copyProperties(user, db, "delFlag", "loginDate", "loginIp", "salt", "password", "avatar");
+        return sysUserRepository.save(db);
     }
 
     /**

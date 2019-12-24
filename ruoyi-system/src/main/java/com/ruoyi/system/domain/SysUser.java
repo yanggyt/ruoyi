@@ -7,7 +7,9 @@ import com.ruoyi.common.annotation.Excels;
 import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -24,6 +26,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "sys_user")
+@DynamicUpdate
+@SelectBeforeUpdate
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
