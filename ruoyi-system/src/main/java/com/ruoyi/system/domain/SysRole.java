@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * 角色表 sys_role
@@ -72,22 +73,19 @@ public class SysRole extends BaseEntity {
     @Transient
     private boolean flag = false;
 
-    /**
-     * 菜单组
-     */
-    private Long[] menuIds;
-
-    /**
-     * 部门组（数据权限）
-     */
-    private Long[] deptIds;
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sys_role_dept",
             joinColumns = @JoinColumn(name = "roleId", referencedColumnName = "roleId"),
             inverseJoinColumns = @JoinColumn(name = "deptId", referencedColumnName = "deptId"))
     @org.hibernate.annotations.ForeignKey(name = "none")
     private List<SysDept> depts;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "sys_role_menu",
+            joinColumns = @JoinColumn(name = "roleId", referencedColumnName = "roleId"),
+            inverseJoinColumns = @JoinColumn(name = "menuId", referencedColumnName = "menuId"))
+    @org.hibernate.annotations.ForeignKey(name = "none")
+    private Set<SysMenu> menus;
 
     public SysRole() {
 
@@ -174,28 +172,20 @@ public class SysRole extends BaseEntity {
         this.flag = flag;
     }
 
-    public Long[] getMenuIds() {
-        return menuIds;
-    }
-
-    public void setMenuIds(Long[] menuIds) {
-        this.menuIds = menuIds;
-    }
-
-    public Long[] getDeptIds() {
-        return deptIds;
-    }
-
-    public void setDeptIds(Long[] deptIds) {
-        this.deptIds = deptIds;
-    }
-
     public List<SysDept> getDepts() {
         return depts;
     }
 
     public void setDepts(List<SysDept> depts) {
         this.depts = depts;
+    }
+
+    public Set<SysMenu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(Set<SysMenu> menus) {
+        this.menus = menus;
     }
 
     public String toString() {

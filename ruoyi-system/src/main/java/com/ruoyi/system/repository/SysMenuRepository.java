@@ -11,4 +11,5 @@ import java.util.List;
 public interface SysMenuRepository extends BaseRepository<SysMenu, Long> {
 
     List<SysMenu> findAllByMenuTypeInAndVisibleOrderByOrderNum(Collection<String> types, String visiable);
+
 }

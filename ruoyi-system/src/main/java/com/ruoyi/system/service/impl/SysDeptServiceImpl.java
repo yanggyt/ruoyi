@@ -47,7 +47,6 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 部门信息集合
      */
     @Override
-    @DataScope(deptAlias = "d")
     public Page<SysDept> selectDeptList(SysDept dept, Pageable pageable) {
         return sysDeptRepository.findAll(getSpecification(dept), pageable);
     }
@@ -81,7 +80,6 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 所有部门信息
      */
     @Override
-    @DataScope(deptAlias = "d")
     public List<Ztree> selectDeptTree(SysDept dept) {
         List<SysDept> deptList = sysDeptRepository.findAll(getSpecification(dept));
         List<Ztree> ztrees = initZtree(deptList);

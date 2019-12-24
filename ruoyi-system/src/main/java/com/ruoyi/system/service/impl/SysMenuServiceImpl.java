@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import com.google.common.collect.Lists;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysMenu;
@@ -10,18 +11,14 @@ import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.mapper.SysMenuMapper;
 import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.repository.SysMenuRepository;
+import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.sql.Types;
+import javax.persistence.criteria.*;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -41,6 +38,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Autowired
     private SysMenuRepository sysMenuRepository;
     @Autowired
+    private SysUserRepository sysUserRepository;
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -57,17 +56,29 @@ public class SysMenuServiceImpl implements ISysMenuService {
             menus = sysMenuRepository.findAllByMenuTypeInAndVisibleOrderByOrderNum(
                     Lists.newArrayList(SysMenu.MENU_TYPE_PRIMARY, SysMenu.MENU_TYPE_SECONDARY), SysMenu.MENU_VISIABLE);
         } else {
-            String sql = "select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type, m.icon, m.order_num, m.create_time " +
-                    " from sys_menu m " +
-                    " left join sys_role_menu rm on m.menu_id = rm.menu_id " +
-                    " left join sys_user_role ur on rm.role_id = ur.role_id " +
-                    " LEFT JOIN sys_role ro on ur.role_id = ro.role_id " +
-                    " where ur.user_id = ? and m.menu_type in (?, ?) and m.visible = ?  AND ro.status = 0 " +
-                    " order by m.parent_id, m.order_num ";
-            menus = jdbcTemplate.query(sql,
-                    new Object[]{user.getUserId(), SysMenu.MENU_TYPE_PRIMARY, SysMenu.MENU_TYPE_SECONDARY, SysMenu.MENU_VISIABLE},
-                    new int[]{Types.BIGINT, Types.CHAR, Types.CHAR, Types.CHAR},
-                    new BeanPropertyRowMapper<SysMenu>());
+            user = sysUserRepository.findSysUserByDelFlagAndUserId(BaseEntity.NOT_DELETED, user.getUserId());
+            Set<SysRole> roles = user.getRoles();
+            menus = sysMenuRepository.findAll(new Specification<SysMenu>() {
+                @Override
+                public Predicate toPredicate(Root<SysMenu> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                    List<Predicate> predicates = new ArrayList<>();
+                    if(!roles.isEmpty()){
+                        for(SysRole role : roles){
+                            predicates.add(criteriaBuilder.isMember(role, root.get("roles")));
+                        }
+                    }
+
+                    Expression<String> type = root.get("menuType").as(String.class);
+                    CriteriaBuilder.In<String> in = criteriaBuilder.in(type);
+                    in.value(SysMenu.MENU_TYPE_PRIMARY);
+                    in.value(SysMenu.MENU_TYPE_SECONDARY);
+                    predicates.add(in);
+
+                    predicates.add(criteriaBuilder.equal(root.get("visible").as(String.class), SysMenu.MENU_VISIABLE));
+                    query.orderBy(criteriaBuilder.asc(root.get("orderNum").as(String.class)));
+                    return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                }
+            });
         }
         return getChildPerms(menus, SysMenu.ROOT_ID);
     }
@@ -81,19 +92,42 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public List<SysMenu> selectMenuList(SysMenu menu, Long userId) {
         List<SysMenu> menuList = null;
         if (SysUser.isAdmin(userId)) {
-            menuList = sysMenuRepository.findAll(getSpecification(menu));
+            menuList = sysMenuRepository.findAll(getSpecificationForAdmin(menu));
         } else {
-            menu.getParams().put("userId", userId);
-            menuList = menuMapper.selectMenuListByUserId(menu);
+            SysUser user = sysUserRepository.findSysUserByDelFlagAndUserId(BaseEntity.NOT_DELETED, userId);
+            Set<SysRole> roles = user.getRoles();
+            menuList = sysMenuRepository.findAll(getSpecification(menu, roles));
         }
         return menuList;
     }
 
-    private Specification<SysMenu> getSpecification(SysMenu sysMenu){
+    private Specification<SysMenu> getSpecificationForAdmin(SysMenu sysMenu){
         return new Specification<SysMenu>() {
             @Override
             public Predicate toPredicate(Root<SysMenu> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
+                if(StringUtils.isNotEmpty(sysMenu.getMenuName())){
+                    predicates.add(criteriaBuilder.like(root.get("menuName").as(String.class), "%" + sysMenu.getMenuName() + "%"));
+                }
+                if(StringUtils.isNotEmpty(sysMenu.getVisible())){
+                    predicates.add(criteriaBuilder.equal(root.get("visible").as(String.class), sysMenu.getVisible()));
+                }
+                query.orderBy(criteriaBuilder.asc(root.get("orderNum").as(String.class)));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+    }
+
+    private Specification<SysMenu> getSpecification(SysMenu sysMenu, Set<SysRole> roles){
+        return new Specification<SysMenu>() {
+            @Override
+            public Predicate toPredicate(Root<SysMenu> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if(!roles.isEmpty()){
+                    for(SysRole role : roles){
+                        predicates.add(criteriaBuilder.isMember(role, root.get("roles")));
+                    }
+                }
                 if(StringUtils.isNotEmpty(sysMenu.getMenuName())){
                     predicates.add(criteriaBuilder.like(root.get("menuName").as(String.class), "%" + sysMenu.getMenuName() + "%"));
                 }

@@ -1,6 +1,5 @@
 package com.ruoyi.system.service.impl;
 
-import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.text.Convert;
@@ -53,7 +52,6 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return 用户信息集合信息
      */
     @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
     public Page<SysUser> selectUserList(SysUser user, Pageable pageRequest) {
         return sysUserRepository.findAll(getSpecification(user), pageRequest);
     }
@@ -99,7 +97,6 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param pageRequest
      * @return 用户信息集合信息
      */
-    @DataScope(deptAlias = "d", userAlias = "u")
     public Page<SysUser> selectAllocatedList(SysUser user, Pageable pageRequest) {
         return sysUserRepository.findAll(getSpecification(user), pageRequest);
     }
@@ -110,7 +107,6 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param sysUser 用户信息
      * @return 用户信息集合信息
      */
-    @DataScope(deptAlias = "d", userAlias = "u")
     public Page<SysUser> selectUnallocatedList(SysUser sysUser, Pageable pageable) {
         return sysUserRepository.findAll(new Specification<SysUser>() {
             @Override
@@ -252,9 +248,13 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
+    @Transactional
     @Override
     public SysUser resetUserPwd(SysUser user) {
-        return updateUserInfo(user);
+        SysUser db = sysUserRepository.findById(user.getUserId()).get();
+        db.setSalt(user.getSalt());
+        db.setPassword(user.getPassword());
+        return db;
     }
 
     /**

@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 菜单权限表 sys_menu
@@ -78,6 +79,10 @@ public class SysMenu extends BaseEntity {
     @JoinColumn(name = "parentId", referencedColumnName = "menuId")
     @org.hibernate.annotations.ForeignKey(name = "none")
     private SysMenu parent;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "menus")
+    @org.hibernate.annotations.ForeignKey(name = "none")
+    private Set<SysRole> roles;
 
     /**
      * 子菜单
@@ -185,6 +190,14 @@ public class SysMenu extends BaseEntity {
 
     public void setParent(SysMenu parent) {
         this.parent = parent;
+    }
+
+    public Set<SysRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<SysRole> roles) {
+        this.roles = roles;
     }
 
     @Override
