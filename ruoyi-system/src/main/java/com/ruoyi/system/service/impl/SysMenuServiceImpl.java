@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.impl;
 
+import com.google.common.collect.Lists;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.utils.StringUtils;
@@ -11,8 +12,11 @@ import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.repository.SysMenuRepository;
 import com.ruoyi.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Types;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -31,6 +35,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
     private SysRoleMenuMapper roleMenuMapper;
     @Autowired
     private SysMenuRepository sysMenuRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 根据用户查询菜单
@@ -43,11 +49,22 @@ public class SysMenuServiceImpl implements ISysMenuService {
         List<SysMenu> menus = new LinkedList<SysMenu>();
         // 管理员显示所有菜单信息
         if (user.isAdmin()) {
-            menus = menuMapper.selectMenuNormalAll();
+            menus = sysMenuRepository.findAllByMenuTypeInAndVisibleOrderByOrderNum(
+                    Lists.newArrayList(SysMenu.MENU_TYPE_PRIMARY, SysMenu.MENU_TYPE_SECONDARY), SysMenu.MENU_VISIABLE);
         } else {
-            menus = menuMapper.selectMenusByUserId(user.getUserId());
+            String sql = "select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type, m.icon, m.order_num, m.create_time " +
+                    " from sys_menu m " +
+                    " left join sys_role_menu rm on m.menu_id = rm.menu_id " +
+                    " left join sys_user_role ur on rm.role_id = ur.role_id " +
+                    " LEFT JOIN sys_role ro on ur.role_id = ro.role_id " +
+                    " where ur.user_id = ? and m.menu_type in (?, ?) and m.visible = ?  AND ro.status = 0 " +
+                    " order by m.parent_id, m.order_num ";
+            menus = jdbcTemplate.query(sql,
+                    new Object[]{user.getUserId(), SysMenu.MENU_TYPE_PRIMARY, SysMenu.MENU_TYPE_SECONDARY, SysMenu.MENU_VISIABLE},
+                    new int[]{Types.BIGINT, Types.CHAR, Types.CHAR, Types.CHAR},
+                    new BeanPropertyRowMapper<SysMenu>());
         }
-        return getChildPerms(menus, 0);
+        return getChildPerms(menus, SysMenu.ROOT_ID);
     }
 
     /**
@@ -283,12 +300,12 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @param parentId 传入的父节点ID
      * @return String
      */
-    public List<SysMenu> getChildPerms(List<SysMenu> list, int parentId) {
+    public List<SysMenu> getChildPerms(List<SysMenu> list, Long parentId) {
         List<SysMenu> returnList = new ArrayList<SysMenu>();
         for (Iterator<SysMenu> iterator = list.iterator(); iterator.hasNext(); ) {
             SysMenu t = (SysMenu) iterator.next();
             // 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
-            if (t.getParentId() == parentId) {
+            if((parentId == null && t.getParentId() == null) || (parentId != null && t.getParentId() != null && parentId.equals(t.getParentId()))){
                 recursionFn(list, t);
                 returnList.add(t);
             }
@@ -326,7 +343,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
         Iterator<SysMenu> it = list.iterator();
         while (it.hasNext()) {
             SysMenu n = (SysMenu) it.next();
-            if (n.getParentId().longValue() == t.getMenuId().longValue()) {
+            if (t.getMenuId().equals(n.getParentId())) {
                 tlist.add(n);
             }
         }

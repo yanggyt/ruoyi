@@ -20,6 +20,13 @@ import java.util.List;
 public class SysMenu extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    public static final String MENU_VISIABLE = "0";
+    public static final String MENU_INVISIABLE = "1";
+    public static final String MENU_TYPE_PRIMARY = "M";
+    public static final String MENU_TYPE_SECONDARY = "C";
+    public static final String MENU_TYPE_PERMS = "F";
+    public static final Long ROOT_ID = null;
+
     /**
      * 菜单ID
      */
@@ -31,11 +38,6 @@ public class SysMenu extends BaseEntity {
      * 菜单名称
      */
     private String menuName;
-
-    /**
-     * 父菜单ID
-     */
-    private Long parentId;
 
     /**
      * 显示顺序
@@ -72,12 +74,15 @@ public class SysMenu extends BaseEntity {
      */
     private String icon;
 
+    @ManyToOne
+    @JoinColumn(name = "parentId", referencedColumnName = "menuId")
+    @org.hibernate.annotations.ForeignKey(name = "none")
+    private SysMenu parent;
+
     /**
      * 子菜单
      */
-    @OneToMany
-    @JoinColumn(name = "parentId")
-    @org.hibernate.annotations.ForeignKey(name = "none")
+    @Transient
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
     public Long getMenuId() {
@@ -98,12 +103,12 @@ public class SysMenu extends BaseEntity {
         this.menuName = menuName;
     }
 
+    @Transient
     public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+        if(parent != null){
+            return parent.getMenuId();
+        }
+        return null;
     }
 
     @NotBlank(message = "显示顺序不能为空")
@@ -172,6 +177,14 @@ public class SysMenu extends BaseEntity {
 
     public void setChildren(List<SysMenu> children) {
         this.children = children;
+    }
+
+    public SysMenu getParent() {
+        return parent;
+    }
+
+    public void setParent(SysMenu parent) {
+        this.parent = parent;
     }
 
     @Override
