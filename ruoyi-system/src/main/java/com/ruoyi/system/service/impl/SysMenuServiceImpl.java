@@ -12,10 +12,15 @@ import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.repository.SysMenuRepository;
 import com.ruoyi.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.sql.Types;
 import java.text.MessageFormat;
 import java.util.*;
@@ -76,12 +81,29 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public List<SysMenu> selectMenuList(SysMenu menu, Long userId) {
         List<SysMenu> menuList = null;
         if (SysUser.isAdmin(userId)) {
-            menuList = menuMapper.selectMenuList(menu);
+            menuList = sysMenuRepository.findAll(getSpecification(menu));
         } else {
             menu.getParams().put("userId", userId);
             menuList = menuMapper.selectMenuListByUserId(menu);
         }
         return menuList;
+    }
+
+    private Specification<SysMenu> getSpecification(SysMenu sysMenu){
+        return new Specification<SysMenu>() {
+            @Override
+            public Predicate toPredicate(Root<SysMenu> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if(StringUtils.isNotEmpty(sysMenu.getMenuName())){
+                    predicates.add(criteriaBuilder.like(root.get("menuName").as(String.class), "%" + sysMenu.getMenuName() + "%"));
+                }
+                if(StringUtils.isNotEmpty(sysMenu.getVisible())){
+                    predicates.add(criteriaBuilder.equal(root.get("visible").as(String.class), sysMenu.getVisible()));
+                }
+                query.orderBy(criteriaBuilder.asc(root.get("orderNum").as(String.class)));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
     }
 
     /**
