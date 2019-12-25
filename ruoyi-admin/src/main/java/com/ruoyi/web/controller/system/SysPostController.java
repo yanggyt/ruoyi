@@ -42,9 +42,7 @@ public class SysPostController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(SysPost post) {
-        startPage();
-        Page<SysPost> page = postService.selectPostList(post, getPageRequest());
-        return getDataTable(page);
+        return getDataTable(postService.selectPostList(post, getPageRequest()));
     }
 
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)

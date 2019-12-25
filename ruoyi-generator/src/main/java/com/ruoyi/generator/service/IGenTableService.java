@@ -1,9 +1,11 @@
 package com.ruoyi.generator.service;
 
+import com.ruoyi.generator.domain.GenTable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Map;
-
-import com.ruoyi.generator.domain.GenTable;
 
 /**
  * 业务 服务层
@@ -17,7 +19,7 @@ public interface IGenTableService {
      * @param genTable 业务信息
      * @return 业务集合
      */
-    public List<GenTable> selectGenTableList(GenTable genTable);
+    public Page<GenTable> selectGenTableList(GenTable genTable, Pageable pageable);
 
     /**
      * 查询据库列表
@@ -25,7 +27,7 @@ public interface IGenTableService {
      * @param genTable 业务信息
      * @return 数据库表集合
      */
-    public List<GenTable> selectDbTableList(GenTable genTable);
+    public Page<GenTable> selectDbTableList(GenTable genTable, Pageable pageable);
 
     /**
      * 查询据库列表

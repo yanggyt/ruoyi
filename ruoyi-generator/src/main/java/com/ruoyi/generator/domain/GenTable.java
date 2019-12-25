@@ -1,6 +1,7 @@
 package com.ruoyi.generator.domain;
 
 import java.util.List;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
@@ -13,12 +14,16 @@ import com.ruoyi.common.utils.StringUtils;
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "gen_table")
 public class GenTable extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 编号
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tableId;
 
     /**

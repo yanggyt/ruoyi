@@ -53,8 +53,7 @@ public class ${ClassName}Controller extends BaseController
     @RequiresPermissions("${permissionPrefix}:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(${ClassName} ${className})
-    {
+    public TableDataInfo list(${ClassName} ${className}) {
         startPage();
         List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
         return getDataTable(list);

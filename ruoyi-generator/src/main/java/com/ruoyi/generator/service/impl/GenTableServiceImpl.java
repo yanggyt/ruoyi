@@ -1,23 +1,5 @@
 package com.ruoyi.generator.service.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.constant.Constants;
@@ -29,10 +11,31 @@ import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.generator.mapper.GenTableColumnMapper;
 import com.ruoyi.generator.mapper.GenTableMapper;
+import com.ruoyi.generator.repository.GenTableRepository;
 import com.ruoyi.generator.service.IGenTableService;
 import com.ruoyi.generator.util.GenUtils;
 import com.ruoyi.generator.util.VelocityInitializer;
 import com.ruoyi.generator.util.VelocityUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 业务 服务层实现
@@ -48,6 +51,8 @@ public class GenTableServiceImpl implements IGenTableService {
 
     @Autowired
     private GenTableColumnMapper genTableColumnMapper;
+    @Autowired
+    private GenTableRepository genTableRepository;
 
     /**
      * 查询业务信息
@@ -69,8 +74,8 @@ public class GenTableServiceImpl implements IGenTableService {
      * @return 业务集合
      */
     @Override
-    public List<GenTable> selectGenTableList(GenTable genTable) {
-        return genTableMapper.selectGenTableList(genTable);
+    public Page<GenTable> selectGenTableList(GenTable genTable, Pageable pageable) {
+        return genTableRepository.findAll(pageable);
     }
 
     /**
@@ -79,8 +84,8 @@ public class GenTableServiceImpl implements IGenTableService {
      * @param genTable 业务信息
      * @return 数据库表集合
      */
-    public List<GenTable> selectDbTableList(GenTable genTable) {
-        return genTableMapper.selectDbTableList(genTable);
+    public Page<GenTable> selectDbTableList(GenTable genTable, Pageable pageable) {
+        return genTableRepository.findAll(pageable);
     }
 
     /**
@@ -269,7 +274,7 @@ public class GenTableServiceImpl implements IGenTableService {
     /**
      * 设置主键列信息
      *
-     * @param genTable 业务表信息
+     * @param table 业务表信息
      * @param columns  业务字段列表
      */
     public void setPkColumn(GenTable table, List<GenTableColumn> columns) {

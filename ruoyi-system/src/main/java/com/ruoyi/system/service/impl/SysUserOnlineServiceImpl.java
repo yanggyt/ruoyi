@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.impl;
 
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.repository.SysUserOnlineRepository;
@@ -25,7 +26,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
+public class SysUserOnlineServiceImpl extends BaseService implements ISysUserOnlineService {
 
     @Autowired
     private SysUserOnlineRepository sysUserOnlineRepository;

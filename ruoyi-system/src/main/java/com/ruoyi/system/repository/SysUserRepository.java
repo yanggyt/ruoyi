@@ -1,10 +1,10 @@
 package com.ruoyi.system.repository;
 
+import com.ruoyi.common.base.BaseRepository;
 import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
-import com.ruoyi.system.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

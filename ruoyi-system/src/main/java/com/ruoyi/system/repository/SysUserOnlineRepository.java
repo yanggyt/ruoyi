@@ -1,7 +1,7 @@
 package com.ruoyi.system.repository;
 
+import com.ruoyi.common.base.BaseRepository;
 import com.ruoyi.system.domain.SysUserOnline;
-import com.ruoyi.system.repository.base.BaseRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

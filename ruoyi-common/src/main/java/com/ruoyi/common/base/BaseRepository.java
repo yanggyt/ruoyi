@@ -1,4 +1,4 @@
-package com.ruoyi.system.repository.base;
+package com.ruoyi.common.base;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

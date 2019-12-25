@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.text.Convert;
@@ -14,7 +15,6 @@ import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.repository.SysRoleRepository;
 import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysRoleService;
-import com.ruoyi.system.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

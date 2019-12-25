@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.impl;
 
 import com.google.common.collect.Lists;
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.domain.Ztree;
@@ -27,7 +28,7 @@ import java.util.*;
  * @author ruoyi
  */
 @Service
-public class SysMenuServiceImpl implements ISysMenuService {
+public class SysMenuServiceImpl extends BaseService implements ISysMenuService {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
     @Autowired

@@ -2,6 +2,7 @@ package com.ruoyi.quartz.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,6 +19,8 @@ import com.ruoyi.quartz.util.CronUtils;
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_job")
 public class SysJob extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -25,6 +28,8 @@ public class SysJob extends BaseEntity implements Serializable {
      * 任务ID
      */
     @Excel(name = "任务序号", cellType = ColumnType.NUMERIC)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
 
     /**

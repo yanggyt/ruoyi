@@ -1,8 +1,8 @@
 package com.ruoyi.system.repository;
 
+import com.ruoyi.common.base.BaseRepository;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
-import com.ruoyi.system.repository.base.BaseRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;

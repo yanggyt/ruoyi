@@ -1,7 +1,7 @@
 package com.ruoyi.system.repository;
 
+import com.ruoyi.common.base.BaseRepository;
 import com.ruoyi.system.domain.SysOperLog;
-import com.ruoyi.system.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 

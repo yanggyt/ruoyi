@@ -1,6 +1,6 @@
 package com.ruoyi.system.service.impl;
 
-import com.ruoyi.common.annotation.DataScope;
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.domain.Ztree;
@@ -32,7 +32,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysDeptServiceImpl implements ISysDeptService {
+public class SysDeptServiceImpl extends BaseService implements ISysDeptService {
     @Autowired
     private SysDeptRepository sysDeptRepository;
     @Autowired

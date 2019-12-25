@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.text.Convert;
@@ -12,7 +13,6 @@ import com.ruoyi.system.domain.SysDictType;
 import com.ruoyi.system.repository.SysDictDataRepository;
 import com.ruoyi.system.repository.SysDictTypeRepository;
 import com.ruoyi.system.service.ISysDictTypeService;
-import com.ruoyi.system.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

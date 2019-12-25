@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.impl;
 
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.text.Convert;
@@ -29,7 +30,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysPostServiceImpl implements ISysPostService {
+public class SysPostServiceImpl extends BaseService implements ISysPostService {
 
     @Autowired
     private SysPostRepository sysPostRepository;

@@ -1,4 +1,4 @@
-package com.ruoyi.system.service.base;
+package com.ruoyi.common.base;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpression;
