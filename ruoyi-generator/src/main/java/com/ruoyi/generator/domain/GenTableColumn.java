@@ -24,11 +24,6 @@ public class GenTableColumn extends BaseEntity {
     private Long columnId;
 
     /**
-     * 归属表编号
-     */
-    private Long tableId;
-
-    /**
      * 列名称
      */
     private String columnName;
@@ -109,20 +104,17 @@ public class GenTableColumn extends BaseEntity {
      */
     private Integer sort;
 
+    @ManyToOne
+    @JoinColumn(name = "tableId", referencedColumnName = "tableId")
+    @org.hibernate.annotations.ForeignKey(name = "none")
+    private GenTable table;
+
     public void setColumnId(Long columnId) {
         this.columnId = columnId;
     }
 
     public Long getColumnId() {
         return columnId;
-    }
-
-    public void setTableId(Long tableId) {
-        this.tableId = tableId;
-    }
-
-    public Long getTableId() {
-        return tableId;
     }
 
     public void setColumnName(String columnName) {
@@ -345,5 +337,13 @@ public class GenTableColumn extends BaseEntity {
         } else {
             return this.columnComment;
         }
+    }
+
+    public GenTable getTable() {
+        return table;
+    }
+
+    public void setTable(GenTable table) {
+        this.table = table;
     }
 }

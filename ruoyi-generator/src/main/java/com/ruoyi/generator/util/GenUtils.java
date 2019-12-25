@@ -34,7 +34,7 @@ public class GenUtils {
     public static void initColumnField(GenTableColumn column, GenTable table) {
         String dataType = getDbType(column.getColumnType());
         String columnName = column.getColumnName();
-        column.setTableId(table.getTableId());
+        column.setTable(table);
         column.setCreateBy(table.getCreateBy());
         // 设置java字段名
         column.setJavaField(StringUtils.toCamelCase(columnName));
@@ -154,7 +154,7 @@ public class GenUtils {
     /**
      * 关键字替换
      *
-     * @param name 需要被替换的名字
+     * @param text 需要被替换的名字
      * @return 替换后的名字
      */
     public static String replaceText(String text) {

@@ -88,6 +88,7 @@ public class GenTable extends BaseEntity {
      * 表列信息
      */
     @Valid
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "")
     private List<GenTableColumn> columns;
 
     /**

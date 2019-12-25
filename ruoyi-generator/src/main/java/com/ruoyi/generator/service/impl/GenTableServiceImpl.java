@@ -46,10 +46,8 @@ import java.util.zip.ZipOutputStream;
 public class GenTableServiceImpl implements IGenTableService {
     private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
-    @Autowired
     private GenTableMapper genTableMapper;
 
-    @Autowired
     private GenTableColumnMapper genTableColumnMapper;
     @Autowired
     private GenTableRepository genTableRepository;

@@ -1,17 +1,20 @@
 package com.ruoyi.quartz.domain;
 
-import java.util.Date;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 定时任务调度日志表 sys_job_log
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_job_log")
 public class SysJobLog extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -19,6 +22,8 @@ public class SysJobLog extends BaseEntity {
      * ID
      */
     @Excel(name = "日志序号")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobLogId;
 
     /**

@@ -1,10 +1,10 @@
 package com.ruoyi.quartz.service;
 
-import java.util.List;
-
-import org.quartz.SchedulerException;
 import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.quartz.domain.SysJob;
+import org.quartz.SchedulerException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 定时任务调度信息信息 服务层
@@ -18,7 +18,7 @@ public interface ISysJobService {
      * @param job 调度信息
      * @return 调度任务集合
      */
-    public List<SysJob> selectJobList(SysJob job);
+    public Page<SysJob> selectJobList(SysJob job, Pageable pageable);
 
     /**
      * 通过调度任务ID查询调度信息

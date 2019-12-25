@@ -1,18 +1,5 @@
 package com.ruoyi.quartz.controller;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.quartz.SchedulerException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -22,6 +9,16 @@ import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.service.ISysJobService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.quartz.SchedulerException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 调度任务信息操作处理
@@ -46,9 +43,7 @@ public class SysJobController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(SysJob job) {
-        startPage();
-        List<SysJob> list = jobService.selectJobList(job);
-        return getDataTable(list);
+        return getDataTable(jobService.selectJobList(job, getPageRequest()));
     }
 
     @Log(title = "定时任务", businessType = BusinessType.EXPORT)
@@ -56,7 +51,7 @@ public class SysJobController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysJob job) {
-        List<SysJob> list = jobService.selectJobList(job);
+        List<SysJob> list = jobService.selectJobList(job, Pageable.unpaged()).getContent();
         ExcelUtil<SysJob> util = new ExcelUtil<SysJob>(SysJob.class);
         return util.exportExcel(list, "定时任务");
     }

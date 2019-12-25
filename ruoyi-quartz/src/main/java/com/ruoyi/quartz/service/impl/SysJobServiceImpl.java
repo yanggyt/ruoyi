@@ -1,23 +1,26 @@
 package com.ruoyi.quartz.service.impl;
 
-import java.util.List;
-import javax.annotation.PostConstruct;
-
-import org.quartz.JobDataMap;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.mapper.SysJobMapper;
+import com.ruoyi.quartz.repository.SysJobRepository;
 import com.ruoyi.quartz.service.ISysJobService;
 import com.ruoyi.quartz.util.CronUtils;
 import com.ruoyi.quartz.util.ScheduleUtils;
+import org.quartz.JobDataMap;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * 定时任务调度信息 服务层
@@ -29,8 +32,9 @@ public class SysJobServiceImpl implements ISysJobService {
     @Autowired
     private Scheduler scheduler;
 
-    @Autowired
     private SysJobMapper jobMapper;
+    @Autowired
+    private SysJobRepository sysJobRepository;
 
     /**
      * 项目启动时，初始化定时器
@@ -38,7 +42,7 @@ public class SysJobServiceImpl implements ISysJobService {
      */
     @PostConstruct
     public void init() throws SchedulerException, TaskException {
-        List<SysJob> jobList = jobMapper.selectJobAll();
+        List<SysJob> jobList = sysJobRepository.findAll();
         for (SysJob job : jobList) {
             updateSchedulerJob(job, job.getJobGroup());
         }
@@ -51,8 +55,8 @@ public class SysJobServiceImpl implements ISysJobService {
      * @return
      */
     @Override
-    public List<SysJob> selectJobList(SysJob job) {
-        return jobMapper.selectJobList(job);
+    public Page<SysJob> selectJobList(SysJob job, Pageable pageable) {
+        return sysJobRepository.findAll(pageable);
     }
 
     /**

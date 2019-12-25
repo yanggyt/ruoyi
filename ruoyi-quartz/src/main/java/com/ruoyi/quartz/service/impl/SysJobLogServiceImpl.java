@@ -1,13 +1,14 @@
 package com.ruoyi.quartz.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.quartz.domain.SysJobLog;
 import com.ruoyi.quartz.mapper.SysJobLogMapper;
+import com.ruoyi.quartz.repository.SysJobLogRepository;
 import com.ruoyi.quartz.service.ISysJobLogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 /**
  * 定时任务调度日志信息 服务层
@@ -16,8 +17,9 @@ import com.ruoyi.quartz.service.ISysJobLogService;
  */
 @Service
 public class SysJobLogServiceImpl implements ISysJobLogService {
-    @Autowired
     private SysJobLogMapper jobLogMapper;
+    @Autowired
+    private SysJobLogRepository sysJobLogRepository;
 
     /**
      * 获取quartz调度器日志的计划任务
@@ -26,8 +28,8 @@ public class SysJobLogServiceImpl implements ISysJobLogService {
      * @return 调度任务日志集合
      */
     @Override
-    public List<SysJobLog> selectJobLogList(SysJobLog jobLog) {
-        return jobLogMapper.selectJobLogList(jobLog);
+    public Page<SysJobLog> selectJobLogList(SysJobLog jobLog, Pageable pageable) {
+        return sysJobLogRepository.findAll(pageable);
     }
 
     /**

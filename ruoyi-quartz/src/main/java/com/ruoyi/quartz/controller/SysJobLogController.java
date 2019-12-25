@@ -1,16 +1,5 @@
 package com.ruoyi.quartz.controller;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -19,6 +8,14 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.quartz.domain.SysJobLog;
 import com.ruoyi.quartz.service.ISysJobLogService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 调度日志操作处理
@@ -43,9 +40,7 @@ public class SysJobLogController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(SysJobLog jobLog) {
-        startPage();
-        List<SysJobLog> list = jobLogService.selectJobLogList(jobLog);
-        return getDataTable(list);
+        return getDataTable(jobLogService.selectJobLogList(jobLog, getPageRequest()));
     }
 
     @Log(title = "调度日志", businessType = BusinessType.EXPORT)
@@ -53,7 +48,7 @@ public class SysJobLogController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysJobLog jobLog) {
-        List<SysJobLog> list = jobLogService.selectJobLogList(jobLog);
+        List<SysJobLog> list = jobLogService.selectJobLogList(jobLog, Pageable.unpaged()).getContent();
         ExcelUtil<SysJobLog> util = new ExcelUtil<SysJobLog>(SysJobLog.class);
         return util.exportExcel(list, "调度日志");
     }

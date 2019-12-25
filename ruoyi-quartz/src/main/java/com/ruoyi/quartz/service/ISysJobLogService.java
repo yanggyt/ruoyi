@@ -3,6 +3,8 @@ package com.ruoyi.quartz.service;
 import java.util.List;
 
 import com.ruoyi.quartz.domain.SysJobLog;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 定时任务调度日志信息信息 服务层
@@ -16,7 +18,7 @@ public interface ISysJobLogService {
      * @param jobLog 调度日志信息
      * @return 调度任务日志集合
      */
-    public List<SysJobLog> selectJobLogList(SysJobLog jobLog);
+    public Page<SysJobLog> selectJobLogList(SysJobLog jobLog, Pageable pageable);
 
     /**
      * 通过调度任务日志ID查询调度信息
