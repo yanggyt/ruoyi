@@ -2,11 +2,11 @@ package com.ruoyi.system.domain;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
-import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = SysLogininfor.TABLE_NAME)
-public class SysLogininfor extends BaseEntity {
+public class SysLogininfor implements Serializable {
     private static final long serialVersionUID = 1L;
     public static final String TABLE_NAME = "sys_logininfor";
 
@@ -75,6 +75,12 @@ public class SysLogininfor extends BaseEntity {
      */
     @Excel(name = "访问时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
+
+    @Transient
+    private Date startTime;
+
+    @Transient
+    private Date endTime;
 
     public Long getInfoId() {
         return infoId;
@@ -161,5 +167,21 @@ public class SysLogininfor extends BaseEntity {
                 .append("msg", getMsg())
                 .append("loginTime", getLoginTime())
                 .toString();
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }
