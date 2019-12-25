@@ -1,15 +1,13 @@
 package com.ruoyi.system.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.Date;
-
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 操作日志记录表 oper_log
@@ -17,9 +15,10 @@ import javax.persistence.*;
  * @author ruoyi
  */
 @Entity
-@Table(name = "sys_oper_log")
+@Table(name = SysOperLog.TABLE_NAME)
 public class SysOperLog extends BaseEntity {
     private static final long serialVersionUID = 1L;
+    public static final String TABLE_NAME = "sys_oper_log";
 
     /**
      * 日志主键

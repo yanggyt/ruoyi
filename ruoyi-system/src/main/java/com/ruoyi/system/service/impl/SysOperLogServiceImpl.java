@@ -109,6 +109,6 @@ public class SysOperLogServiceImpl extends BaseService implements ISysOperLogSer
     @Transactional
     @Override
     public void cleanOperLog() {
-        jdbcTemplate.update("truncate table sys_oper_log");
+        jdbcTemplate.update("truncate table " + SysOperLog.TABLE_NAME);
     }
 }

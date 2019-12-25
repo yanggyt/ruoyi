@@ -1,26 +1,31 @@
 package com.ruoyi.system.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.Date;
-
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 系统访问记录表 sys_logininfor
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = SysLogininfor.TABLE_NAME)
 public class SysLogininfor extends BaseEntity {
     private static final long serialVersionUID = 1L;
+    public static final String TABLE_NAME = "sys_logininfor";
 
     /**
      * ID
      */
     @Excel(name = "序号", cellType = ColumnType.NUMERIC)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long infoId;
 
     /**
