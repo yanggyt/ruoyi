@@ -8,15 +8,14 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
-import com.ruoyi.system.mapper.SysMenuMapper;
-import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.repository.SysMenuRepository;
+import com.ruoyi.system.repository.SysRoleRepository;
 import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 import java.text.MessageFormat;
@@ -32,15 +31,11 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
     @Autowired
-    private SysMenuMapper menuMapper;
-    @Autowired
-    private SysRoleMenuMapper roleMenuMapper;
-    @Autowired
     private SysMenuRepository sysMenuRepository;
     @Autowired
     private SysUserRepository sysUserRepository;
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private SysRoleRepository sysRoleRepository;
 
     /**
      * 根据用户查询菜单
@@ -166,9 +161,12 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public Set<String> selectPermsByUserId(Long userId) {
-        List<String> perms = menuMapper.selectPermsByUserId(userId);
+        SysUser sysUser = sysUserRepository.findSysUserByDelFlagAndUserId(BaseEntity.NOT_DELETED, userId);
+        Set<SysRole> roles = sysUser.getRoles();
+        List<SysMenu> menus = sysMenuRepository.findAll(getSpecification(new SysMenu(), roles));
         Set<String> permsSet = new HashSet<>();
-        for (String perm : perms) {
+        for(SysMenu sysMenu : menus){
+            String perm = sysMenu.getPerms();
             if (StringUtils.isNotEmpty(perm)) {
                 permsSet.addAll(Arrays.asList(perm.trim().split(",")));
             }
@@ -188,8 +186,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
         List<Ztree> ztrees = new ArrayList<Ztree>();
         List<SysMenu> menuList = selectMenuAll(userId);
         if (StringUtils.isNotNull(roleId)) {
-            List<String> roleMenuList = menuMapper.selectMenuTree(roleId);
-            ztrees = initZtree(menuList, roleMenuList, true);
+            List<SysMenu> menus = sysMenuRepository.findAllByRolesContaining(new SysRole(roleId));
+            ztrees = initZtree(menuList, menus, true);
         } else {
             ztrees = initZtree(menuList, null, true);
         }
@@ -243,7 +241,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @param permsFlag    是否需要显示权限标识
      * @return 树结构列表
      */
-    public List<Ztree> initZtree(List<SysMenu> menuList, List<String> roleMenuList, boolean permsFlag) {
+    public List<Ztree> initZtree(List<SysMenu> menuList, List<SysMenu> roleMenuList, boolean permsFlag) {
         List<Ztree> ztrees = new ArrayList<Ztree>();
         boolean isCheck = StringUtils.isNotNull(roleMenuList);
         for (SysMenu menu : menuList) {
@@ -253,7 +251,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             ztree.setName(transMenuName(menu, permsFlag));
             ztree.setTitle(menu.getMenuName());
             if (isCheck) {
-                ztree.setChecked(roleMenuList.contains(menu.getMenuId() + menu.getPerms()));
+                ztree.setChecked(roleMenuList.contains(menu));
             }
             ztrees.add(ztree);
         }
@@ -277,7 +275,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public int deleteMenuById(Long menuId) {
-        return menuMapper.deleteMenuById(menuId);
+        sysMenuRepository.deleteById(menuId);
+        return 1;
     }
 
     /**
@@ -288,7 +287,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public SysMenu selectMenuById(Long menuId) {
-        return menuMapper.selectMenuById(menuId);
+        return sysMenuRepository.findById(menuId).get();
     }
 
     /**
@@ -299,7 +298,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public int selectCountMenuByParentId(Long parentId) {
-        return menuMapper.selectCountMenuByParentId(parentId);
+        return sysMenuRepository.countByParent(new SysMenu(parentId));
     }
 
     /**
@@ -310,7 +309,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public int selectCountRoleMenuByMenuId(Long menuId) {
-        return roleMenuMapper.selectCountRoleMenuByMenuId(menuId);
+        return sysRoleRepository.countByMenusContaining(new SysMenu(menuId));
     }
 
     /**
@@ -319,9 +318,10 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
+    @Transactional
     @Override
-    public int insertMenu(SysMenu menu) {
-        return menuMapper.insertMenu(menu);
+    public SysMenu insertMenu(SysMenu menu) {
+        return sysMenuRepository.save(menu);
     }
 
     /**
@@ -330,9 +330,10 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
+    @Transactional
     @Override
-    public int updateMenu(SysMenu menu) {
-        return menuMapper.updateMenu(menu);
+    public SysMenu updateMenu(SysMenu menu) {
+        return sysMenuRepository.save(menu);
     }
 
     /**
@@ -344,7 +345,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Override
     public String checkMenuNameUnique(SysMenu menu) {
         Long menuId = StringUtils.isNull(menu.getMenuId()) ? -1L : menu.getMenuId();
-        SysMenu info = menuMapper.checkMenuNameUnique(menu.getMenuName(), menu.getParentId());
+        SysMenu info = sysMenuRepository.findFirstByMenuNameAndParent(menu.getMenuName(), new SysMenu(menu.getParentId()));
         if (StringUtils.isNotNull(info) && info.getMenuId().longValue() != menuId.longValue()) {
             return UserConstants.MENU_NAME_NOT_UNIQUE;
         }

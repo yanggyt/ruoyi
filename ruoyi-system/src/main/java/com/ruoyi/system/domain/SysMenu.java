@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -219,5 +220,25 @@ public class SysMenu extends BaseEntity {
                 .append("updateTime", getUpdateTime())
                 .append("remark", getRemark())
                 .toString();
+    }
+
+    public SysMenu(Long menuId) {
+        this.menuId = menuId;
+    }
+
+    public SysMenu() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SysMenu sysMenu = (SysMenu) o;
+        return Objects.equals(menuId, sysMenu.menuId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(menuId);
     }
 }

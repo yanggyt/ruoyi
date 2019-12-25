@@ -111,7 +111,7 @@ public interface ISysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
-    public int insertMenu(SysMenu menu);
+    public SysMenu insertMenu(SysMenu menu);
 
     /**
      * 修改保存菜单信息
@@ -119,7 +119,7 @@ public interface ISysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
-    public int updateMenu(SysMenu menu);
+    public SysMenu updateMenu(SysMenu menu);
 
     /**
      * 校验菜单名称是否唯一

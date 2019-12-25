@@ -99,7 +99,8 @@ public class SysMenuController extends BaseController {
         }
         menu.setCreateBy(ShiroUtils.getLoginName());
         ShiroUtils.clearCachedAuthorizationInfo();
-        return toAjax(menuService.insertMenu(menu));
+        menuService.insertMenu(menu);
+        return success();
     }
 
     /**
@@ -124,7 +125,8 @@ public class SysMenuController extends BaseController {
         }
         menu.setUpdateBy(ShiroUtils.getLoginName());
         ShiroUtils.clearCachedAuthorizationInfo();
-        return toAjax(menuService.updateMenu(menu));
+        menuService.updateMenu(menu);
+        return success();
     }
 
     /**
