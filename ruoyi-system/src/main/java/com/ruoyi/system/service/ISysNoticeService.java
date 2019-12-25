@@ -3,6 +3,8 @@ package com.ruoyi.system.service;
 import java.util.List;
 
 import com.ruoyi.system.domain.SysNotice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 公告 服务层
@@ -24,7 +26,7 @@ public interface ISysNoticeService {
      * @param notice 公告信息
      * @return 公告集合
      */
-    public List<SysNotice> selectNoticeList(SysNotice notice);
+    public Page<SysNotice> selectNoticeList(SysNotice notice, Pageable pageable);
 
     /**
      * 新增公告

@@ -3,6 +3,8 @@ package com.ruoyi.system.service;
 import java.util.List;
 
 import com.ruoyi.system.domain.SysOperLog;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 操作日志 服务层
@@ -23,7 +25,7 @@ public interface ISysOperLogService {
      * @param operLog 操作日志对象
      * @return 操作日志集合
      */
-    public List<SysOperLog> selectOperLogList(SysOperLog operLog);
+    public Page<SysOperLog> selectOperLogList(SysOperLog operLog, Pageable pageable);
 
     /**
      * 批量删除系统操作日志

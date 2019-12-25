@@ -1,0 +1,1 @@
+UPDATE sys_menu SET parent_id = NULL WHERE parent_id = 0;

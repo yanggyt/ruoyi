@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,12 +12,16 @@ import com.ruoyi.common.core.domain.BaseEntity;
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_notice")
 public class SysNotice extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 公告ID
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
     /**

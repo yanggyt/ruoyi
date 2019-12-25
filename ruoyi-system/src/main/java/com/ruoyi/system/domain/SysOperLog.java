@@ -9,11 +9,15 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import javax.persistence.*;
+
 /**
  * 操作日志记录表 oper_log
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_oper_log")
 public class SysOperLog extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +25,8 @@ public class SysOperLog extends BaseEntity {
      * 日志主键
      */
     @Excel(name = "操作序号", cellType = ColumnType.NUMERIC)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long operId;
 
     /**
@@ -38,6 +44,7 @@ public class SysOperLog extends BaseEntity {
     /**
      * 业务类型数组
      */
+    @Transient
     private Integer[] businessTypes;
 
     /**
