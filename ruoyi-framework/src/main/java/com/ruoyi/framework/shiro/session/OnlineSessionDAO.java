@@ -1,17 +1,19 @@
 package com.ruoyi.framework.shiro.session;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import org.apache.shiro.session.Session;
-import org.apache.shiro.session.UnknownSessionException;
-import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import com.ruoyi.common.enums.OnlineStatus;
 import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.shiro.service.SysShiroService;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.UnknownSessionException;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 针对自定义的ShiroSession的db操作
@@ -19,6 +21,8 @@ import com.ruoyi.framework.shiro.service.SysShiroService;
  * @author ruoyi
  */
 public class OnlineSessionDAO extends EnterpriseCacheSessionDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(OnlineSessionDAO.class);
     /**
      * 同步session到数据库的周期 单位为毫秒（默认1分钟）
      */
@@ -100,6 +104,10 @@ public class OnlineSessionDAO extends EnterpriseCacheSessionDAO {
             return;
         }
         onlineSession.setStatus(OnlineStatus.off_line);
-        sysShiroService.deleteSession(onlineSession);
+        try{
+            sysShiroService.deleteSession(onlineSession);
+        }catch (Exception e){
+            logger.info("delete OnlineSession error : {}", e);
+        }
     }
 }

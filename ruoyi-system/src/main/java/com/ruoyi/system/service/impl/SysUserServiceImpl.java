@@ -1,16 +1,19 @@
 package com.ruoyi.system.service.impl;
 
+import com.querydsl.core.types.ExpressionUtils;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
+import com.ruoyi.system.domain.QSysUser;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.service.base.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -36,7 +39,7 @@ import java.util.Set;
  * @author ruoyi
  */
 @Service
-public class SysUserServiceImpl implements ISysUserService {
+public class SysUserServiceImpl extends BaseService implements ISysUserService {
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
     @Autowired
@@ -54,7 +57,37 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public Page<SysUser> selectUserList(SysUser user, Pageable pageRequest) {
-        return sysUserRepository.findAll(getSpecification(user), pageRequest);
+        return sysUserRepository.findAll(getPredicate(user), pageRequest);
+    }
+
+    private com.querydsl.core.types.Predicate getPredicate(SysUser sysUser){
+        QSysUser qSysUser = QSysUser.sysUser;
+        List<com.querydsl.core.types.Predicate> predicates = new ArrayList<>();
+        if(StringUtils.isNotEmpty(sysUser.getDelFlag())){
+            predicates.add(qSysUser.delFlag.eq(sysUser.getDelFlag()));
+        }
+        if(StringUtils.isNotEmpty(sysUser.getLoginName())){
+            predicates.add(buildLike(qSysUser.loginName, sysUser.getLoginName()));
+        }
+        if(StringUtils.isNotEmpty(sysUser.getStatus())){
+            predicates.add(buildEqual(qSysUser.status, sysUser.getStatus()));
+        }
+        if(StringUtils.isNotEmpty(sysUser.getPhonenumber())){
+            predicates.add(buildLike(qSysUser.phonenumber, sysUser.getPhonenumber()));
+        }
+        if(sysUser.getStartTime() != null){
+            predicates.add(buildGreaterThanOrEqualTo(qSysUser.createTime, sysUser.getStartTime()));
+        }
+        if(sysUser.getEndTime() != null){
+            predicates.add(buildLessThanOrEqualTo(qSysUser.createTime, sysUser.getEndTime()));
+        }
+        if(sysUser.getDept() != null && sysUser.getDept().getDeptId() != null){
+            predicates.add(buildEqual(qSysUser.dept.deptId, sysUser.getDept().getDeptId()));
+        }
+        if(sysUser.getDept() != null && StringUtils.isNotEmpty(sysUser.getDept().getCode())){
+            predicates.add(buildLike(qSysUser.dept.code, sysUser.getDept().getCode()));
+        }
+        return ExpressionUtils.allOf(predicates);
     }
 
     private Specification<SysUser> getSpecification(SysUser sysUser){
