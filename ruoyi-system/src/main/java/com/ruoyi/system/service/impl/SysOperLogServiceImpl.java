@@ -86,6 +86,7 @@ public class SysOperLogServiceImpl extends BaseService implements ISysOperLogSer
      * @param ids 需要删除的数据
      * @return
      */
+    @Transactional
     @Override
     public int deleteOperLogByIds(String ids) {
         sysOperLogRepository.deleteByOperIdIn(Arrays.asList(Convert.toLongArray(ids)));
