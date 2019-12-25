@@ -1,18 +1,22 @@
 package com.ruoyi.system.domain;
 
-import javax.validation.constraints.*;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * 字典类型表 sys_dict_type
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_dict_type")
 public class SysDictType extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +24,8 @@ public class SysDictType extends BaseEntity {
      * 字典主键
      */
     @Excel(name = "字典主键", cellType = ColumnType.NUMERIC)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dictId;
 
     /**

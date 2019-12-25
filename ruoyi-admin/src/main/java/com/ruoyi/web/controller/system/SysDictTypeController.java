@@ -1,17 +1,5 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -23,6 +11,15 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysDictType;
 import com.ruoyi.system.service.ISysDictTypeService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 数据字典信息
@@ -47,9 +44,7 @@ public class SysDictTypeController extends BaseController {
     @RequiresPermissions("system:dict:list")
     @ResponseBody
     public TableDataInfo list(SysDictType dictType) {
-        startPage();
-        List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
-        return getDataTable(list);
+        return getDataTable(dictTypeService.selectDictTypeList(dictType, getPageRequest()));
     }
 
     @Log(title = "字典类型", businessType = BusinessType.EXPORT)
@@ -57,8 +52,7 @@ public class SysDictTypeController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysDictType dictType) {
-
-        List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
+        List<SysDictType> list = dictTypeService.selectDictTypeList(dictType, Pageable.unpaged()).getContent();
         ExcelUtil<SysDictType> util = new ExcelUtil<SysDictType>(SysDictType.class);
         return util.exportExcel(list, "字典类型");
     }

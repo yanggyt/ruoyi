@@ -1,13 +1,22 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.QSysDictData;
 import com.ruoyi.system.domain.SysDictData;
-import com.ruoyi.system.mapper.SysDictDataMapper;
+import com.ruoyi.system.repository.SysDictDataRepository;
 import com.ruoyi.system.service.ISysDictDataService;
+import com.ruoyi.system.service.base.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 字典 业务层处理
@@ -15,9 +24,9 @@ import com.ruoyi.system.service.ISysDictDataService;
  * @author ruoyi
  */
 @Service
-public class SysDictDataServiceImpl implements ISysDictDataService {
+public class SysDictDataServiceImpl extends BaseService implements ISysDictDataService {
     @Autowired
-    private SysDictDataMapper dictDataMapper;
+    private SysDictDataRepository sysDictDataRepository;
 
     /**
      * 根据条件分页查询字典数据
@@ -26,8 +35,23 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
      * @return 字典数据集合信息
      */
     @Override
-    public List<SysDictData> selectDictDataList(SysDictData dictData) {
-        return dictDataMapper.selectDictDataList(dictData);
+    public Page<SysDictData> selectDictDataList(SysDictData dictData, Pageable pageable) {
+        return sysDictDataRepository.findAll(getPredicate(dictData), pageable);
+    }
+
+    private Predicate getPredicate(SysDictData dictData){
+        QSysDictData qSysDictData = QSysDictData.sysDictData;
+        List<Predicate> predicates = new ArrayList<>();
+        if(StringUtils.isNotEmpty(dictData.getDictType())){
+            predicates.add(buildEqual(qSysDictData.dictType, dictData.getDictType()));
+        }
+        if(StringUtils.isNotEmpty(dictData.getDictLabel())){
+            predicates.add(buildLike(qSysDictData.status, dictData.getDictLabel()));
+        }
+        if(StringUtils.isNotEmpty(dictData.getStatus())){
+            predicates.add(buildEqual(qSysDictData.status, dictData.getStatus()));
+        }
+        return ExpressionUtils.allOf(predicates);
     }
 
     /**
@@ -38,7 +62,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
      */
     @Override
     public List<SysDictData> selectDictDataByType(String dictType) {
-        return dictDataMapper.selectDictDataByType(dictType);
+        return sysDictDataRepository.findByDictType(dictType);
     }
 
     /**
@@ -50,7 +74,8 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
      */
     @Override
     public String selectDictLabel(String dictType, String dictValue) {
-        return dictDataMapper.selectDictLabel(dictType, dictValue);
+        SysDictData dictData = sysDictDataRepository.findFirstByDictTypeAndDictLabel(dictType, dictType);
+        return  dictData == null ? dictData.getDictValue() : "";
     }
 
     /**
@@ -61,7 +86,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
      */
     @Override
     public SysDictData selectDictDataById(Long dictCode) {
-        return dictDataMapper.selectDictDataById(dictCode);
+        return sysDictDataRepository.findById(dictCode).get();
     }
 
     /**
@@ -70,9 +95,11 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
      * @param dictCode 字典数据ID
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteDictDataById(Long dictCode) {
-        return dictDataMapper.deleteDictDataById(dictCode);
+        sysDictDataRepository.deleteById(dictCode);
+        return 1;
     }
 
     /**
@@ -81,9 +108,13 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
      * @param ids 需要删除的数据
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteDictDataByIds(String ids) {
-        return dictDataMapper.deleteDictDataByIds(Convert.toStrArray(ids));
+        for(Long id : Convert.toLongArray(ids)){
+            deleteDictDataById(id);
+        }
+        return 1;
     }
 
     /**
@@ -94,7 +125,8 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
      */
     @Override
     public int insertDictData(SysDictData dictData) {
-        return dictDataMapper.insertDictData(dictData);
+        sysDictDataRepository.save(dictData);
+        return 1;
     }
 
     /**
@@ -105,6 +137,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
      */
     @Override
     public int updateDictData(SysDictData dictData) {
-        return dictDataMapper.updateDictData(dictData);
+        sysDictDataRepository.save(dictData);
+        return 1;
     }
 }

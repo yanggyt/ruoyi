@@ -1,9 +1,11 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.system.domain.SysDictType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * 字典 业务层
@@ -17,7 +19,7 @@ public interface ISysDictTypeService {
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
-    public List<SysDictType> selectDictTypeList(SysDictType dictType);
+    public Page<SysDictType> selectDictTypeList(SysDictType dictType, Pageable pageable);
 
     /**
      * 根据所有字典类型

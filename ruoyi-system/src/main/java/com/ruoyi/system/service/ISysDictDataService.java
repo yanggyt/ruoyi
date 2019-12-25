@@ -1,8 +1,10 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-
 import com.ruoyi.system.domain.SysDictData;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * 字典 业务层
@@ -16,7 +18,7 @@ public interface ISysDictDataService {
      * @param dictData 字典数据信息
      * @return 字典数据集合信息
      */
-    public List<SysDictData> selectDictDataList(SysDictData dictData);
+    public Page<SysDictData> selectDictDataList(SysDictData dictData, Pageable pageable);
 
     /**
      * 根据字典类型查询字典数据
