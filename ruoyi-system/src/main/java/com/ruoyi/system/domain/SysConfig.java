@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,6 +14,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
  *
  * @author ruoyi
  */
+@Entity
+@Table(name = "sys_config")
 public class SysConfig extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +23,8 @@ public class SysConfig extends BaseEntity {
      * 参数主键
      */
     @Excel(name = "参数主键", cellType = ColumnType.NUMERIC)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long configId;
 
     /**

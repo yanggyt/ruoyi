@@ -1,17 +1,5 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -22,6 +10,15 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.service.ISysConfigService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 参数配置 信息操作处理
@@ -49,9 +46,7 @@ public class SysConfigController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(SysConfig config) {
-        startPage();
-        List<SysConfig> list = configService.selectConfigList(config);
-        return getDataTable(list);
+        return getDataTable(configService.selectConfigList(config, getPageRequest()));
     }
 
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
@@ -59,7 +54,7 @@ public class SysConfigController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysConfig config) {
-        List<SysConfig> list = configService.selectConfigList(config);
+        List<SysConfig> list = configService.selectConfigList(config, Pageable.unpaged()).getContent();
         ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
         return util.exportExcel(list, "参数数据");
     }

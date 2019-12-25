@@ -3,6 +3,8 @@ package com.ruoyi.system.service;
 import java.util.List;
 
 import com.ruoyi.system.domain.SysConfig;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 参数配置 服务层
@@ -32,7 +34,7 @@ public interface ISysConfigService {
      * @param config 参数配置信息
      * @return 参数配置集合
      */
-    public List<SysConfig> selectConfigList(SysConfig config);
+    public Page<SysConfig> selectConfigList(SysConfig config, Pageable pageable);
 
     /**
      * 新增参数配置

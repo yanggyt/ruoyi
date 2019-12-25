@@ -1,15 +1,24 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.QSysConfig;
 import com.ruoyi.system.domain.SysConfig;
-import com.ruoyi.system.mapper.SysConfigMapper;
+import com.ruoyi.system.repository.SysConfigRepository;
 import com.ruoyi.system.service.ISysConfigService;
+import com.ruoyi.system.service.base.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 参数配置 服务层实现
@@ -17,9 +26,9 @@ import com.ruoyi.system.service.ISysConfigService;
  * @author ruoyi
  */
 @Service
-public class SysConfigServiceImpl implements ISysConfigService {
+public class SysConfigServiceImpl extends BaseService implements ISysConfigService {
     @Autowired
-    private SysConfigMapper configMapper;
+    private SysConfigRepository sysConfigRepository;
 
     /**
      * 查询参数配置信息
@@ -29,9 +38,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
      */
     @Override
     public SysConfig selectConfigById(Long configId) {
-        SysConfig config = new SysConfig();
-        config.setConfigId(configId);
-        return configMapper.selectConfig(config);
+        return sysConfigRepository.findById(configId).get();
     }
 
     /**
@@ -42,9 +49,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
      */
     @Override
     public String selectConfigByKey(String configKey) {
-        SysConfig config = new SysConfig();
-        config.setConfigKey(configKey);
-        SysConfig retConfig = configMapper.selectConfig(config);
+        SysConfig retConfig = sysConfigRepository.findFirstByConfigKey(configKey);
         return StringUtils.isNotNull(retConfig) ? retConfig.getConfigValue() : "";
     }
 
@@ -55,8 +60,29 @@ public class SysConfigServiceImpl implements ISysConfigService {
      * @return 参数配置集合
      */
     @Override
-    public List<SysConfig> selectConfigList(SysConfig config) {
-        return configMapper.selectConfigList(config);
+    public Page<SysConfig> selectConfigList(SysConfig config, Pageable pageable) {
+        return sysConfigRepository.findAll(getPredicate(config), pageable);
+    }
+
+    private Predicate getPredicate(SysConfig config){
+        QSysConfig qSysConfig = QSysConfig.sysConfig;
+        List<Predicate> predicates = new ArrayList<>();
+        if(StringUtils.isNotEmpty(config.getConfigName())){
+            predicates.add(buildLike(qSysConfig.configName, config.getConfigName()));
+        }
+        if(StringUtils.isNotEmpty(config.getConfigType())){
+            predicates.add(buildEqual(qSysConfig.configType, config.getConfigType()));
+        }
+        if(StringUtils.isNotEmpty(config.getConfigKey())){
+            predicates.add(buildLike(qSysConfig.configKey, config.getConfigKey()));
+        }
+        if(config.getStartTime() != null){
+            predicates.add(buildGreaterThanOrEqualTo(qSysConfig.createTime, config.getStartTime()));
+        }
+        if(config.getEndTime() != null){
+            predicates.add(buildLessThanOrEqualTo(qSysConfig.createTime, config.getEndTime()));
+        }
+        return ExpressionUtils.allOf(predicates);
     }
 
     /**
@@ -67,7 +93,8 @@ public class SysConfigServiceImpl implements ISysConfigService {
      */
     @Override
     public int insertConfig(SysConfig config) {
-        return configMapper.insertConfig(config);
+        sysConfigRepository.save(config);
+        return 1;
     }
 
     /**
@@ -78,7 +105,8 @@ public class SysConfigServiceImpl implements ISysConfigService {
      */
     @Override
     public int updateConfig(SysConfig config) {
-        return configMapper.updateConfig(config);
+        sysConfigRepository.save(config);
+        return 1;
     }
 
     /**
@@ -87,9 +115,11 @@ public class SysConfigServiceImpl implements ISysConfigService {
      * @param ids 需要删除的数据ID
      * @return 结果
      */
+    @Transactional
     @Override
     public int deleteConfigByIds(String ids) {
-        return configMapper.deleteConfigByIds(Convert.toStrArray(ids));
+        sysConfigRepository.deleteByConfigIdIn(Arrays.asList(Convert.toLongArray(ids)));
+        return 1;
     }
 
     /**
@@ -101,7 +131,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
     @Override
     public String checkConfigKeyUnique(SysConfig config) {
         Long configId = StringUtils.isNull(config.getConfigId()) ? -1L : config.getConfigId();
-        SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
+        SysConfig info = sysConfigRepository.findFirstByConfigKey(config.getConfigKey());
         if (StringUtils.isNotNull(info) && info.getConfigId().longValue() != configId.longValue()) {
             return UserConstants.CONFIG_KEY_NOT_UNIQUE;
         }
