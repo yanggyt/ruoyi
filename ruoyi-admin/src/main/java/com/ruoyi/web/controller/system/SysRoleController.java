@@ -4,7 +4,6 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -16,6 +15,7 @@ import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -49,9 +49,7 @@ public class SysRoleController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(SysRole role) {
-        startPage();
-        List<SysRole> list = roleService.selectRoleList(role);
-        return getDataTable(list);
+        return getDataTable(roleService.selectRoleList(role, getPageRequest()));
     }
 
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
@@ -59,7 +57,7 @@ public class SysRoleController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysRole role) {
-        List<SysRole> list = roleService.selectRoleList(role);
+        List<SysRole> list = roleService.selectRoleList(role, Pageable.unpaged()).getContent();
         ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
         return util.exportExcel(list, "角色数据");
     }
@@ -87,7 +85,8 @@ public class SysRoleController extends BaseController {
         }
         role.setCreateBy(ShiroUtils.getLoginName());
         ShiroUtils.clearCachedAuthorizationInfo();
-        return toAjax(roleService.insertRole(role));
+        roleService.insertRole(role);
+        return success();
 
     }
 
@@ -116,7 +115,8 @@ public class SysRoleController extends BaseController {
         }
         role.setUpdateBy(ShiroUtils.getLoginName());
         ShiroUtils.clearCachedAuthorizationInfo();
-        return toAjax(roleService.updateRole(role));
+        roleService.updateRole(role);
+        return success();
     }
 
     /**

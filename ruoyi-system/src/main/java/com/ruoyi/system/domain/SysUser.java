@@ -133,11 +133,7 @@ public class SysUser extends BaseEntity {
     @org.hibernate.annotations.ForeignKey(name = "none")
     private Set<SysPost> posts = new HashSet<>();
 
-    @Transient
-    private Date startTime;
 
-    @Transient
-    private Date endTime;
 
     public SysUser() {
 
@@ -290,22 +286,6 @@ public class SysUser extends BaseEntity {
 
     public void setPosts(Set<SysPost> posts) {
         this.posts = posts;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     @Override

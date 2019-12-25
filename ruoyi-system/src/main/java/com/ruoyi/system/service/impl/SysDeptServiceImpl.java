@@ -98,7 +98,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
         List<Ztree> ztrees;
         List<SysDept> deptList = sysDeptRepository.findAll(getSpecification(new SysDept()));
         if (StringUtils.isNotNull(roleId)) {
-            SysRole sysRole = sysRoleRepository.findById(roleId).get();
+            SysRole sysRole = sysRoleRepository.findByRoleId(roleId);
             ztrees = initZtree(deptList, sysRole.getDepts());
         } else {
             ztrees = initZtree(deptList);

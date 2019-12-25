@@ -1,10 +1,12 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-import java.util.Set;
-
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUserRole;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * 角色业务层
@@ -18,7 +20,7 @@ public interface ISysRoleService {
      * @param role 角色信息
      * @return 角色数据集合信息
      */
-    public List<SysRole> selectRoleList(SysRole role);
+    public Page<SysRole> selectRoleList(SysRole role, Pageable pageable);
 
     /**
      * 根据用户ID查询角色
@@ -34,7 +36,7 @@ public interface ISysRoleService {
      * @param userId 用户ID
      * @return 角色列表
      */
-    public List<SysRole> selectRolesByUserId(Long userId);
+    public Set<SysRole> selectRolesByUserId(Long userId);
 
     /**
      * 查询所有角色
@@ -74,7 +76,7 @@ public interface ISysRoleService {
      * @param role 角色信息
      * @return 结果
      */
-    public int insertRole(SysRole role);
+    public SysRole insertRole(SysRole role);
 
     /**
      * 修改保存角色信息
@@ -82,7 +84,7 @@ public interface ISysRoleService {
      * @param role 角色信息
      * @return 结果
      */
-    public int updateRole(SysRole role);
+    public SysRole updateRole(SysRole role);
 
     /**
      * 修改数据权限信息

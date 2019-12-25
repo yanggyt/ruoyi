@@ -79,6 +79,12 @@ public class BaseEntity implements Serializable {
     @Transient
     private Map<String, Object> params;
 
+    @Transient
+    private Date startTime;
+
+    @Transient
+    private Date endTime;
+
     public String getSearchValue() {
         return searchValue;
     }
@@ -136,5 +142,21 @@ public class BaseEntity implements Serializable {
 
     public void setParams(Map<String, Object> params) {
         this.params = params;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

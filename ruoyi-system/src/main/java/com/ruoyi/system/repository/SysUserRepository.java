@@ -2,6 +2,7 @@ package com.ruoyi.system.repository;
 
 import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysPost;
+import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -36,4 +37,6 @@ public interface SysUserRepository extends BaseRepository<SysUser, Long> {
     @Modifying
     @Query("update SysUser u set u.status = ?1 where u.userId = ?2")
     void changeStatus(String status, Long userId);
+
+    int countByRolesContaining(SysRole sysRole);
 }
