@@ -3,6 +3,7 @@ package com.ruoyi.system.domain;
 import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "sys_dept")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "com.ruoyi.system.domain.SysDept")
 public class SysDept extends BaseEntity {
 
     public static final Long ROOT_ID = 1L;

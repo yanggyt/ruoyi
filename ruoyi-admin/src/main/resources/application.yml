@@ -81,6 +81,10 @@ spring:
     properties:
       hibernate:
         format_sql: false
+  cache:
+    type: jcache
+    jcache:
+      provider: org.ehcache.jsr107.EhcacheCachingProvider
 
 # MyBatis
 mybatis:
