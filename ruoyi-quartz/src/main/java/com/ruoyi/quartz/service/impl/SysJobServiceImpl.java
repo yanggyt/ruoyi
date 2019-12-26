@@ -1,10 +1,14 @@
 package com.ruoyi.quartz.service.impl;
 
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.job.TaskException;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.quartz.domain.QSysJob;
 import com.ruoyi.quartz.domain.SysJob;
-import com.ruoyi.quartz.mapper.SysJobMapper;
 import com.ruoyi.quartz.repository.SysJobRepository;
 import com.ruoyi.quartz.service.ISysJobService;
 import com.ruoyi.quartz.util.CronUtils;
@@ -13,6 +17,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +34,9 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysJobServiceImpl implements ISysJobService {
+public class SysJobServiceImpl extends BaseService implements ISysJobService {
     @Autowired
     private Scheduler scheduler;
-
-    private SysJobMapper jobMapper;
     @Autowired
     private SysJobRepository sysJobRepository;
 
@@ -56,7 +60,25 @@ public class SysJobServiceImpl implements ISysJobService {
      */
     @Override
     public Page<SysJob> selectJobList(SysJob job, Pageable pageable) {
-        return sysJobRepository.findAll(pageable);
+        return sysJobRepository.findAll(getPredicate(job), pageable);
+    }
+
+    private Predicate getPredicate(SysJob job){
+        QSysJob qSysJob = QSysJob.sysJob;
+        List<Predicate> predicates = new ArrayList<>();
+        if(StringUtils.isNotEmpty(job.getJobName())){
+            predicates.add(buildLike(qSysJob.jobName, job.getJobName()));
+        }
+        if(StringUtils.isNotEmpty(job.getJobGroup())){
+            predicates.add(buildEqual(qSysJob.jobGroup, job.getJobGroup()));
+        }
+        if(StringUtils.isNotEmpty(job.getStatus())){
+            predicates.add(buildEqual(qSysJob.status, job.getStatus()));
+        }
+        if(StringUtils.isNotEmpty(job.getInvokeTarget())){
+            predicates.add(buildLike(qSysJob.invokeTarget, job.getInvokeTarget()));
+        }
+        return ExpressionUtils.allOf(predicates);
     }
 
     /**
@@ -67,7 +89,7 @@ public class SysJobServiceImpl implements ISysJobService {
      */
     @Override
     public SysJob selectJobById(Long jobId) {
-        return jobMapper.selectJobById(jobId);
+        return sysJobRepository.findById(jobId).get();
     }
 
     /**
@@ -81,11 +103,9 @@ public class SysJobServiceImpl implements ISysJobService {
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-        int rows = jobMapper.updateJob(job);
-        if (rows > 0) {
-            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
-        return rows;
+        sysJobRepository.updateStatus(job.getStatus(), jobId);
+        scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+        return 1;
     }
 
     /**
@@ -99,11 +119,9 @@ public class SysJobServiceImpl implements ISysJobService {
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
         job.setStatus(ScheduleConstants.Status.NORMAL.getValue());
-        int rows = jobMapper.updateJob(job);
-        if (rows > 0) {
-            scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
-        return rows;
+        sysJobRepository.updateStatus(job.getStatus(), jobId);
+        scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+        return 1;
     }
 
     /**
@@ -116,11 +134,9 @@ public class SysJobServiceImpl implements ISysJobService {
     public int deleteJob(SysJob job) throws SchedulerException {
         Long jobId = job.getJobId();
         String jobGroup = job.getJobGroup();
-        int rows = jobMapper.deleteJobById(jobId);
-        if (rows > 0) {
-            scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
-        }
-        return rows;
+        sysJobRepository.deleteById(jobId);
+        scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+        return 1;
     }
 
     /**
@@ -134,7 +150,7 @@ public class SysJobServiceImpl implements ISysJobService {
     public void deleteJobByIds(String ids) throws SchedulerException {
         Long[] jobIds = Convert.toLongArray(ids);
         for (Long jobId : jobIds) {
-            SysJob job = jobMapper.selectJobById(jobId);
+            SysJob job = selectJobById(jobId);
             deleteJob(job);
         }
     }
@@ -183,11 +199,9 @@ public class SysJobServiceImpl implements ISysJobService {
     @Transactional
     public int insertJob(SysJob job) throws SchedulerException, TaskException {
         job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-        int rows = jobMapper.insertJob(job);
-        if (rows > 0) {
-            ScheduleUtils.createScheduleJob(scheduler, job);
-        }
-        return rows;
+        sysJobRepository.save(job);
+        ScheduleUtils.createScheduleJob(scheduler, job);
+        return 1;
     }
 
     /**
@@ -199,11 +213,9 @@ public class SysJobServiceImpl implements ISysJobService {
     @Transactional
     public int updateJob(SysJob job) throws SchedulerException, TaskException {
         SysJob properties = selectJobById(job.getJobId());
-        int rows = jobMapper.updateJob(job);
-        if (rows > 0) {
-            updateSchedulerJob(job, properties.getJobGroup());
-        }
-        return rows;
+        BeanUtils.copyProperties(job, properties);
+        updateSchedulerJob(job, properties.getJobGroup());
+        return 1;
     }
 
     /**

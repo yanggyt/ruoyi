@@ -1,11 +1,11 @@
 package com.ruoyi.quartz.domain;
 
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,9 +14,10 @@ import java.util.Date;
  * @author ruoyi
  */
 @Entity
-@Table(name = "sys_job_log")
-public class SysJobLog extends BaseEntity {
+@Table(name = SysJobLog.TABLE_NAME)
+public class SysJobLog implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final String TABLE_NAME = "sys_job_log";
 
     /**
      * ID
