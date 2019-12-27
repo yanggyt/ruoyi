@@ -27,4 +27,12 @@ public class BaseService {
     protected <T extends Comparable<T>> BooleanExpression buildLessThanOrEqualTo(ComparableExpression<T> path, T value){
         return ExpressionUtils.buildLessThanOrEqualTo(path, value);
     }
+
+    protected BooleanExpression notLike(StringPath path, String value){
+        return ExpressionUtils.notLike(path, value);
+    }
+
+    protected BooleanExpression notStartWith(StringPath path, String value){
+        return ExpressionUtils.notStartWith(path, value);
+    }
 }

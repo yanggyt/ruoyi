@@ -2,6 +2,9 @@ package com.ruoyi.generator.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.text.Convert;
@@ -9,8 +12,8 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
-import com.ruoyi.generator.mapper.GenTableColumnMapper;
-import com.ruoyi.generator.mapper.GenTableMapper;
+import com.ruoyi.generator.domain.QGenTable;
+import com.ruoyi.generator.repository.GenTableColumnRepository;
 import com.ruoyi.generator.repository.GenTableRepository;
 import com.ruoyi.generator.service.IGenTableService;
 import com.ruoyi.generator.util.GenUtils;
@@ -24,13 +27,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,14 +50,18 @@ import java.util.zip.ZipOutputStream;
  * @author ruoyi
  */
 @Service
-public class GenTableServiceImpl implements IGenTableService {
+public class GenTableServiceImpl extends BaseService implements IGenTableService {
+
+    private static final String QUARTZ_TABLE_PREFIX = "qrtz_";
+    private static final String GEN_TABLE_PREFIX = "gen_";
     private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
-    private GenTableMapper genTableMapper;
-
-    private GenTableColumnMapper genTableColumnMapper;
     @Autowired
     private GenTableRepository genTableRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private GenTableColumnRepository genTableColumnRepository;
 
     /**
      * 查询业务信息
@@ -60,7 +71,7 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     @Override
     public GenTable selectGenTableById(Long id) {
-        GenTable genTable = genTableMapper.selectGenTableById(id);
+        GenTable genTable = genTableRepository.findById(id).get();
         setTableFromOptions(genTable);
         return genTable;
     }
@@ -73,7 +84,7 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     @Override
     public Page<GenTable> selectGenTableList(GenTable genTable, Pageable pageable) {
-        return genTableRepository.findAll(pageable);
+        return genTableRepository.findAll(getPredicate(genTable), pageable);
     }
 
     /**
@@ -83,7 +94,43 @@ public class GenTableServiceImpl implements IGenTableService {
      * @return 数据库表集合
      */
     public Page<GenTable> selectDbTableList(GenTable genTable, Pageable pageable) {
-        return genTableRepository.findAll(pageable);
+        String sql = " select table_name, table_comment, create_time, update_time from information_schema.tables " +
+                " where table_schema = (select database()) " +
+                " AND table_name NOT LIKE '"+QUARTZ_TABLE_PREFIX+"%' AND table_name NOT LIKE '"+GEN_TABLE_PREFIX+"%' " +
+                " AND table_name NOT IN (select table_name from gen_table) ";
+        if(StringUtils.isNotEmpty(genTable.getTableName())){
+            sql += " AND lower(table_name) like lower(concat('%', " + genTable.getTableName()+ ", '%')) ";
+        }
+        if(StringUtils.isNotEmpty(genTable.getTableName())){
+            sql += " AND lower(table_comment) like lower(concat('%', " + genTable.getTableComment() + ", '%'))";
+        }
+        String countSql = "select count(0) from ( " + sql + " ) t";
+        if(pageable.isPaged()){
+            int page = pageable.getPageNumber();
+            int size = pageable.getPageSize();
+            int start = 0;
+            if(page > 0){
+                start = page * size ;
+            }
+            sql += " limit " + start + "," + size;
+        }
+        List<GenTable> tables = jdbcTemplate.query(sql, new BeanPropertyRowMapper<GenTable>(GenTable.class));
+        int count = jdbcTemplate.queryForObject(countSql, Integer.class);
+        return new PageImpl<GenTable>(tables, pageable, count);
+    }
+
+    private Predicate getPredicate(GenTable genTable){
+        QGenTable qGenTable = QGenTable.genTable;
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(notStartWith(qGenTable.tableName, QUARTZ_TABLE_PREFIX));
+        predicates.add(notStartWith(qGenTable.tableName, GEN_TABLE_PREFIX));
+        if(StringUtils.isNotEmpty(genTable.getTableName())){
+            predicates.add(buildLike(qGenTable.tableName, genTable.getTableName()));
+        }
+        if(StringUtils.isNotEmpty(genTable.getTableComment())){
+            predicates.add(buildLike(qGenTable.tableComment, genTable.getTableComment()));
+        }
+        return ExpressionUtils.allOf(predicates);
     }
 
     /**
@@ -93,7 +140,17 @@ public class GenTableServiceImpl implements IGenTableService {
      * @return 数据库表集合
      */
     public List<GenTable> selectDbTableListByNames(String[] tableNames) {
-        return genTableMapper.selectDbTableListByNames(tableNames);
+        String sql = "select table_name, table_comment, create_time, update_time from information_schema.tables " +
+                " where table_name NOT LIKE '"+QUARTZ_TABLE_PREFIX+"%' and table_name NOT LIKE '"+GEN_TABLE_PREFIX+"%' and table_schema = (select database()) " +
+                " and table_name in (";
+        for(int i=0;i<tableNames.length;i++){
+            sql += "'" +tableNames[i]+"'";
+            if(i != tableNames.length - 1){
+                sql += ",";
+            }
+        }
+        sql += ")";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(GenTable.class));
     }
 
     /**
@@ -107,11 +164,9 @@ public class GenTableServiceImpl implements IGenTableService {
     public void updateGenTable(GenTable genTable) {
         String options = JSON.toJSONString(genTable.getParams());
         genTable.setOptions(options);
-        int row = genTableMapper.updateGenTable(genTable);
-        if (row > 0) {
-            for (GenTableColumn cenTableColumn : genTable.getColumns()) {
-                genTableColumnMapper.updateGenTableColumn(cenTableColumn);
-            }
+        genTableRepository.save(genTable);
+        for (GenTableColumn cenTableColumn : genTable.getColumns()) {
+            genTableColumnRepository.save(cenTableColumn);
         }
     }
 
@@ -124,8 +179,12 @@ public class GenTableServiceImpl implements IGenTableService {
     @Override
     @Transactional
     public void deleteGenTableByIds(String ids) {
-        genTableMapper.deleteGenTableByIds(Convert.toLongArray(ids));
-        genTableColumnMapper.deleteGenTableColumnByIds(Convert.toLongArray(ids));
+        List<GenTable> tables = new ArrayList<>();
+        for(Long id : Convert.toLongArray(ids)){
+            genTableRepository.deleteById(id);
+            tables.add(new GenTable(id));
+        }
+        genTableColumnRepository.deleteByTableIn(tables);
     }
 
     /**
@@ -139,16 +198,15 @@ public class GenTableServiceImpl implements IGenTableService {
     public void importGenTable(List<GenTable> tableList, String operName) {
         for (GenTable table : tableList) {
             try {
-                String tableName = table.getTableName();
                 GenUtils.initTable(table, operName);
-                int row = genTableMapper.insertGenTable(table);
-                if (row > 0) {
-                    // 保存列信息
-                    List<GenTableColumn> genTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
-                    for (GenTableColumn column : genTableColumns) {
-                        GenUtils.initColumnField(column, table);
-                        genTableColumnMapper.insertGenTableColumn(column);
-                    }
+                genTableRepository.save(table);
+                String sql = "select column_name, (case when (is_nullable = 'no' && column_key != 'PRI') then '1' else null end) as is_required, (case when column_key = 'PRI' then '1' else '0' end) as is_pk, ordinal_position as sort, column_comment, (case when extra = 'auto_increment' then '1' else '0' end) as is_increment, column_type " +
+                        " from information_schema.columns where table_schema = (select database()) and table_name =  '" + table.getTableName() + "'" +
+                        " order by ordinal_position";
+                List<GenTableColumn> genTableColumns = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(GenTableColumn.class));
+                for (GenTableColumn column : genTableColumns) {
+                    GenUtils.initColumnField(column, table);
+                    genTableColumnRepository.save(column);
                 }
             } catch (Exception e) {
                 log.error("表名 " + table.getTableName() + " 导入失败：", e);
@@ -165,7 +223,7 @@ public class GenTableServiceImpl implements IGenTableService {
     public Map<String, String> previewCode(Long tableId) {
         Map<String, String> dataMap = new LinkedHashMap<>();
         // 查询表信息
-        GenTable table = genTableMapper.selectGenTableById(tableId);
+        GenTable table = genTableRepository.findById(tableId).get();
         // 查询列信息
         List<GenTableColumn> columns = table.getColumns();
         setPkColumn(table, columns);
@@ -222,7 +280,7 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     private void generatorCode(String tableName, ZipOutputStream zip) {
         // 查询表信息
-        GenTable table = genTableMapper.selectGenTableByName(tableName);
+        GenTable table = genTableRepository.findFirstByTableName(tableName);
         // 查询列信息
         List<GenTableColumn> columns = table.getColumns();
         setPkColumn(table, columns);

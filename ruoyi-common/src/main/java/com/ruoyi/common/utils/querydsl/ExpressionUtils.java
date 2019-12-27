@@ -20,6 +20,14 @@ public class ExpressionUtils {
         return path.like("%" + value + "%");
     }
 
+    public static BooleanExpression notLike(StringPath path, String value){
+        return path.notLike("%" + value + "%");
+    }
+
+    public static BooleanExpression notStartWith(StringPath path, String value){
+        return path.notLike(value + "%");
+    }
+
     /**
      * 构建 等于 查询
      * @param path

@@ -105,7 +105,9 @@ public class GenTableColumn extends BaseEntity {
     private Integer sort;
 
     @ManyToOne
-    @JoinColumn(name = "tableId", referencedColumnName = "tableId")
+    @JoinTable(name = "gen_table_columns",
+            inverseJoinColumns = @JoinColumn(name = "genTableTableId", referencedColumnName = "tableId"),
+            joinColumns = @JoinColumn(name = "columnsColumnId", referencedColumnName = "columnId"))
     @org.hibernate.annotations.ForeignKey(name = "none")
     private GenTable table;
 

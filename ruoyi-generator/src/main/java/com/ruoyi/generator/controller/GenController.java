@@ -72,9 +72,9 @@ public class GenController extends BaseController {
     @RequiresPermissions("tool:gen:list")
     @PostMapping("/column/list")
     @ResponseBody
-    public TableDataInfo columnList(GenTableColumn genTableColumn) {
+    public TableDataInfo columnList(GenTable genTable) {
         TableDataInfo dataInfo = new TableDataInfo();
-        List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(genTableColumn);
+        List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(genTable);
         dataInfo.setRows(list);
         dataInfo.setTotal(list.size());
         return dataInfo;

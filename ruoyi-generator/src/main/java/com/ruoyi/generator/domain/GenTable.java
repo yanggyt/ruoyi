@@ -1,13 +1,13 @@
 package com.ruoyi.generator.domain;
 
-import java.util.List;
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
+
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * 业务表 gen_table
@@ -82,13 +82,14 @@ public class GenTable extends BaseEntity {
     /**
      * 主键信息
      */
+    @Transient
     private GenTableColumn pkColumn;
 
     /**
      * 表列信息
      */
     @Valid
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "")
+    @OneToMany(mappedBy = "table")
     private List<GenTableColumn> columns;
 
     /**
@@ -264,5 +265,12 @@ public class GenTable extends BaseEntity {
             StringUtils.equalsAnyIgnoreCase(javaField, GenConstants.TREE_ENTITY);
         }
         return StringUtils.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
+    }
+
+    public GenTable() {
+    }
+
+    public GenTable(Long tableId) {
+        this.tableId = tableId;
     }
 }
