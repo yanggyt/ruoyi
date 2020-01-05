@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import com.ruoyi.common.utils.StringUtils;
@@ -68,7 +70,7 @@ public class YamlUtil
         if (map != null && !map.isEmpty() && qualifiedKey != null)
         {
             String input = String.valueOf(qualifiedKey);
-            if (!input.equals(""))
+            if (!Objects.equals(input, ""))
             {
                 if (input.contains("."))
                 {
