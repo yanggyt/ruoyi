@@ -1,44 +1,5 @@
 package com.ruoyi.common.utils.poi;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFDataValidation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.annotation.Excel.Type;
@@ -50,10 +11,26 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.reflect.ReflectUtils;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFDataValidation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.*;
 
 /**
  * Excel相关处理
- * 
+ *
  * @author ruoyi
  */
 public class ExcelUtil<T>
@@ -125,7 +102,7 @@ public class ExcelUtil<T>
 
     /**
      * 对excel表单默认第一个索引名转换成list
-     * 
+     *
      * @param is 输入流
      * @return 转换后集合
      */
@@ -136,7 +113,7 @@ public class ExcelUtil<T>
 
     /**
      * 对excel表单指定表格索引名转换成list
-     * 
+     *
      * @param sheetName 表格索引名
      * @param is 输入流
      * @return 转换后集合
@@ -289,7 +266,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @param list 导出数据集合
      * @param sheetName 工作表的名称
      * @return 结果
@@ -302,7 +279,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @param sheetName 工作表的名称
      * @return 结果
      */
@@ -314,7 +291,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @return 结果
      */
     public AjaxResult exportExcel()
@@ -381,7 +358,7 @@ public class ExcelUtil<T>
 
     /**
      * 填充excel数据
-     * 
+     *
      * @param index 序号
      * @param row 单元格行
      */
@@ -408,7 +385,7 @@ public class ExcelUtil<T>
 
     /**
      * 创建表格样式
-     * 
+     *
      * @param wb 工作薄对象
      * @return 样式列表
      */
@@ -466,7 +443,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置单元格信息
-     * 
+     *
      * @param value 单元格值
      * @param attr 注解相关
      * @param cell 单元格信息
@@ -482,6 +459,15 @@ public class ExcelUtil<T>
         {
             cell.setCellType(CellType.NUMERIC);
             cell.setCellValue(Integer.parseInt(value + ""));
+        }
+        else if (ColumnType.IMAGE == attr.cellType())
+        {
+            if(value != null && value instanceof byte[]){
+                Drawing<?> patriarch = cell.getSheet().createDrawingPatriarch();
+                XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRowIndex(), (short) cell.getColumnIndex() + 1, cell.getRowIndex() + 1);
+                int pictureIndex = cell.getSheet().getWorkbook().addPicture((byte[]) value, HSSFWorkbook.PICTURE_TYPE_JPEG);
+                patriarch.createPicture(anchor, pictureIndex);
+            }
         }
     }
 
@@ -559,7 +545,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置 POI XSSFSheet 单元格提示
-     * 
+     *
      * @param sheet 表单
      * @param promptTitle 提示标题
      * @param promptContent 提示内容
@@ -582,7 +568,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置某些列的值只能输入预制的数据,显示下拉框.
-     * 
+     *
      * @param sheet 要设置的sheet.
      * @param textlist 下拉框显示的内容
      * @param firstRow 开始行
@@ -616,7 +602,7 @@ public class ExcelUtil<T>
 
     /**
      * 解析导出值 0=男,1=女,2=未知
-     * 
+     *
      * @param propertyValue 参数值
      * @param converterExp 翻译注解
      * @return 解析后值
@@ -645,7 +631,7 @@ public class ExcelUtil<T>
 
     /**
      * 反向解析值 男=0,女=1,未知=2
-     * 
+     *
      * @param propertyValue 参数值
      * @param converterExp 翻译注解
      * @return 解析后值
@@ -683,7 +669,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取下载路径
-     * 
+     *
      * @param filename 文件名称
      */
     public String getAbsoluteFile(String filename)
@@ -699,7 +685,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取bean中的属性值
-     * 
+     *
      * @param vo 实体对象
      * @param field 字段
      * @param excel 注解
@@ -730,7 +716,7 @@ public class ExcelUtil<T>
 
     /**
      * 以类的属性的get方法方法形式获取值
-     * 
+     *
      * @param o
      * @param name
      * @return value
@@ -799,7 +785,7 @@ public class ExcelUtil<T>
 
     /**
      * 创建工作表
-     * 
+     *
      * @param sheetNo sheet数量
      * @param index 序号
      */
@@ -820,7 +806,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取单元格值
-     * 
+     *
      * @param row 获取的行
      * @param column 获取单元格列号
      * @return 单元格值
