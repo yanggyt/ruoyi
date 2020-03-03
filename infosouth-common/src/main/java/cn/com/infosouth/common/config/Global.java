@@ -15,6 +15,12 @@ public class Global
     /** 项目名称 */
     private static String name;
 
+    /** 欢迎词 **/
+    private static String welcomeDesc;
+
+    /** 甲方爸爸 **/
+    private static String baba;
+
     /** 版本 */
     private static String version;
 
@@ -38,6 +44,22 @@ public class Global
     public void setName(String name)
     {
         Global.name = name;
+    }
+
+    public static String getWelcomeDesc() {
+        return welcomeDesc;
+    }
+
+    public static void setWelcomeDesc(String welcomeDesc) {
+        Global.welcomeDesc = welcomeDesc;
+    }
+
+    public static String getBaba() {
+        return baba;
+    }
+
+    public static void setBaba(String baba) {
+        Global.baba = baba;
     }
 
     public static String getVersion()
