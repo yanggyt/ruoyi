@@ -167,7 +167,14 @@
 				<artifactId>fastjson</artifactId>
 				<version>${fastjson.version}</version>
 			</dependency>
-            
+
+			<!-- ARJ21-->
+			<dependency>
+				<groupId>cn.com.infosouth</groupId>
+				<artifactId>infosouth-arj21</artifactId>
+				<version>${infosouth.version}</version>
+			</dependency>
+
             <!-- 定时任务-->
 			<dependency>
 				<groupId>cn.com.infosouth</groupId>
@@ -213,7 +220,8 @@
 		<module>infosouth-quartz</module>
 		<module>infosouth-generator</module>
         <module>infosouth-common</module>
-    </modules>
+		<module>infosouth-arj21</module>
+	</modules>
     <packaging>pom</packaging>
 
 

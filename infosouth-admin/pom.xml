@@ -72,6 +72,12 @@
             <groupId>cn.com.infosouth</groupId>
             <artifactId>infosouth-generator</artifactId>
         </dependency>
+
+        <!-- 虚拟机型数据库 -->
+        <dependency>
+            <groupId>cn.com.infosouth</groupId>
+            <artifactId>infosouth-arj21</artifactId>
+        </dependency>
         
     </dependencies>
 

@@ -26,24 +26,6 @@ import cn.com.infosouth.common.utils.StringUtils;
 @Controller
 public class SysLoginController extends BaseController
 {
-    @GetMapping("/login")
-    public String login(ModelMap mmap2)
-    {
-        // 如果是Ajax请求，返回Json字符串。
-        //HttpServletRequest request, HttpServletResponse response,
-        //        if (ServletUtils.isAjaxRequest(request))
-        //        {
-        //            return ServletUtils.renderString(response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}");
-        //
-        //        }
-        mmap2.put("sysName", Global.getName());
-        mmap2.put("sysWelcome", Global.getWelcomeDesc());
-        mmap2.put("sysBaba", Global.getBaba());
-        mmap2.put("copyrightYear", Global.getCopyrightYear());
-        mmap2.put("sysVersion", Global.getVersion());
-        return "login";
-    }
-
     @GetMapping("/login-old")
     public String loginOld(HttpServletRequest request, HttpServletResponse response)
     {
@@ -54,6 +36,24 @@ public class SysLoginController extends BaseController
         }
 
         return "login-old";
+    }
+
+    @GetMapping("/login")
+    public String login(ModelMap mmap)
+    {
+        // 如果是Ajax请求，返回Json字符串。
+        //HttpServletRequest request, HttpServletResponse response,
+        //        if (ServletUtils.isAjaxRequest(request))
+        //        {
+        //            return ServletUtils.renderString(response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}");
+        //
+        //        }
+        mmap.put("sysName", Global.getName());
+        mmap.put("sysWelcome", Global.getWelcomeDesc());
+        mmap.put("sysBaba", Global.getBaba());
+        mmap.put("copyrightYear", Global.getCopyrightYear());
+        mmap.put("sysVersion", Global.getVersion());
+        return "login";
     }
 
     @PostMapping("/login")
