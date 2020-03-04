@@ -41,6 +41,7 @@ nbdist/
 
 target/*
 *.bak
+*.class
 
 !*/build/*.java
 !*/build/*.html

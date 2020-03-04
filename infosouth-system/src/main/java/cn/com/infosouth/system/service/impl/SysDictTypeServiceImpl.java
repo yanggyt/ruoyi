@@ -169,7 +169,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
             if (UserConstants.DICT_NORMAL.equals(dict.getStatus()))
             {
                 Ztree ztree = new Ztree();
-                ztree.setId(dict.getDictId());
+                ztree.setId(dict.getDictId()+"");
                 ztree.setName(transDictName(dict));
                 ztree.setTitle(dict.getDictType());
                 ztrees.add(ztree);
