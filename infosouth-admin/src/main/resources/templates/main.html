@@ -1,877 +1,2053 @@
 <!DOCTYPE html>
-<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"  >
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--360浏览器优先以webkit内核解析-->
-    <title>介绍</title>
+    <title>首页数据展示</title>
     <link rel="shortcut icon" href="favicon.ico">
-    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
-    <link href="../static/css/main/animate.min.css" th:href="@{/css/main/animate.min.css}" rel="stylesheet"/>
-    <link href="../static/css/main/style.min862f.css" th:href="@{/css/main/style.min862f.css}" rel="stylesheet"/>
+	<title>${fns:getConfig('productName')}</title>
+	<meta name="decorator" content="blank"/>
+	<!-- 静态页面js文件刷新 -->
+	<meta http-equiv="pragma" content="no-cache"/> 
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/> 
+	<meta http-equiv="expires" content="0"/>
+	<!-- 静态页面js文件刷新 -->
+<!--
+	<%&#45;&#45; <%@include file="/WEB-INF/views/include/login_head.jsp" %> &#45;&#45;%>
+-->
+
+	<!-- 引入自己写的css样式文件 -->
+	<link href="../static/oneself/common/main_index.css" th:href="@{/oneself/common/main_index.css}" type="text/css" rel="stylesheet" />
+	<link href="../static/oneself/css/main.css" th:href="@{/oneself/css/main.css}" type="text/css" rel="stylesheet" />
+
+	<style type="text/css">
+		body{
+			overflow:scroll;
+			overflow-y:hidden;
+		}
+		table {
+			border: 1px #ccc;
+		}
+		.main_cell_td{
+			background-color: #FFFFFF;
+			BORDER-RIGHT:solid 20px #eaedf1;;
+		}
+		#contentTable th,#contentTable td{
+			text-align:center;
+		}
+		/* 隐藏滚动条，但仍然能滚动 */
+		::-webkit-scrollbar{
+			display:none;
+		}
+
+		.pitch_set_class{
+			color:#3daae9;
+		}
+		.acTypeContrastSetting{
+			color:#3daae9;
+		}
+		.verticalAcceleration_set_class{
+			color:#3daae9;
+		}
+		label.control-label {
+			width: 10%;
+		}
+		.mycontrolsDiv{
+			padding-left: 20px;
+		}
+		.form-group{
+			height: 40px;
+		}
+		/* 遮罩层 */
+		.zhezhao_mask {
+			position: absolute; top: 0px; filter: alpha(opacity=40); background-color: #777;
+			z-index: 1100; left: 0px;
+			opacity:0.5; -moz-opacity:0.5;
+		}
+		.cruisingAltitude_set_class{
+			color:#3daae9;
+		}
+		/*模态框样式调整*/
+		.modal.fade {
+			top: -390%;
+			/* align:center; */
+		}
+
+		input#statisticsAction {
+			width: 196px;
+		}
+		input#cruisingAltitude_title_param {
+			width: 196px;
+		}
+		input#verticalAcceleration_statisticsAction{
+			width: 196px;
+		}
+		input#acTypeContrastSettingTitle{
+			width: 196px;
+		}
+		input#acTypeContrast_set_Title{
+			width: 196px;
+		}
+		/* div#s2id_acTypeContrast_set_modelName_pitch {
+    		margin-left: 213px;
+		} */
+		div#s2id_acTypeContrast_set_modelName_col2{
+			margin-left: 213px;
+		}
+		div#s2id_acTypeContrast_set_modelName_col3{
+			margin-left: 213px;
+		}
+		div#s2id_acTypeContrast_set_modelName_col4{
+			margin-left: 213px;
+		}
+		#choose_paramName_col1{
+			width: 196px;
+		}
+		#choose_paramName_col2{
+			width: 196px;
+		}
+		#choose_paramName_col3{
+			width: 196px;
+		}
+		#choose_paramName_col4{
+			width: 196px;
+		}
+		.scroll_jobName_tips_text{
+			text-align: center;
+		}
+		#acTypeContrast_set_dlg {
+
+		}
+		.multiAcTypeTipClass{
+
+			color:#888;
+		}
+		a#scroll_jobName_tips_text{
+			text-decoration:none;
+		}
+		/* 表格边框线 */
+		/* table#contentTable tr td { border:1px solid #999; } */
+		/* 给列名加背景颜色 */
+		th.show_choose_paramName_col_blank{
+			background:#D1EA85;
+		}
+		th.show_choose_paramName_col1{
+			background:#D1EA85;
+		}
+		th.show_choose_paramName_col2{
+			background:#D1EA85;
+		}
+		th.show_choose_paramName_col3{
+			background:#D1EA85;
+		}
+		th.show_choose_paramName_col4{
+			background:#D1EA85;
+		}
+		/* 给列名加背景颜色 */
+
+	</style>
+
+	<script type="text/javascript">
+        var global_acTypeArr = '${acTypeListByAcTypeNoStr}'.split(',');
+	</script>
 </head>
 
 <body class="gray-bg">
-    <div class="row  border-bottom white-bg dashboard-header">
-        <div class="col-sm-12">
-            <blockquote class="text-warning" style="font-size:14px">
-                                           领取阿里云通用云产品1888优惠券
-                <br><a target="_blank" href="https://www.aliyun.com/minisite/goods?userCode=brki8iof">https://www.aliyun.com/minisite/goods?userCode=brki8iof</a><br>
-                                           领取腾讯云通用云产品2860优惠券
-                <br><a target="_blank" href="https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console">https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console</a><br>
-                <h4 class="text-danger">云产品通用红包，可叠加官网常规优惠使用。(仅限新用户)</h4>
-            </blockquote>
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td height="580" valign="top">
+			<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:20px;margin-bottom:20px;">
+				<tr>
+					<td valign="top">
+						<div class="five_width">
+							<div class="five">
+								<div class="tup"><img src="../oneself/images/tmt7.png" th:src="@{/oneself/images/tmt7.png}"/></div>
+								<div class="cans">
+									<li>QAR数据量</li>
+									<!--<li><span>${qarCount}</span>条</li>-->
+									<li><span>25089</span>条</li>
+								</div>
+							</div>
 
-            <hr>
-        </div>
-        <div class="col-sm-3">
-            <h2>Hello,Guest</h2>
-            <small>移动设备访问请扫描以下二维码：</small>
-            <br>
-            <br>
-            <img th:src="@{/img/qr_code.png}" width="100%" style="max-width:264px;">
-            <br>
-        </div>
-        <div class="col-sm-5">
-            <h2>若依后台管理框架</h2>
-            <p>一直想做一款后台管理系统，看了很多优秀的开源项目但是发现没有合适自己的。于是利用空闲休息时间开始自己写一套后台系统。如此有了若依管理系统。，她可以用于所有的Web应用程序，如<b>网站管理后台</b>，<b>网站会员中心</b>，<b>CMS</b>，<b>CRM</b>，<b>OA</b>等等，当然，您也可以对她进行深度定制，以做出更强系统。所有前端后台代码封装过后十分精简易上手，出错概率低。同时支持移动客户端访问。系统会陆续更新一些实用功能。</p>
-            <p>
-                <b>当前版本：</b><span>v[[${version}]]</span>
-            </p>
-            <p>
-                <span class="label label-warning">&yen;免费开源</span>
-            </p>
-            <br>
-            <p>
-                <a class="btn btn-success btn-outline" href="https://gitee.com/y_project/RuoYi" target="_blank">
-                    <i class="fa fa-cloud"> </i> 访问码云
-                </a>
-                <a class="btn btn-white btn-bitbucket" href="http://ruoyi.vip" target="_blank">
-                    <i class="fa fa-home"></i> 访问主页
-                </a>
-            </p>
-        </div>
-        <div class="col-sm-4">
-            <h4>技术选型：</h4>
-            <ol>
-                <li>核心框架：Spring Boot。</li>
-                <li>安全框架：Apache Shiro。</li>
-                <li>模板引擎：Thymeleaf。</li>
-                <li>持久层框架：MyBatis。</li>
-				<li>定时任务:Quartz。</li>
-                <li>数据库连接池：Druid。</li>
-                <li>工具类：Fastjson。</li>
-                <li>更多……</li>
-            </ol>
-        </div>
+							<div class="five">
+								<div class="tup"><img src="../oneself/images/tmt8.png" th:src="@{/oneself/images/tmt8.png}"/></div>
+								<div class="cans" style="width:60%;">
+									<li>机型数据</li>
+									<li><span class="s18">支线/窄体/宽体</span></li>
+								</div>
+							</div>
 
-    </div>
-    <div class="wrapper wrapper-content">
-        <div class="row">
-            <div class="col-sm-4">
+							<div class="five">
+								<div class="tup"><img src="../oneself/images/tmt9.png" th:src="@{/oneself/images/tmt9.png}"/></div>
+								<div class="cans">
+									<li>模型数量</li>
+									<!--<li><span>${modelCount}</span>条</li>-->
+									<li><span>52</span>条</li>
+								</div>
+							</div>
 
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>联系信息</h5>
+							<div class="five">
+								<div class="tup"><img src="../oneself/images/tmt10.png" th:src="@{/oneself/images/tmt10.png}"/></div>
+								<div class="cans">
+									<li>任务数量</li>
+									<!--<li><span>${jobCount}</span>条</li>-->
+									<li><span>11</span>条</li>
+								</div>
+							</div>
 
-                    </div>
-                    <div class="ibox-content">
-                        <p><i class="fa fa-send-o"></i> 官网：<a href="http://www.ruoyi.vip" target="_blank">http://www.ruoyi.vip</a>
-                        </p>
-                        <p><i class="fa fa-qq"></i> QQ群：<s>满1389287</s> <s>满1679294</s> <s>满1529866</s> <s>满1772718</s> <s>满1366522</s> <s>满1382251</s> <s>满1145125</s> <s>满86752435</s> <s>满134072510</s> <s>满210336300</s> <a href="https://jq.qq.com/?_wv=1027&k=5omzbKc" target="_blank">339522636</a> 
-                        </p>
-                        <p><i class="fa fa-weixin"></i> 微信：<a href="javascript:;">/ *若依</a>
-                        </p>
-                        <p><i class="fa fa-credit-card"></i> 支付宝：<a href="javascript:;" class="支付宝信息">/ *若依</a>
-                        </p>
-                    </div>
-                </div>
+							<div class="five">
+								<div class="tup"><img src="../oneself/images/tmt11.png" th:src="@{/oneself/images/tmt11.png}"/></div>
+								<div class="cans">
+									<li>参数数量</li>
+									<li><span>全参</span></li>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table width="96%" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:30px;">
+				<tr>
+					<td class="main_cell_td" >
+						<div class="biaog03_div"><span class="acTypeContrast_set_title"></span>分析&nbsp;&nbsp;
+							<!--<c:if test="${isShowAdminSettingFlag=='1'}">-->
+								<a class="acTypeContrastSetting" onclick="acTypeContrast_set_dlg();">设置</a>
+							<!--</c:if>-->
+						</div>
+					</td>
+					<td class="main_cell_td" >
+						<div class="biaog03_div"><span class="verticalAcceleration_title"></span>--<span class="verticalAcceleration_choose_statisticsType"></span>分析&nbsp;&nbsp;
+							<!--<c:if test="${isShowAdminSettingFlag=='1'}">
+								<a class="verticalAcceleration_set_class" onclick="verticalAcceleration_set_dlg();">设置</a>
+							</c:if>-->
+						</div>
+					</td>
+					<td  style="background-color: #FFFFFF;">
+						<div class="biaog03_div">调度任务列表</div>
+					</td>
+				</tr>
+				<tr class="main_tr">
+					<td class="main_cell_td main_cell" valign="top">
+						<div class="biaog03_img main_cell">
+
+							<table id="contentTable" class="table table-bordered main_cell">
+								<thead>
+								<tr>
+									<th class="show_choose_paramName_col_blank"></th>
+									<th class="show_choose_paramName_col1" bgcolor="#D1EA85">参数名1</th>
+									<th class="show_choose_paramName_col2" bgcolor="#D1EA85">参数名2</th>
+									<th class="show_choose_paramName_col3" bgcolor="#D1EA85">参数名3</th>
+									<th class="show_choose_paramName_col4" bgcolor="#D1EA85">参数名4</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td bgcolor="#F4D371">
+										${acType_row1}
+									</td>
+									<td class="${acType_row1}_param_col1">
+
+									</td>
+									<td class="${acType_row1}_param_col2">
+
+									</td>
+									<td class="${acType_row1}_param_col3">
+
+									</td>
+									<td class="${acType_row1}_param_col4">
+
+									</td>
+								</tr>
+								<tr>
+									<td bgcolor="#F4D371">
+										${acType_row2}
+									</td>
+									<td class="${acType_row2}_param_col1">
+
+									</td>
+									<td class="${acType_row2}_param_col2">
+
+									</td>
+									<td class="${acType_row2}_param_col3">
+
+									</td>
+									<td class="${acType_row2}_param_col4">
+
+									</td>
+								</tr>
+								<tr>
+									<td bgcolor="#F4D371">
+										${acType_row3}
+									</td>
+									<td class="${acType_row3}_param_col1">
+
+									</td>
+									<td class="${acType_row3}_param_col2">
+
+									</td>
+									<td class="${acType_row3}_param_col3">
+
+									</td>
+									<td class="${acType_row3}_param_col4">
+
+									</td>
+								</tr>
+
+								<tr>
+									<td bgcolor="#F4D371">
+										${acType_row4}
+									</td>
+									<td class="${acType_row4}_param_col1">
+
+									</td>
+									<td class="${acType_row4}_param_col2">
+
+									</td>
+									<td class="${acType_row4}_param_col3">
+
+									</td>
+									<td class="${acType_row4}_param_col4">
+
+									</td>
+								</tr>
+								<tr>
+									<td bgcolor="#F4D371">
+										${acType_row5}
+									</td>
+									<td class="${acType_row5}_param_col1">
+
+									</td>
+									<td class="${acType_row5}_param_col2">
+
+									</td>
+									<td class="${acType_row5}_param_col3">
+
+									</td>
+									<td class="${acType_row5}_param_col4">
+
+									</td>
+								</tr>
+
+								</tbody>
+							</table>
+
+						</div>
+					</td>
+					<td class="main_cell_td main_cell" valign="top">
+						<div class="biaog03_img main_cell">
+							<div class="chart_container_line main_cell">
+								<canvas id="myChart_line" width="800" height="500"></canvas>
+							</div>
+
+						</div>
+					</td>
+					<td valign="top" style="background-color: #FFFFFF;" rowspan="3">
+						<div class="biaog03_img main_cell_right">
+							<iframe name="infoDutyScheduleList" class="main_cell_right" id="infoDutyScheduleList" src="${ctx}/defaultIndex/defaultIndex/infoDutyScheduleList" scrolling="no" width="100%" frameborder="0"></iframe>
+						</div>
+						<div class="biaog03_div">查看更多</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="main_cell_td">
+						<div class="biaog03_div"><span class="choose_paramName"></span>--<span class="choose_statisticsType"></span>分析&nbsp;&nbsp;
+							<!--<c:if test="${isShowAdminSettingFlag=='1'}">-->
+								<a class="pitch_set_class" onclick="pitch_set_dlg();">设置</a>
+							<!--</c:if>-->
+						</div>
+					</td>
+					<td class="main_cell_td">
+						<div class="biaog03_div"><span class="cruisingAltitude_task_title"></span>分析&nbsp;&nbsp;
+							<!--<c:if test="${isShowAdminSettingFlag=='1'}">-->
+								<a class="cruisingAltitude_set_class" onclick="cruisingAltitude_set_dlg();">设置</a>
+							<!--</c:if>-->
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="main_cell_td main_cell" valign="top">
+						<div class="biaog03_img main_cell">
+							<div class="chart_container_bar main_cell">
+								<canvas id="myChart_bar" width="800" height="500"></canvas>
+							</div>
+						</div>
+					</td>
+					<td class="main_cell_td main_cell" valign="top">
+						<div class="biaog03_img main_cell">
+							<div class="chart_container_pie main_cell">
+								<canvas id="myChart_pie" width="800" height="500"></canvas>
+							</div>
+						</div>
+					</td>
+
+				</tr>
+			</table>
+</table>
+
+<!--
+<table width="96%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#FFFFFF">
+  <tr>
+    <td width="20%" height="70" align="center" bgcolor="#ff8a74" onmouseover="javascript:this.bgColor='#fc765d'" onmouseout="javascript:this.bgColor='#ff8a74'"><span class="biaog01">QAR数据量</span><br />
+      <span class="biaog02">${qarCount}条</span><br /></td>
+    <td width="20%" align="center" bgcolor="#f6b644" onmouseover="javascript:this.bgColor='#f7ab25'" onmouseout="javascript:this.bgColor='#f6b644'"><span class="biaog01">机型数据</span><br />
+      <span class="biaog02">支线/窄体/宽体</span></td>
+    <td width="20%" align="center" bgcolor="#00acee" onmouseover="javascript:this.bgColor='#039cd6'" onmouseout="javascript:this.bgColor='#00acee'"><span class="biaog01">模型数量</span><br />
+      <span class="biaog02">${modelCount}条</span></td>
+    <td align="center" bgcolor="#7c77b9" onmouseover="javascript:this.bgColor='#665fb8'" onmouseout="javascript:this.bgColor='#7c77b9'"><span class="biaog01">任务数量</span><br />
+      <span class="biaog02">${jobCount}条</span></td>
+    <td align="center" bgcolor="#84c66f" onmouseover="javascript:this.bgColor='#62bd46'" onmouseout="javascript:this.bgColor='#84c66f'"><span class="biaog01">参数数量</span><br />
+      <span class="biaog02">全参</span></td>
+    <td width="15%" align="center" bgcolor="#00FFCC" onmouseover="javascript:this.bgColor='#00CCCC'" onmouseout="javascript:this.bgColor='#00FFCC'">
+       <marquee class="scroll_jobName_tips" height=30 style="" scrollamount="1" scrolldelay="10" behavior="scroll" direction="up" onmouseover=stop() onmouseout=start()>
+
+       </marquee>
+       </td>
+
+  </tr>
+</table>
+
+<table width="96%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:20px;margin-bottom:30px;">
+  <tr>
+    <td width="40%" valign="top" style="float: left;">
+    <table  width="97%" height="650" border="1" cellpadding="0" cellspacing="1" bgcolor="#cccccc">
+      <tr>
+        <td valign="top" bgcolor="#FFFFFF">
+        <div class="biaog03_div"><span class="acTypeContrast_set_title"></span>分析&nbsp;&nbsp;
+            <c:if test="${isShowAdminSettingFlag=='1'}">
+            <a class="acTypeContrastSetting" onclick="acTypeContrast_set_dlg();">设置</a>
+            </c:if>
+        </div>
+        <div class="biaog03_img">
+
+            <table id="contentTable" class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th></th>
+                      <th class="show_choose_paramName_col1">参数名1</th>
+                      <th class="show_choose_paramName_col2">参数名2</th>
+                      <th class="show_choose_paramName_col3">参数名3</th>
+                      <th class="show_choose_paramName_col4">参数名4</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>C900
+
+                      </td>
+                      <td><span class="C900_param_col1"></span>
+
+                      </td>
+                      <td><span class="C900_param_col2"></span>
+
+                      </td>
+                      <td><span class="C900_param_col3"></span>
+
+                      </td>
+                      <td><span class="C900_param_col4"></span>
+
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>B737
+
+                      </td>
+                      <td><span class="B737_param_col1"></span>
+
+                      </td>
+                      <td><span class="B737_param_col2"></span>
+
+                      </td>
+                      <td><span class="B737_param_col3"></span>
+
+                      </td>
+                      <td><span class="B737_param_col4"></span>
+
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>A320
+
+                      </td>
+                      <td><span class="A320_param_col1"></span>
+
+                      </td>
+                      <td><span class="A320_param_col2"></span>
+
+                      </td>
+                      <td><span class="A320_param_col3"></span>
+
+                      </td>
+                      <td><span class="A320_param_col4"></span>
+
+                      </td>
+                  </tr>
+
+                  <tr>
+                      <td>B777
+
+                      </td>
+                      <td><span class="B777_param_col1"></span>
+
+                      </td>
+                      <td><span class="B777_param_col2"></span>
+
+                      </td>
+                      <td><span class="B777_param_col3"></span>
+
+                      </td>
+                      <td><span class="B777_param_col4"></span>
+
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>A330
+
+                      </td>
+                      <td><span class="A330_param_col1"></span>
+
+                      </td>
+                      <td><span class="A330_param_col2"></span>
+
+                      </td>
+                      <td><span class="A330_param_col3"></span>
+
+                      </td>
+                      <td><span class="A330_param_col4"></span>
+
+                      </td>
+                  </tr>
+
+              </tbody>
+          </table>
+
+        </div>
+        <div class="biaog03_div"><span class="choose_paramName"></span>--<span class="choose_statisticsType"></span>分析&nbsp;&nbsp;
+            <c:if test="${isShowAdminSettingFlag=='1'}">
+            <a class="pitch_set_class" onclick="pitch_set_dlg();">设置</a>
+            </c:if>
+        </div>
+        <div class="biaog03_img">
+            <div class="chart_container_bar">
+                <canvas id="myChart_bar" width="600" height="275"></canvas>
+          </div>
+        </div>
+        </td>
+      </tr>
+    </table></td>
+    <td valign="top" style="float: left;">
+    <table width="97%" height="650" border="1" align="center" cellpadding="0" cellspacing="1" bgcolor="#cccccc">
+      <tr>
+        <td valign="top" bgcolor="#FFFFFF">
+        <div class="biaog03_div"><span class="verticalAcceleration_title"></span>--<span class="verticalAcceleration_choose_statisticsType"></span>分析&nbsp;&nbsp;
+            <c:if test="${isShowAdminSettingFlag=='1'}">
+            <a class="verticalAcceleration_set_class" onclick="verticalAcceleration_set_dlg();">设置</a>
+            </c:if>
+        </div>
+        <div class="biaog03_img">
+            <div class="chart_container_line">
+                <canvas id="myChart_line" width="900" height="500"></canvas>
             </div>
-            <div class="col-sm-4">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>更新日志</h5>
-                    </div>
-                    <div class="ibox-content no-padding">
-                        <div class="panel-body">
-                            <div class="panel-group" id="version">
-                            <div class="panel panel-default">
-								<div class="panel-heading">
-								   <h5 class="panel-title">
-									   <a data-toggle="collapse" data-parent="#version" href="#v41">v4.1.0</a><code class="pull-right">2019.10.22</code>
-								   </h5>
-								</div>
-								<div id="v41" class="panel-collapse collapse in">
-									<div class="panel-body">
-									   <ol>
-									        <li>支持多表格实例操作</li>
-									        <li>浮动提示方法tooltip支持弹窗</li>
-											<li>代码生成&字典数据支持模糊条件查询</li>
-											<li>增加页签全屏方法</li>
-											<li>增加清除表单验证错误信息方法</li>
-											<li>支持iframe局部刷新页面</li>
-											<li>支持在线切换主题</li>
-											<li>修改图片预览设置的高宽参数颠倒问题</li>
-											<li>操作日志新增解锁账户功能</li>
-											<li>管理员用户&角色不允许操作</li>
-											<li>去掉jsoup包调用自定义转义工具</li>
-											<li>添加时间轴示例</li>
-											<li>修复翻页记住选择时获取指定列值的问题</li>
-											<li>代码生成sql脚本添加导出按钮</li>
-											<li>添加表格父子视图示例</li>
-											<li>添加表格行内编辑示例</li>
-											<li>升级fastjson到最新版1.2.60 阻止漏洞攻击</li>
-											<li>升级echarts到最新版4.2.1</li>
-											<li>操作日志新增返回参数</li>
-											<li>支持mybatis通配符扫描任意多个包</li>
-											<li>权限验证多种情况处理</li>
-											<li>修复树形类型的代码生成的部分必要属性无法显示</li>
-											<li>修复非表格插件情况下重置出现异常</li>
-											<li>修复富文本编辑器有序列表冲突</li>
-											<li>代码生成表前缀配置支持多个</li>
-											<li>修复自动去除表前缀配置无效问题</li>
-											<li>菜单列表按钮数据可见不显示（权限标识控制）</li>
-											<li>修复设置会话超时时间无效问题</li>
-											<li>新增本地资源通用下载方法</li>
-											<li>操作日志记录新增请求方式</li>
-											<li>代码生成单选按钮属性重名修复</li>
-											<li>优化select2下拉框宽度不会随浏览器改变</li>
-											<li>修复代码生成树表异常</li>
-											<li>其他细节优化</li>
-										</ol>
-									</div>
-								</div>
-							 </div>
-                            <div class="panel panel-default">
-								<div class="panel-heading">
-								   <h5 class="panel-title">
-									   <a data-toggle="collapse" data-parent="#version" href="#v40">v4.0.0</a><code class="pull-right">2019.08.08</code>
-								   </h5>
-								</div>
-								<div id="v40" class="panel-collapse collapse">
-									<div class="panel-body">
-									   <ol>
-									        <li>代码生成支持预览、编辑，保存方案</li>
-									        <li>新增防止表单重复提交注解</li>
-											<li>新增后端校验（和前端保持一致）</li>
-											<li>新增同一个用户最大会话数控制</li>
-											<li>Excel导出子对象支持多个字段</li>
-											<li>定时任务支持静态调用和多参数</li>
-											<li>定时任务增加分组条件查询</li>
-											<li>字典类型增加任务分组数据</li>
-											<li>新增表格是否首次加载数据</li>
-											<li>新增parentTab选项卡可在同一页签打开</li>
-											<li>多数据源支持类注解（允许继承父类的注解）</li>
-											<li>部门及以下数据权限（调整为以下及所有子节点）</li>
-											<li>新增角色数据权限配（仅本人数据权限）</li>
-											<li>修改菜单权限显示问题</li>
-											<li>上传文件修改路径及返回名称</li>
-											<li>添加报表插件及示例</li>
-											<li>添加首页统计模板</li>
-											<li>添加表格拖拽示例</li>
-											<li>添加卡片列表示例</li>
-											<li>添加富文本编辑器示例</li>
-											<li>添加表格动态增删改查示例</li>
-											<li>添加用户页面岗位选择框提示</li>
-											<li>点击菜单操作添加背景高亮显示</li>
-											<li>表格树新增showSearch是否显示检索信息</li>
-											<li>解决表格列设置sortName无效问题</li>
-											<li>表格图片预览支持自定义设置宽高</li>
-											<li>添加表格列浮动提示（单击文本复制）</li>
-											<li>PC端收起菜单后支持浮动显示</li>
-											<li>详细操作样式调整</li>
-											<li>修改用户更新描述空串不更新问题</li>
-											<li>导入修改为模板渲染</li>
-											<li>修改菜单及部门排序规则</li>
-											<li>角色导出数据范围表达式翻译</li>
-											<li>添加summernote富文本字体大小</li>
-											<li>优化表格底部下边框防重叠&汇总像素问题</li>
-											<li>树表格支持属性多层级访问</li>
-											<li>修复IE浏览器用户管理界面右侧留白问题</li>
-											<li>重置按钮刷新表格</li>
-											<li>重置密码更新用户缓存</li>
-											<li>优化验证码属性参数</li>
-											<li>支持数据监控配置用户名和密码</li>
-											<li>文件上传修改按钮背景及加载动画</li>
-											<li>支持配置一级菜单href跳转</li>
-											<li>侧边栏添加一套浅色主题</li>
-											<li>树表格添加回调函数（校验异常状态）</li>
-											<li>用户个人中心适配手机端显示</li>
-											<li>Excel支持设置导出类型&更换样式</li>
-											<li>检查属性改变修改为克隆方式（防止热部署强转异常）</li>
-											<li>其他细节优化</li>
-										</ol>
-									</div>
-								</div>
-							 </div>
-                            <div class="panel panel-default">
-								<div class="panel-heading">
-								   <h5 class="panel-title">
-									   <a data-toggle="collapse" data-parent="#version" href="#v34">v3.4.0</a><code class="pull-right">2019.06.03</code>
-								   </h5>
-								</div>
-								<div id="v34" class="panel-collapse collapse">
-									<div class="panel-body">
-									   <ol>
-									        <li>新增实例演示菜单及demo</li>
-											<li>新增页签右键操作</li>
-											<li>菜单管理新增打开方式</li>
-											<li>新增点击某行触发的事件</li>
-											<li>新增双击某行触发的事件</li>
-											<li>新增单击某格触发的事件</li>
-											<li>新增双击某格触发的事件</li>
-											<li>新增是否启用显示细节视图</li>
-											<li>支持上传任意格式文件</li>
-											<li>修复角色权限注解失效问题</li>
-											<li>左侧的菜单栏宽度调整</li>
-											<li>新增响应完成后自定义回调函数</li>
-											<li>支持前端及其他模块直接获取用户信息</li>
-											<li>升级swagger到最新版2.9.2</li>
-											<li>升级jquery.slimscroll到最新版1.3.8</li>
-											<li>升级select2到最新版4.0.7</li>
-											<li>新增角色配置本部门数据权限</li>
-											<li>新增角色配置本部门及以下数据权限</li>
-											<li>优化底部操作防止跳到页面顶端</li>
-											<li>修改冻结列选框无效及样式问题</li>
-											<li>修复部门四层级修改祖级无效问题</li>
-											<li>更换开关切换按钮样式</li>
-											<li>新增select2-bootstrap美化下拉框</li>
-											<li>添加表格内图片预览方法</li>
-											<li>修复权限校验失败跳转页面路径错误</li>
-											<li>国际化资源文件调整</li>
-											<li>通知公告布局调整</li>
-											<li>删除页签操作功能</li>
-											<li>表格树新增查询指定列值</li>
-											<li>更改系统接口扫描方式及完善测试案例</li>
-											<li>表格列浮动提示及字典回显默认去背景</li>
-											<li>修复启用翻页记住前面的选择check没选中问题</li>
-											<li>去除监控页面底部的广告</li>
-											<li>日期控件功问题修复及data功能增强</li>
-											<li>新增角色权限可见性（前端直接调用）</li>
-											<li>新增获取当前登录用户方法（前端及子模块调用）</li>
-											<li>修复热部署重启导致菜单丢失问题</li>
-											<li>优化业务校验失败普通请求跳转页面</li>
-											<li>操作日志新增状态条件查询</li>
-											<li>操作类型支持多选条件查询</li>
-											<li>通知公告防止滚动触底回弹优化</li>
-											<li>其他细节优化</li>
-										</ol>
-									</div>
-								</div>
-							 </div>
-                             <div class="panel panel-default">
-								<div class="panel-heading">
-								   <h5 class="panel-title">
-									   <a data-toggle="collapse" data-parent="#version" href="#v33">v3.3.0</a><code class="pull-right">2019.04.01</code>
-								   </h5>
-								</div>
-								<div id="v33" class="panel-collapse collapse">
-									<div class="panel-body">
-									   <ol>
-											<li>新增线程池统一管理</li>
-											<li>新增支持左右冻结列</li>
-											<li>新增表格字符超长浮动提示</li>
-											<li>升级datepicker拓展并汉化</li>
-											<li>升级druid到最新版本v1.1.14</li>
-											<li>修复个人头像为图片服务器跨域问题</li>
-											<li>修改上传文件按日期存储</li>
-											<li>新增表格客户端分页选项</li>
-											<li>新增表格的高度参数</li>
-											<li>新增表格销毁方法</li>
-											<li>新增表格下拉按钮切换方法</li>
-											<li>新增表格分页跳转到指定页码</li>
-											<li>新增表格启用点击选中行参数</li>
-											<li>修复表格数据重新加载未触发部分按钮禁用</li>
-											<li>使用jsonview展示操作日志参数</li>
-											<li>新增方法（addTab、editTab）</li>
-											<li>修改用户管理界面为Tab打开方式</li>
-											<li>表单验证代码优化</li>
-											<li>修复@Excel注解 prompt 属性使用报错</li>
-											<li>修复combo属性Excel兼容性问题</li>
-											<li>新增@Excel导入导出支持父类字段</li>
-											<li>修复关闭最后选项卡无法激活滚动问题</li>
-											<li>增加日期控件显示类型及回显格式扩展选项</li>
-											<li>修复定时任务执行失败后入库状态为成功状态</li>
-											<li>支持定时任务并发开关控制</li>
-											<li>优化权限校验失败普通请求跳转页面</li>
-											<li>捕获线程池执行任务抛出的异常</li>
-											<li>修复IE浏览器导出功能报错</li>
-											<li>新增角色管理分配用户功能</li>
-											<li>新增表格翻页记住前面的选择</li>
-											<li>调整用户个人中心页面</li>
-											<li>修复界面存在的一些安全问题</li>
-											<li>其他细节优化</li>
-										</ol>
-									</div>
-								</div>
-							</div>
-                            <div class="panel panel-default">
-								<div class="panel-heading">
-								   <h5 class="panel-title">
-									   <a data-toggle="collapse" data-parent="#version" href="#v32">v3.2.0</a><code class="pull-right">2019.01.18</code>
-								   </h5>
-								</div>
-								<div id="v32" class="panel-collapse collapse">
-									<div class="panel-body">
-									   <ol>
-											<li>部门修改时不允许选择最后节点</li>
-											<li>修复部门菜单排序字段无效</li>
-											<li>修复光驱磁盘导致服务监控异常</li>
-											<li>登录界面去除check插件</li>
-											<li>验证码文本字符间距修正</li>
-											<li>升级SpringBoot到最新版本2.1.1</li>
-											<li>升级MYSQL驱动</li>
-											<li>修正登录必填项位置偏移</li>
-											<li>Session会话检查优化</li>
-											<li>Excel注解支持多级获取</li>
-											<li>新增序列号生成方法</li>
-											<li>修复WAR部署tomcat退出线程异常</li>
-											<li>全屏操作增加默认确认/关闭</li>
-											<li>修复个人信息可能导致漏洞</li>
-											<li>字典数据根据下拉选择新增类型</li>
-											<li>升级Summernote到最新版本v0.8.11</li>
-											<li>新增用户数据导入</li>
-											<li>首页主题样式更换</li>
-											<li>layer扩展主题更换</li>
-											<li>用户管理移动端默认隐藏左侧布局</li>
-											<li>详细信息弹出层显示在顶层</li>
-											<li>表格支持切换状态（用户/角色/定时任务）</li>
-											<li>Druid数据源支持配置继承</li>
-											<li>修正部分iPhone手机端表格适配问题</li>
-											<li>新增防止重复提交表单方法</li>
-											<li>新增表格数据统计汇总方法</li>
-											<li>支持富文本上传图片文件</li>
-										</ol>
-									</div>
-								</div>
-							</div>
-                            <div class="panel panel-default">
-								<div class="panel-heading">
-								   <h5 class="panel-title">
-									   <a data-toggle="collapse" data-parent="#version" href="#v31">v3.1.0</a><code class="pull-right">2018.12.03</code>
-								   </h5>
-								</div>
-								<div id="v31" class="panel-collapse collapse">
-									<div class="panel-body">
-									   <ol>
-											<li>新增内网不获取IP地址</li>
-											<li>新增cron表达式有效校验</li>
-											<li>定时任务新增详细信息</li>
-											<li>定时任务默认策略修改（不触发立即执行）</li>
-											<li>定时任务显示下一个执行周期</li>
-											<li>支持前端任意日期格式处理</li>
-											<li>上传头像删除多余提交按钮</li>
-											<li>表格增加行间隔色配置项</li>
-											<li>表格增加转义HTML字符串配置项</li>
-											<li>表格增加显示/隐藏指定列</li>
-											<li>代码生成优化</li>
-											<li>操作日志参数格式化显示</li>
-											<li>页签新增新增全屏显示</li>
-											<li>新增一键打包部署</li>
-											<li>Excel注解新增多个参数</li>
-											<li>新增提交静默更新表格方法</li>
-											<li>新增服务监控菜单</li>
-										</ol>
-									</div>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-								   <h5 class="panel-title">
-									   <a data-toggle="collapse" data-parent="#version" href="#v30">v3.0.0</a><code class="pull-right">2018.10.08</code>
-								   </h5>
-								</div>
-								<div id="v30" class="panel-collapse collapse">
-									<div class="panel-body">
-									   <ol>
-											<li>升级poi到最新版3.17</li>
-											<li>导出修改临时目录绝对路径</li>
-											<li>升级laydate到最新版5.0.9</li>
-											<li>升级SpringBoot到最新版本2.0.5</li>
-											<li>优化开始/结束时间校验限制</li>
-											<li>重置密码参数表中获取默认值</li>
-											<li>修复头像修改显示问题</li>
-											<li>新增数据权限过滤注解</li>
-											<li>新增表格检索折叠按钮</li>
-											<li>新增清空（登录、操作、调度）日志</li>
-											<li>固定按钮位置（提交/关闭）</li>
-											<li>部门/菜单支持（展开/折叠）</li>
-											<li>部分细节调整优化</li>
-											<li>项目采用分模块</li>
-										</ol>
-									</div>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-								   <h5 class="panel-title">
-									   <a data-toggle="collapse" data-parent="#version" href="#v24">v2.4.0</a><code class="pull-right">2018.09.03</code>
-								   </h5>
-								</div>
-								<div id="v24" class="panel-collapse collapse">
-									<div class="panel-body">
-									   <ol>
-											<li>支持部门多级查询</li>
-											<li>修复菜单状态查询无效</li>
-											<li>支持IP地址开关</li>
-											<li>支持XSS开关</li>
-											<li>记录日志异步处理</li>
-											<li>字典回显样式更改为下拉框</li>
-											<li>菜单类型必填校验</li>
-											<li>修复在线用户排序报错</li>
-											<li>增加重置按钮</li>
-											<li>支持注解导入数据</li>
-											<li>支持弹层外区域关闭</li>
-											<li>备注更换为文本区域</li>
-											<li>新增角色逻辑删除</li>
-											<li>新增部门逻辑删除</li>
-											<li>支持部门数据权限</li>
-											<li>管理员默认拥有所有授权</li>
-											<li>字典数据采用分页</li>
-											<li>部分细节调整优化</li>
-										</ol>
-									</div>
-								</div>
-							</div>
-                            <div class="panel panel-default">
-									<div class="panel-heading">
-									   <h5 class="panel-title">
-										   <a data-toggle="collapse" data-parent="#version" href="#v23">v2.3.0</a><code class="pull-right">2018.08.06</code>
-									   </h5>
-									</div>
-									<div id="v23" class="panel-collapse collapse">
-										<div class="panel-body">
-										   <ol>
-										        <li>支持表格不分页开关控制</li>
-										        <li>修改字典类型同步修改字典数据</li>
-										        <li>代码生成新增修改后缀处理</li>
-										        <li>代码生成新增实体toString</li>
-										        <li>代码生成非字符串去除!=''</li>
-												<li>导出数据前加载遮罩层</li>
-												<li>部门删除校验条件修改</li>
-												<li>搜索查询下载优化</li>
-												<li>手机打开弹出层自适应</li>
-												<li>角色岗位禁用显示置灰</li>
-												<li>角色禁用不显示菜单</li>
-												<li>新增导出权限</li>
-												<li>角色权限唯一校验</li>
-												<li>岗位名称编码唯一校验</li>
-                                                <li>TreeTable优化</li>
-                                                <li>支持多数据源</li>
-												<li>其他细节优化</li>
-											</ol>
-										</div>
-									</div>
-								</div>
-                                <div class="panel panel-default">
-									<div class="panel-heading">
-									   <h5 class="panel-title">
-										   <a data-toggle="collapse" data-parent="#version" href="#v22">v2.2.0</a><code class="pull-right">2018.07.23</code>
-									   </h5>
-									</div>
-									<div id="v22" class="panel-collapse collapse">
-										<div class="panel-body">
-										   <ol>
-										        <li>修复批量生成代码异常问题</li>
-										        <li>修复定时器保存失败问题</li>
-										        <li>修复热部署转换问题</li>
-												<li>支持查询菜单管理，部门管理</li>
-												<li>大多数功能支持时间查询</li>
-												<li>自定义导出注解自动匹配column</li>
-												<li>新增任务执行策略</li>
-												<li>操作详细动态显示类型</li>
-												<li>支持动态回显字典数据</li>
-												<li>后台代码优化调整</li>
-												<li>其他细节优化</li>
-											</ol>
-										</div>
-									</div>
-								</div>
-                                <div class="panel panel-default">
-									<div class="panel-heading">
-									   <h5 class="panel-title">
-										   <a data-toggle="collapse" data-parent="#version" href="#v21">v2.1.0</a><code class="pull-right">2018.07.10</code>
-									   </h5>
-									</div>
-									<div id="v21" class="panel-collapse collapse">
-										<div class="panel-body">
-										   <ol>
-										        <li>新增登陆超时提醒</li>
-										        <li>修复定时器热部署转换问题</li>
-										        <li>修复登录验证码校验无效问题</li>
-												<li>定时任务新增立即执行一次</li>
-												<li>存在字典数据不允许删除字典</li>
-												<li>字典数据支持按名称查询</li>
-												<li>代码生成增加日志注解&表格优化</li>
-												<li>修复用户逻辑删除后能登录问题</li>
-												<li>表格支持多字段动态排序</li>
-												<li>支持三级菜单显示</li>
-												<li>新增ry.sh启动程序脚本</li>
-												<li>其他细节优化</li>
-											</ol>
-										</div>
-									</div>
-								</div>
-                            	<div class="panel panel-default">
-									<div class="panel-heading">
-									   <h5 class="panel-title">
-										   <a data-toggle="collapse" data-parent="#version" href="#v20">v2.0.0</a><code class="pull-right">2018.07.02</code>
-									   </h5>
-									</div>
-									<div id="v20" class="panel-collapse collapse">
-										<div class="panel-body">
-										   <ol>
-										        <li>升级SpringBoot到最新版本2.0.3</li>
-										        <li>新增公告管理</li>
-												<li>表单校验示提体验优化</li>
-												<li>前端通用方法封装调整</li>
-												<li>前端去除js文件，合并到html</li>
-												<li>操作加载遮罩层</li>
-												<li>支持全屏模式操作</li>
-												<li>支持注解导出数据</li>
-												<li>系统支持多查询&下载</li>
-												<li>系统样式调整</li>
-											</ol>
-										</div>
-									</div>
-								</div>
-                                <div class="panel panel-default">
-									<div class="panel-heading">
-									   <h5 class="panel-title">
-										   <a data-toggle="collapse" data-parent="#version" href="#v16">v1.1.6</a><code class="pull-right">2018.06.04</code>
-									   </h5>
-									</div>
-									<div id="v16" class="panel-collapse collapse">
-										<div class="panel-body">
-										   <ol>
-												<li>新增用户列表部门列</li>
-												<li>新增登录地点</li>
-												<li>新增swagger</li>
-												<li>修复排序数字校验</li>
-												<li>优化头像上传文件类型限定为图片</li>
-												<li>新增XSS过滤</li>
-												<li>新增热部署提高开发效率</li>
-												<li>修复treegrid居中无效</li>
-												<li>角色多条件查询</li>
-											</ol>
-										</div>
-									</div>
-								</div>
-                            	<div class="panel panel-default">
-									<div class="panel-heading">
-									   <h5 class="panel-title">
-										   <a data-toggle="collapse" data-parent="#version" href="#v15">v1.1.5</a><code class="pull-right">2018.05.28</code>
-									   </h5>
-									</div>
-									<div id="v15" class="panel-collapse collapse">
-										<div class="panel-body">
-										   <ol>
-												<li>优化登录失败刷新验证码</li>
-												<li>新增用户登陆地址时间</li>
-												<li>修复ajax超时退出问题</li>
-												<li>新增html调用数据字典(若依首创)</li>
-												<li>调整系统部分样式</li>
-												<li>新增用户逻辑删除</li>
-												<li>新增管理员不允许删除修改</li>
-												<li>升级bootstrapTable到最新版本1.12.1</li>
-												<li>升级layer到最新版本3.1.1</li>
-											</ol>
-										</div>
-									</div>
-								</div>
-							    <div class="panel panel-default">
-									<div class="panel-heading">
-									   <h5 class="panel-title">
-										   <a data-toggle="collapse" data-parent="#version" href="#v14">v1.1.4</a><code class="pull-right">2018.05.20</code>
-									   </h5>
-									</div>
-									<div id="v14" class="panel-collapse collapse">
-										<div class="panel-body">
-										   <ol>
-												<li>新增参数管理</li>
-												<li>修复头像上传bug</li>
-												<li>手机邮箱唯一校验</li>
-												<li>支持手机邮箱登录</li>
-												<li>代码生成优化</li>
-												<li>支持模糊查询</li>
-												<li>支持切换主题皮肤</li>
-												<li>修改权限即时生效</li>
-												<li>修复页签Tab关闭问题</li>
-											</ol>
-										</div>
-									</div>
-								</div>
-								<div class="panel panel-default">
-									<div class="panel-heading">
-									   <h5 class="panel-title">
-										   <a data-toggle="collapse" data-parent="#version" href="#v13">v1.1.3</a><code class="pull-right">2018.05.14</code>
-									   </h5>
-									</div>
-									<div id="v13" class="panel-collapse collapse">
-										<div class="panel-body">
-										   <ol>
-												<li>新增验证码（数组计算、字符验证）</li>
-												<li>新增cookie记住我</li>
-												<li>新增头像上传</li>
-												<li>用户名密码长度限制</li>
-												<li>通用字段提取</li>
-												<li>支持自定义条件查询</li>
-												<li>部门名称必填、时间格式调整</li>
-												<li>其他细节优化</li>
-											</ol>
-										</div>
-									</div>
-								</div>
-								<div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v12">v1.1.2</a><code class="pull-right">2018.05.07</code>
-										</h5>
-                                    </div>
-                                    <div id="v12" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增个人信息修改</li>
-												<li>菜单存在子菜单不允许删除</li>
-												<li>菜单分配角色不允许删除</li>
-												<li>角色分配人员不允许删除</li>
-												<li>岗位使用后不允许删除</li>
-												<li>保证用户的数据完整性加入事物</li>
-												<li>新增环境使用手册、数据建模</li>
-												<li>Thymeleaf升级到3.0</li>
-												<li>支持非ROOT部署</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v11">v1.1.1</a><code class="pull-right">2018.04.23</code>
-										</h5>
-                                    </div>
-                                    <div id="v11" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增表单构建器</li>
-												<li>代码生成优化</li>
-												<li>支持新增主部门</li>
-												<li>支持选择上级部门、上级菜单</li>
-												<li>新增字典管理单条删除</li>
-												<li>优化一些其他细节</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v10">v1.1.0</a><code class="pull-right">2018.04.20</code>
-										</h5>
-                                    </div>
-                                    <div id="v10" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>支持密码盐</li>
-												<li>支持新增主目录</li>
-												<li>支持批量生成代码</li>
-												<li>支持表格导出(csv、txt、doc、excel)</li>
-												<li>自动适应宽高模式窗体</li>
-												<li>重复校验(角色名、菜单名、部门名)</li>
-												<li>优化一些其他细节</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v09">v1.0.9</a><code class="pull-right">2018.04.14</code>
-										</h5>
-                                    </div>
-                                    <div id="v09" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增代码生成(生成包括 java、html、js、xml、sql)</li>
-												<li>新增按钮权限控制隐藏(若依首创)</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-								<div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v08">v1.0.8</a><code class="pull-right">2018.04.08</code>
-										</h5>
-                                    </div>
-                                    <div id="v08" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增定时任务(新增、修改、删除、查询、启动/暂停)</li>
-												<li>新增调度日志(查询、删除)</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                            	<div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v07">v1.0.7</a><code class="pull-right">2018.04.04</code>
-										</h5>
-                                    </div>
-                                    <div id="v07" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增岗位管理(新增、修改、删除、查询)</li>
-												<li>优化用户管理，菜单管理部分细节</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-								<div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v06">v1.0.6</a><code class="pull-right">2018.03.15</code>
-										</h5>
-                                    </div>
-                                    <div id="v06" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增字典管理(新增、删除、修改、查询、数据选择)</li>
-												<li>新增用户密码重置</li>
-												<li>优化一些其他细节</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-								<div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v05">v1.0.5</a><code class="pull-right">2018.03.12</code>
-										</h5>
-                                    </div>
-                                    <div id="v05" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增菜单管理(新增、删除、修改、查询、图标选择)</li>
-												<li>部门管理优化(添加责任人、联系电话、邮箱、修改者)</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-								<div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v04">v1.0.4</a><code class="pull-right">2018.03.11</code>
-										</h5>
-                                    </div>
-                                    <div id="v04" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增角色管理(新增、删除、修改、查询、菜单选择)</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-								<div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v03">v1.0.3</a><code class="pull-right">2018.03.08</code>
-										</h5>
-                                    </div>
-                                    <div id="v03" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增用户管理(新增、删除、修改、查询、部门选择)</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                            	<div class="panel panel-default">
-									<div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v02">v1.0.2</a><code class="pull-right">2018.03.04</code>
-										</h5>
-                                    </div>
-                                    <div id="v02" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增部门管理 (新增、删除、修改、查询)</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h5 class="panel-title">
-											<a data-toggle="collapse" data-parent="#version" href="#v01">v1.0.1</a><code class="pull-right">2018.03.03</code>
-										</h5>
-                                    </div>
-                                    <div id="v01" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                            	<li>新增在线用户 (批量强退、单条强退、查询)</li>
-                                                <li>新增登录日志 (批量删除、查询)</li>
-												<li>新增操作日志 (批量删除、查询、详细)</li>
-												<li>新增数据监控 (监控DB池连接和SQL的执行)</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#version" href="#v00">v1.0.0</a><code class="pull-right">2018.03.01</code>
-                                        </h4>
-                                    </div>
-                                    <div id="v00" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ol>
-                                                <li>若依管理系统正式发布。</li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>捐赠</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="alert alert-warning">
-                            	请作者喝杯咖啡（点击图片放大）
-                        </div>
-                        <p id="pay-qrcode">
-                            <a href="javascript:;"><img th:src="@{/img/pay.png}" width="100%" alt="请使用手机支付宝或者微信扫码支付">
-                            </a>
-                        </p>
 
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
-    <script type="text/javascript">
-	    $('#pay-qrcode').click(function(){
-	        var html=$(this).html();
-	        parent.layer.open({
-	            title: false,
-	            type: 1,
-	            closeBtn:false,
-	            shadeClose:true,
-	            area: ['600px', 'auto'],
-	            content: html
-	        });
-	    });
-    </script>
+        <div class="biaog03_div"><span class="cruisingAltitude_task_title"></span>分析&nbsp;&nbsp;
+            <c:if test="${isShowAdminSettingFlag=='1'}">
+            <a class="cruisingAltitude_set_class" onclick="cruisingAltitude_set_dlg();">设置</a>
+            </c:if>
+        </div>
+        <div class="biaog03_img">
+            <div class="chart_container_pie">
+                    <canvas id="myChart_pie" width="300" height="300"></canvas>
+                </div>
+        </div>
+      </td>
+      </tr>
+    </table>
+    </td>
+    <td valign="top" width="30%" style="float: left;">
+    <table width="97%" height="650" border="1" align="right" cellpadding="0" cellspacing="1" bgcolor="#cccccc">
+      <tr>
+        <td valign="top" bgcolor="#FFFFFF">
+        <div class="biaog03_div">调度任务列表</div>
+        <div class="biaog03_img">
+            <iframe name="infoDutyScheduleList" id="infoDutyScheduleList" src="${ctx}/defaultIndex/defaultIndex/infoDutyScheduleList" scrolling="no" width="100%" height="430" frameborder="0"></iframe>
+        </div>
+
+        <div class="biaog03_div">查看更多</div>
+        <div class="biaog03_img">
+        </div>
+        </td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+-->
+</td>
+</tr>
+
+</table>
+
+<!-- acTypeContrast_set_dlg模态框（Modal） -->
+<div class="modal fade" style="width:900px;" id="acTypeContrast_set_dlg" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					<span class="acTypeContrast_set_title"></span>分析设置
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name"  class="control-label">标题：</label>
+						<input type="text" class="input-medium" id="acTypeContrast_set_Title" name="acTypeContrast_set_Title" placeholder="机型数据对比">
+					</div>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">参数名1：</label>
+						<input type="text" class="input-medium" id="choose_paramName_col1" name="choose_paramName_col1" placeholder="起飞Pitch">
+						&nbsp;&nbsp;<label for="recipient-name" class="control-label">参数名2：</label>
+						<input type="text" class="input-medium" id="choose_paramName_col2" name="choose_paramName_col2" placeholder="巡航速度">
+					</div>
+					<!--  <div class="form-group">
+
+                     </div> -->
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">参数名3：</label>
+						<label class="control-label">参数名3：</label>
+						<input type="text" class="input-medium" id="choose_paramName_col3" name="choose_paramName_col3" placeholder="巡航高度">
+						&nbsp;&nbsp;<label for="recipient-name" class="control-label">参数名4：</label>
+						<input type="text" class="input-medium" id="choose_paramName_col4" name="choose_paramName_col4" placeholder="最大垂直加速度">
+					</div>
+					<!-- <div class="form-group">
+
+                    </div> -->
+
+					<div class="form-group">
+						<label for="message-text" class="control-label">机型：</label>
+						<select id="acTypeContrast_set_acTypeList" name="acTypeContrast_set_acTypeList" class="input-large">
+							<!--<option value="">空机型</option>-->
+							<!--<option value="${acType_row1}">${acType_row1}</option>
+							<option value="${acType_row2}">${acType_row2}</option>
+							<option value="${acType_row3}">${acType_row3}</option>
+							<option value="${acType_row4}">${acType_row4}</option>
+							<option value="${acType_row5}">${acType_row5}</option>-->
+							<option value="ARJ21-4">ARJ21-4</option>
+							<option value="AC737">AC737</option>
+							<option value="AC320">AC320</option>
+							<option value="AC777">AC777</option>
+							<option value="AC330">AC330</option>
+						</select>
+						<span class="multiAcTypeTipClass">（切换机型，可设置多个机型的计算参数，点击“提交”按钮，会计算多个机型的参数统计数据）</span>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">选择参数：</label>
+						<select id="acTypeContrast_set_jobId" name="acTypeContrast_set_jobId" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_All}" var="infoDutySchedule">
+								<option value="${infoDutySchedule.id }"
+								<c:if test="${infoDutySchedule.id == acTypeContrastSetting_jobId}">
+									selected
+								</c:if>
+								>${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>
+							</c:forEach>-->
+						</select>
+
+						<select id="acTypeContrast_set_modelName_col1" name="acTypeContrast_set_modelName_col1" class="input-medium">
+						</select>
+						<select id="acTypeContrast_set_paramName_col1" name="acTypeContrast_set_paramName_col1" class="input-medium">
+						</select>
+						<select id="acTypeContrast_set_paramName_col1_statisticsType" name="acTypeContrast_set_paramName_col1_statisticsType" class="input-small">
+							<option value="1">平均值</option>
+							<option value="2">中位数</option>
+							<option value="3">最大值</option>
+							<option value="4">最小值</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label"></label>
+						<select id="acTypeContrast_set_modelName_col2" name="acTypeContrast_set_modelName_col2" class="input-medium">
+						</select>
+						<select id="acTypeContrast_set_paramName_col2" name="acTypeContrast_set_paramName_col2" class="input-medium">
+						</select>
+						<select id="acTypeContrast_set_paramName_col2_statisticsType" name="acTypeContrast_set_paramName_col2_statisticsType" class="input-small">
+							<option value="1">平均值</option>
+							<option value="2">中位数</option>
+							<option value="3">最大值</option>
+							<option value="4">最小值</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label"></label>
+						<select id="acTypeContrast_set_modelName_col3" name="acTypeContrast_set_modelName_col3" class="input-medium">
+						</select>
+						<select id="acTypeContrast_set_paramName_col3" name="acTypeContrast_set_paramName_col3" class="input-medium">
+						</select>
+						<select id="acTypeContrast_set_paramName_col3_statisticsType" name="acTypeContrast_set_paramName_col3_statisticsType" class="input-small">
+							<option value="1">平均值</option>
+							<option value="2">中位数</option>
+							<option value="3">最大值</option>
+							<option value="4">最小值</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label"></label>
+						<select id="acTypeContrast_set_modelName_col4" name="acTypeContrast_set_modelName_col4" class="input-medium">
+						</select>
+						<select id="acTypeContrast_set_paramName_col4" name="acTypeContrast_set_paramName_col4" class="input-medium">
+						</select>
+						<select id="acTypeContrast_set_paramName_col4_statisticsType" name="acTypeContrast_set_paramName_col4_statisticsType" class="input-small">
+							<option value="1">平均值</option>
+							<option value="2">中位数</option>
+							<option value="3">最大值</option>
+							<option value="4">最小值</option>
+						</select>
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="acTypeContrast_set_func()">
+					提交
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- acTypeContrast_set_func模态框（Modal） -->
+
+
+<!-- pitch_set_func模态框（Modal） -->
+<div class="modal fade" style="width:800px;" id="pitch_set_dlg" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					<span class="choose_paramName"></span>分析设置
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">标题：</label>
+						<input type="text" class="input-medium" id="statisticsAction" name="statisticsAction" placeholder="起飞参数">
+						（比如“起飞参数”）
+					</div>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">统计类型：</label>
+						<select id="statisticsType" name="statisticsType" class="input-large">
+							<option value="1">平均值</option>
+							<option value="2">中位数</option>
+							<option value="3">最大值</option>
+							<option value="4">最小值</option>
+						</select>
+					</div>
+
+
+					<div class="form-group">
+						<label for="message-text" class="control-label">
+							${acType_row1}
+							：</label>
+						<select id="jobId_CRJ900" name="jobId_CRJ900" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_CRJ900}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_CRJ900}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="modelName_C900" name="modelName_C900" class="input-medium">
+						</select>
+						<select id="paramName_C900" name="paramName_C900" class="input-medium">
+						</select>
+
+					</div>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">
+							${acType_row2}
+							：</label>
+						<select id="jobId_B737" name="jobId_B737" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_B737}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_B737}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="modelName_B737" name="modelName_B737" class="input-medium">
+						</select>
+						<select id="paramName_B737" name="paramName_B737" class="input-medium">
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">
+							${acType_row3}
+							：</label>
+						<select id="jobId_A320" name="jobId_A320" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_A320}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_A320}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="modelName_A320" name="modelName_A320" class="input-medium">
+						</select>
+						<select id="paramName_A320" name="paramName_A320" class="input-medium">
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">
+							${acType_row4}
+							：</label>
+						<select id="jobId_B777" name="jobId_B777" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_B777}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_B777}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="modelName_B777" name="modelName_B777" class="input-medium">
+						</select>
+						<select id="paramName_B777" name="paramName_B777" class="input-medium">
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">
+							${acType_row5}
+							：</label>
+						<select id="jobId_A330" name="jobId_A330" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_A330}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_A330}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="modelName_A330" name="modelName_A330" class="input-medium">
+						</select>
+						<select id="paramName_A330" name="paramName_A330" class="input-medium">
+						</select>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="pitch_set_func()">
+					提交
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- pitch_set_func模态框（Modal） -->
+
+
+<!-- cruisingAltitude_set_func模态框（Modal） -->
+<div class="modal fade" style="width:800px;" id="cruisingAltitude_set__dlg" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					<span class="cruisingAltitude_task_title"></span>分析设置
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">标题：</label>
+						<input type="text" class="input-medium" id="cruisingAltitude_title_param" name="cruisingAltitude_title_param" placeholder="巡航高度">
+						（比如“巡航高度”）
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">任务：</label>
+						<select id="cruisingAltitude_jobId_CRJ900" name="cruisingAltitude_jobId_CRJ900" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_CRJ900}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_CRJ900}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="cruisingAltitude_modelName_C900" name="cruisingAltitude_modelName_C900" class="input-medium">
+						</select>
+						<select id="cruisingAltitude_paramName_C900" name="cruisingAltitude_paramName_C900" class="input-medium">
+						</select>
+
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">区间1：</label>
+						<input type="text" class="input-small" id="field1_min" name="field1_min" placeholder="">--<input type="text" class="input-small" id="field1_max" name="field1_max" placeholder="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">区间2：</label>
+						<input type="text" class="input-small" id="field2_min" name="field2_min" placeholder="">--<input type="text" class="input-small" id="field2_max" name="field2_max" placeholder="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">区间3：</label>
+						<input type="text" class="input-small" id="field3_min" name="field3_min" placeholder="">--<input type="text" class="input-small" id="field3_max" name="field3_max" placeholder="">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">区间4：</label>
+						<input type="text" class="input-small" id="field4_min" name="field4_min" placeholder="">--<input type="text" class="input-small" id="field4_max" name="field4_max" placeholder="">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="cruisingAltitude_set_func()">
+					提交
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- cruisingAltitude_set_func模态框（Modal） -->
+
+
+
+
+<!-- verticalAcceleration_set_func模态框（Modal） -->
+<div class="modal fade" style="width:800px;" id="verticalAcceleration_set_dlg" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					<span class="verticalAcceleration_title"></span>分析设置
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">标题：</label>
+						<input type="text" class="input-medium" id="verticalAcceleration_statisticsAction" name="verticalAcceleration_statisticsAction" placeholder="最大垂直加速度">
+						（比如“最大垂直加速度”）
+					</div>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">统计类型：</label>
+						<select id="verticalAcceleration_statisticsType" name="verticalAcceleration_statisticsType" class="input-large">
+							<option value="1">平均值</option>
+							<option value="2">中位数</option>
+							<option value="3">最大值</option>
+							<option value="4">最小值</option>
+						</select>
+					</div>
+
+
+					<div class="form-group">
+						<label for="message-text" class="control-label">
+							${acType_row1}
+							：</label>
+						</label>
+						<select id="verticalAcceleration_jobId_CRJ900" name="verticalAcceleration_jobId_CRJ900" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_CRJ900}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_CRJ900}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="verticalAcceleration_modelName_C900" name="verticalAcceleration_modelName_C900" class="input-medium">
+						</select>
+						<select id="verticalAcceleration_paramName_C900" name="verticalAcceleration_paramName_C900" class="input-medium">
+						</select>
+
+					</div>
+					<div class="form-group">
+						<label for="recipient-name" class="control-label">
+							${acType_row2}
+							：</label>
+						<select id="verticalAcceleration_jobId_B737" name="verticalAcceleration_jobId_B737" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_B737}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_B737}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="verticalAcceleration_modelName_B737" name="verticalAcceleration_modelName_B737" class="input-medium">
+						</select>
+						<select id="verticalAcceleration_paramName_B737" name="verticalAcceleration_paramName_B737" class="input-medium">
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">
+							${acType_row3}
+							：</label>
+						<select id="verticalAcceleration_jobId_A320" name="verticalAcceleration_jobId_A320" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_A320}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_A320}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="verticalAcceleration_modelName_A320" name="verticalAcceleration_modelName_A320" class="input-medium">
+						</select>
+						<select id="verticalAcceleration_paramName_A320" name="verticalAcceleration_paramName_A320" class="input-medium">
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">
+							${acType_row4}
+							：</label>
+						<select id="verticalAcceleration_jobId_B777" name="verticalAcceleration_jobId_B777" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_B777}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_B777}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="verticalAcceleration_modelName_B777" name="verticalAcceleration_modelName_B777" class="input-medium">
+						</select>
+						<select id="verticalAcceleration_paramName_B777" name="verticalAcceleration_paramName_B777" class="input-medium">
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="control-label">
+							${acType_row5}
+							：</label>
+						<select id="verticalAcceleration_jobId_A330" name="verticalAcceleration_jobId_A330" class="input-large">
+							<option value=""></option>
+							<!--<c:forEach items="${infoDutyScheduleList_A330}" var="infoDutySchedule">-->
+								<!--<option value="${infoDutySchedule.id }"-->
+								<!--<c:if test="${infoDutySchedule.id == jobId_A330}">-->
+									<!--selected-->
+								<!--</c:if>-->
+								<!--&gt;${infoDutySchedule.jobName}&#45;&#45;${infoDutySchedule.acType}</option>-->
+							<!--</c:forEach>-->
+						</select>
+
+						<select id="verticalAcceleration_modelName_A330" name="verticalAcceleration_modelName_A330" class="input-medium">
+						</select>
+						<select id="verticalAcceleration_paramName_A330" name="verticalAcceleration_paramName_A330" class="input-medium">
+						</select>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="verticalAcceleration_set_func()">
+					提交
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- verticalAcceleration_set_func模态框（Modal） -->
+
+
+<!-- 模拟 alert弹窗 -->
+<div id="date_alert" style="width:20%;position:fixed;left:40%;z-index: 1300; top:40%;background:rgba(0,0,0,0.6);height:3rem;text-align:center;line-height:3rem;border-radius:0.3rem;color:#fff;font-size:1.2rem;display:none;">
+	添加成功
+</div>
+<div id="date_alert2" style="width:30%;position:fixed;left:35%;z-index: 1300; top:40%;background:rgba(0,0,0,0.6);height:3rem;text-align:center;line-height:3rem;border-radius:0.3rem;color:#fff;font-size:1.2rem;display:none;">
+	添加成功
+</div>
+
+<div id="date_alert3" style="width:30%;position:fixed;left:35%;z-index: 1300; top:25%;background:rgba(0,0,0,0.6);height:3rem;text-align:center;line-height:3rem;border-radius:0.3rem;color:#fff;font-size:1.2rem;display:none;">
+	添加成功
+</div>
+
+<!--这是遮罩层，默认是不显示的，设置透明度为0.1-->
+<div id="masking_bg" style="display:none;position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 1100;background-color:black;opacity: 0.1"></div>
+<div id="zhezhao_mask" class="zhezhao_mask"></div>
+<!--这是遮罩层，默认是不显示的，设置透明度为0.1-->
+
+<script src="../oneself/chartjs/Chart.bundle.js" th:src="@{/oneself/chartjs/Chart.bundle.js}"></script>
+<script src="../oneself/chartjs/Chart.PieceLabel.js" th:src="@{/oneself/chartjs/Chart.PieceLabel.js}"></script>
+<script src="../oneself/chartjs/chartjs-plugin-datalabels.js" th:src="@{/oneself/chartjs/chartjs-plugin-datalabels.js}"></script>
+<script type="text/javascript" charset="utf-8" src="../oneself/chartjs/Chart.roundedBarCharts.min.js" th:src="@{/oneself/chartjs/Chart.roundedBarCharts.min.js}"></script>
+
+
+<!--     不同机型参数自定义图形设置js -->
+<script src="../oneself/customer_js/defaultIndex/defaultIndex_acTypeContrast_set.js?time=<%=new Date().getTime()%>" th:src="@{/oneself/customer_js/defaultIndex/defaultIndex_acTypeContrast_set.js?time=new Date().getTime()}"></script>
+<script src="../oneself/customer_js/defaultIndex/defaultIndex_cruisingAltitude_set.js?time=<%=new Date().getTime()%>" th:src="@{/oneself/customer_js/defaultIndex/defaultIndex_cruisingAltitude_set.js?time=new Date().getTime()}"></script>
+<script src="../oneself/customer_js/defaultIndex/defaultIndex_pitchAnalysis_set.js?time=<%=new Date().getTime()%>" th:src="@{/oneself/customer_js/defaultIndex/defaultIndex_pitchAnalysis_set.js?time=new Date().getTime()}"></script>
+<script src="../oneself/customer_js/defaultIndex/defaultIndex_verticalacceleration_set.js?time=<%=new Date().getTime()%>" th:src="@{oneself/customer_js/defaultIndex/defaultIndex_verticalacceleration_set.js?time=new Date().getTime()}"></script>
+<script type="text/javascript">
+    var bodyWidth = $(document.body).width();//页面宽度
+    /*模拟alert*/
+    function oDateAlert(txt){
+        $('#date_alert').html(txt);
+        $('#date_alert').show();
+        setInterval(function(){
+            $('#date_alert').fadeOut();
+        },5000);
+    }
+    /*模拟alert*/
+    function oDateAlert2(txt){
+        $('#date_alert2').html(txt);
+        $('#date_alert2').show();
+        setInterval(function(){
+            $('#date_alert2').fadeOut();
+        },5000);
+    }
+    /*模拟alert*/
+    function oDateAlert3(txt){
+        $('#date_alert3').html(txt);
+        $('#date_alert3').show();
+        setInterval(function(){
+            $('#date_alert3').fadeOut();
+        },5000);
+    }
+
+    //兼容火狐、IE8
+    //显示遮罩层
+    function show_zhezhao_mask(){
+        $("#zhezhao_mask").css("height",$(document).height());
+        $("#zhezhao_mask").css("width",$(document).width());
+        $("#zhezhao_mask").show();
+    }
+
+    //隐藏遮罩层
+    function hide_zhezhao_mask(){
+        $("#zhezhao_mask").hide();
+    }
+
+
+    var colors = [
+        '#1f77b4', '#e377c2', '#ff7f0e', '#2ca02c', '#bcbd22', '#d62728',
+        '#17becf', '#9467bd', '#7f7f7f', '#8c564b', '#3366cc'
+    ];
+    //柱状图图形对象
+    var myLineChart_bar;
+    //圆饼图图形对象
+    var myLineChart_pie;
+    //折线图形对象
+    var myLineChart_line;
+    //首次加载页面，初始化图表
+
+    $(document).ready(function(){
+        //默认加载首页，柱状图大小
+        default_chart_container_bar_size();
+        //
+        //$(".chart_container_line").css({"width":"450px","height":"250px"});
+        //$(".chart_container_pie").css({"width":"300px","height":"300px"});
+
+
+        //初始化机型数据对比-------------------------------------------------
+        getParamsStatisticsResultToTable();
+
+        //初始化pitch起飞参数-------------------------------------------------
+        getParamsStatisticsResultToBar();
+
+        //初始化C900巡航高度-------------------------------------------------
+        getCruisingAltitudeFieldsStatisticsResultToPie();
+
+        //初始化最大垂直加速度-------------------------------------------------
+        getParamsStatisticsResultToLine();
+
+        //设置标题初始值	-开始-----------------------------------------------------------------------
+        $(".choose_paramName").append('起飞参数');
+        $(".choose_statisticsType").append('平均值');
+        $(".cruisingAltitude_title_param").append('巡航高度');
+        $(".cruisingAltitude_task_title").append('巡航高度');
+        $(".verticalAcceleration_title").append('最大垂直加速度');
+        $(".verticalAcceleration_choose_statisticsType").append('平均值');
+
+        //设置标题初始值	-结束-----------------------------------------------------------------------
+
+        //初始化select2
+        $("#pitch_set_dlg").on("shown.bs.modal", function(){
+            $(".select2").select2();
+        });
+
+        //首页，滚动文字
+        //marquee_scroll_text(${jobsTop10JsonArr},'${marquee_scroll_text_url}');
+
+        //为模态对话框添加拖拽
+        adjustModelDlgDraggable();
+
+        bodyWidth = $(document.body).width();
+        //窗口Resize事件
+        $(window).resize(function() {
+            var change = Math.abs(bodyWidth - $(document.body).width());
+            if(change > 50)
+                default_chart_container_bar_size();
+        });
+    });
+
+    //绘制柱状图---------------------------
+    function bar_chart(chart_container_width, chart_container_height, calcuteResultArr, statisticsType){
+        //
+        //$("#myChart_bar").width=chart_container_width;
+        //$("#myChart_bar").height=chart_container_height;
+
+        var ctx_bar = document.getElementById("myChart_bar").getContext("2d");
+        //var myLineChart_bar = null;
+
+        var dataArray = [];
+        var countArr = [];
+        countArr = '${acTypeListByAcTypeNoStr}'.split(',');
+
+        if(calcuteResultArr.length>0){
+            for(var i=0;i<countArr.length;i++){
+                countArri = '';
+                countArri = countArr[i];
+                $.each(calcuteResultArr,function(index,calcuteResultEach){
+                    if(calcuteResultEach.acType==countArri){
+                        if(statisticsType=='1'||statisticsType==1){
+                            if(calcuteResultEach.avg==''||calcuteResultEach.avg==null||calcuteResultEach.avg==undefined)
+                                dataArray.push(0);
+                            else
+                                dataArray.push(calcuteResultEach.avg);
+                        }
+                        if(statisticsType=='2'||statisticsType==2){
+                            if(calcuteResultEach.median==''||calcuteResultEach.median==null||calcuteResultEach.median==undefined)
+                                dataArray.push(0);
+                            else
+                                dataArray.push(calcuteResultEach.median);
+                        }
+                        if(statisticsType=='3'||statisticsType==3){
+                            if(calcuteResultEach.max==''||calcuteResultEach.max==null||calcuteResultEach.max==undefined)
+                                dataArray.push(0);
+                            else
+                                dataArray.push(calcuteResultEach.max);
+                        }
+                        if(statisticsType=='4'||statisticsType==4){
+                            if(calcuteResultEach.min==''||calcuteResultEach.min==null||calcuteResultEach.min==undefined)
+                                dataArray.push(0);
+                            else
+                                dataArray.push(calcuteResultEach.min);
+                        }
+                    }
+
+                });
+            }
+        }else{
+            dataArray = [-6.0,5.9,6.3,6.1,5.9];
+        }
+        //如果paramName 为空，则默认Pitch
+
+        var chartdata_bar = {
+            labels : countArr,
+            datasets : [
+                {
+                    label : '',
+                    data : dataArray,
+                    //backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF"]
+                    backgroundColor: ["#3784D4", "#0DCB5F", "#9AD873", "#5DBBE1", "#75D3DF"],
+                    datalabels: {
+                        align: 'end',
+                        anchor: 'end'
+                    }
+                }
+            ]
+        }
+        if(myLineChart_bar!=null)
+            myLineChart_bar.destroy();
+        myLineChart_bar = new Chart(ctx_bar, {
+            type: 'bar',
+            data: chartdata_bar,
+            options: {
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            offsetGridLines: true
+                        },
+                        barPercentage:0.3
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            /* min: 0.0 */
+                            callback: function(value) {if (value % 1 === 0) {return value;}}
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                //cornerRadius: 30
+
+            }
+        });
+        //console.log('柱状图！');
+    }
+
+
+    //绘制曲线图---------------------------
+    function line_chart(chart_container_width, chart_container_height, calcuteResultArr, statisticsType){
+        //$("#myChart_line").width=chart_container_width;
+        //$("#myChart_line").height=chart_container_height;
+
+        var ctx_line = document.getElementById("myChart_line").getContext("2d");
+
+        var countArr = [];
+        countArr = '${acTypeListByAcTypeNoStr}'.split(',');
+        var dataArray = [];
+
+        if(calcuteResultArr.length>0){
+            for(var i=0;i<countArr.length;i++){
+                countArri = '';
+                countArri = countArr[i];
+                $.each(calcuteResultArr,function(index,calcuteResultEach){
+                    if(calcuteResultEach.acType==countArri){
+                        if(statisticsType=='1'||statisticsType==1){
+                            if(calcuteResultEach.avg==''||calcuteResultEach.avg==null||calcuteResultEach.avg==undefined)
+                                dataArray.push(0);
+                            else
+                                dataArray.push(calcuteResultEach.avg);
+                        }
+                        if(statisticsType=='2'||statisticsType==2){
+                            if(calcuteResultEach.median==''||calcuteResultEach.median==null||calcuteResultEach.median==undefined)
+                                dataArray.push(0);
+                            else
+                                dataArray.push(calcuteResultEach.median);
+                        }
+                        if(statisticsType=='3'||statisticsType==3){
+                            if(calcuteResultEach.max==''||calcuteResultEach.max==null||calcuteResultEach.max==undefined)
+                                dataArray.push(0);
+                            else
+                                dataArray.push(calcuteResultEach.max);
+                        }
+                        if(statisticsType=='4'||statisticsType==4){
+                            if(calcuteResultEach.min==''||calcuteResultEach.min==null||calcuteResultEach.min==undefined)
+                                dataArray.push(0);
+                            else
+                                dataArray.push(calcuteResultEach.min);
+                        }
+                    }
+
+                });
+            }
+        }else{
+            dataArray = [1.001,1.004,0.991,1.100,1.202];
+        }
+
+        if(statisticsType=='1')
+            statisticsType = '平均值';
+        if(statisticsType=='2')
+            statisticsType = '中位数';
+        if(statisticsType=='3')
+            statisticsType = '最大值';
+        if(statisticsType=='4')
+            statisticsType = '最小值';
+        var chartdata_line = {
+            labels : countArr,
+            datasets : [
+                {
+                    label: statisticsType,
+                    data: dataArray,
+                    //backgroundColor: ["#0074D9"]
+                    backgroundColor: ['rgba(255, 255, 255, 0.0)'],
+                    borderColor: '#3BA5CD',
+                    pointBorderColor: '#3BA5CD',
+                    datalabels: {
+                        align: 'top',
+                        anchor: 'start'
+                    }
+                }
+            ]
+        }
+        if(myLineChart_line!=null)
+            myLineChart_line.destroy();
+        myLineChart_line = new Chart(ctx_line, {
+            type: 'line',
+            data: chartdata_line,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            /* min: 0.0 */
+                            //callback: function(value) {if (value % 1 === 0) {return value;}}
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+
+        //console.log('线性图！');
+    }
+
+    //绘制圆饼图---------------------------
+    function pie_chart(chart_container_width, chart_container_height,statisticsFieldsJsonArr){
+        //$("#myChart_pie").width=chart_container_width;
+        //$("#myChart_pie").height=chart_container_height;
+
+        var ctx_pie = document.getElementById("myChart_pie").getContext("2d");
+
+        var countArr = [];
+        var dataArray = [];
+
+        if(statisticsFieldsJsonArr.length>0){
+            for(var i=0;i<statisticsFieldsJsonArr.length;i++){
+                statisticsFieldsJson = {};
+                statisticsFieldsJson = statisticsFieldsJsonArr[i];
+                if(statisticsFieldsJson.field_min!=''&&statisticsFieldsJson.field_min!=undefined&&statisticsFieldsJson.field_max!=''&&statisticsFieldsJson.field_max!=undefined){
+                    countArr.push(statisticsFieldsJson.field_min + '-' + statisticsFieldsJson.field_max);
+                    dataArray.push(statisticsFieldsJson.field_count);
+                }
+            }
+        }else{
+            countArr = ["最小值","最大值","中位值","平均值"];
+            dataArray = [21700,28500,24400,24600];
+        }
+        //
+        var dataArray_is0_Flag = true;
+        for(var i=0;i<dataArray.length;i++){
+            if(dataArray[i]!='0'&&dataArray[i]>0){
+                dataArray_is0_Flag = false;
+            }
+        }
+        if(dataArray_is0_Flag){
+            oDateAlert3('圆饼图：该参数统计结果为0，无法绘图');
+        }
+
+        var chartdata_pie = {
+            labels : countArr,
+            datasets : [
+                {
+                    label : "AC700飞行参数分析",
+                    data : dataArray,
+                    //backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B"]
+                    backgroundColor: ["#F36059", "#FA9253", "#F4D371", "#D1EA85"]
+                }
+            ],
+            cutoutPercentage: 0
+        }
+        if(myLineChart_pie!=null)
+            myLineChart_pie.destroy();
+        myLineChart_pie = new Chart(ctx_pie, {
+            type: 'pie',
+            data: chartdata_pie,
+            responsive: true,
+            options: {
+                title: {
+                    display: true,
+                    fontsize: 14,
+                    text: 'AC700飞行参数分析'
+                },
+                legend: {
+                    display: true,
+                    position: 'right'
+                }
+            },
+            pieceLabel: {
+                render: 'value',
+                fontSize: 14,
+                fontStyle: 'bold',
+                fontColor: '#000',
+                fontFamily: '"Lucida Console", Monaco, monospace'
+            }
+        });
+
+        //console.log('圆饼图！');
+    }
+
+
+
+
+
+
+
+
+    /* **************************************机型数据对比设置*********************************************** */
+    //见js文件：/customer_js/defaultIndex/defaultIndex_acTypeContrast_set.js
+
+
+
+
+    /* **************************************机型数据对比设置*********************************************** */
+
+
+    /* **************************************不同机型起飞Pitch分析设置*开始********************************************** */
+
+
+    //pitch 统计结果设置
+    function pitch_set_func(){
+        var statisticsAction = $("#statisticsAction").val();
+        var statisticsType = $("#statisticsType").val();
+
+        var jobId_CRJ900 = $("#jobId_CRJ900").val();
+        var jobId_B737 = $("#jobId_B737").val();
+        var jobId_A320 = $("#jobId_A320").val();
+        var jobId_B777 = $("#jobId_B777").val();
+        var jobId_A330 = $("#jobId_A330").val();
+
+        var modelName_C900 = $("#modelName_C900").val();
+        var modelName_B737 = $("#modelName_B737").val();
+        var modelName_A320 = $("#modelName_A320").val();
+        var modelName_B777 = $("#modelName_B777").val();
+        var modelName_A330 = $("#modelName_A330").val();
+
+        var paramName_C900 = $("#paramName_C900").val();
+        var paramName_B737 = $("#paramName_B737").val();
+        var paramName_A320 = $("#paramName_A320").val();
+        var paramName_B777 = $("#paramName_B777").val();
+        var paramName_A330 = $("#paramName_A330").val();
+
+        if(statisticsAction==''||statisticsAction==""){
+            oDateAlert('请设置标题');
+            return;
+        }
+
+        if(statisticsType==''||statisticsType==""){
+            oDateAlert('请选择统计类型');
+            return;
+        }
+        var paramDataJson = {"jobId_CRJ900":jobId_CRJ900,"jobId_B737":jobId_B737,"jobId_A320":jobId_A320,"jobId_B777":jobId_B777,"jobId_A330":jobId_A330,"modelName_CRJ900":modelName_C900,"modelName_B737":modelName_B737,"modelName_A320":modelName_A320,"modelName_B777":modelName_B777,"modelName_A330":modelName_A330,"paramName_CRJ900":paramName_C900,"paramName_B737":paramName_B737,"paramName_A320":paramName_A320,"paramName_B777":paramName_B777,"paramName_A330":paramName_A330};
+
+        var paramDataJsonString = JSON.stringify(paramDataJson);
+
+        $.ajax({
+            type: "POST",
+            url: '${ctx}/defaultIndex/infoDefaultindexParamset/getParamsStatisticsResult_Bar',
+            data: {statisticsType:statisticsType,statisticsAction:statisticsAction,paramDataJsonString:paramDataJsonString},
+            dataType:'json',
+            cache: false,
+            async: true,
+            success: function(data){
+                if(data.status=='1001'||data.status==1001){
+                    //关闭模态框
+                    $('#pitch_set_dlg').modal('hide');
+
+                    var calcuteResultArr = data.calcuteResultArr;
+                    var $chart_container_width_bar=$(".chart_container_bar").width();
+                    var $chart_container_height_bar=$(".chart_container_bar").height();
+                    chart_container_width_bar = $chart_container_width_bar;
+                    chart_container_height_bar = $chart_container_height_bar;
+                    //绘制柱状图
+                    bar_chart(chart_container_width_bar, chart_container_height_bar, calcuteResultArr, statisticsType);
+
+
+                    //更新参数名标题
+
+                    //更新平均值还是中位数
+                    $(".choose_statisticsType").empty();
+                    if(statisticsType=='1')
+                        $(".choose_statisticsType").append('平均值');
+                    if(statisticsType=='2')
+                        $(".choose_statisticsType").append('中位数');
+                    if(statisticsType=='3')
+                        $(".choose_statisticsType").append('最大值');
+                    if(statisticsType=='4')
+                        $(".choose_statisticsType").append('最小值');
+                    //更新标题-飞行参数
+                    if(statisticsAction!=''&&statisticsAction!=undefined){
+                        $(".choose_paramName").empty();
+                        $(".choose_paramName").append(statisticsAction);
+                    }
+
+                    //将设置的统计类型传给临时变量
+                    pitchAnalysis_statisticsType_Temp = statisticsType;
+                }else{
+                    oDateAlert(data.data);
+                    return;
+                }
+
+            }
+
+        });
+    }
+    /* **************************************不同机型起飞Pitch分析设置*结束********************************************** */
+
+
+
+    /* *********************************************************C900巡航高度分析*开始******************************************************************************** */
+
+    //巡航高度区间设置
+    function cruisingAltitude_set_func(){
+        var cruisingAltitude_title_param = $("#cruisingAltitude_title_param").val();
+        var field1_min = $("#field1_min").val();
+        var field1_max = $("#field1_max").val();
+
+        var field2_min = $("#field2_min").val();
+        var field2_max = $("#field2_max").val();
+
+        var field3_min = $("#field3_min").val();
+        var field3_max = $("#field3_max").val();
+
+        var field4_min = $("#field4_min").val();
+        var field4_max = $("#field4_max").val();
+
+        //
+        var jobId = $("#cruisingAltitude_jobId_CRJ900").val();
+        var modelName = $("#cruisingAltitude_modelName_C900").val();
+        var paramName = $("#cruisingAltitude_paramName_C900").val();
+
+        if(cruisingAltitude_title_param==''||cruisingAltitude_title_param==""){
+            oDateAlert('请设置标题');
+            return;
+        }
+
+        if(jobId==''){
+            oDateAlert('任务不能为空');
+            return;
+        }
+        if(modelName==''){
+            oDateAlert('模型名不能为空');
+            return;
+        }
+        if(paramName==''){
+            oDateAlert('参数不能为空');
+            return;
+        }
+
+
+        var regexp=/^\d+$/;
+        notNullFlag = false;
+        field1_min_NotNullFlag = false;
+        field1_max_NotNullFlag = false;
+        field2_min_NotNullFlag = false;
+        field2_max_NotNullFlag = false;
+        field3_min_NotNullFlag = false;
+        field3_max_NotNullFlag = false;
+        field4_min_NotNullFlag = false;
+        field4_max_NotNullFlag = false;
+
+        if(field1_min!=''&&field1_min!=undefined){
+            if(!regexp.test(field1_min)||field1_min==''||field1_min==0){
+                oDateAlert("请输入 正确的数字,且大于0！");
+                return false;
+            }else{
+                field1_min_NotNullFlag = true;
+                notNullFlag = true;
+            }
+        }
+        if(field1_max!=''&&field1_max!=undefined){
+            if(!regexp.test(field1_max)||field1_max==''||field1_max==0){
+                oDateAlert("请输入 正确的数字,且大于0！");
+                return false;
+            }else{
+                if(!field1_min_NotNullFlag){
+                    oDateAlert("请先填写该区间最小值！");
+                    return false;
+                }
+                if(field1_min>=field1_max){
+                    oDateAlert("请大于该区间最小值！");
+                    return false;
+                }
+                field1_max_NotNullFlag = true;
+                notNullFlag = true;
+            }
+        }
+        if(field2_min!=''&&field2_min!=undefined){
+            if(!regexp.test(field2_min)||field2_min==''||field2_min==0){
+                oDateAlert("请输入 正确的数字,且大于0！");
+                return false;
+            }else
+                field2_min_NotNullFlag = true;
+        }
+        if(field2_max!=''&&field2_max!=undefined){
+            if(!regexp.test(field2_max)||field2_max==''||field2_max==0){
+                oDateAlert("请输入 正确的数字,且大于0！");
+                return false;
+            }else{
+                if(!field2_min_NotNullFlag){
+                    oDateAlert("请先填写该区间最小值！");
+                    return false;
+                }
+                if(field2_min>=field2_max){
+                    oDateAlert("请大于该区间最小值！");
+                    return false;
+                }
+                field2_max_NotNullFlag = true;
+                notNullFlag = true;
+            }
+        }
+        if(field3_min!=''&&field3_min!=undefined){
+            if(!regexp.test(field3_min)||field3_min==''||field3_min==0){
+                oDateAlert("请输入 正确的数字,且大于0！");
+                return false;
+            }else{
+                notNullFlag = true;
+                field3_min_NotNullFlag = true;
+            }
+        }
+        if(field3_max!=''&&field3_max!=undefined){
+            if(!regexp.test(field3_max)||field3_max==''||field3_max==0){
+                oDateAlert("请输入 正确的数字,且大于0！");
+                return false;
+            }else{
+                if(!field3_min_NotNullFlag){
+                    oDateAlert("请先填写该区间最小值！");
+                    return false;
+                }
+                if(field3_min>=field3_max){
+                    oDateAlert("请大于该区间最小值！");
+                    return false;
+                }
+                field3_max_NotNullFlag = true;
+                notNullFlag = true;
+            }
+        }
+        if(field4_min!=''&&field4_min!=undefined){
+            if(!regexp.test(field4_min)||field4_min==''||field4_min==0){
+                oDateAlert("请输入 正确的数字,且大于0！");
+                return false;
+            }else{
+                field4_min_NotNullFlag = true;
+                notNullFlag = true;
+            }
+        }
+        if(field4_max!=''&&field4_max!=undefined){
+            if(!regexp.test(field4_max)||field4_max==''||field4_max==0){
+                oDateAlert("请输入 正确的数字,且大于0！");
+                return false;
+            }else{
+                if(!field4_min_NotNullFlag){
+                    oDateAlert("请先填写该区间最小值！");
+                    return false;
+                }
+                if(field4_min>=field4_max){
+                    oDateAlert("请大于该区间最小值！");
+                    return false;
+                }
+                field4_max_NotNullFlag = true;
+                notNullFlag = true;
+            }
+        }
+        if(!notNullFlag){
+            oDateAlert("请至少输入一个区间范围！");
+            return false;
+        }
+
+        //如果有区间范围不完整，则提示
+        if((field1_min_NotNullFlag&&!field1_max_NotNullFlag)||(!field1_min_NotNullFlag&&field1_max_NotNullFlag)){
+            oDateAlert("请将区间填写完整！");
+            return false;
+        }
+        if((field2_min_NotNullFlag&&!field2_max_NotNullFlag)||(!field2_min_NotNullFlag&&field2_max_NotNullFlag)){
+            oDateAlert("请将区间填写完整！");
+            return false;
+        }
+        if((field3_min_NotNullFlag&&!field3_max_NotNullFlag)||(!field3_min_NotNullFlag&&field3_max_NotNullFlag)){
+            oDateAlert("请将区间填写完整！");
+            return false;
+        }
+        if((field4_min_NotNullFlag&&!field4_max_NotNullFlag)||(!field4_min_NotNullFlag&&field4_max_NotNullFlag)){
+            oDateAlert("请将区间填写完整！");
+            return false;
+        }
+        reqField1Json = {};
+        reqField1Json = {"field_index":"1","field_min":field1_min,"field_max":field1_max,"field_count":""};
+        reqField2Json = {};
+        reqField2Json = {"field_index":"2","field_min":field2_min,"field_max":field2_max,"field_count":""};
+        reqField3Json = {};
+        reqField3Json = {"field_index":"3","field_min":field3_min,"field_max":field3_max,"field_count":""};
+        reqField4Json = {};
+        reqField4Json = {"field_index":"4","field_min":field4_min,"field_max":field4_max,"field_count":""};
+
+        reqParamDataJson = [];
+        reqParamDataJson.push(reqField1Json);
+        reqParamDataJson.push(reqField2Json);
+        reqParamDataJson.push(reqField3Json);
+        reqParamDataJson.push(reqField4Json);
+
+        //检测是否有区间重合的地方
+        for(var i=0;i<reqParamDataJson.length;i++){
+            reqParamDataJson_i = reqParamDataJson[i];
+            if(reqParamDataJson_i.field_min!=''&&reqParamDataJson_i.field_max!=''){
+                for(var j=0;j<reqParamDataJson.length;j++){
+                    reqParamDataJson_temp_each ={};
+                    reqParamDataJson_temp_each = reqParamDataJson[j];
+                    if(reqParamDataJson_temp_each.field_min!=''&&reqParamDataJson_temp_each.field_max!=''&&reqParamDataJson_i.field_index!=reqParamDataJson_temp_each.field_index){
+                        if(reqParamDataJson_i.field_min>=reqParamDataJson_temp_each.field_max){
+                            continue;
+                        }
+                        if(reqParamDataJson_i.field_max<=reqParamDataJson_temp_each.field_min){
+                            continue;
+                        }
+                        else{
+                            oDateAlert('设置区间有重叠，请重新设置');
+                            return false;
+                        }
+                    }
+                }
+
+            }else
+                continue;
+
+        }
+        //关闭模态框
+        $('#cruisingAltitude_set__dlg').modal('hide');
+
+        var reqParamDataJsonString = JSON.stringify(reqParamDataJson);
+        $.ajax({
+            type: "POST",
+            url: '${ctx}/defaultIndex/cruisingAltitude/getCruisingAltitudeStatisticsResult_Pie',
+            data: {reqParamDataJsonString:reqParamDataJsonString,cruisingAltitude_title_param:cruisingAltitude_title_param,jobId:jobId,modelName:modelName,paramName:paramName},
+            dataType:'json',
+            cache: false,
+            async: true,
+            success: function(data){
+                if(data.status=='1001'||data.status==1001){
+
+
+                    statisticsFieldsJsonArr = [];
+                    //返回的统计数据
+                    statisticsFieldsJsonArr = data.data;
+                    var $chart_container_width_pie=$(".chart_container_width_pie").width();
+                    var $chart_container_height_pie=$(".chart_container_height_pie").height();
+
+                    chart_container_width_pie = $chart_container_width_pie;
+                    chart_container_height_pie = $chart_container_height_pie;
+
+                    //绘制圆饼图
+                    pie_chart(chart_container_width_pie,chart_container_height_pie,statisticsFieldsJsonArr);
+
+                    //更新标题-飞行参数
+                    if(cruisingAltitude_title_param!=''&&cruisingAltitude_title_param!=undefined){
+                        $(".cruisingAltitude_task_title").empty();
+                        $(".cruisingAltitude_task_title").append(cruisingAltitude_title_param);
+                    }
+
+                }else{
+                    oDateAlert(data.data);
+                    return;
+                }
+
+            }
+
+        });
+    }
+    /* *********************************************************C900巡航高度分析*结束********************************************************** */
+
+
+
+
+
+    /* *********************************************************最大垂直加速度分析*开始************************************************************************ */
+
+
+    //点击提交设置
+    function verticalAcceleration_set_func(){
+        var statisticsAction = $("#verticalAcceleration_statisticsAction").val();
+        var statisticsType = $("#verticalAcceleration_statisticsType").val();
+
+        var jobId_CRJ900 = $("#verticalAcceleration_jobId_CRJ900").val();
+        var jobId_B737 = $("#verticalAcceleration_jobId_B737").val();
+        var jobId_A320 = $("#verticalAcceleration_jobId_A320").val();
+        var jobId_B777 = $("#verticalAcceleration_jobId_B777").val();
+        var jobId_A330 = $("#verticalAcceleration_jobId_A330").val();
+
+        var modelName_C900 = $("#verticalAcceleration_modelName_C900").val();
+        var modelName_B737 = $("#verticalAcceleration_modelName_B737").val();
+        var modelName_A320 = $("#verticalAcceleration_modelName_A320").val();
+        var modelName_B777 = $("#verticalAcceleration_modelName_B777").val();
+        var modelName_A330 = $("#verticalAcceleration_modelName_A330").val();
+
+        var paramName_C900 = $("#verticalAcceleration_paramName_C900").val();
+        var paramName_B737 = $("#verticalAcceleration_paramName_B737").val();
+        var paramName_A320 = $("#verticalAcceleration_paramName_A320").val();
+        var paramName_B777 = $("#verticalAcceleration_paramName_B777").val();
+        var paramName_A330 = $("#verticalAcceleration_paramName_A330").val();
+
+        if(statisticsAction==''||statisticsAction==""){
+            oDateAlert('请设置标题');
+            return;
+        }
+
+        if(statisticsType==''||statisticsType==""){
+            oDateAlert('请选择统计类型');
+            return;
+        }
+        var paramDataJson = {"jobId_CRJ900":jobId_CRJ900,"jobId_B737":jobId_B737,"jobId_A320":jobId_A320,"jobId_B777":jobId_B777,"jobId_A330":jobId_A330,"modelName_CRJ900":modelName_C900,"modelName_B737":modelName_B737,"modelName_A320":modelName_A320,"modelName_B777":modelName_B777,"modelName_A330":modelName_A330,"paramName_CRJ900":paramName_C900,"paramName_B737":paramName_B737,"paramName_A320":paramName_A320,"paramName_B777":paramName_B777,"paramName_A330":paramName_A330};
+
+        var paramDataJsonString = JSON.stringify(paramDataJson);
+
+        $.ajax({
+            type: "POST",
+            url: '${ctx}/defaultIndex/infoDefaultindexVerticalaccelerationset/getParamsStatisticsResult_Line',
+            data: {statisticsType:statisticsType,statisticsAction:statisticsAction,paramDataJsonString:paramDataJsonString},
+            dataType:'json',
+            cache: false,
+            async: true,
+            success: function(data){
+                if(data.status=='1001'||data.status==1001){
+                    //关闭模态框
+                    $('#verticalAcceleration_set_dlg').modal('hide');
+
+                    var calcuteResultArr = data.calcuteResultArr;
+                    //绘图
+                    var $chart_container_width_line=$(".chart_container_line").width();
+                    var $chart_container_height_line=$(".chart_container_line").height();
+                    chart_container_width_line = $chart_container_width_line;
+                    chart_container_height_line = $chart_container_height_line;
+                    line_chart(chart_container_width_line, chart_container_height_line,calcuteResultArr,statisticsType);
+
+
+
+                    //更新参数名标题
+
+                    //更新平均值还是中位数
+                    $(".verticalAcceleration_choose_statisticsType").empty();
+                    if(statisticsType=='1')
+                        $(".verticalAcceleration_choose_statisticsType").append('平均值');
+                    if(statisticsType=='2')
+                        $(".verticalAcceleration_choose_statisticsType").append('中位数');
+                    if(statisticsType=='3')
+                        $(".verticalAcceleration_choose_statisticsType").append('最大值');
+                    if(statisticsType=='4')
+                        $(".verticalAcceleration_choose_statisticsType").append('最小值');
+                    //更新标题-飞行参数
+                    if(statisticsAction!=''&&statisticsAction!=undefined){
+                        $(".verticalAcceleration_title").empty();
+                        $(".verticalAcceleration_title").append(statisticsAction);
+                    }
+
+                    //将统计类型传给临时变量
+                    verticalacceleration_statisticsType_Temp = statisticsType;
+                }else{
+                    oDateAlert(data.data);
+                    return;
+                }
+
+            }
+
+        });
+    }
+
+
+
+    /**********************************************************最大垂直加速度分析*结束*************************************************************************/
+
+    //----------------------------------------------------------------------------------------------------------------------
+
+    //marquee_scroll_text,默认首页-滚动文字
+    function marquee_scroll_text(jobsTop10JsonArr0,info_schedule_list_page_url){
+        //任务滚动提示----------------------------------------------------
+        var jobsTop10JsonArr = [];
+        jobsTop10JsonArr = jobsTop10JsonArr0;
+        info_schedule_list_page_url = locate_url + info_schedule_list_page_url;
+        $(".scroll_jobName_tips").empty();
+        for(var i=0;i<jobsTop10JsonArr.length;i++){
+            jobsTop10JsonArr_i = {};
+            jobsTop10JsonArr_i = jobsTop10JsonArr[i];
+            scroll_jobName_tips_html='';
+            scroll_jobName='';
+            scroll_jobName = jobsTop10JsonArr_i.jobName;
+            if(scroll_jobName.length>0){
+                scroll_jobName = scroll_jobName.substring(0,10) + '...';
+            }
+            scroll_jobName_tips_html = "<center><a id=\"scroll_jobName_tips_text\" href=\""+info_schedule_list_page_url+"\" target=\"mainFrame\">"+scroll_jobName+"</a></center><br>";
+            //scroll_jobName_tips_html = "<center><a id=\"scroll_jobName_tips_text\">"+scroll_jobName+"</a></center><br>";
+            $(".scroll_jobName_tips").append(scroll_jobName_tips_html);
+        }
+    }
+
+
+    //调整模态框显示的水平位置----------------------------------
+    function adjustModelDlgHorizontalPosition(){
+        //调整模态框显示的水平位置----------------------------------
+        var $modalfade_width=$(".modal.fade").width();
+        var $modalfade_height=$(".modal.fade").height();
+        //var windowWidth = $(document.body).width();//浏览器当前窗口文档body的宽度
+        //var windowWidth = $(document).width();//浏览器当前窗口文档对象宽度
+        var windowWidth = window.screen.width; //屏幕分辨率的宽
+        var windowHeight = $(document).height();
+        var modalfade_width = $modalfade_width;
+        var modalfade_height = $modalfade_height;
+        var modelDlgLeft = (windowWidth - modalfade_width)/2;
+        var modelDlgTop = (windowHeight - modalfade_height)/2;
+        console.log('modelDlgLeft:'+modelDlgLeft);
+        $(".modal.fade").css({"left":modelDlgLeft+"px"});
+        //调整模态框显示的水平位置----------------------------------
+    }
+
+    //为模态对话框添加拖拽
+    function adjustModelDlgDraggable(){
+        $("#acTypeContrast_set_dlg").draggable();//为模态对话框添加拖拽
+        $("#acTypeContrast_set_dlg").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+
+        $("#pitch_set_dlg").draggable();//为模态对话框添加拖拽
+        $("#pitch_set_dlg").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+
+        $("#cruisingAltitude_set__dlg").draggable();//为模态对话框添加拖拽
+        $("#cruisingAltitude_set__dlg").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+
+        $("#verticalAcceleration_set_dlg").draggable();//为模态对话框添加拖拽
+        $("#verticalAcceleration_set_dlg").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+    }
+
+
+
+    //
+    function redirectToJobList(){
+        info_schedule_list_page_url = '';
+        info_schedule_list_page_url = '${ctx}'+'${marquee_scroll_text_url}';
+        parent.location.href = info_schedule_list_page_url;
+
+    }
+    /* $("#scroll_jobName_tips_text").click(function() {
+        document.getElementById("scroll_jobName_tips_text").click();
+    }); */
+
+    //默认加载首页，柱状图大小
+    function default_chart_container_bar_size(){
+        //
+        bodyWidth = $(document.body).width();
+        var cellWidth = bodyWidth*0.3;
+        $(".main_cell").css({"width":cellWidth,"height":cellWidth*0.625});
+        $(".main_cell_right").css({"height":cellWidth*1.25});
+
+        //$(".main_tr").css({"height":cellHeight});
+        //windowScreenWidth = windowScreenWidth+200;
+        //console.log("可能被jquery收缩了200，所以加上200，宽度是："+windowScreenWidth);
+        /* if(windowScreenWidth>=0&&windowScreenWidth<=1440){
+            $(".chart_container_bar").css({"width":"400px","height":"240px"});
+        }else if(windowScreenWidth>1440&&windowScreenWidth<=1600){
+            $(".chart_container_bar").css({"width":"450px","height":"270px"});
+        }else if(windowScreenWidth>1600&&windowScreenWidth<=1760){
+            $(".chart_container_bar").css({"width":"500px","height":"300px"});
+        }else if(windowScreenWidth>1600&&windowScreenWidth>1760){
+            $(".chart_container_bar").css({"width":"600px","height":"275px"});
+            //$("#myChart_bar").css({"width":"560px","height":"248px"});
+        } */
+    }
+
+</script>
 </body>
 </html>
