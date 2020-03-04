@@ -1,9 +1,9 @@
 # 项目相关配置
-ruoyi:
+infosouth:
   # 名称
   name: ARJ21-700飞机参考机型虚拟数据库
-  welcomeDesc: "ARJ21-700飞机 参考机型虚拟数据库"
-  baba: 中国商飞
+  baba: 中国商飞客服公司
+  welcome: ARJ21-700飞机参考机型虚拟数据库
   # 版本
   version: 4.1.0
   # 版权年份

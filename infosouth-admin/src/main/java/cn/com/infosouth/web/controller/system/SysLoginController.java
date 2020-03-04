@@ -39,17 +39,15 @@ public class SysLoginController extends BaseController
     }
 
     @GetMapping("/login")
-    public String login(ModelMap mmap)
+    public String login(ModelMap mmap, HttpServletRequest request, HttpServletResponse response)
     {
         // 如果是Ajax请求，返回Json字符串。
-        //HttpServletRequest request, HttpServletResponse response,
-        //        if (ServletUtils.isAjaxRequest(request))
-        //        {
-        //            return ServletUtils.renderString(response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}");
-        //
-        //        }
+		if (ServletUtils.isAjaxRequest(request)) {
+			return ServletUtils.renderString(response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}");
+
+		}
         mmap.put("sysName", Global.getName());
-        mmap.put("sysWelcome", Global.getWelcomeDesc());
+        mmap.put("sysWelcome", Global.getWelcome());
         mmap.put("sysBaba", Global.getBaba());
         mmap.put("copyrightYear", Global.getCopyrightYear());
         mmap.put("sysVersion", Global.getVersion());

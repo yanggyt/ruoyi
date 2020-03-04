@@ -1,4 +1,4 @@
-Application Version: ${ruoyi.version}
+Application Version: ${infosouth.version}
 Spring Boot Version: ${spring-boot.version}
 ///////////////////////////////////////////////////////////////////////////////////
            __  __           _____    _____ ____  __  __          _____

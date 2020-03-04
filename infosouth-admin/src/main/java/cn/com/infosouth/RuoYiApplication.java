@@ -3,6 +3,7 @@ package cn.com.infosouth;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 /**
  * 启动程序
@@ -16,6 +17,6 @@ public class RuoYiApplication
     {
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(RuoYiApplication.class, args);
-        System.out.println("  系统启动成功(◠‿◠)   \n");
+        System.out.println("  系统启动成功  \n");
     }
 }

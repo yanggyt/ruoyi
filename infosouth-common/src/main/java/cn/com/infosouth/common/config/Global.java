@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
  * @author ruoyi
  */
 @Component
-@ConfigurationProperties(prefix = "ruoyi")
+@ConfigurationProperties(prefix = "infosouth")
 public class Global
 {
     /** 项目名称 */
     private static String name;
 
     /** 欢迎词 **/
-    private static String welcomeDesc;
+    private static String welcome;
 
     /** 甲方爸爸 **/
     private static String baba;
@@ -46,23 +46,23 @@ public class Global
         Global.name = name;
     }
 
-    public static String getWelcomeDesc() {
-        return welcomeDesc;
-    }
+    public static String getWelcome() {
+		return welcome;
+	}
 
-    public static void setWelcomeDesc(String welcomeDesc) {
-        Global.welcomeDesc = welcomeDesc;
-    }
+	public void setWelcome(String welcome) {
+		Global.welcome = welcome;
+	}
 
-    public static String getBaba() {
-        return baba;
-    }
+	public static String getBaba() {
+		return baba;
+	}
 
-    public static void setBaba(String baba) {
-        Global.baba = baba;
-    }
+	public void setBaba(String baba) {
+		Global.baba = baba;
+	}
 
-    public static String getVersion()
+	public static String getVersion()
     {
         return version;
     }

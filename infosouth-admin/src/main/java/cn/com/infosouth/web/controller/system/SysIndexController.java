@@ -34,6 +34,8 @@ public class SysIndexController extends BaseController
         mmap.put("menus", menus);
         mmap.put("user", user);
         mmap.put("sysName", Global.getName());
+        mmap.put("sysBaba", Global.getBaba());
+        mmap.put("sysWelcome", Global.getWelcome());
         mmap.put("sysVersion", Global.getVersion());
         mmap.put("copyrightYear", Global.getCopyrightYear());
         mmap.put("demoEnabled", Global.isDemoEnabled());

@@ -13,14 +13,12 @@ import cn.com.infosouth.common.core.controller.BaseController;
  */
 @Controller
 @RequestMapping("/tool/build")
-public class BuildController extends BaseController
-{
-    private String prefix = "tool/build";
+public class BuildController extends BaseController {
+	private String prefix = "tool/build";
 
-    @RequiresPermissions("tool:build:view")
-    @GetMapping()
-    public String build()
-    {
-        return prefix + "/build";
-    }
+	@RequiresPermissions("tool:build:view")
+	@GetMapping()
+	public String build() {
+		return prefix + "/build";
+	}
 }
