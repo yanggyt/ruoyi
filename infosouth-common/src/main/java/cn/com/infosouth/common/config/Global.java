@@ -16,7 +16,8 @@ public class Global
     private static String name;
 
     /** 欢迎词 **/
-    private static String welcome;
+    private static String welcomePart1;
+    private static String welcomePart2;
 
     /** 甲方爸爸 **/
     private static String baba;
@@ -46,12 +47,20 @@ public class Global
         Global.name = name;
     }
 
-    public static String getWelcome() {
-		return welcome;
+	public static String getWelcomePart1() {
+		return welcomePart1;
 	}
 
-	public void setWelcome(String welcome) {
-		Global.welcome = welcome;
+	public void setWelcomePart1(String welcomePart1) {
+		Global.welcomePart1 = welcomePart1;
+	}
+
+	public static String getWelcomePart2() {
+		return welcomePart2;
+	}
+
+	public void setWelcomePart2(String welcomePart2) {
+		Global.welcomePart2 = welcomePart2;
 	}
 
 	public static String getBaba() {

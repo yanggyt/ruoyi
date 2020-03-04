@@ -47,7 +47,8 @@ public class SysLoginController extends BaseController
 
 		}
         mmap.put("sysName", Global.getName());
-        mmap.put("sysWelcome", Global.getWelcome());
+        mmap.put("sysWelcomePart1", Global.getWelcomePart1());
+        mmap.put("sysWelcomePart2", Global.getWelcomePart2());
         mmap.put("sysBaba", Global.getBaba());
         mmap.put("copyrightYear", Global.getCopyrightYear());
         mmap.put("sysVersion", Global.getVersion());
