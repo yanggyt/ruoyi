@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoAircraftMapper">
+    
+    <resultMap type="InfoAircraft" id="InfoAircraftResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="acReg"    column="ac_reg"    />
+        <result property="infoAcTypeId"    column="info_ac_type_id"    />
+        <result property="uploadDirId"    column="upload_dir_id"    />
+        <result property="aircompanyid"    column="airCompanyId"    />
+    </resultMap>
+
+    <sql id="selectInfoAircraftVo">
+        select id, create_by, create_date, update_by, update_date, remarks, del_flag, ac_reg, info_ac_type_id, upload_dir_id, airCompanyId from info_aircraft
+    </sql>
+
+    <select id="selectInfoAircraftList" parameterType="InfoAircraft" resultMap="InfoAircraftResult">
+        <include refid="selectInfoAircraftVo"/>
+        <where>  
+            <if test="acReg != null  and acReg != ''"> and ac_reg = #{acReg}</if>
+            <if test="infoAcTypeId != null  and infoAcTypeId != ''"> and info_ac_type_id = #{infoAcTypeId}</if>
+            <if test="aircompanyid != null  and aircompanyid != ''"> and airCompanyId = #{aircompanyid}</if>
+        </where>
+    </select>
+    
+    <select id="selectInfoAircraftById" parameterType="String" resultMap="InfoAircraftResult">
+        <include refid="selectInfoAircraftVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInfoAircraft" parameterType="InfoAircraft">
+        insert into info_aircraft
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="acReg != null  and acReg != ''">ac_reg,</if>
+            <if test="infoAcTypeId != null  and infoAcTypeId != ''">info_ac_type_id,</if>
+            <if test="uploadDirId != null  and uploadDirId != ''">upload_dir_id,</if>
+            <if test="aircompanyid != null  and aircompanyid != ''">airCompanyId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="acReg != null  and acReg != ''">#{acReg},</if>
+            <if test="infoAcTypeId != null  and infoAcTypeId != ''">#{infoAcTypeId},</if>
+            <if test="uploadDirId != null  and uploadDirId != ''">#{uploadDirId},</if>
+            <if test="aircompanyid != null  and aircompanyid != ''">#{aircompanyid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoAircraft" parameterType="InfoAircraft">
+        update info_aircraft
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="acReg != null  and acReg != ''">ac_reg = #{acReg},</if>
+            <if test="infoAcTypeId != null  and infoAcTypeId != ''">info_ac_type_id = #{infoAcTypeId},</if>
+            <if test="uploadDirId != null  and uploadDirId != ''">upload_dir_id = #{uploadDirId},</if>
+            <if test="aircompanyid != null  and aircompanyid != ''">airCompanyId = #{aircompanyid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoAircraftById" parameterType="String">
+        delete from info_aircraft where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoAircraftByIds" parameterType="String">
+        delete from info_aircraft where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

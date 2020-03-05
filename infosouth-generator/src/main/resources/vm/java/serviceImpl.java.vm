@@ -3,11 +3,11 @@ package ${packageName}.service.impl;
 import java.util.List;
 #if($table.tree)
 import java.util.ArrayList;
-import Ztree;
+import cn.com.infosouth.common.core.domain.Ztree;
 #end
 #foreach ($column in $columns)
 #if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
-import DateUtils;
+import cn.com.infosouth.common.utils.DateUtils;
 #break
 #end
 #end
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import ${packageName}.mapper.${ClassName}Mapper;
 import ${packageName}.domain.${ClassName};
 import ${packageName}.service.I${ClassName}Service;
-import Convert;
+import cn.com.infosouth.common.core.text.Convert;
 
 /**
  * ${functionName}Service业务层处理

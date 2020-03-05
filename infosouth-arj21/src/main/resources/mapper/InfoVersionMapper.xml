@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoVersionMapper">
+    
+    <resultMap type="InfoVersion" id="InfoVersionResult">
+        <result property="id"    column="id"    />
+        <result property="verName"    column="ver_name"    />
+        <result property="verDesc"    column="ver_desc"    />
+        <result property="csvHeaderIndex"    column="csv_header_index"    />
+        <result property="csvContentIndex"    column="csv_content_index"    />
+        <result property="scriptLanguage"    column="script_language"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectInfoVersionVo">
+        select id, ver_name, ver_desc, csv_header_index, csv_content_index, script_language, create_by, create_date, update_by, update_date, remarks, del_flag from info_version
+    </sql>
+
+    <select id="selectInfoVersionList" parameterType="InfoVersion" resultMap="InfoVersionResult">
+        <include refid="selectInfoVersionVo"/>
+        <where>  
+            <if test="verName != null  and verName != ''"> and ver_name like concat('%', #{verName}, '%')</if>
+            <if test="verDesc != null  and verDesc != ''"> and ver_desc like concat('%', #{verDesc}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectInfoVersionById" parameterType="Long" resultMap="InfoVersionResult">
+        <include refid="selectInfoVersionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInfoVersion" parameterType="InfoVersion" useGeneratedKeys="true" keyProperty="id">
+        insert into info_version
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="verName != null  and verName != ''">ver_name,</if>
+            <if test="verDesc != null  and verDesc != ''">ver_desc,</if>
+            <if test="csvHeaderIndex != null ">csv_header_index,</if>
+            <if test="csvContentIndex != null ">csv_content_index,</if>
+            <if test="scriptLanguage != null  and scriptLanguage != ''">script_language,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="verName != null  and verName != ''">#{verName},</if>
+            <if test="verDesc != null  and verDesc != ''">#{verDesc},</if>
+            <if test="csvHeaderIndex != null ">#{csvHeaderIndex},</if>
+            <if test="csvContentIndex != null ">#{csvContentIndex},</if>
+            <if test="scriptLanguage != null  and scriptLanguage != ''">#{scriptLanguage},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoVersion" parameterType="InfoVersion">
+        update info_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="verName != null  and verName != ''">ver_name = #{verName},</if>
+            <if test="verDesc != null  and verDesc != ''">ver_desc = #{verDesc},</if>
+            <if test="csvHeaderIndex != null ">csv_header_index = #{csvHeaderIndex},</if>
+            <if test="csvContentIndex != null ">csv_content_index = #{csvContentIndex},</if>
+            <if test="scriptLanguage != null  and scriptLanguage != ''">script_language = #{scriptLanguage},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoVersionById" parameterType="Long">
+        delete from info_version where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoVersionByIds" parameterType="String">
+        delete from info_version where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

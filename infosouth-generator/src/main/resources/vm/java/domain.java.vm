@@ -2,11 +2,11 @@ package ${packageName}.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import Excel;
+import cn.com.infosouth.common.annotation.Excel;
 #if($table.crud)
-import BaseEntity;
+import cn.com.infosouth.common.core.domain.BaseEntity;
 #elseif($table.tree)
-import TreeEntity;
+import cn.com.infosouth.common.core.domain.TreeEntity;
 #end
 #foreach ($import in $importList)
 import ${import};

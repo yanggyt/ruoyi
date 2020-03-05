@@ -3,7 +3,7 @@ package ${packageName}.service;
 import java.util.List;
 import ${packageName}.domain.${ClassName};
 #if($table.tree)
-import Ztree;
+import cn.com.infosouth.common.core.domain.Ztree;
 #end
 
 /**
