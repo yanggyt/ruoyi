@@ -10,10 +10,6 @@
                 <form id="formId">
                     <div class="select-list">
                         <ul>
-                            <li>
-                                <p>null：</p>
-                                <input type="text" name="id"/>
-                            </li>
                             <li class="select-time">
                                 <p>航班日期：</p>
                                 <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginFlDate]"/>
@@ -32,49 +28,8 @@
                                 </select>
                             </li>
                             <li>
-                                <p>起飞机场：</p>
-                                <input type="text" name="pod"/>
-                            </li>
-                            <li>
-                                <p>到达机场：</p>
-                                <input type="text" name="poa"/>
-                            </li>
-                            <li>
-                                <p>所属公司：</p>
-                                <input type="text" name="airline"/>
-                            </li>
-                            <li>
-                                <p>操作人：</p>
-                                <input type="text" name="operateBy"/>
-                            </li>
-                            <li class="select-time">
-                                <p>操作时间：</p>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginOperateDate]"/>
-                                <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endOperateDate]"/>
-                            </li>
-                            <li>
-                                <p>ip：</p>
-                                <input type="text" name="hostIp"/>
-                            </li>
-                            <li>
-                                <p>文件大小：</p>
-                                <input type="text" name="fileSize"/>
-                            </li>
-                            <li>
                                 <p>操作类型--导入，导出：</p>
                                 <select name="operateType" th:with="type=${@dict.getType('')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-                            <li>
-                                <p>是否成功：</p>
-                                <input type="text" name="isSucce"/>
-                            </li>
-                            <li>
-                                <p>失败原因：</p>
-                                <select name="failType" th:with="type=${@dict.getType('')}">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -129,32 +84,12 @@
                     title : '航班日期'
                 },
                 {
-                    field : 'flNo', 
-                    title : '航班号'
-                },
-                {
                     field : 'arn', 
                     title : '飞机号'
                 },
                 {
                     field : 'acType', 
                     title : '机型'
-                },
-                {
-                    field : 'pod', 
-                    title : '起飞机场'
-                },
-                {
-                    field : 'poa', 
-                    title : '到达机场'
-                },
-                {
-                    field : 'airline', 
-                    title : '所属公司'
-                },
-                {
-                    field : 'csvPath', 
-                    title : 'csv存储路径'
                 },
                 {
                     field : 'csvName', 
@@ -187,18 +122,6 @@
                 {
                     field : 'failType', 
                     title : '失败原因'
-                },
-                {
-                    field : 'createDate', 
-                    title : '创建时间'
-                },
-                {
-                    field : 'updateDate', 
-                    title : '更新时间'
-                },
-                {
-                    field : 'remarks', 
-                    title : '备注'
                 },
                 {
                     title: '操作',
