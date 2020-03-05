@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.com.infosouth.arj21.mapper.InfoFlightMapper">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoImexportLogMapper">
     
-    <resultMap type="InfoFlight" id="InfoFlightResult">
+    <resultMap type="InfoImexportLog" id="InfoImexportLogResult">
         <result property="id"    column="id"    />
         <result property="flDate"    column="fl_date"    />
         <result property="flNo"    column="fl_no"    />
@@ -15,7 +15,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="airline"    column="airline"    />
         <result property="csvPath"    column="csv_path"    />
         <result property="csvName"    column="csv_name"    />
-        <result property="infoResourceId"    column="info_resource_id"    />
+        <result property="operateBy"    column="operate_by"    />
+        <result property="operateDate"    column="operate_date"    />
+        <result property="hostIp"    column="host_ip"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="operateType"    column="operate_type"    />
+        <result property="isSucce"    column="is_succe"    />
+        <result property="failType"    column="fail_type"    />
         <result property="createBy"    column="create_by"    />
         <result property="createDate"    column="create_date"    />
         <result property="updateBy"    column="update_by"    />
@@ -24,36 +30,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="delFlag"    column="del_flag"    />
     </resultMap>
 
-    <sql id="selectInfoFlightVo">
-        select id, fl_date, fl_no, arn, ac_type, pod, poa, airline, csv_path, csv_name, info_resource_id, create_by, create_date, update_by, update_date, remarks, del_flag from info_flight
+    <sql id="selectInfoImexportLogVo">
+        select id, fl_date, fl_no, arn, ac_type, pod, poa, airline, csv_path, csv_name, operate_by, operate_date, host_ip, file_size, operate_type, is_succe, fail_type, create_by, create_date, update_by, update_date, remarks, del_flag from info_imexport_log
     </sql>
 
-    <select id="selectInfoFlightList" parameterType="InfoFlight" resultMap="InfoFlightResult">
-        <include refid="selectInfoFlightVo"/>
+    <select id="selectInfoImexportLogList" parameterType="InfoImexportLog" resultMap="InfoImexportLogResult">
+        <include refid="selectInfoImexportLogVo"/>
         <where>  
+            <if test="id != null  and id != ''"> and id = #{id}</if>
             <if test="flDate != null "> and fl_date = #{flDate}</if>
-            <if test="flNo != null  and flNo != ''"> and fl_no = #{flNo}</if>
             <if test="arn != null  and arn != ''"> and arn = #{arn}</if>
             <if test="acType != null  and acType != ''"> and ac_type = #{acType}</if>
             <if test="pod != null  and pod != ''"> and pod = #{pod}</if>
             <if test="poa != null  and poa != ''"> and poa = #{poa}</if>
             <if test="airline != null  and airline != ''"> and airline = #{airline}</if>
-            <if test="csvPath != null  and csvPath != ''"> and csv_path = #{csvPath}</if>
             <if test="csvName != null  and csvName != ''"> and csv_name like concat('%', #{csvName}, '%')</if>
-            <if test="infoResourceId != null  and infoResourceId != ''"> and info_resource_id = #{infoResourceId}</if>
-            <if test="createDate != null "> and create_date = #{createDate}</if>
-            <if test="updateDate != null "> and update_date = #{updateDate}</if>
-            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="operateBy != null  and operateBy != ''"> and operate_by = #{operateBy}</if>
+            <if test="operateDate != null "> and operate_date = #{operateDate}</if>
+            <if test="hostIp != null  and hostIp != ''"> and host_ip = #{hostIp}</if>
+            <if test="fileSize != null "> and file_size = #{fileSize}</if>
+            <if test="operateType != null  and operateType != ''"> and operate_type = #{operateType}</if>
+            <if test="isSucce != null  and isSucce != ''"> and is_succe = #{isSucce}</if>
+            <if test="failType != null  and failType != ''"> and fail_type = #{failType}</if>
         </where>
     </select>
     
-    <select id="selectInfoFlightById" parameterType="String" resultMap="InfoFlightResult">
-        <include refid="selectInfoFlightVo"/>
+    <select id="selectInfoImexportLogById" parameterType="String" resultMap="InfoImexportLogResult">
+        <include refid="selectInfoImexportLogVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertInfoFlight" parameterType="InfoFlight">
-        insert into info_flight
+    <insert id="insertInfoImexportLog" parameterType="InfoImexportLog">
+        insert into info_imexport_log
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null  and id != ''">id,</if>
             <if test="flDate != null ">fl_date,</if>
@@ -65,7 +73,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="airline != null  and airline != ''">airline,</if>
             <if test="csvPath != null  and csvPath != ''">csv_path,</if>
             <if test="csvName != null  and csvName != ''">csv_name,</if>
-            <if test="infoResourceId != null  and infoResourceId != ''">info_resource_id,</if>
+            <if test="operateBy != null  and operateBy != ''">operate_by,</if>
+            <if test="operateDate != null ">operate_date,</if>
+            <if test="hostIp != null  and hostIp != ''">host_ip,</if>
+            <if test="fileSize != null ">file_size,</if>
+            <if test="operateType != null  and operateType != ''">operate_type,</if>
+            <if test="isSucce != null  and isSucce != ''">is_succe,</if>
+            <if test="failType != null  and failType != ''">fail_type,</if>
             <if test="createBy != null  and createBy != ''">create_by,</if>
             <if test="createDate != null ">create_date,</if>
             <if test="updateBy != null  and updateBy != ''">update_by,</if>
@@ -84,7 +98,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="airline != null  and airline != ''">#{airline},</if>
             <if test="csvPath != null  and csvPath != ''">#{csvPath},</if>
             <if test="csvName != null  and csvName != ''">#{csvName},</if>
-            <if test="infoResourceId != null  and infoResourceId != ''">#{infoResourceId},</if>
+            <if test="operateBy != null  and operateBy != ''">#{operateBy},</if>
+            <if test="operateDate != null ">#{operateDate},</if>
+            <if test="hostIp != null  and hostIp != ''">#{hostIp},</if>
+            <if test="fileSize != null ">#{fileSize},</if>
+            <if test="operateType != null  and operateType != ''">#{operateType},</if>
+            <if test="isSucce != null  and isSucce != ''">#{isSucce},</if>
+            <if test="failType != null  and failType != ''">#{failType},</if>
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
             <if test="createDate != null ">#{createDate},</if>
             <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
@@ -94,8 +114,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateInfoFlight" parameterType="InfoFlight">
-        update info_flight
+    <update id="updateInfoImexportLog" parameterType="InfoImexportLog">
+        update info_imexport_log
         <trim prefix="SET" suffixOverrides=",">
             <if test="flDate != null ">fl_date = #{flDate},</if>
             <if test="flNo != null  and flNo != ''">fl_no = #{flNo},</if>
@@ -106,7 +126,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="airline != null  and airline != ''">airline = #{airline},</if>
             <if test="csvPath != null  and csvPath != ''">csv_path = #{csvPath},</if>
             <if test="csvName != null  and csvName != ''">csv_name = #{csvName},</if>
-            <if test="infoResourceId != null  and infoResourceId != ''">info_resource_id = #{infoResourceId},</if>
+            <if test="operateBy != null  and operateBy != ''">operate_by = #{operateBy},</if>
+            <if test="operateDate != null ">operate_date = #{operateDate},</if>
+            <if test="hostIp != null  and hostIp != ''">host_ip = #{hostIp},</if>
+            <if test="fileSize != null ">file_size = #{fileSize},</if>
+            <if test="operateType != null  and operateType != ''">operate_type = #{operateType},</if>
+            <if test="isSucce != null  and isSucce != ''">is_succe = #{isSucce},</if>
+            <if test="failType != null  and failType != ''">fail_type = #{failType},</if>
             <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
             <if test="createDate != null ">create_date = #{createDate},</if>
             <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
@@ -117,27 +143,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteInfoFlightById" parameterType="String">
-        delete from info_flight where id = #{id}
+    <delete id="deleteInfoImexportLogById" parameterType="String">
+        delete from info_imexport_log where id = #{id}
     </delete>
 
-    <delete id="deleteInfoFlightByIds" parameterType="String">
-        delete from info_flight where id in 
+    <delete id="deleteInfoImexportLogByIds" parameterType="String">
+        delete from info_imexport_log where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
-    <!-- 查询info_flight 表数量 -->
-	<select id="findFlightCount" resultType="String">
-		select 
-		count(a.id) as qarCount
-		from info_flight a
-		where 1=1
-		<if test="del_flag != null and arn !='' ">
-		and a.del_flag = #{DEL_FLAG_DELETE}
-		</if>		
-	</select>
-    
     
 </mapper>

@@ -91,4 +91,10 @@ public class InfoVersionServiceImpl implements IInfoVersionService
     {
         return infoVersionMapper.deleteInfoVersionById(id);
     }
+
+	@Override
+	public List<InfoVersion> findList(InfoVersion infoVersion) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

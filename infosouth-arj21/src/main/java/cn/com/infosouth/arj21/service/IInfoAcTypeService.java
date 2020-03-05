@@ -1,6 +1,8 @@
 package cn.com.infosouth.arj21.service;
 
 import java.util.List;
+import java.util.Map;
+
 import cn.com.infosouth.arj21.domain.InfoAcType;
 
 /**
@@ -58,4 +60,10 @@ public interface IInfoAcTypeService
      * @return 结果
      */
     public int deleteInfoAcTypeById(String id);
+
+    /**
+     *   查找机型列表
+     * @return
+     */
+	public List<Map<String, String>> findacTpyeMapList();
 }

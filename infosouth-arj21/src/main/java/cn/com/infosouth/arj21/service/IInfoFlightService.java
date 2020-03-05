@@ -58,4 +58,10 @@ public interface IInfoFlightService
      * @return 结果
      */
     public int deleteInfoFlightById(String id);
+
+    /**
+     * qar数量
+     * @return
+     */
+	public String findFlightCount();
 }

@@ -91,4 +91,9 @@ public class InfoFlightServiceImpl implements IInfoFlightService
     {
         return infoFlightMapper.deleteInfoFlightById(id);
     }
+
+	@Override
+	public String findFlightCount() {
+		return infoFlightMapper.findFlightCount();
+	}
 }

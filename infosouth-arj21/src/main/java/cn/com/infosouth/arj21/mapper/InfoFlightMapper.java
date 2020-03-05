@@ -58,4 +58,6 @@ public interface InfoFlightMapper
      * @return 结果
      */
     public int deleteInfoFlightByIds(String[] ids);
+
+	public String findFlightCount();
 }

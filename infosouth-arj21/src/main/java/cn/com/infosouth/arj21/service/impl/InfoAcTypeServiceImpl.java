@@ -1,6 +1,8 @@
 package cn.com.infosouth.arj21.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.com.infosouth.arj21.mapper.InfoAcTypeMapper;
@@ -91,4 +93,9 @@ public class InfoAcTypeServiceImpl implements IInfoAcTypeService
     {
         return infoAcTypeMapper.deleteInfoAcTypeById(id);
     }
+
+	@Override
+	public List<Map<String, String>> findacTpyeMapList() {
+		return infoAcTypeMapper.findacTpyeMapList();
+	}
 }
