@@ -1,4 +1,4 @@
-package cn.com.infosouth.arj21.service;
+package cn.com.infosouth.arj21.mapper;
 
 import java.util.List;
 import java.util.Map;
@@ -6,12 +6,12 @@ import java.util.Map;
 import cn.com.infosouth.arj21.domain.InfoDutySchedule;
 
 /**
- * 任务调度Service接口
+ * 任务调度Mapper接口
  * 
  * @author kxnf
  * @date 2020-03-05
  */
-public interface IInfoDutyScheduleService 
+public interface InfoDutyScheduleMapper 
 {
     /**
      * 查询任务调度
@@ -46,32 +46,31 @@ public interface IInfoDutyScheduleService
     public int updateInfoDutySchedule(InfoDutySchedule infoDutySchedule);
 
     /**
-     * 批量删除任务调度
-     * 
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    public int deleteInfoDutyScheduleByIds(String ids);
-
-    /**
-     * 删除任务调度信息
+     * 删除任务调度
      * 
      * @param id 任务调度ID
      * @return 结果
      */
     public int deleteInfoDutyScheduleById(String id);
-    
+
     /**
-     * 查找调度任务列表
+     * 批量删除任务调度
+     * 
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    public int deleteInfoDutyScheduleByIds(String[] ids);
+
+    /**
+     * 查找任务列表
      * @param static_acType_B737
      * @return
      */
-    List<Map<String, String>> findInfoDutyScheduleMapList(String static_acType_B737);
+	public List<Map<String, String>> findInfoDutyScheduleMapList(String static_acType_B737);
 
 	/**
-	 * 任务数量
+	 * 查找job数量
 	 * @return
 	 */
-	String findJobCount();
+	public String findJobCount();
 }
-
