@@ -1,9 +1,12 @@
 package cn.com.infosouth.arj21.controller.csvmanager;
 
 import java.util.List;
+
+import com.github.pagehelper.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +21,9 @@ import cn.com.infosouth.common.core.domain.AjaxResult;
 import cn.com.infosouth.common.core.page.TableDataInfo;
 import cn.com.infosouth.common.enums.BusinessType;
 import cn.com.infosouth.common.utils.poi.ExcelUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 航班信息Controller
@@ -114,4 +120,9 @@ public class InfoFlightController extends BaseController {
 	public AjaxResult remove(String ids) {
 		return toAjax(infoFlightService.deleteInfoFlightByIds(ids));
 	}
+
+
+
+
+
 }
