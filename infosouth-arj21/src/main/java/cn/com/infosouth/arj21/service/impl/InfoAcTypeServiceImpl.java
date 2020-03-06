@@ -98,4 +98,9 @@ public class InfoAcTypeServiceImpl implements IInfoAcTypeService
 	public List<Map<String, String>> findacTpyeMapList() {
 		return infoAcTypeMapper.findacTpyeMapList();
 	}
+
+	@Override
+	public List<String> findacTpyeList() {
+		return infoAcTypeMapper.findacTpyeList();
+	}
 }

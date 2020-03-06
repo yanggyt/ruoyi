@@ -62,4 +62,6 @@ public interface InfoAcTypeMapper
     public int deleteInfoAcTypeByIds(String[] ids);
 
 	public List<Map<String, String>> findacTpyeMapList();
+
+	public List<String> findacTpyeList();
 }

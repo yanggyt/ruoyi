@@ -27,24 +27,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<sql id="infoFlightColumns">
 		a.id AS "id",
-		a.fl_date AS "flDate",
-		a.fl_no AS "flNo",
+		a.fl_date AS "fl_date",
+		a.fl_no AS "fl_no",
 		<!-- a.arn AS "arId", -->
 		c.ac_reg AS "arn",
 		<!-- a.ac_type AS "acTypeId", -->
-		d.ac_tpye AS "acType",
+		d.ac_tpye AS "ac_type",
 		a.pod AS "pod",
 		a.poa AS "poa",
 		a.airline AS "airline",
-		a.csv_path AS "csvPath",
-		a.csv_name AS "csvName",
+		a.csv_path AS "csv_path",
+		a.csv_name AS "csv_name",
 		a.create_by AS "createBy.id",
-		a.info_resource_id AS "infoResourceId",
-		a.create_date AS "createDate",
+		a.info_resource_id AS "info_resource_id",
+		a.create_date AS "create_date",
 		a.update_by AS "updateBy.id",
-		a.update_date AS "updateDate",
+		a.update_date AS "update_date",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "del_flag"
 	</sql>
 	<sql id="infoFlightJoins">
 		left join info_resource b 
@@ -60,7 +60,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectInfoFlightList" parameterType="InfoFlight" resultMap="InfoFlightResult">
-        <include refid="selectInfoFlightVo"/>
+       	select
+        <include refid="infoFlightColumns"/>
+        from info_flight a
+      		left join info_aircraft c
+			on a.arn = c.id
+			left join info_ac_type d
+			on a.ac_type = d.id
         <where>  
             <if test="flDate != null "> and fl_date = #{flDate}</if>
             <if test="flNo != null  and flNo != ''"> and fl_no = #{flNo}</if>

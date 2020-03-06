@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.infosouth.arj21.domain.InfoFlight;
+import cn.com.infosouth.arj21.service.IInfoAcTypeService;
 import cn.com.infosouth.arj21.service.IInfoFlightService;
 import cn.com.infosouth.common.annotation.Log;
 import cn.com.infosouth.common.core.controller.BaseController;
@@ -22,6 +24,7 @@ import cn.com.infosouth.common.core.domain.AjaxResult;
 import cn.com.infosouth.common.core.page.TableDataInfo;
 import cn.com.infosouth.common.enums.BusinessType;
 import cn.com.infosouth.common.utils.poi.ExcelUtil;
+import cn.com.infosouth.framework.util.ShiroUtils;
 
 /**
  * 航班信息Controller
@@ -36,11 +39,16 @@ public class InfoFlightController extends BaseController {
 
 	@Autowired
 	private IInfoFlightService infoFlightService;
+	@Autowired
+	private IInfoAcTypeService infoAcTypeService;
 
 	@RequiresPermissions("arj21:flight:view")
 	@GetMapping()
-	public String flight() {
-		return prefix + "/flight";
+	public String flight(Model model) {
+		
+		List<String> acTypeList = infoAcTypeService.findacTpyeList();
+		model.addAttribute("acTypeList", acTypeList);
+		return prefix + "/qarDataExport";
 	}
 
 	/**   
@@ -57,6 +65,7 @@ public class InfoFlightController extends BaseController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "1001");
 		map.put("data", "");
+		map.put("loginName", ShiroUtils.getLoginName());
 		//String info_ac_type_id = "";
 		String acType = "";
 		try {

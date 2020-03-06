@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.infosouth.arj21.domain.InfoImexportLog;
+import cn.com.infosouth.arj21.service.IInfoAcTypeService;
 import cn.com.infosouth.arj21.service.IInfoImexportLogService;
 import cn.com.infosouth.common.annotation.Log;
 import cn.com.infosouth.common.core.controller.BaseController;
@@ -37,11 +39,15 @@ public class InfoImexportLogController extends BaseController
 
     @Autowired
     private IInfoImexportLogService infoImexportLogService;
-
+    @Autowired
+    private IInfoAcTypeService infoAcTypeService;
+    
     @RequiresPermissions("arj21:csvexport:view")
     @GetMapping()
-    public String csvexport()
+    public String csvexport(Model model)
     {
+    	List<String> acTypeList = infoAcTypeService.findacTpyeList();
+		model.addAttribute("acTypeList", acTypeList);
         return prefix + "/csvexport";
     }
 

@@ -101,7 +101,8 @@
 	    			$("#progressBar").append("<li style='list-style-type:none;'><span class='filename'>"+efileName+"</span><div class='progress'> <div id='"+m+"barj' class='progress-bar progress-bar-info' role='progressbar' aria-valuemin='0' aria-valuenow='0' aria-valuemax='100' style='width: 0%'></div></div></li>");
 	    		} */
 	    		//填充table
-	    		tbody_html = "";
+	    		tbody_html = ""
+	    		var loginName = "";//上传用户名
 	    		for(var m=0;m<ss.length;m++){ //循环添加进度条	    			
 	    			efileName = ss[m].name ;
 	    			var efileNameArr = efileName.split('_');
@@ -133,6 +134,7 @@
 	    				success: function(data){
 	    					if(data.status=='1001'){
 	    						tbody_html +=''+data.data;
+	    						loginName = data.loginName;
 	    					}else{
 	    						alert('上传出错，请稍后再试！')
 	    						return;
@@ -164,7 +166,7 @@
 	    			tbody_html += "</td>";
 	    			tbody_html += "<td>";
 					//上传人
-					tbody_html +='';
+					tbody_html += loginName;
 	    			tbody_html += "</td>";
 	    			tbody_html += "<td class=\"td_time_"+m+"\">";
 					//上传时间

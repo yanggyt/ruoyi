@@ -66,4 +66,10 @@ public interface IInfoAcTypeService
      * @return
      */
 	public List<Map<String, String>> findacTpyeMapList();
+
+	/**
+	 * 查找机型列表
+	 * @return
+	 */
+	public List<String> findacTpyeList();
 }

@@ -17,56 +17,38 @@
                                 <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endFlDate]"/>
                             </li>
                             <li>
-                                <p>航班号：</p>
-                                <input type="text" name="flNo"/>
+                                <p>机型：</p>
+                                <select name="acType" >
+                                    <option value="">所有</option>
+                                    <option th:each="actype,status:${acTypeList}" th:text="${actype}" th:value="${actype}"></option>
+                                </select>
                             </li>
                             <li>
                                 <p>飞机号：</p>
                                 <input type="text" name="arn"/>
                             </li>
                             <li>
-                                <p>机型：</p>
-                                <select name="acType" th:with="type=${@dict.getType('')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-                            <li>
                                 <p>起飞机场：</p>
                                 <input type="text" name="pod"/>
                             </li>
                             <li>
-                                <p>到达机场：</p>
+                                <p>落地机场：</p>
                                 <input type="text" name="poa"/>
                             </li>
-                            <li>
-                                <p>所属公司：</p>
-                                <input type="text" name="airline"/>
-                            </li>
-                            <li>
-                                <p>资源目录ID：</p>
-                                <input type="text" name="infoResourceId"/>
-                            </li>
-                            <li class="select-time">
-                                <p>创建时间：</p>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreateDate]"/>
-                                <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreateDate]"/>
-                            </li>
-                            <li class="select-time">
-                                <p>更新时间：</p>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginUpdateDate]"/>
-                                <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endUpdateDate]"/>
-                            </li>
-                            <li>
-                                <p>备注：</p>
-                                <input type="text" name="remarks"/>
-                            </li>
+                            
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
+                           <!--  <li>
+                            	<p>导出类型：</p>
+                            	 <select name="exportType" >
+                                    <option value="csv">csv</option>
+                                    <option value="xml">xml</option>
+                                    <option value="txt">txt</option>
+                                 </select>
+                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;</a>
+                            </li> -->
                         </ul>
                     </div>
                 </form>
@@ -114,12 +96,8 @@
                     visible: false
                 },
                 {
-                    field : 'flDate', 
-                    title : '航班日期'
-                },
-                {
-                    field : 'flNo', 
-                    title : '航班号'
+                    field : 'csvName', 
+                    title : 'csv文件名'
                 },
                 {
                     field : 'arn', 
@@ -130,6 +108,10 @@
                     title : '机型'
                 },
                 {
+                    field : 'flDate', 
+                    title : '航班日期'
+                },
+                {
                     field : 'pod', 
                     title : '起飞机场'
                 },
@@ -138,34 +120,11 @@
                     title : '到达机场'
                 },
                 {
-                    field : 'airline', 
-                    title : '所属公司'
-                },
-                {
-                    field : 'csvPath', 
-                    title : 'csv存储路径'
-                },
-                {
-                    field : 'csvName', 
-                    title : 'csv文件名'
-                },
-                {
-                    field : 'infoResourceId', 
-                    title : '资源目录ID'
-                },
-                {
                     field : 'createDate', 
-                    title : '创建时间'
-                },
-                {
-                    field : 'updateDate', 
-                    title : '更新时间'
-                },
-                {
-                    field : 'remarks', 
-                    title : '备注'
-                },
-                {
+                    title : '导入时间'
+                }
+               
+               /*  {
                     title: '操作',
                     align: 'center',
                     formatter: function(value, row, index) {
@@ -174,7 +133,8 @@
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
-                }]
+                } */
+                ]
             };
             $.table.init(options);
         });
