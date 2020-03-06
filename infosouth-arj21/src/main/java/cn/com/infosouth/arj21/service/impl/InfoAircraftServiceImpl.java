@@ -91,4 +91,9 @@ public class InfoAircraftServiceImpl implements IInfoAircraftService
     {
         return infoAircraftMapper.deleteInfoAircraftById(id);
     }
+
+	@Override
+	public InfoAircraft getByAcReg(String airNo) {
+		return infoAircraftMapper.getByAcReg(airNo);
+	}
 }

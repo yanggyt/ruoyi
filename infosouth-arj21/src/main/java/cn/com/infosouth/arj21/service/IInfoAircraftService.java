@@ -58,4 +58,6 @@ public interface IInfoAircraftService
      * @return 结果
      */
     public int deleteInfoAircraftById(String id);
+
+	public InfoAircraft getByAcReg(String airNo);
 }

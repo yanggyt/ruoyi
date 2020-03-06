@@ -1,8 +1,9 @@
 package cn.com.infosouth.arj21.controller.csvmanager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.github.pagehelper.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import cn.com.infosouth.arj21.domain.InfoFlight;
+import cn.com.infosouth.arj21.service.IInfoAcTypeService;
 import cn.com.infosouth.arj21.service.IInfoFlightService;
 import cn.com.infosouth.common.annotation.Log;
 import cn.com.infosouth.common.core.controller.BaseController;
@@ -21,9 +24,7 @@ import cn.com.infosouth.common.core.domain.AjaxResult;
 import cn.com.infosouth.common.core.page.TableDataInfo;
 import cn.com.infosouth.common.enums.BusinessType;
 import cn.com.infosouth.common.utils.poi.ExcelUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import cn.com.infosouth.framework.util.ShiroUtils;
 
 /**
  * 航班信息Controller
@@ -38,13 +39,48 @@ public class InfoFlightController extends BaseController {
 
 	@Autowired
 	private IInfoFlightService infoFlightService;
+	@Autowired
+	private IInfoAcTypeService infoAcTypeService;
 
 	@RequiresPermissions("arj21:flight:view")
 	@GetMapping()
-	public String flight() {
-		return prefix + "/flight";
+	public String flight(Model model) {
+		
+		List<String> acTypeList = infoAcTypeService.findacTpyeList();
+		model.addAttribute("acTypeList", acTypeList);
+		return prefix + "/qarDataExport";
 	}
 
+	/**   
+	 * @Title: getAcTypeByArn   
+	 * @Description: TODO(根据飞机号获取机型)   
+	 * @param: @param arn
+	 * @param: @return      
+	 * @return: Map<String,Object>      
+	 * @throws   
+	 */
+	@RequestMapping(value = "getAcTypeByArn")
+	@ResponseBody
+	public Map<String, Object> getAcTypeByArn(String arn) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", "1001");
+		map.put("data", "");
+		map.put("loginName", ShiroUtils.getLoginName());
+		//String info_ac_type_id = "";
+		String acType = "";
+		try {
+			acType = infoFlightService.getAcTypeByArn(arn);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("status", "1002");
+			logger.error("-------getAcTypeByArn()--查询出错！----------");
+		}
+		
+		map.put("data", acType);
+		
+		return map;
+	}
+	
 	/**
 	 * 查询航班信息列表
 	 */
@@ -121,6 +157,7 @@ public class InfoFlightController extends BaseController {
 		return toAjax(infoFlightService.deleteInfoFlightByIds(ids));
 	}
 
+	
 
 
 

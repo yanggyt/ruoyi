@@ -99,4 +99,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     
+    <select id="findacTpyeList" resultType="String">
+		SELECT 
+			b.ac_tpye
+		FROM info_ac_type b
+		<where>
+			b.del_flag = 0
+		</where>	
+		ORDER BY b.ac_tpye
+	</select>
+	
 </mapper>

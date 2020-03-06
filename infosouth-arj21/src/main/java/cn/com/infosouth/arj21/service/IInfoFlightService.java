@@ -58,4 +58,23 @@ public interface IInfoFlightService
      * @return 结果
      */
     public int deleteInfoFlightById(String id);
+
+    /**
+     * qar数量
+     * @return
+     */
+	public String findFlightCount();
+
+	/**
+	 * 根据飞机号获取机型
+	 * @param arn
+	 * @return
+	 */
+	public String getAcTypeByArn(String arn);
+
+	public boolean csvExist(String fileName);
+
+	public String getIdByCsvName(String fileName);
+
+
 }

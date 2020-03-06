@@ -58,4 +58,17 @@ public interface InfoFlightMapper
      * @return 结果
      */
     public int deleteInfoFlightByIds(String[] ids);
+
+	public String findFlightCount();
+
+	/**
+	 * 根据飞机号获得飞机机型
+	 * @param arn
+	 * @return
+	 */
+	public String getAcTypeByArn(String arn);
+
+	public int csvExist(String csvName);
+
+	public String getIdByCsvName(String csvName);
 }
