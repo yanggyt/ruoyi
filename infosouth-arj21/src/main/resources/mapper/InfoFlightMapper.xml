@@ -24,12 +24,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="delFlag"    column="del_flag"    />
     </resultMap>
 
+
+	<sql id="infoFlightColumns">
+		a.id AS "id",
+		a.fl_date AS "fl_date",
+		a.fl_no AS "fl_no",
+		<!-- a.arn AS "arId", -->
+		c.ac_reg AS "arn",
+		<!-- a.ac_type AS "acTypeId", -->
+		d.ac_tpye AS "ac_type",
+		a.pod AS "pod",
+		a.poa AS "poa",
+		a.airline AS "airline",
+		a.csv_path AS "csv_path",
+		a.csv_name AS "csv_name",
+		a.create_by AS "createBy.id",
+		a.info_resource_id AS "info_resource_id",
+		a.create_date AS "create_date",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "update_date",
+		a.remarks AS "remarks",
+		a.del_flag AS "del_flag"
+	</sql>
+	<sql id="infoFlightJoins">
+		left join info_resource b 
+		on a.info_resource_id = b.id 
+		left join info_aircraft c
+		on a.arn = c.id
+		left join info_ac_type d
+		on a.ac_type = d.id
+	</sql>
+
     <sql id="selectInfoFlightVo">
         select id, fl_date, fl_no, arn, ac_type, pod, poa, airline, csv_path, csv_name, info_resource_id, create_by, create_date, update_by, update_date, remarks, del_flag from info_flight
     </sql>
 
     <select id="selectInfoFlightList" parameterType="InfoFlight" resultMap="InfoFlightResult">
-        <include refid="selectInfoFlightVo"/>
+       	select
+        <include refid="infoFlightColumns"/>
+        from info_flight a
+      		left join info_aircraft c
+			on a.arn = c.id
+			left join info_ac_type d
+			on a.ac_type = d.id
         <where>  
             <if test="flDate != null "> and fl_date = #{flDate}</if>
             <if test="flNo != null  and flNo != ''"> and fl_no = #{flNo}</if>
@@ -127,5 +164,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    
+    <!-- 查询info_flight 表数量 -->
+	<select id="findFlightCount" resultType="String">
+		select 
+		count(a.id) as qarCount
+		from info_flight a
+		where 1=1
+		<if test="del_flag != null and arn !='' ">
+		and a.del_flag = #{DEL_FLAG_DELETE}
+		</if>		
+	</select>
+    
+    <select id="getAcTypeByArn" resultType="String">
+		SELECT 
+		ac_tpye as acType	
+		FROM info_ac_type a left join info_aircraft b on a.id=b.info_ac_type_id
+		where 
+		b.ac_reg=#{arn}
+		and a.del_flag=0
+		and b.del_flag=0
+	</select>
+	
+	<select id="csvExist" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM info_flight a
+		<include refid="infoFlightJoins"/>
+		WHERE a.csv_name = #{csvName}
+		and a.del_flag=0
+		and b.del_flag=0
+	</select>
+	
+	<select id="getIdByCsvName" resultType="String">
+		SELECT 
+			<include refid="infoFlightColumns"/>,
+			c.ac_reg AS "arn"
+		FROM info_flight a
+		<include refid="infoFlightJoins"/>
+		WHERE a.csv_name = #{csvName}
+		limit 1
+	</select>
     
 </mapper>

@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--360浏览器优先以webkit内核解析-->
     <title>首页数据展示</title>
-    <link rel="shortcut icon" href="favicon.ico">
-	<title>[[${sysName}]]</title>
+<!--     <link rel="shortcut icon" href="favicon.ico">
+ -->	<title>[[${sysName}]]</title>
 	<meta name="decorator" content="blank"/>
 	<!-- 静态页面js文件刷新 -->
 	<meta http-equiv="pragma" content="no-cache"/> 
@@ -20,7 +20,7 @@
 	<!-- 引入自己写的css样式文件 -->
 	<link href="../static/oneself/common/main_index.css" th:href="@{/oneself/common/main_index.css}" type="text/css" rel="stylesheet" />
 	<link href="../static/oneself/css/main.css" th:href="@{/oneself/css/main.css}" type="text/css" rel="stylesheet" />
-
+	
 	<style type="text/css">
 		body{
 			overflow:scroll;
@@ -244,8 +244,8 @@
 								<tbody>
 								<tr>
 									<td bgcolor="#F4D371">
-										${acType_row1}
-									</td>
+<!-- 										${acType_row1}
+ -->									</td>
 									<td class="${acType_row1}_param_col1">
 
 									</td>
@@ -261,7 +261,7 @@
 								</tr>
 								<tr>
 									<td bgcolor="#F4D371">
-										${acType_row2}
+										<!-- ${acType_row2} -->
 									</td>
 									<td class="${acType_row2}_param_col1">
 
@@ -278,7 +278,7 @@
 								</tr>
 								<tr>
 									<td bgcolor="#F4D371">
-										${acType_row3}
+										<!-- ${acType_row3} -->
 									</td>
 									<td class="${acType_row3}_param_col1">
 
@@ -296,7 +296,7 @@
 
 								<tr>
 									<td bgcolor="#F4D371">
-										${acType_row4}
+										<!-- ${acType_row4} -->
 									</td>
 									<td class="${acType_row4}_param_col1">
 
@@ -313,7 +313,7 @@
 								</tr>
 								<tr>
 									<td bgcolor="#F4D371">
-										${acType_row5}
+										<!-- ${acType_row5} -->
 									</td>
 									<td class="${acType_row5}_param_col1">
 
@@ -344,8 +344,8 @@
 					</td>
 					<td valign="top" style="background-color: #FFFFFF;" rowspan="3">
 						<div class="biaog03_img main_cell_right">
-							<iframe name="infoDutyScheduleList" class="main_cell_right" id="infoDutyScheduleList" th:src="@{/defaultIndex/defaultIndex/infoDutyScheduleList}" scrolling="no" width="100%" frameborder="0"></iframe>
-						</div>
+<!-- 							<iframe name="infoDutyScheduleList" class="main_cell_right" id="infoDutyScheduleList" th:src="@{/defaultIndex/defaultIndex/infoDutyScheduleList}" scrolling="no" width="100%" frameborder="0"></iframe>
+ -->						</div>
 						<div class="biaog03_div">查看更多</div>
 					</td>
 				</tr>
@@ -1102,6 +1102,8 @@
 <div id="zhezhao_mask" class="zhezhao_mask"></div>
 <!--这是遮罩层，默认是不显示的，设置透明度为0.1-->
 
+<script src="../js/jquery-ui-1.10.4.min.js" th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+
 <script src="../oneself/chartjs/Chart.bundle.js" th:src="@{/oneself/chartjs/Chart.bundle.js}"></script>
 <script src="../oneself/chartjs/Chart.PieceLabel.js" th:src="@{/oneself/chartjs/Chart.PieceLabel.js}"></script>
 <script src="../oneself/chartjs/chartjs-plugin-datalabels.js" th:src="@{/oneself/chartjs/chartjs-plugin-datalabels.js}"></script>
@@ -1112,7 +1114,7 @@
 <script src="../oneself/customer_js/defaultIndex/defaultIndex_acTypeContrast_set.js?time=<%=new Date().getTime()%>" th:src="@{/oneself/customer_js/defaultIndex/defaultIndex_acTypeContrast_set.js}"></script>
 <script src="../oneself/customer_js/defaultIndex/defaultIndex_cruisingAltitude_set.js?time=<%=new Date().getTime()%>" th:src="@{/oneself/customer_js/defaultIndex/defaultIndex_cruisingAltitude_set.js}"></script>
 <script src="../oneself/customer_js/defaultIndex/defaultIndex_pitchAnalysis_set.js?time=<%=new Date().getTime()%>" th:src="@{/oneself/customer_js/defaultIndex/defaultIndex_pitchAnalysis_set.js}"></script>
-<script src="../oneself/customer_js/defaultIndex/defaultIndex_verticalacceleration_set.js?time=<%=new Date().getTime()%>" th:src="@{oneself/customer_js/defaultIndex/defaultIndex_verticalacceleration_set.js}"></script>
+<script src="../oneself/customer_js/defaultIndex/defaultIndex_verticalacceleration_set.js?time=<%=new Date().getTime()%>" th:src="@{/oneself/customer_js/defaultIndex/defaultIndex_verticalacceleration_set.js}"></script>
 <script type="text/javascript">
     var bodyWidth = $(document.body).width();//页面宽度
     /*模拟alert*/

@@ -18,5 +18,14 @@
             <groupId>cn.com.infosouth</groupId>
             <artifactId>infosouth-common</artifactId>
         </dependency>
+        
+        <!-- 核心模块-->
+        <dependency>
+            <groupId>cn.com.infosouth</groupId>
+            <artifactId>infosouth-framework</artifactId>
+        </dependency>
+        
+        
+        
     </dependencies>
 </project>

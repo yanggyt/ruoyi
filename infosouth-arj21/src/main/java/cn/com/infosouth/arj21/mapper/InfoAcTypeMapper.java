@@ -1,6 +1,8 @@
 package cn.com.infosouth.arj21.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import cn.com.infosouth.arj21.domain.InfoAcType;
 
 /**
@@ -58,4 +60,8 @@ public interface InfoAcTypeMapper
      * @return 结果
      */
     public int deleteInfoAcTypeByIds(String[] ids);
+
+	public List<Map<String, String>> findacTpyeMapList();
+
+	public List<String> findacTpyeList();
 }

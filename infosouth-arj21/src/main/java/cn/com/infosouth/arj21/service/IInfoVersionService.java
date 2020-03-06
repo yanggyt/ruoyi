@@ -58,4 +58,7 @@ public interface IInfoVersionService
      * @return 结果
      */
     public int deleteInfoVersionById(Long id);
+
+    
+	public List<InfoVersion> findList(InfoVersion infoVersion);
 }
