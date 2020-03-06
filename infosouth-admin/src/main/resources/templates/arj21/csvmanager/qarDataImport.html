@@ -5,7 +5,6 @@
 	<th:block th:include="include :: datetimepicker-css" />
 	<title>csv管理</title>
 	<meta name="decorator" content="default"/>
-	<link href="/bootstrap/3.3.7/css/bootstrap.min.css"   rel="stylesheet">
 	
 	<style>
 		.myTable{
@@ -45,7 +44,7 @@
     var fc = 0;
     // 原来的 "^[A-Za-z]-([0-9]{4})_([0-9]{14})_([0-9]+).csv$"
     var reg = "^[A-Z]-([A-Z0-9]{4})_([0-9]{14})(.*?).csv$";//验证文件名格式正则        如： B-3251_20171115045933_479365185.csv
-    var base = "${ctx}/csvmanager/infoFlight";
+    var base = "/arj21/csvmanager/qarDataImport";
     var tbody_html = "";
     var allSuccess = true;//所有上传任务都成功
 		$(document).ready(function() {
@@ -126,7 +125,7 @@
 					//机型
 					$.ajax({
 	    				type: "POST",
-	    				url: '${ctx}/csvmanager/infoFlight/getAcTypeByArn',
+	    				url: '/arj21/csvmanager/getAcTypeByArn',
 	    		    	data: {arn:airNo},
 	    				dataType:'json',
 	    				cache: false,
@@ -165,7 +164,7 @@
 	    			tbody_html += "</td>";
 	    			tbody_html += "<td>";
 					//上传人
-					tbody_html +='<%=UserUtils.getUser().getName()%>';
+					tbody_html +='';
 	    			tbody_html += "</td>";
 	    			tbody_html += "<td class=\"td_time_"+m+"\">";
 					//上传时间
@@ -253,6 +252,7 @@
 			        //xhr.upload.addEventListener("progress", progressFunction, false);
 			        xhr.send(form);   
 		    }
+		    
 		    function progressFunction(evt) {
 		        var progressBar = $("#progressBar").find("#"+j+"barj");
 		        if (evt.lengthComputable) {

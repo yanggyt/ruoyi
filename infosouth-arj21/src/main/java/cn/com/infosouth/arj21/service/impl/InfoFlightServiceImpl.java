@@ -96,4 +96,27 @@ public class InfoFlightServiceImpl implements IInfoFlightService
 	public String findFlightCount() {
 		return infoFlightMapper.findFlightCount();
 	}
+
+	@Override
+	public String getAcTypeByArn(String arn) {
+		return infoFlightMapper.getAcTypeByArn(arn);
+	}
+
+	//csv文件是否已存在
+	@Override
+	public boolean csvExist(String csvName) {
+		int count = infoFlightMapper.csvExist(csvName);
+		return count > 0 ? true: false;
+	}
+
+	/**   
+	 * @Title: getIdByCsvName   
+	 * @Description: TODO(这里用一句话描述这个方法的作用)   
+	 * @param: @return      
+	 * @return: String      
+	 * @throws   
+	 */
+	public String getIdByCsvName(String csvName){
+		return infoFlightMapper.getIdByCsvName(csvName);
+	}
 }

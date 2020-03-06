@@ -64,4 +64,17 @@ public interface IInfoFlightService
      * @return
      */
 	public String findFlightCount();
+
+	/**
+	 * 根据飞机号获取机型
+	 * @param arn
+	 * @return
+	 */
+	public String getAcTypeByArn(String arn);
+
+	public boolean csvExist(String fileName);
+
+	public String getIdByCsvName(String fileName);
+
+
 }

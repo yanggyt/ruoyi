@@ -17,12 +17,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="uploadDirId"    column="upload_dir_id"    />
         <result property="aircompanyid"    column="airCompanyId"    />
     </resultMap>
+    
 
+	<sql id="infoAircraftJoins">
+		left join info_ac_type b on b.id = a.info_ac_type_id
+		left join info_resource c on c.id = a.upload_dir_id
+		left join info_version v on b.version_id = v.id
+		left join sys_office o on a.airCompanyId = o.id
+	</sql>
+
+	<sql id="infoAircraftColumns">
+		a.id AS "id",
+		a.create_by AS "create_by",
+		a.create_date AS "create_date",
+		a.update_by AS "update_by",
+		a.update_date AS "update_by",
+		a.remarks AS "remarks",
+		a.del_flag AS "del_flag",
+		a.ac_reg AS "ac_reg",
+		a.info_ac_type_id AS "info_ac_type_id",
+		a.upload_dir_id AS "upload_dir_id",
+		a.airCompanyId AS "airCompanyId",		
+		v.csv_header_index AS "infoAcType.csvHeaderIndex",
+		v.csv_content_index AS "infoAcType.csvContentIndex",
+		b.version_id AS "infoAcType.versionId",
+		b.ac_tpye AS "infoAcType.acTpye",
+		b.remarks AS "infoAcType.remarks",
+		c.mapping_path AS "infoResource.mappingPath",
+		c.id AS "resParentId",
+		o.name AS "airCompanyName"
+	</sql>
     <sql id="selectInfoAircraftVo">
         select id, create_by, create_date, update_by, update_date, remarks, del_flag, ac_reg, info_ac_type_id, upload_dir_id, airCompanyId from info_aircraft
     </sql>
 
-    <select id="selectInfoAircraftList" parameterType="InfoAircraft" resultMap="InfoAircraftResult">
+    <select id="selectInfoAircraftList" parameterType="InfoAircraft"  >
         <include refid="selectInfoAircraftVo"/>
         <where>  
             <if test="acReg != null  and acReg != ''"> and ac_reg = #{acReg}</if>
@@ -31,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectInfoAircraftById" parameterType="String" resultMap="InfoAircraftResult">
+    <select id="selectInfoAircraftById" parameterType="String" >
         <include refid="selectInfoAircraftVo"/>
         where id = #{id}
     </select>
@@ -93,5 +122,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    
+    <select id="getByAcReg" resultMap="InfoAircraftResult">
+		SELECT 
+			<include refid="infoAircraftColumns"/>
+		FROM info_aircraft a
+		<include refid="infoAircraftJoins"/>
+		WHERE a.ac_reg = #{acReg}
+	</select>
     
 </mapper>

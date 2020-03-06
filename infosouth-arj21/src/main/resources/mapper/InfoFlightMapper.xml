@@ -24,6 +24,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="delFlag"    column="del_flag"    />
     </resultMap>
 
+
+	<sql id="infoFlightColumns">
+		a.id AS "id",
+		a.fl_date AS "flDate",
+		a.fl_no AS "flNo",
+		<!-- a.arn AS "arId", -->
+		c.ac_reg AS "arn",
+		<!-- a.ac_type AS "acTypeId", -->
+		d.ac_tpye AS "acType",
+		a.pod AS "pod",
+		a.poa AS "poa",
+		a.airline AS "airline",
+		a.csv_path AS "csvPath",
+		a.csv_name AS "csvName",
+		a.create_by AS "createBy.id",
+		a.info_resource_id AS "infoResourceId",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	<sql id="infoFlightJoins">
+		left join info_resource b 
+		on a.info_resource_id = b.id 
+		left join info_aircraft c
+		on a.arn = c.id
+		left join info_ac_type d
+		on a.ac_type = d.id
+	</sql>
+
     <sql id="selectInfoFlightVo">
         select id, fl_date, fl_no, arn, ac_type, pod, poa, airline, csv_path, csv_name, info_resource_id, create_by, create_date, update_by, update_date, remarks, del_flag from info_flight
     </sql>
@@ -139,5 +170,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>		
 	</select>
     
+    <select id="getAcTypeByArn" resultType="String">
+		SELECT 
+		ac_tpye as acType	
+		FROM info_ac_type a left join info_aircraft b on a.id=b.info_ac_type_id
+		where 
+		b.ac_reg=#{arn}
+		and a.del_flag=0
+		and b.del_flag=0
+	</select>
+	
+	<select id="csvExist" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM info_flight a
+		<include refid="infoFlightJoins"/>
+		WHERE a.csv_name = #{csvName}
+		and a.del_flag=0
+		and b.del_flag=0
+	</select>
+	
+	<select id="getIdByCsvName" resultType="String">
+		SELECT 
+			<include refid="infoFlightColumns"/>,
+			c.ac_reg AS "arn"
+		FROM info_flight a
+		<include refid="infoFlightJoins"/>
+		WHERE a.csv_name = #{csvName}
+		limit 1
+	</select>
     
 </mapper>

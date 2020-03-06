@@ -16,7 +16,7 @@ public class InfoAircraft extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** null */
+    /** id */
     private String id;
 
     /** 创建时间 */
@@ -49,6 +49,7 @@ public class InfoAircraft extends BaseEntity
     /** null */
     @Excel(name = "null")
     private String aircompanyid;
+
 
     public void setId(String id) 
     {

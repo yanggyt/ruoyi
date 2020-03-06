@@ -69,7 +69,7 @@ public class InfoImexportLog extends BaseEntity
 
     /** 文件大小 */
     @Excel(name = "文件大小")
-    private Long fileSize;
+    private String fileSize;
 
     /** 操作类型--导入，导出 */
     @Excel(name = "操作类型--导入，导出")
@@ -94,6 +94,7 @@ public class InfoImexportLog extends BaseEntity
     /** 备注 */
     @Excel(name = "备注")
     private String remarks;
+    
 
     /** 删除标志 */
     private String delFlag;
@@ -215,12 +216,12 @@ public class InfoImexportLog extends BaseEntity
     {
         return hostIp;
     }
-    public void setFileSize(Long fileSize) 
+    public void setFileSize(String fileSize) 
     {
         this.fileSize = fileSize;
     }
 
-    public Long getFileSize() 
+    public String getFileSize() 
     {
         return fileSize;
     }
@@ -316,4 +317,5 @@ public class InfoImexportLog extends BaseEntity
             .append("delFlag", getDelFlag())
             .toString();
     }
+
 }
