@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改航班信息')" />
+	<th:block th:include="include :: datetimepicker-css" />
+	<title>csv管理</title>
+	<meta name="decorator" content="default"/>
+	
+	<style>
+		.myTable{
+			margin-top:20px;
+		}
+		
+		.breadcrumb {		    
+		    background-color: #FFF;
+		    border-bottom: 1px solid #eee;
+		}
+		
+		#export_files{
+			background-image: url(/oneself/login_images/anniu1.gif);
+			color: #FFF;
+    		font-family: "微软雅黑";
+   			font-size: 14px;
+   			opacity: 1;
+		}
+		input#batchUploadBtn {
+		    background-image: url(/oneself/login_images/anniu2.gif);
+		    color: #FFF;
+		    font-family: "微软雅黑";
+		    font-size: 14px;
+		    opacity: 1;
+		    padding-left: 30px;
+		}
+		.upload_files_count{
+			width:60px;
+		}
+	</style>
+	<script src="/oneself/jquery/jquery-1.9.1.min.js"></script>
+	<script src="/oneself/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	
+	
+    var j = 0;//当前完成上传的文件数量
+    var fc = 0;
+    // 原来的 "^[A-Za-z]-([0-9]{4})_([0-9]{14})_([0-9]+).csv$"
+    var reg = "^[A-Z]-([A-Z0-9]{4})_([0-9]{14})(.*?).csv$";//验证文件名格式正则        如： B-3251_20171115045933_479365185.csv
+    var base = "/arj21/csvmanager/qarDataImport";
+    var tbody_html = "";
+    var allSuccess = true;//所有上传任务都成功
+		$(document).ready(function() {
+		    // 上传按钮
+		    $("#batchUploadBtn").attr('disabled', true);
+		    // 上传文件按钮点击的时候
+		    $("#batchUploadBtn").click(function() {
+		        // 进度条归零
+		        //$("#progressBar").width("0%");
+		        // 上传按钮禁用
+		        $(this).attr('disabled', true);
+		        // 进度条显示
+		        /* $("#progressBar").parent().show();
+        		$("#progressBar").parent().addClass("active"); */
+		        // 上传文件
+		        UpladFile();
+		    });
+		
+		    // 文件修改时
+		    $("#batchFile").change(function() {
+		    	var flag = true;//文件验证是否通过
+		    	//验证文件大小,不能超过500M
+		        $("#batchUploadBtn").val("开始上传");
+		        //$("#progressBar").width("0%");
+		        $("#progressBar").empty();
+		    	var ss =this.files; //获取当前选择的文件对象
+		    	if(ss.length == 0){
+		    		$("#filename").html("未选择文件");
+		    	}else if(ss.length > 1){
+		    		$("#filename").html(ss.length + "个文件");
+		    	}
+			    for(var m=0;m<ss.length;m++){ //循环添加进度条
+			        
+			        //验证文件大小
+				    if (ss[m].size> 1024 * 1024 * 500){
+				      	flag = false;
+				      	alert("文件大小不能超过500MB");   
+			     	}
+			     	
+			     	var result=ss[m].name.match(/^[A-Z]-([A-Z0-9]{4})_([0-9]{14,})(.*?)?\.csv$/i); 
+					if(result==null){
+						flag = false;
+						alert("文件名格式不匹配，请参照:B-3251_20171115045933_479365185.csv");
+					}
+					if(!flag){
+		    			$("#batchUploadBtn").attr('disabled', true);
+		    			$(".tbody_myupload").empty();
+		    			return;
+		    		}
+     			}
+	    		$("#batchUploadBtn").attr('disabled', false);
+	    		/* for(var m=0;m<ss.length;m++){ //循环添加进度条
+	    			efileName = ss[m].name ;
+	    			$("#progressBar").append("<li style='list-style-type:none;'><span class='filename'>"+efileName+"</span><div class='progress'> <div id='"+m+"barj' class='progress-bar progress-bar-info' role='progressbar' aria-valuemin='0' aria-valuenow='0' aria-valuemax='100' style='width: 0%'></div></div></li>");
+	    		} */
+	    		//填充table
+	    		tbody_html = ""
+	    		var loginName = "";//上传用户名
+	    		for(var m=0;m<ss.length;m++){ //循环添加进度条	    			
+	    			efileName = ss[m].name ;
+	    			var efileNameArr = efileName.split('_');
+	    			airlineDate = efileNameArr[1];
+	    			airlineDate = airlineDate.substring(0,4)+"-"+airlineDate.substring(4,6)+"-"+airlineDate.substring(6,8);
+	    			fileSize = ss[m].size;
+	    			fileSize = parseInt(fileSize/(1024*1024));
+	    			//飞机号
+	    			var airNo = efileNameArr[0];
+	    			
+	    			tbody_html += "<tr class=\"tr_"+m+"\">";
+	    			tbody_html += "<td>";
+	    			//序号
+	    			tbody_html +=''+parseInt(m+1);
+	    			tbody_html += "</td>";
+	    			tbody_html += "<td>";
+	    			//文件名
+	    			tbody_html += efileName;
+	    			tbody_html += "</td>";
+					tbody_html += "<td>";
+					//机型
+					$.ajax({
+	    				type: "POST",
+	    				url: '/arj21/csvmanager/getAcTypeByArn',
+	    		    	data: {arn:airNo},
+	    				dataType:'json',
+	    				cache: false,
+	    				async: false, 
+	    				success: function(data){
+	    					if(data.status=='1001'){
+	    						tbody_html +=''+data.data;
+	    						loginName = data.loginName;
+	    					}else{
+	    						alert('上传出错，请稍后再试！')
+	    						return;
+	    					}
+	    				}
+	    			});
+					tbody_html +='';
+	    			tbody_html += "</td>";
+	    			
+					tbody_html += "<td>";
+					//飞机号
+					tbody_html +=efileNameArr[0];
+	    			tbody_html += "</td>";
+					tbody_html += "<td>";
+					//航班号
+					tbody_html +='';
+	    			tbody_html += "</td>";
+					tbody_html += "<td>";
+					//航班日期
+					tbody_html +=''+airlineDate;
+	    			tbody_html += "</td>";
+	    			tbody_html += "<td>";
+					//文件大小
+					tbody_html +=''+fileSize;
+	    			tbody_html += "</td>";
+	    			tbody_html += "<td class=\"td_"+m+"\">";
+					//上传状态
+					tbody_html +='待上传';
+	    			tbody_html += "</td>";
+	    			tbody_html += "<td>";
+					//上传人
+					tbody_html += loginName;
+	    			tbody_html += "</td>";
+	    			tbody_html += "<td class=\"td_time_"+m+"\">";
+					//上传时间
+					//tbody_html += getCurrTime();
+	    			tbody_html += "</td>";
+	    			
+	    			tbody_html += "</tr>";
+	    			
+	    		}
+	    		//
+	    		$(".tbody_myupload").empty();
+	    		$(".tbody_myupload").append(tbody_html);
+	    		
+	    		//要上传的文件数量
+	    		upload_files_count_html =ss.length +'个文件';
+	    		$(".upload_files_count").empty();
+	    		$(".upload_files_count").append(upload_files_count_html);
+	    		
+		
+		    });
+		
+		    function UpladFile() {
+		    	$("#batchUploadBtn").attr('disabled', true);
+		    	$("#batchFile").attr('disabled', true);
+		        var files = $("#batchFile").get(0).files; // js 获取文件对象
+		        j = 0;
+		        fc = files.length;
+		        allSuccess = true;
+		        if(fc > 0)
+		        	$("#canClose").val("0");
+		        var FileController = base + "/upload"; // 接收上传文件的后台地址 
+		        // FormData 对象
+		        for(var i = 0;i< files.length;i++){
+	        		var fileObj = files[i];
+	        		uploadSingleFile(fileObj,i,FileController);
+		        }
+			    
+			        
+		    }
+		    
+		    function uploadSingleFile(fileObj,i,url){
+		    	var form = new FormData();
+		        // form.append("author", "hooyes"); // 可以增加表单数据
+		        form.append("files", fileObj); // 文件对象
+		        form.append("index", i); // 序号
+		        // XMLHttpRequest 对象
+		        var xhr = new XMLHttpRequest();
+		        xhr.onreadystatechange  = function() {
+		        	console.log(xhr.responseText);
+		            //var progressBar = $("#progressBar").find("#"+j+"barj");
+		            //progressBar.text("100%");
+		            //progressBar.width("100%");
+		            if(xhr.readyState == 4){
+		            	if(xhr.status == 200){
+		            		j++;
+		            		var data = eval('(' + xhr.responseText + ')');
+							if(data.message != "1"){
+				            	//处理上传异常信息展示
+				            	allSuccess = false;
+				            	$(".td_"+data.index).empty();
+						        $(".td_"+data.index).append(data.message);
+				            }else{
+				            	$(".td_"+data.index).empty();
+						        $(".td_"+data.index).append('完成');
+						        $(".td_time_"+data.index).empty();
+						        $(".td_time_"+data.index).append(getCurrTime());
+				            }
+				            $("#batchUploadBtn").attr('disabled', true);
+				            $("#batchUploadBtn").val("上传");
+		            		if(j == fc){
+		            			/* if(allSuccess){
+				        			alert("导入完成!");
+			        			} */
+			        			alert("导入完成!");
+			        			$("#canClose").val("1");
+			        			$("#batchFile").attr('disabled', false);
+			        		}
+		            	}
+		            }
+		            };
+		            //$("#progressBar").parent().removeClass("active");
+           			//$("#progressBar").parent().hide();
+					xhr.open("post", url);//异步上传
+			        //进度条事件
+			        //xhr.upload.addEventListener("progress", progressFunction, false);
+			        xhr.send(form);   
+		    }
+		    
+		    function progressFunction(evt) {
+		        var progressBar = $("#progressBar").find("#"+j+"barj");
+		        if (evt.lengthComputable) {
+		            var completePercent = Math.round(evt.loaded / evt.total * 100)+ "%";
+		            progressBar.text(completePercent);
+		            progressBar.width(completePercent);
+		            //$("#batchUploadBtn").val("正在上传 " + completePercent);
+		        }
+		    }
+		    /**
+			 * 
+			 * 获取当前时间
+			 */
+			 function p(s) {
+				    return s < 10 ? '0' + s: s;
+				}
+		    function getCurrTime(){
+				var myDate = new Date();
+				//获取当前年
+				var year=myDate.getFullYear();
+				//获取当前月
+				var month=myDate.getMonth()+1;
+				//获取当前日
+				var date=myDate.getDate(); 
+				var h=myDate.getHours();       //获取当前小时数(0-23)
+				var m=myDate.getMinutes();     //获取当前分钟数(0-59)
+				var s=myDate.getSeconds();  
+				var now=year+'-'+p(month)+"-"+p(date)+" "+p(h)+':'+p(m)+":"+p(s);
+				return now;
+			}
+		});
+	</script>
+	</head>
+<body>
+<!-- <div class="page-header"><h2>QAR数据导入</h1></div> -->
+<!-- <ul class="nav nav-tabs">
+	<li class="active"><a href="">QAR数据导入</a></li>		
+</ul> -->
+<!-- 能否关闭窗口(是否正在上传) -->
+<input id="canClose" value="1" type="hidden"/>
+<form id="" modelAttribute="" action="" method="post" class="breadcrumb form-search ">
+	<div>
+	    <div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle;">
+		   	浏览路径： 	
+			<button id="export_files" class="btn fileinput-button" type="button">&nbsp;&nbsp;&nbsp;浏览</button>
+			<input type="file" name="txt_file" id="batchFile" multiple style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+		    <span id="filename" style="vertical-align: middle">未上传文件</span>
+	    </div>
+	    <div style="display:inline;margin-left:22%;">
+		   <span class="upload_files_count"></span> <input id="batchUploadBtn" type="submit" name="submit" style="margin-left: 20px;" class="btn" value="开始上传" />
+		    </div>
+    </div>
+</form>
+
+<div class="myTable">
+	    <table id="contentTable" class="table table-striped table-bordered table-condensed">
+			<thead><tr><th>序号</th><th>文件名</th><th>机型</th><th>飞机号</th><th>航班号</th><th>航班日期</th><th>文件大小(MB)</th><th>上传状态</th><th>上传人</th><th>上传时间</th></tr></thead>
+			<tbody class="tbody_myupload">
+				
+	    	</tbody>
+	   	</table>
+</div>
+
+<!-- <div class="row" style="margin-left: 20px;">
+   
+    
+<div>
+	                <ul id="progressBar" style="width: 90%;margin-left: 20px;">
+	                    <div id="progressBar" class="progress-bar progress-bar-info"
+	                        role="progressbar" aria-valuemin="0" aria-valuenow="0"
+	                        aria-valuemax="100" style="width: 0%">
+	                    </div>
+	                </ul>
+	                
+                </div> -->
+                
+                
+<script type="text/javascript">
+
+</script>           
+	                
+</body>
+</html>

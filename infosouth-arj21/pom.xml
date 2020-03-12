@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>amas.comac</artifactId>
+        <groupId>cn.com.infosouth</groupId>
+        <version>4.1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>infosouth-arj21</artifactId>
+
+    <description>商飞客服虚拟机型数据库业务层</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.com.infosouth</groupId>
+            <artifactId>infosouth-common</artifactId>
+        </dependency>
+        
+        <!-- 核心模块-->
+        <dependency>
+            <groupId>cn.com.infosouth</groupId>
+            <artifactId>infosouth-framework</artifactId>
+        </dependency>
+        
+        
+        
+    </dependencies>
+</project>

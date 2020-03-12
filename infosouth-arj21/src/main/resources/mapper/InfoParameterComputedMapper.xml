@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoParameterComputedMapper">
+    
+    <resultMap type="InfoParameterComputed" id="InfoParameterComputedResult">
+        <result property="id"    column="id"    />
+        <result property="prmId"    column="prm_id"    />
+        <result property="infoVersion"    column="info_version"    />
+        <result property="infoType"    column="info_type"    />
+        <result property="prmName"    column="prm_name"    />
+        <result property="prmDesc"    column="prm_desc"    />
+        <result property="prmLanguage"    column="prm_language"    />
+        <result property="scriptCode"    column="script_code"    />
+        <result property="pythonCode"    column="python_code"    />
+        <result property="order"    column="order"    />
+        <result property="preferenceParams"    column="preference_params"    />
+        <result property="exportParams"    column="export_params"    />
+        <result property="exportFrom"    column="export_from"    />
+        <result property="exportTo"    column="export_to"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectInfoParameterComputedVo">
+        select id, prm_id, info_version, info_type, prm_name, prm_desc, prm_language, script_code, python_code, order, preference_params, export_params, export_from, export_to, create_by, create_date, update_by, update_date, remarks, del_flag from info_parameter_computed
+    </sql>
+
+    <select id="selectInfoParameterComputedList" parameterType="InfoParameterComputed" resultMap="InfoParameterComputedResult">
+        <include refid="selectInfoParameterComputedVo"/>
+        <where>  
+            <if test="infoVersion != null  and infoVersion != ''"> and info_version = #{infoVersion}</if>
+            <if test="prmName != null  and prmName != ''"> and prm_name like concat('%', #{prmName}, '%')</if>
+            <if test="prmDesc != null  and prmDesc != ''"> and prm_desc = #{prmDesc}</if>
+        </where>
+        ORDER BY prm_name DESC
+    </select>
+    
+    <select id="selectInfoParameterComputedById" parameterType="String" resultMap="InfoParameterComputedResult">
+        <include refid="selectInfoParameterComputedVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInfoParameterComputed" parameterType="InfoParameterComputed">
+        insert into info_parameter_computed
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="prmId != null  and prmId != ''">prm_id,</if>
+            <if test="infoVersion != null  and infoVersion != ''">info_version,</if>
+            <if test="infoType != null ">info_type,</if>
+            <if test="prmName != null  and prmName != ''">prm_name,</if>
+            <if test="prmDesc != null  and prmDesc != ''">prm_desc,</if>
+            <if test="prmLanguage != null  and prmLanguage != ''">prm_language,</if>
+            <if test="scriptCode != null  and scriptCode != ''">script_code,</if>
+            <if test="pythonCode != null  and pythonCode != ''">python_code,</if>
+            <if test="order != null ">order,</if>
+            <if test="preferenceParams != null  and preferenceParams != ''">preference_params,</if>
+            <if test="exportParams != null  and exportParams != ''">export_params,</if>
+            <if test="exportFrom != null ">export_from,</if>
+            <if test="exportTo != null ">export_to,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="prmId != null  and prmId != ''">#{prmId},</if>
+            <if test="infoVersion != null  and infoVersion != ''">#{infoVersion},</if>
+            <if test="infoType != null ">#{infoType},</if>
+            <if test="prmName != null  and prmName != ''">#{prmName},</if>
+            <if test="prmDesc != null  and prmDesc != ''">#{prmDesc},</if>
+            <if test="prmLanguage != null  and prmLanguage != ''">#{prmLanguage},</if>
+            <if test="scriptCode != null  and scriptCode != ''">#{scriptCode},</if>
+            <if test="pythonCode != null  and pythonCode != ''">#{pythonCode},</if>
+            <if test="order != null ">#{order},</if>
+            <if test="preferenceParams != null  and preferenceParams != ''">#{preferenceParams},</if>
+            <if test="exportParams != null  and exportParams != ''">#{exportParams},</if>
+            <if test="exportFrom != null ">#{exportFrom},</if>
+            <if test="exportTo != null ">#{exportTo},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoParameterComputed" parameterType="InfoParameterComputed">
+        update info_parameter_computed
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="prmId != null  and prmId != ''">prm_id = #{prmId},</if>
+            <if test="infoVersion != null  and infoVersion != ''">info_version = #{infoVersion},</if>
+            <if test="infoType != null ">info_type = #{infoType},</if>
+            <if test="prmName != null  and prmName != ''">prm_name = #{prmName},</if>
+            <if test="prmDesc != null  and prmDesc != ''">prm_desc = #{prmDesc},</if>
+            <if test="prmLanguage != null  and prmLanguage != ''">prm_language = #{prmLanguage},</if>
+            <if test="scriptCode != null  and scriptCode != ''">script_code = #{scriptCode},</if>
+            <if test="pythonCode != null  and pythonCode != ''">python_code = #{pythonCode},</if>
+            <if test="order != null ">order = #{order},</if>
+            <if test="preferenceParams != null  and preferenceParams != ''">preference_params = #{preferenceParams},</if>
+            <if test="exportParams != null  and exportParams != ''">export_params = #{exportParams},</if>
+            <if test="exportFrom != null ">export_from = #{exportFrom},</if>
+            <if test="exportTo != null ">export_to = #{exportTo},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoParameterComputedById" parameterType="String">
+        delete from info_parameter_computed where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoParameterComputedByIds" parameterType="String">
+        delete from info_parameter_computed where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    
+    
+    
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoAcTypeMapper">
+    
+    <resultMap type="InfoAcType" id="InfoAcTypeResult">
+        <result property="id"    column="id"    />
+        <result property="acTpye"    column="ac_tpye"    />
+        <result property="csvHeaderIndex"    column="csv_header_index"    />
+        <result property="csvContentIndex"    column="csv_content_index"    />
+        <result property="versionId"    column="version_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="acTypeNo"    column="ac_type_no"    />
+    </resultMap>
+
+    <sql id="selectInfoAcTypeVo">
+        select id, ac_tpye, csv_header_index, csv_content_index, version_id, create_by, create_date, update_by, update_date, remarks, del_flag, ac_type_no from info_ac_type
+    </sql>
+
+    <select id="selectInfoAcTypeList" parameterType="InfoAcType" resultMap="InfoAcTypeResult">
+        <include refid="selectInfoAcTypeVo"/>
+        <where>  
+            <if test="acTpye != null  and acTpye != ''"> and ac_tpye like concat('%', #{acTpye}, '%')</if>
+            <if test="versionId != null "> and version_id = #{versionId}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks like concat('%', #{remarks}, '%')</if>
+            <if test="acTypeNo != null  and acTypeNo != ''"> and ac_type_no like concat('%', #{acTypeNo}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectInfoAcTypeById" parameterType="String" resultMap="InfoAcTypeResult">
+        <include refid="selectInfoAcTypeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInfoAcType" parameterType="InfoAcType">
+        insert into info_ac_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="acTpye != null  and acTpye != ''">ac_tpye,</if>
+            <if test="csvHeaderIndex != null ">csv_header_index,</if>
+            <if test="csvContentIndex != null ">csv_content_index,</if>
+            <if test="versionId != null ">version_id,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="acTypeNo != null  and acTypeNo != ''">ac_type_no,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="acTpye != null  and acTpye != ''">#{acTpye},</if>
+            <if test="csvHeaderIndex != null ">#{csvHeaderIndex},</if>
+            <if test="csvContentIndex != null ">#{csvContentIndex},</if>
+            <if test="versionId != null ">#{versionId},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="acTypeNo != null  and acTypeNo != ''">#{acTypeNo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoAcType" parameterType="InfoAcType">
+        update info_ac_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="acTpye != null  and acTpye != ''">ac_tpye = #{acTpye},</if>
+            <if test="csvHeaderIndex != null ">csv_header_index = #{csvHeaderIndex},</if>
+            <if test="csvContentIndex != null ">csv_content_index = #{csvContentIndex},</if>
+            <if test="versionId != null ">version_id = #{versionId},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="acTypeNo != null  and acTypeNo != ''">ac_type_no = #{acTypeNo},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoAcTypeById" parameterType="String">
+        delete from info_ac_type where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoAcTypeByIds" parameterType="String">
+        delete from info_ac_type where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <select id="findacTpyeList" resultType="String">
+		SELECT 
+			b.ac_tpye
+		FROM info_ac_type b
+		<where>
+			b.del_flag = 0
+		</where>	
+		ORDER BY b.ac_tpye
+	</select>
+	
+	<select id="findacTpyeList2" resultType="String">
+		SELECT 
+			b.ac_tpye
+		FROM info_ac_type b
+		<where>
+			b.del_flag = 0
+			and b.version_id=#{versionId}
+		</where>	
+		ORDER BY b.ac_tpye
+	</select>
+	
+	
+</mapper>

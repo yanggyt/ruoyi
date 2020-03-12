@@ -11,6 +11,7 @@ target/
 ######################################################################
 # IDE
 
+
 ### STS ###
 .apt_generated
 .classpath
@@ -37,6 +38,10 @@ nbdist/
 # Others
 *.log
 *.xml.versionsBackup
+
+target/*
+*.bak
+*.class
 
 !*/build/*.java
 !*/build/*.html

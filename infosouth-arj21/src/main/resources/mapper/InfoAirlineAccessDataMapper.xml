@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoAirlineAccessDataMapper">
+    
+    <resultMap type="InfoAirlineAccessData" id="InfoAirlineAccessDataResult">
+        <result property="id"    column="id"    />
+        <result property="fileNo"    column="file_no"    />
+        <result property="company"    column="company"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="fileType"    column="file_type"    />
+    </resultMap>
+
+    <sql id="selectInfoAirlineAccessDataVo">
+        select id, file_no, company, file_name, file_size, create_time, file_type from info_airline_access_data
+    </sql>
+
+    <select id="selectInfoAirlineAccessDataList" parameterType="InfoAirlineAccessData" resultMap="InfoAirlineAccessDataResult">
+        <include refid="selectInfoAirlineAccessDataVo"/>
+        <where>  
+            <if test="company != null  and company != ''"> and company like concat('%', #{company}, '%')</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectInfoAirlineAccessDataById" parameterType="String" resultMap="InfoAirlineAccessDataResult">
+        <include refid="selectInfoAirlineAccessDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInfoAirlineAccessData" parameterType="InfoAirlineAccessData">
+        insert into info_airline_access_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="fileNo != null  and fileNo != ''">file_no,</if>
+            <if test="company != null  and company != ''">company,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="fileSize != null  and fileSize != ''">file_size,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="fileType != null  and fileType != ''">file_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="fileNo != null  and fileNo != ''">#{fileNo},</if>
+            <if test="company != null  and company != ''">#{company},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="fileSize != null  and fileSize != ''">#{fileSize},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="fileType != null  and fileType != ''">#{fileType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoAirlineAccessData" parameterType="InfoAirlineAccessData">
+        update info_airline_access_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileNo != null  and fileNo != ''">file_no = #{fileNo},</if>
+            <if test="company != null  and company != ''">company = #{company},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="fileSize != null  and fileSize != ''">file_size = #{fileSize},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="fileType != null  and fileType != ''">file_type = #{fileType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoAirlineAccessDataById" parameterType="String">
+        delete from info_airline_access_data where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoAirlineAccessDataByIds" parameterType="String">
+        delete from info_airline_access_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

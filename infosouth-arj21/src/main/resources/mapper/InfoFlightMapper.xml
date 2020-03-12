@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoFlightMapper">
+    
+    <resultMap type="InfoFlight" id="InfoFlightResult">
+        <result property="id"    column="id"    />
+        <result property="flDate"    column="fl_date"    />
+        <result property="flNo"    column="fl_no"    />
+        <result property="arn"    column="arn"    />
+        <result property="acType"    column="ac_type"    />
+        <result property="pod"    column="pod"    />
+        <result property="poa"    column="poa"    />
+        <result property="airline"    column="airline"    />
+        <result property="csvPath"    column="csv_path"    />
+        <result property="csvName"    column="csv_name"    />
+        <result property="infoResourceId"    column="info_resource_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+
+	<sql id="infoFlightColumns">
+		a.id AS "id",
+		a.fl_date AS "fl_date",
+		a.fl_no AS "fl_no",
+		<!-- a.arn AS "arId", -->
+		c.ac_reg AS "arn",
+		<!-- a.ac_type AS "acTypeId", -->
+		d.ac_tpye AS "ac_type",
+		a.pod AS "pod",
+		a.poa AS "poa",
+		a.airline AS "airline",
+		a.csv_path AS "csv_path",
+		a.csv_name AS "csv_name",
+		a.create_by AS "createBy.id",
+		a.info_resource_id AS "info_resource_id",
+		a.create_date AS "create_date",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "update_date",
+		a.remarks AS "remarks",
+		a.del_flag AS "del_flag"
+	</sql>
+	<sql id="infoFlightJoins">
+		left join info_resource b 
+		on a.info_resource_id = b.id 
+		left join info_aircraft c
+		on a.arn = c.id
+		left join info_ac_type d
+		on a.ac_type = d.id
+	</sql>
+
+    <sql id="selectInfoFlightVo">
+        select id, fl_date, fl_no, arn, ac_type, pod, poa, airline, csv_path, csv_name, info_resource_id, create_by, create_date, update_by, update_date, remarks, del_flag from info_flight
+    </sql>
+
+    <select id="selectInfoFlightList" parameterType="InfoFlight" resultMap="InfoFlightResult">
+       	select
+        <include refid="infoFlightColumns"/>
+        from info_flight a
+      		left join info_aircraft c
+			on a.arn = c.id
+			left join info_ac_type d
+			on a.ac_type = d.id
+        <where>  
+            <if test="flDate != null "> and fl_date = #{flDate}</if>
+            <if test="flNo != null  and flNo != ''"> and fl_no = #{flNo}</if>
+            <if test="arn != null  and arn != ''"> and arn = #{arn}</if>
+            <if test="acType != null  and acType != ''"> and ac_type = #{acType}</if>
+            <if test="pod != null  and pod != ''"> and pod = #{pod}</if>
+            <if test="poa != null  and poa != ''"> and poa = #{poa}</if>
+            <if test="airline != null  and airline != ''"> and airline = #{airline}</if>
+            <if test="csvPath != null  and csvPath != ''"> and csv_path = #{csvPath}</if>
+            <if test="csvName != null  and csvName != ''"> and csv_name like concat('%', #{csvName}, '%')</if>
+            <if test="infoResourceId != null  and infoResourceId != ''"> and info_resource_id = #{infoResourceId}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        </where>
+    </select>
+    
+    <select id="selectInfoFlightById" parameterType="String" resultMap="InfoFlightResult">
+        <include refid="selectInfoFlightVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInfoFlight" parameterType="InfoFlight">
+        insert into info_flight
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="flDate != null ">fl_date,</if>
+            <if test="flNo != null  and flNo != ''">fl_no,</if>
+            <if test="arn != null  and arn != ''">arn,</if>
+            <if test="acType != null  and acType != ''">ac_type,</if>
+            <if test="pod != null  and pod != ''">pod,</if>
+            <if test="poa != null  and poa != ''">poa,</if>
+            <if test="airline != null  and airline != ''">airline,</if>
+            <if test="csvPath != null  and csvPath != ''">csv_path,</if>
+            <if test="csvName != null  and csvName != ''">csv_name,</if>
+            <if test="infoResourceId != null  and infoResourceId != ''">info_resource_id,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="flDate != null ">#{flDate},</if>
+            <if test="flNo != null  and flNo != ''">#{flNo},</if>
+            <if test="arn != null  and arn != ''">#{arn},</if>
+            <if test="acType != null  and acType != ''">#{acType},</if>
+            <if test="pod != null  and pod != ''">#{pod},</if>
+            <if test="poa != null  and poa != ''">#{poa},</if>
+            <if test="airline != null  and airline != ''">#{airline},</if>
+            <if test="csvPath != null  and csvPath != ''">#{csvPath},</if>
+            <if test="csvName != null  and csvName != ''">#{csvName},</if>
+            <if test="infoResourceId != null  and infoResourceId != ''">#{infoResourceId},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoFlight" parameterType="InfoFlight">
+        update info_flight
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="flDate != null ">fl_date = #{flDate},</if>
+            <if test="flNo != null  and flNo != ''">fl_no = #{flNo},</if>
+            <if test="arn != null  and arn != ''">arn = #{arn},</if>
+            <if test="acType != null  and acType != ''">ac_type = #{acType},</if>
+            <if test="pod != null  and pod != ''">pod = #{pod},</if>
+            <if test="poa != null  and poa != ''">poa = #{poa},</if>
+            <if test="airline != null  and airline != ''">airline = #{airline},</if>
+            <if test="csvPath != null  and csvPath != ''">csv_path = #{csvPath},</if>
+            <if test="csvName != null  and csvName != ''">csv_name = #{csvName},</if>
+            <if test="infoResourceId != null  and infoResourceId != ''">info_resource_id = #{infoResourceId},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoFlightById" parameterType="String">
+        delete from info_flight where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoFlightByIds" parameterType="String">
+        delete from info_flight where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <!-- 查询info_flight 表数量 -->
+	<select id="findFlightCount" resultType="String">
+		select 
+		count(a.id) as qarCount
+		from info_flight a
+		where 1=1
+		<if test="del_flag != null and arn !='' ">
+		and a.del_flag = #{DEL_FLAG_DELETE}
+		</if>		
+	</select>
+    
+    <select id="getAcTypeByArn" resultType="String">
+		SELECT 
+		ac_tpye as acType	
+		FROM info_ac_type a left join info_aircraft b on a.id=b.info_ac_type_id
+		where 
+		b.ac_reg=#{arn}
+		and a.del_flag=0
+		and b.del_flag=0
+	</select>
+	
+	<select id="csvExist" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM info_flight a
+		<include refid="infoFlightJoins"/>
+		WHERE a.csv_name = #{csvName}
+		and a.del_flag=0
+		and b.del_flag=0
+	</select>
+	
+	<select id="getIdByCsvName" resultType="String">
+		SELECT 
+			<include refid="infoFlightColumns"/>,
+			c.ac_reg AS "arn"
+		FROM info_flight a
+		<include refid="infoFlightJoins"/>
+		WHERE a.csv_name = #{csvName}
+		limit 1
+	</select>
+    
+</mapper>

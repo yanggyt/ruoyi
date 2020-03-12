@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('资源目录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <p>父级编号：</p>
+                                <input type="text" name="parentId"/>
+                            </li>
+                            <li>
+                                <p>名称：</p>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                <p>排序：</p>
+                                <input type="text" name="sort"/>
+                            </li>
+                            <li class="select-time">
+                                <p>创建时间：</p>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreateDate]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreateDate]"/>
+                            </li>                
+                            <li class="select-time">
+                                <p>更新时间：</p>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginUpdateDate]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endUpdateDate]"/>
+                            </li>                
+                            <li>
+                                <p>备注信息：</p>
+                                <input type="text" name="remarks"/>
+                            </li>
+                            <li>
+                                <p>是否为目录：</p>
+                                <input type="text" name="isDir"/>
+                            </li>
+                            <li>
+                                <p>英文名：</p>
+                                <input type="text" name="enName"/>
+                            </li>
+                            <li>
+                                <p>所属用户ID：</p>
+                                <input type="text" name="ownerId"/>
+                            </li>
+                            <li>
+                                <p>用户组ID：</p>
+                                <input type="text" name="ownerGrpId"/>
+                            </li>
+                            <li>
+                                <p>6可读可写：</p>
+                                <input type="text" name="authLevelOwner"/>
+                            </li>
+                            <li>
+                                <p>同组者权限(默认有可读权限)：</p>
+                                <input type="text" name="authLevelSameGrp"/>
+                            </li>
+                            <li>
+                                <p>其他用户权限：</p>
+                                <input type="text" name="authLevelOther"/>
+                            </li>
+                            <li>
+                                <p>免密公钥列表(user_id1@auth_level1;user_id2@auth_level2)：</p>
+                                <input type="text" name="authKey"/>
+                            </li>
+                            <li>
+                                <p>hdfs映射路径：</p>
+                                <input type="text" name="mappingPath"/>
+                            </li>
+                            <li class="select-time">
+                                <p>检查是否同步的时间：</p>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCheckSyncTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCheckSyncTime]"/>
+                            </li>                
+                            <li>
+                                <p>资源路径是否有效(-1, 0, 1),0代表未知,-1代表无效，1代表有效：</p>
+                                <input type="text" name="checkValid"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.treeTable.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="arj21:resource:add">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a class="btn btn-primary" onclick="$.operate.edit()" shiro:hasPermission="arj21:resource:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-info" id="expandAllBtn">
+                    <i class="fa fa-exchange"></i> 展开/折叠
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-tree-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var addFlag = [[${@permission.hasPermi('arj21:resource:add')}]];
+        var editFlag = [[${@permission.hasPermi('arj21:resource:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('arj21:resource:remove')}]];
+        var prefix = ctx + "arj21/resource-manage";
+
+        $(function() {
+            var options = {
+                code: "id",
+                parentCode: "parentId",
+                expandColumn: "3",
+                uniqueId: "id",
+                url: prefix + "/list",
+                createUrl: prefix + "/add/{id}",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove/{id}",
+                exportUrl: prefix + "/export",
+                modalName: "资源目录",
+                columns: [{
+                    field: 'selectItem', 
+                    radio: true
+                },
+                {
+                    field : 'parentId', 
+                    title : '父级编号',
+                    align: 'left'
+                },
+                {
+                    field : 'parentIds', 
+                    title : '所有父级编号',
+                    align: 'left'
+                },
+                {
+                    field : 'name', 
+                    title : '名称',
+                    align: 'left'
+                },
+                {
+                    field : 'sort', 
+                    title : '排序',
+                    align: 'left'
+                },
+                {
+                    field : 'createDate', 
+                    title : '创建时间',
+                    align: 'left'
+                },
+                {
+                    field : 'updateDate', 
+                    title : '更新时间',
+                    align: 'left'
+                },
+                {
+                    field : 'remarks', 
+                    title : '备注信息',
+                    align: 'left'
+                },
+                {
+                    field : 'isDir', 
+                    title : '是否为目录',
+                    align: 'left'
+                },
+                {
+                    field : 'enName', 
+                    title : '英文名',
+                    align: 'left'
+                },
+                {
+                    field : 'ownerId', 
+                    title : '所属用户ID',
+                    align: 'left'
+                },
+                {
+                    field : 'ownerGrpId', 
+                    title : '用户组ID',
+                    align: 'left'
+                },
+                {
+                    field : 'authLevelOwner', 
+                    title : '6可读可写',
+                    align: 'left'
+                },
+                {
+                    field : 'authLevelSameGrp', 
+                    title : '同组者权限(默认有可读权限)',
+                    align: 'left'
+                },
+                {
+                    field : 'authLevelOther', 
+                    title : '其他用户权限',
+                    align: 'left'
+                },
+                {
+                    field : 'authKey', 
+                    title : '免密公钥列表(user_id1@auth_level1;user_id2@auth_level2)',
+                    align: 'left'
+                },
+                {
+                    field : 'mappingPath', 
+                    title : 'hdfs映射路径',
+                    align: 'left'
+                },
+                {
+                    field : 'checkSyncTime', 
+                    title : '检查是否同步的时间',
+                    align: 'left'
+                },
+                {
+                    field : 'checkValid', 
+                    title : '资源路径是否有效(-1, 0, 1),0代表未知,-1代表无效，1代表有效',
+                    align: 'left'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    align: 'left',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-info  btn-xs ' + addFlag + '" href="javascript:void(0)" onclick="$.operate.add(\'' + row.id + '\')"><i class="fa fa-plus"></i>新增</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.treeTable.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoResourceMapper">
+    
+    <resultMap type="InfoResource" id="InfoResourceResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="parentIds"    column="parent_ids"    />
+        <result property="name"    column="name"    />
+        <result property="sort"    column="sort"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="isDir"    column="is_dir"    />
+        <result property="enName"    column="en_name"    />
+        <result property="ownerId"    column="owner_id"    />
+        <result property="ownerGrpId"    column="owner_grp_id"    />
+        <result property="authLevelOwner"    column="auth_level_owner"    />
+        <result property="authLevelSameGrp"    column="auth_level_same_grp"    />
+        <result property="authLevelOther"    column="auth_level_other"    />
+        <result property="authKey"    column="auth_key"    />
+        <result property="mappingPath"    column="mapping_path"    />
+        <result property="checkSyncTime"    column="check_sync_time"    />
+        <result property="checkValid"    column="check_valid"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectInfoResourceVo">
+        select id, parent_id, parent_ids, name, sort, create_by, create_date, update_by, update_date, remarks, del_flag, is_dir, en_name, owner_id, owner_grp_id, auth_level_owner, auth_level_same_grp, auth_level_other, auth_key, mapping_path, check_sync_time, check_valid from info_resource
+    </sql>
+
+    <select id="selectInfoResourceList" parameterType="InfoResource" resultMap="InfoResourceResult">
+        <include refid="selectInfoResourceVo"/>
+        <where>  
+            <if test="parentId != null  and parentId != ''"> and parent_id = #{parentId}</if>
+            <if test="parentIds != null  and parentIds != ''"> and parent_ids = #{parentIds}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="isDir != null  and isDir != ''"> and is_dir = #{isDir}</if>
+            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
+            <if test="ownerId != null  and ownerId != ''"> and owner_id = #{ownerId}</if>
+            <if test="ownerGrpId != null  and ownerGrpId != ''"> and owner_grp_id = #{ownerGrpId}</if>
+            <if test="authLevelOwner != null "> and auth_level_owner = #{authLevelOwner}</if>
+            <if test="authLevelSameGrp != null "> and auth_level_same_grp = #{authLevelSameGrp}</if>
+            <if test="authLevelOther != null "> and auth_level_other = #{authLevelOther}</if>
+            <if test="authKey != null  and authKey != ''"> and auth_key = #{authKey}</if>
+            <if test="mappingPath != null  and mappingPath != ''"> and mapping_path = #{mappingPath}</if>
+            <if test="checkSyncTime != null "> and check_sync_time = #{checkSyncTime}</if>
+            <if test="checkValid != null "> and check_valid = #{checkValid}</if>
+        </where>
+        order by parent_id
+    </select>
+    
+    <select id="selectInfoResourceById" parameterType="String" resultMap="InfoResourceResult">
+        select t.id, t.parent_id, t.parent_ids, t.name, t.sort, t.create_by, t.create_date, t.update_by, t.update_date, t.remarks, t.del_flag, t.is_dir, t.en_name, t.owner_id, t.owner_grp_id, t.auth_level_owner, t.auth_level_same_grp, t.auth_level_other, t.auth_key, t.mapping_path, t.check_sync_time, t.check_valid, p.name as parent_name
+        from info_resource t
+        left join info_resource p on p.id = t.parent_id
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertInfoResource" parameterType="InfoResource">
+        insert into info_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="parentId != null  and parentId != ''">parent_id,</if>
+            <if test="parentIds != null  and parentIds != ''">parent_ids,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="isDir != null  and isDir != ''">is_dir,</if>
+            <if test="enName != null  and enName != ''">en_name,</if>
+            <if test="ownerId != null  and ownerId != ''">owner_id,</if>
+            <if test="ownerGrpId != null  and ownerGrpId != ''">owner_grp_id,</if>
+            <if test="authLevelOwner != null ">auth_level_owner,</if>
+            <if test="authLevelSameGrp != null ">auth_level_same_grp,</if>
+            <if test="authLevelOther != null ">auth_level_other,</if>
+            <if test="authKey != null  and authKey != ''">auth_key,</if>
+            <if test="mappingPath != null  and mappingPath != ''">mapping_path,</if>
+            <if test="checkSyncTime != null ">check_sync_time,</if>
+            <if test="checkValid != null ">check_valid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="parentId != null  and parentId != ''">#{parentId},</if>
+            <if test="parentIds != null  and parentIds != ''">#{parentIds},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="isDir != null  and isDir != ''">#{isDir},</if>
+            <if test="enName != null  and enName != ''">#{enName},</if>
+            <if test="ownerId != null  and ownerId != ''">#{ownerId},</if>
+            <if test="ownerGrpId != null  and ownerGrpId != ''">#{ownerGrpId},</if>
+            <if test="authLevelOwner != null ">#{authLevelOwner},</if>
+            <if test="authLevelSameGrp != null ">#{authLevelSameGrp},</if>
+            <if test="authLevelOther != null ">#{authLevelOther},</if>
+            <if test="authKey != null  and authKey != ''">#{authKey},</if>
+            <if test="mappingPath != null  and mappingPath != ''">#{mappingPath},</if>
+            <if test="checkSyncTime != null ">#{checkSyncTime},</if>
+            <if test="checkValid != null ">#{checkValid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoResource" parameterType="InfoResource">
+        update info_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null  and parentId != ''">parent_id = #{parentId},</if>
+            <if test="parentIds != null  and parentIds != ''">parent_ids = #{parentIds},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="isDir != null  and isDir != ''">is_dir = #{isDir},</if>
+            <if test="enName != null  and enName != ''">en_name = #{enName},</if>
+            <if test="ownerId != null  and ownerId != ''">owner_id = #{ownerId},</if>
+            <if test="ownerGrpId != null  and ownerGrpId != ''">owner_grp_id = #{ownerGrpId},</if>
+            <if test="authLevelOwner != null ">auth_level_owner = #{authLevelOwner},</if>
+            <if test="authLevelSameGrp != null ">auth_level_same_grp = #{authLevelSameGrp},</if>
+            <if test="authLevelOther != null ">auth_level_other = #{authLevelOther},</if>
+            <if test="authKey != null  and authKey != ''">auth_key = #{authKey},</if>
+            <if test="mappingPath != null  and mappingPath != ''">mapping_path = #{mappingPath},</if>
+            <if test="checkSyncTime != null ">check_sync_time = #{checkSyncTime},</if>
+            <if test="checkValid != null ">check_valid = #{checkValid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoResourceById" parameterType="String">
+        delete from info_resource where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoResourceByIds" parameterType="String">
+        delete from info_resource where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InfoDefaultindexActypecontrastsetMapper">
+    
+	<sql id="infoDefaultindexActypecontrastsetColumns">
+		a.id AS "id",
+		a.login_admin AS "loginAdmin",
+		a.statisticstitle AS "statisticstitle",
+		a.choose_paramname_col1 AS "chooseParamnameCol1",
+		a.choose_paramname_col2 AS "chooseParamnameCol2",
+		a.choose_paramname_col3 AS "chooseParamnameCol3",
+		a.choose_paramname_col4 AS "chooseParamnameCol4",
+		a.jobid_crj900 AS "jobidCrj900",
+		a.jobid_b737 AS "jobidB737",
+		a.jobid_a320 AS "jobidA320",
+		a.jobid_b777 AS "jobidB777",
+		a.jobid_a330 AS "jobidA330",
+		a.modelname_crj900_col1 AS "modelnameCrj900Col1",
+		a.modelname_crj900_col2 AS "modelnameCrj900Col2",
+		a.modelname_crj900_col3 AS "modelnameCrj900Col3",
+		a.modelname_crj900_col4 AS "modelnameCrj900Col4",
+		a.modelname_b737_col1 AS "modelnameB737Col1",
+		a.modelname_b737_col2 AS "modelnameB737Col2",
+		a.modelname_b737_col3 AS "modelnameB737Col3",
+		a.modelname_b737_col4 AS "modelnameB737Col4",
+		a.modelname_a320_col1 AS "modelnameA320Col1",
+		a.modelname_a320_col2 AS "modelnameA320Col2",
+		a.modelname_a320_col3 AS "modelnameA320Col3",
+		a.modelname_a320_col4 AS "modelnameA320Col4",
+		a.modelname_b777_col1 AS "modelnameB777Col1",
+		a.modelname_b777_col2 AS "modelnameB777Col2",
+		a.modelname_b777_col3 AS "modelnameB777Col3",
+		a.modelname_b777_col4 AS "modelnameB777Col4",
+		a.modelname_a330_col1 AS "modelnameA330Col1",
+		a.modelname_a330_col2 AS "modelnameA330Col2",
+		a.modelname_a330_col3 AS "modelnameA330Col3",
+		a.modelname_a330_col4 AS "modelnameA330Col4",
+		a.paramname_crj900_col1 AS "paramnameCrj900Col1",
+		a.paramname_crj900_col1_statisticsjson AS "paramnameCrj900Col1Statisticsjson",
+		a.paramname_crj900_col2 AS "paramnameCrj900Col2",
+		a.paramname_crj900_col2_statisticsjson AS "paramnameCrj900Col2Statisticsjson",
+		a.paramname_crj900_col3 AS "paramnameCrj900Col3",
+		a.paramname_crj900_col3_statisticsjson AS "paramnameCrj900Col3Statisticsjson",
+		a.paramname_crj900_col4 AS "paramnameCrj900Col4",
+		a.paramname_crj900_col4_statisticsjson AS "paramnameCrj900Col4Statisticsjson",
+		a.paramname_b737_col1 AS "paramnameB737Col1",
+		a.paramname_b737_col1_statisticsjson AS "paramnameB737Col1Statisticsjson",
+		a.paramname_b737_col2 AS "paramnameB737Col2",
+		a.paramname_b737_col2_statisticsjson AS "paramnameB737Col2Statisticsjson",
+		a.paramname_b737_col3 AS "paramnameB737Col3",
+		a.paramname_b737_col3_statisticsjson AS "paramnameB737Col3Statisticsjson",
+		a.paramname_b737_col4 AS "paramnameB737Col4",
+		a.paramname_b737_col4_statisticsjson AS "paramnameB737Col4Statisticsjson",
+		a.paramname_a320_col1 AS "paramnameA320Col1",
+		a.paramname_a320_col1_statisticsjson AS "paramnameA320Col1Statisticsjson",
+		a.paramname_a320_col2 AS "paramnameA320Col2",
+		a.paramname_a320_col2_statisticsjson AS "paramnameA320Col2Statisticsjson",
+		a.paramname_a320_col3 AS "paramnameA320Col3",
+		a.paramname_a320_col3_statisticsjson AS "paramnameA320Col3Statisticsjson",
+		a.paramname_a320_col4 AS "paramnameA320Col4",
+		a.paramname_a320_col4_statisticsjson AS "paramnameA320Col4Statisticsjson",
+		a.paramname_b777_col1 AS "paramnameB777Col1",
+		a.paramname_b777_col1_statisticsjson AS "paramnameB777Col1Statisticsjson",
+		a.paramname_b777_col2 AS "paramnameB777Col2",
+		a.paramname_b777_col2_statisticsjson AS "paramnameB777Col2Statisticsjson",
+		a.paramname_b777_col3 AS "paramnameB777Col3",
+		a.paramname_b777_col3_statisticsjson AS "paramnameB777Col3Statisticsjson",
+		a.paramname_b777_col4 AS "paramnameB777Col4",
+		a.paramname_b777_col4_statisticsjson AS "paramnameB777Col4Statisticsjson",
+		a.paramname_a330_col1 AS "paramnameA330Col1",
+		a.paramname_a330_col1_statisticsjson AS "paramnameA330Col1Statisticsjson",
+		a.paramname_a330_col2 AS "paramnameA330Col2",
+		a.paramname_a330_col2_statisticsjson AS "paramnameA330Col2Statisticsjson",
+		a.paramname_a330_col3 AS "paramnameA330Col3",
+		a.paramname_a330_col3_statisticsjson AS "paramnameA330Col3Statisticsjson",
+		a.paramname_a330_col4 AS "paramnameA330Col4",
+		a.paramname_a330_col4_statisticsjson AS "paramnameA330Col4Statisticsjson"
+	</sql>
+	
+	<sql id="infoDefaultindexActypecontrastsetJoins">
+	</sql>
+    
+	<select id="get" resultType="InfoDefaultindexActypecontrastset">
+		SELECT 
+			<include refid="infoDefaultindexActypecontrastsetColumns"/>
+		FROM info_defaultindex_actypecontrastset a
+		<include refid="infoDefaultindexActypecontrastsetJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="InfoDefaultindexActypecontrastset">
+		SELECT 
+			<include refid="infoDefaultindexActypecontrastsetColumns"/>
+		FROM info_defaultindex_actypecontrastset a
+		<include refid="infoDefaultindexActypecontrastsetJoins"/>
+		<where>
+			
+		</where>
+	</select>
+	
+	<select id="findAllList" resultType="InfoDefaultindexActypecontrastset">
+		SELECT 
+			<include refid="infoDefaultindexActypecontrastsetColumns"/>
+		FROM info_defaultindex_actypecontrastset a
+		<include refid="infoDefaultindexActypecontrastsetJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO info_defaultindex_actypecontrastset(
+			id,
+			login_admin,
+			statisticstitle,
+			choose_paramname_col1,
+			choose_paramname_col2,
+			choose_paramname_col3,
+			choose_paramname_col4,
+			jobid_crj900,
+			jobid_b737,
+			jobid_a320,
+			jobid_b777,
+			jobid_a330,
+			modelname_crj900_col1,
+			modelname_crj900_col2,
+			modelname_crj900_col3,
+			modelname_crj900_col4,
+			modelname_b737_col1,
+			modelname_b737_col2,
+			modelname_b737_col3,
+			modelname_b737_col4,
+			modelname_a320_col1,
+			modelname_a320_col2,
+			modelname_a320_col3,
+			modelname_a320_col4,
+			modelname_b777_col1,
+			modelname_b777_col2,
+			modelname_b777_col3,
+			modelname_b777_col4,
+			modelname_a330_col1,
+			modelname_a330_col2,
+			modelname_a330_col3,
+			modelname_a330_col4,
+			paramname_crj900_col1,
+			paramname_crj900_col1_statisticsjson,
+			paramname_crj900_col2,
+			paramname_crj900_col2_statisticsjson,
+			paramname_crj900_col3,
+			paramname_crj900_col3_statisticsjson,
+			paramname_crj900_col4,
+			paramname_crj900_col4_statisticsjson,
+			paramname_b737_col1,
+			paramname_b737_col1_statisticsjson,
+			paramname_b737_col2,
+			paramname_b737_col2_statisticsjson,
+			paramname_b737_col3,
+			paramname_b737_col3_statisticsjson,
+			paramname_b737_col4,
+			paramname_b737_col4_statisticsjson,
+			paramname_a320_col1,
+			paramname_a320_col1_statisticsjson,
+			paramname_a320_col2,
+			paramname_a320_col2_statisticsjson,
+			paramname_a320_col3,
+			paramname_a320_col3_statisticsjson,
+			paramname_a320_col4,
+			paramname_a320_col4_statisticsjson,
+			paramname_b777_col1,
+			paramname_b777_col1_statisticsjson,
+			paramname_b777_col2,
+			paramname_b777_col2_statisticsjson,
+			paramname_b777_col3,
+			paramname_b777_col3_statisticsjson,
+			paramname_b777_col4,
+			paramname_b777_col4_statisticsjson,
+			paramname_a330_col1,
+			paramname_a330_col1_statisticsjson,
+			paramname_a330_col2,
+			paramname_a330_col2_statisticsjson,
+			paramname_a330_col3,
+			paramname_a330_col3_statisticsjson,
+			paramname_a330_col4,
+			paramname_a330_col4_statisticsjson
+		) VALUES (
+			#{id},
+			#{loginAdmin},
+			#{statisticstitle},
+			#{chooseParamnameCol1},
+			#{chooseParamnameCol2},
+			#{chooseParamnameCol3},
+			#{chooseParamnameCol4},
+			#{jobidCrj900},
+			#{jobidB737},
+			#{jobidA320},
+			#{jobidB777},
+			#{jobidA330},
+			#{modelnameCrj900Col1},
+			#{modelnameCrj900Col2},
+			#{modelnameCrj900Col3},
+			#{modelnameCrj900Col4},
+			#{modelnameB737Col1},
+			#{modelnameB737Col2},
+			#{modelnameB737Col3},
+			#{modelnameB737Col4},
+			#{modelnameA320Col1},
+			#{modelnameA320Col2},
+			#{modelnameA320Col3},
+			#{modelnameA320Col4},
+			#{modelnameB777Col1},
+			#{modelnameB777Col2},
+			#{modelnameB777Col3},
+			#{modelnameB777Col4},
+			#{modelnameA330Col1},
+			#{modelnameA330Col2},
+			#{modelnameA330Col3},
+			#{modelnameA330Col4},
+			#{paramnameCrj900Col1},
+			#{paramnameCrj900Col1Statisticsjson},
+			#{paramnameCrj900Col2},
+			#{paramnameCrj900Col2Statisticsjson},
+			#{paramnameCrj900Col3},
+			#{paramnameCrj900Col3Statisticsjson},
+			#{paramnameCrj900Col4},
+			#{paramnameCrj900Col4Statisticsjson},
+			#{paramnameB737Col1},
+			#{paramnameB737Col1Statisticsjson},
+			#{paramnameB737Col2},
+			#{paramnameB737Col2Statisticsjson},
+			#{paramnameB737Col3},
+			#{paramnameB737Col3Statisticsjson},
+			#{paramnameB737Col4},
+			#{paramnameB737Col4Statisticsjson},
+			#{paramnameA320Col1},
+			#{paramnameA320Col1Statisticsjson},
+			#{paramnameA320Col2},
+			#{paramnameA320Col2Statisticsjson},
+			#{paramnameA320Col3},
+			#{paramnameA320Col3Statisticsjson},
+			#{paramnameA320Col4},
+			#{paramnameA320Col4Statisticsjson},
+			#{paramnameB777Col1},
+			#{paramnameB777Col1Statisticsjson},
+			#{paramnameB777Col2},
+			#{paramnameB777Col2Statisticsjson},
+			#{paramnameB777Col3},
+			#{paramnameB777Col3Statisticsjson},
+			#{paramnameB777Col4},
+			#{paramnameB777Col4Statisticsjson},
+			#{paramnameA330Col1},
+			#{paramnameA330Col1Statisticsjson},
+			#{paramnameA330Col2},
+			#{paramnameA330Col2Statisticsjson},
+			#{paramnameA330Col3},
+			#{paramnameA330Col3Statisticsjson},
+			#{paramnameA330Col4},
+			#{paramnameA330Col4Statisticsjson}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE info_defaultindex_actypecontrastset SET 	
+			login_admin = #{loginAdmin},
+			statisticstitle = #{statisticstitle},
+			choose_paramname_col1 = #{chooseParamnameCol1},
+			choose_paramname_col2 = #{chooseParamnameCol2},
+			choose_paramname_col3 = #{chooseParamnameCol3},
+			choose_paramname_col4 = #{chooseParamnameCol4},
+			jobid_crj900 = #{jobidCrj900},
+			jobid_b737 = #{jobidB737},
+			jobid_a320 = #{jobidA320},
+			jobid_b777 = #{jobidB777},
+			jobid_a330 = #{jobidA330},
+			modelname_crj900_col1 = #{modelnameCrj900Col1},
+			modelname_crj900_col2 = #{modelnameCrj900Col2},
+			modelname_crj900_col3 = #{modelnameCrj900Col3},
+			modelname_crj900_col4 = #{modelnameCrj900Col4},
+			modelname_b737_col1 = #{modelnameB737Col1},
+			modelname_b737_col2 = #{modelnameB737Col2},
+			modelname_b737_col3 = #{modelnameB737Col3},
+			modelname_b737_col4 = #{modelnameB737Col4},
+			modelname_a320_col1 = #{modelnameA320Col1},
+			modelname_a320_col2 = #{modelnameA320Col2},
+			modelname_a320_col3 = #{modelnameA320Col3},
+			modelname_a320_col4 = #{modelnameA320Col4},
+			modelname_b777_col1 = #{modelnameB777Col1},
+			modelname_b777_col2 = #{modelnameB777Col2},
+			modelname_b777_col3 = #{modelnameB777Col3},
+			modelname_b777_col4 = #{modelnameB777Col4},
+			modelname_a330_col1 = #{modelnameA330Col1},
+			modelname_a330_col2 = #{modelnameA330Col2},
+			modelname_a330_col3 = #{modelnameA330Col3},
+			modelname_a330_col4 = #{modelnameA330Col4},
+			paramname_crj900_col1 = #{paramnameCrj900Col1},
+			paramname_crj900_col1_statisticsjson = #{paramnameCrj900Col1Statisticsjson},
+			paramname_crj900_col2 = #{paramnameCrj900Col2},
+			paramname_crj900_col2_statisticsjson = #{paramnameCrj900Col2Statisticsjson},
+			paramname_crj900_col3 = #{paramnameCrj900Col3},
+			paramname_crj900_col3_statisticsjson = #{paramnameCrj900Col3Statisticsjson},
+			paramname_crj900_col4 = #{paramnameCrj900Col4},
+			paramname_crj900_col4_statisticsjson = #{paramnameCrj900Col4Statisticsjson},
+			paramname_b737_col1 = #{paramnameB737Col1},
+			paramname_b737_col1_statisticsjson = #{paramnameB737Col1Statisticsjson},
+			paramname_b737_col2 = #{paramnameB737Col2},
+			paramname_b737_col2_statisticsjson = #{paramnameB737Col2Statisticsjson},
+			paramname_b737_col3 = #{paramnameB737Col3},
+			paramname_b737_col3_statisticsjson = #{paramnameB737Col3Statisticsjson},
+			paramname_b737_col4 = #{paramnameB737Col4},
+			paramname_b737_col4_statisticsjson = #{paramnameB737Col4Statisticsjson},
+			paramname_a320_col1 = #{paramnameA320Col1},
+			paramname_a320_col1_statisticsjson = #{paramnameA320Col1Statisticsjson},
+			paramname_a320_col2 = #{paramnameA320Col2},
+			paramname_a320_col2_statisticsjson = #{paramnameA320Col2Statisticsjson},
+			paramname_a320_col3 = #{paramnameA320Col3},
+			paramname_a320_col3_statisticsjson = #{paramnameA320Col3Statisticsjson},
+			paramname_a320_col4 = #{paramnameA320Col4},
+			paramname_a320_col4_statisticsjson = #{paramnameA320Col4Statisticsjson},
+			paramname_b777_col1 = #{paramnameB777Col1},
+			paramname_b777_col1_statisticsjson = #{paramnameB777Col1Statisticsjson},
+			paramname_b777_col2 = #{paramnameB777Col2},
+			paramname_b777_col2_statisticsjson = #{paramnameB777Col2Statisticsjson},
+			paramname_b777_col3 = #{paramnameB777Col3},
+			paramname_b777_col3_statisticsjson = #{paramnameB777Col3Statisticsjson},
+			paramname_b777_col4 = #{paramnameB777Col4},
+			paramname_b777_col4_statisticsjson = #{paramnameB777Col4Statisticsjson},
+			paramname_a330_col1 = #{paramnameA330Col1},
+			paramname_a330_col1_statisticsjson = #{paramnameA330Col1Statisticsjson},
+			paramname_a330_col2 = #{paramnameA330Col2},
+			paramname_a330_col2_statisticsjson = #{paramnameA330Col2Statisticsjson},
+			paramname_a330_col3 = #{paramnameA330Col3},
+			paramname_a330_col3_statisticsjson = #{paramnameA330Col3Statisticsjson},
+			paramname_a330_col4 = #{paramnameA330Col4},
+			paramname_a330_col4_statisticsjson = #{paramnameA330Col4Statisticsjson}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM info_defaultindex_actypecontrastset
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 查询查询机型数据对比设置属性-->
+	<select id="findActypecontrastSetData" resultType="java.util.Map">
+		SELECT 
+			<include refid="infoDefaultindexActypecontrastsetColumns"/>
+		FROM info_defaultindex_actypecontrastset a
+		
+	</select>
+</mapper>

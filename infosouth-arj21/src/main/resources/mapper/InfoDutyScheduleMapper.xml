@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoDutyScheduleMapper">
+    
+    <resultMap type="InfoDutySchedule" id="InfoDutyScheduleResult">
+        <result property="id"    column="id"    />
+        <result property="jobName"    column="job_name"    />
+        <result property="modelName"    column="model_name"    />
+        <result property="acType"    column="ac_type"    />
+        <result property="acReg"    column="ac_reg"    />
+        <result property="versionId"    column="version_id"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="jobDesc"    column="job_desc"    />
+        <result property="isExcute"    column="is_excute"    />
+        <result property="jobStatus"    column="job_status"    />
+        <result property="excuteFreq"    column="excute_freq"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="jobConf"    column="job_conf"    />
+        <result property="executeStatus"    column="execute_status"    />
+    </resultMap>
+
+    <sql id="selectInfoDutyScheduleVo">
+        select id, job_name, model_name, ac_type, ac_reg, version_id, start_date, end_date, job_desc, is_excute, job_status, excute_freq, create_by, create_date, update_by, update_date, remarks, del_flag, job_conf, execute_status from info_duty_schedule
+    </sql>
+
+    <select id="selectInfoDutyScheduleList" parameterType="InfoDutySchedule" resultMap="InfoDutyScheduleResult">
+        <include refid="selectInfoDutyScheduleVo"/>
+        <where>  
+            <if test="jobName != null  and jobName != ''"> and job_name like concat('%', #{jobName}, '%')</if>
+            <if test="modelName != null  and modelName != ''"> and model_name like concat('%', #{modelName}, '%')</if>
+            <if test="acType != null  and acType != ''"> and ac_type = #{acType}</if>
+            <if test="acReg != null  and acReg != ''"> and ac_reg = #{acReg}</if>
+            <if test="versionId != null "> and version_id = #{versionId}</if>
+            <if test="startDate != null "> and start_date = #{startDate}</if>
+            <if test="endDate != null "> and end_date = #{endDate}</if>
+            <if test="jobDesc != null  and jobDesc != ''"> and job_desc = #{jobDesc}</if>
+            <if test="isExcute != null "> and is_excute = #{isExcute}</if>
+            <if test="jobStatus != null  and jobStatus != ''"> and job_status = #{jobStatus}</if>
+            <if test="excuteFreq != null  and excuteFreq != ''"> and excute_freq = #{excuteFreq}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="jobConf != null  and jobConf != ''"> and job_conf = #{jobConf}</if>
+            <if test="executeStatus != null "> and execute_status = #{executeStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectInfoDutyScheduleById" parameterType="String" resultMap="InfoDutyScheduleResult">
+        <include refid="selectInfoDutyScheduleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInfoDutySchedule" parameterType="InfoDutySchedule">
+        insert into info_duty_schedule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="jobName != null  and jobName != ''">job_name,</if>
+            <if test="modelName != null  and modelName != ''">model_name,</if>
+            <if test="acType != null  and acType != ''">ac_type,</if>
+            <if test="acReg != null  and acReg != ''">ac_reg,</if>
+            <if test="versionId != null ">version_id,</if>
+            <if test="startDate != null ">start_date,</if>
+            <if test="endDate != null ">end_date,</if>
+            <if test="jobDesc != null  and jobDesc != ''">job_desc,</if>
+            <if test="isExcute != null ">is_excute,</if>
+            <if test="jobStatus != null  and jobStatus != ''">job_status,</if>
+            <if test="excuteFreq != null  and excuteFreq != ''">excute_freq,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createDate != null ">create_date,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateDate != null ">update_date,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="jobConf != null  and jobConf != ''">job_conf,</if>
+            <if test="executeStatus != null ">execute_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="jobName != null  and jobName != ''">#{jobName},</if>
+            <if test="modelName != null  and modelName != ''">#{modelName},</if>
+            <if test="acType != null  and acType != ''">#{acType},</if>
+            <if test="acReg != null  and acReg != ''">#{acReg},</if>
+            <if test="versionId != null ">#{versionId},</if>
+            <if test="startDate != null ">#{startDate},</if>
+            <if test="endDate != null ">#{endDate},</if>
+            <if test="jobDesc != null  and jobDesc != ''">#{jobDesc},</if>
+            <if test="isExcute != null ">#{isExcute},</if>
+            <if test="jobStatus != null  and jobStatus != ''">#{jobStatus},</if>
+            <if test="excuteFreq != null  and excuteFreq != ''">#{excuteFreq},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createDate != null ">#{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateDate != null ">#{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="jobConf != null  and jobConf != ''">#{jobConf},</if>
+            <if test="executeStatus != null ">#{executeStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoDutySchedule" parameterType="InfoDutySchedule">
+        update info_duty_schedule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="jobName != null  and jobName != ''">job_name = #{jobName},</if>
+            <if test="modelName != null  and modelName != ''">model_name = #{modelName},</if>
+            <if test="acType != null  and acType != ''">ac_type = #{acType},</if>
+            <if test="acReg != null  and acReg != ''">ac_reg = #{acReg},</if>
+            <if test="versionId != null ">version_id = #{versionId},</if>
+            <if test="startDate != null ">start_date = #{startDate},</if>
+            <if test="endDate != null ">end_date = #{endDate},</if>
+            <if test="jobDesc != null  and jobDesc != ''">job_desc = #{jobDesc},</if>
+            <if test="isExcute != null ">is_excute = #{isExcute},</if>
+            <if test="jobStatus != null  and jobStatus != ''">job_status = #{jobStatus},</if>
+            <if test="excuteFreq != null  and excuteFreq != ''">excute_freq = #{excuteFreq},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createDate != null ">create_date = #{createDate},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateDate != null ">update_date = #{updateDate},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="jobConf != null  and jobConf != ''">job_conf = #{jobConf},</if>
+            <if test="executeStatus != null ">execute_status = #{executeStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoDutyScheduleById" parameterType="String">
+        delete from info_duty_schedule where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoDutyScheduleByIds" parameterType="String">
+        delete from info_duty_schedule where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <!-- **************查询任务数量************* -->
+	<select id="findJobCount" resultType="String">
+		SELECT 
+			count(a.id) as jobCount
+		FROM info_duty_schedule a
+		<where>
+			a.del_flag = 0
+		</where>		
+	</select>
+	
+	<!-- 根据机型，查询匹配的任务 -->
+	<select id="findInfoDutyScheduleMapList" resultType="java.util.Map">
+		SELECT 
+			a.id AS "id",
+			a.job_name AS "jobName",
+			a.ac_type AS "acType"
+		FROM info_duty_schedule a
+		<where>
+			a.del_flag = 0
+			AND
+			a.ac_type=#{acType}
+		</where>	
+		ORDER BY a.create_by,a.update_date DESC
+	</select>
+	
+    
+</mapper>
