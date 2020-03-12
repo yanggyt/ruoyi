@@ -91,4 +91,9 @@ public class InfoParameterComputedServiceImpl implements IInfoParameterComputedS
     {
         return infoParameterComputedMapper.deleteInfoParameterComputedById(id);
     }
+
+	@Override
+	public List<InfoParameterComputed> findList(InfoParameterComputed infoParameterComputed) {
+		return infoParameterComputedMapper.selectInfoParameterComputedList(infoParameterComputed);
+	}
 }

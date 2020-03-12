@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.ShowMultiCsvMapper">
+    
+	<sql id="showMultiCsvColumns">
+		a.id AS "id",
+    	a.fl_date AS flDate,
+    	a.fl_no AS "flNo",   	    	
+    	a.pod AS "pod",
+    	a.poa AS "poa",
+    	a.airline AS "airline",
+    	a.csv_path as 'csvPath',
+    	a.csv_name AS "csvName",
+    	a.info_resource_id AS "infoResourceId",
+    	a.create_by "createBy.id",
+    	a.create_date "createDate",
+    	a.update_by "updateBy.id",
+    	a.update_date "updateDate",
+    	a.remarks AS "remarks",
+    	a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="showMultiCsvJoins">
+		left join info_resource b 
+		on a.info_resource_id = b.id 
+		left join info_aircraft c
+		on a.arn = c.id
+		left join info_ac_type d
+		on a.ac_type = d.id	
+	</sql>
+    
+	<select id="get" resultType="ShowMultiCsv">
+		SELECT 
+			<include refid="showMultiCsvColumns"/>
+		FROM info_flight a
+		<include refid="showMultiCsvJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT 
+		 count(*)
+	FROM info_flight a
+	<include refid="showMultiCsvJoins"/>
+	<where>
+		3=3 
+		and a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="beginDate != null and beginDate != ''">
+		and a.fl_date &gt;= #{beginDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			and a.fl_date &lt;= #{endDate}
+		</if>		
+		<if test="arn != null and arn != ''">
+			and FIND_IN_SET(c.ac_reg,#{arn})                 <!-- 查询的是 info_aircraft 里面的ac_reg-->
+			</if>
+			<if test="acType != null and acType != ''">
+				and FIND_IN_SET(d.ac_tpye,#{acType})
+			</if>
+
+			<if test="pod != null and pod != ''">
+				and a.pod regexp #{pod}
+			</if>
+			<if test="poa != null and poa != ''">
+				and a.poa regexp #{poa}
+			</if>
+
+			<if test="createBy != null and createBy != ''">	
+<!-- 				<if test="createBy.id != null and createBy.id != '' and createBy.id == 'ALL_USER_IDS'">	
+			</if> -->
+			<if test="createBy.id != null and createBy.id != '' and createBy.id != 'ALL_USER_IDS'">	
+				<if test="idsList != null and idsList != '' ">						
+					AND a.create_by in
+					<foreach collection="idsList" index="index" item="custid" open="(" separator="," close=")">
+						#{custid} 
+					</foreach>					
+				</if>	
+			</if>							
+		</if>	
+		</where>
+	</select>
+	
+	<select id="findList" resultType="ShowMultiCsv">
+		SELECT 
+			<include refid="showMultiCsvColumns"/>
+			,
+			c.ac_reg AS "arn",
+			d.ac_tpye AS "acType"
+		FROM info_flight a
+		<include refid="showMultiCsvJoins"/>
+		<where>
+			3=3 
+			and a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="beginDate != null and beginDate != ''">
+			and a.fl_date &gt;= #{beginDate}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and a.fl_date &lt;= #{endDate}
+			</if>		
+			<if test="arn != null and arn != ''">
+				and FIND_IN_SET(c.ac_reg,#{arn})                 <!-- 查询的是 info_aircraft 里面的ac_reg-->
+			</if>
+			<if test="acType != null and acType != ''">
+				and FIND_IN_SET(d.ac_tpye,#{acType})
+			</if>
+
+			<if test="pod != null and pod != ''">
+				and a.pod regexp #{pod}
+			</if>
+			<if test="poa != null and poa != ''">
+				and a.poa regexp #{poa}
+			</if>
+
+			<if test="createBy != null and createBy != ''">	
+<!-- 				<if test="createBy.id != null and createBy.id != '' and createBy.id == 'ALL_USER_IDS'">	
+				</if> -->
+				<if test="createBy.id != null and createBy.id != '' and createBy.id != 'ALL_USER_IDS'">	
+					<if test="idsList != null and idsList != '' ">						
+						AND a.create_by in
+						<foreach collection="idsList" index="index" item="custid" open="(" separator="," close=")">
+							#{custid} 
+						</foreach>					
+					</if>	
+				</if>							
+			</if>	
+			
+		</where>
+			order by c.ac_reg,a.fl_date DESC limit pageNum, pageSize
+	</select>
+	
+	<!-- 分页查询csv的飞机号，起飞机场，降落机场信息 -->
+	<select id="findpartList" resultType="ShowMultiCsv" useCache="false">
+		SELECT
+			<include refid="showMultiCsvColumns"/>,
+			c.ac_reg AS "arn",
+			d.ac_tpye AS "acType"
+		FROM info_flight f
+		<include refid="showMultiCsvJoins"/>
+		where 2=2		
+		<if test="flDate != null and flDate != ''">
+			<!-- and f.fl_date=DATE_FORMAT(fl_date,'%Y-%m-%d')  -->
+			and a.fl_date=#{flDate}
+		</if>
+		<if test="arn != null and arn != ''">
+			and c.ac_reg regexp #{arn}                 <!-- 查询的是 info_aircraft 里面的ac_reg-->
+		</if>
+		<if test="pod != null and pod != ''">
+			and a.pod regexp #{pod}
+		</if>
+		<if test="poa != null and poa != ''">
+			and a.poa regexp #{poa}
+		</if>
+		order by a.fl_date DESC
+	</select>
+	
+	<select id="findAllList" resultType="ShowMultiCsv">
+		SELECT 
+			<include refid="showMultiCsvColumns"/>
+		FROM info_flight a
+		<include refid="showMultiCsvJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO info_flight(
+			id,
+			fl_date,
+			fl_no,
+			arn,
+			ac_type,
+			pod,
+			poa,
+			airline,
+			csv_path,
+			csv_name,
+			create_by,
+			info_resource_id,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{flDate},
+			#{flNo},
+			#{arn},
+			#{acType},
+			#{pod},
+			#{poa},
+			#{airline},
+			#{csvPath},
+			#{csvName},
+			#{createBy.id},
+			#{infoResourceId},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE info_flight SET 	
+			fl_date = #{flDate},
+			fl_no = #{flNo},
+			arn = #{arn},
+			ac_type = #{acType},
+			pod = #{pod},
+			poa = #{poa},
+			airline = #{airline},
+			csv_path = #{csvPath},
+			csv_name = #{csvName},
+			info_resource_id = #{infoResourceId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE info_flight SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 根据id查询某个csv信息 -->
+	<select id="findShowCsvById" resultType="ShowMultiCsv" useCache="false">
+		SELECT
+			<include refid="showMultiCsvColumns"/>
+		FROM info_flight f
+		where f.arn = #{arn}
+	</select>
+	
+</mapper>

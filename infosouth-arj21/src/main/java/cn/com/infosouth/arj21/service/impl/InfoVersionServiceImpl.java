@@ -1,10 +1,13 @@
 package cn.com.infosouth.arj21.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import cn.com.infosouth.arj21.mapper.InfoVersionMapper;
+
 import cn.com.infosouth.arj21.domain.InfoVersion;
+import cn.com.infosouth.arj21.mapper.InfoVersionMapper;
 import cn.com.infosouth.arj21.service.IInfoVersionService;
 import cn.com.infosouth.common.core.text.Convert;
 
@@ -94,7 +97,11 @@ public class InfoVersionServiceImpl implements IInfoVersionService
 
 	@Override
 	public List<InfoVersion> findList(InfoVersion infoVersion) {
-		// TODO Auto-generated method stub
-		return null;
+		return infoVersionMapper.selectInfoVersionList(infoVersion);
+	}
+
+	@Override
+	public List<Map<String, Object>> findInfoVersionMapList() {
+		return infoVersionMapper.findInfoVersionMapList();
 	}
 }

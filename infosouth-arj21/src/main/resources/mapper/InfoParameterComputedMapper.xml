@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="prmName != null  and prmName != ''"> and prm_name like concat('%', #{prmName}, '%')</if>
             <if test="prmDesc != null  and prmDesc != ''"> and prm_desc = #{prmDesc}</if>
         </where>
+        ORDER BY prm_name DESC
     </select>
     
     <select id="selectInfoParameterComputedById" parameterType="String" resultMap="InfoParameterComputedResult">
@@ -129,5 +130,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    
+    
+    
     
 </mapper>

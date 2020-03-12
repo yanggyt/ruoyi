@@ -1,6 +1,10 @@
 package cn.com.infosouth.arj21.mapper;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
+
 import cn.com.infosouth.arj21.domain.InfoVersion;
 
 /**
@@ -9,6 +13,7 @@ import cn.com.infosouth.arj21.domain.InfoVersion;
  * @author kxnf
  * @date 2020-03-05
  */
+@Mapper
 public interface InfoVersionMapper 
 {
     /**
@@ -58,4 +63,13 @@ public interface InfoVersionMapper
      * @return 结果
      */
     public int deleteInfoVersionByIds(String[] ids);
+
+    /**
+     * chaxun
+     * @param infoVersion
+     * @return
+     */
+	public List<InfoVersion> findList(InfoVersion infoVersion);
+
+	public List<Map<String, Object>> findInfoVersionMapList();
 }

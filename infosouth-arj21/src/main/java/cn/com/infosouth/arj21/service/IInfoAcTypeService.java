@@ -72,4 +72,6 @@ public interface IInfoAcTypeService
 	 * @return
 	 */
 	public List<String> findacTpyeList();
+
+	public List<String> findacTpyeList2(String versionId);
 }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.infosouth.arj21.mapper.InfoChoosedMulticsvParamsTemplateMapper">
+    
+    <resultMap type="InfoChoosedMulticsvParamsTemplate" id="InfoChoosedMulticsvParamsTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="templatename"    column="templateName"    />
+        <result property="loginAdmin"    column="login_admin"    />
+        <result property="arn"    column="arn"    />
+        <result property="actype"    column="acType"    />
+        <result property="choosedParamsstr"    column="choosed_paramsStr"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="versionid"    column="versionId"    />
+    </resultMap>
+
+    <sql id="selectInfoChoosedMulticsvParamsTemplateVo">
+        select id, templateName, login_admin, arn, acType, choosed_paramsStr, createTime, versionId from info_choosed_multicsv_params_template
+    </sql>
+
+    <select id="selectInfoChoosedMulticsvParamsTemplateList" parameterType="InfoChoosedMulticsvParamsTemplate" resultMap="InfoChoosedMulticsvParamsTemplateResult">
+        <include refid="selectInfoChoosedMulticsvParamsTemplateVo"/>
+        <where>  
+            <if test="templatename != null  and templatename != ''"> and templateName like concat('%', #{templatename}, '%')</if>
+            <if test="loginAdmin != null  and loginAdmin != ''"> and login_admin = #{loginAdmin}</if>
+            <if test="arn != null  and arn != ''"> and arn = #{arn}</if>
+            <if test="actype != null  and actype != ''"> and acType = #{actype}</if>
+            <if test="choosedParamsstr != null  and choosedParamsstr != ''"> and choosed_paramsStr = #{choosedParamsstr}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+            <if test="versionid != null  and versionid != ''"> and versionId = #{versionid}</if>
+        </where>
+   		ORDER BY createTime DESC
+    </select>
+    
+    <select id="selectInfoChoosedMulticsvParamsTemplateById" parameterType="String" resultMap="InfoChoosedMulticsvParamsTemplateResult">
+        <include refid="selectInfoChoosedMulticsvParamsTemplateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInfoChoosedMulticsvParamsTemplate" parameterType="InfoChoosedMulticsvParamsTemplate">
+        insert into info_choosed_multicsv_params_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="templatename != null  and templatename != ''">templateName,</if>
+            <if test="loginAdmin != null  and loginAdmin != ''">login_admin,</if>
+            <if test="arn != null  and arn != ''">arn,</if>
+            <if test="actype != null  and actype != ''">acType,</if>
+            <if test="choosedParamsstr != null  and choosedParamsstr != ''">choosed_paramsStr,</if>
+            <if test="createTime != null ">createTime,</if>
+            <if test="versionid != null  and versionid != ''">versionId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="templatename != null  and templatename != ''">#{templatename},</if>
+            <if test="loginAdmin != null  and loginAdmin != ''">#{loginAdmin},</if>
+            <if test="arn != null  and arn != ''">#{arn},</if>
+            <if test="actype != null  and actype != ''">#{actype},</if>
+            <if test="choosedParamsstr != null  and choosedParamsstr != ''">#{choosedParamsstr},</if>
+            <if test="createtime != null ">#{createtime},</if>
+            <if test="versionid != null  and versionid != ''">#{versionid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfoChoosedMulticsvParamsTemplate" parameterType="InfoChoosedMulticsvParamsTemplate">
+        update info_choosed_multicsv_params_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templatename != null  and templatename != ''">templateName = #{templatename},</if>
+            <if test="loginAdmin != null  and loginAdmin != ''">login_admin = #{loginAdmin},</if>
+            <if test="arn != null  and arn != ''">arn = #{arn},</if>
+            <if test="actype != null  and actype != ''">acType = #{actype},</if>
+            <if test="choosedParamsstr != null  and choosedParamsstr != ''">choosed_paramsStr = #{choosedParamsstr},</if>
+            <if test="createTime != null ">createTime = #{createtime},</if>
+            <if test="versionid != null  and versionid != ''">versionId = #{versionid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInfoChoosedMulticsvParamsTemplateById" parameterType="String">
+        delete from info_choosed_multicsv_params_template where id = #{id}
+    </delete>
+
+    <delete id="deleteInfoChoosedMulticsvParamsTemplateByIds" parameterType="String">
+        delete from info_choosed_multicsv_params_template where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <!-- 根据管理员查询设置过的选中参数模板 -->
+	<select id="findChoosedTemplateMapList" resultType="java.util.Map">
+		SELECT 
+			a.id,
+			a.templateName AS "templatename",
+			a.choosed_paramsStr AS "choosedParamsstr"
+		FROM info_choosed_multicsv_params_template a
+		<where>
+			and a.login_admin = #{loginAdmin}   		
+		</where>	
+		ORDER BY a.createTime DESC
+	</select>
+    
+    <select id="findChoosedTemplateMapListByCondition" resultType="java.util.Map">
+		SELECT 
+			a.id,
+			a.templateName AS "templatename",
+			a.choosed_paramsStr AS "choosedParamsstr",
+			a.versionid AS "versionid"
+		FROM info_choosed_multicsv_params_template a
+		<where>
+			<if test="loginAdmin != null and loginAdmin != ''">
+				AND a.login_admin = #{loginAdmin}
+			</if>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="versionid != null and versionid != ''">
+				AND a.versionid = #{versionid}
+			</if>						
+		</where>	
+		ORDER BY a.createTime DESC
+	</select>
+	
+	  <select id="selectById" parameterType="InfoChoosedMulticsvParamsTemplate" resultMap="InfoChoosedMulticsvParamsTemplateResult">
+        <include refid="selectInfoChoosedMulticsvParamsTemplateVo"/>
+        where id = #{choosed_templateId}
+      </select>
+	
+	<insert id="insert">
+		INSERT INTO info_choosed_multicsv_params_template(
+			id,
+			templatename,
+			login_admin,
+			arn,
+			actype,
+			choosed_paramsstr,
+			createtime,
+			versionid
+		) VALUES (
+			#{id},
+			#{templatename},
+			#{loginAdmin},
+			#{arn},
+			#{actype},
+			#{choosedParamsstr},
+			#{createTime},
+			#{versionid}
+		)
+	</insert>
+	
+    
+</mapper>

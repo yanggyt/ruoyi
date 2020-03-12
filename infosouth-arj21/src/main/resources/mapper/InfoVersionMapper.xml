@@ -28,7 +28,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="verName != null  and verName != ''"> and ver_name like concat('%', #{verName}, '%')</if>
             <if test="verDesc != null  and verDesc != ''"> and ver_desc like concat('%', #{verDesc}, '%')</if>
+    		del_flag = 0
         </where>
+		ORDER BY update_date DESC
     </select>
     
     <select id="selectInfoVersionById" parameterType="Long" resultMap="InfoVersionResult">
@@ -95,4 +97,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     
+    <select id="findList" parameterType="List">
+    	select * from info_version
+    	where del_flag = 0
+		ORDER BY update_date DESC		
+    </select>
+    <select id="findInfoVersionMapList" resultType="java.util.Map">
+		SELECT *
+ 		FROM info_version a		
+		<where>
+			a.del_flag = 0			
+		</where>
+		ORDER BY a.update_date DESC		
+	</select>
 </mapper>
