@@ -58,4 +58,6 @@ public interface InfoParameterComputedMapper
      * @return 结果
      */
     public int deleteInfoParameterComputedByIds(String[] ids);
+
+     
 }

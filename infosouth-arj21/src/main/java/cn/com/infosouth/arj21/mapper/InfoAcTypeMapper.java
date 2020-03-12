@@ -64,4 +64,6 @@ public interface InfoAcTypeMapper
 	public List<Map<String, String>> findacTpyeMapList();
 
 	public List<String> findacTpyeList();
+
+	public List<String> findacTpyeList2(String versionId);
 }

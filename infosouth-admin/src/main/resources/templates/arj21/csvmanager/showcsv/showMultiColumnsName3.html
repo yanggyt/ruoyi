@@ -1,0 +1,1305 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+<meta name="decorator" content="default"/>
+
+<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="author" content="infosouth"/>
+<meta name="renderer" content="webkit"><meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10" />
+<meta http-equiv="Expires" content="0"><meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store">
+<script src="/oneself/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
+
+<!-- 模态框拖拽 -->
+<link href="/oneself/bootstrap/modelDlg/jquery-ui.css" rel="stylesheet"/>
+<script src="/oneself/bootstrap/modelDlg/jquery-ui.min.js"></script>
+<script src="/oneself/bootstrap/modelDlg/jquery-ui.touch-punch.js"></script>
+
+
+<link href="/oneself/bootstrap/2.3.1/css_cerulean/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<script src="/oneself/bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+
+<link href="/oneself/bootstrap/2.3.1/awesome/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<!--[if lte IE 7]><link href="/oneself/bootstrap/2.3.1/awesome/font-awesome-ie7.min.css" type="text/css" rel="stylesheet" /><![endif]-->
+<!--[if lte IE 6]><link href="/oneself/bootstrap/bsie/css/bootstrap-ie6.min.css" type="text/css" rel="stylesheet" />
+<script src="/oneself/bootstrap/bsie/js/bootstrap-ie.min.js" type="text/javascript"></script><![endif]-->
+<link href="/oneself/jquery-select2/3.4/select2.min.css" rel="stylesheet" />
+<script src="/oneself/jquery-select2/3.4/select2.min.js" type="text/javascript"></script>
+
+<link href="/oneself/bootstrap/select/bootstrap-select.min.css" rel="stylesheet" />
+<script src="/oneself/bootstrap/select/bootstrap-select.min.js" type="text/javascript"></script>
+
+<link href="/oneself/jquery-validation/1.11.0/jquery.validate.min.css" type="text/css" rel="stylesheet" />
+<script src="/oneself/jquery-validation/1.11.0/jquery.validate.min.js" type="text/javascript"></script>
+<link href="/oneself/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet" />
+<script src="/oneself/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
+<script src="/oneself/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script src="/oneself/common/mustache.min.js" type="text/javascript"></script>
+<link href="/oneself/common/numberone.css" type="text/css" rel="stylesheet" />
+<script src="/oneself/common/numberone.js" type="text/javascript"></script>
+
+
+<!-- layui 弹出层插件 -->
+<!--  引入layui 弹出框插件 -->
+<link href="/oneself/layui/js/theme/default/layer.css" type="text/css" rel="stylesheet" />
+<!--引入layui 弹出框插件  -->
+<script src="/oneself/layui/js/layer.js"></script>
+	
+<meta name="decorator" content="default"/>
+
+	<!-- 引入拾色器的css样式文件 -->
+    <link href="/oneself/bootstrap/colorPicker/iColor.css" type="text/css" rel="stylesheet" />
+
+<style>
+	tbody>tr{
+		cursor:pointer;
+	}
+	
+	input.input-medium {
+   		width: 120px;
+	}
+	
+	input#queryParam{
+		width: 60px;
+	}
+	
+	.chart_container{
+		/* margin-top:10px; */
+		width:49.5%;
+		height:900px;
+		float:left;
+	}
+	/* 遮罩层 */
+	 .zhezhao_mask {       
+            position: absolute; top: 0px; filter: alpha(opacity=40); background-color: #777;     
+            z-index: 1450; left: 0px;     
+            opacity:0.5; -moz-opacity:0.5;     
+        }  
+        
+    .form-search .ul-form li label {
+    	width: auto;
+	}
+	
+	.paramExport{
+			color:#3daae9;
+		}
+		
+	label.control-label {
+		width: 23%;
+	}
+	/*模态框样式调整*/
+	.modal.fade {
+    	top: -380%;
+    }
+
+    
+    /* 图表属性设置 */
+    .chartPropertySetting{
+    	border-bottom: 1px solid #ddd;
+    }
+    /*图表属性设置 --设置字体*/
+    .chartPropertySetting_a{
+   		color:#3daae9;
+    }
+    /* 参数导出csv样式设置 */
+    .paramExportClass{
+    	padding-left:2%;
+    }
+    /* 表格设置 */
+    table#string_contentTable {
+    	border: 0px solid #ddd;
+	}
+	
+	/* 保存模板样式设置 */
+	.choosed_template{
+		width:120px;
+	}
+	.saveParamsTemplate{
+		font-size:12px;
+	}
+	.deleteParamsTemplate{
+		font-size:12px;
+	}
+	/* 保存模板样式设置 */
+	
+	input.input-small{
+    	width: 106px;
+	}
+	
+	.container-fluid{
+		padding-right: 0px;
+	    padding-left: 0px;
+	}
+	.paramsTemplateOperateClass{
+		padding-right:25%;
+		text-align:right;
+	}
+	
+	/* 保存模板样式设置 */
+	.versionId{
+		width:100px;
+	}
+	
+	/***表格tbody滚动样式------------------------**/
+	table tbody {
+		display:block;
+		height:640px;
+		overflow-y:scroll;
+		
+	}
+	
+	table thead, tbody tr {
+		display:table;
+		width:100%;
+		table-layout:fixed;
+	}
+	
+	table thead {
+		width: calc(100% - 1em);
+	}
+	table thead th{ background:#ccc;}
+	/***表格tbody滚动样式---------------------------**/
+</style>
+
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="row-fluid">
+					<div class="span12">
+						<form id="searchForm" modelAttribute="" action="" method="post" class="breadcrumb form-search ">
+							<ul class="ul-form">
+								<li><label>参数：</label><input name="queryParam" id="queryParam" path="" htmlEscape="false" maxlength="50" class="input-medium"/></li>								
+								<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="button" value="查询"/>
+								<li>
+								<label>参数版本：</label>
+							<select id="versionId" name="versionId" class="input-small">
+                            	<option th:each="version,status:${versionList}" th:text="${version.verName}" th:value="${version.id}"></option>
+							</select>
+								</li>
+								<li>
+								<label>参数模板：</label>
+							<select id="choosed_template" name="choosed_template"
+								class="choosed_template">
+								<option value="">空模板</option>
+ 							</select>
+							<a class="deleteParamsTemplate" onclick="deleteParamsTemplate();">删除</a>
+							<a class="saveParamsTemplate" onclick="saveParamsTemplateDlg();">保存</a>
+								</li>
+							</ul>
+						</form>
+						
+						<table id="contentTable" class="table table-bordered table-condensed">
+								<thead><tr><th style="width:20px;"></th><th>参数</th></tr></thead>
+								<tbody id="tbody_columnsname">
+								</tbody>
+							</table>
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!--监听csv文件改变事件，初始化图表 -->
+	<input id="listen_input" type="hidden" oninput="OnInput(event)" onpropertychange="OnPropChanged(event)">
+
+	<!-- 模拟 alert弹窗 -->
+		<div id="date_alert" style="width:90%;position:fixed;left:5%;top:40%;background:rgba(0,0,0,0.6);height:3rem;text-align:center;line-height:3rem;border-radius:0.3rem;color:#fff;font-size:1.2rem;display:none;z-index: 1200;">
+				添加成功
+		</div>
+	<!--这是遮罩层，默认是不显示的，设置透明度为0.1-->  
+    <div id="masking_bg" style="display:none;position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 1470;background-color:black;opacity: 0.1"></div>
+    <div id="zhezhao_mask" class="zhezhao_mask"></div>    
+	<!--这是遮罩层，默认是不显示的，设置透明度为0.1-->  
+	
+    
+    <input type="hidden" class="form-control" id="tbody_columnsname_html" value="">
+    <input type="hidden" class="form-control" id="whole_line_acType" value="">
+     
+     
+     
+     <!--paramsTemplateModal 模态框（Modal） -->
+	<div class="modal fade" style="width:350px;" id="paramsTemplateModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						保存（修改）参数模板
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form>	
+					 <div class="form-group">
+			            <label for="recipient-name" class="control-label">模板名称：</label>
+			            <input type="text" class="form-control" id="templateName" name="templateName" placeholder="" value="">
+			          </div>
+			          <div class="form-group">
+			            <label for="recipient-name" class="control-label">勾选的参数：</label>
+			            <!-- <input type="text" class="form-control" id="choosedParams" name="choosedParams" placeholder="" disabled="disabled"> -->
+			            <textarea rows="4" cols="50" readonly="readonly" id="choosedParams" name="choosedParams"></textarea>
+			          </div>
+			          <div class="form-group">
+			            <label for="message-text" class="control-label">参数版本ID：</label>
+			            <input type="text" class="form-control" id="templateVersionId" name="templateVersionId" placeholder="100" disabled="disabled">
+			          </div>
+			          <div class="form-group">
+			            <label for="message-text" class="control-label">参数版本名称：</label>
+			            <input type="text" class="form-control" id="templateVersionName" name="templateVersionName" placeholder="100" disabled="disabled">
+			          </div>
+			         	         
+			        </form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+					</button>
+					<button type="button" class="btn btn-primary" onclick="saveParamsTemplate()"> 
+						提交
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--paramsTemplateModal 模态框（Modal） -->
+	
+	
+	
+	
+	
+	 <!--删除操作提示 模态框（Modal） -->
+	<div class="modal fade" style="width:200px;" id="confirmDeleteModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						提示
+					</h4>
+				</div>
+				<div class="modal-body">	
+				确认删除？				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn btn-primary" onclick="confirmDeleteParamTemplate()"> 
+						删除
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--paramsTemplateModal 模态框（Modal） -->
+	
+	
+	
+	<div class="chartModelDlgContainer"></div>
+	
+<!-- 选中的行的fid -->
+    <input type="hidden" class="form-control" id="fidChooseRow_input" value="">
+    
+    <!-- 根据选中的模板，勾选的参数，重新绘图事件 -->
+    <a id="refresh_chart_by_choosed_params" onclick="refresh_chart_by_choosed_params();" value=""/></a>
+    
+	<script src="/oneself/chartjs/Chart.bundle.js"></script>
+	<!-- 颜色拾色器js -->
+	<script src="/oneself/bootstrap/colorPicker/iColor.js"></script>
+	
+	<!-- rgb转16 进制js -->
+	<script src="/oneself/customer_js/rgbTo16.js"></script>
+	
+	
+	
+	<script type="text/javascript">
+	//监听listen_input 属性变化-----------------
+	$('#listen_input').bind('input propertychange', function() {
+	    $('.msg').html($(this).val().length + ' characters');
+	});
+	function OnInput (event) {
+        alert ("The new content: " + event.target.value);
+    }
+	function OnPropChanged (event) {
+        if (event.propertyName.toLowerCase () == "value") {
+            alert ("The new content: " + event.srcElement.value);
+        }
+    }
+	//监听listen_input 属性变化-----------
+	
+	//兼容火狐、IE8   
+    //显示遮罩层    
+    function show_zhezhao_mask(){     
+        $("#zhezhao_mask").css("height",$(document).height());     
+        $("#zhezhao_mask").css("width",$(document).width());     
+        $("#zhezhao_mask").show();
+    }  
+	
+    //隐藏遮罩层  
+    function hide_zhezhao_mask(){               
+        $("#zhezhao_mask").hide();     
+    } 
+	
+	
+	//移除奇数行颜色设定
+	$(function(){
+		$("#contentTable").removeClass("table-striped");
+	});
+	
+	//画图表 初始化-------------------------------
+	//var ctx = document.getElementById("myChart").getContext("2d");	
+	//var myLineChart;
+	
+	//当前管理员的图形属性设置
+	var myInfoChartpropertysettingJson = {};
+	
+	//首次加载页面，初始化图表
+	$(function(){
+		//空图表------------------------------
+		/* myLineChart = new Chart(ctx, {
+		    type: 'line',
+		    data: [],
+		    options: 'top' //'bottom''left''top''right'
+		}); */
+		//空图表-结束------------------------------
+		console.log('首次加载页面，没有参数可查询！');
+		
+		//为模态对话框添加拖拽-------------------------------------------------------
+		$("#chartPropertySettingModal").draggable();//为模态对话框添加拖拽
+        $("#chartPropertySettingModal").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+        $("#paramsTemplateModal").draggable();//为模态对话框添加拖拽
+        $("#paramsTemplateModal").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+        $("#confirmDeleteModal").draggable();//为模态对话框添加拖拽
+        $("#confirmDeleteModal").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+        //为模态对话框添加拖拽-------------------------------------------------------
+        
+        
+        //当前管理员的图形属性设置
+        infoChartpropertysettingJsonArr = [];
+        //infoChartpropertysettingJsonArr = ${infoChartpropertysettingJsonArr};
+        if(infoChartpropertysettingJsonArr.length>0)
+        	myInfoChartpropertysettingJson = infoChartpropertysettingJsonArr[0];
+
+        
+        //拾色器
+        //$('input').iColor({'x': 10, 'y': -50});
+    	$('#left_chartLineColor').iColor(function(hx) {
+    		this.val('').css('background', '#' + hx);
+    	});
+    	$('#right_chartLineColor').iColor(function(hx) {
+    		this.val('').css('background', '#' + hx);
+    	});
+ 	
+    	
+    	//加载页面，设置默认构型id
+    	set_defaultVersionId();
+	})
+    
+		
+	
+	//所有点过的checkbox
+	var clicked_checkboxValue = '';
+	var columnsNameStr = '';
+	//2个y轴坐标系最小值和最大值范围
+	var groupRange1Arr = [];
+	var groupRange2Arr = [];
+	//每个参数点击事件
+	$("#tbody_columnsname").on("click","input[type='checkbox']",function(){
+		
+		clicked_checkboxValue = '';
+	    console.log('------------checkbox choose--start---------------');
+	    $(".table tbody tr").find("td:first input:checkbox").each(function () {  
+	        var ischecked = $(this).prop("checked");  
+	        if(ischecked){
+	        	var checkboxValue = $(this).attr('value');
+	        	clicked_checkboxValue += checkboxValue+',';
+	        }
+	        
+   		 });
+	    console.log('------------checkbox choose--end---------------');
+		$(this).addClass('selected') //为选中项添加高亮
+		.siblings().removeClass('selected')//去除其他项的高亮形式
+		.end();
+		
+		
+		var trclassArr = clicked_checkboxValue.substring(0,clicked_checkboxValue.length-1).split(",");
+		columnsNameStr = '';
+		for(var i=0;i<trclassArr.length;i++){
+			var lineId = trclassArr[i];
+			//除去 selected 标签
+			var lineIdArr = lineId.split(';');
+			var versionId = lineIdArr[0];
+			var linei = lineIdArr[1];
+			columnsNameStr+=lineIdArr[2]+',';
+
+			//勾选参数，置顶，淡入淡出效果------------------------------------------------------------------------------------------------------------------
+			//闪烁，淡入淡出效果，3次
+			$('#contentTable tbody tr').each(function(){
+				var tr_each_className = '';
+				tr_each_className = $(this)[0].className;
+				if(lineId==tr_each_className){
+					//闪烁，淡入淡出效果，3次
+					for(var i=0;i<2;i++){													
+						//将点击过的checkbox，移到第一行，置顶
+						//置顶 
+						$("#tbody_columnsname").prepend($(this)); 
+						$(this).fadeOut().fadeIn();
+						
+					}
+				}
+			});
+			//勾选参数，置顶，淡入淡出效果------------------------------------------------------------------------------------------------------------------
+		}
+		
+		//勾选参数时，同时更新已勾选过的csv里面查询出的图表
+		update_choosedCsvs_charts(trclassArr);
+		
+		
+	});
+	
+	//勾选参数时，同时更新已勾选过的csv里面查询出的图表
+	function update_choosedCsvs_charts(trclassArr){
+		//勾选参数时，同时更新已勾选过的csv里面查询出的图表--------------------------------------------
+		var curr_choosed_versionId = getChoosed_versionId();
+		if(clicked_checkboxValue.length!=0&&trclassArr.length!=0){
+			var choosed_csv_Ids_trclassArr = [];
+			choosed_csv_Ids_trclassArr = getChoosedCsvIdsArr();
+			if(choosed_csv_Ids_trclassArr!=''&&choosed_csv_Ids_trclassArr.length>0){
+				for(var i=0;i<choosed_csv_Ids_trclassArr.length;i++){
+					choosed_csv_Ids_trclassArr_i = '';
+					choosed_csv_Ids_trclassArr_i = choosed_csv_Ids_trclassArr[i];
+					flightCsvIndex_i_text = '';
+					flightCsvIndex_i_text = $(parent.window.frames["showMultiCsvList"].document).find(".flightCsvIndex_"+choosed_csv_Ids_trclassArr_i).text();
+					
+					reqCondition = '';
+					reqCondition = 'choosed_versionId='+curr_choosed_versionId+'&choosed_columnsNameStr='+columnsNameStr+'&choosed_whole_lineId='+choosed_csv_Ids_trclassArr_i+'&choosed_flightCsv_NO='+flightCsvIndex_i_text;
+					//window.open('${ctx}/csvmanager/showMultiCsv/showNewChartWindow?'+reqCondition,choosed_csv_Ids_trclassArr_i,'width=1050,height=700,location=no,menubar=yes,toolbar=yes, status=no,scrollbars=yes',true);
+				 	
+				}
+			}
+			
+		}		
+		
+		//勾选参数时，同时更新已勾选过的csv里面查询出的图表--------------------------------------------
+	}
+	
+	
+	/*模拟alert*/
+    function oDateAlert(txt){
+    	$('#date_alert').html(txt);
+     	$('#date_alert').show();
+    	setInterval(function(){
+    		$('#date_alert').fadeOut();
+    	},5000);
+	}
+	
+  //点击显示颜色
+	function tagscheck(a) {  
+	    var lng = document.getElementsByTagName("tr").length;  
+	    for (i = 0; i < lng; i++) {  
+	        var temp = document.getElementsByTagName("tr")[i];  
+	        if (a == temp) {  
+	            //选中的标签样式  
+	            temp.style.background = '#38a8e8';  
+	  
+	        } else {  
+	            //恢复原状  
+	            temp.style.background = "";  
+	        }  
+	  
+	    }  
+	  
+	}
+  
+	//颜色随机数
+  	var redcolor = 0;
+	var bluecolor = 0;
+	var greencolor = 360;
+	
+  	
+  	
+  //颜色随机数
+  	var redcolor = 0;
+	var bluecolor = 0;
+	var greencolor = 360;
+	
+	var left_redcolor = 0;
+	var left_bluecolor = 0;
+	var left_greencolor = 360;
+	
+	var right_redcolor = 0;
+	var right_bluecolor = 0;
+	var right_greencolor = 360;
+	
+  	
+  	
+  	//如果csv文件变化时，初始化图表
+  	function initMyChart(inputvalue){
+  	//注销之前的图形缓存
+		myLineChart.destroy();
+  	//空图表------------------------------
+		myLineChart = new Chart(ctx, {
+		    type: 'line',
+		    data: [],
+		    options: 'top' //'bottom''left''top''right'
+		});
+		//空图表-结束------------------------------
+		console.log('改变csv文件，初始化图表！');
+  	}
+  	
+  	//条件查询-参数列表的html
+  	$("#btnSubmit").click(function(){
+  		var paramsStr = '';  		
+  		var queryParam = $("#queryParam").val();  
+  		var tbody_columnsname_html = $("#tbody_columnsname_html").val();	
+  		var tbody_columnsname_clicked_checkboxValue = '';
+  		//查询之前，已经勾选的参数
+  		console.log('------------checkbox choose--start---------------');
+	    $("#contentTable tr").find("td:first input:checkbox").each(function () {  
+	        var ischecked = $(this).prop("checked");  
+	        if(ischecked){
+	        	var checkboxValue = $(this).attr('value');
+	        	tbody_columnsname_clicked_checkboxValue += checkboxValue+',';
+	        }
+	        
+   		 });
+	    console.log('------------checkbox choose--end---------------');
+	    
+	    new_query_tbody_columnsname_htmlArr = [];
+	    $("#tbody_columnsname").empty();
+		$("#tbody_columnsname").append(tbody_columnsname_html);
+  		
+  		$("#tbody_columnsname").find("tr").each(function(){
+	  			var tdArr = $(this).children();
+	  	        var param = tdArr.eq(1).text();//
+	  	      	paramsStr+=param+',';
+	  	      	var trclass = $(this).attr("class");
+	  	    	//var lineIdArr = trclass.split('_');
+	  	    	//改成分号
+	  			var lineIdArr = trclass.split(';');
+	  			checkbox_sort_i = lineIdArr[1];	
+	  			var lineId = lineIdArr[0];	
+	  			html_tr = '';  
+	  			if(queryParam==null||queryParam==''||queryParam==""){
+	  	  			//查询全部参数
+	  				//html_tr +="<tr class=\""+lineId+"_"+checkbox_sort_i+"_"+param+"\">";
+	  				//改成分号
+	  				html_tr +="<tr class=\""+lineId+";"+checkbox_sort_i+";"+param+"\">";
+	  				html_tr +="<td class='center' style=\"width: 20px;\">";
+	  	  			//html_tr +="<input type='checkbox' name=\"checkbox_name"+checkbox_sort_i+"\" value=\""+lineId+"_"+checkbox_sort_i+"_"+param+"\" id=\"checkbox_"+checkbox_sort_i+"\" alt=\"\"/>";
+	  	  			//改成分号
+	  	  			html_tr +="<input type='checkbox' name=\"checkbox_name"+checkbox_sort_i+"\" value=\""+lineId+";"+checkbox_sort_i+";"+param+"\" id=\"checkbox_"+checkbox_sort_i+"\" alt=\"\"/>";
+	  				html_tr +="</td>";
+	  				html_tr +="<td>";
+	  				html_tr +=param; 	
+	  				html_tr += "</td>"; 
+	  				html_tr += "</tr>";
+	  				new_query_tbody_columnsname_tr = {"trclass":trclass,"htmlContent":html_tr,"checkbox_sort_i":checkbox_sort_i};
+					new_query_tbody_columnsname_htmlArr.push(new_query_tbody_columnsname_tr);
+	  	  		}else{  
+	  	  			//查询某些参数
+	  	  			queryParam = new RegExp(queryParam, 'i');
+		  	  		if(param.match(queryParam)){	  					  			
+			  				//html_tr +="<tr class=\""+lineId+"_"+checkbox_sort_i+"_"+param+"\">";
+			  				//改成分号
+			  				html_tr +="<tr class=\""+lineId+";"+checkbox_sort_i+";"+param+"\">";
+			  				html_tr +="<td class='center' style=\"width: 20px;\">";
+			  	  			//html_tr +="<input type='checkbox' name=\"checkbox_name"+checkbox_sort_i+"\" value=\""+lineId+"_"+checkbox_sort_i+"_"+param+"\" id=\"checkbox_"+checkbox_sort_i+"\" alt=\"\"/>";
+			  	  			//改成分号
+			  	  			html_tr +="<input type='checkbox' name=\"checkbox_name"+checkbox_sort_i+"\" value=\""+lineId+";"+checkbox_sort_i+";"+param+"\" id=\"checkbox_"+checkbox_sort_i+"\" alt=\"\"/>";
+			  				html_tr +="</td>";
+			  				html_tr +="<td>";
+			  				html_tr +=param; 	
+			  				html_tr += "</td>"; 
+			  				html_tr += "</tr>";
+			  				new_query_tbody_columnsname_tr = {"trclass":trclass,"htmlContent":html_tr,"checkbox_sort_i":checkbox_sort_i};
+							new_query_tbody_columnsname_htmlArr.push(new_query_tbody_columnsname_tr);
+					}
+	  	 		}
+	  			
+	  			
+	  		});
+			//重置#tbody_columnsname的html
+			$("#tbody_columnsname").empty();
+			
+		tbody_columnsname_clicked_checkbox = '';
+		html = '';
+		//用来放checkbox id
+		tbody_columnsname_clicked_checkbox_allArr= [];
+		if(tbody_columnsname_clicked_checkboxValue!=''&&tbody_columnsname_clicked_checkboxValue!=""){
+			tbody_columnsname_clicked_checkboxValueArr = tbody_columnsname_clicked_checkboxValue.split(",");
+			tbody_columnsname_clicked_checkbox_all_tr = '';
+			
+			for(var jj=0;jj<tbody_columnsname_clicked_checkboxValueArr.length;jj++){
+				if(tbody_columnsname_clicked_checkboxValueArr[jj]==''||tbody_columnsname_clicked_checkboxValueArr[jj]=="")
+					continue;
+				tbody_columnsname_clicked_checkbox_tr_match = {};					
+				tbody_columnsname_clicked_checkbox_tr_matchFlag = false;
+				//遍历查询到的参数，如果之前勾选的参数包含在这里，则true
+				for(var ii=0;ii<new_query_tbody_columnsname_htmlArr.length;ii++){	
+					new_query_tbody_columnsname_htmlObj = new_query_tbody_columnsname_htmlArr[ii];
+					if(tbody_columnsname_clicked_checkboxValueArr[jj]==new_query_tbody_columnsname_htmlObj.trclass){						
+						tbody_columnsname_clicked_checkbox_tr_matchFlag = true;
+						tbody_columnsname_clicked_checkbox_tr_match = new_query_tbody_columnsname_htmlObj;
+						//勾选的html，加上查询的参数中匹配的参数html
+						tbody_columnsname_clicked_checkbox_all_tr +=new_query_tbody_columnsname_htmlObj.htmlContent;
+						//同时，移除查询中匹配参数的html
+						new_query_tbody_columnsname_htmlArr.splice(ii,1);
+					}
+					
+				}
+					
+				if(tbody_columnsname_clicked_checkbox_tr_matchFlag){
+					//如果之前勾选的参数包含在这里，则将checkbox设为勾选状态
+					checkbox_sort_i = tbody_columnsname_clicked_checkbox_tr_match.checkbox_sort_i;
+					//存放勾选过checkbox id
+					tbody_columnsname_clicked_checkbox_allArr.push({"checkbox_sort_i":checkbox_sort_i});
+					
+				}
+				else{
+					//如果之前勾选的参数不包含在这里，新写一行
+					//tbody_columnsname_clicked_checkboxValue_tr = tbody_columnsname_clicked_checkboxValueArr[jj].split('_');
+					//改成分号
+					tbody_columnsname_clicked_checkboxValue_tr = tbody_columnsname_clicked_checkboxValueArr[jj].split(';');
+					tbody_columnsname_clicked_checkbox_tr = '';
+					tbody_columnsname_clicked_checkbox_tr +="<tr class=\""+tbody_columnsname_clicked_checkboxValueArr[jj]+"\">";
+					tbody_columnsname_clicked_checkbox_tr +="<td class='center' style=\"width: 20px;\">";
+					tbody_columnsname_clicked_checkbox_tr +="<input type='checkbox' name=\"checkbox_name"+tbody_columnsname_clicked_checkboxValue_tr[1]+"\" value=\""+tbody_columnsname_clicked_checkboxValueArr[jj]+"\" id=\"checkbox_"+tbody_columnsname_clicked_checkboxValue_tr[1]+"\" alt=\"\"/>";
+					tbody_columnsname_clicked_checkbox_tr +="</td>";
+					tbody_columnsname_clicked_checkbox_tr +="<td>";
+					tbody_columnsname_clicked_checkbox_tr +=tbody_columnsname_clicked_checkboxValue_tr[2]; 	
+					tbody_columnsname_clicked_checkbox_tr += "</td>"; 
+					tbody_columnsname_clicked_checkbox_tr += "</tr>";
+					tbody_columnsname_clicked_checkbox_all_tr +=tbody_columnsname_clicked_checkbox_tr;
+					//存放勾选过checkbox id
+					tbody_columnsname_clicked_checkbox_allArr.push({"checkbox_sort_i":tbody_columnsname_clicked_checkboxValue_tr[1]});						
+				}
+				
+			}
+			//之前勾选的checkbox 参数
+			$("#tbody_columnsname").append(tbody_columnsname_clicked_checkbox_all_tr);
+			
+		}
+		
+								
+		//新查询到的参数
+		for(var ii=0;ii<new_query_tbody_columnsname_htmlArr.length;ii++){	
+			new_query_tbody_columnsname_htmlObj = new_query_tbody_columnsname_htmlArr[ii];
+			html+=new_query_tbody_columnsname_htmlObj.htmlContent;
+		}
+		
+		$("#tbody_columnsname").append(html);
+		//显示打勾
+		for(var checkbox_i=0;checkbox_i<tbody_columnsname_clicked_checkbox_allArr.length;checkbox_i++){
+			tbody_columnsname_clicked_checkbox_all_choose = {};
+			tbody_columnsname_clicked_checkbox_all_choose = tbody_columnsname_clicked_checkbox_allArr[checkbox_i];
+			$("#checkbox_"+tbody_columnsname_clicked_checkbox_all_choose.checkbox_sort_i).prop("checked", true);
+		}
+
+  	})
+
+  	
+  	
+		
+		//区分是否是同一组
+		function check_is_one_group(colsGroup){
+			groupType_temp = '';
+			check_count = 0;
+			for(var jj=0;jj<colsGroup.length;jj++){
+				colsGroupj = colsGroup[jj];
+				if(groupType_temp!=colsGroupj.groupType){
+					groupType_temp = colsGroupj.groupType;
+					check_count+=1;
+				}				
+			}
+			//不是同一组，返回false，反之，返回true
+			if(check_count>1)
+				return false;
+			else
+				return true;	
+		}
+		
+		
+		//获取每个参数的颜色序号
+		function getEachParamColorIndex(choose_paramStr){
+			columnsNameArrToStr = $("#columnsNameArrToStr").val();
+			columnsNameStrToArr = jquery.parseJSON(columnsNameArrToStr);
+			choose_param_colorIndex = 0;//没有匹配上的颜色
+			for(var i=0;i<columnsNameStrToArr.length;i++){
+				columnsNameStrToArrObj = columnsNameStrToArr[i];
+				mycolumnsName = columnsNameStrToArrObj.mycolumnsName;
+				if(choose_paramStr==mycolumnsName){
+					choose_param_colorIndex = columnsNameStrToArrObj.colorIndex;
+					
+				}
+				
+			}
+			
+			return choose_param_colorIndex;
+			
+		}
+		
+		
+
+		
+
+		//勾选参数模板设置********************************************************************************************************************************
+		
+		//保存选中的参数模板，打开模态框
+		function saveParamsTemplateDlg(){
+			if(columnsNameStr==''||columnsNameStr==""||columnsNameStr==undefined){
+				oDateAlert('请勾选参数');
+				console.log('请勾选参数');				
+				return;
+			}
+			//判断当前是否有勾选的checkbox-------------------------------------------------------
+			var choosed_checkbox_now_flag = false;
+		    $("#contentTable tbody tr").find("td:first input:checkbox").each(function () {  
+		        var ischecked = $(this).prop("checked");  
+		        if(ischecked){
+		        	choosed_checkbox_now_flag = true;
+		        }
+		        
+	   		 });
+		    //判断当前是否有勾选的checkbox-------------------------------------------------------
+		    //如果没有勾选，提示勾选
+			if(!choosed_checkbox_now_flag){
+				oDateAlert('请勾选参数');
+				console.log('请勾选参数');				
+				return;
+			}
+		     
+			//打开模态框
+			$('#paramsTemplateModal').modal();
+			
+			//选择的构型
+			choosed_versionId = '';
+			choosed_versionId = getChoosed_versionId();
+			//选择的模板id
+			choosed_templateId = '';
+			choosed_templateId = getChoosed_templateId();
+			var showcolumnsNameStr = '';			
+			showcolumnsNameStr = columnsNameStr;
+			if(columnsNameStr.length>100){
+				showcolumnsNameStr = columnsNameStr.substring(0,100)+'......';
+			}
+			
+			if(choosed_versionId==''||choosed_templateId==''){	
+				$("#templateName").val('');
+				//
+				$("#templateVersionId").val(getChoosed_versionId());
+				$("#templateVersionName").val(getChoosed_versionName());
+				$("#choosedParams").val(showcolumnsNameStr);
+			}else{
+				//从数据库查询数据
+				$.ajax({
+					type: "POST",
+					url: '/arj21/infoChoosedMulticsvParamsTemplate/getParamsTemplateByCondition',
+			    	data: {choosed_versionId:choosed_versionId,return_choosed_templateId:choosed_templateId},
+					dataType:'json',
+					cache: false,
+					success: function(data){
+						if(data.status=='1001'||data.status==1001){
+							//
+							infoChoosedParamsTemplateJsonArr = [];
+							infoChoosedParamsTemplateJsonArr = data.data;
+							if(infoChoosedParamsTemplateJsonArr.length>0){
+								//
+								$("#templateVersionId").val(getChoosed_versionId());
+								$("#templateVersionName").val(getChoosed_versionName());
+								$("#choosedParams").val(showcolumnsNameStr);
+								$("#templateName").val(infoChoosedParamsTemplateJsonArr[0].templatename);
+							}
+							
+						}else{
+							oDateAlert(data.data);
+							return;
+						}
+					}
+					
+				});
+			}
+			
+			
+		}
+		
+		//保存勾选参数模板
+		function saveParamsTemplate(){
+			
+			var templateName = $("#templateName").val();
+			//var arn = $("#arn").val();
+			var choosed_versionId = getChoosed_versionId();
+			var choosed_templateId = getChoosed_templateId();
+			var choosedParams = columnsNameStr;
+			$.ajax({
+				type: "POST",
+				url: '/arj21/infoChoosedMulticsvParamsTemplate/saveParamsTemplate',
+		    	data: {choosed_versionId:choosed_versionId,choosed_templateId:choosed_templateId,templateName:templateName,choosedParams:choosedParams},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					if(data.status=='1001'||data.status==1001){
+						//关闭模态框
+						$('#paramsTemplateModal').modal('hide');
+						return_choosed_templateId = data.return_choosed_templateId;
+						//重新加载勾选参数模板列表
+						//whole_line_acType = '';
+						//whole_line_acType = $("#whole_line_acType").val();
+						choosed_versionId = '';
+						choosed_versionId = getChoosed_versionId();
+						getParamsTemplateByCondition(choosed_versionId,return_choosed_templateId);
+						
+						oDateAlert('保存模板成功');
+					}else{
+						oDateAlert(data.data);
+						return;
+					}
+					
+				}
+				
+			});
+		}
+		
+		//删除勾选参数模板
+		function deleteParamsTemplate(){
+			//打开确认删除提示框
+			$("#confirmDeleteModal").modal();						
+		}
+		
+		function confirmDeleteParamTemplate(){
+			choosed_templateId = '';
+			choosed_templateId = $("#choosed_template").val();
+			if(choosed_templateId==''){
+				oDateAlert('请先选择要删除的模板');
+				return;
+			}
+			
+			$("#confirmDeleteModal").modal('hide');
+			$.ajax({
+				type: "POST",
+				url: '${ctx}/csvmanager/infoChoosedMulticsvParamsTemplate/deleteParamsTemplate',
+		    	data: {choosed_templateId:choosed_templateId},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					if(data.status=='1001'||data.status==1001){						
+						//重新加载勾选参数模板列表
+						//whole_line_acType = '';
+						//whole_line_acType = $("#whole_line_acType").val();
+						choosed_versionId = '';
+						choosed_versionId = getChoosed_versionId();
+						getParamsTemplateByCondition(choosed_versionId,'');
+						
+						//加载该csv文件所有参数到列表页面--------------------------------------------
+						var tbody_columnsname_html = $("#tbody_columnsname_html").val();
+						$("#tbody_columnsname").empty();
+						$("#tbody_columnsname").append(tbody_columnsname_html);
+						//加载该csv文件所有参数到列表页面--------------------------------------------
+						oDateAlert('删除模板成功');
+					}else{
+						oDateAlert(data.data);
+						return;
+					}
+					
+				}
+				
+			});
+		}
+		
+		//根据条件查询设置过的选中参数模板
+		function getParamsTemplateByCondition(choosed_versionId,return_choosed_templateId){
+			$.ajax({
+				type: "POST",
+ 				url: '/arj21/infoChoosedMulticsvParamsTemplate/getParamsTemplateByCondition',
+		    	data: {choosed_versionId:choosed_versionId},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					if(data.status=='1001'||data.status==1001){
+						infoChoosedParamsTemplateJsonArr = [];
+						infoChoosedParamsTemplateJsonArr = data.data;
+						
+						$("#choosed_template").empty();      //清空	
+						$("#choosed_template").select2("val", ""); 
+						$(".choosed_template").find(".select2-chosen").empty();
+						//空选项
+						blank_option = "";
+						blank_option = "<option value=\"\">空模板</option>";
+						$("#choosed_template").append(blank_option); 
+						
+						if(infoChoosedParamsTemplateJsonArr!='' && infoChoosedParamsTemplateJsonArr.length != 0){
+							choosed_templateId = '';
+							choosed_templateId = $("#choosed_template").val();
+							//如果有返回的return_choosed_templateId，使用return_choosed_templateId
+							if(return_choosed_templateId!=''&&return_choosed_templateId!=undefined){
+								choosed_templateId = return_choosed_templateId;
+							}
+														
+							
+			                for(var i=0; i<infoChoosedParamsTemplateJsonArr.length; i++){  
+			                	infoChoosedParamsTemplateJson = {};
+			                	infoChoosedParamsTemplateJson = infoChoosedParamsTemplateJsonArr[i];
+			                	
+			                    var option="<option value=\""+infoChoosedParamsTemplateJson.id+"\""; 
+			                    option += ">"+infoChoosedParamsTemplateJson.templatename+"</option>";  //动态添加数据		                   
+			                    $("#choosed_template").append(option); 
+			                    //如果当前有选择一个参数模板，则将该模板设为默认,并重新绘图
+			                    if(choosed_templateId!=''&&choosed_templateId!=undefined){
+			                    	if(choosed_templateId==infoChoosedParamsTemplateJson.id){
+			                    		$("#choosed_template").val(choosed_templateId).trigger("change");
+
+			                    	}
+			                    	
+								}
+			                }
+			                
+			        	} 
+
+					}else{
+						oDateAlert(data.data);
+						return;
+					}
+					
+				}
+				
+			});
+		}
+		
+		
+		//选择的参数模板，作为临时变量，每次选择不同模板，会刷新
+		var choosed_params_template_name = '';			
+		//选择勾选参数模板
+		$("#choosed_template").change(function(){
+			//选择的模板id
+			var choosed_templateId = $("#choosed_template").val();
+			if(choosed_templateId==''||choosed_templateId==undefined){
+				//如果空模板，则将参数列表设置为该参数版本下的参数列表
+				var tbody_columnsname_html = $("#tbody_columnsname_html").val();
+				$("#tbody_columnsname").empty();
+				$("#tbody_columnsname").append(tbody_columnsname_html);
+				return;
+			}			
+			refresh_chart_by_choosed_paramsTemplateId(choosed_templateId);
+			
+		});
+		
+		
+		
+		//保存参数模板结束**************************************************************************************************************************************************************
+		
+
+		
+		//根绝选择的参数模板的ID 重新绘图
+		function refresh_chart_by_choosed_paramsTemplateId(choosed_templateId){
+			$.ajax({
+				type: "POST",
+				url: '/arj21/infoChoosedMulticsvParamsTemplate/getParamsTemplateById',
+		    	data: {choosed_templateId:choosed_templateId},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					if(data.status=='1001'||data.status==1001){
+						//
+						var infoChoosedParamsTemplateJson = data.data;
+						//模板里面的机型
+						var acTypeByTemplate = infoChoosedParamsTemplateJson.acType;
+						//模板里面的飞机号
+						//var arnByTemplate = infoChoosedParamsTemplateJson.arn;
+						//模板里面的管理员
+						var loginAdminByTemplate = infoChoosedParamsTemplateJson.loginAdmin;
+						//模板里面的模板名称
+						var templateNameByTemplate = infoChoosedParamsTemplateJson.templateName;
+						//模板里面的构型id
+						var versionidByTemplate = infoChoosedParamsTemplateJson.versionidByTemplate;
+						choosed_params_template_name = templateNameByTemplate;
+						//输入框填上模板名
+						$("#templateName").val(choosed_params_template_name);	
+						//模板构型不匹配
+						choosed_versionId = getChoosed_versionId();
+						if(versionidByTemplate!=choosed_versionId){
+							oDateAlert('该参数模板不匹配参数版本，请另选模板');
+							console.log('该参数模板不匹配参数版本，请另选模板');
+							return;
+						}
+						
+						$.ajax({
+							type: "POST",
+							url: '/arj21/infoChoosedMulticsvParamsTemplate/checkMatchParamsTemplate',
+					    	data: {loginAdminByTemplate:loginAdminByTemplate},
+							dataType:'json',
+							cache: false,
+							success: function(data){
+								if(data.status=='1001'||data.status==1001){
+									//加载该csv文件所有参数到列表页面--------------------------------------------
+									var tbody_columnsname_html = $("#tbody_columnsname_html").val();
+									$("#tbody_columnsname").empty();
+									$("#tbody_columnsname").append(tbody_columnsname_html);
+									//加载该csv文件所有参数到列表页面--------------------------------------------
+									
+									//模板里面的参数
+									var paramsByTemplate = infoChoosedParamsTemplateJson.choosed_paramsStr;
+									
+									//根据模板里面的参数绘图---------------------------------------------------------------------------------------------------------------------------
+									var paramsByTemplateArr = [];
+									if(paramsByTemplate.length>0){
+										paramsByTemplateArr = paramsByTemplate.split(",");
+									}
+									clicked_checkboxValue = '';
+								    
+									//先清除之前勾选过的参数前面的勾-开始-----------------------------------------------
+									$(".table tbody tr").find("td:first input:checkbox").each(function () {  
+										$(this).attr("checked",this.checked==true?false:false);
+									});
+									//先清除之前勾选过的参数前面的勾--结束----------------------------------------------
+									
+								    console.log('------------checkbox choose--start---------------');
+								    $(".table tbody tr").find("td:first input:checkbox").each(function () {  
+								    	var checkboxValue = $(this).attr('value');
+								    	checkboxValueArrTemp = [];
+								    	//取出该行参数
+								    	checkboxValueArrTemp = checkboxValue.split(";");
+								    	var isMatchInTemplateFlag = false;
+								    	//比较，如果与模板中参数匹配
+								    	$.each(paramsByTemplateArr,function(index,paramsByTemplateEach){
+								    		if(checkboxValueArrTemp[2]==paramsByTemplateEach){
+								    			clicked_checkboxValue += checkboxValue+',';
+								    			isMatchInTemplateFlag = true;
+								    		}
+								    	});
+								       //如果与模板中参数匹配,将该参数打勾
+								    	if(isMatchInTemplateFlag){
+								    		$(this).attr("checked",this.checked==true?false:true);
+								    	}
+							   		 });
+								    console.log('------------checkbox choose--end---------------');
+									$(this).addClass('selected') //为选中项添加高亮
+									.siblings().removeClass('selected')//去除其他项的高亮形式
+									.end();
+									
+									
+									var trclassArr = clicked_checkboxValue.substring(0,clicked_checkboxValue.length-1).split(",");
+									columnsNameStr = '';
+									var fid = '';
+									for(var i=0;i<trclassArr.length;i++){
+										var lineId = trclassArr[i];
+										//除去 selected 标签
+										var fidStr = lineId.split(';');
+										fid = fidStr[0];
+										var linei = fidStr[1];
+										//闪烁，淡入淡出效果，3次
+										$('#contentTable tbody tr').each(function(){
+											var tr_each_className = '';
+											tr_each_className = $(this)[0].className;
+											if(lineId==tr_each_className){
+												//闪烁，淡入淡出效果，3次
+												for(var i=0;i<2;i++){													
+													//将点击过的checkbox，移到第一行，置顶
+													//置顶 
+													$("#tbody_columnsname").prepend($(this)); 
+													$(this).fadeOut().fadeIn();
+													
+												}
+											}
+										});
+										
+									}									
+									
+									//将全局参数（columnsNameStr）设为模板里面的参数
+									columnsNameStr = paramsByTemplate;
+									
+									
+									//勾选参数时，同时更新已勾选过的csv里面查询出的图表
+									update_choosedCsvs_charts(trclassArr);
+									
+									
+									//根据模板里面的参数绘图-------------------------------------------------------------------------------------------------------------------------------
+									
+								}else{
+									oDateAlert(data.data);
+									console.log(data.data);
+									return;
+								}
+							}
+						});
+
+					}else{
+						oDateAlert(data.data);
+						return;
+					}
+				}
+				
+			});
+		}
+		
+		
+		//根据选中的模板，勾选的参数，重新绘图事件
+		function refresh_chart_by_choosed_params(){			
+			//选择的模板id
+			var choosed_templateId = $("#choosed_template").val();
+			if(choosed_templateId==''||choosed_templateId==undefined){
+				
+				return;
+			}		
+			//根据参数版本，刷新绘图
+			refresh_chart_by_choosed_paramsTemplateId(choosed_templateId);
+		}
+		
+		//改变构型下拉框
+		$("#versionId").change(function(){
+			var choosed_versionId = $("#versionId").val();
+			choosed_versionId_type = '';
+			choosed_versionId_type = '1';
+			getAllParamsListByVersionId(choosed_versionId,choosed_versionId_type);
+			//
+			//更新showMultiCsvList 的参数版本下拉框
+			refreshVersionIdList(choosed_versionId);
+			
+			//更新参数模板
+			choosed_versionId = '';
+			choosed_versionId = getChoosed_versionId();
+			getParamsTemplateByCondition(choosed_versionId,'');
+		});
+		
+		
+		//根据构型，查询对应的参数
+		function getAllParamsListByVersionId(versionId,type){
+			$.ajax({
+				type: "POST",
+				url: '/arj21/parameter_computed/getHeaderParams',
+		    	data: {
+		    		versionId:versionId,
+		    		type:type  //1,记录参数，2，所有参数
+				},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					if(data!=null){
+						paramsList = [];
+						paramsList = data;
+						html = '';
+						//新的包含列名和颜色序号的json 数组
+						var new_columnsNameArr = [];
+						for(var i=0;i<paramsList.length;i++){
+							var myparamsName = paramsList[i]; 
+							//改成分号
+							html += "<tr class=\""+versionId+";"+i+";"+myparamsName+"\">";
+							html += "<td class='center' style=\"width: 20px;\">";
+							//改成分号
+							html += "<input type='checkbox' name=\"checkbox_name"+i+"\" value=\""+versionId+";"+i+";"+myparamsName+"\" id=\"checkbox_"+i+"\" alt=\"\"/>";
+							
+							html += "</td>";
+							
+							html += "<td>";
+							html += myparamsName;
+							html += "</td>";
+							html += "</tr>";
+							//生成新的包含列名和颜色序号的json 数组
+							new_columnsNameArr.push({"mycolumnsName":myparamsName,"colorIndex":i});
+						}
+						columnsNameArrToStr = JSON.stringify(new_columnsNameArr);
+						$("#tbody_columnsname").empty();
+						$("#tbody_columnsname").append(html);
+						
+						//将tbody_columnsname_html 填充上参数列表
+						$("#tbody_columnsname_html").val('');
+						$("#tbody_columnsname_html").val(html);
+					}else{
+						oDateAlert('参数数据为空，请刷新页面或稍后再试');
+						return;
+					}
+					console.log('成功');
+					
+				}
+			});
+			
+		}
+		
+		//刷新构型下拉框,更新showMultiCsvList 的参数版本下拉框
+		function refreshVersionIdList(choosed_versionId){
+			$(parent.window.frames["showMultiCsvList"].document).find("#choosed_versionId_by_choosed_versionId").empty();
+			$(parent.window.frames["showMultiCsvList"].document).find("#choosed_versionId_by_choosed_versionId").append(choosed_versionId);
+			$(parent.window.frames["showMultiCsvList"].document).find("#choosed_versionId_by_choosed_versionId").click();
+		}
+		
+		
+		
+		//获取勾选的csv|行号 id 字符串
+		function getFidChooseRow_input(){
+			choosed_fids = '';
+			choosed_fids = $("#fidChooseRow_input").val();
+			if(choosed_fids==''||choosed_fids==undefined){
+				choosed_fids = '';
+			}
+			return choosed_fids;
+		}		
+		
+		//获取勾选构型id
+		function getChoosed_versionId(){
+			choosed_versionId = '';
+			choosed_versionId = $("#versionId").val();
+			if(choosed_versionId==''||choosed_versionId==undefined){
+				choosed_versionId = '';
+			}
+			return choosed_versionId;
+		}
+		//获取勾选构型id
+		function getChoosed_versionName(){
+			choosed_versionText = '';
+			choosed_versionText = $("#versionId").find("option:selected").text();;
+			if(choosed_versionText==''||choosed_versionText==undefined){
+				choosed_versionText = '';
+			}
+			return choosed_versionText;
+		}
+		
+		//获取勾选的模板id
+		function getChoosed_templateId(){
+			choosed_templateId = '';
+			//选择的模板id
+			choosed_templateId = $("#choosed_template").val();
+			if(choosed_templateId==''||choosed_templateId==undefined){
+				choosed_templateId = '';
+			}	
+			return choosed_templateId;
+		}
+		
+		
+		//加载页面，设置默认构型id
+		function set_defaultVersionId(){
+			//
+			var defaultShowVersionId = '${defaultShowVersionId}';
+			$("#versionId").val(defaultShowVersionId).trigger("change");
+		}
+		
+		
+		//获取右边表格勾选的csv id
+		function getChoosedCsvIdsArr(){
+			clicked_checkboxValue = '';	        
+		    console.log('------------checkbox choose--start---------------');
+			$(parent.window.frames["showMultiCsvList"].document).find("#contentTable tr").find("td:first input:checkbox").each(function () {
+				 var ischecked = $(this).prop("checked");  
+			     if(ischecked){
+			     var checkboxValue = $(this).attr('value');
+			     	clicked_checkboxValue += checkboxValue+',';
+			     }
+			});
+			console.log('------------checkbox choose--end---------------');
+			
+			//
+			//勾选的csv文件行
+		    var trclassArr = clicked_checkboxValue.substring(0,clicked_checkboxValue.length-1).split(",");
+			return trclassArr;
+		}
+		
+		
+		
+	</script>
+	 
+	
+	
+	
+</body>
+</html>

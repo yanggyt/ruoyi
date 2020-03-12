@@ -22,16 +22,17 @@
                             </li>
                             <li>
                                 <p>机型：</p>
-                                <select name="acType" th:with="type=${@dict.getType('')}">
+                                <select name="acType">
                                     <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                    <option th:each="actype,status:${acTypeList}" th:text="${actype}" th:value="${actype}"></option>
                                 </select>
                             </li>
                             <li>
-                                <p>操作类型--导入，导出：</p>
-                                <select name="operateType" th:with="type=${@dict.getType('')}">
+                                <p>操作类型</p>
+                                <select name="operateType">
                                     <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                    <option value="import">导入</option>
+                                    <option value="export">导出</option>
                                 </select>
                             </li>
                             <li>
@@ -75,6 +76,8 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+                sortName: "create_date",
+		        sortOrder: "desc",
                 modalName: "导入导出日志",
                 columns: [{
                     checkbox: true
@@ -113,11 +116,25 @@
                 },
                 {
                     field : 'operateType', 
-                    title : '操作类型--导入，导出'
+                    title : '操作类型',
+                    formatter: function (value, row, index) {
+                        if (value == 'import') {
+                            return "导入";
+                        } else {
+                            return "导出";
+                        }
+                    }
                 },
                 {
                     field : 'isSucce', 
-                    title : '是否成功'
+                    title : '是否成功',
+                    formatter: function (value, row, index) {
+                        if (value == 'true') {
+                            return "成功";
+                        } else {
+                            return "失败";
+                        }
+                    }
                 },
                 {
                     field : 'failType', 

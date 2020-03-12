@@ -43,14 +43,13 @@ public class InfoVersion extends BaseEntity
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createDate;
 
-    /** 更新时间 */
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date updateDate;
-
     /** 备注 */
     @Excel(name = "备注")
     private String remarks;
 
+    @Excel(name = "更新时间", width = 30)
+    private Date updateDate;
+    
     /** 删除标志 */
     private String delFlag;
 

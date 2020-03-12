@@ -58,4 +58,11 @@ public interface IInfoParameterComputedService
      * @return 结果
      */
     public int deleteInfoParameterComputedById(String id);
+
+    /**
+     * 查询计算参数列表
+     * @param infoParameterComputed
+     * @return
+     */
+	public List<InfoParameterComputed> findList(InfoParameterComputed infoParameterComputed);
 }

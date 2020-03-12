@@ -1,6 +1,10 @@
 package cn.com.infosouth.arj21.controller.parameter;
 
+import java.util.HashSet;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,14 +14,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import cn.com.infosouth.common.annotation.Log;
-import cn.com.infosouth.common.enums.BusinessType;
+
+import cn.com.infosouth.arj21.domain.InfoHeaderParams;
 import cn.com.infosouth.arj21.domain.InfoParameterComputed;
+import cn.com.infosouth.arj21.service.IInfoHeaderParamsService;
 import cn.com.infosouth.arj21.service.IInfoParameterComputedService;
+import cn.com.infosouth.common.annotation.Log;
 import cn.com.infosouth.common.core.controller.BaseController;
 import cn.com.infosouth.common.core.domain.AjaxResult;
-import cn.com.infosouth.common.utils.poi.ExcelUtil;
 import cn.com.infosouth.common.core.page.TableDataInfo;
+import cn.com.infosouth.common.enums.BusinessType;
+import cn.com.infosouth.common.utils.StringUtils;
+import cn.com.infosouth.common.utils.poi.ExcelUtil;
 
 /**
  * 计算参数Controller
@@ -33,6 +41,8 @@ public class InfoParameterComputedController extends BaseController
 
     @Autowired
     private IInfoParameterComputedService infoParameterComputedService;
+    @Autowired
+    private IInfoHeaderParamsService headerParamsService;
 
     @RequiresPermissions("arj21:parameter_computed:view")
     @GetMapping()
@@ -123,4 +133,33 @@ public class InfoParameterComputedController extends BaseController
     {
         return toAjax(infoParameterComputedService.deleteInfoParameterComputedByIds(ids));
     }
+    
+    @PostMapping(value = "/getHeaderParams")
+	@ResponseBody
+	public HashSet<String> getHeaderParams(HttpServletRequest request){
+    	HashSet<String> params = new HashSet<String>();
+		String versionStr = request.getParameter("versionId");
+		String type = request.getParameter("type");//表示只包含记录参数(1)或包含所有参数(2)
+		int version = Integer.valueOf(versionStr);
+		InfoHeaderParams infoHeaderParams = headerParamsService.getByVersionId(version);
+		if(infoHeaderParams != null){
+			String[] paramsArr = infoHeaderParams.getHeaderParams().split(",");//csv中的参数
+			for(String p:paramsArr){
+				if(StringUtils.isNoneBlank(p))
+					params.add(p);
+			}
+		}
+		if(StringUtils.isBlank(type) || type.equals("2")){
+			//添加计算参数
+			InfoParameterComputed infoParameterComputed = new InfoParameterComputed();
+			infoParameterComputed.setInfoVersion(versionStr);
+			List<InfoParameterComputed> computedList = infoParameterComputedService.findList(infoParameterComputed);
+			for(InfoParameterComputed c:computedList){
+				params.add(c.getPrmName());
+			}
+		}
+		return params;
+    }
+    
+    
 }

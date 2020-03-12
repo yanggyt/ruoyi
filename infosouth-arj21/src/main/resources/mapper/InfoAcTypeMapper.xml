@@ -109,4 +109,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY b.ac_tpye
 	</select>
 	
+	<select id="findacTpyeList2" resultType="String">
+		SELECT 
+			b.ac_tpye
+		FROM info_ac_type b
+		<where>
+			b.del_flag = 0
+			and b.version_id=#{versionId}
+		</where>	
+		ORDER BY b.ac_tpye
+	</select>
+	
+	
 </mapper>

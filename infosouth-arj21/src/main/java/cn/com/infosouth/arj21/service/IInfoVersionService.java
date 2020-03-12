@@ -1,6 +1,8 @@
 package cn.com.infosouth.arj21.service;
 
 import java.util.List;
+import java.util.Map;
+
 import cn.com.infosouth.arj21.domain.InfoVersion;
 
 /**
@@ -59,6 +61,15 @@ public interface IInfoVersionService
      */
     public int deleteInfoVersionById(Long id);
 
-    
+    /**
+	 * 查找所有数据
+	 * @return
+	 */
 	public List<InfoVersion> findList(InfoVersion infoVersion);
+
+	/**
+	 * 查找所有数据
+	 * @return
+	 */
+	public List<Map<String, Object>> findInfoVersionMapList();
 }

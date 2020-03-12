@@ -5,12 +5,14 @@ package cn.com.infosouth.arj21.domain;
 
 import javax.validation.constraints.Size;
 
+import cn.com.infosouth.common.core.domain.BaseEntity;
+
 /**
  * 导入csv时不同机型对应的header参数Entity
  * @author cyh
  * @version 2018-03-06
  */
-public class InfoHeaderParams{
+public class InfoHeaderParams extends BaseEntity{
 	
 	private static final long serialVersionUID = 1L;
 	private String id;	//id
