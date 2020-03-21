@@ -92,7 +92,8 @@ public class DataScopeAspect
      * 
      * @param joinPoint 切点
      * @param user 用户
-     * @param alias 别名
+     * @param deptAlias 别名
+     * @param userAlias 别名
      */
     public static void dataScopeFilter(JoinPoint joinPoint, SysUser user, String deptAlias, String userAlias)
     {

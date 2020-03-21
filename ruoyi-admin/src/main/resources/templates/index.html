@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
     <title>若依系统首页</title>
-    <!--[if lt IE 9]>
-    <meta http-equiv="refresh" content="0;ie.html"/>
-    <![endif]-->
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link th:href="@{favicon.ico}" rel="stylesheet"/>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/jquery.contextMenu.min.css}" rel="stylesheet"/>
@@ -34,7 +33,7 @@
             <ul class="nav" id="side-menu">
             	<li>
             		<div class="user-panel">
-            			<a class="menuItem" title="个人中心" th:href="@{/system/user/profile}"> 
+            			<a class="menuItem" title="个人中心" th:href="@{/system/user/profile}">
             				<div class="hide" th:text="个人中心"></div>
 					        <div class="pull-left image">
 		                    	<img th:src="(${user.avatar} == '') ? @{/img/profile.jpg} : @{${user.avatar}}" class="img-circle" alt="User Image">
@@ -56,7 +55,7 @@
                 <li th:each="menu : ${menus}">
                 	<a th:class="@{${menu.url != '' && menu.url != '#'} ? ${menu.target}}" th:href="@{${menu.url == ''} ? |#| : ${menu.url}}">
                 		<i class="fa fa-bar-chart-o" th:class="${menu.icon}"></i>
-                    	<span class="nav-label" th:text="${menu.menuName}">一级菜单</span> 
+                    	<span class="nav-label" th:text="${menu.menuName}">一级菜单</span>
                     	<span th:class="${menu.url == '' || menu.url == '#'} ? |fa arrow|"></span>
                 	</a>
                     <ul class="nav nav-second-level collapse">
@@ -276,14 +275,15 @@ function resetPwd() {
     var url = ctx + 'system/user/profile/resetPwd';
     $.modal.open("重置密码", url, '770', '380');
 }
+
 /* 切换主题 */
 function switchSkin() {
     layer.open({
-		type : 2,
-		shadeClose : true,
-		title : "切换主题",
-		area : ["530px", "386px"],
-		content : [ctx + "system/switchSkin", 'no']
+		type: 2,
+		shadeClose: true,
+		title: "切换主题",
+		area: ["530px", "386px"],
+		content: [ctx + "system/switchSkin", 'no']
 	})
 }
 

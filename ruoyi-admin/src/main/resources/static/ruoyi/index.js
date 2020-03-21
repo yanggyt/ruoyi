@@ -14,13 +14,11 @@ $(function() {
     $('#side-menu').metisMenu();
 
     //固定菜单栏
-    $(function() {
-        $('.sidebar-collapse').slimScroll({
-            height: '100%',
-            railOpacity: 0.9,
-            alwaysVisible: false
-        });
-    });
+	$('.sidebar-collapse').slimScroll({
+		height: '96%',
+		railOpacity: 0.9,
+		alwaysVisible: false
+	});    
 
     // 菜单切换
     $('.navbar-minimalize').click(function() {
@@ -35,9 +33,9 @@ $(function() {
     $('#side-menu>li').click(function() {
     	if ($('body').hasClass('canvas-menu mini-navbar')) {
             NavToggle();
-        }
-    	
+        }    	
     });
+	
     $('#side-menu>li li a:not(:has(span))').click(function() {
         if ($(window).width() < 769) {
             NavToggle();

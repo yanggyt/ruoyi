@@ -9,8 +9,6 @@ import com.ruoyi.common.utils.StringUtils;
  */
 public class EscapeUtil
 {
-    public static final String RE_HTML_MARK = "(<[^<]*?>)|(<[\\s]*?/[^<]*?>)|(<[^<]*?/[\\s]*?>)";
-
     private static final char[][] TEXT = new char[64][];
 
     static
@@ -140,15 +138,5 @@ public class EscapeUtil
             }
         }
         return tmp.toString();
-    }
-
-    public static void main(String[] args)
-    {
-        String html = "<script>alert(1);</script>";
-        // String html = "<scr<script>ipt>alert(\"XSS\")</scr<script>ipt>";
-        // String html = "<123";
-        System.out.println(EscapeUtil.clean(html));
-        System.out.println(EscapeUtil.escape(html));
-        System.out.println(EscapeUtil.unescape(html));
     }
 }
