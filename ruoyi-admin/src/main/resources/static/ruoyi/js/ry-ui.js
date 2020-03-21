@@ -215,9 +215,15 @@ var table = {
             	$(optionsIds).off("click").on("click", '.img-circle', function() {
     			    var src = $(this).attr('src');
     			    var target = $(this).data('target');
-    			    var height = $(this).data('height');
-    			    var width = $(this).data('width');
     			    if($.common.equals("self", target)) {
+    						var height = $(this).data('height');
+    						var width = $(this).data('width');
+    						//如果是移动端，就使用自适应大小弹窗
+    						if ($.common.isMobile()) {
+    							width = 'auto';
+    							height = 'auto';
+    						}
+
     			    	layer.open({
         			        title: false,
         			        type: 1,

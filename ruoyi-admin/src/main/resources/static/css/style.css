@@ -3083,10 +3083,6 @@ a:hover, a:focus {
     margin-bottom: 15px;
 }
 
-video {
-    width: 100% !important;
-    height: auto !important;
-}
 /* GALLERY */
 .gallery>.row>div {
     margin-bottom: 15px;
