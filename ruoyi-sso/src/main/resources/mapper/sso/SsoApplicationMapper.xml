@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.sso.mapper.SsoApplicationMapper">
+    
+    <resultMap type="SsoApplication" id="SsoApplicationResult">
+        <result property="appId"    column="app_id"    />
+        <result property="appName"    column="app_name"    />
+        <result property="appDesc"    column="app_desc"    />
+        <result property="appKey"    column="app_key"    />
+        <result property="appSecret"    column="app_secret"    />
+        <result property="appCallBackUrl"    column="app_call_back_url"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectSsoApplicationVo">
+        select app_id, app_name, app_desc, app_key, app_secret, app_call_back_url, create_by, update_by, create_time, update_time, status from sso_application
+    </sql>
+
+    <select id="selectSsoApplicationList" parameterType="SsoApplication" resultMap="SsoApplicationResult">
+        <include refid="selectSsoApplicationVo"/>
+        <where>  
+            <if test="appName != null  and appName != ''"> and app_name like concat('%', #{appName}, '%')</if>
+            <if test="appCallBackUrl != null  and appCallBackUrl != ''"> and app_call_back_url like concat('%', #{appCallBackUrl}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectSsoApplicationById" parameterType="Long" resultMap="SsoApplicationResult">
+        <include refid="selectSsoApplicationVo"/>
+        where app_id = #{appId}
+    </select>
+
+    <select id="querySsoApplicationByAppKeyAndSecret" resultType="com.ruoyi.sso.domain.SsoApplication">
+        <include refid="selectSsoApplicationVo"/>
+        <where>
+            <if test="appKey != null  and appKey != ''"> and app_key = #{appKey}</if>
+            <if test="appSecret != null  and appSecret != ''"> and app_secret = #{appSecret}</if>
+        </where>
+    </select>
+
+    <insert id="insertSsoApplication" parameterType="SsoApplication" useGeneratedKeys="true" keyProperty="appId">
+        insert into sso_application
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appName != null  and appName != ''">app_name,</if>
+            <if test="appDesc != null  and appDesc != ''">app_desc,</if>
+            <if test="appKey != null  and appKey != ''">app_key,</if>
+            <if test="appSecret != null  and appSecret != ''">app_secret,</if>
+            <if test="appCallBackUrl != null  and appCallBackUrl != ''">app_call_back_url,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="status != null  and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appName != null  and appName != ''">#{appName},</if>
+            <if test="appDesc != null  and appDesc != ''">#{appDesc},</if>
+            <if test="appKey != null  and appKey != ''">#{appKey},</if>
+            <if test="appSecret != null  and appSecret != ''">#{appSecret},</if>
+            <if test="appCallBackUrl != null  and appCallBackUrl != ''">#{appCallBackUrl},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSsoApplication" parameterType="SsoApplication">
+        update sso_application
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appName != null  and appName != ''">app_name = #{appName},</if>
+            <if test="appDesc != null  and appDesc != ''">app_desc = #{appDesc},</if>
+            <if test="appKey != null  and appKey != ''">app_key = #{appKey},</if>
+            <if test="appSecret != null  and appSecret != ''">app_secret = #{appSecret},</if>
+            <if test="appCallBackUrl != null  and appCallBackUrl != ''">app_call_back_url = #{appCallBackUrl},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+        </trim>
+        where app_id = #{appId}
+    </update>
+
+    <delete id="deleteSsoApplicationById" parameterType="Long">
+        delete from sso_application where app_id = #{appId}
+    </delete>
+
+    <delete id="deleteSsoApplicationByIds" parameterType="String">
+        delete from sso_application where app_id in 
+        <foreach item="appId" collection="array" open="(" separator="," close=")">
+            #{appId}
+        </foreach>
+    </delete>
+    
+</mapper>

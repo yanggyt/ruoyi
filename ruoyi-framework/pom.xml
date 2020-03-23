@@ -71,11 +71,18 @@
 			<artifactId>UserAgentUtils</artifactId>
 		</dependency>
 
-        <!-- 系统模块-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-system</artifactId>
-        </dependency>
+		<!-- 系统模块-->
+		<dependency>
+			<groupId>com.ruoyi</groupId>
+			<artifactId>ruoyi-system</artifactId>
+		</dependency>
+
+		<!-- 单点模块-->
+		<dependency>
+			<groupId>com.ruoyi</groupId>
+			<artifactId>ruoyi-sso</artifactId>
+			<version>4.2.0</version>
+		</dependency>
 		
 		<!-- 获取系统信息 -->
 		<dependency>
