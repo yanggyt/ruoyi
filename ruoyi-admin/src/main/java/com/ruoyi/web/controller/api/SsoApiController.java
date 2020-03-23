@@ -9,7 +9,6 @@ import com.ruoyi.sso.service.ISsoApplicationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import org.slf4j.Logger;
@@ -61,6 +60,7 @@ public class SsoApiController extends BaseController {
     public String ssoCallBack(@ApiParam(value = "回调应用加密信息", type = "String") String redirect_uri,
                               @ApiParam(value = "用于搜索数据的ticket", type = "String") String ticket,
                               @ApiParam(value = "登录类型", type = "String") String logintype) throws Exception {
+        logger.info("redirect_uri = {} ----- ticket = {} ----- loginType = {}", redirect_uri, ticket, logintype);
         String resultJsonStr = DESUtil.decrypt(redirect_uri, JXSR_SSO_API_KEY);
         JSONObject jsonObject = JSONObject.parseObject(resultJsonStr);
         String appKey = jsonObject.getString("appKey");
@@ -78,6 +78,7 @@ public class SsoApiController extends BaseController {
     @GetMapping(value = "/validateTicket", produces = "application/json;charset=utf-8")
     @ResponseBody
     public String validateTicket(@ApiParam(value = "回调中获取的ticket值", type = "String", required = true) String ticket) {
+        logger.info("ticket = {}", ticket);
         HttpResponse response = HttpRequest.post("https://login.jxzwfww.gov.cn/auth2/validationTicket.do")
                 .form("ticket", ticket)
                 .form("clientId", JXSR_CLIENT_ID)
