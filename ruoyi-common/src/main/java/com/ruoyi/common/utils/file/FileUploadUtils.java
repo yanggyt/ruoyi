@@ -2,6 +2,8 @@ package com.ruoyi.common.utils.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 import com.ruoyi.common.config.Global;
@@ -113,7 +115,7 @@ public class FileUploadUtils
         String fileName = extractFilename(file);
 
         File desc = getAbsoluteFile(baseDir, fileName);
-        file.transferTo(desc);
+        file.transferTo(Paths.get(desc.getAbsolutePath()));
         String pathFileName = getPathFileName(baseDir, fileName);
         return pathFileName;
     }
