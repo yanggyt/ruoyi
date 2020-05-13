@@ -4,6 +4,8 @@ import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
@@ -151,5 +153,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         // 计算差多少秒//输出结果
         // long sec = diff % nd % nh % nm / ns;
         return day + "天" + hour + "小时" + min + "分钟";
+    }
+
+    public static String dateToString(Date date, String pattern) {
+        if (date != null && StringUtils.isNotEmpty(pattern)) {
+            SimpleDateFormat format = new SimpleDateFormat(pattern);
+            return format.format(date);
+        } else {
+            return null;
+        }
     }
 }
