@@ -115,8 +115,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     public List<Ztree> select${ClassName}Tree() {
         List<${ClassName}> ${className}List = ${className}Mapper.select${ClassName}List(new ${ClassName}());
         List<Ztree> ztrees = new ArrayList<Ztree>();
-        for (${ClassName} ${className} : ${className}List)
-        {
+        for (${ClassName} ${className} : ${className}List){
             Ztree ztree = new Ztree();
 #set($TreeCode=$treeCode.substring(0,1).toUpperCase() + ${treeCode.substring(1)})
 #set($TreeParentCode=$treeParentCode.substring(0,1).toUpperCase() + ${treeParentCode.substring(1)})
