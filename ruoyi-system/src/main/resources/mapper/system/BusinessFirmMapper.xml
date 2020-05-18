@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusinessFirmMapper">
+    
+    <resultMap type="BusinessFirm" id="BusinessFirmResult">
+        <result property="id"    column="id"    />
+        <result property="businessCode"    column="business_code"    />
+        <result property="loginName"    column="login_name"    />
+        <result property="userName"    column="user_name"    />
+        <result property="email"    column="email"    />
+        <result property="telephoneNo"    column="telephone_no"    />
+        <result property="phoneNo"    column="phone_no"    />
+        <result property="sex"    column="sex"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="credentials"    column="credentials"    />
+        <result property="password"    column="password"    />
+        <result property="salt"    column="salt"    />
+        <result property="status"    column="status"    />
+        <result property="guaranteeMoney"    column="guarantee_money"    />
+        <result property="refundGuaranteeMoney"    column="refund_guarantee_money"    />
+        <result property="bussinessType"    column="bussiness_type"    />
+        <result property="provinceCode"    column="province_code"    />
+        <result property="provinceName"    column="province_name"    />
+        <result property="cityCode"    column="city_code"    />
+        <result property="ciityName"    column="ciity_name"    />
+        <result property="countyCode"    column="county_code"    />
+        <result property="countyName"    column="county_name"    />
+        <result property="townCode"    column="town_code"    />
+        <result property="townName"    column="town_name"    />
+        <result property="adress"    column="adress"    />
+        <result property="coordinatePoint"    column="coordinate_point"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="bankCardNo"    column="bank_card_no"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="version"    column="version"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBusinessFirmVo">
+        select id, business_code, login_name, user_name, email, telephone_no, phone_no, sex, avatar, id_card, credentials, password, salt, status, guarantee_money, refund_guarantee_money, bussiness_type, province_code, province_name, city_code, ciity_name, county_code, county_name, town_code, town_name, adress, coordinate_point, bank_name, bank_card_no, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, version, remark from business_firm
+    </sql>
+
+    <select id="selectBusinessFirmList" parameterType="BusinessFirm" resultMap="BusinessFirmResult">
+        <include refid="selectBusinessFirmVo"/>
+        <where>  
+            <if test="businessCode != null  and businessCode != ''"> and business_code = #{businessCode}</if>
+            <if test="loginName != null  and loginName != ''"> and login_name like concat('%', #{loginName}, '%')</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="telephoneNo != null  and telephoneNo != ''"> and telephone_no = #{telephoneNo}</if>
+            <if test="phoneNo != null  and phoneNo != ''"> and phone_no = #{phoneNo}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="idCard != null  and idCard != ''"> and id_card = #{idCard}</if>
+            <if test="credentials != null  and credentials != ''"> and credentials = #{credentials}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="salt != null  and salt != ''"> and salt = #{salt}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="guaranteeMoney != null "> and guarantee_money = #{guaranteeMoney}</if>
+            <if test="refundGuaranteeMoney != null "> and refund_guarantee_money = #{refundGuaranteeMoney}</if>
+            <if test="bussinessType != null  and bussinessType != ''"> and bussiness_type = #{bussinessType}</if>
+            <if test="provinceCode != null  and provinceCode != ''"> and province_code = #{provinceCode}</if>
+            <if test="provinceName != null  and provinceName != ''"> and province_name like concat('%', #{provinceName}, '%')</if>
+            <if test="cityCode != null  and cityCode != ''"> and city_code = #{cityCode}</if>
+            <if test="ciityName != null  and ciityName != ''"> and ciity_name like concat('%', #{ciityName}, '%')</if>
+            <if test="countyCode != null  and countyCode != ''"> and county_code = #{countyCode}</if>
+            <if test="countyName != null  and countyName != ''"> and county_name like concat('%', #{countyName}, '%')</if>
+            <if test="townCode != null  and townCode != ''"> and town_code = #{townCode}</if>
+            <if test="townName != null  and townName != ''"> and town_name like concat('%', #{townName}, '%')</if>
+            <if test="adress != null  and adress != ''"> and adress = #{adress}</if>
+            <if test="coordinatePoint != null  and coordinatePoint != ''"> and coordinate_point = #{coordinatePoint}</if>
+            <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
+            <if test="bankCardNo != null  and bankCardNo != ''"> and bank_card_no = #{bankCardNo}</if>
+            <if test="loginIp != null  and loginIp != ''"> and login_ip = #{loginIp}</if>
+            <if test="loginDate != null "> and login_date = #{loginDate}</if>
+            <if test="version != null "> and version = #{version}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusinessFirmById" parameterType="Long" resultMap="BusinessFirmResult">
+        <include refid="selectBusinessFirmVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusinessFirm" parameterType="BusinessFirm" useGeneratedKeys="true" keyProperty="id">
+        insert into business_firm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="businessCode != null  and businessCode != ''">business_code,</if>
+            <if test="loginName != null  and loginName != ''">login_name,</if>
+            <if test="userName != null  and userName != ''">user_name,</if>
+            <if test="email != null  and email != ''">email,</if>
+            <if test="telephoneNo != null  and telephoneNo != ''">telephone_no,</if>
+            <if test="phoneNo != null  and phoneNo != ''">phone_no,</if>
+            <if test="sex != null  and sex != ''">sex,</if>
+            <if test="avatar != null  and avatar != ''">avatar,</if>
+            <if test="idCard != null  and idCard != ''">id_card,</if>
+            <if test="credentials != null  and credentials != ''">credentials,</if>
+            <if test="password != null  and password != ''">password,</if>
+            <if test="salt != null  and salt != ''">salt,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="guaranteeMoney != null ">guarantee_money,</if>
+            <if test="refundGuaranteeMoney != null ">refund_guarantee_money,</if>
+            <if test="bussinessType != null  and bussinessType != ''">bussiness_type,</if>
+            <if test="provinceCode != null  and provinceCode != ''">province_code,</if>
+            <if test="provinceName != null  and provinceName != ''">province_name,</if>
+            <if test="cityCode != null  and cityCode != ''">city_code,</if>
+            <if test="ciityName != null  and ciityName != ''">ciity_name,</if>
+            <if test="countyCode != null  and countyCode != ''">county_code,</if>
+            <if test="countyName != null  and countyName != ''">county_name,</if>
+            <if test="townCode != null  and townCode != ''">town_code,</if>
+            <if test="townName != null  and townName != ''">town_name,</if>
+            <if test="adress != null  and adress != ''">adress,</if>
+            <if test="coordinatePoint != null  and coordinatePoint != ''">coordinate_point,</if>
+            <if test="bankName != null  and bankName != ''">bank_name,</if>
+            <if test="bankCardNo != null  and bankCardNo != ''">bank_card_no,</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag,</if>
+            <if test="loginIp != null  and loginIp != ''">login_ip,</if>
+            <if test="loginDate != null ">login_date,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="version != null ">version,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="businessCode != null  and businessCode != ''">#{businessCode},</if>
+            <if test="loginName != null  and loginName != ''">#{loginName},</if>
+            <if test="userName != null  and userName != ''">#{userName},</if>
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="telephoneNo != null  and telephoneNo != ''">#{telephoneNo},</if>
+            <if test="phoneNo != null  and phoneNo != ''">#{phoneNo},</if>
+            <if test="sex != null  and sex != ''">#{sex},</if>
+            <if test="avatar != null  and avatar != ''">#{avatar},</if>
+            <if test="idCard != null  and idCard != ''">#{idCard},</if>
+            <if test="credentials != null  and credentials != ''">#{credentials},</if>
+            <if test="password != null  and password != ''">#{password},</if>
+            <if test="salt != null  and salt != ''">#{salt},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="guaranteeMoney != null ">#{guaranteeMoney},</if>
+            <if test="refundGuaranteeMoney != null ">#{refundGuaranteeMoney},</if>
+            <if test="bussinessType != null  and bussinessType != ''">#{bussinessType},</if>
+            <if test="provinceCode != null  and provinceCode != ''">#{provinceCode},</if>
+            <if test="provinceName != null  and provinceName != ''">#{provinceName},</if>
+            <if test="cityCode != null  and cityCode != ''">#{cityCode},</if>
+            <if test="ciityName != null  and ciityName != ''">#{ciityName},</if>
+            <if test="countyCode != null  and countyCode != ''">#{countyCode},</if>
+            <if test="countyName != null  and countyName != ''">#{countyName},</if>
+            <if test="townCode != null  and townCode != ''">#{townCode},</if>
+            <if test="townName != null  and townName != ''">#{townName},</if>
+            <if test="adress != null  and adress != ''">#{adress},</if>
+            <if test="coordinatePoint != null  and coordinatePoint != ''">#{coordinatePoint},</if>
+            <if test="bankName != null  and bankName != ''">#{bankName},</if>
+            <if test="bankCardNo != null  and bankCardNo != ''">#{bankCardNo},</if>
+            <if test="delFlag != null  and delFlag != ''">#{delFlag},</if>
+            <if test="loginIp != null  and loginIp != ''">#{loginIp},</if>
+            <if test="loginDate != null ">#{loginDate},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="version != null ">#{version},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusinessFirm" parameterType="BusinessFirm">
+        update business_firm
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="businessCode != null  and businessCode != ''">business_code = #{businessCode},</if>
+            <if test="loginName != null  and loginName != ''">login_name = #{loginName},</if>
+            <if test="userName != null  and userName != ''">user_name = #{userName},</if>
+            <if test="email != null  and email != ''">email = #{email},</if>
+            <if test="telephoneNo != null  and telephoneNo != ''">telephone_no = #{telephoneNo},</if>
+            <if test="phoneNo != null  and phoneNo != ''">phone_no = #{phoneNo},</if>
+            <if test="sex != null  and sex != ''">sex = #{sex},</if>
+            <if test="avatar != null  and avatar != ''">avatar = #{avatar},</if>
+            <if test="idCard != null  and idCard != ''">id_card = #{idCard},</if>
+            <if test="credentials != null  and credentials != ''">credentials = #{credentials},</if>
+            <if test="password != null  and password != ''">password = #{password},</if>
+            <if test="salt != null  and salt != ''">salt = #{salt},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="guaranteeMoney != null ">guarantee_money = #{guaranteeMoney},</if>
+            <if test="refundGuaranteeMoney != null ">refund_guarantee_money = #{refundGuaranteeMoney},</if>
+            <if test="bussinessType != null  and bussinessType != ''">bussiness_type = #{bussinessType},</if>
+            <if test="provinceCode != null  and provinceCode != ''">province_code = #{provinceCode},</if>
+            <if test="provinceName != null  and provinceName != ''">province_name = #{provinceName},</if>
+            <if test="cityCode != null  and cityCode != ''">city_code = #{cityCode},</if>
+            <if test="ciityName != null  and ciityName != ''">ciity_name = #{ciityName},</if>
+            <if test="countyCode != null  and countyCode != ''">county_code = #{countyCode},</if>
+            <if test="countyName != null  and countyName != ''">county_name = #{countyName},</if>
+            <if test="townCode != null  and townCode != ''">town_code = #{townCode},</if>
+            <if test="townName != null  and townName != ''">town_name = #{townName},</if>
+            <if test="adress != null  and adress != ''">adress = #{adress},</if>
+            <if test="coordinatePoint != null  and coordinatePoint != ''">coordinate_point = #{coordinatePoint},</if>
+            <if test="bankName != null  and bankName != ''">bank_name = #{bankName},</if>
+            <if test="bankCardNo != null  and bankCardNo != ''">bank_card_no = #{bankCardNo},</if>
+            <if test="delFlag != null  and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="loginIp != null  and loginIp != ''">login_ip = #{loginIp},</if>
+            <if test="loginDate != null ">login_date = #{loginDate},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="version != null ">version = #{version},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusinessFirmById" parameterType="Long">
+        delete from business_firm where id = #{id}
+    </delete>
+
+    <delete id="deleteBusinessFirmByIds" parameterType="String">
+        delete from business_firm where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
