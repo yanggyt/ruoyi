@@ -81,7 +81,7 @@ public class BusinessFirm extends BaseEntity
 
     /** 商家类型，0个人 1商家 */
     @Excel(name = "商家类型，0个人 1商家")
-    private String bussinessType;
+    private String businessType;
 
     /** 省id */
     @Excel(name = "省id")
@@ -97,15 +97,15 @@ public class BusinessFirm extends BaseEntity
 
     /** 市名称 */
     @Excel(name = "市名称")
-    private String ciityName;
+    private String cityName;
 
     /** 县ID */
     @Excel(name = "县ID")
-    private String countyCode;
+    private String countryCode;
 
     /** 县名称 */
     @Excel(name = "县名称")
-    private String countyName;
+    private String countryName;
 
     /** 乡/镇ID */
     @Excel(name = "乡/镇ID")
@@ -290,14 +290,14 @@ public class BusinessFirm extends BaseEntity
     {
         return refundGuaranteeMoney;
     }
-    public void setBussinessType(String bussinessType) 
+    public void setBussinessType(String businessType)
     {
-        this.bussinessType = bussinessType;
+        this.businessType = businessType;
     }
 
-    public String getBussinessType() 
+    public String getBusinessType()
     {
-        return bussinessType;
+        return businessType;
     }
     public void setProvinceCode(String provinceCode) 
     {
@@ -326,32 +326,32 @@ public class BusinessFirm extends BaseEntity
     {
         return cityCode;
     }
-    public void setCiityName(String ciityName) 
+    public void setCityName(String cityName)
     {
-        this.ciityName = ciityName;
+        this.cityName = cityName;
     }
 
-    public String getCiityName() 
+    public String getCityName()
     {
-        return ciityName;
+        return cityName;
     }
-    public void setCountyCode(String countyCode) 
+    public void setCountryCode(String countryCode)
     {
-        this.countyCode = countyCode;
-    }
-
-    public String getCountyCode() 
-    {
-        return countyCode;
-    }
-    public void setCountyName(String countyName) 
-    {
-        this.countyName = countyName;
+        this.countryCode = countryCode;
     }
 
-    public String getCountyName() 
+    public String getCountryCode()
     {
-        return countyName;
+        return countryCode;
+    }
+    public void setCountryName(String countryName)
+    {
+        this.countryName = countryName;
+    }
+
+    public String getCountryName()
+    {
+        return countryName;
     }
     public void setTownCode(String townCode) 
     {
@@ -463,13 +463,13 @@ public class BusinessFirm extends BaseEntity
             .append("status", getStatus())
             .append("guaranteeMoney", getGuaranteeMoney())
             .append("refundGuaranteeMoney", getRefundGuaranteeMoney())
-            .append("bussinessType", getBussinessType())
+            .append("businessType", getBusinessType())
             .append("provinceCode", getProvinceCode())
             .append("provinceName", getProvinceName())
             .append("cityCode", getCityCode())
-            .append("ciityName", getCiityName())
-            .append("countyCode", getCountyCode())
-            .append("countyName", getCountyName())
+            .append("cityName", getCityName())
+            .append("countryCode", getCountryCode())
+            .append("countryName", getCountryName())
             .append("townCode", getTownCode())
             .append("townName", getTownName())
             .append("adress", getAdress())

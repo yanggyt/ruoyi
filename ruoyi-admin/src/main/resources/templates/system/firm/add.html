@@ -13,7 +13,7 @@
                     <input name="businessCode" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
+            <div class="form-group">
                 <label class="col-sm-3 control-label is-required">登录账号：</label>
                 <div class="col-sm-8">
                     <input name="loginName" class="form-control" type="text" required>
@@ -47,9 +47,10 @@
                 <label class="col-sm-3 control-label">用户性别：</label>
                 <div class="col-sm-8">
                     <select name="sex" class="form-control m-b" required>
-                        <option value="">所有</option>
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">未知</option>
                     </select>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
                 </div>
             </div>
             <div class="form-group">    
@@ -59,13 +60,13 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">身份证证件地址：</label>
+                <label class="col-sm-3 control-label is-required">身份证地址：</label>
                 <div class="col-sm-8">
                     <input name="idCard" class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">房产、合同等证件地址,json串：</label>
+                <label class="col-sm-3 control-label is-required">证件信息：</label>
                 <div class="col-sm-8">
                     <input name="credentials" class="form-control" type="text" required>
                 </div>
@@ -76,103 +77,73 @@
                     <input name="password" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">盐加密：</label>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">质保金：</label>
                 <div class="col-sm-8">
-                    <input name="salt" class="form-control" type="text" required>
+                    <input name="guaranteeMoney" class="form-control" type="text" >
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">帐号状态：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">商家类型：</label>
                 <div class="col-sm-8">
-                    <div class="radio-box">
-                        <input type="radio" name="status" value="" required>
-                        <label th:for="status" th:text="未知"></label>
-                    </div>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">质保金金额：</label>
-                <div class="col-sm-8">
-                    <input name="guaranteeMoney" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">已退质保金金额：</label>
-                <div class="col-sm-8">
-                    <input name="refundGuaranteeMoney" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">商家类型，0个人 1商家：</label>
-                <div class="col-sm-8">
-                    <select name="bussinessType" class="form-control m-b" required>
-                        <option value="">所有</option>
+                    <select name="businessType" class="form-control m-b" required>
+                        <option value="0">个人</option>
+                        <option value="1">商家</option>
                     </select>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">省id：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">省：</label>
                 <div class="col-sm-8">
-                    <input name="provinceCode" class="form-control" type="text" required>
+                    <select id="provinceSelect" name="provinceCode" class="form-control m-b" th:onchange="changeAreaCode('provinceSelect')"
+                            th:with="areas=${@iAddressService.selectAddressByParentCode('0')}">
+                        <option value="0">--请选择--</option>
+                        <option th:each="area : ${areas}"
+                                th:text="${area.areaName}"
+                                th:value="${area.areaCode}" onclick="alert(0)"/>
+                    </select>
+                    <input id="provinceName" name="provinceName" type="text" style="display:none" value="">
                 </div>
             </div>
+
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">省名称：</label>
+                <label class="col-sm-3 control-label is-required">市：</label>
                 <div class="col-sm-8">
-                    <input name="provinceName" class="form-control" type="text" required>
+                    <select id="citySelect" name="cityCode" class="form-control m-b" th:onchange="changeAreaCode('citySelect')">
+                        <option value="0">--请选择--</option>
+                    </select>
+                    <input id="cityName" name="cityName" type="text" style="display:none" value="">
                 </div>
             </div>
+
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">市ID：</label>
+                <label class="col-sm-3 control-label is-required">县：</label>
                 <div class="col-sm-8">
-                    <input name="cityCode" class="form-control" type="text" required>
+                    <select id="countrySelect" name="countryCode" class="form-control m-b" th:onchange="changeAreaCode('countrySelect')">
+                        <option value="0">--请选择--</option>
+                    </select>
+                    <input id="countryName" name="countryName" type="text" style="display:none" value="">
                 </div>
             </div>
+
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">市名称：</label>
+                <label class="col-sm-3 control-label is-required">乡/镇：</label>
                 <div class="col-sm-8">
-                    <input name="ciityName" class="form-control" type="text" required>
+                    <select id="townSelect" name="townCode" class="form-control m-b" th:onchange="changeAreaCode('townSelect')">
+                        <option value="0">--请选择--</option>
+                    </select>
+                    <input id="townName" name="townName" type="text" style="display:none" value="">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">县ID：</label>
-                <div class="col-sm-8">
-                    <input name="countyCode" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">县名称：</label>
-                <div class="col-sm-8">
-                    <input name="countyName" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">乡/镇ID：</label>
-                <div class="col-sm-8">
-                    <input name="townCode" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">乡/镇名称：</label>
-                <div class="col-sm-8">
-                    <input name="townName" class="form-control" type="text" required>
-                </div>
-            </div>
+
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">详细地址信息：</label>
                 <div class="col-sm-8">
                     <input name="adress" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">坐标地址：</label>
-                <div class="col-sm-8">
-                    <input name="coordinatePoint" class="form-control" type="text" required>
-                </div>
-            </div>
+
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">开户行名称：</label>
                 <div class="col-sm-8">
@@ -185,33 +156,10 @@
                     <input name="bankCardNo" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">删除标志：</label>
-                <div class="col-sm-8">
-                    <input name="delFlag" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">最后登陆ip：</label>
-                <div class="col-sm-8">
-                    <input name="loginIp" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">最后登陆时间：</label>
-                <div class="col-sm-8">
-                    <div class="input-group date">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input name="loginDate" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">版本号：</label>
-                <div class="col-sm-8">
-                    <input name="version" class="form-control" type="text" required>
-                </div>
-            </div>
+
+
+
+
         </form>
     </div>
     <th:block th:include="include :: footer" />
@@ -233,6 +181,44 @@
             minView: "month",
             autoclose: true
         });
+
+        function changeAreaCode(selectId) {
+            var code = '0';
+            var nextSelectId = "";
+            if ("provinceSelect" == selectId) {
+                $("#citySelect").empty();
+                $("#countrySelect").empty();
+                $("#townSelect").empty();
+                code = $("#provinceSelect").find("option:selected").attr("value");
+                nextSelectId = "citySelect";
+                $("#provinceName").val($("#provinceSelect").find("option:selected").text());
+            } else if ("citySelect" == selectId) {
+                code = $("#citySelect").find("option:selected").attr("value");
+                nextSelectId = "countrySelect";
+                $("#cityName").val($("#citySelect").find("option:selected").text());
+            } else if ("countrySelect" == selectId) {
+                code = $("#countrySelect").find("option:selected").attr("value");
+                nextSelectId = "townSelect";
+                $("#countryName").val($("#countrySelect").find("option:selected").text());
+            } else if ("townSelect" == selectId) {
+                $("#townName").val($("#townSelect").find("option:selected").text());
+            }
+
+            $.ajax({
+                url: '/system/address/childrenList',
+                dataType : "json",
+                async:true,
+                data:{code:code},
+                success:function (result) {
+                    var str='<option value="">--请选择--</option>';
+                    for (var i = 0; i < result.length; i++) {
+                        str+='<option value='+result[i].areaCode+'>'+result[i].areaName+'</option>';
+                    }
+                    $("#" + nextSelectId + "").html(str);
+                }
+
+            });
+        }
     </script>
 </body>
 </html>

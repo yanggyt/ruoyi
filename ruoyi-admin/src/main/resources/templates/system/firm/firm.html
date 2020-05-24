@@ -19,132 +19,51 @@
                                 <input type="text" name="loginName"/>
                             </li>
                             <li>
-                                <label>用户昵称：</label>
-                                <input type="text" name="userName"/>
-                            </li>
-                            <li>
-                                <label>用户邮箱：</label>
-                                <input type="text" name="email"/>
-                            </li>
-                            <li>
-                                <label>固定电话：</label>
-                                <input type="text" name="telephoneNo"/>
-                            </li>
-                            <li>
-                                <label>手机号码：</label>
-                                <input type="text" name="phoneNo"/>
-                            </li>
-                            <li>
-                                <label>用户性别：</label>
-                                <select name="sex">
-                                    <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
-                                </select>
-                            </li>
-                            <li>
-                                <label>头像路径：</label>
-                                <input type="text" name="avatar"/>
-                            </li>
-                            <li>
-                                <label>身份证证件地址：</label>
-                                <input type="text" name="idCard"/>
-                            </li>
-                            <li>
-                                <label>房产、合同等证件地址,json串：</label>
-                                <input type="text" name="credentials"/>
-                            </li>
-                            <li>
-                                <label>密码：</label>
-                                <input type="text" name="password"/>
-                            </li>
-                            <li>
-                                <label>盐加密：</label>
-                                <input type="text" name="salt"/>
-                            </li>
-                            <li>
                                 <label>帐号状态：</label>
                                 <select name="status">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option value="0">正常</option>
+                                    <option value="1">关闭</option>
                                 </select>
                             </li>
                             <li>
-                                <label>质保金金额：</label>
-                                <input type="text" name="guaranteeMoney"/>
-                            </li>
-                            <li>
-                                <label>已退质保金金额：</label>
-                                <input type="text" name="refundGuaranteeMoney"/>
-                            </li>
-                            <li>
-                                <label>商家类型，0个人 1商家：</label>
-                                <select name="bussinessType">
+                                <label>商家类型</label>
+                                <select name="businessType">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option value="0">个人</option>
+                                    <option value="1">商家</option>
                                 </select>
                             </li>
                             <li>
-                                <label>省id：</label>
-                                <input type="text" name="provinceCode"/>
+                                <label>省：</label>
+                                <select name="provinceForm"
+                                        th:with="areas=${@iAddressService.selectAddressByParentCode('0')}">
+                                    <option th:each="area : ${areas}"
+                                            th:text="${area.areaName}"
+                                            th:value="${area.areaCode}" onclick="alert(0)"/>
+                                </select>
                             </li>
                             <li>
-                                <label>省名称：</label>
-                                <input type="text" name="provinceName"/>
+                                <label>市：</label>
+                                <select name="provinceForm"
+                                        th:with="areas=${@iAddressService.selectAddressByParentCode('0')}">
+                                    <option th:each="area : ${areas}"
+                                            th:text="${area.areaName}"
+                                            th:value="${area.areaCode}" onclick="alert(0)"/>
+                                </select>
                             </li>
                             <li>
-                                <label>市ID：</label>
-                                <input type="text" name="cityCode"/>
+                                <label>县：</label>
+                                <select name="provinceForm"
+                                        th:with="areas=${@iAddressService.selectAddressByParentCode('0')}">
+                                    <option th:each="area : ${areas}"
+                                            th:text="${area.areaName}"
+                                            th:value="${area.areaCode}" onclick="alert(0)"/>
+                                </select>
                             </li>
-                            <li>
-                                <label>市名称：</label>
-                                <input type="text" name="ciityName"/>
-                            </li>
-                            <li>
-                                <label>县ID：</label>
-                                <input type="text" name="countyCode"/>
-                            </li>
-                            <li>
-                                <label>县名称：</label>
-                                <input type="text" name="countyName"/>
-                            </li>
-                            <li>
-                                <label>乡/镇ID：</label>
-                                <input type="text" name="townCode"/>
-                            </li>
-                            <li>
-                                <label>乡/镇名称：</label>
-                                <input type="text" name="townName"/>
-                            </li>
-                            <li>
-                                <label>详细地址信息：</label>
-                                <input type="text" name="adress"/>
-                            </li>
-                            <li>
-                                <label>坐标地址：</label>
-                                <input type="text" name="coordinatePoint"/>
-                            </li>
-                            <li>
-                                <label>开户行名称：</label>
-                                <input type="text" name="bankName"/>
-                            </li>
-                            <li>
-                                <label>开户行卡号：</label>
-                                <input type="text" name="bankCardNo"/>
-                            </li>
-                            <li>
-                                <label>最后登陆ip：</label>
-                                <input type="text" name="loginIp"/>
-                            </li>
-                            <li class="select-time">
-                                <label>最后登陆时间：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginLoginDate]"/>
-                                <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endLoginDate]"/>
-                            </li>
-                            <li>
-                                <label>版本号：</label>
-                                <input type="text" name="version"/>
-                            </li>
+
+
+
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -201,47 +120,53 @@
                 },
                 {
                     field: 'loginName', 
-                    title: '登录账号'
+                    title: '登录账号',
+                    visible: false
+
                 },
                 {
                     field: 'userName', 
-                    title: '用户昵称'
+                    title: '商家名称'
                 },
+                {
+                    field: 'businessType',
+                    title: '商家类型'
+                }
+                ,
                 {
                     field: 'email', 
                     title: '用户邮箱'
                 },
                 {
                     field: 'telephoneNo', 
-                    title: '固定电话'
+                    title: '固定电话',
+                    visible: false
                 },
                 {
                     field: 'phoneNo', 
-                    title: '手机号码'
+                    title: '手机号码',
+                    visible: false
                 },
                 {
                     field: 'sex', 
-                    title: '用户性别'
+                    title: '用户性别',
+                    visible: false
                 },
                 {
                     field: 'avatar', 
-                    title: '头像路径'
+                    title: '头像路径',
+                    visible: false
+
                 },
                 {
                     field: 'idCard', 
-                    title: '身份证证件地址'
+                    title: '身份证',
+                    visible: false
                 },
                 {
                     field: 'credentials', 
-                    title: '房产、合同等证件地址,json串'
-                },
-                {
-                    field: 'password', 
-                    title: '密码'
-                },
-                {
-                    field: 'salt', 
-                    title: '盐加密'
+                    title: '证件地址',
+                    visible: false
                 },
                 {
                     field: 'status', 
@@ -249,75 +174,46 @@
                 },
                 {
                     field: 'guaranteeMoney', 
-                    title: '质保金金额'
+                    title: '质保金'
                 },
                 {
                     field: 'refundGuaranteeMoney', 
-                    title: '已退质保金金额'
-                },
-                {
-                    field: 'bussinessType', 
-                    title: '商家类型，0个人 1商家'
-                },
-                {
-                    field: 'provinceCode', 
-                    title: '省id'
+                    title: '已退质保金'
                 },
                 {
                     field: 'provinceName', 
-                    title: '省名称'
+                    title: '省'
                 },
                 {
-                    field: 'cityCode', 
-                    title: '市ID'
+                    field: 'cityName',
+                    title: '市'
                 },
                 {
-                    field: 'ciityName', 
-                    title: '市名称'
-                },
-                {
-                    field: 'countyCode', 
-                    title: '县ID'
-                },
-                {
-                    field: 'countyName', 
-                    title: '县名称'
-                },
-                {
-                    field: 'townCode', 
-                    title: '乡/镇ID'
+                    field: 'countryName',
+                    title: '县'
                 },
                 {
                     field: 'townName', 
-                    title: '乡/镇名称'
+                    title: '乡/镇'
                 },
                 {
                     field: 'adress', 
-                    title: '详细地址信息'
+                    title: '详细地址'
                 },
                 {
                     field: 'coordinatePoint', 
-                    title: '坐标地址'
+                    title: '坐标地址',
+                    visible: false
                 },
                 {
                     field: 'bankName', 
-                    title: '开户行名称'
+                    title: '开户行名称',
+                    visible: false
                 },
                 {
                     field: 'bankCardNo', 
-                    title: '开户行卡号'
-                },
-                {
-                    field: 'loginIp', 
-                    title: '最后登陆ip'
-                },
-                {
-                    field: 'loginDate', 
-                    title: '最后登陆时间'
-                },
-                {
-                    field: 'version', 
-                    title: '版本号'
+                    title: '开户行卡号',
+                    visible: false
                 },
                 {
                     field: 'remark', 

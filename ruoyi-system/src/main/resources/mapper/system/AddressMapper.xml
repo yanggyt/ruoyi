@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AddressMapper">
+    
+    <resultMap type="com.ruoyi.system.domain.Address" id="AddressResult">
+        <result property="id"    column="id"    />
+        <result property="areaCode"    column="area_code"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="parentCode"    column="parent_code"    />
+    </resultMap>
+
+    <sql id="selectAddressVo">
+        select id, area_code, area_name, parent_code from address
+    </sql>
+
+    <select id="selectAddressList" parameterType="com.ruoyi.system.domain.Address" resultMap="AddressResult">
+        <include refid="selectAddressVo"/>
+        <where>  
+            <if test="areaCode != null  and areaCode != ''"> and area_code = #{areaCode}</if>
+            <if test="areaName != null  and areaName != ''"> and area_name like concat('%', #{areaName}, '%')</if>
+            <if test="parentCode != null  and parentCode != ''"> and parent_code = #{parentCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectAddressById" parameterType="Long" resultMap="AddressResult">
+        <include refid="selectAddressVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAddress" parameterType="com.ruoyi.system.domain.Address" useGeneratedKeys="true" keyProperty="id">
+        insert into address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaCode != null  and areaCode != ''">area_code,</if>
+            <if test="areaName != null  and areaName != ''">area_name,</if>
+            <if test="parentCode != null  and parentCode != ''">parent_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaCode != null  and areaCode != ''">#{areaCode},</if>
+            <if test="areaName != null  and areaName != ''">#{areaName},</if>
+            <if test="parentCode != null  and parentCode != ''">#{parentCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAddress" parameterType="com.ruoyi.system.domain.Address">
+        update address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaCode != null  and areaCode != ''">area_code = #{areaCode},</if>
+            <if test="areaName != null  and areaName != ''">area_name = #{areaName},</if>
+            <if test="parentCode != null  and parentCode != ''">parent_code = #{parentCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAddressById" parameterType="Long">
+        delete from address where id = #{id}
+    </delete>
+
+    <delete id="deleteAddressByIds" parameterType="String">
+        delete from address where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectAddressByParentCode" resultMap="AddressResult" parameterType="String">
+        <include refid="selectAddressVo"/>
+        where parent_code = #{_parmeter, jdbcType=VARCHAR}
+    </select>
+
+</mapper>
