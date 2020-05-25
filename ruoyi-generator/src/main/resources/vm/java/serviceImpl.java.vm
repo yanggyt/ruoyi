@@ -26,8 +26,7 @@ import com.ruoyi.common.core.text.Convert;
  * @date ${datetime}
  */
 @Service
-public class ${ClassName}ServiceImpl implements I${ClassName}Service 
-{
+public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     @Autowired
     private ${ClassName}Mapper ${className}Mapper;
 
@@ -38,8 +37,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      * @return ${functionName}
      */
     @Override
-    public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField})
-    {
+    public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField}) {
         return ${className}Mapper.select${ClassName}ById(${pkColumn.javaField});
     }
 
@@ -50,8 +48,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      * @return ${functionName}
      */
     @Override
-    public List<${ClassName}> select${ClassName}List(${ClassName} ${className})
-    {
+    public List<${ClassName}> select${ClassName}List(${ClassName} ${className}) {
         return ${className}Mapper.select${ClassName}List(${className});
     }
 
@@ -63,8 +60,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insert${ClassName}(${ClassName} ${className})
-    {
+    public int insert${ClassName}(${ClassName} ${className}) {
 #foreach ($column in $columns)
 #if($column.javaField == 'createTime')
         ${className}.setCreateTime(DateUtils.getNowDate());
@@ -81,8 +77,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int update${ClassName}(${ClassName} ${className})
-    {
+    public int update${ClassName}(${ClassName} ${className}) {
 #foreach ($column in $columns)
 #if($column.javaField == 'updateTime')
         ${className}.setUpdateTime(DateUtils.getNowDate());
@@ -99,8 +94,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int delete${ClassName}ByIds(String ids)
-    {
+    public int delete${ClassName}ByIds(String ids) {
         return ${className}Mapper.delete${ClassName}ByIds(Convert.toStrArray(ids));
     }
 
@@ -111,8 +105,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      * @return 结果
      */
     @Override
-    public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField})
-    {
+    public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField}) {
         return ${className}Mapper.delete${ClassName}ById(${pkColumn.javaField});
     }
 #if($table.tree)
@@ -123,12 +116,10 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
      * @return 所有${functionName}信息
      */
     @Override
-    public List<Ztree> select${ClassName}Tree()
-    {
+    public List<Ztree> select${ClassName}Tree() {
         List<${ClassName}> ${className}List = ${className}Mapper.select${ClassName}List(new ${ClassName}());
         List<Ztree> ztrees = new ArrayList<Ztree>();
-        for (${ClassName} ${className} : ${className}List)
-        {
+        for (${ClassName} ${className} : ${className}List) {
             Ztree ztree = new Ztree();
 #set($TreeCode=$treeCode.substring(0,1).toUpperCase() + ${treeCode.substring(1)})
 #set($TreeParentCode=$treeParentCode.substring(0,1).toUpperCase() + ${treeParentCode.substring(1)})

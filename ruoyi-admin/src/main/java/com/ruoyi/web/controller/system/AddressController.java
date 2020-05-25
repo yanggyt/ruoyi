@@ -2,6 +2,7 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
+import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @Controller
 @RequestMapping("/system/address")
-public class AddressController extends BaseController
-{
+public class AddressController extends BaseController {
     private final static String PREFIX = "system/address";
     private final static String ROOT = "0";
 
@@ -48,6 +48,9 @@ public class AddressController extends BaseController
     @GetMapping("/childrenList")
     @ResponseBody
     public List<Address> selectAddressByParentCode(String code) {
+
+        Long userId = ShiroUtils.getUserId();
+        //TODO 过滤未分配区域
         return addressService.selectAddressByParentCode(code);
     }
 
@@ -57,8 +60,7 @@ public class AddressController extends BaseController
     @RequiresPermissions("system:address:list")
     @GetMapping("/list")
     @ResponseBody
-    public TableDataInfo list(Address address)
-    {
+    public TableDataInfo list(Address address) {
         startPage();
         if (StringUtils.isBlank(address.getAreaCode())
                 || StringUtils.isBlank(address.getAreaName())
@@ -77,8 +79,7 @@ public class AddressController extends BaseController
     @Log(title = "地区信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(Address address)
-    {
+    public AjaxResult export(Address address) {
         List<Address> list = addressService.selectAddressList(address);
         ExcelUtil<Address> util = new ExcelUtil<Address>(Address.class);
         return util.exportExcel(list, "address");
@@ -109,8 +110,7 @@ public class AddressController extends BaseController
      * 修改地区信息
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
-    {
+    public String edit(@PathVariable("id") Long id, ModelMap mmap) {
         Address address = addressService.selectAddressById(id);
         mmap.put("address", address);
         return PREFIX + "/edit";

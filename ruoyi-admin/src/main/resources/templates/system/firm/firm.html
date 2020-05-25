@@ -36,29 +36,18 @@
                             </li>
                             <li>
                                 <label>省：</label>
-                                <select name="provinceForm"
+                                <select name="provinceForm" th:onchange="changeAreaCode('provinceSelect')"
                                         th:with="areas=${@iAddressService.selectAddressByParentCode('0')}">
-                                    <option th:each="area : ${areas}"
-                                            th:text="${area.areaName}"
-                                            th:value="${area.areaCode}" onclick="alert(0)"/>
                                 </select>
                             </li>
                             <li>
                                 <label>市：</label>
-                                <select name="provinceForm"
-                                        th:with="areas=${@iAddressService.selectAddressByParentCode('0')}">
-                                    <option th:each="area : ${areas}"
-                                            th:text="${area.areaName}"
-                                            th:value="${area.areaCode}" onclick="alert(0)"/>
+                                <select id="countrySelect" name="countryCode" th:onchange="changeAreaCode('countrySelect')">
                                 </select>
                             </li>
                             <li>
                                 <label>县：</label>
-                                <select name="provinceForm"
-                                        th:with="areas=${@iAddressService.selectAddressByParentCode('0')}">
-                                    <option th:each="area : ${areas}"
-                                            th:text="${area.areaName}"
-                                            th:value="${area.areaCode}" onclick="alert(0)"/>
+                                <select id="townSelect" name="townCode" th:onchange="changeAreaCode('townSelect')">
                                 </select>
                             </li>
 
@@ -93,7 +82,7 @@
         </div>
     </div>
     <th:block th:include="include :: footer" />
-    <script th:inline="javascript">
+    <script language="JavaScript" th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('system:firm:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:firm:remove')}]];
         var prefix = ctx + "system/firm";
@@ -232,6 +221,43 @@
             };
             $.table.init(options);
         });
+
+
+        function changeAreaCode(selectId) {
+            var code = '0';
+            var nextSelectId = "";
+            if ("provinceSelect" == selectId) {
+                $("#citySelect").empty();
+                $("#countrySelect").empty();
+                $("#townSelect").empty();
+                code = $("#provinceSelect").find("option:selected").attr("value");
+                nextSelectId = "citySelect";
+            } else if ("citySelect" == selectId) {
+                code = $("#citySelect").find("option:selected").attr("value");
+                nextSelectId = "countrySelect";
+            } else if ("countrySelect" == selectId) {
+                code = $("#countrySelect").find("option:selected").attr("value");
+                nextSelectId = "townSelect";
+            } else if ("townSelect" == selectId) {
+            }
+
+            $.ajax({
+                url: '/system/address/childrenList',
+                dataType : "json",
+                async:true,
+                data:{code:code},
+                success:function (result) {
+                    var str='<option value="">--请选择--</option>';
+                    for (var i = 0; i < result.length; i++) {
+                        str+='<option value='+result[i].areaCode+'>'+result[i].areaName+'</option>';
+                    }
+                    $("#" + nextSelectId + "").html(str);
+                }
+
+            });
+        }
+
+
     </script>
 </body>
 </html>
