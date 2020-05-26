@@ -481,7 +481,7 @@ public class ExcelUtil<T>
         else if (ColumnType.NUMERIC == attr.cellType())
         {
             cell.setCellType(CellType.NUMERIC);
-            cell.setCellValue(Integer.parseInt(value + ""));
+            cell.setCellValue(((Number)value).doubleValue());
         }
     }
 
