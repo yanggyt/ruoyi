@@ -160,6 +160,9 @@ function(e) {
     parent.$("body").addClass(skin.split('|')[0]);
     parent.$("body").addClass(skin.split('|')[1]);
     storage.set('skin', skin);
+	//获取索引并关闭当前窗口 by coderyang 2020-6-16
+	var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.close(index);
 });
 </script>
 </html>
