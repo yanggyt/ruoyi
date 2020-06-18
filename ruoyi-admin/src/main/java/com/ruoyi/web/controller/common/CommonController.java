@@ -18,11 +18,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
 
-/**
- * 通用请求处理
- * 
- * @author ruoyi
- */
+//2020/6/18
 @Controller
 public class CommonController
 {
@@ -31,12 +27,8 @@ public class CommonController
     @Autowired
     private ServerConfig serverConfig;
 
-    /**
-     * 通用下载请求
-     * 
-     * @param fileName 文件名称
-     * @param delete 是否删除
-     */
+
+    //通用下载请求，文件名，是否删除
     @GetMapping("common/download")
     public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
     {
