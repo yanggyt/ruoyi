@@ -499,6 +499,20 @@ var table = {
                 });
                 return actions.join('');
             },
+            // 回显数据字典，指定分隔符的
+            selectDictLabels: function(datas, value,separator) {
+                var actions = [];
+                $.each(value.split(separator),function (i,val) {
+                    $.each(datas, function(index, dict) {
+                        if (dict.dictValue == ('' + val)) {
+                            var listClass = $.common.equals("default", dict.listClass) ? "" : "badge badge-" + dict.listClass;
+                            actions.push($.common.sprintf("<span class='%s'>%s</span>", listClass, dict.dictLabel));
+                            return false;
+                        }
+                    });
+                })
+                return actions.join('');
+            },
             // 显示表格指定列
             showColumn: function(column, tableId) {
             	var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
