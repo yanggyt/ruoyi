@@ -17,9 +17,9 @@
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
 #set($comment=$column.columnComment.substring(0, $parentheseIndex))
-#else  
+#else
 #set($comment=$column.columnComment)
-#end  
+#end
 #if($column.htmlType == "input")
                             <li>
                                 <label>${comment}：</label>
@@ -44,9 +44,9 @@
 #elseif($column.htmlType == "datetime")
                             <li class="select-time">
                                 <label>${comment}：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[begin${AttrName}]"/>
+                                <input type="text" class="time-input" placeholder="开始时间" name="params[begin${AttrName}]"/>
                                 <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[end${AttrName}]"/>
+                                <input type="text" class="time-input" placeholder="结束时间" name="params[end${AttrName}]"/>
                             </li>
 #end
 #end
@@ -129,7 +129,7 @@
                     field: '${javaField}',
                     title: '${comment}'
                 },
-#end                
+#end
 #end
                 {
                     title: '操作',
