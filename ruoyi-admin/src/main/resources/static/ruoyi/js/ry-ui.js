@@ -45,6 +45,7 @@ var table = {
         		    pagination: true,
         		    paginationLoop: false,
         		    pageSize: 10,
+        		    pageNumber: 1,
         		    pageList: [10, 25, 50],
         		    toolbar: "toolbar",
         		    striped: false,
@@ -275,8 +276,8 @@ var table = {
             serialNumber: function (index, tableId) {
             	var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
 				var tableParams = $("#" + currentId).bootstrapTable('getOptions');
-				var pageSize = tableParams.pageSize;
-				var pageNumber = tableParams.pageNumber;
+				var pageSize = $.common.isNotEmpty(tableParams.pageSize) ? tableParams.pageSize: table.options.pageSize;
+				var pageNumber = $.common.isNotEmpty(tableParams.pageNumber) ? tableParams.pageNumber: table.options.pageNumber;
 				return pageSize * (pageNumber - 1) + index + 1;
 			},
 			// 列超出指定长度浮动提示 target（copy单击复制文本 open弹窗打开文本）
@@ -496,6 +497,21 @@ var table = {
                     	actions.push($.common.sprintf("<span class='%s'>%s</span>", listClass, dict.dictLabel));
                         return false;
                     }
+                });
+                return actions.join('');
+            },
+            // 回显数据字典（字符串数组）
+            selectDictLabels: function(datas, value, separator) {
+            	var currentSeparator = $.common.isEmpty(separator) ? "," : separator;
+            	var actions = [];
+                $.each(value.split(currentSeparator), function(i, val) {
+                	$.each(datas, function(index, dict) {
+                		if (dict.dictValue == ('' + val)) {
+                        	var listClass = $.common.equals("default", dict.listClass) || $.common.isEmpty(dict.listClass) ? "" : "badge badge-" + dict.listClass;
+                        	actions.push($.common.sprintf("<span class='%s'>%s </span>", listClass, dict.dictLabel));
+                            return false;
+                        }
+                	});
                 });
                 return actions.join('');
             },

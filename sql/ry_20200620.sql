@@ -121,8 +121,8 @@ create table sys_role (
 -- ----------------------------
 -- 初始化-角色信息表数据
 -- ----------------------------
-insert into sys_role values('1', '管理员',   'admin',  1, 1, '0', '0', 'admin', '2018-03-16 11-33-00', 'ry', '2018-03-16 11-33-00', '管理员');
-insert into sys_role values('2', '普通角色', 'common', 2, 2, '0', '0', 'admin', '2018-03-16 11-33-00', 'ry', '2018-03-16 11-33-00', '普通角色');
+insert into sys_role values('1', '系统管理员', 'admin',  1, 1, '0', '0', 'admin', '2018-03-16 11-33-00', 'ry', '2018-03-16 11-33-00', '系统管理员');
+insert into sys_role values('2', '普通角色',   'common', 2, 2, '0', '0', 'admin', '2018-03-16 11-33-00', 'ry', '2018-03-16 11-33-00', '普通角色');
 
 
 -- ----------------------------
@@ -651,8 +651,8 @@ create table gen_table (
   table_id             bigint(20)      not null auto_increment    comment '编号',
   table_name           varchar(200)    default ''                 comment '表名称',
   table_comment        varchar(500)    default ''                 comment '表描述',
-  sub_table_name       varchar(64)     default null               comment '关联父表的表名',
-  sub_table_fk_name    varchar(64)     default null               comment '本表关联父表的外键名',
+  sub_table_name       varchar(64)     default null               comment '关联子表的表名',
+  sub_table_fk_name    varchar(64)     default null               comment '子表关联的外键名',
   class_name           varchar(100)    default ''                 comment '实体类名称',
   tpl_category         varchar(200)    default 'crud'             comment '使用的模板（crud单表操作 tree树表操作 sub主子表操作）',
   package_name         varchar(100)                               comment '生成包路径',
