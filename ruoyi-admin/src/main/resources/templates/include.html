@@ -189,3 +189,17 @@
 	<script th:src="@{/ajax/libs/bootstrap-table/extensions/editable/bootstrap-editable.min.js}"></script>
     <script th:src="@{/ajax/libs/bootstrap-table/extensions/editable/bootstrap-table-editable.js}"></script>
 </div>
+
+<div th:fragment="ckeditor-css">
+	<style>
+		.ck-editor__editable_inline {
+			min-height: 300px;
+		}
+	</style>
+</div>
+
+<div th:fragment="ckeditor-js">
+	<script src="/ckeditor5/ckeditor.js"></script>
+	<script src="/ckeditor5/translations/zh-cn.js"></script>
+</div>
+

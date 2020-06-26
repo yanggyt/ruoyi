@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增文件资源')" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-file-add">
+            <!--<div class="form-group">
+                <label class="col-sm-2 control-label is-required">文件名：</label>
+                <div class="col-sm-9">
+                    <input name="fileName" class="form-control" type="text" required>
+                </div>
+            </div>-->
+            <input type="hidden" name="filePath" id="hfile"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label is-required">文件：</label>
+                <div class="col-sm-9">
+                    <label class="font-noraml"></label>
+                    <div class="file-loading">
+                        <input id="fileinput" type="file" multiple>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: bootstrap-fileinput-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "businessfile/file"
+        $("#form-file-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            // if ($.validate.form()) {
+            //
+            //     let fileval = $("#hfile").val();
+            //     if(fileval == "" || fileval == null){
+            //         $.modal.alertWarning('请先添加一个文件！')
+            //         return;
+            //     }
+            //
+            //     $.operate.save(prefix + "/add", $('#form-file-add').serialize());
+            // }
+
+            var parent = window.parent;
+            if (parent.table.options.type == table_type.bootstrapTable) {
+                $.modal.close();
+                parent.$.table.refresh();
+            } else if (parent.table.options.type == table_type.bootstrapTreeTable) {
+                $.modal.close();
+                parent.$.treeTable.refresh();
+            } else {
+                $.modal.msgReload("保存成功,正在刷新数据请稍后……", modal_status.SUCCESS);
+            }
+        }
+
+        $(document).ready(function () {
+            $("#fileinput").fileinput({
+                uploadUrl:prefix + "/addfile",
+                uploadAsync:true,
+                maxFileCount:1,
+                dropZoneTitle:"拖拽文件到这里...<br/>最大文件体积25MB"
+            });
+
+            $("#fileinput").on("fileuploaded", function (event, data, previewId, index) {
+                $("#hfile").val(data.response.data);
+            })
+
+        });
+
+    </script>
+</body>
+</html>

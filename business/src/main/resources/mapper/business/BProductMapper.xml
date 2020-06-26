@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BProductMapper">
+    
+    <resultMap type="BProduct" id="BProductResult">
+        <result property="id"    column="id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productDetails"    column="product_details"    />
+        <result property="classId"    column="class_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBProductVo">
+        select id, product_name, product_details, class_id, create_time, update_time from b_product
+    </sql>
+
+    <select id="selectBProductList" parameterType="BProduct" resultMap="BProductResult">
+        <include refid="selectBProductVo"/>
+        <where>  
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBProductById" parameterType="Long" resultMap="BProductResult">
+        <include refid="selectBProductVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBProduct" parameterType="BProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into b_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="productDetails != null">product_details,</if>
+            <if test="classId != null">class_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="productDetails != null">#{productDetails},</if>
+            <if test="classId != null">#{classId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBProduct" parameterType="BProduct">
+        update b_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="productDetails != null">product_details = #{productDetails},</if>
+            <if test="classId != null">class_id = #{classId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBProductById" parameterType="Long">
+        delete from b_product where id = #{id}
+    </delete>
+
+    <delete id="deleteBProductByIds" parameterType="String">
+        delete from b_product where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

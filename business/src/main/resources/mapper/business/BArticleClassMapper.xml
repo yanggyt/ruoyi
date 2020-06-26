@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BArticleClassMapper">
+    
+    <resultMap type="BArticleClass" id="BArticleClassResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="name"    column="name"    />
+        <result property="articleDescribe"    column="article_describe"    />
+        <result property="additional"    column="additional"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectBArticleClassVo">
+        select id, parent_id, name, article_describe, additional, create_time, update_time from b_article_class
+    </sql>
+
+    <select id="selectBArticleClassList" parameterType="BArticleClass" resultMap="BArticleClassResult">
+        <include refid="selectBArticleClassVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="articleDescribe != null  and articleDescribe != ''"> and article_describe like concat('%', #{articleDescribe}, '%')</if>
+            <if test="additional != null  and additional != ''"> and additional = #{additional}</if>
+        </where>
+        order by parent_id
+    </select>
+    
+    <select id="selectBArticleClassById" parameterType="Long" resultMap="BArticleClassResult">
+        select t.id, t.parent_id, t.name, t.article_describe, t.additional, t.create_time, t.update_time, p.name as parent_name
+        from b_article_class t
+        left join b_article_class p on p.id = t.parent_id
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertBArticleClass" parameterType="BArticleClass" useGeneratedKeys="true" keyProperty="id">
+        insert into b_article_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="articleDescribe != null">article_describe,</if>
+            <if test="additional != null">additional,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="articleDescribe != null">#{articleDescribe},</if>
+            <if test="additional != null">#{additional},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBArticleClass" parameterType="BArticleClass">
+        update b_article_class
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="articleDescribe != null">article_describe = #{articleDescribe},</if>
+            <if test="additional != null">additional = #{additional},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBArticleClassById" parameterType="Long">
+        delete from b_article_class where id = #{id}
+    </delete>
+
+    <delete id="deleteBArticleClassByIds" parameterType="String">
+        delete from b_article_class where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

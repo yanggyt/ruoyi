@@ -663,7 +663,7 @@
             }
             self.$form = $el.closest('form');
             self._initTemplateDefaults();
-            self.uploadFileAttr = !$h.isEmpty($el.attr('name')) ? $el.attr('name') : 'file_data';
+            self.uploadFileAttr = !$h.isEmpty($el.attr('name')) ? $el.attr('name') : 'upload';
             t = self._getLayoutTemplate('progress');
             self.progressTemplate = t.replace('{class}', self.progressClass);
             self.progressInfoTemplate = t.replace('{class}', self.progressInfoClass);
@@ -5584,7 +5584,7 @@
             close: 'Close detailed preview'
         }
     };
-    
+
     $.fn.fileinputLocales.zh = {
         fileSingle: '文件',
         filePlural: '个文件',
