@@ -193,6 +193,14 @@ $(function() {
         var elem = this;
         var win = $(window);
         var doc = $('html, body');
+        if(typeof(opt) != "undefined"){
+        	if(opt.win != null){
+        		win = opt.win;
+        	}
+        	if(opt.doc != null){
+        		doc = opt.doc;
+        	}
+        }
         var options = $.extend({
             autohide: true,
             offset: 50,
