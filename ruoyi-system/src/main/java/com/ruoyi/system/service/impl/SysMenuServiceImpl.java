@@ -65,16 +65,16 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 所有菜单信息
      */
     @Override
-    public List<SysMenu> selectMenuList(SysMenu menu, Long userId)
+    public List<SysMenu> selectMenuList(SysMenu menu, SysUser user)
     {
         List<SysMenu> menuList = null;
-        if (SysUser.isAdmin(userId))
+        if (user.isAdmin())
         {
             menuList = menuMapper.selectMenuList(menu);
         }
         else
         {
-            menu.getParams().put("userId", userId);
+            menu.getParams().put("userId", user.getUserId());
             menuList = menuMapper.selectMenuListByUserId(menu);
         }
         return menuList;
@@ -86,16 +86,16 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 所有菜单信息
      */
     @Override
-    public List<SysMenu> selectMenuAll(Long userId)
+    public List<SysMenu> selectMenuAll(SysUser user)
     {
         List<SysMenu> menuList = null;
-        if (SysUser.isAdmin(userId))
+        if (user.isAdmin())
         {
             menuList = menuMapper.selectMenuAll();
         }
         else
         {
-            menuList = menuMapper.selectMenuAllByUserId(userId);
+            menuList = menuMapper.selectMenuAllByUserId(user.getUserId());
         }
         return menuList;
     }
@@ -128,11 +128,11 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 菜单列表
      */
     @Override
-    public List<Ztree> roleMenuTreeData(SysRole role, Long userId)
+    public List<Ztree> roleMenuTreeData(SysRole role, SysUser user)
     {
         Long roleId = role.getRoleId();
         List<Ztree> ztrees = new ArrayList<Ztree>();
-        List<SysMenu> menuList = selectMenuAll(userId);
+        List<SysMenu> menuList = selectMenuAll(user);
         if (StringUtils.isNotNull(roleId))
         {
             List<String> roleMenuList = menuMapper.selectMenuTree(roleId);
@@ -151,9 +151,9 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 菜单列表
      */
     @Override
-    public List<Ztree> menuTreeData(Long userId)
+    public List<Ztree> menuTreeData(SysUser user)
     {
-        List<SysMenu> menuList = selectMenuAll(userId);
+        List<SysMenu> menuList = selectMenuAll(user);
         List<Ztree> ztrees = initZtree(menuList);
         return ztrees;
     }
@@ -164,10 +164,10 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 权限列表
      */
     @Override
-    public LinkedHashMap<String, String> selectPermsAll(Long userId)
+    public LinkedHashMap<String, String> selectPermsAll(SysUser user)
     {
         LinkedHashMap<String, String> section = new LinkedHashMap<>();
-        List<SysMenu> permissions = selectMenuAll(userId);
+        List<SysMenu> permissions = selectMenuAll(user);
         if (StringUtils.isNotEmpty(permissions))
         {
             for (SysMenu menu : permissions)

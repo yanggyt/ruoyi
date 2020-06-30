@@ -20,6 +20,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
+import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysMenuService;
 
 /**
@@ -48,8 +49,8 @@ public class SysMenuController extends BaseController
     @ResponseBody
     public List<SysMenu> list(SysMenu menu)
     {
-        Long userId = ShiroUtils.getUserId();
-        List<SysMenu> menuList = menuService.selectMenuList(menu, userId);
+        SysUser user = ShiroUtils.getSysUser();
+        List<SysMenu> menuList = menuService.selectMenuList(menu, user);
         return menuList;
     }
 
@@ -167,8 +168,8 @@ public class SysMenuController extends BaseController
     @ResponseBody
     public List<Ztree> roleMenuTreeData(SysRole role)
     {
-        Long userId = ShiroUtils.getUserId();
-        List<Ztree> ztrees = menuService.roleMenuTreeData(role, userId);
+        SysUser user = ShiroUtils.getSysUser();
+        List<Ztree> ztrees = menuService.roleMenuTreeData(role, user);
         return ztrees;
     }
 
@@ -179,8 +180,8 @@ public class SysMenuController extends BaseController
     @ResponseBody
     public List<Ztree> menuTreeData()
     {
-        Long userId = ShiroUtils.getUserId();
-        List<Ztree> ztrees = menuService.menuTreeData(userId);
+        SysUser user = ShiroUtils.getSysUser();
+        List<Ztree> ztrees = menuService.menuTreeData(user);
         return ztrees;
     }
 
