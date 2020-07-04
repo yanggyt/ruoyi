@@ -103,6 +103,8 @@
                 },
 #foreach($column in $columns)
 #set($dictType=$column.dictType)
+#set($isUpload = $column.htmlType == 'upload')
+#set($isSummernote = $column.htmlType == 'summernote')
 #set($javaField=$column.javaField)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
@@ -125,10 +127,36 @@
                     }
                 },
 #elseif($column.list && "" != $javaField)
+    #if($isUpload)
+                {
+                    field: '${javaField}',
+                    title: '${comment}',
+                    formatter: function(value, row, index) {
+                        if(row.${column.javaField}){
+                            return '<a class="btn btn-success btn-xs" href="'+row.${column.javaField}+'" target="view_window"><i class="fa fa-download"></i></a> '
+                            // 如果是图片，把下面注释取消
+                            // return $.table.imageView(row.${column.javaField});
+                        }
+                        return ''
+                    }
+                },
+    #elseif($isSummernote)
+                {
+                    field: '${javaField}',
+                    title: '${comment}',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.seeSummernoteDetail(' + index + ',\'${column.javaField}\')"><i class="fa fa-eye"></i>查看</a> ');
+                        return actions.join('');
+                    }
+                },
+    #else
                 {
                     field: '${javaField}',
                     title: '${comment}'
                 },
+    #end
+
 #end                
 #end
                 {
