@@ -1233,8 +1233,7 @@ var table = {
 			seeSummernoteDetail: function(index,fild) {
 				table.set();
 				var row = $("#" + table.options.id).bootstrapTable('getData')[index];
-				console.log(row)
-				var content =window.atob(row[fild]);
+				var content = decodeURI(window.atob(row[fild]));
 				var htmlcontent = [
 					"<div style='padding:20px;'>",
 					content,

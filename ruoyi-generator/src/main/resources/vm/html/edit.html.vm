@@ -157,15 +157,14 @@
                           required#end>[[*{${field}}]]</textarea>
             </div>
         </div>
-#elseif($column.htmlType == "upload" || $column.htmlType == "uploads")
+#elseif($column.htmlType == "upload")
         <div class="form-group">
             <label class="col-sm-3 control-label">${comment}：</label>
             <div class="col-sm-8">
+                <input type="hidden" th:field="*{${field}}">
                 <div class="file-loading">
-                    <input type="hidden" th:field="*{${field}}">
                     <input class="form-control file-upload" name="file" id="${field}"
-                           type="file" #if($column.htmlType == "uploads")
-                           multiple#end #if($column.required) required#end>
+                           type="file">
                 </div>
             </div>
         </div>
@@ -182,18 +181,18 @@
 #end
 #end
 #if($table.sub)
-            <h4 class="form-header h4">${subTable.functionName}信息</h4>
-            <div class="row">
-                <div class="col-sm-12">
-                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus">
-                        增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus">
-                        删除</i></button>
-                    <div class="col-sm-12 select-table table-striped">
-                        <table id="bootstrap-table"></table>
-                    </div>
+        <h4 class="form-header h4">${subTable.functionName}信息</h4>
+        <div class="row">
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus">
+                    增加</i></button>
+                <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus">
+                    删除</i></button>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="bootstrap-table"></table>
                 </div>
             </div>
+        </div>
 #end
     </form>
 </div>
@@ -267,14 +266,14 @@
     $(function () {
         $('.summernote').each(function (i) {
             var content = $("input[name='" + this.id + "']").val()
-            content = window.atob(content);
+            content = decodeURI(window.atob(content));
             this.innerHTML = content;
             $(this).summernote({
                 height: 100,
                 lang: 'zh-CN',
                 callbacks: {
                     onChange: function (contents, $edittable) {
-                        $("input[name='" + this.id + "']").val(window.btoa(contents))
+                        $("input[name='" + this.id + "']").val(window.btoa(encodeURI(contents)));
                     }
                 }
             });

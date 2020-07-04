@@ -156,10 +156,10 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">${comment}：</label>
             <div class="col-sm-8">
+                <input type="hidden" name="${field}">
                 <div class="file-loading">
-                    <input type="hidden" name="${field}">
                     <input class="form-control file-upload" name="file" id="${field}"
-                           type="file" #if($column.required) required#end>
+                           type="file" >
                 </div>
             </div>
         </div>
@@ -261,7 +261,7 @@
             callbacks: {
                 onChange: function (contents, $edittable) {
                     // Xss 过滤掉了html 内容 ，所以用base64 保存
-                    $("input[name='" + this.id + "']").val(window.btoa(contents))
+                    $("input[name='" + this.id + "']").val(window.btoa(encodeURI(contents)));
 
                 }
             }
