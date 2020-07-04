@@ -1228,7 +1228,27 @@ var table = {
                     $.modal.alertError(result.msg);
                 }
                 $.modal.closeLoading();
-            }
+            },
+			// 显示富文本详细内容
+			seeSummernoteDetail: function(index,fild) {
+				table.set();
+				var row = $("#" + table.options.id).bootstrapTable('getData')[index];
+				console.log(row)
+				var content =window.atob(row[fild]);
+				var htmlcontent = [
+					"<div style='padding:20px;'>",
+					content,
+					"</div>"
+				].join('');
+				layer.open({
+					title: false,
+					type: 1,
+					closeBtn: true,
+					shadeClose: true,
+					area: ['800px', ($(window).height() - 50)+ 'px'],
+					content: htmlcontent
+				});
+			}
         },
         // 校验封装处理
         validate: {
