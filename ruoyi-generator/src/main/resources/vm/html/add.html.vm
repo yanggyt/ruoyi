@@ -241,7 +241,6 @@
         autoReplace: true,      // 自动替换预览图（maxFileCount 是前置条件）
         overwriteInitial: true, // 选择文件后覆盖预览图
         layoutTemplates :{
-            actionDelete:'',    //去除上传预览的缩略图中的删除图标
             actionDrag:''       // 去除预览图拖拽图标
         }
     }).on('fileuploaded', function (event, data, previewId, index) {
