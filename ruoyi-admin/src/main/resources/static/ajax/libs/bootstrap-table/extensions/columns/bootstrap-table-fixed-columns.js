@@ -216,7 +216,7 @@
 
             this.$fixedBody.css({
                 width: this.$fixedHeader.width(),
-                height: height,
+                height: height - 12,
                 top: top + 1
             }).show();
             
