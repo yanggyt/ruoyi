@@ -28,7 +28,7 @@
                 '<thead></thead>',
                 '</table>',
                 '</div>'].join(''));
-            
+
             this.$fixedHeader.find('table').attr('class', this.$el.attr('class'));
             this.$fixedHeaderColumns = this.$fixedHeader.find('thead');
             this.$tableHeader.before(this.$fixedHeader);
@@ -57,7 +57,7 @@
             this.$rightfixedBodyColumns = this.$rightfixedBody.find('tbody');
             this.$tableBody.before(this.$rightfixedBody);
             if (this.options.fixedColumns) {
-                $('.right-fixed-table-columns').attr('style','right:0px');
+                $('.right-fixed-table-columns').attr('style','right:0px;');
             }
         }
     };
@@ -93,9 +93,9 @@
             this.$fixedHeaderColumns.html('').append($ltr);
             this.$selectAll = $ltr.find('[name="btSelectAll"]');
             this.$selectAll.on('click', function () {
-            	var checked = $(this).prop('checked');
-            	$(".left-fixed-body-columns input[name=btSelectItem]").filter(':enabled').prop('checked', checked);
-            	$('.fixed-table-body input[name=btSelectItem]').closest('tr').removeClass('selected');
+                var checked = $(this).prop('checked');
+                $(".left-fixed-body-columns input[name=btSelectItem]").filter(':enabled').prop('checked', checked);
+                $('.fixed-table-body input[name=btSelectItem]').closest('tr').removeClass('selected');
             });
         }
     };
@@ -183,21 +183,16 @@
             this.$fixedHeader.width(headerWidth + 2).show();
         }
         if (that.options.rightFixedColumns) {
+            headerWidth = 0;
+            var totalLength = $("#" + table.options.id).find('th').length;
             this.$body.find('tr:first-child:not(.no-records-found) > *').each(function (i) {
                 var $this = $(this),
-                    index = i;
+                    index = totalLength - i - 1;
 
-                if (i >= visibleFields.length - that.options.rightFixedNumber) {
+                if (i >= that.options.rightFixedNumber) {
                     return false;
-
-
-                    if (that.options.detailView && !that.options.cardView) {
-                       index = i - 1;
-                    }
-                    that.$rightfixedBody.find('thead th[data-field="' + visibleFields[index] + '"]')
-                        .find('.fht-cell').width($this.innerWidth() - 1);
-                    headerWidth += $this.outerWidth();
                 }
+                headerWidth += $("#"  + table.options.id).find("tr:first-child>th").eq(index).width();
             });
             this.$rightfixedBody.width(headerWidth - 1).show();
         }
@@ -213,7 +208,7 @@
                 this.$fixedBody.hide();
                 return;
             }
-            
+
             if (!this.options.height) {
                 top = this.$fixedHeader.height()- 1;
                 height = height - top;
@@ -221,58 +216,59 @@
 
             this.$fixedBody.css({
                 width: this.$fixedHeader.width(),
-                height: height,
+                height: height - 12,
                 top: top + 1
             }).show();
-            
+
             var bsHeight = $("#" + table.options.id).find("tr").eq(1).height();
             var fixedHeight = $("#" + table.options.id).parent().prev().find("tr").eq(1).height();
             var resizeHeight = bsHeight > fixedHeight ? bsHeight: fixedHeight;
             this.$body.find('> tr').each(function (i) {
-            	that.$fixedBody.find('tr:eq(' + i + ')').height(i == 0 ? resizeHeight - 1 : resizeHeight);
+                that.$fixedBody.find('tr:eq(' + i + ')').height(i == 0 ? resizeHeight - 1 : resizeHeight);
+                $("#" + table.options.id).find('tbody>tr:eq(' + i + ')').height(resizeHeight);
                 var thattds = this;
                 that.$fixedBody.find('tr:eq(' + i + ')').find('td').each(function (j) {
                     $(this).width($($(thattds).find('td')[j]).width() + 1);
                 });
             });
-            
+
             $("#" + table.options.id).on("check.bs.table uncheck.bs.table", function (e, rows, $element) {
-        	    var index= $element.data('index');
+                var index= $element.data('index');
                 $(this).find('.bs-checkbox').find('input[data-index="' + index + '"]').prop("checked", true);
                 var selectFixedItem = $('.left-fixed-body-columns input[name=btSelectItem]');
                 var checkAll = selectFixedItem.filter(':enabled').length &&
                     selectFixedItem.filter(':enabled').length ===
-                	selectFixedItem.filter(':enabled').filter(':checked').length;
+                    selectFixedItem.filter(':enabled').filter(':checked').length;
                 $(".left-fixed-table-columns input[name=btSelectAll]").prop('checked', checkAll);
                 $('.fixed-table-body input[name=btSelectItem]').closest('tr').removeClass('selected');
-        	});
-            
+            });
+
             $("#" + table.options.id).off('click', '.fixed-table-body').on('click', '.th-inner', function (event) {
-            	$.each(that.$fixedHeader.find('th'), function (i, th) {
-        			$(th).find('.sortable').removeClass('desc asc').addClass('both');
-        		});
+                $.each(that.$fixedHeader.find('th'), function (i, th) {
+                    $(th).find('.sortable').removeClass('desc asc').addClass('both');
+                });
             });
 
             // events
             this.$fixedHeader.off('click', '.th-inner').on('click', '.th-inner', function (event) {
-            	var target = $(this);
-            	var $this = event.type === "keypress" ? $(event.currentTarget) : $(event.currentTarget).parent(), $this_ = that.$header.find('th').eq($this.index());
-            	
-            	var sortOrder = "";
-            	if (table.options.sortName === $this.data('field')) {
-            		sortOrder = table.options.sortOrder === 'asc' ? 'desc' : 'asc';
+                var target = $(this);
+                var $this = event.type === "keypress" ? $(event.currentTarget) : $(event.currentTarget).parent(), $this_ = that.$header.find('th').eq($this.index());
+
+                var sortOrder = "";
+                if (table.options.sortName === $this.data('field')) {
+                    sortOrder = table.options.sortOrder === 'asc' ? 'desc' : 'asc';
                 } else {
                     sortOrder = $this.data('order') === 'asc' ? 'desc' : 'asc';
                 }
-            	table.options.sortOrder = sortOrder;
-            	var sortName = $this.data('sortName') ? $this.data('sortName') : $this.data('field');
-            	if (target.parent().data().sortable) {
-            		$.each(that.$fixedHeader.find('th'), function (i, th) {
-            			$(th).find('.sortable').removeClass('desc asc').addClass(($(th).data('field') === sortName || $(th).data('sortName') === sortName) ? sortOrder : 'both');
-            		});
+                table.options.sortOrder = sortOrder;
+                var sortName = $this.data('sortName') ? $this.data('sortName') : $this.data('field');
+                if (target.parent().data().sortable) {
+                    $.each(that.$fixedHeader.find('th'), function (i, th) {
+                        $(th).find('.sortable').removeClass('desc asc').addClass(($(th).data('field') === sortName || $(th).data('sortName') === sortName) ? sortOrder : 'both');
+                    });
                 }
             });
-            
+
             this.$tableBody.on('scroll', function () {
                 that.$fixedBody.find('table').css('top', -$(this).scrollTop());
             });

@@ -213,7 +213,9 @@
 		<module>ruoyi-quartz</module>
 		<module>ruoyi-generator</module>
         <module>ruoyi-common</module>
-    </modules>
+		<module>ruoyi-imark</module>
+		<module>ruoyi-cloud</module>
+	</modules>
     <packaging>pom</packaging>
 
 
