@@ -11,5 +11,35 @@
 
     <artifactId>ruoyi-tts</artifactId>
 
+    <dependencies>
+
+        <!-- 核心模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-framework</artifactId>
+        </dependency>
+
+        <!-- java串口通信 -->
+        <dependency>
+            <groupId>org.bidib.jbidib.org.qbang.rxtx</groupId>
+            <artifactId>rxtxcomm</artifactId>
+            <version>2.2</version>
+        </dependency>
+
+        <!--  文字转语音 -->
+        <dependency>
+        <groupId>com.hynnet</groupId>
+        <artifactId>jacob</artifactId>
+        <version>1.18</version>
+        </dependency>
+
+        <!--小辣椒 lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>
