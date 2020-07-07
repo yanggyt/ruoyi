@@ -215,6 +215,8 @@
         <module>ruoyi-common</module>
 		<module>ruoyi-imark</module>
 		<module>ruoyi-cloud</module>
+        <module>ruoyi-alg</module>
+		<module>ruoyi-tts</module>
 	</modules>
     <packaging>pom</packaging>
 
