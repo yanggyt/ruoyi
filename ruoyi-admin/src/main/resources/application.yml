@@ -133,3 +133,10 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+
+minio:
+  url: http://032t.com:9999/
+  accessKey: admin
+  secretKey: R1@31qaz
+  bucketName: huaping
+  startfile: index.html

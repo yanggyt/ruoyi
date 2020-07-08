@@ -88,6 +88,11 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-file</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-minio</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

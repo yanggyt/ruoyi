@@ -217,6 +217,12 @@
 				<version>${ruoyi.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>com.ruoyi</groupId>
+				<artifactId>ruoyi-minio</artifactId>
+				<version>${ruoyi.version}</version>
+			</dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -229,6 +235,7 @@
         <module>ruoyi-common</module>
 		<module>ruoyi-file</module>
         <module>business</module>
+		<module>ruoyi-minio</module>
     </modules>
     <packaging>pom</packaging>
 
