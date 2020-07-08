@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>在线编辑</title>
+    <link href="/layui/css/layui.css" rel="stylesheet"/>
+    <script src="/vscode/vs/loader.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/layui/layui.all.js"></script>
+</head>
+<body style="background-color: #f3f3f3">
+
+<div>
+    <div class="layui-row">
+        <div class="layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span style="margin-right: 30px;margin-left: 30px;">VSCODE 编辑器</span>
+                    <input type="button" class="layui-btn" value="保存" onclick="save();"/>
+                </div>
+                <div class="layui-card-body" id="text">
+                    <div id="container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">目录</div>
+                <div class="layui-card-body" id="dir">
+
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>类型</th>
+                            <th>名称</th>
+                            <th>大小</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="o : ${dirlist}" th:onclick="initEditor([[${o.objname}]],[[${o.isDir}]]);">
+                            <td th:switch="${o.isDir}">
+                                <i th:case="true" class="layui-icon">&#xe67d;</i>
+                                <i th:case="false" class="layui-icon">&#xe655;</i>
+                            </td>
+
+                            <td th:text="${o['name']}"></td>
+                            <td th:text="${o['size']+ 'b'}"></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script th:inline="javascript">
+    var editor;
+    var m;
+    var openfile = [[ ${openfile} ]];
+
+    require.config({
+        paths: { 'vs': '/vscode/vs'},
+
+    });
+    require(['vs/editor/editor.main'], function() {
+        m = monaco;
+        editor = monaco.editor.create(document.getElementById('container'), {});
+        $.post(
+            "/minio/getfile",
+            {filepath:openfile},function (e) {
+                console.log(e);
+                m.editor.setModelLanguage(editor.getModel(),"html")
+                editor.setValue(e.data);
+                openfile = "index.html";
+            }
+        );
+    });
+
+    $(function () {
+        $("#container").width($("#text").width());
+        let height = $(document).height()
+        $("#container").height(height-((height/100)*10));
+    })
+
+    function initEditor(file,isdir) {
+
+        if(isdir){
+            getDirsFile(file);
+        }else{
+            getfile(file);
+        }
+
+    }
+
+    function getfile(filename){
+        var loading = layer.msg('正在加载', {icon: 16, shade: 0.3, time: 0});
+        $.post(
+            "/minio/getfile",
+            {
+                filepath:filename
+
+            },function (e) {
+                if(e.code==0){
+                    var index = filename.lastIndexOf(".");
+                    var suffix = filename.substring(index+1);
+                    if(suffix=="js") suffix = "javascript";
+                    m.editor.setModelLanguage(editor.getModel(),suffix);
+                    editor.setValue(e.data);
+                    openfile = filename;
+                    layer.close(loading);
+                }else{
+                    layer.close(loading);
+                    layer.msg(e.msg);
+                }
+            }
+        );
+    }
+
+    function getDirsFile(path) {
+       location.href="/minio/index?path="+path+"&openfile="+openfile;
+    }
+
+    function save() {
+        var loading = layer.msg('正在提交', {icon: 16, shade: 0.3, time: 0});
+        $.post(
+            "/minio/save",
+            {
+                filepath:openfile,
+                content:editor.getValue()
+            },function (e) {
+                layer.close(loading);
+                layer.msg(e.msg);
+
+            }
+        );
+    }
+</script>
+</body>
+</html>

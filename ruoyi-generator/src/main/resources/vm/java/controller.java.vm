@@ -1,4 +1,4 @@
-package ${basePackage}.web.controller.${moduleName};
+package ${basePackage}.${moduleName}.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -26,7 +26,7 @@ import com.ruoyi.common.core.domain.Ztree;
 
 /**
  * ${functionName}Controller
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */

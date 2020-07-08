@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BArticleMapper">
+    
+    <resultMap type="BArticle" id="BArticleResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="language"    column="language"    />
+        <result property="source"    column="source"    />
+        <result property="link"    column="link"    />
+        <result property="articleclassid"    column="articleclassid"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBArticleVo">
+        select id, title, content, language, source, link, articleclassid, create_time, update_time from b_article
+    </sql>
+
+    <select id="selectBArticleList" parameterType="BArticle" resultMap="BArticleResult">
+        <include refid="selectBArticleVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+            <if test="articleclassid != null "> and articleclassid = #{articleclassid}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBArticleById" parameterType="Long" resultMap="BArticleResult">
+        <include refid="selectBArticleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBArticle" parameterType="BArticle" useGeneratedKeys="true" keyProperty="id">
+        insert into b_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="language != null">language,</if>
+            <if test="source != null">source,</if>
+            <if test="link != null">link,</if>
+            <if test="articleclassid != null">articleclassid,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="language != null">#{language},</if>
+            <if test="source != null">#{source},</if>
+            <if test="link != null">#{link},</if>
+            <if test="articleclassid != null">#{articleclassid},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBArticle" parameterType="BArticle">
+        update b_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="language != null">language = #{language},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="link != null">link = #{link},</if>
+            <if test="articleclassid != null">articleclassid = #{articleclassid},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBArticleById" parameterType="Long">
+        delete from b_article where id = #{id}
+    </delete>
+
+    <delete id="deleteBArticleByIds" parameterType="String">
+        delete from b_article where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

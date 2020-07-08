@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BFrontEndMenuMapper">
+
+    <resultMap type="BFrontEndMenu" id="BFrontEndMenuResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="link"    column="link"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="parentName" column="parent_name" />
+        <result property="additional" column="additional" />
+    </resultMap>
+
+    <sql id="selectBFrontEndMenuVo">
+        select * from b_front_end_menu
+    </sql>
+
+    <select id="selectBFrontEndMenuList" parameterType="BFrontEndMenu" resultMap="BFrontEndMenuResult">
+        <include refid="selectBFrontEndMenuVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="link != null  and link != ''"> and link = #{link}</if>
+        </where>
+        order by parent_id
+    </select>
+
+    <select id="selectBFrontEndMenuById" parameterType="Long" resultMap="BFrontEndMenuResult">
+        select t.id, t.name, t.link, t.parent_id, t.create_time, t.update_time,t.additional, p.name as parent_name
+        from b_front_end_menu t
+        left join b_front_end_menu p on p.id = t.parent_id
+        where t.id = #{id}
+    </select>
+
+    <insert id="insertBFrontEndMenu" parameterType="BFrontEndMenu" useGeneratedKeys="true" keyProperty="id">
+        insert into b_front_end_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="link != null and link != ''">link,</if>
+            <if test="additional != null">additional,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="link != null and link != ''">#{link},</if>
+            <if test="additional != null">#{additional},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBFrontEndMenu" parameterType="BFrontEndMenu">
+        update b_front_end_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="link != null and link != ''">link = #{link},</if>
+            <if test="additional != null">additional = #{additional},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBFrontEndMenuById" parameterType="Long">
+        delete from b_front_end_menu where id = #{id}
+    </delete>
+
+    <delete id="deleteBFrontEndMenuByIds" parameterType="String">
+        delete from b_front_end_menu where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
