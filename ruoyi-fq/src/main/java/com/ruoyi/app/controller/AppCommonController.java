@@ -20,6 +20,7 @@ import com.ruoyi.system.service.ISysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -176,5 +180,12 @@ public class AppCommonController extends BaseController
             return AjaxResult.error("非图像文件");
         }
 
+    }
+
+    //生成shiro密钥
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        SecretKey deskey = keygen.generateKey();
+        System.out.println(Base64.encodeToString(deskey.getEncoded()));
     }
 }
