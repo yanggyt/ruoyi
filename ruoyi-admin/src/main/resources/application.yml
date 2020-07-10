@@ -10,13 +10,14 @@ ruoyi:
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: D:/ruoyi/uploadPath
+  #profile: /home/ruoyi/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 80
+  port: 7777
   servlet:
     # 应用的访问路径
     context-path: /
@@ -61,9 +62,9 @@ spring:
   servlet:
      multipart:
        # 单个文件大小
-       max-file-size:  10MB
+       max-file-size:  15MB
        # 设置总上传的文件大小
-       max-request-size:  20MB
+       max-request-size:  30MB
   # 服务模块
   devtools:
     restart:
@@ -108,11 +109,9 @@ shiro:
     httpOnly: true
     # 设置Cookie的过期时间，天为单位
     maxAge: 30
-    # 设置密钥，务必保持唯一性（生成方式，直接拷贝到main运行即可）KeyGenerator keygen = KeyGenerator.getInstance("AES"); SecretKey deskey = keygen.generateKey(); System.out.println(Base64.encodeToString(deskey.getEncoded()));
-    cipherKey: zSyK5Kp6PZAAjlT+eeNMlg==
   session:
     # Session超时时间，-1代表永不过期（默认30分钟）
-    expireTime: 30
+    expireTime: 60
     # 同步session到数据库的周期（默认1分钟）
     dbSyncPeriod: 1
     # 相隔多久检查一次session的有效性，默认就是10分钟

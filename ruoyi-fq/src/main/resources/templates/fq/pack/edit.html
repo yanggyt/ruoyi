@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改封铅袋')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-pack-edit" th:object="${fqPackage}">
+            <h4 class="form-header h4">封铅袋信息</h4>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">编码：</label>
+                <div class="col-sm-8">
+                    <input name="id" th:field="*{id}" remark class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">描述：</label>
+                <div class="col-sm-8">
+                    <input name="remark" th:field="*{remark}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">产品名称：</label>
+                <div class="col-sm-8">
+                    <input name="pName" th:field="*{pName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">品牌名称：</label>
+                <div class="col-sm-8">
+                    <input name="bName" th:field="*{bName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">袋内数量：</label>
+                <div class="col-sm-8">
+                    <input name="num" th:field="*{num}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">使用：</label>
+                <div class="col-sm-8">
+                    <input name="num" th:field="*{numUse}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">颜色：</label>
+                <div class="col-sm-8">
+                    <input name="color" th:field="*{color}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">起始编码：</label>
+                <div class="col-sm-8">
+                    <input name="startNo" th:field="*{startNo}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">结束编码：</label>
+                <div class="col-sm-8">
+                    <input name="endNo" th:field="*{endNo}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出库区域：</label>
+                <div class="col-sm-8">
+                    <input name="deptId" th:field="*{dept}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">区域领取人：</label>
+                <div class="col-sm-8">
+                    <input name="aUserid" th:field="*{aUserid}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">区域领取时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="aGetTime" th:value="${#dates.format(fqPackage.aGetTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">客户经理领取人：</label>
+                <div class="col-sm-8">
+                    <input name="userid" th:field="*{kUserid}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">客户经理领取时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="kGetTime" th:value="${#dates.format(fqPackage.kGetTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('fq_p_status')}">
+                        <input type="radio" th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:field="*{status}">
+                        <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+            <!--<h4 class="form-header h4">封铅信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>-->
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "fq/pack";
+        $("#form-pack-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-pack-edit').serialize());
+            }
+        }
+
+        $("input[name='aGetTime']").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            //minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='kGetTime']").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            //minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

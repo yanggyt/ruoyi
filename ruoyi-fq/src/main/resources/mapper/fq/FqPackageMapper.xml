@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fq.mapper.FqPackageMapper">
+    
+    <resultMap type="FqPackage" id="FqPackageResult">
+        <result property="id"    column="id"    />
+        <result property="pName"    column="p_name"    />
+        <result property="bName"    column="b_name"    />
+        <result property="num"    column="num"    />
+        <result property="numUse"    column="num_use"    />
+        <result property="color"    column="color"    />
+        <result property="startNo"    column="start_no"    />
+        <result property="endNo"    column="end_no"    />
+        <result property="remark"    column="remark"    />
+        <result property="aUserid"    column="a_userId"    />
+        <result property="aGetTime"    column="a_get_time"    />
+        <result property="kUserid"    column="k_userId"    />
+        <result property="kGetTime"    column="k_get_time"    />
+        <result property="gUserid"    column="g_userId"    />
+        <result property="gReTime"    column="g_re_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <!--<association property="dept"   column="dept_id" javaType="SysDept" resultMap="deptResult" />
+        <association property="aUser"   column="a_userId" javaType="SysUser" resultMap="userResult" />
+        <association property="kUser"   column="k_userId" javaType="SysUser" resultMap="userResult2" />-->
+    </resultMap>
+
+        <!--部门-->
+    <resultMap id="deptResult" type="SysDept">
+        <id     property="deptId"   column="dept_id"     />
+        <result property="parentId" column="parent_id"   />
+        <result property="deptName" column="dept_name"   />
+        <result property="orderNum" column="order_num"   />
+        <result property="leader"   column="leader"      />
+        <result property="status"   column="dept_status" />
+    </resultMap>
+
+<!--
+用户
+-->
+    <resultMap id="userResult" type="SysUser">
+        <id property="userId"  column="a_user_id" />
+        <result property="loginName" column="a_login_name"/>
+        <result property="userName"  column="a_user_name" />
+    </resultMap>
+
+    <resultMap id="userResult2" type="SysUser">
+        <id property="userId"  column="k_user_id" />
+        <result property="loginName" column="k_login_name"/>
+        <result property="userName"  column="k_user_name" />
+    </resultMap>
+
+    <sql id="selectFqPackageVo">
+        select p.id, p.p_name, p.b_name, p.num,p.num_use, p.color, p.start_no, p.end_no, p.remark, p.dept_id, p.a_userId,
+        p.a_get_time, p.k_userId, p.k_get_time, p.create_time, p.update_by, p.create_by, p.update_time, p.status,
+        p.del_flag, p.user_id, p.g_userId, p.g_re_time,
+        d.dept_name as "dept.deptName",
+        u.user_name as "aUser.userName", u.login_name as "aUser.loginName",
+        u2.user_name as "kUser.userName", u2.login_name as "kUser.loginName"
+        from fq_package p
+        left join sys_dept d on p.dept_id = d.dept_id
+        left join sys_user u on p.a_userId = u.user_id
+	    left join sys_user u2 on p.k_userId = u2.user_id
+	    left join sys_user u3 on p.g_userId = u3.user_id
+    </sql>
+
+    <select id="selectFqPackageList" parameterType="FqPackage" resultMap="FqPackageResult">
+        <include refid="selectFqPackageVo"/>
+        <where>
+            1=1 and p.del_flag = '0'
+            <if test="id != null "> and p.id = #{id}</if>
+            <if test="pName != null  and pName != ''"> and p.p_name like concat('%', #{pName}, '%')</if>
+            <if test="bName != null  and bName != ''"> and p.b_name like concat('%', #{bName}, '%')</if>
+            <if test="num != null "> and p.num = #{num}</if>
+            <if test="numUse != null "> and p.num_use = #{numUse}</if>
+            <if test="color != null  and color != ''"> and p.color like concat('%', #{color}, '%')</if>
+            <if test="startNo != null  and startNo != ''"> and p.start_no like concat('%', #{startNo}, '%')</if>
+            <if test="endNo != null  and endNo != ''"> and p.end_no like concat('%', #{endNo}, '%')</if>
+            <if test="aUserid != null "> and p.a_userId = #{aUserid}</if>
+            <if test="params.beginAGetTime != null and params.beginAGetTime != '' and params.endAGetTime != null and params.endAGetTime != ''"> and p.a_get_time between #{params.beginAGetTime} and #{params.endAGetTime}</if>
+            <if test="kUserid != null "> and p.k_userId = #{kUserid}</if>
+            <if test="params.beginKGetTime != null and params.beginKGetTime != '' and params.endKGetTime != null and params.endKGetTime != ''"> and p.k_get_time between #{params.beginKGetTime} and #{params.endKGetTime}</if>
+            <if test="gUserid != null "> and g_userId = #{gUserid}</if>
+            <if test="params.beginGReTime != null and params.beginGReTime != '' and params.endGReTime != null and params.endGReTime != ''"> and g_re_time between #{params.beginGReTime} and #{params.endGReTime}</if>
+            <if test="userId != null "> and p.user_id = #{userId}</if>
+            <if test="deptId != null "> and p.dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and p.status = #{status}</if>
+        </where>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+
+    <select id="selectFqPackageById" parameterType="Long" resultMap="FqPackageResult">
+        <include refid="selectFqPackageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFqPackage" parameterType="FqPackage" useGeneratedKeys="true" keyProperty="id">
+        insert into fq_package
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pName != null">p_name,</if>
+            <if test="bName != null">b_name,</if>
+            <if test="num != null">num,</if>
+            <if test="numUse != null">num_use,</if>
+            <if test="color != null">color,</if>
+            <if test="startNo != null">start_no,</if>
+            <if test="endNo != null">end_no,</if>
+            <if test="remark != null">remark,</if>
+            <if test="aUserid != null">a_userId,</if>
+            <if test="aGetTime != null">a_get_time,</if>
+            <if test="kUserid != null">k_userId,</if>
+            <if test="kGetTime != null">k_get_time,</if>
+            <if test="gUserid != null">g_userId,</if>
+            <if test="gReTime != null">g_re_time,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pName != null">#{pName},</if>
+            <if test="bName != null">#{bName},</if>
+            <if test="num != null">#{num},</if>
+            <if test="numUse != null">#{numUse},</if>
+            <if test="color != null">#{color},</if>
+            <if test="startNo != null">#{startNo},</if>
+            <if test="endNo != null">#{endNo},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="aUserid != null">#{aUserid},</if>
+            <if test="aGetTime != null">#{aGetTime},</if>
+            <if test="kUserid != null">#{kUserid},</if>
+            <if test="kGetTime != null">#{kGetTime},</if>
+            <if test="gUserid != null">#{gUserid},</if>
+            <if test="gReTime != null">#{gReTime},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFqPackage" parameterType="FqPackage">
+        update fq_package
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pName != null">p_name = #{pName},</if>
+            <if test="bName != null">b_name = #{bName},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="numUse != null">num_use = #{numUse},</if>
+            <if test="color != null">color = #{color},</if>
+            <if test="startNo != null">start_no = #{startNo},</if>
+            <if test="endNo != null">end_no = #{endNo},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="aUserid != null">a_userId = #{aUserid},</if>
+            <if test="aGetTime != null">a_get_time = #{aGetTime},</if>
+            <if test="kUserid != null">k_userId = #{kUserid},</if>
+            <if test="kGetTime != null">k_get_time = #{kGetTime},</if>
+            <if test="gUserid != null">g_userId = #{gUserid},</if>
+            <if test="gReTime != null">g_re_time = #{gReTime},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--<delete id="deleteFqPackageById" parameterType="Long">
+        delete from fq_package where id = #{id}
+    </delete>-->
+
+    <!--<delete id="deleteFqPackageByIds" parameterType="String">
+        delete from fq_package where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>-->
+
+    <delete id="deleteFqPackageById" parameterType="Long">
+        update fq_package set del_flag = '2' where id = #{id}
+    </delete>
+
+    <delete id="deleteFqPackageByIds" parameterType="String">
+        update fq_package  set del_flag = '2' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

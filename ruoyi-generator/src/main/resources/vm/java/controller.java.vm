@@ -1,4 +1,4 @@
-package ${packageName}.controller;
+package ${basePackage}.${moduleName}.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,6 +17,8 @@ import ${packageName}.service.I${ClassName}Service;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.util.ShiroUtils;
+import org.springframework.web.multipart.MultipartFile;
 #if($table.crud || $table.sub)
 import com.ruoyi.common.core.page.TableDataInfo;
 #elseif($table.tree)
@@ -26,7 +28,7 @@ import com.ruoyi.common.core.domain.Ztree;
 
 /**
  * ${functionName}Controller
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
@@ -87,29 +89,69 @@ public class ${ClassName}Controller extends BaseController
         return util.exportExcel(list, "${businessName}");
     }
 
-#if($table.crud || $table.sub)
     /**
-     * 新增${functionName}
+     * 导入${functionName}列表
      */
-    @GetMapping("/add")
-    public String add()
+    @Log(title = "${functionName}", businessType = BusinessType.IMPORT)
+    @RequiresPermissions("${permissionPrefix}:import")
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        return prefix + "/add";
+        ExcelUtil<${ClassName}> util = new ExcelUtil<${ClassName}>(${ClassName}.class);
+        List<${ClassName}> list = util.importExcel(file.getInputStream());
+        String operName = ShiroUtils.getSysUser().getLoginName();
+        String message = ${className}Service.importData(list, updateSupport, operName);
+        return AjaxResult.success(message);
     }
-#elseif($table.tree)
+
     /**
-     * 新增${functionName}
+     * 下载模板
      */
-    @GetMapping(value = { "/add/{${pkColumn.javaField}}", "/add/" })
-    public String add(@PathVariable(value = "${pkColumn.javaField}", required = false) Long ${pkColumn.javaField}, ModelMap mmap)
+    @RequiresPermissions("${permissionPrefix}:list")
+    @GetMapping("/importTemplate")
+    @ResponseBody
+    public AjaxResult importTemplate()
     {
-        if (StringUtils.isNotNull(${pkColumn.javaField}))
+        ExcelUtil<${ClassName}> util = new ExcelUtil<>(${ClassName}.class);
+        return util.importTemplateExcel("${functionName}数据");
+    }
+
+    /**
+    * 查看详细
+    */
+    @RequiresPermissions("${permissionPrefix}:detail")
+    @GetMapping("/detail/{${pkColumn.javaField}}")
+    public String detail(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField}, ModelMap mmap)
+    {
+        ${ClassName} ${className} = ${className}Service.select${ClassName}ById(${pkColumn.javaField});
+        mmap.put("${className}", ${className});
+        return prefix + "/detail";
+    }
+
+    #if($table.crud || $table.sub)
+        /**
+         * 新增${functionName}
+         */
+        @GetMapping("/add")
+        public String add()
         {
-            mmap.put("${className}", ${className}Service.select${ClassName}ById(${pkColumn.javaField}));
+            return prefix + "/add";
         }
-        return prefix + "/add";
-    }
-#end
+    #elseif($table.tree)
+        /**
+         * 新增${functionName}
+         */
+        @GetMapping(value = { "/add/{${pkColumn.javaField}}", "/add/" })
+        public String add(@PathVariable(value = "${pkColumn.javaField}", required = false) Long ${pkColumn.javaField}, ModelMap mmap)
+        {
+            if (StringUtils.isNotNull(${pkColumn.javaField}))
+            {
+                mmap.put("${className}", ${className}Service.select${ClassName}ById(${pkColumn.javaField}));
+            }
+            return prefix + "/add";
+        }
+    #end
 
     /**
      * 新增保存${functionName}
@@ -120,6 +162,7 @@ public class ${ClassName}Controller extends BaseController
     @ResponseBody
     public AjaxResult addSave(${ClassName} ${className})
     {
+        ${className}.setCreateBy(ShiroUtils.getLoginName());
         return toAjax(${className}Service.insert${ClassName}(${className}));
     }
 
@@ -143,6 +186,7 @@ public class ${ClassName}Controller extends BaseController
     @ResponseBody
     public AjaxResult editSave(${ClassName} ${className})
     {
+        ${className}.setUpdateBy(ShiroUtils.getLoginName());
         return toAjax(${className}Service.update${ClassName}(${className}));
     }
 

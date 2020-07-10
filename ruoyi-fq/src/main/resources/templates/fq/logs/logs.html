@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('封铅袋出入库记录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>封铅袋编码：</label>
+                                <input type="text" name="pId"/>
+                            </li>
+                            <li>
+                                <label>袋内数量：</label>
+                                <input type="text" name="num"/>
+                            </li>
+                            <li>
+                                <label>起始编码：</label>
+                                <input type="text" name="fqPackage.startNo"/>
+                            </li>
+                            <li>
+                                <label>结束编码：</label>
+                                <input type="text" name="fqPackage.endNo"/>
+                            </li>
+                            <li>
+                                <label>归还人：</label>
+                                <input type="hidden" id="gUserid" name="kUserid"/>
+                                <input type="text" id="c" name="c" onclick="selectUserC('1,2,100')"/>
+                            </li>
+                            <li class="select-time">
+                                <label>归还时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginGReTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endGReTime]"/>
+                            </li>
+                            <li>
+                                <label>操作类型：</label>
+                                <select name="optType" th:with="type=${@dict.getType('fq_l_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>领取人：</label>
+                                <input type="hidden" id="userId" name="userId"/>
+                                <input type="text" id="a" name="a" onclick="selectUserA('1,2,100')"/>
+                            </li>
+                            <li class="select-time">
+                                <label>领取时间：</label>
+                                <input type="text" class="time-input" id="startTime2" placeholder="开始时间" name="params[beginGetTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime2" placeholder="结束时间" name="params[endGetTime]"/>
+                            </li>
+                            <li>
+                                <label>当前区域：</label>
+                                <input name="deptId" type="hidden" id="treeId"/>
+                                <input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择区域" class="form-control">
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <!--<div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="fq:logs:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="fq:logs:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="fq:logs:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="fq:logs:import">
+                    <i class="fa fa-upload"></i> 导入
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="fq:logs:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>-->
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('fq:logs:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('fq:logs:remove')}]];
+        var optTypeDatas = [[${@dict.getType('fq_l_type')}]];
+        var prefix = ctx + "fq/logs";
+
+        /*用户管理-新增-选择部门树*/
+        function selectDeptTree() {
+            var treeId = $("#treeId").val();
+            var deptId = $.common.isEmpty(treeId) ? "201" : $("#treeId").val();
+            var url = ctx + "system/dept/selectDeptTree/" + deptId;
+            var options = {
+                title: '选择区域',
+                width: "380",
+                url: url,
+                callBack: selectDeptTreeHandler
+            };
+            $.modal.openOptions(options);
+        }
+
+        function selectDeptTreeHandler(index, layero){
+            var tree = layero.find("iframe")[0].contentWindow.$._tree;
+            if ($.tree.notAllowParents(tree)) {
+                var body = layer.getChildFrame('body', index);
+                $("#treeId").val(body.find('#treeId').val());
+                $("#treeName").val(body.find('#treeName').val());
+                layer.close(index);
+            }
+        }
+
+        /* 分配用户-选择用户 */
+        // r 角色id
+        function selectUserA(r) {
+            var options = {
+                title: '选择用户',
+                //width: "380",
+                url: '/system/role/authUser/selectUserCommonExt/' + r,  // 101
+                callBack: selectUserHandlerA
+            };
+            $.modal.openOptions(options);
+        }
+
+        function selectUserHandlerA(index){
+            var body = layer.getChildFrame('body', index);
+            $("#a").val(body.find('#userName').val());
+            $("#userid").val(body.find('#userId').val());
+            layer.close(index);
+        }
+
+        function selectUserC(r) {
+            var options = {
+                title: '选择用户',
+                //width: "380",
+                //排除某些角色
+                url: '/system/role/authUser/selectUserCommonExt/' + r,  // 101
+                callBack: selectUserHandlerC
+            };
+            $.modal.openOptions(options);
+        }
+
+        function selectUserHandlerC(index){
+            var body = layer.getChildFrame('body', index);
+            $("#c").val(body.find('#userName').val());
+            $("#gUserid").val(body.find('#userId').val());
+            layer.close(index);
+        }
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                importUrl: prefix + "/importData",
+                importTemplateUrl: prefix + "/importTemplate",
+                detailUrl: prefix + "/detail/{id}",
+                sortName: "createTime",
+                sortOrder: "desc",
+                modalName: "封铅袋出入库记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'pId',
+                    title: '封铅袋id'
+                },
+                {
+                    field: 'fqPackage.startNo',
+                    title: '起始编码'
+                },
+                {
+                    field: 'fqPackage.endNo',
+                    title: '结束编码'
+                },
+                {
+                    field: 'num',
+                    title: '袋内数量'
+                },
+                {
+                    field: 'numUse',
+                    title: '使用数量'
+                },
+                {
+                    field: 'gUserid',
+                    title: '归还人'
+                },
+                {
+                    field: 'gReTime',
+                    title: '归还时间'
+                },
+                {
+                    field: 'optType',
+                    title: '操作类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(optTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'userId',
+                    title: '领取人'
+                },
+                {
+                    field: 'getTime',
+                    title: '领取时间'
+                },
+                {
+                    field: 'deptId',
+                    title: '当前区域'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5">
+                <input type="checkbox" id="updateSupport" name="updateSupport" title="如果封铅袋出入库记录已经存在，更新这条数据。"> 是否更新已经存在的封铅袋
+                &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
+</html>

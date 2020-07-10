@@ -20,3 +20,9 @@ values('${functionName}删除', @parentId, '4',  '#',  'F', '0', '${permissionPr
 
 insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
 values('${functionName}导出', @parentId, '5',  '#',  'F', '0', '${permissionPrefix}:export',       '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('${functionName}导入', @parentId, '6',  '#',  'F', '0', '${permissionPrefix}:import',       '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('${functionName}详情', @parentId, '7',  '#',  'F', '0', '${permissionPrefix}:detail',       '#', 'admin', '2018-03-01', 'ry', '2018-03-01', '');

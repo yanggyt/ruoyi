@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fq.mapper.FqTableMapper">
+    
+    <resultMap type="FqTable" id="FqTableResult">
+        <result property="id"    column="id"    />
+        <result property="kName"    column="k_name"    />
+        <result property="dName"    column="d_name"    />
+        <result property="dNo"    column="d_no"    />
+        <result property="pId"    column="p_id"    />
+        <result property="fNo"    column="f_no"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="splitTime"    column="split_time"    />
+        <result property="optSign"    column="opt_sign"    />
+        <result property="userSign"    column="user_sign"    />
+        <result property="status"    column="status"    />
+        <result property="optTime"    column="opt_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+
+    <sql id="selectFqTableVo">
+        select id, k_name, d_name, d_no, p_id, f_no, add_time, split_time, opt_sign, user_sign, status, opt_time, remark, create_by, create_time, update_by, update_time, user_id, dept_id from fq_table
+    </sql>
+
+    <select id="selectFqTableList" parameterType="FqTable" resultMap="FqTableResult">
+        <include refid="selectFqTableVo"/>
+        <where>  1=1
+            <if test="kName != null  and kName != ''"> and k_name like concat('%', #{kName}, '%')</if>
+            <if test="dName != null  and dName != ''"> and d_name like concat('%', #{dName}, '%')</if>
+            <if test="dNo != null  and dNo != ''"> and d_no like concat('%', #{dNo}, '%')</if>
+            <if test="pId != null "> and p_id = #{pId}</if>
+            <if test="fNo != null  and fNo != ''"> and f_no like concat('%', #{fNo}, '%')</if>
+            <if test="params.beginAddTime != null and params.beginAddTime != '' and params.endAddTime != null and params.endAddTime != ''"> and add_time between #{params.beginAddTime} and #{params.endAddTime}</if>
+            <if test="params.beginSplitTime != null and params.beginSplitTime != '' and params.endSplitTime != null and params.endSplitTime != ''"> and split_time between #{params.beginSplitTime} and #{params.endSplitTime}</if>
+            <if test="optSign != null  and optSign != ''"> and opt_sign = #{optSign}</if>
+            <if test="userSign != null  and userSign != ''"> and user_sign = #{userSign}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="params.beginOptTime != null and params.beginOptTime != '' and params.endOptTime != null and params.endOptTime != ''"> and opt_time between #{params.beginOptTime} and #{params.endOptTime}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+    
+    <select id="selectFqTableById" parameterType="Long" resultMap="FqTableResult">
+        <include refid="selectFqTableVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFqTable" parameterType="FqTable" useGeneratedKeys="true" keyProperty="id">
+        insert into fq_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="kName != null">k_name,</if>
+            <if test="dName != null">d_name,</if>
+            <if test="dNo != null">d_no,</if>
+            <if test="pId != null">p_id,</if>
+            <if test="fNo != null">f_no,</if>
+            <if test="addTime != null">add_time,</if>
+            <if test="splitTime != null">split_time,</if>
+            <if test="optSign != null">opt_sign,</if>
+            <if test="userSign != null">user_sign,</if>
+            <if test="status != null">status,</if>
+            <if test="optTime != null">opt_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="kName != null">#{kName},</if>
+            <if test="dName != null">#{dName},</if>
+            <if test="dNo != null">#{dNo},</if>
+            <if test="pId != null">#{pId},</if>
+            <if test="fNo != null">#{fNo},</if>
+            <if test="addTime != null">#{addTime},</if>
+            <if test="splitTime != null">#{splitTime},</if>
+            <if test="optSign != null">#{optSign},</if>
+            <if test="userSign != null">#{userSign},</if>
+            <if test="status != null">#{status},</if>
+            <if test="optTime != null">#{optTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+         </trim>
+    </insert>
+
+    <insert id="batchInsertFqTable" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into fq_table (k_name, d_name, d_no, p_id, f_no, add_time, split_time, opt_sign, user_sign, status, opt_time, remark, create_by, create_time, update_by, update_time, user_id, dept_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+            #{item.kName},#{item.dName},#{item.dNo},#{item.pId},#{item.fNo},#{item.addTime},#{item.splitTime},#{item.optSign},#{item.userSign},#{item.status},#{item.optTime},
+            #{item.remark},#{item.createBy},#{item.createTime},#{item.updateBy},#{item.updateTime},#{item.userId},#{item.deptId}
+        </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateFqTable" parameterType="FqTable">
+        update fq_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="kName != null">k_name = #{kName},</if>
+            <if test="dName != null">d_name = #{dName},</if>
+            <if test="dNo != null">d_no = #{dNo},</if>
+            <if test="pId != null">p_id = #{pId},</if>
+            <if test="fNo != null">f_no = #{fNo},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+            <if test="splitTime != null">split_time = #{splitTime},</if>
+            <if test="optSign != null">opt_sign = #{optSign},</if>
+            <if test="userSign != null">user_sign = #{userSign},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="optTime != null">opt_time = #{optTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFqTableById" parameterType="Long">
+        delete from fq_table where id = #{id}
+    </delete>
+
+    <delete id="deleteFqTableByIds" parameterType="String">
+        delete from fq_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
