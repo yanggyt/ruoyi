@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('封铅登记列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>客户名称：</label>
+                                <input type="text" name="kName"/>
+                            </li>
+                            <li>
+                                <label>设备名称：</label>
+                                <input type="text" name="dName"/>
+                            </li>
+                            <li>
+                                <label>设备编号：</label>
+                                <input type="text" name="dNo"/>
+                            </li>
+                            <li>
+                                <label>封签袋id：</label>
+                                <input type="text" name="pId"/>
+                            </li>
+                            <li>
+                                <label>封铅编码：</label>
+                                <input type="text" name="fNo"/>
+                            </li>
+                            <li class="select-time">
+                                <label>加封日期：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginAddTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endAddTime]"/>
+                            </li>
+                            <li class="select-time">
+                                <label>拆封日期：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginSplitTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSplitTime]"/>
+                            </li>
+                            <li>
+                                <label>执行人签字：</label>
+                                <input type="text" name="optSign"/>
+                            </li>
+                            <li>
+                                <label>用户签字：</label>
+                                <input type="text" name="userSign"/>
+                            </li>
+                            <li>
+                                <label>状态：</label>
+                                <select name="status" th:with="type=${@dict.getType('fq_f_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li class="select-time">
+                                <label>使用时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginOptTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endOptTime]"/>
+                            </li>
+                            <li>
+                                <label>客户经理：</label>
+                                <input type="text" name="userId"/>
+                            </li>
+                            <li>
+                                <label>区域：</label>
+                                <input type="text" name="deptId"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="fq:fqTable:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="fq:fqTable:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="fq:fqTable:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="fq:fqTable:import">
+                    <i class="fa fa-upload"></i> 导入
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="fq:fqTable:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('fq:fqTable:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('fq:fqTable:remove')}]];
+        var statusDatas = [[${@dict.getType('fq_f_type')}]];
+        var prefix = ctx + "fq/fqTable";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                importUrl: prefix + "/importData",
+                importTemplateUrl: prefix + "/importTemplate",
+                detailUrl: prefix + "/detail/{id}",
+                sortName: "createTime",
+                sortOrder: "desc",
+                modalName: "封铅登记",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'kName',
+                    title: '客户名称'
+                },
+                {
+                    field: 'dName',
+                    title: '设备名称'
+                },
+                {
+                    field: 'dNo',
+                    title: '设备编号'
+                },
+                {
+                    field: 'pId',
+                    title: '封签袋id'
+                },
+                {
+                    field: 'fNo',
+                    title: '封铅编码'
+                },
+                {
+                    field: 'addTime',
+                    title: '加封日期'
+                },
+                {
+                    field: 'splitTime',
+                    title: '拆封日期'
+                },
+                {
+                    field: 'optSign',
+                    title: '执行人签字'
+                },
+                {
+                    field: 'userSign',
+                    title: '用户签字'
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(statusDatas, value);
+                    }
+                },
+                {
+                    field: 'optTime',
+                    title: '使用时间'
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
+                },
+                {
+                    field: 'userId',
+                    title: '客户经理'
+                },
+                {
+                    field: 'deptId',
+                    title: '区域'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>详情</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5">
+                <input type="checkbox" id="updateSupport" name="updateSupport" title="如果封铅登记已经存在，更新这条数据。"> 是否更新已经存在的封铅袋
+                &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
+</html>

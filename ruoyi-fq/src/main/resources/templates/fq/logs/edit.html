@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('修改封铅袋出入库记录')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-logs-edit" th:object="${fqPLogs}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">封铅袋id：</label>
+                <div class="col-sm-8">
+                    <input name="pId" th:field="*{pId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">袋内数量：</label>
+                <div class="col-sm-8">
+                    <input name="num" th:field="*{num}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">归还人：</label>
+                <div class="col-sm-8">
+                    <input name="gUserid" th:field="*{gUserid}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">归还时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="gReTime" th:value="${#dates.format(fqPLogs.gReTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">操作类型(0 代表区域领取 1 代表区域归还 2 入库 3客户经理领取 4客户经理归还)：</label>
+                <div class="col-sm-8">
+                    <select name="optType" class="form-control m-b" th:with="type=${@dict.getType('fq_l_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{optType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">领取人：</label>
+                <div class="col-sm-8">
+                    <input name="userId" th:field="*{userId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">领取时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="getTime" th:value="${#dates.format(fqPLogs.getTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">当前区域：</label>
+                <div class="col-sm-8">
+                    <input name="deptId" th:field="*{deptId}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "fq/logs";
+        $("#form-logs-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-logs-edit').serialize());
+            }
+        }
+
+        $("input[name='gReTime']").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            //minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='getTime']").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            //minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

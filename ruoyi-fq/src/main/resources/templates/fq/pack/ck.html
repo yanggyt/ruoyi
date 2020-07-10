@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('修改封铅袋')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-pack-edit">
+            <h4 class="form-header h4">出库</h4>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">出库封签袋编号：</label>
+                <div class="col-sm-8">
+                    <input name="ids" th:value="${ids}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group" shiro:hasAnyRoles="admin,zbgl">
+                <label class="col-sm-3 control-label" >出库区域：</label>
+                <div class="col-sm-8">
+                    <input name="deptId" type="hidden" id="treeId"/>
+                    <input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择区域" class="form-control">
+                </div>
+            </div>
+            <div class="form-group" shiro:hasAnyRoles="admin,zbgl">
+                <label class="col-sm-3 control-label">区域领取人：</label>
+                <div class="col-sm-8">
+                    <input type="hidden" id="aUserid" name="aUserid"/>
+                    <input type="text" id="a" name="a" onclick="selectUserA('101')"/>
+                </div>
+            </div>
+            <div class="form-group" shiro:hasAnyRoles="admin,zbgl">
+                <label class="col-sm-3 control-label">区域领取时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="aGetTime" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" shiro:hasAnyRoles="admin,qygl">
+                <label class="col-sm-3 control-label">客户经理领取人：</label>
+                <div class="col-sm-8">
+                    <input type="hidden" id="kUserid" name="kUserid"/>
+                    <input type="text" id="b" name="b" onclick="selectUserB('102')"/>
+                </div>
+            </div>
+            <div class="form-group" shiro:hasAnyRoles="admin,qygl">
+                <label class="col-sm-3 control-label">客户经理领取时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="kGetTime" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "fq/pack";
+        $("#form-pack-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/editAll", $('#form-pack-edit').serialize());
+            }
+        }
+
+        $("input[name='aGetTime']").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            //minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='kGetTime']").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            //minView: "month",
+            autoclose: true
+        });
+
+        /*用户管理-新增-选择部门树*/
+        function selectDeptTree() {
+            var treeId = $("#treeId").val();
+            var deptId = $.common.isEmpty(treeId) ? "201" : $("#treeId").val();
+            var url = ctx + "system/dept/selectDeptTree/" + deptId;
+            var options = {
+                title: '选择区域',
+                width: "380",
+                url: url,
+                callBack: selectDeptTreeHandler
+            };
+            $.modal.openOptions(options);
+        }
+
+        function selectDeptTreeHandler(index, layero){
+            var tree = layero.find("iframe")[0].contentWindow.$._tree;
+            if ($.tree.notAllowParents(tree)) {
+                var body = layer.getChildFrame('body', index);
+                $("#treeId").val(body.find('#treeId').val());
+                $("#treeName").val(body.find('#treeName').val());
+                layer.close(index);
+            }
+        }
+
+        /* 分配用户-选择用户 */
+        // r 角色id
+        function selectUserA(r) {
+            var options = {
+                title: '选择用户',
+                //width: "380",
+                url: '/system/role/authUser/selectUserCommon/' + r,  // 101
+                callBack: selectUserHandlerA
+            };
+            $.modal.openOptions(options);
+        }
+
+        function selectUserB(r) {
+            var options = {
+                title: '选择用户',
+                //width: "380",
+                url: '/system/role/authUser/selectUserCommon/' + r,  // 101
+                callBack: selectUserHandlerB
+            };
+            $.modal.openOptions(options);
+        }
+
+        function selectUserHandlerA(index){
+            var body = layer.getChildFrame('body', index);
+            $("#a").val(body.find('#userName').val());
+            $("#aUserid").val(body.find('#userId').val());
+            layer.close(index);
+        }
+
+        function selectUserHandlerB(index){
+            var body = layer.getChildFrame('body', index);
+            $("#b").val(body.find('#userName').val());
+            $("#kUserid").val(body.find('#userId').val());
+            layer.close(index);
+        }
+    </script>
+</body>
+</html>

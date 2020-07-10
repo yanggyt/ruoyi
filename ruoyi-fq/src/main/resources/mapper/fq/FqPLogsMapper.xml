@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fq.mapper.FqPLogsMapper">
+    
+    <resultMap type="FqPLogs" id="FqPLogsResult">
+        <result property="id"    column="id"    />
+        <result property="pId"    column="p_id"    />
+        <result property="num"    column="num"    />
+        <result property="numUse"    column="num_use"    />
+        <result property="gUserid"    column="g_userId"    />
+        <result property="gReTime"    column="g_re_time"    />
+        <result property="optType"    column="opt_type"    />
+        <result property="userId"    column="user_id"    />
+        <result property="getTime"    column="get_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFqPLogsVo">
+        select p.id, p.p_id, p.num,p.num_use, p.g_userId, p.g_re_time, p.opt_type, p.user_id, p.get_time, p.dept_id, p.create_by, p.create_time, p.update_by, p.update_time,
+        d.dept_name as "dept.deptName",
+        u.user_name as "user.userName", u.login_name as "user.loginName",
+        u2.user_name as "gUser.userName", u2.login_name as "gUser.loginName",
+        f.start_no as "fqPackage.startNo",f.end_no as "fqPackage.endNo"
+        from fq_p_logs p
+        left join sys_dept d on p.dept_id = d.dept_id
+        left join sys_user u on p.user_id = u.user_id
+	    left join sys_user u2 on p.g_userId = u2.user_id
+	    left join fq_package f on p.p_id = f.id
+    </sql>
+
+    <select id="selectFqPLogsList" parameterType="FqPLogs" resultMap="FqPLogsResult">
+        <include refid="selectFqPLogsVo"/>
+        <where>  1=1
+            <if test="pId != null  and pId != ''"> and p.p_id = #{pId}</if>
+            <if test="num != null "> and p.num = #{num}</if>
+            <if test="numUse != null "> and p.num_use = #{numUse}</if>
+            <if test="gUserid != null "> and p.g_userId = #{gUserid}</if>
+            <if test="params.beginGReTime != null and params.beginGReTime != '' and params.endGReTime != null and params.endGReTime != ''"> and p.g_re_time between #{params.beginGReTime} and #{params.endGReTime}</if>
+            <if test="optType != null  and optType != ''"> and p.opt_type = #{optType}</if>
+            <if test="userId != null "> and p.user_id = #{userId}</if>
+            <if test="params.beginGetTime != null and params.beginGetTime != '' and params.endGetTime != null and params.endGetTime != ''"> and p.get_time between #{params.beginGetTime} and #{params.endGetTime}</if>
+            <if test="deptId != null "> and p.dept_id = #{deptId}</if>
+            <if test="fqPackage != null and fqPackage.startNo != '' "> and f.start_no like concat('%', #{fqPackage.startNo}, '%')</if>
+            <if test="fqPackage != null and fqPackage.endNo != '' "> and f.end_no like concat('%', #{fqPackage.endNo}, '%')</if>
+        </where>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+    
+    <select id="selectFqPLogsById" parameterType="String" resultMap="FqPLogsResult">
+        <include refid="selectFqPLogsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFqPLogs" parameterType="FqPLogs">
+        insert into fq_p_logs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pId != null">p_id,</if>
+            <if test="num != null">num,</if>
+            <if test="numUse != null">num_use,</if>
+            <if test="gUserid != null">g_userId,</if>
+            <if test="gReTime != null">g_re_time,</if>
+            <if test="optType != null">opt_type,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="getTime != null">get_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pId != null">#{pId},</if>
+            <if test="num != null">#{num},</if>
+            <if test="numUse != null">#{numUse},</if>
+            <if test="gUserid != null">#{gUserid},</if>
+            <if test="gReTime != null">#{gReTime},</if>
+            <if test="optType != null">#{optType},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="getTime != null">#{getTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFqPLogs" parameterType="FqPLogs">
+        update fq_p_logs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pId != null">p_id = #{pId},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="numUse != null">num_use = #{numUse},</if>
+            <if test="gUserid != null">g_userId = #{gUserid},</if>
+            <if test="gReTime != null">g_re_time = #{gReTime},</if>
+            <if test="optType != null">opt_type = #{optType},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="getTime != null">get_time = #{getTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFqPLogsById" parameterType="String">
+        delete from fq_p_logs where id = #{id}
+    </delete>
+
+    <delete id="deleteFqPLogsByIds" parameterType="String">
+        delete from fq_p_logs where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

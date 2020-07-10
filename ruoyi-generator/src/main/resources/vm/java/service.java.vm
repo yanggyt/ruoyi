@@ -8,15 +8,15 @@ import com.ruoyi.common.core.domain.Ztree;
 
 /**
  * ${functionName}Service接口
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${ClassName}Service 
+public interface I${ClassName}Service
 {
     /**
      * 查询${functionName}
-     * 
+     *
      * @param ${pkColumn.javaField} ${functionName}ID
      * @return ${functionName}
      */
@@ -24,7 +24,7 @@ public interface I${ClassName}Service
 
     /**
      * 查询${functionName}列表
-     * 
+     *
      * @param ${className} ${functionName}
      * @return ${functionName}集合
      */
@@ -32,7 +32,7 @@ public interface I${ClassName}Service
 
     /**
      * 新增${functionName}
-     * 
+     *
      * @param ${className} ${functionName}
      * @return 结果
      */
@@ -40,7 +40,7 @@ public interface I${ClassName}Service
 
     /**
      * 修改${functionName}
-     * 
+     *
      * @param ${className} ${functionName}
      * @return 结果
      */
@@ -48,7 +48,7 @@ public interface I${ClassName}Service
 
     /**
      * 批量删除${functionName}
-     * 
+     *
      * @param ids 需要删除的数据ID
      * @return 结果
      */
@@ -56,7 +56,7 @@ public interface I${ClassName}Service
 
     /**
      * 删除${functionName}信息
-     * 
+     *
      * @param ${pkColumn.javaField} ${functionName}ID
      * @return 结果
      */
@@ -65,9 +65,19 @@ public interface I${ClassName}Service
 
     /**
      * 查询${functionName}树列表
-     * 
+     *
      * @return 所有${functionName}信息
      */
     public List<Ztree> select${ClassName}Tree();
 #end
+
+    /**
+     * 导入数据
+     *
+     * @param list 数据列表列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importData(List<${ClassName}> list, Boolean isUpdateSupport, String operName);
 }
