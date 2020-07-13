@@ -116,15 +116,14 @@ public class SysUser extends BaseEntity
         this.userId = userId;
     }
 
-    public boolean isAdmin()
-    {
-        return isAdmin(this.userId);
-    }
-
-    public static boolean isAdmin(Long userId)
-    {
-        return userId != null && 1L == userId;
-    }
+    public boolean isAdmin() {
+		// 是否分配了管理员角色
+		List<SysRole> roles = this.getRoles();
+		if (roles != null && roles.stream().allMatch(r -> r.isAdmin())) {
+			return true;
+		}
+		return this.getUserId() != null && this.getUserId() == 1L;
+	}
 
     public Long getDeptId()
     {
