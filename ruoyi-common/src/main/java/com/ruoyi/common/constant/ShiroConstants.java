@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.ruoyi.common.constant;
 
 /**
@@ -6,7 +5,7 @@ package com.ruoyi.common.constant;
  * 
  * @author ruoyi
  */
-public interface ShiroConstants
+public class ShiroConstants
 {
     /**
      * 当前登录的用户
@@ -21,22 +20,22 @@ public interface ShiroConstants
     /**
      * 消息key
      */
-    public static String MESSAGE = "message";
+    public static final String MESSAGE = "message";
 
     /**
      * 错误key
      */
-    public static String ERROR = "errorMsg";
+    public static final String ERROR = "errorMsg";
 
     /**
      * 编码格式
      */
-    public static String ENCODING = "UTF-8";
+    public static final String ENCODING = "UTF-8";
 
     /**
      * 当前在线会话
      */
-    public String ONLINE_SESSION = "online_session";
+    public static final String ONLINE_SESSION = "online_session";
 
     /**
      * 验证码key
@@ -49,7 +48,7 @@ public interface ShiroConstants
     public static final String CURRENT_ENABLED = "captchaEnabled";
 
     /**
-     * 验证码开关
+     * 验证码类型
      */
     public static final String CURRENT_TYPE = "captchaType";
 
@@ -62,70 +61,14 @@ public interface ShiroConstants
      * 验证码错误
      */
     public static final String CAPTCHA_ERROR = "captchaError";
+
+    /**
+     * 登录记录缓存
+     */
+    public static final String LOGINRECORDCACHE = "loginRecordCache";
+
+    /**
+     * 系统活跃用户缓存
+     */
+    public static final String SYS_USERCACHE = "sys-userCache";
 }
-=======
-package com.ruoyi.common.constant;
-
-/**
- * Shiro通用常量
- * 
- * @author ruoyi
- */
-public interface ShiroConstants
-{
-    /**
-     * 当前登录的用户
-     */
-    public static final String CURRENT_USER = "currentUser";
-
-    /**
-     * 用户名
-     */
-    public static final String CURRENT_USERNAME = "username";
-
-    /**
-     * 消息key
-     */
-    public static String MESSAGE = "message";
-
-    /**
-     * 错误key
-     */
-    public static String ERROR = "errorMsg";
-
-    /**
-     * 编码格式
-     */
-    public static String ENCODING = "UTF-8";
-
-    /**
-     * 当前在线会话
-     */
-    public String ONLINE_SESSION = "online_session";
-
-    /**
-     * 验证码key
-     */
-    public static final String CURRENT_CAPTCHA = "captcha";
-
-    /**
-     * 验证码开关
-     */
-    public static final String CURRENT_ENABLED = "captchaEnabled";
-
-    /**
-     * 验证码开关
-     */
-    public static final String CURRENT_TYPE = "captchaType";
-
-    /**
-     * 验证码
-     */
-    public static final String CURRENT_VALIDATECODE = "validateCode";
-
-    /**
-     * 验证码错误
-     */
-    public static final String CAPTCHA_ERROR = "captchaError";
-}
->>>>>>> c404de177361c58256c3fe7ac8124ea9ac7f890d

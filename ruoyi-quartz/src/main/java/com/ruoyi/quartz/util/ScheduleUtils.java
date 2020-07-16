@@ -1,18 +1,15 @@
-<<<<<<< HEAD
 package com.ruoyi.quartz.util;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
+import org.quartz.Job;
 import org.quartz.JobBuilder;
-import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.common.exception.job.TaskException.Code;
@@ -26,186 +23,75 @@ import com.ruoyi.quartz.domain.SysJob;
  */
 public class ScheduleUtils
 {
-    private static final Logger log = LoggerFactory.getLogger(ScheduleUtils.class);
-
     /**
-     * 获取触发器key
+     * 得到quartz任务类
+     *
+     * @param sysJob 执行计划
+     * @return 具体执行任务类
      */
-    public static TriggerKey getTriggerKey(Long jobId)
+    private static Class<? extends Job> getQuartzJobClass(SysJob sysJob)
     {
-        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId);
+        boolean isConcurrent = "0".equals(sysJob.getConcurrent());
+        return isConcurrent ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
     }
 
     /**
-     * 获取jobKey
+     * 构建任务触发对象
      */
-    public static JobKey getJobKey(Long jobId)
+    public static TriggerKey getTriggerKey(Long jobId, String jobGroup)
     {
-        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId);
+        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
     }
 
     /**
-     * 获取表达式触发器
+     * 构建任务键对象
      */
-    public static CronTrigger getCronTrigger(Scheduler scheduler, Long jobId)
+    public static JobKey getJobKey(Long jobId, String jobGroup)
     {
-        try
-        {
-            return (CronTrigger) scheduler.getTrigger(getTriggerKey(jobId));
-        }
-        catch (SchedulerException e)
-        {
-            log.error("getCronTrigger 异常：", e);
-        }
-        return null;
+        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
     }
 
     /**
      * 创建定时任务
      */
-    public static void createScheduleJob(Scheduler scheduler, SysJob job)
+    public static void createScheduleJob(Scheduler scheduler, SysJob job) throws SchedulerException, TaskException
     {
-        try
+        Class<? extends Job> jobClass = getQuartzJobClass(job);
+        // 构建job信息
+        Long jobId = job.getJobId();
+        String jobGroup = job.getJobGroup();
+        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
+
+        // 表达式调度构建器
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
+        cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
+
+        // 按新的cronExpression表达式构建一个新的trigger
+        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup))
+                .withSchedule(cronScheduleBuilder).build();
+
+        // 放入参数，运行时的方法可以获取
+        jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
+
+        // 判断是否存在
+        if (scheduler.checkExists(getJobKey(jobId, jobGroup)))
         {
-            // 构建job信息
-            JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(job.getJobId())).build();
-
-            // 表达式调度构建器
-            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
-            cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
-
-            // 按新的cronExpression表达式构建一个新的trigger
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(job.getJobId()))
-                    .withSchedule(cronScheduleBuilder).build();
-
-            // 放入参数，运行时的方法可以获取
-            jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
-
-            scheduler.scheduleJob(jobDetail, trigger);
-
-            // 暂停任务
-            if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
-            {
-                pauseJob(scheduler, job.getJobId());
-            }
+            // 防止创建时存在数据问题 先移除，然后在执行创建操作
+            scheduler.deleteJob(getJobKey(jobId, jobGroup));
         }
-        catch (SchedulerException e)
+
+        scheduler.scheduleJob(jobDetail, trigger);
+
+        // 暂停任务
+        if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
         {
-            log.error("createScheduleJob 异常：", e);
-        }
-        catch (TaskException e)
-        {
-            log.error("createScheduleJob 异常：", e);
+            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }
     }
 
     /**
-     * 更新定时任务
+     * 设置定时任务策略
      */
-    public static void updateScheduleJob(Scheduler scheduler, SysJob job)
-    {
-        try
-        {
-            TriggerKey triggerKey = getTriggerKey(job.getJobId());
-
-            // 表达式调度构建器
-            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
-            cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
-
-            CronTrigger trigger = getCronTrigger(scheduler, job.getJobId());
-
-            // 按新的cronExpression表达式重新构建trigger
-            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
-
-            // 参数
-            trigger.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
-
-            scheduler.rescheduleJob(triggerKey, trigger);
-
-            // 暂停任务
-            if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
-            {
-                pauseJob(scheduler, job.getJobId());
-            }
-
-        }
-        catch (SchedulerException e)
-        {
-            log.error("SchedulerException 异常：", e);
-        }
-        catch (TaskException e)
-        {
-            log.error("SchedulerException 异常：", e);
-        }
-    }
-
-    /**
-     * 立即执行任务
-     */
-    public static int run(Scheduler scheduler, SysJob job)
-    {
-        int rows = 0;
-        try
-        {
-            // 参数
-            JobDataMap dataMap = new JobDataMap();
-            dataMap.put(ScheduleConstants.TASK_PROPERTIES, job);
-
-            scheduler.triggerJob(getJobKey(job.getJobId()), dataMap);
-            rows = 1;
-        }
-        catch (SchedulerException e)
-        {
-            log.error("run 异常：", e);
-        }
-        return rows;
-    }
-
-    /**
-     * 暂停任务
-     */
-    public static void pauseJob(Scheduler scheduler, Long jobId)
-    {
-        try
-        {
-            scheduler.pauseJob(getJobKey(jobId));
-        }
-        catch (SchedulerException e)
-        {
-            log.error("pauseJob 异常：", e);
-        }
-    }
-
-    /**
-     * 恢复任务
-     */
-    public static void resumeJob(Scheduler scheduler, Long jobId)
-    {
-        try
-        {
-            scheduler.resumeJob(getJobKey(jobId));
-        }
-        catch (SchedulerException e)
-        {
-            log.error("resumeJob 异常：", e);
-        }
-    }
-
-    /**
-     * 删除定时任务
-     */
-    public static void deleteScheduleJob(Scheduler scheduler, Long jobId)
-    {
-        try
-        {
-            scheduler.deleteJob(getJobKey(jobId));
-        }
-        catch (SchedulerException e)
-        {
-            log.error("deleteScheduleJob 异常：", e);
-        }
-    }
-
     public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJob job, CronScheduleBuilder cb)
             throws TaskException
     {
@@ -220,234 +106,8 @@ public class ScheduleUtils
             case ScheduleConstants.MISFIRE_DO_NOTHING:
                 return cb.withMisfireHandlingInstructionDoNothing();
             default:
-                throw new TaskException("The task misfire policy '" + job.getMisfirePolicy() + "' cannot be used in cron schedule tasks", Code.CONFIG_ERROR);
+                throw new TaskException("The task misfire policy '" + job.getMisfirePolicy()
+                        + "' cannot be used in cron schedule tasks", Code.CONFIG_ERROR);
         }
     }
 }
-=======
-package com.ruoyi.quartz.util;
-
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobBuilder;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ruoyi.common.constant.ScheduleConstants;
-import com.ruoyi.common.exception.job.TaskException;
-import com.ruoyi.common.exception.job.TaskException.Code;
-import com.ruoyi.quartz.domain.SysJob;
-
-/**
- * 定时任务工具类
- * 
- * @author ruoyi
- *
- */
-public class ScheduleUtils
-{
-    private static final Logger log = LoggerFactory.getLogger(ScheduleUtils.class);
-
-    /**
-     * 获取触发器key
-     */
-    public static TriggerKey getTriggerKey(Long jobId)
-    {
-        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId);
-    }
-
-    /**
-     * 获取jobKey
-     */
-    public static JobKey getJobKey(Long jobId)
-    {
-        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId);
-    }
-
-    /**
-     * 获取表达式触发器
-     */
-    public static CronTrigger getCronTrigger(Scheduler scheduler, Long jobId)
-    {
-        try
-        {
-            return (CronTrigger) scheduler.getTrigger(getTriggerKey(jobId));
-        }
-        catch (SchedulerException e)
-        {
-            log.error("getCronTrigger 异常：", e);
-        }
-        return null;
-    }
-
-    /**
-     * 创建定时任务
-     */
-    public static void createScheduleJob(Scheduler scheduler, SysJob job)
-    {
-        try
-        {
-            // 构建job信息
-            JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(job.getJobId())).build();
-
-            // 表达式调度构建器
-            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
-            cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
-
-            // 按新的cronExpression表达式构建一个新的trigger
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(job.getJobId()))
-                    .withSchedule(cronScheduleBuilder).build();
-
-            // 放入参数，运行时的方法可以获取
-            jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
-
-            scheduler.scheduleJob(jobDetail, trigger);
-
-            // 暂停任务
-            if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
-            {
-                pauseJob(scheduler, job.getJobId());
-            }
-        }
-        catch (SchedulerException e)
-        {
-            log.error("createScheduleJob 异常：", e);
-        }
-        catch (TaskException e)
-        {
-            log.error("createScheduleJob 异常：", e);
-        }
-    }
-
-    /**
-     * 更新定时任务
-     */
-    public static void updateScheduleJob(Scheduler scheduler, SysJob job)
-    {
-        try
-        {
-            TriggerKey triggerKey = getTriggerKey(job.getJobId());
-
-            // 表达式调度构建器
-            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
-            cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
-
-            CronTrigger trigger = getCronTrigger(scheduler, job.getJobId());
-
-            // 按新的cronExpression表达式重新构建trigger
-            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
-
-            // 参数
-            trigger.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
-
-            scheduler.rescheduleJob(triggerKey, trigger);
-
-            // 暂停任务
-            if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue()))
-            {
-                pauseJob(scheduler, job.getJobId());
-            }
-
-        }
-        catch (SchedulerException e)
-        {
-            log.error("SchedulerException 异常：", e);
-        }
-        catch (TaskException e)
-        {
-            log.error("SchedulerException 异常：", e);
-        }
-    }
-
-    /**
-     * 立即执行任务
-     */
-    public static int run(Scheduler scheduler, SysJob job)
-    {
-        int rows = 0;
-        try
-        {
-            // 参数
-            JobDataMap dataMap = new JobDataMap();
-            dataMap.put(ScheduleConstants.TASK_PROPERTIES, job);
-
-            scheduler.triggerJob(getJobKey(job.getJobId()), dataMap);
-            rows = 1;
-        }
-        catch (SchedulerException e)
-        {
-            log.error("run 异常：", e);
-        }
-        return rows;
-    }
-
-    /**
-     * 暂停任务
-     */
-    public static void pauseJob(Scheduler scheduler, Long jobId)
-    {
-        try
-        {
-            scheduler.pauseJob(getJobKey(jobId));
-        }
-        catch (SchedulerException e)
-        {
-            log.error("pauseJob 异常：", e);
-        }
-    }
-
-    /**
-     * 恢复任务
-     */
-    public static void resumeJob(Scheduler scheduler, Long jobId)
-    {
-        try
-        {
-            scheduler.resumeJob(getJobKey(jobId));
-        }
-        catch (SchedulerException e)
-        {
-            log.error("resumeJob 异常：", e);
-        }
-    }
-
-    /**
-     * 删除定时任务
-     */
-    public static void deleteScheduleJob(Scheduler scheduler, Long jobId)
-    {
-        try
-        {
-            scheduler.deleteJob(getJobKey(jobId));
-        }
-        catch (SchedulerException e)
-        {
-            log.error("deleteScheduleJob 异常：", e);
-        }
-    }
-
-    public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJob job, CronScheduleBuilder cb)
-            throws TaskException
-    {
-        switch (job.getMisfirePolicy())
-        {
-            case ScheduleConstants.MISFIRE_DEFAULT:
-                return cb;
-            case ScheduleConstants.MISFIRE_IGNORE_MISFIRES:
-                return cb.withMisfireHandlingInstructionIgnoreMisfires();
-            case ScheduleConstants.MISFIRE_FIRE_AND_PROCEED:
-                return cb.withMisfireHandlingInstructionFireAndProceed();
-            case ScheduleConstants.MISFIRE_DO_NOTHING:
-                return cb.withMisfireHandlingInstructionDoNothing();
-            default:
-                throw new TaskException("The task misfire policy '" + job.getMisfirePolicy() + "' cannot be used in cron schedule tasks", Code.CONFIG_ERROR);
-        }
-    }
-}
->>>>>>> c404de177361c58256c3fe7ac8124ea9ac7f890d

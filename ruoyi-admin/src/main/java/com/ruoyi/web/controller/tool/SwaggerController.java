@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 package com.ruoyi.web.controller.tool;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.common.core.controller.BaseController;
 
 /**
  * swagger 接口
@@ -23,29 +22,3 @@ public class SwaggerController extends BaseController
         return redirect("/swagger-ui.html");
     }
 }
-=======
-package com.ruoyi.web.controller.tool;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.ruoyi.framework.web.base.BaseController;
-
-/**
- * swagger 接口
- * 
- * @author ruoyi
- */
-@Controller
-@RequestMapping("/tool/swagger")
-public class SwaggerController extends BaseController
-{
-    @RequiresPermissions("tool:swagger:view")
-    @GetMapping()
-    public String index()
-    {
-        return redirect("/swagger-ui.html");
-    }
-}
->>>>>>> c404de177361c58256c3fe7ac8124ea9ac7f890d
