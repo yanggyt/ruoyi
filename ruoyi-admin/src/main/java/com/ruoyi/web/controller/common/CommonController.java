@@ -44,6 +44,7 @@ public class CommonController
         {
             if (!FileUtils.isValidFilename(fileName))
             {
+                log.error("远端测试文件名字打印失败{}",fileName);
                 throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
             }
             String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
