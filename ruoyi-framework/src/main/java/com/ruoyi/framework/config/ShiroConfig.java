@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.Filter;
+
+import com.ruoyi.framework.shiro.cache.SpringCacheManagerWrapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
@@ -17,8 +19,10 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.ruoyi.common.utils.StringUtils;
@@ -123,23 +127,27 @@ public class ShiroConfig
     @Value("${shiro.user.unauthorizedUrl}")
     private String unauthorizedUrl;
 
+    @Autowired(required = false)
+    private CacheManager cacheManager;
+
     /**
-     * 缓存管理器 使用Ehcache实现
+     * 缓存管理器 使用Spring CacheManager或Ehcache实现
      */
     @Bean
-    public EhCacheManager getEhCacheManager()
+    public org.apache.shiro.cache.CacheManager getEhCacheManager()
     {
-        net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("ruoyi");
-        EhCacheManager em = new EhCacheManager();
-        if (StringUtils.isNull(cacheManager))
-        {
-            em.setCacheManager(new net.sf.ehcache.CacheManager(getCacheManagerConfigFileInputStream()));
-            return em;
-        }
-        else
-        {
-            em.setCacheManager(cacheManager);
-            return em;
+        if(cacheManager != null){
+            return new SpringCacheManagerWrapper(cacheManager);
+        }else {
+            net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("ruoyi");
+            EhCacheManager em = new EhCacheManager();
+            if (StringUtils.isNull(cacheManager)) {
+                em.setCacheManager(new net.sf.ehcache.CacheManager(getCacheManagerConfigFileInputStream()));
+                return em;
+            } else {
+                em.setCacheManager(cacheManager);
+                return em;
+            }
         }
     }
 
@@ -172,7 +180,7 @@ public class ShiroConfig
      * 自定义Realm
      */
     @Bean
-    public UserRealm userRealm(EhCacheManager cacheManager)
+    public UserRealm userRealm(org.apache.shiro.cache.CacheManager cacheManager)
     {
         UserRealm userRealm = new UserRealm();
         userRealm.setCacheManager(cacheManager);
