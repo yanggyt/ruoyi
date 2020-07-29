@@ -622,7 +622,8 @@ var table = {
     			table.set(tableId);
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
             	$("#" + currentId)[0].reset();
-            	if (table.options.type == table_type.bootstrapTable) {
+				$("#" + currentId).find('select').val('').trigger('change');
+				if (table.options.type == table_type.bootstrapTable) {
             	    if($.common.isEmpty(tableId)){
             	    	$("#" + table.options.id).bootstrapTable('refresh');
                 	} else{
