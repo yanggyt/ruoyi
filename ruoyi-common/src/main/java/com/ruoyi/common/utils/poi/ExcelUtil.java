@@ -1,46 +1,5 @@
 package com.ruoyi.common.utils.poi;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFDataValidation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.annotation.Excel.Type;
@@ -53,10 +12,26 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.reflect.ReflectUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFDataValidation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Excel相关处理
- * 
+ *
  * @author ruoyi
  */
 public class ExcelUtil<T>
@@ -104,6 +79,11 @@ public class ExcelUtil<T>
     private List<Object[]> fields;
 
     /**
+     * 要合并的单元格列
+     */
+    public ArrayList<Integer> mergeCells = new ArrayList<>();
+
+    /**
      * 实体对象
      */
     public Class<T> clazz;
@@ -128,7 +108,7 @@ public class ExcelUtil<T>
 
     /**
      * 对excel表单默认第一个索引名转换成list
-     * 
+     *
      * @param is 输入流
      * @return 转换后集合
      */
@@ -139,7 +119,7 @@ public class ExcelUtil<T>
 
     /**
      * 对excel表单指定表格索引名转换成list
-     * 
+     *
      * @param sheetName 表格索引名
      * @param is 输入流
      * @return 转换后集合
@@ -296,7 +276,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @param list 导出数据集合
      * @param sheetName 工作表的名称
      * @return 结果
@@ -309,7 +289,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @param sheetName 工作表的名称
      * @return 结果
      */
@@ -321,7 +301,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @return 结果
      */
     public AjaxResult exportExcel()
@@ -388,7 +368,7 @@ public class ExcelUtil<T>
 
     /**
      * 填充excel数据
-     * 
+     *
      * @param index 序号
      * @param row 单元格行
      */
@@ -411,11 +391,18 @@ public class ExcelUtil<T>
                 this.addCell(excel, row, vo, field, column++);
             }
         }
+
+        //合并单元格(需要传入要合并的列序号)
+        if(mergeCells.size() > 0){
+            for (int mergeCell : mergeCells) {
+                mergeCells(sheet, mergeCell, 1, sheet.getLastRowNum());
+            }
+        }
     }
 
     /**
      * 创建表格样式
-     * 
+     *
      * @param wb 工作薄对象
      * @return 样式列表
      */
@@ -473,7 +460,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置单元格信息
-     * 
+     *
      * @param value 单元格值
      * @param attr 注解相关
      * @param cell 单元格信息
@@ -572,7 +559,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置 POI XSSFSheet 单元格提示
-     * 
+     *
      * @param sheet 表单
      * @param promptTitle 提示标题
      * @param promptContent 提示内容
@@ -595,7 +582,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置某些列的值只能输入预制的数据,显示下拉框.
-     * 
+     *
      * @param sheet 要设置的sheet.
      * @param textlist 下拉框显示的内容
      * @param firstRow 开始行
@@ -629,7 +616,7 @@ public class ExcelUtil<T>
 
     /**
      * 解析导出值 0=男,1=女,2=未知
-     * 
+     *
      * @param propertyValue 参数值
      * @param converterExp 翻译注解
      * @param separator 分隔符
@@ -674,7 +661,7 @@ public class ExcelUtil<T>
 
     /**
      * 反向解析值 男=0,女=1,未知=2
-     * 
+     *
      * @param propertyValue 参数值
      * @param converterExp 翻译注解
      * @param separator 分隔符
@@ -712,7 +699,7 @@ public class ExcelUtil<T>
 
     /**
      * 解析字典值
-     * 
+     *
      * @param dictValue 字典值
      * @param dictType 字典类型
      * @param separator 分隔符
@@ -728,7 +715,7 @@ public class ExcelUtil<T>
 
     /**
      * 反向解析值字典值
-     * 
+     *
      * @param dictLabel 字典标签
      * @param dictType 字典类型
      * @param separator 分隔符
@@ -753,7 +740,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取下载路径
-     * 
+     *
      * @param filename 文件名称
      */
     public String getAbsoluteFile(String filename)
@@ -769,7 +756,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取bean中的属性值
-     * 
+     *
      * @param vo 实体对象
      * @param field 字段
      * @param excel 注解
@@ -800,7 +787,7 @@ public class ExcelUtil<T>
 
     /**
      * 以类的属性的get方法方法形式获取值
-     * 
+     *
      * @param o
      * @param name
      * @return value
@@ -847,6 +834,18 @@ public class ExcelUtil<T>
             }
         }
         this.fields = this.fields.stream().sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort())).collect(Collectors.toList());
+
+        //筛选出需要合并的单元格的位置
+        if(this.fields.size()>0){
+            int column = 0;
+            for (Object[] os : fields){
+                Excel excel = (Excel) os[1];
+                if(excel.isMerge()){
+                    this.mergeCells.add(column);
+                }
+                column++;
+            }
+        }
     }
 
     /**
@@ -870,7 +869,7 @@ public class ExcelUtil<T>
 
     /**
      * 创建工作表
-     * 
+     *
      * @param sheetNo sheet数量
      * @param index 序号
      */
@@ -891,7 +890,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取单元格值
-     * 
+     *
      * @param row 获取的行
      * @param column 获取单元格列号
      * @return 单元格值
@@ -947,5 +946,44 @@ public class ExcelUtil<T>
             return val;
         }
         return val;
+    }
+    /**
+     * @Author mr
+     * @Description //TODO 合并单元格
+     * @param sheet
+     * @param cellLine  合并的列号
+     * @param startRow  开始行
+     * @param endRow  尾行
+     * @Date 2020-06-29
+     **/
+    private void mergeCells(Sheet sheet, int cellLine,int startRow, int endRow) {
+        // 获取第一行的数据,以便后面进行比较
+        String s_will = getCellValue(sheet.getRow(startRow),cellLine).toString();
+        //合并行数
+        int count = 0;
+        //数据比较，从第二行开始比较
+        for (int i = 2; i <= endRow; i++) {
+            //取出下一行的数据
+            String s_current = getCellValue(sheet.getRow(i),cellLine).toString();
+            //与相对的第一行的数据进行比较
+            if (s_will.equals(s_current) && !s_will.equals("")) {
+                //合并行数加一
+                count++;
+            } else {
+                //如果合并行数大于等于1就合并，现将需要合并的行数进行合并
+                if(count >= 1){
+                    //合并从开始行到合并的行数
+                    sheet.addMergedRegion(new CellRangeAddress( startRow, startRow+count,cellLine , cellLine));
+                }
+                //初始化数据，进行下一个单元格合并
+                startRow = i;
+                s_will = s_current;
+                count = 0;
+            }
+            //最后个单元格合并
+            if (i == endRow && count > 0) {
+                sheet.addMergedRegion(new CellRangeAddress(startRow,startRow+count ,cellLine , cellLine));
+            }
+        }
     }
 }
