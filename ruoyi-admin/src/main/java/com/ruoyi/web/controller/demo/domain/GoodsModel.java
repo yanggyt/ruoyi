@@ -30,6 +30,11 @@ public class GoodsModel
      */
     private String type;
 
+    /**
+     * 时间
+     */
+    private String time;
+    
     public String getName()
     {
         return name;
@@ -70,13 +75,22 @@ public class GoodsModel
         this.type = type;
     }
 
-    @Override
+    public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	@Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("name", getName())
             .append("weight", getWeight())
             .append("price", getPrice())
             .append("type", getType())
+            .append("time", getTime())
             .toString();
     }
 }

@@ -82,6 +82,7 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <script th:src="@{/js/jquery.tmpl.js}"></script>
+    <script th:src="@{/ajax/libs/bootstrap-table/extensions/editable/bootstrap-table-editable-inline.js}"></script>
 	<script th:inline="javascript">
 	    $(function() {
 		    var options = {
@@ -130,6 +131,15 @@
 		        		return html;
                     }
 		        },
+                {
+                    field: 'time',
+                    align: 'center',
+                    title: '时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control time' type='text' name='goods[%s].time' value='%s'>", index, value);
+                        return html;
+                    }
+                },
 		        {
 		            field: 'type',
 		            align: 'center',
@@ -166,6 +176,7 @@
                 	name: "",
                 	weight: "",
                 	price: "",
+                	time: "",
                 	type: "",
                 }
         	});
