@@ -9,8 +9,10 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
 import com.ruoyi.system.domain.QSysUser;
+import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.repository.SysRoleRepository;
 import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
@@ -28,10 +30,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用户 业务层处理
@@ -44,9 +43,10 @@ public class SysUserServiceImpl extends BaseService implements ISysUserService {
 
     @Autowired
     private SysUserRepository sysUserRepository;
-
     @Autowired
     private ISysConfigService configService;
+    @Autowired
+    private SysRoleRepository sysRoleRepository;
 
     /**
      * 根据条件分页查询用户列表
@@ -413,5 +413,16 @@ public class SysUserServiceImpl extends BaseService implements ISysUserService {
     @Override
     public void changeStatus(SysUser user) {
         sysUserRepository.changeStatus(user.getStatus(), user.getUserId());
+    }
+
+    public Set<SysDept> getUserRoleDepts(Long userId){
+        SysUser user = sysUserRepository.findSysUserByDelFlagAndUserId(BaseEntity.NOT_DELETED, userId);
+        Set<SysDept> depts = new HashSet<>();
+        Set<SysRole> roles = user.getRoles();
+        for(SysRole sysRole : roles){
+            sysRole = sysRoleRepository.findByRoleId(sysRole.getRoleId());
+            depts.addAll(sysRole.getDepts());
+        }
+        return depts;
     }
 }

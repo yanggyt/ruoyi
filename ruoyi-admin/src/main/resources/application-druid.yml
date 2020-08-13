@@ -68,7 +68,7 @@ spring:
         url: jdbc:mysql://localhost:3306/mysql?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
         user: ${db.username}
         password: ${db.password}
-        #需要目标数据库已经存在，不自动升级
+        #目标数据库已经存在，不自动升级
         baseline-on-migrate: false
         encoding: utf-8
         clean-on-validation-error: false

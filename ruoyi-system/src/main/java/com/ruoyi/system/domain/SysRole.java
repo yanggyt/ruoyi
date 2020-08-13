@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.annotation.DataScopes;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -54,7 +55,7 @@ public class SysRole extends BaseEntity {
      * 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限）
      */
     @Excel(name = "数据范围", readConverterExp = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限")
-    private String dataScope;
+    private DataScopes dataScope;
 
     /**
      * 角色状态（0正常 1停用）
@@ -111,11 +112,11 @@ public class SysRole extends BaseEntity {
         return roleId != null && 1L == roleId;
     }
 
-    public String getDataScope() {
+    public DataScopes getDataScope() {
         return dataScope;
     }
 
-    public void setDataScope(String dataScope) {
+    public void setDataScope(DataScopes dataScope) {
         this.dataScope = dataScope;
     }
 

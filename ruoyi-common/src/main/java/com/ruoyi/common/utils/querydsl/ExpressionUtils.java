@@ -1,9 +1,6 @@
 package com.ruoyi.common.utils.querydsl;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.ComparableExpression;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * QueryDsl 构建查询条件的工具类
@@ -35,7 +32,7 @@ public class ExpressionUtils {
      * @param <T>
      * @return
      */
-    public static <T extends Comparable<T>> BooleanExpression buildEqual(ComparableExpression<T> path, T value){
+    public static <T extends Comparable<T>> BooleanExpression buildEqual(ComparableExpressionBase<T> path, T value){
         return path.eq(value);
     }
 

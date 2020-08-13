@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.SysRole;
+import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.domain.SysUserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,10 @@ public interface ISysRoleService {
      * 根据条件分页查询角色数据
      *
      * @param role 角色信息
+     * @param user
      * @return 角色数据集合信息
      */
-    public Page<SysRole> selectRoleList(SysRole role, Pageable pageable);
+    public Page<SysRole> selectRoleList(SysRole role, Pageable pageable, SysUser user);
 
     /**
      * 根据用户ID查询角色

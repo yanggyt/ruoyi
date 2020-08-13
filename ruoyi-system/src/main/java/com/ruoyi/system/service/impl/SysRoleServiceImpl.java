@@ -2,7 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
-import com.ruoyi.common.base.BaseService;
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.text.Convert;
@@ -15,6 +15,7 @@ import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.repository.SysRoleRepository;
 import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysRoleService;
+import com.ruoyi.system.service.base.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +29,9 @@ import java.util.*;
  *
  * @author ruoyi
  */
+@DataScope(userFieldName = "user")
 @Service
-public class SysRoleServiceImpl extends BaseService implements ISysRoleService {
+public class SysRoleServiceImpl extends BusinessService implements ISysRoleService {
 
     @Autowired
     private SysRoleRepository sysRoleRepository;
@@ -40,14 +42,15 @@ public class SysRoleServiceImpl extends BaseService implements ISysRoleService {
      * 根据条件分页查询角色数据
      *
      * @param role 角色信息
+     * @param user
      * @return 角色数据集合信息
      */
     @Override
-    public Page<SysRole> selectRoleList(SysRole role, Pageable pageable) {
-        return sysRoleRepository.findAll(getPredicate(role), pageable);
+    public Page<SysRole> selectRoleList(SysRole role, Pageable pageable, SysUser user) {
+        return sysRoleRepository.findAll(getPredicate(role, user), pageable);
     }
 
-    private Predicate getPredicate(SysRole role){
+    public Predicate getPredicate(SysRole role, SysUser user){
         QSysRole qSysRole = QSysRole.sysRole;
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(buildEqual(qSysRole.delFlag, BaseEntity.NOT_DELETED));
@@ -60,8 +63,8 @@ public class SysRoleServiceImpl extends BaseService implements ISysRoleService {
         if(StringUtils.isNotEmpty(role.getRoleKey())){
             predicates.add(buildLike(qSysRole.roleKey, role.getRoleKey()));
         }
-        if(StringUtils.isNotEmpty(role.getDataScope())){
-            predicates.add(buildEqual(qSysRole.dataScope, role.getDataScope()));
+        if(role.getDataScope() != null){
+            predicates.add(buildEqual(qSysRole.dataScope, role.getDataScope().name()));
         }
         if(role.getStartTime() != null){
             predicates.add(buildGreaterThanOrEqualTo(qSysRole.createTime, role.getStartTime()));
@@ -69,6 +72,7 @@ public class SysRoleServiceImpl extends BaseService implements ISysRoleService {
         if(role.getEndTime() != null){
             predicates.add(buildLessThanOrEqualTo(qSysRole.createTime, role.getEndTime()));
         }
+//        predicates.add(buildDataPermission(qSysRole.depts, user.getUserId()));
         return ExpressionUtils.allOf(predicates);
     }
 
@@ -108,7 +112,7 @@ public class SysRoleServiceImpl extends BaseService implements ISysRoleService {
      */
     @Override
     public List<SysRole> selectRoleAll() {
-        return sysRoleRepository.findAll(getPredicate(new SysRole()), Pageable.unpaged()).getContent();
+        return sysRoleRepository.findAll(getPredicate(new SysRole(), new SysUser()), Pageable.unpaged()).getContent();
     }
 
     /**

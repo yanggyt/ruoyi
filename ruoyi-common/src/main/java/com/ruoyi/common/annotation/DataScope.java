@@ -11,17 +11,13 @@ import java.lang.annotation.Target;
  *
  * @author ruoyi
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface DataScope {
     /**
-     * 部门表的别名
+     * 业务表的所属用户的字段名称：过滤仅本人的数据权限,
+     * 该字段的类型为：{@link com.ruoyi.system.domain.SysUser}
      */
-    public String deptAlias() default "";
-
-    /**
-     * 用户表的别名
-     */
-    public String userAlias() default "";
+    String userFieldName() default "";
 }

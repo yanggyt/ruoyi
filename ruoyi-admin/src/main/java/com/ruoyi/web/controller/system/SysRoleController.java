@@ -2,7 +2,6 @@ package com.ruoyi.web.controller.system;
 
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
@@ -13,6 +12,7 @@ import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.web.controller.system.base.WebController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +30,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/system/role")
-public class SysRoleController extends BaseController {
+public class SysRoleController extends WebController {
     private String prefix = "system/role";
 
     @Autowired
@@ -49,7 +49,7 @@ public class SysRoleController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(SysRole role) {
-        return getDataTable(roleService.selectRoleList(role, getPageRequest()));
+        return getDataTable(roleService.selectRoleList(role, getPageRequest(), getUser()));
     }
 
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
@@ -57,7 +57,7 @@ public class SysRoleController extends BaseController {
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(SysRole role) {
-        List<SysRole> list = roleService.selectRoleList(role, Pageable.unpaged()).getContent();
+        List<SysRole> list = roleService.selectRoleList(role, Pageable.unpaged(), getUser()).getContent();
         ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
         return util.exportExcel(list, "角色数据");
     }

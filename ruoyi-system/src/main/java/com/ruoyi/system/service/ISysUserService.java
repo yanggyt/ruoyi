@@ -1,10 +1,12 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户 业务层
@@ -169,4 +171,6 @@ public interface ISysUserService {
      * @return 结果
      */
     public void changeStatus(SysUser user);
+
+    Set<SysDept> getUserRoleDepts(Long userId);
 }

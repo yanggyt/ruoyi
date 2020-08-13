@@ -7,6 +7,8 @@ layer.config({
     skin: 'layer-ext-moon'
 });
 
+var currentMenuId = null;
+
 $(function() {
     // MetsiMenu
     $('#side-menu').metisMenu();
@@ -213,9 +215,10 @@ $(function() {
 
     function menuItem() {
         // 获取标识数据
-        var dataUrl = $(this).attr('href'),
-        dataIndex = $(this).data('index'),
-        menuName = $.trim($(this).text()),
+        var dataUrl = $(this).attr('href');
+        dataIndex = $(this).data('index');
+        menuName = $.trim($(this).text());
+        currentMenuId = $(this).attr('id');
         flag = true;
         $(".nav ul li, .nav li").removeClass("selected");
         $(this).parent("li").addClass("selected");
@@ -242,7 +245,7 @@ $(function() {
         });
         // 选项卡菜单不存在
         if (flag) {
-            var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
+            var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '" id="'+ currentMenuId +'">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
             $('.menuTab').removeClass('active');
 
             // 添加选项卡对应的iframe
@@ -284,7 +287,9 @@ $(function() {
             // 当前元素后面有同辈元素，使后面的一个元素处于活动状态
             if ($(this).parents('.menuTab').next('.menuTab').size()) {
 
-                var activeId = $(this).parents('.menuTab').next('.menuTab:eq(0)').data('id');
+                var toShow = $(this).parents('.menuTab').next('.menuTab:eq(0)');
+                var activeId = toShow.data('id');
+                currentMenuId = toShow.attr('id');
                 $(this).parents('.menuTab').next('.menuTab:eq(0)').addClass('active');
 
                 $('.mainContent .RuoYi_iframe').each(function() {
@@ -316,7 +321,9 @@ $(function() {
 
             // 当前元素后面没有同辈元素，使当前元素的上一个元素处于活动状态
             if ($(this).parents('.menuTab').prev('.menuTab').size()) {
-                var activeId = $(this).parents('.menuTab').prev('.menuTab:last').data('id');
+                var toShow = $(this).parents('.menuTab').prev('.menuTab:last');
+                var activeId = toShow.data('id');
+                currentMenuId = toShow.attr('id');
                 $(this).parents('.menuTab').prev('.menuTab:last').addClass('active');
                 $('.mainContent .RuoYi_iframe').each(function() {
                     if ($(this).data('id') == activeId) {
@@ -376,6 +383,7 @@ $(function() {
     function activeTab() {
         if (!$(this).hasClass('active')) {
             var currentId = $(this).data('id');
+            currentMenuId = $(this).attr('id');
             // 显示tab对应的内容区
             $('.mainContent .RuoYi_iframe').each(function() {
                 if ($(this).data('id') == currentId) {
