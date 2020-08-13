@@ -74,7 +74,7 @@ public class GenController extends BaseController {
     @ResponseBody
     public TableDataInfo columnList(GenTable genTable) {
         TableDataInfo dataInfo = new TableDataInfo();
-        List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(genTable);
+        List<GenTableColumn> list = genTableService.selectGenTableById(genTable.getTableId()).getColumns();
         dataInfo.setRows(list);
         dataInfo.setTotal(list.size());
         return dataInfo;

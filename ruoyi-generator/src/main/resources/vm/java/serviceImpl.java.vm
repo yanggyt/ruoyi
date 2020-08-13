@@ -1,6 +1,8 @@
 package ${packageName}.service.impl;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 #if($table.tree)
 import java.util.ArrayList;
 import com.ruoyi.common.core.domain.Ztree;
@@ -29,6 +31,12 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
 {
     @Autowired
     private ${ClassName}Mapper ${className}Mapper;
+    @Autowired
+    private ${ClassName}Repository ${className}Repository;
+
+    public Page<${ClassName}> findByPage(${className}, Pageable pageable){
+
+    }
 
     /**
      * 查询${functionName}

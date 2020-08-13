@@ -1,10 +1,11 @@
-package ${packageName}.domain;
+package ${packageName}.entity;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
+import javax.persistence.Entity;
 #if($table.crud)
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.BaseDatabaseEntity;
 #elseif($table.tree)
 import com.ruoyi.common.core.domain.TreeEntity;
 #end
@@ -19,10 +20,11 @@ import ${import};
  * @date ${datetime}
  */
 #if($table.crud)
-#set($Entity="BaseEntity")
+#set($Entity="BaseDatabaseEntity")
 #elseif($table.tree)
 #set($Entity="TreeEntity")
 #end
+@Entity
 public class ${ClassName} extends ${Entity}
 {
     private static final long serialVersionUID = 1L;

@@ -35,7 +35,6 @@ public class GenTable extends BaseEntity {
     /**
      * 表描述
      */
-    @NotBlank(message = "表描述不能为空")
     private String tableComment;
 
     /**
@@ -70,7 +69,6 @@ public class GenTable extends BaseEntity {
     /**
      * 生成功能名
      */
-    @NotBlank(message = "生成功能名不能为空")
     private String functionName;
 
     /**
@@ -89,7 +87,10 @@ public class GenTable extends BaseEntity {
      * 表列信息
      */
     @Valid
-    @OneToMany(mappedBy = "table")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "gen_table_columns",
+            joinColumns = @JoinColumn(name = "genTableTableId", referencedColumnName = "tableId"),
+            inverseJoinColumns = @JoinColumn(name = "columnsColumnId", referencedColumnName = "columnId"))
     private List<GenTableColumn> columns;
 
     /**

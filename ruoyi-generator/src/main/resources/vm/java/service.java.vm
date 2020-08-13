@@ -1,73 +1,139 @@
 package ${packageName}.service;
 
-import ${packageName}.domain.${ClassName};
+import java.util.ArrayList;
 import java.util.List;
-#if($table.tree)
-import com.ruoyi.common.core.domain.Ztree;
-#end
+import java.util.Date;
+
+import com.ruoyi.common.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
+import ${packageName}.repository.${ClassName}Repository;
+import ${packageName}.entity.${ClassName};
+import com.ruoyi.common.core.text.Convert;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
- * ${functionName}Service接口
- * 
+ * ${functionName} 服务层实现
+ *
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${ClassName}Service 
-{
-    /**
-     * 查询${functionName}
-     * 
-     * @param ${pkColumn.javaField} ${functionName}ID
-     * @return ${functionName}
-     */
-    public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
+@Service
+public class ${ClassName}Service {
+
+    @Autowired
+    private ${ClassName}Repository ${classname}Repository;
 
     /**
-     * 查询${functionName}列表
-     * 
-     * @param ${className} ${functionName}
-     * @return ${functionName}集合
+     * 查询 ${functionName} 分页信息
+     *
+     * @param ${classname} 查询对象
+     * @param pageRequest 分页信息
+     * @return ${functionName} 分页后结果
      */
-    public List<${ClassName}> select${ClassName}List(${ClassName} ${className});
+    public Page<${ClassName}> findByPage(${ClassName} ${classname}, Pageable pageRequest){
+        return ${classname}Repository.findAll(getSpecification(${classname}), pageRequest);
+    }
+
+    /**
+     * 查询 ${functionName} 所有信息
+     *
+     * @param ${classname} 查询对象
+     * @return ${functionName} 结果
+     */
+    public List<${ClassName}> findAll(${ClassName} ${classname}){
+        return ${classname}Repository.findAll(getSpecification(${classname}));
+    }
 
     /**
      * 新增${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
+     *
+     * @param ${classname} ${functionName}信息
+     * @return 保存后的对象
      */
-    public int insert${ClassName}(${ClassName} ${className});
+    @Transactional
+    public ${ClassName} insert(${ClassName} ${classname}){
+        return ${classname}Repository.save(${classname});
+    }
 
     /**
      * 修改${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
+     *
+     * @param ${classname} ${functionName}信息
+     * @return 保存后的对象
      */
-    public int update${ClassName}(${ClassName} ${className});
+    @Transactional
+    public ${ClassName} update(${ClassName} ${classname}){
+        return ${classname}Repository.save(${classname});
+    }
 
     /**
-     * 批量删除${functionName}
-     * 
+     * 查询${functionName}对象
+     *
+     * @param ${pkColumn.javaField} 需要查询的id
+     * @return
+     */
+    public ${ClassName} findById(${pkColumn.javaType} ${pkColumn.javaField}){
+        return ${classname}Repository.findById(${pkColumn.javaField}).orElse(null);
+    }
+
+    /**
+     * 删除${functionName}对象
+     *
+     * @param ${pkColumn.javaField} 需要删除的数据ID
+     */
+    @Transactional
+    public void deleteById(${pkColumn.javaType} ${pkColumn.javaField}){
+            ${classname}Repository.deleteById(${pkColumn.javaField});
+    }
+
+    /**
+     * 删除${functionName}对象
+     *
      * @param ids 需要删除的数据ID
      * @return 结果
      */
-    public int delete${ClassName}ByIds(String ids);
+    @Transactional
+    public int deleteByIds(String ids) {
+        for(String id : Convert.toStrArray(ids)){
+                ${classname}Repository.deleteById(${pkColumn.javaType}.valueOf(id));
+        }
+        return 1;
+    }
 
-    /**
-     * 删除${functionName}信息
-     * 
-     * @param ${pkColumn.javaField} ${functionName}ID
-     * @return 结果
-     */
-    public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
-#if($table.tree)
 
-    /**
-     * 查询${functionName}树列表
-     * 
-     * @return 所有${functionName}信息
-     */
-    public List<Ztree> select${ClassName}Tree();
-#end
+    private Specification<${ClassName}> getSpecification(${ClassName} ${classname}){
+        return new Specification<${ClassName}>() {
+            @Override
+            public Predicate toPredicate(Root<${ClassName}> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                #foreach($column in $columns)
+                    #if($column.javaType == "String")
+                        if(StringUtils.isNotEmpty(${classname}.get${column.capital()}())){
+                        predicates.add(criteriaBuilder.like(root.get("$column.javaField").as(${column.javaType}.class), "%" + ${classname}.get${column.capital()}() + "%"));
+                    }
+                    #else
+                        if(${classname}.get${column.capital()}() != null){
+                        predicates.add(criteriaBuilder.equal(root.get("$column.javaField").as(${column.javaType}.class), ${classname}.get${column.capital()}()));
+                    }
+                    #end
+                #end
+                if(${classname}.getStartTime() != null){
+                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createDate").as(Date.class), ${classname}.getStartTime()));
+                }
+                if(${classname}.getEndTime() != null){
+                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createDate").as(Date.class), ${classname}.getEndTime()));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+    }
 }

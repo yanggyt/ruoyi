@@ -179,12 +179,9 @@ public class GenTableServiceImpl extends BaseService implements IGenTableService
     @Override
     @Transactional
     public void deleteGenTableByIds(String ids) {
-        List<GenTable> tables = new ArrayList<>();
         for(Long id : Convert.toLongArray(ids)){
             genTableRepository.deleteById(id);
-            tables.add(new GenTable(id));
         }
-        genTableColumnRepository.deleteByTableIn(tables);
     }
 
     /**
@@ -199,15 +196,17 @@ public class GenTableServiceImpl extends BaseService implements IGenTableService
         for (GenTable table : tableList) {
             try {
                 GenUtils.initTable(table, operName);
-                genTableRepository.save(table);
+                List<GenTableColumn> columns = new ArrayList<>();
                 String sql = "select column_name, (case when (is_nullable = 'no' && column_key != 'PRI') then '1' else null end) as is_required, (case when column_key = 'PRI' then '1' else '0' end) as is_pk, ordinal_position as sort, column_comment, (case when extra = 'auto_increment' then '1' else '0' end) as is_increment, column_type " +
                         " from information_schema.columns where table_schema = (select database()) and table_name =  '" + table.getTableName() + "'" +
                         " order by ordinal_position";
                 List<GenTableColumn> genTableColumns = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(GenTableColumn.class));
                 for (GenTableColumn column : genTableColumns) {
                     GenUtils.initColumnField(column, table);
-                    genTableColumnRepository.save(column);
+                    columns.add(column);
                 }
+                table.setColumns(columns);
+                genTableRepository.save(table);
             } catch (Exception e) {
                 log.error("表名 " + table.getTableName() + " 导入失败：", e);
             }

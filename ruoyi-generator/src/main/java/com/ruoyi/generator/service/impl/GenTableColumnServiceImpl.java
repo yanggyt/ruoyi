@@ -1,15 +1,12 @@
 package com.ruoyi.generator.service.impl;
 
 import com.ruoyi.common.core.text.Convert;
-import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.generator.repository.GenTableColumnRepository;
 import com.ruoyi.generator.service.IGenTableColumnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * 业务字段 服务层实现
@@ -21,16 +18,6 @@ public class GenTableColumnServiceImpl implements IGenTableColumnService {
     @Autowired
     private GenTableColumnRepository genTableColumnRepository;
 
-    /**
-     * 查询业务字段列表
-     *
-     * @param genTable 业务字段信息
-     * @return 业务字段集合
-     */
-    @Override
-    public List<GenTableColumn> selectGenTableColumnListByTableId(GenTable genTable) {
-        return genTableColumnRepository.findByTable(genTable);
-    }
 
     /**
      * 新增业务字段

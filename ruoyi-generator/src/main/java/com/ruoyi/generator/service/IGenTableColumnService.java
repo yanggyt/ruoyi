@@ -1,8 +1,5 @@
 package com.ruoyi.generator.service;
 
-import java.util.List;
-
-import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 
 /**
@@ -11,13 +8,6 @@ import com.ruoyi.generator.domain.GenTableColumn;
  * @author ruoyi
  */
 public interface IGenTableColumnService {
-    /**
-     * 查询业务字段列表
-     *
-     * @param genTable 业务字段信息
-     * @return 业务字段集合
-     */
-    public List<GenTableColumn> selectGenTableColumnListByTableId(GenTable genTable);
 
     /**
      * 新增业务字段

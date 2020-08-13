@@ -104,13 +104,6 @@ public class GenTableColumn extends BaseEntity {
      */
     private Integer sort;
 
-    @ManyToOne
-    @JoinTable(name = "gen_table_columns",
-            inverseJoinColumns = @JoinColumn(name = "genTableTableId", referencedColumnName = "tableId"),
-            joinColumns = @JoinColumn(name = "columnsColumnId", referencedColumnName = "columnId"))
-    @org.hibernate.annotations.ForeignKey(name = "none")
-    private GenTable table;
-
     public void setColumnId(Long columnId) {
         this.columnId = columnId;
     }
@@ -341,11 +334,7 @@ public class GenTableColumn extends BaseEntity {
         }
     }
 
-    public GenTable getTable() {
-        return table;
-    }
-
-    public void setTable(GenTable table) {
-        this.table = table;
+    public String capital(){
+        return StringUtils.capitalize(this.javaField);
     }
 }
