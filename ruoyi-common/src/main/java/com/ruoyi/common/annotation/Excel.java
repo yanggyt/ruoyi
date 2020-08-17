@@ -85,6 +85,11 @@ public @interface Excel
     public boolean isExport() default true;
 
     /**
+     * 是否合并.
+     */
+    public boolean isMerge() default true;
+
+    /**
      * 另一个类中的属性名称,支持多级获取,以小数点隔开
      */
     public String targetAttr() default "";
