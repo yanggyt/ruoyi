@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 自定义导出Excel数据注解
- * 
+ *
  * @author ruoyi
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -83,6 +83,11 @@ public @interface Excel
      * 是否导出数据,应对需求:有时我们需要导出一份模板,这是标题需要但内容需要用户手工填写.
      */
     public boolean isExport() default true;
+
+    /**
+     * 是否合并.
+     */
+    public boolean isMerge() default true;
 
     /**
      * 另一个类中的属性名称,支持多级获取,以小数点隔开
