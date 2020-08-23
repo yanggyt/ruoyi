@@ -452,6 +452,15 @@ public class ExcelUtil<T>
         cell.setCellValue(attr.name());
         setDataValidation(attr, row, column);
         cell.setCellStyle(styles.get("header"));
+        if (ColumnType.STRING == attr.cellType())
+        {
+            CellStyle cellStyle = cell.getCellStyle();
+            DataFormat wbDataFormat = wb.createDataFormat();
+            cellStyle.setDataFormat(wbDataFormat.getFormat("TEXT"));
+        } else if (ColumnType.NUMERIC == attr.cellType())
+        {
+            cell.setCellType(CellType.NUMERIC);
+        }
         return cell;
     }
 
