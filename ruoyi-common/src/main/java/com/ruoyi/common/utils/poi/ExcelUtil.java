@@ -19,23 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFDataValidation;
@@ -456,24 +440,33 @@ public class ExcelUtil<T>
 
         return styles;
     }
-
+    
     /**
      * 创建单元格
      */
     public Cell createCell(Excel attr, Row row, int column)
     {
         // 创建列
+        // 创建列
         Cell cell = row.createCell(column);
         // 写入列信息
         cell.setCellValue(attr.name());
         setDataValidation(attr, row, column);
         cell.setCellStyle(styles.get("header"));
+        // 对于文本列设置内容格式为文本格式
+        if (ColumnType.STRING == attr.cellType())
+        {
+            CellStyle dataColStyle = wb.createCellStyle();
+            DataFormat wbDataFormat = wb.createDataFormat();
+            dataColStyle.setDataFormat(wbDataFormat.getFormat("@"));
+            sheet.setDefaultColumnStyle(column, dataColStyle);
+        }
         return cell;
     }
 
     /**
      * 设置单元格信息
-     * 
+     *
      * @param value 单元格值
      * @param attr 注解相关
      * @param cell 单元格信息
@@ -482,6 +475,9 @@ public class ExcelUtil<T>
     {
         if (ColumnType.STRING == attr.cellType())
         {
+            CellStyle cellStyle = cell.getCellStyle();
+            DataFormat wbDataFormat = wb.createDataFormat();
+            cellStyle.setDataFormat(wbDataFormat.getFormat("@"));
             cell.setCellType(CellType.STRING);
             cell.setCellValue(StringUtils.isNull(value) ? attr.defaultValue() : value + attr.suffix());
         }
@@ -491,6 +487,7 @@ public class ExcelUtil<T>
             cell.setCellValue(Integer.parseInt(value + ""));
         }
     }
+
 
     /**
      * 创建表格样式
