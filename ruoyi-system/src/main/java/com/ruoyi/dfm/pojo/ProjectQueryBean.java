@@ -1,6 +1,9 @@
 package com.ruoyi.dfm.pojo;
 
-public class ProjectQueryBean {
+import java.io.Serializable;
+
+public class ProjectQueryBean implements Serializable {
+	private static final long serialVersionUID = -599057777600930089L;
 	private String projectName;
 	private String username;
 	private String state;

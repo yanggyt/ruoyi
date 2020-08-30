@@ -1,5 +1,6 @@
 package com.ruoyi.framework.util;
 
+import com.ruoyi.dfm.pojo.UserInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.mgt.RealmSecurityManager;
@@ -41,6 +42,18 @@ public class ShiroUtils
         if (StringUtils.isNotNull(obj))
         {
             user = new SysUser();
+            BeanUtils.copyBeanProp(user, obj);
+        }
+        return user;
+    }
+
+    public static UserInfo getLoginUser()
+    {
+        UserInfo user = null;
+        Object obj = getSubject().getPrincipal();
+        if (StringUtils.isNotNull(obj))
+        {
+            user = new UserInfo();
             BeanUtils.copyBeanProp(user, obj);
         }
         return user;

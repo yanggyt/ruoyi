@@ -11,4 +11,7 @@ public interface UserConstants {
 	
 	int USER_STATUS_QIYONG = 0;
 	int USER_STATUS_ZANTING = 1;
+
+	int MENU_LEVEL_0 = 0;
+	int MENU_LEVEL_1 = 1;
 }

@@ -1,6 +1,9 @@
 package com.ruoyi.dfm.pojo;
 
-public class UserInfo {
+import java.io.Serializable;
+
+public class UserInfo implements Serializable {
+	private static final long serialVersionUID = -8601310432026069019L;
 	private int id;
 	private String name;
 	private String username;
@@ -11,6 +14,16 @@ public class UserInfo {
 	private String ccEmail;
 	private int groupId;
 	private int status;
+	private String avatar;
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
 	public int getStatus() {
 		return status;
 	}

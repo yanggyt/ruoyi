@@ -1,19 +1,20 @@
 package com.ruoyi.system.service.impl;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Deque;
-import java.util.List;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.ShiroConstants;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.mapper.SysUserOnlineMapper;
 import com.ruoyi.system.service.ISysUserOnlineService;
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * 在线用户 服务层处理

@@ -1,7 +1,8 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
 import com.ruoyi.system.domain.SysUserOnline;
+
+import java.util.List;
 
 /**
  * 在线用户 数据层

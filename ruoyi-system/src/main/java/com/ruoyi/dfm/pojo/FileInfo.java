@@ -1,6 +1,10 @@
 package com.ruoyi.dfm.pojo;
 
-public class FileInfo {
+import java.io.Serializable;
+
+public class FileInfo implements Serializable {
+
+	private static final long serialVersionUID = 1363196522567826008L;
 	private int id;
 	private String fileName;
 	private String relaPath;

@@ -2,12 +2,9 @@ package com.ruoyi.dfm.dao;
 
 
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 统计功能DAO

@@ -1,6 +1,9 @@
 package com.ruoyi.dfm.pojo;
 
-public class ProjectStage {
+import java.io.Serializable;
+
+public class ProjectStage implements Serializable {
+	private static final long serialVersionUID = -5089867653922923969L;
 	private int id ;
 	private String stageName;
 	private int stageOrder;

@@ -2,6 +2,8 @@ package com.ruoyi.framework.shiro.realm;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.ruoyi.dfm.pojo.UserInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -93,7 +95,7 @@ public class UserRealm extends AuthorizingRealm
             password = new String(upToken.getPassword());
         }
 
-        SysUser user = null;
+        UserInfo user = null;
         try
         {
             user = loginService.login(username, password);

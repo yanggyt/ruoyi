@@ -3,18 +3,21 @@ package com.ruoyi.dfm.pojo;
 
 import com.ruoyi.dfm.util.PropertiesUtils;
 
-public class Page {
+import java.io.Serializable;
+
+public class Page implements Serializable {
+	private static final long serialVersionUID = -4222587152137966045L;
 	private int currentPage;
 	private int pageSize;
 	private int totalCount;
 	private int totalPage;
 	
 	private String orderCase;
-	private static int PAGE_SIZE;
+	private static int PAGE_SIZE = 10;
 	// 获取系统文件根路径
-	static {
-		PAGE_SIZE = Integer.parseInt(PropertiesUtils.getProperties().getProperty("PAGE_SIZE"));
-	}
+//	static {
+//		PAGE_SIZE = Integer.parseInt(PropertiesUtils.getProperties().getProperty("PAGE_SIZE"));
+//	}
 	public Page() {
 		this.currentPage = 1;
 		this.pageSize = PAGE_SIZE;

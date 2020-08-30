@@ -1,6 +1,7 @@
 package com.ruoyi.common.core.controller;
 
 import java.beans.PropertyEditorSupport;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -181,5 +182,26 @@ public class BaseController
     public String redirect(String url)
     {
         return StringUtils.format("redirect:{}", url);
+    }
+
+
+    protected void outputMsg(HttpServletResponse res , String msg) throws Exception
+    {
+        PrintWriter out = res.getWriter();
+        res.setContentType("text/html");
+        res.setCharacterEncoding("utf-8");
+        out.write(msg);
+        out.flush();
+        out.close();
+    }
+
+    protected void outputJson(HttpServletResponse res , String msg) throws Exception
+    {
+        PrintWriter out = res.getWriter();
+        res.setContentType("text/json");
+        res.setCharacterEncoding("utf-8");
+        out.write(msg);
+        out.flush();
+        out.close();
     }
 }

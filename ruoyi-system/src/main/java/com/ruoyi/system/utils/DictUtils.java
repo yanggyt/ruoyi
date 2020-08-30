@@ -1,11 +1,12 @@
 package com.ruoyi.system.utils;
 
-import java.util.List;
-import org.springframework.stereotype.Component;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysDictData;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 字典工具类

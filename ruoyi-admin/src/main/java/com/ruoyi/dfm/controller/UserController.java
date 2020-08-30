@@ -1,5 +1,8 @@
 package com.ruoyi.dfm.controller;
 
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.dfm.constant.UserConstants;
 import com.ruoyi.dfm.pojo.Page;
 import com.ruoyi.dfm.pojo.UserInfo;
@@ -7,12 +10,15 @@ import com.ruoyi.dfm.pojo.UserQueryBean;
 import com.ruoyi.dfm.service.FileService;
 import com.ruoyi.dfm.service.UserService;
 import com.ruoyi.dfm.util.Md5Util;
+import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysRole;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +27,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user.do")
-public class UserController extends BaseController{
+public class UserController extends com.ruoyi.common.core.controller.BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
@@ -94,7 +100,21 @@ public class UserController extends BaseController{
 		}
 		
 	}
-	
+
+
+	/**
+	 * 用户管理控制器，默认打开个人资料方法
+	 * @param req
+	 * @param res
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/list")
+	public ModelAndView list(HttpServletRequest req,
+									  HttpServletResponse res) throws Exception {
+		return new ModelAndView("dfm/userList");
+	}
+
 	/**
 	 * 获取用户列表
 	 * @param req
@@ -102,35 +122,28 @@ public class UserController extends BaseController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/getUserList")
-	public ModelAndView getUserList(HttpServletRequest req,
-                                    HttpServletResponse res) throws Exception {
-		String currentPage = req.getParameter("currentPage");
-		Page page = new Page();
-		if(currentPage == null || "".equals(currentPage.trim()))
-		{
-			page.setCurrentPage(1);
-		}
-		else
-		{
-			page.setCurrentPage(Integer.parseInt(currentPage));
-		}
-
-		UserInfo currentUser = getUserInfo(req);
-		List<UserInfo> rs = null;
-		if(UserConstants.USER_LEVEL_ADMIN == currentUser.getGroupId()) {
-			rs = userService.getAllUser(page);
-		} else if(UserConstants.USER_LEVEL_DEP_ADMIN == currentUser.getGroupId()) {
-			//部门管理员，只能获取自己部门的用户
-			UserQueryBean userQueryBean = new UserQueryBean();
-			userQueryBean.setDepartment(currentUser.getDepartment());
-			rs = userService.getByQueryBean(userQueryBean, page);
-		}
-		req.setAttribute("userList", rs);
-		req.setAttribute("page", page);
-		return new ModelAndView("userList");
-	}
-	
+//	@RequestMapping("/getUserList")
+//	@ResponseBody
+//	public TableDataInfo getUserList(HttpServletRequest req, HttpServletResponse res) throws Exception {
+//		startPage();
+//		Page page = new Page();
+//		PageDomain pageDomain = TableSupport.getPageDomain();
+//		page.setCurrentPage(pageDomain.getPageNum());
+//		page.setPageSize(pageDomain.getPageSize());
+//
+//		UserInfo currentUser = ShiroUtils.getLoginUser();
+//		List<UserInfo> rs = null;
+//		if(UserConstants.USER_LEVEL_ADMIN == currentUser.getGroupId()) {
+//			rs = userService.getAllUser(page);
+//		} else if(UserConstants.USER_LEVEL_DEP_ADMIN == currentUser.getGroupId()) {
+//			//部门管理员，只能获取自己部门的用户
+//			UserQueryBean userQueryBean = new UserQueryBean();
+//			userQueryBean.setDepartment(currentUser.getDepartment());
+//			rs = userService.getByQueryBean(userQueryBean, page);
+//		}
+//		return getDataTable(rs);
+//	}
+//
 	
 	
 	/**
@@ -194,7 +207,7 @@ public class UserController extends BaseController{
 		String ustr = req.getParameter("uid");
 		if(ustr == null || "".equals(ustr))
 		{
-			uid = getUserInfo(req).getId();
+			uid = ShiroUtils.getLoginUser().getId();
 		}else
 		{
 			uid = Integer.parseInt(ustr);
@@ -231,7 +244,7 @@ public class UserController extends BaseController{
 			groupId = UserConstants.USER_LEVEL_DEP_ADMIN;
 		}
 
-		UserInfo user1 = getUserInfo(req);
+		UserInfo user1 = ShiroUtils.getLoginUser();
 		try {
 			UserInfo user = new UserInfo();
 			user.setId(Integer.parseInt(id));
@@ -262,10 +275,11 @@ public class UserController extends BaseController{
 		}
 	}
 
-	@RequestMapping("/queryUser")
-	public ModelAndView queryUser(HttpServletRequest req,
+	@RequestMapping("/getUserList")
+	@ResponseBody
+	public TableDataInfo queryUser(HttpServletRequest req,
                                   HttpServletResponse res) throws Exception {
-		
+		startPage();
 		String name = req.getParameter("name");
 		String username = req.getParameter("username");
 		String department = req.getParameter("department");
@@ -278,20 +292,15 @@ public class UserController extends BaseController{
 		queryBean.setProjectGroup(projectGroup);
 		queryBean.setState(state);
 		queryBean.setUsername(username);
-		
-		//构造分页参数
-		String currentPage = req.getParameter("currentPage");
-		Page page = new Page();
-		if(currentPage == null || "".equals(currentPage.trim()))
-		{
-			page.setCurrentPage(1);
-		}
-		else
-		{
-			page.setCurrentPage(Integer.parseInt(currentPage));
-		}
 
-		UserInfo currentUser = getUserInfo(req);
+		Page page = new Page();
+		PageDomain pageDomain = TableSupport.getPageDomain();
+		page.setCurrentPage(pageDomain.getPageNum());
+		page.setPageSize(pageDomain.getPageSize());
+
+		UserInfo currentUser = ShiroUtils.getLoginUser();
+
+
 		List<UserInfo> rs = null;
 		if(UserConstants.USER_LEVEL_ADMIN == currentUser.getGroupId()) {
 			rs = userService.getByQueryBean(queryBean , page);
@@ -300,11 +309,7 @@ public class UserController extends BaseController{
 			queryBean.setDepartment(currentUser.getDepartment());
 			rs = userService.getByQueryBean(queryBean, page);
 		}
-
-		//List<UserInfo> list = userService.getByQueryBean(queryBean , page);
-		req.setAttribute("page", page);
-		req.setAttribute("userList", rs);
-		return new ModelAndView("userList");
+		return getDataTable(rs);
 	}
 	
 	

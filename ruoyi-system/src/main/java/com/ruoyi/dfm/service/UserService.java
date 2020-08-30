@@ -6,7 +6,7 @@ import com.ruoyi.dfm.pojo.Project;
 import com.ruoyi.dfm.pojo.UserInfo;
 import com.ruoyi.dfm.pojo.UserQueryBean;
 import com.ruoyi.dfm.util.Md5Util;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

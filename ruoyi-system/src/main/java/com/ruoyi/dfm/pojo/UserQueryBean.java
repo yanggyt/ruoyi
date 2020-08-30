@@ -1,7 +1,10 @@
 package com.ruoyi.dfm.pojo;
 
-public class UserQueryBean {
+import java.io.Serializable;
 
+public class UserQueryBean implements Serializable {
+
+	private static final long serialVersionUID = -2612773710283491830L;
 	private String name;
     private String username;
     private String department;

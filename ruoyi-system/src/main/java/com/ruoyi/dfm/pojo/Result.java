@@ -1,6 +1,9 @@
 package com.ruoyi.dfm.pojo;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable {
+	private static final long serialVersionUID = -8219578427197649446L;
 	private boolean success;
 	private String message;
 	private Object data;

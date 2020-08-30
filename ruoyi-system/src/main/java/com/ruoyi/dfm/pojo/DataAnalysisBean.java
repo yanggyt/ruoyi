@@ -1,6 +1,10 @@
 package com.ruoyi.dfm.pojo;
 
-public class DataAnalysisBean {
+import java.io.Serializable;
+
+public class DataAnalysisBean implements Serializable {
+
+	private static final long serialVersionUID = -1499073053303362866L;
 	private int dataId;
 	private int projectId;
 	private String projectName;
