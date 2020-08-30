@@ -1,16 +1,16 @@
 package com.ruoyi.web.controller.system;
 
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.framework.shiro.service.SysRegisterService;
+import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.framework.shiro.service.SysRegisterService;
-import com.ruoyi.system.domain.SysUser;
-import com.ruoyi.system.service.ISysConfigService;
 
 /**
  * 注册验证
