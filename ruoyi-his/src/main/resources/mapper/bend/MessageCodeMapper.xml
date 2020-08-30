@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.MessageCodeMapper">
+    
+    <resultMap type="MessageCode" id="MessageCodeResult">
+        <result property="id"    column="id"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="signName"    column="sign_name"    />
+        <result property="smsType"    column="sms_type"    />
+        <result property="smsCode"    column="sms_code"    />
+        <result property="messageText"    column="message_text"    />
+        <result property="templateCode"    column="template_code"    />
+        <result property="templateParam"    column="template_param"    />
+        <result property="smsStatus"    column="sms_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectMessageCodeVo">
+        select id, mobile_phone, sign_name, sms_type, sms_code, message_text, template_code, template_param, sms_status, create_time, update_time, deleted from bend_message_code
+    </sql>
+
+    <select id="selectMessageCodeList" parameterType="MessageCode" resultMap="MessageCodeResult">
+        <include refid="selectMessageCodeVo"/>
+        <where>  
+            <if test="mobilePhone != null  and mobilePhone != ''"> and mobile_phone = #{mobilePhone}</if>
+            <if test="smsStatus != null "> and sms_status = #{smsStatus}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectMessageCodeById" parameterType="Long" resultMap="MessageCodeResult">
+        <include refid="selectMessageCodeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMessageCode" parameterType="MessageCode" useGeneratedKeys="true" keyProperty="id">
+        insert into bend_message_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mobilePhone != null">mobile_phone,</if>
+            <if test="signName != null">sign_name,</if>
+            <if test="smsType != null">sms_type,</if>
+            <if test="smsCode != null">sms_code,</if>
+            <if test="messageText != null">message_text,</if>
+            <if test="templateCode != null">template_code,</if>
+            <if test="templateParam != null">template_param,</if>
+            <if test="smsStatus != null">sms_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mobilePhone != null">#{mobilePhone},</if>
+            <if test="signName != null">#{signName},</if>
+            <if test="smsType != null">#{smsType},</if>
+            <if test="smsCode != null">#{smsCode},</if>
+            <if test="messageText != null">#{messageText},</if>
+            <if test="templateCode != null">#{templateCode},</if>
+            <if test="templateParam != null">#{templateParam},</if>
+            <if test="smsStatus != null">#{smsStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMessageCode" parameterType="MessageCode">
+        update bend_message_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
+            <if test="signName != null">sign_name = #{signName},</if>
+            <if test="smsType != null">sms_type = #{smsType},</if>
+            <if test="smsCode != null">sms_code = #{smsCode},</if>
+            <if test="messageText != null">message_text = #{messageText},</if>
+            <if test="templateCode != null">template_code = #{templateCode},</if>
+            <if test="templateParam != null">template_param = #{templateParam},</if>
+            <if test="smsStatus != null">sms_status = #{smsStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMessageCodeById" parameterType="Long">
+        delete from bend_message_code where id = #{id}
+    </delete>
+
+    <delete id="deleteMessageCodeByIds" parameterType="String">
+        delete from bend_message_code where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

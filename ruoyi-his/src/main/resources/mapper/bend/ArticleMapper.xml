@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.ArticleMapper">
+    
+    <resultMap type="Article" id="ArticleResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="subTitle"    column="sub_title"    />
+        <result property="articleCover"    column="article_cover"    />
+        <result property="pvCount"    column="pv_count"    />
+        <result property="commentCount"    column="comment_count"    />
+        <result property="quoteCount"    column="quote_count"    />
+        <result property="wechatAccount"    column="wechat_account"    />
+        <result property="signatureName"    column="signature_name"    />
+        <result property="articleType"    column="article_type"    />
+        <result property="articleClassify"    column="article_classify"    />
+        <result property="articleCategory"    column="article_category"    />
+        <result property="articleStatus"    column="article_status"    />
+        <result property="approveStatus"    column="approve_status"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="releaseTime"    column="release_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="content"    column="content"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectArticleVo">
+        select id, title, sub_title, article_cover, pv_count, comment_count, quote_count, wechat_account, signature_name, article_type, article_classify, article_category, article_status, approve_status, sort_no, create_by, audit_time, release_time, create_time, update_time, content, deleted from bend_article
+    </sql>
+
+    <select id="selectArticleList" parameterType="Article" resultMap="ArticleResult">
+        <include refid="selectArticleVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="articleType != null "> and article_type = #{articleType}</if>
+            <if test="articleClassify != null "> and article_classify = #{articleClassify}</if>
+            <if test="articleCategory != null "> and article_category = #{articleCategory}</if>
+            <if test="articleStatus != null "> and article_status = #{articleStatus}</if>
+            <if test="approveStatus != null "> and approve_status = #{approveStatus}</if>
+            <if test="releaseTime != null "> and release_time = #{releaseTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectArticleById" parameterType="Long" resultMap="ArticleResult">
+        <include refid="selectArticleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertArticle" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
+        insert into bend_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="subTitle != null">sub_title,</if>
+            <if test="articleCover != null">article_cover,</if>
+            <if test="pvCount != null">pv_count,</if>
+            <if test="commentCount != null">comment_count,</if>
+            <if test="quoteCount != null">quote_count,</if>
+            <if test="wechatAccount != null and wechatAccount != ''">wechat_account,</if>
+            <if test="signatureName != null and signatureName != ''">signature_name,</if>
+            <if test="articleType != null">article_type,</if>
+            <if test="articleClassify != null">article_classify,</if>
+            <if test="articleCategory != null">article_category,</if>
+            <if test="articleStatus != null">article_status,</if>
+            <if test="approveStatus != null">approve_status,</if>
+            <if test="sortNo != null">sort_no,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="releaseTime != null">release_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="content != null">content,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="subTitle != null">#{subTitle},</if>
+            <if test="articleCover != null">#{articleCover},</if>
+            <if test="pvCount != null">#{pvCount},</if>
+            <if test="commentCount != null">#{commentCount},</if>
+            <if test="quoteCount != null">#{quoteCount},</if>
+            <if test="wechatAccount != null and wechatAccount != ''">#{wechatAccount},</if>
+            <if test="signatureName != null and signatureName != ''">#{signatureName},</if>
+            <if test="articleType != null">#{articleType},</if>
+            <if test="articleClassify != null">#{articleClassify},</if>
+            <if test="articleCategory != null">#{articleCategory},</if>
+            <if test="articleStatus != null">#{articleStatus},</if>
+            <if test="approveStatus != null">#{approveStatus},</if>
+            <if test="sortNo != null">#{sortNo},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="releaseTime != null">#{releaseTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="content != null">#{content},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArticle" parameterType="Article">
+        update bend_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="subTitle != null">sub_title = #{subTitle},</if>
+            <if test="articleCover != null">article_cover = #{articleCover},</if>
+            <if test="pvCount != null">pv_count = #{pvCount},</if>
+            <if test="commentCount != null">comment_count = #{commentCount},</if>
+            <if test="quoteCount != null">quote_count = #{quoteCount},</if>
+            <if test="wechatAccount != null and wechatAccount != ''">wechat_account = #{wechatAccount},</if>
+            <if test="signatureName != null and signatureName != ''">signature_name = #{signatureName},</if>
+            <if test="articleType != null">article_type = #{articleType},</if>
+            <if test="articleClassify != null">article_classify = #{articleClassify},</if>
+            <if test="articleCategory != null">article_category = #{articleCategory},</if>
+            <if test="articleStatus != null">article_status = #{articleStatus},</if>
+            <if test="approveStatus != null">approve_status = #{approveStatus},</if>
+            <if test="sortNo != null">sort_no = #{sortNo},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="releaseTime != null">release_time = #{releaseTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteArticleById" parameterType="Long">
+        delete from bend_article where id = #{id}
+    </delete>
+
+    <delete id="deleteArticleByIds" parameterType="String">
+        delete from bend_article where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.BannerMapper">
+    
+    <resultMap type="Banner" id="BannerResult">
+        <result property="id"    column="id"    />
+        <result property="adTitle"    column="ad_title"    />
+        <result property="adUrl"    column="ad_url"    />
+        <result property="adDetailUrl"    column="ad_detail_url"    />
+        <result property="adType"    column="ad_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectBannerVo">
+        select id, ad_title, ad_url, ad_detail_url, ad_type, create_time, update_time, deleted from bend_banner
+    </sql>
+
+    <select id="selectBannerList" parameterType="Banner" resultMap="BannerResult">
+        <include refid="selectBannerVo"/>
+        <where>  
+            <if test="adType != null "> and ad_type = #{adType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBannerById" parameterType="Long" resultMap="BannerResult">
+        <include refid="selectBannerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBanner" parameterType="Banner" useGeneratedKeys="true" keyProperty="id">
+        insert into bend_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adTitle != null and adTitle != ''">ad_title,</if>
+            <if test="adUrl != null">ad_url,</if>
+            <if test="adDetailUrl != null">ad_detail_url,</if>
+            <if test="adType != null">ad_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="adTitle != null and adTitle != ''">#{adTitle},</if>
+            <if test="adUrl != null">#{adUrl},</if>
+            <if test="adDetailUrl != null">#{adDetailUrl},</if>
+            <if test="adType != null">#{adType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBanner" parameterType="Banner">
+        update bend_banner
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="adTitle != null and adTitle != ''">ad_title = #{adTitle},</if>
+            <if test="adUrl != null">ad_url = #{adUrl},</if>
+            <if test="adDetailUrl != null">ad_detail_url = #{adDetailUrl},</if>
+            <if test="adType != null">ad_type = #{adType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBannerById" parameterType="Long">
+        delete from bend_banner where id = #{id}
+    </delete>
+
+    <delete id="deleteBannerByIds" parameterType="String">
+        delete from bend_banner where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

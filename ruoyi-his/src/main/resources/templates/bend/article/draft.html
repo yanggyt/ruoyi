@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('草稿内容')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input name="articleStatus" th:value="${articleStatus}" type="hidden">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>文章标题：</label>
+                                <input type="text" name="title"/>
+                            </li>
+                            <li>
+                                <label>文章类型：</label>
+                                <select name="articleType" th:with="type=${@dict.getType('biz_article_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>文章类别：</label>
+                                <select name="articleClassify" th:with="type=${@dict.getType('biz_article_classify')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>文章分类：</label>
+                                <select name="articleCategory" th:with="type=${@dict.getType('biz_article_category')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="bend:article:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-danger" onclick="$.operate.clean()" shiro:hasPermission="bend:article:remove">
+                    <i class="fa fa-trash"></i> 清空
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="bend:article:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table" style="width: 2000px"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('bend:article:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('bend:article:remove')}]];
+        var articleTypeDatas = [[${@dict.getType('biz_article_type')}]];
+        var articleClassifyDatas = [[${@dict.getType('biz_article_classify')}]];
+        var articleCategoryDatas = [[${@dict.getType('biz_article_category')}]];
+        var articleStatusDatas = [[${@dict.getType('biz_article_status')}]];
+        var prefix = ctx + "bend/article";
+
+        $(function() {
+            var options = {
+                url: prefix + "/draft/list",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "内容管理",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '主键ID',
+                    visible: false
+                },
+                {
+                    field: 'title',
+                    title: '文章标题',
+                    align: "center",
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'subTitle',
+                    title: '副标题',
+                    align: "center",
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'articleCover',
+                    title: '文章封面',
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return $.table.imageView(value);
+                    }
+                },
+                {
+                    field: 'wechatAccount',
+                    title: '微信公众号',
+                    align: "center",
+                },
+                {
+                    field: 'signatureName',
+                    title: '署名名称',
+                    align: "center"
+                },
+                {
+                    field: 'articleType',
+                    title: '文章类型',
+                    align: "center",
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(articleTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'articleClassify',
+                    title: '文章类别',
+                    align: "center",
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(articleClassifyDatas, value);
+                    }
+                },
+                {
+                    field: 'articleCategory',
+                    title: '文章分类',
+                    align: "center",
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(articleCategoryDatas, value);
+                    }
+                },
+                {
+                    field: 'articleStatus',
+                    title: '文章状态',
+                    align: "center",
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(articleStatusDatas, value);
+                    }
+                },
+                {
+                    field: 'pvCount',
+                    title: '浏览量',
+                    align: "center"
+                },
+                {
+                    field: 'commentCount',
+                    title: '评论数',
+                    align: "center"
+                },
+                {
+                    field: 'quoteCount',
+                    title: '转载量',
+                    align: "center"
+                },
+                {
+                    field: 'sortNo',
+                    title: '排序号',
+                    align: "center"
+                },
+                {
+                    field: 'createBy',
+                    title: '操作员',
+                    align: "center"
+                },
+                {
+                    field: 'releaseTime',
+                    title: '发布时间',
+                    align: "center"
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    align: "center"
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editTab(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>
