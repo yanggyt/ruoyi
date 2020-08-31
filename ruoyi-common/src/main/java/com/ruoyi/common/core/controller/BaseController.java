@@ -114,6 +114,16 @@ public class BaseController
         return rspData;
     }
 
+    protected TableDataInfo getDataTable(List<?> list, long total)
+    {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(0);
+        rspData.setRows(list);
+        rspData.setTotal(total);
+        return rspData;
+    }
+
+
     /**
      * 响应返回结果
      * 

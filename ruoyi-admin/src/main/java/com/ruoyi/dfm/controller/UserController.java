@@ -43,11 +43,6 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/")
-	public ModelAndView defaultHandle(HttpServletRequest req,
-                                      HttpServletResponse res) throws Exception {
-		return new ModelAndView("modifyUser");
-	}
 	
 	/**
 	 * 添加用户
@@ -56,8 +51,8 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/add")
-	public ModelAndView add(HttpServletRequest req,
+	@RequestMapping("/addSave")
+	public ModelAndView addSave(HttpServletRequest req,
                             HttpServletResponse res) throws Exception {
 		String name = req.getParameter("name");
 		String username = req.getParameter("username");
@@ -99,6 +94,19 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 			return null;
 		}
 		
+	}
+
+	/**
+	 * 添加用户页面
+	 * @param req
+	 * @param res
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/add")
+	public ModelAndView add(HttpServletRequest req,
+							 HttpServletResponse res) throws Exception {
+		return new ModelAndView("dfm/addUser");
 	}
 
 
@@ -300,7 +308,6 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 
 		UserInfo currentUser = ShiroUtils.getLoginUser();
 
-
 		List<UserInfo> rs = null;
 		if(UserConstants.USER_LEVEL_ADMIN == currentUser.getGroupId()) {
 			rs = userService.getByQueryBean(queryBean , page);
@@ -309,7 +316,7 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 			queryBean.setDepartment(currentUser.getDepartment());
 			rs = userService.getByQueryBean(queryBean, page);
 		}
-		return getDataTable(rs);
+		return getDataTable(rs, page.getTotalCount());
 	}
 	
 	
