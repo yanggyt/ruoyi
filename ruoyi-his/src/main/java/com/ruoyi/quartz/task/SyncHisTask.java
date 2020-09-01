@@ -123,7 +123,7 @@ public class SyncHisTask {
                     Integer days = taskParam.getDays();
                     Date endTime = DateUtils.getNowDate();
                     Date beginTime = Func.minusDays(endTime, days);
-                    hisService.syncRegistrationRecord(orgCode, "", Func.formatDate(beginTime), Func.formatDate(endTime));
+                    hisService.syncRegistrationRecord(orgCode, "", Func.formatDate(beginTime, DateUtils.YYYY_MM_DD), Func.formatDate(endTime, DateUtils.YYYY_MM_DD));
                 });
                 long entTime = System.currentTimeMillis();
                 log.info("同步挂号记录:共耗时 {} 秒", (float) (entTime - startTime) / 1000);
@@ -554,9 +554,10 @@ public class SyncHisTask {
                 taskParams.forEach(taskParam -> {
                     String orgCode = taskParam.getOrgCode();
                     Integer days = taskParam.getDays();
-                    Date nowDate = DateUtils.getNowDate();
-                    Date beginTime = Func.minusDays(nowDate, 1);//昨天
-                    Date endTime = Func.plusDays(nowDate, days);
+                    //Date nowDate = DateUtils.getNowDate();
+                    //Date beginTime = Func.minusDays(nowDate, 1);//昨天
+                    Date beginTime = DateUtils.getNowDate();
+                    Date endTime = Func.plusDays(beginTime, days);
                     this.doctorScheduleQuery(orgCode, days);
                     //医生列表(正常在线)
                     HisDoctor hisDoctor = new HisDoctor();
@@ -564,7 +565,7 @@ public class SyncHisTask {
                     hisDoctor.setIsShow(IConstant.ONE.getValue());
                     List<HisDoctor> doctorList = iHisDoctorService.selectHisDoctorList(hisDoctor);
                     if (Func.isNotEmpty(doctorList)) {
-                        hisService.syncDoctorSchedule(doctorList, Func.formatDate(beginTime), Func.formatDate(endTime));
+                        hisService.syncDoctorSchedule(doctorList, Func.formatDate(beginTime, DateUtils.YYYY_MM_DD), Func.formatDate(endTime, DateUtils.YYYY_MM_DD));
                     }
                 });
             }
