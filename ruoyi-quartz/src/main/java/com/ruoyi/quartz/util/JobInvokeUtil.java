@@ -25,8 +25,10 @@ public class JobInvokeUtil
         String invokeTarget = sysJob.getInvokeTarget();
         String beanName = getBeanName(invokeTarget);
         String methodName = getMethodName(invokeTarget);
-        List<Object[]> methodParams = getMethodParams(invokeTarget);
-
+        //修改定时任务，获取任务参数
+        String params = sysJob.getMethodParams();
+        //List<Object[]> methodParams = getMethodParams(invokeTarget);
+        List<Object[]> methodParams = getMethodParams(params);
         if (!isValidClassName(beanName))
         {
             Object bean = SpringUtils.getBean(beanName);
@@ -110,7 +112,8 @@ public class JobInvokeUtil
         {
             return null;
         }
-        String[] methodParams = methodStr.split(",");
+        //String[] methodParams = methodStr.split(",");
+        String[] methodParams = methodStr.split("\\|");
         List<Object[]> classs = new LinkedList<>();
         for (int i = 0; i < methodParams.length; i++)
         {
