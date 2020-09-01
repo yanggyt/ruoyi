@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisOutpatientExpensesBillMapper">
+    
+    <resultMap type="HisOutpatientExpensesBill" id="HisOutpatientExpensesBillResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="patientId"    column="patient_id"    />
+        <result property="idCardNo"    column="id_card_no"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="orderCode"    column="order_code"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="registeredId"    column="registered_id"    />
+        <result property="recipeId"    column="recipe_id"    />
+        <result property="recipeCode"    column="recipe_code"    />
+        <result property="recipeFee"    column="recipe_fee"    />
+        <result property="billDoctor"    column="bill_doctor"    />
+        <result property="billDept"    column="bill_dept"    />
+        <result property="billTime"    column="bill_time"    />
+        <result property="feeName"    column="fee_name"    />
+        <result property="operateDept"    column="operate_dept"    />
+        <result property="recipeStatus"    column="recipe_status"    />
+        <result property="chargeRecordId"    column="charge_record_id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <resultMap id="HisOutpatientExpensesBillHisOutpatientExpensesBillDetailResult" type="HisOutpatientExpensesBill" extends="HisOutpatientExpensesBillResult">
+        <collection property="hisOutpatientExpensesBillDetailList" notNullColumn="id" javaType="java.util.List" resultMap="HisOutpatientExpensesBillDetailResult" />
+    </resultMap>
+
+    <resultMap type="HisOutpatientExpensesBillDetail" id="HisOutpatientExpensesBillDetailResult">
+        <result property="id"    column="id"    />
+        <result property="billId"    column="bill_id"    />
+        <result property="billDetailId"    column="bill_detail_id"    />
+        <result property="recipeId"    column="recipe_id"    />
+        <result property="recipeCode"    column="recipe_code"    />
+        <result property="fee"    column="fee"    />
+        <result property="feeName"    column="fee_name"    />
+        <result property="billDoctor"    column="bill_doctor"    />
+        <result property="billDept"    column="bill_dept"    />
+        <result property="operateDept"    column="operate_dept"    />
+        <result property="billTime"    column="bill_time"    />
+        <result property="amount"    column="amount"    />
+        <result property="unit"    column="unit"    />
+        <result property="specification"    column="specification"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="costItemName"    column="cost_item_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisOutpatientExpensesBillVo">
+        select id, member_id, patient_id, id_card_no, patient_name, order_code, business_id, registered_id, recipe_id, recipe_code, recipe_fee, bill_doctor, bill_dept, bill_time, fee_name, operate_dept, recipe_status, charge_record_id, org_code, org_name, pay_time, create_time, update_time, deleted from his_outpatient_expenses_bill
+    </sql>
+
+    <select id="selectHisOutpatientExpensesBillList" parameterType="HisOutpatientExpensesBill" resultMap="HisOutpatientExpensesBillResult">
+        <include refid="selectHisOutpatientExpensesBillVo"/>
+        <where>  
+            <if test="idCardNo != null  and idCardNo != ''"> and id_card_no = #{idCardNo}</if>
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="orderCode != null  and orderCode != ''"> and order_code = #{orderCode}</if>
+            <if test="businessId != null  and businessId != ''"> and business_id = #{businessId}</if>
+            <if test="recipeCode != null  and recipeCode != ''"> and recipe_code = #{recipeCode}</if>
+            <if test="params.beginBillTime != null and params.beginBillTime != ''">
+                AND date_format(bill_time,'%y%m%d') &gt;= date_format(#{params.beginBillTime},'%y%m%d')
+            </if>
+            <if test="params.endBillTime != null and params.endBillTime != ''">
+                AND date_format(bill_time,'%y%m%d') &lt;= date_format(#{params.endBillTime},'%y%m%d')
+            </if>
+            <if test="recipeStatus != null "> and recipe_status = #{recipeStatus}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="params.beginPayTime != null and params.beginPayTime != ''">
+                AND date_format(pay_time,'%y%m%d') &gt;= date_format(#{params.beginPayTime},'%y%m%d')
+            </if>
+            <if test="params.endPayTime != null and params.endPayTime != ''">
+                AND date_format(pay_time,'%y%m%d') &lt;= date_format(#{params.endPayTime},'%y%m%d')
+            </if>
+        </where>
+        order by bill_time desc
+    </select>
+    
+    <select id="selectHisOutpatientExpensesBillById" parameterType="Long" resultMap="HisOutpatientExpensesBillHisOutpatientExpensesBillDetailResult">
+        select a.id, a.member_id, a.patient_id, a.id_card_no, a.patient_name, a.order_code, a.business_id, a.registered_id, a.recipe_id, a.recipe_code, a.recipe_fee, a.bill_doctor, a.bill_dept, a.bill_time, a.fee_name, a.operate_dept, a.recipe_status, a.charge_record_id, a.org_code, a.org_name, a.pay_time, a.create_time, a.update_time, a.deleted,
+            b.id, b.bill_id, b.bill_detail_id, b.recipe_id, b.recipe_code, b.fee, b.fee_name, b.bill_doctor, b.bill_dept, b.operate_dept, b.bill_time, b.amount, b.unit, b.specification, b.unit_price, b.cost_item_name, b.create_time, b.deleted
+        from his_outpatient_expenses_bill a
+        left join his_outpatient_expenses_bill_detail b on b.bill_id = a.id
+        where a.id = #{id}
+    </select>
+    
+    <delete id="deleteHisOutpatientExpensesBillDetailByBillIds" parameterType="String">
+        delete from his_outpatient_expenses_bill_detail where bill_id in 
+        <foreach item="billId" collection="array" open="(" separator="," close=")">
+            #{billId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteHisOutpatientExpensesBillDetailByBillId" parameterType="Long">
+        delete from his_outpatient_expenses_bill_detail where bill_id = #{billId}
+    </delete>
+
+    <insert id="batchHisOutpatientExpensesBillDetail">
+        insert into his_outpatient_expenses_bill_detail(id,bill_id, bill_detail_id, recipe_id, recipe_code, fee, fee_name, bill_doctor, bill_dept, operate_dept, bill_time, amount, unit, specification, unit_price, cost_item_name, create_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            (#{item.id},#{item.billId}, #{item.billDetailId}, #{item.recipeId}, #{item.recipeCode}, #{item.fee}, #{item.feeName}, #{item.billDoctor}, #{item.billDept}, #{item.operateDept}, #{item.billTime}, #{item.amount}, #{item.unit}, #{item.specification}, #{item.unitPrice}, #{item.costItemName}, #{item.createTime})
+        </foreach>
+    </insert>
+
+</mapper>

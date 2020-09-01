@@ -1,6 +1,8 @@
 package com.ruoyi.bend.controller;
 
 import java.util.List;
+
+import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -86,6 +88,8 @@ public class AgreementController extends BaseController
     @ResponseBody
     public AjaxResult addSave(Agreement agreement)
     {
+        String operName = ShiroUtils.getSysUser().getLoginName();
+        agreement.setCreateBy(operName);
         return toAjax(agreementService.insertAgreement(agreement));
     }
 
@@ -109,6 +113,8 @@ public class AgreementController extends BaseController
     @ResponseBody
     public AjaxResult editSave(Agreement agreement)
     {
+        String operName = ShiroUtils.getSysUser().getLoginName();
+        agreement.setCreateBy(operName);
         return toAjax(agreementService.updateAgreement(agreement));
     }
 

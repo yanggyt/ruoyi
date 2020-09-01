@@ -8,7 +8,7 @@ import java.util.List;
  * 就诊人列表Mapper接口
  * 
  * @author bend
- * @date 2020-08-30
+ * @date 2020-09-01
  */
 public interface PatientListMapper extends RuoYiBaseMapper<PatientList>
 {

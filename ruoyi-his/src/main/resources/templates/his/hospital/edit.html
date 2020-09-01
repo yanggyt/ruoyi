@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改医疗机构')" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-hospital-edit" th:object="${hisHospitalInfo}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <h4 class="form-header h4">基本信息</h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">机构编码：</label>
+                        <div class="col-sm-8">
+                            <input name="orgCode" th:field="*{orgCode}" class="form-control" type="text" required disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">机构名称：</label>
+                        <div class="col-sm-8">
+                            <input name="orgName" th:field="*{orgName}" class="form-control" type="text" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">注册地址：</label>
+                        <div class="col-sm-8">
+                            <input name="orgAddress" th:field="*{orgAddress}" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">联系人：</label>
+                        <div class="col-sm-8">
+                            <input name="contactPerson" th:field="*{contactPerson}" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">医院类别：</label>
+                        <div class="col-sm-8">
+                            <select name="orgType" class="form-control m-b" th:with="type=${@dict.getType('biz_org_type')}" required>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{orgType}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">医院等级：</label>
+                        <div class="col-sm-8">
+                            <select name="orgLevel" class="form-control m-b" th:with="type=${@dict.getType('biz_org_level')}" required>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{orgLevel}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">优秀科室：</label>
+                        <div class="col-sm-8">
+                            <!--<input name="excellentDeptIds" th:field="*{excellentDeptIds}" class="form-control" type="text">-->
+                            <select id="excellentDeptIds" class="form-control select2-multiple" multiple>
+                                <option th:each="dept:${hisDepartmentList}" th:value="${dept.deptId}" th:text="${dept.deptName}" th:selected="${dept.flag}"></option>
+                            </select>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 最多可选5个优秀科室.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">优秀医生：</label>
+                        <div class="col-sm-8">
+                            <!--<input name="excellentDoctorIds" th:field="*{excellentDoctorIds}" class="form-control" type="text">-->
+                            <select id="excellentDoctorIds" class="form-control select2-multiple" multiple>
+                                <option th:each="doctor:${hisDoctorList}" th:value="${doctor.doctorId}" th:text="${doctor.doctorName}" th:selected="${doctor.flag}"></option>
+                            </select>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 最多可选5个优秀医生.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">联系电话：</label>
+                        <div class="col-sm-8">
+                            <input name="contactPhone" th:field="*{contactPhone}" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">经度：</label>
+                        <div class="col-sm-8">
+                            <input name="longitude" th:field="*{longitude}" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">虚拟用户：</label>
+                        <div class="col-sm-8">
+                            <select id="vmUserId" class="form-control">
+                                <option th:each="vmDoctor:${vmUserList}" th:value="${vmDoctor.doctorId}" th:text="${vmDoctor.doctorName}" th:selected="${vmDoctor.flag}"></option>
+                            </select>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 机构用于线上的虚拟操作员.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">纬度：</label>
+                        <div class="col-sm-8">
+                            <input name="latitude" th:field="*{latitude}" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">显示状态：</label>
+                        <div class="col-sm-8">
+                            <div class="radio-box" th:each="dict : ${@dict.getType('biz_normal_disable')}">
+                                <input type="radio" th:id="${'isShow_' + dict.dictCode}" name="isShow" th:value="${dict.dictValue}" th:field="*{isShow}" required>
+                                <label th:for="${'isShow_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">排序号：</label>
+                        <div class="col-sm-4">
+                            <input name="sortNo" th:field="*{sortNo}" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="form-header h4">其他信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">机构图标：</label>
+                        <div class="col-sm-10">
+                            <div class="file-loading">
+                                <input id="logoFile" name="logoFile" type="file" class="file"/>
+                                <!--<input id="logo_hidden" name="logo" type="hidden" th:field="*{logo}"/>-->
+                            </div>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 仅支持PNG,JPEG/JPG格式,图片大小不超过5MB。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">机构简介：</label>
+                        <div class="col-sm-10">
+                            <textarea name="introduction" class="form-control" rows="6">[[*{introduction}]]</textarea>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 机构简介最多600字.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-5 col-sm-10">
+            <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+        </div>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "his/hospital";
+        var form_hospital_edit =$("#form-hospital-edit");
+
+        form_hospital_edit.validate({
+            focusCleanup: true
+        });
+        var logoFile = $("#logoFile");
+        //处理图片回显
+        var defaultPreview = ["/img/profile.jpg"];
+        var initialPreview = [[${hisHospitalInfo.logo}]] == null ? defaultPreview :[[${hisHospitalInfo.logo}]];
+
+        logoFile.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: prefix + "/update/logo",
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            initialPreview: initialPreview,
+            dropZoneEnabled : false,
+            showCaption : true, //是否显示标题
+            //initialPreviewConfig:[ {type:"image",fileType:"image"} ],
+            allowedPreviewTypes : [ 'image' ],
+            allowedFileTypes : [ 'image' ],
+            allowedFileExtensions : [ 'jpg', 'png',"jpeg" ],
+            maxFileSize : 5120,
+            maxFileCount : 1,
+            uploadExtraData:{},//上传其他参数
+            initialPreviewConfig: [
+                {
+                    url: prefix + "/update/logo/del",
+                }
+            ],
+        }).on("filebatchselected", function(event, files) {
+            //选择文件后处理事件,文件上传方法
+            $(this).fileinput("upload");
+        }).on("fileuploaded", function(event, data, previewId, index) {
+            console.log("---------fileuploaded----------")
+            console.log(data.response)
+            console.log(previewId)
+            console.log(index)
+            console.log(event)
+            logoFile.attr("value", data.response.data);//上传成功后处理方法
+        }).on('filesuccessremove', function(event, key, data) {
+            console.log("------filesuccessremove----------")
+            console.log(event)
+            console.log(key)
+            console.log(data)
+        });
+        function submitHandler() {
+            if ($.validate.form()) {
+                var data = form_hospital_edit.serializeArray();
+                var excellentDoctorIds = $.form.selectSelects("excellentDoctorIds");
+                var excellentDeptIds = $.form.selectSelects("excellentDeptIds");
+                var vmUserId = $.form.selectSelects("vmUserId");
+                data.push({"name": "excellentDoctorIds", "value": excellentDoctorIds});
+                data.push({"name": "excellentDeptIds", "value": excellentDeptIds});
+                data.push({"name": "vmUserId", "value": vmUserId});
+                data.push({"name": "logo", "value": logoFile.attr("value")});
+                $.operate.save(prefix + "/edit", data);
+            }
+        }
+    </script>
+</body>
+</html>

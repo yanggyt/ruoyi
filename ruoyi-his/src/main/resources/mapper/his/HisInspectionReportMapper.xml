@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisInspectionReportMapper">
+    
+    <resultMap type="HisInspectionReport" id="HisInspectionReportResult">
+        <result property="id"    column="id"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="idCardNo"    column="id_card_no"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="patientSex"    column="patient_sex"    />
+        <result property="age"    column="age"    />
+        <result property="fee"    column="fee"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="billStatus"    column="bill_status"    />
+        <result property="billTime"    column="bill_time"    />
+        <result property="dataSource"    column="data_source"    />
+        <result property="subjective"    column="subjective"    />
+        <result property="assessment"    column="assessment"    />
+        <result property="packName"    column="pack_name"    />
+        <result property="specimenType"    column="specimen_type"    />
+        <result property="specimen"    column="specimen"    />
+        <result property="imageSrc"    column="image_src"    />
+        <result property="dataResult"    column="data_result"    />
+        <result property="infectious"    column="infectious"    />
+        <result property="conclusion"    column="conclusion"    />
+        <result property="remark"    column="remark"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="userName"    column="user_name"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="actorName"    column="actor_name"    />
+        <result property="operators"    column="operators"    />
+        <result property="execTime"    column="exec_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <resultMap id="HisInspectionReportHisInspectionReportItemResult" type="HisInspectionReport" extends="HisInspectionReportResult">
+        <collection property="hisInspectionReportItemList" notNullColumn="id" javaType="java.util.List" resultMap="HisInspectionReportItemResult" />
+    </resultMap>
+
+    <resultMap type="HisInspectionReportItem" id="HisInspectionReportItemResult">
+        <result property="id"    column="id"    />
+        <result property="reportId"    column="report_id"    />
+        <result property="itemId"    column="item_id"    />
+        <result property="execRecordId"    column="exec_record_id"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="itemValue"    column="item_value"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="unit"    column="unit"    />
+        <result property="referenceValue"    column="reference_value"    />
+        <result property="qualityResult"    column="quality_result"    />
+        <result property="archivedFlag"    column="archived_flag"    />
+        <result property="fee"    column="fee"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisInspectionReportVo">
+        select id, apply_id, id_card_no, patient_name, patient_sex, age, fee, bill_code, bill_type, bill_status, bill_time, data_source, subjective, assessment, pack_name, specimen_type, specimen, image_src, data_result, infectious, conclusion, remark, template_id, dept_id, dept_name, user_name, org_code, actor_name, operators, exec_time, create_time, deleted from his_inspection_report
+    </sql>
+
+    <select id="selectHisInspectionReportList" parameterType="HisInspectionReport" resultMap="HisInspectionReportResult">
+        <include refid="selectHisInspectionReportVo"/>
+        <where>  
+            <if test="applyId != null  and applyId != ''"> and apply_id = #{applyId}</if>
+            <if test="idCardNo != null  and idCardNo != ''"> and id_card_no = #{idCardNo}</if>
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="billType != null "> and bill_type = #{billType}</if>
+            <if test="infectious != null "> and infectious = #{infectious}</if>
+            <if test="params.beginBillTime != null and params.beginBillTime != ''">
+                AND date_format(bill_time,'%y%m%d') &gt;= date_format(#{params.beginBillTime},'%y%m%d')
+            </if>
+            <if test="params.endBillTime != null and params.endBillTime != ''">
+                AND date_format(bill_time,'%y%m%d') &lt;= date_format(#{params.endBillTime},'%y%m%d')
+            </if>
+            <if test="params.beginExecTime != null and params.beginExecTime != ''">
+                AND date_format(exec_time,'%y%m%d') &gt;= date_format(#{params.beginExecTime},'%y%m%d')
+            </if>
+            <if test="params.endExecTime != null and params.endExecTime != ''">
+                AND date_format(exec_time,'%y%m%d') &lt;= date_format(#{params.endExecTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectHisInspectionReportById" parameterType="Long" resultMap="HisInspectionReportHisInspectionReportItemResult">
+        select a.id, a.apply_id, a.id_card_no, a.patient_name, a.patient_sex, a.age, a.fee, a.bill_code, a.bill_type, a.bill_status, a.bill_time, a.data_source, a.subjective, a.assessment, a.pack_name, a.specimen_type, a.specimen, a.image_src, a.data_result, a.infectious, a.conclusion, a.remark, a.template_id, a.dept_id, a.dept_name, a.user_name, a.org_code, a.actor_name, a.operators, a.exec_time, a.create_time, a.deleted,
+            b.id, b.report_id, b.item_id, b.exec_record_id, b.item_name, b.item_value, b.sort_no, b.unit, b.reference_value, b.quality_result, b.archived_flag, b.fee, b.create_time, b.update_time, b.deleted
+        from his_inspection_report a
+        left join his_inspection_report_item b on b.report_id = a.id
+        where a.id = #{id}
+    </select>
+    
+    <delete id="deleteHisInspectionReportItemByReportIds" parameterType="String">
+        delete from his_inspection_report_item where report_id in 
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteHisInspectionReportItemByReportId" parameterType="Long">
+        delete from his_inspection_report_item where report_id = #{reportId}
+    </delete>
+
+    <insert id="batchHisInspectionReportItem">
+        insert into his_inspection_report_item( report_id, item_id, exec_record_id, item_name, item_value, sort_no, unit, reference_value, quality_result, archived_flag, fee, create_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            (#{item.reportId}, #{item.itemId}, #{item.execRecordId}, #{item.itemName}, #{item.itemValue}, #{item.sortNo}, #{item.unit}, #{item.referenceValue}, #{item.qualityResult}, #{item.archivedFlag}, #{item.fee}, #{item.createTime})
+        </foreach>
+    </insert>
+
+</mapper>

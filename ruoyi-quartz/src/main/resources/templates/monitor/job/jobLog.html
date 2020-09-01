@@ -101,9 +101,16 @@
                     	return $.table.tooltip(value);
                     }
 		        },
-		        {
-		            field: 'jobMessage',
-		            title: '日志信息'
+				{
+					field: 'methodParams',
+					title: '调用目标参数',
+					formatter: function(value, row, index) {
+						return $.table.tooltip(value);
+					}
+				},
+				{
+				field: 'jobMessage',
+				title: '日志信息'
 		        },
 		        {
 		            field: 'status',

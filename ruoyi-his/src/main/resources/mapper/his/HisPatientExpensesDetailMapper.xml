@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisPatientExpensesDetailMapper">
+    
+    <resultMap type="HisPatientExpensesDetail" id="HisPatientExpensesDetailResult">
+        <result property="id"    column="id"    />
+        <result property="expensesId"    column="expenses_id"    />
+        <result property="costDetailId"    column="cost_detail_id"    />
+        <result property="costItemName"    column="cost_item_name"    />
+        <result property="costItemCode"    column="cost_item_code"    />
+        <result property="costItemCategoryName"    column="cost_item_category_name"    />
+        <result property="costItemCategoryCode"    column="cost_item_category_code"    />
+        <result property="unit"    column="unit"    />
+        <result property="formulation"    column="formulation"    />
+        <result property="specification"    column="specification"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="amount"    column="amount"    />
+        <result property="drugDosage"    column="drug_dosage"    />
+        <result property="drugUsage"    column="drug_usage"    />
+        <result property="frequency"    column="frequency"    />
+        <result property="medicateDays"    column="medicate_days"    />
+        <result property="hospitalPricingUnit"    column="hospital_pricing_unit"    />
+        <result property="isImportedDrugs"    column="is_imported_drugs"    />
+        <result property="drugProducingArea"    column="drug_producing_area"    />
+        <result property="recipeCode"    column="recipe_code"    />
+        <result property="costDocumentType"    column="cost_document_type"    />
+        <result property="billDeptName"    column="bill_dept_name"    />
+        <result property="billDeptId"    column="bill_dept_id"    />
+        <result property="billDoctorName"    column="bill_doctor_name"    />
+        <result property="billDoctorId"    column="bill_doctor_id"    />
+        <result property="billTime"    column="bill_time"    />
+        <result property="operateDeptName"    column="operate_dept_name"    />
+        <result property="operateDeptId"    column="operate_dept_id"    />
+        <result property="operateDoctorName"    column="operate_doctor_name"    />
+        <result property="operateDoctorId"    column="operate_doctor_id"    />
+        <result property="operateTime"    column="operate_time"    />
+        <result property="prescribe"    column="prescribe"    />
+        <result property="operator"    column="operator"    />
+        <result property="doctorNumber"    column="doctor_number"    />
+        <result property="costWriteOffId"    column="cost_write_off_id"    />
+        <result property="isChargeFee"    column="is_charge_fee"    />
+        <result property="chargeTime"    column="charge_time"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="packageSpec"    column="package_spec"    />
+        <result property="dosageSpec"    column="dosage_spec"    />
+        <result property="everyTimeDosage"    column="every_time_dosage"    />
+        <result property="dirCode"    column="dir_code"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisPatientExpensesDetailVo">
+        select id, expenses_id, cost_detail_id, cost_item_name, cost_item_code, cost_item_category_name, cost_item_category_code, unit, formulation, specification, unit_price, quantity, amount, drug_dosage, drug_usage, frequency, medicate_days, hospital_pricing_unit, is_imported_drugs, drug_producing_area, recipe_code, cost_document_type, bill_dept_name, bill_dept_id, bill_doctor_name, bill_doctor_id, bill_time, operate_dept_name, operate_dept_id, operate_doctor_name, operate_doctor_id, operate_time, prescribe, operator, doctor_number, cost_write_off_id, is_charge_fee, charge_time, org_code, org_name, package_spec, dosage_spec, every_time_dosage, dir_code, create_time, deleted from his_patient_expenses_detail
+    </sql>
+
+    <select id="selectHisPatientExpensesDetailList" parameterType="HisPatientExpensesDetail" resultMap="HisPatientExpensesDetailResult">
+        <include refid="selectHisPatientExpensesDetailVo"/>
+        <where>  
+            <if test="expensesId != null "> and expenses_id = #{expensesId}</if>
+            <if test="costItemName != null  and costItemName != ''"> and cost_item_name like concat('%', #{costItemName}, '%')</if>
+            <if test="billTime != null  and billTime != ''"> and bill_time = #{billTime}</if>
+            <if test="isChargeFee != null "> and is_charge_fee = #{isChargeFee}</if>
+            <if test="chargeTime != null "> and charge_time = #{chargeTime}</if>
+        </where>
+    </select>
+
+</mapper>

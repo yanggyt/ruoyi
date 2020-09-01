@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.ScrcuOfflineOrdersMapper">
+    
+    <resultMap type="ScrcuOfflineOrders" id="ScrcuOfflineOrdersResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="reqSsn"    column="req_ssn"    />
+        <result property="reqTime"    column="req_time"    />
+        <result property="mchtNo"    column="mcht_no"    />
+        <result property="txnAreaInfo"    column="txn_area_info"    />
+        <result property="notifyUrl"    column="notify_url"    />
+        <result property="orderAmt"    column="order_amt"    />
+        <result property="validTime"    column="valid_time"    />
+        <result property="orderDesc"    column="order_desc"    />
+        <result property="mchToken"    column="mch_token"    />
+        <result property="userToken"    column="user_token"    />
+        <result property="sacnType"    column="sacn_type"    />
+        <result property="txnType"    column="txn_type"    />
+        <result property="payNo"    column="pay_no"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="hisTradeNo"    column="his_trade_no"    />
+        <result property="respSsn"    column="resp_ssn"    />
+        <result property="respTime"    column="resp_time"    />
+        <result property="orderState"    column="order_state"    />
+        <result property="orderSpecies"    column="order_species"    />
+        <result property="expenseType"    column="expense_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectScrcuOfflineOrdersVo">
+        select id, member_id, req_ssn, req_time, mcht_no, txn_area_info, notify_url, order_amt, valid_time, order_desc, mch_token, user_token, sacn_type, txn_type, pay_no, org_code, his_trade_no, resp_ssn, resp_time, order_state, order_species, expense_type, create_time, update_time, deleted from scrcu_offline_orders
+    </sql>
+
+    <select id="selectScrcuOfflineOrdersList" parameterType="ScrcuOfflineOrders" resultMap="ScrcuOfflineOrdersResult">
+        <include refid="selectScrcuOfflineOrdersVo"/>
+        <where>  
+            <if test="reqSsn != null  and reqSsn != ''"> and req_ssn = #{reqSsn}</if>
+            <if test="mchtNo != null  and mchtNo != ''"> and mcht_no = #{mchtNo}</if>
+            <if test="sacnType != null  and sacnType != ''"> and sacn_type = #{sacnType}</if>
+            <if test="txnType != null  and txnType != ''"> and txn_type = #{txnType}</if>
+            <if test="orgCode != null  and orgCode != ''"> and org_code = #{orgCode}</if>
+            <if test="hisTradeNo != null  and hisTradeNo != ''"> and his_trade_no = #{hisTradeNo}</if>
+            <if test="orderState != null  and orderState != ''"> and order_state = #{orderState}</if>
+            <if test="orderSpecies != null "> and order_species = #{orderSpecies}</if>
+            <if test="expenseType != null "> and expense_type = #{expenseType}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectScrcuOfflineOrdersById" parameterType="Long" resultMap="ScrcuOfflineOrdersResult">
+        <include refid="selectScrcuOfflineOrdersVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertScrcuOfflineOrders" parameterType="ScrcuOfflineOrders" useGeneratedKeys="true" keyProperty="id">
+        insert into scrcu_offline_orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="reqSsn != null">req_ssn,</if>
+            <if test="reqTime != null">req_time,</if>
+            <if test="mchtNo != null">mcht_no,</if>
+            <if test="txnAreaInfo != null">txn_area_info,</if>
+            <if test="notifyUrl != null">notify_url,</if>
+            <if test="orderAmt != null">order_amt,</if>
+            <if test="validTime != null">valid_time,</if>
+            <if test="orderDesc != null">order_desc,</if>
+            <if test="mchToken != null">mch_token,</if>
+            <if test="userToken != null">user_token,</if>
+            <if test="sacnType != null">sacn_type,</if>
+            <if test="txnType != null">txn_type,</if>
+            <if test="payNo != null">pay_no,</if>
+            <if test="orgCode != null">org_code,</if>
+            <if test="hisTradeNo != null">his_trade_no,</if>
+            <if test="respSsn != null">resp_ssn,</if>
+            <if test="respTime != null">resp_time,</if>
+            <if test="orderState != null">order_state,</if>
+            <if test="orderSpecies != null">order_species,</if>
+            <if test="expenseType != null">expense_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="reqSsn != null">#{reqSsn},</if>
+            <if test="reqTime != null">#{reqTime},</if>
+            <if test="mchtNo != null">#{mchtNo},</if>
+            <if test="txnAreaInfo != null">#{txnAreaInfo},</if>
+            <if test="notifyUrl != null">#{notifyUrl},</if>
+            <if test="orderAmt != null">#{orderAmt},</if>
+            <if test="validTime != null">#{validTime},</if>
+            <if test="orderDesc != null">#{orderDesc},</if>
+            <if test="mchToken != null">#{mchToken},</if>
+            <if test="userToken != null">#{userToken},</if>
+            <if test="sacnType != null">#{sacnType},</if>
+            <if test="txnType != null">#{txnType},</if>
+            <if test="payNo != null">#{payNo},</if>
+            <if test="orgCode != null">#{orgCode},</if>
+            <if test="hisTradeNo != null">#{hisTradeNo},</if>
+            <if test="respSsn != null">#{respSsn},</if>
+            <if test="respTime != null">#{respTime},</if>
+            <if test="orderState != null">#{orderState},</if>
+            <if test="orderSpecies != null">#{orderSpecies},</if>
+            <if test="expenseType != null">#{expenseType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScrcuOfflineOrders" parameterType="ScrcuOfflineOrders">
+        update scrcu_offline_orders
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="reqSsn != null">req_ssn = #{reqSsn},</if>
+            <if test="reqTime != null">req_time = #{reqTime},</if>
+            <if test="mchtNo != null">mcht_no = #{mchtNo},</if>
+            <if test="txnAreaInfo != null">txn_area_info = #{txnAreaInfo},</if>
+            <if test="notifyUrl != null">notify_url = #{notifyUrl},</if>
+            <if test="orderAmt != null">order_amt = #{orderAmt},</if>
+            <if test="validTime != null">valid_time = #{validTime},</if>
+            <if test="orderDesc != null">order_desc = #{orderDesc},</if>
+            <if test="mchToken != null">mch_token = #{mchToken},</if>
+            <if test="userToken != null">user_token = #{userToken},</if>
+            <if test="sacnType != null">sacn_type = #{sacnType},</if>
+            <if test="txnType != null">txn_type = #{txnType},</if>
+            <if test="payNo != null">pay_no = #{payNo},</if>
+            <if test="orgCode != null">org_code = #{orgCode},</if>
+            <if test="hisTradeNo != null">his_trade_no = #{hisTradeNo},</if>
+            <if test="respSsn != null">resp_ssn = #{respSsn},</if>
+            <if test="respTime != null">resp_time = #{respTime},</if>
+            <if test="orderState != null">order_state = #{orderState},</if>
+            <if test="orderSpecies != null">order_species = #{orderSpecies},</if>
+            <if test="expenseType != null">expense_type = #{expenseType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScrcuOfflineOrdersById" parameterType="Long">
+        delete from scrcu_offline_orders where id = #{id}
+    </delete>
+
+    <delete id="deleteScrcuOfflineOrdersByIds" parameterType="String">
+        delete from scrcu_offline_orders where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

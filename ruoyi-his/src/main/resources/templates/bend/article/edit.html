@@ -99,14 +99,14 @@
 
         function submitHandler(status) {
             if ($.validate.form()) {
-                var data = $('#form-article-add').serializeArray();
-                /*文章状态，草稿或正常*/
+                var data = $('#form-article-edit').serializeArray();
+                /*文章状态（0草稿 1正常 2删除）*/
                 if (status === 0){
                     data.push({"name": "articleStatus", "value": status});
                 } else {
                     data.push({"name": "articleStatus", "value": status});
                 }
-                $.operate.save(prefix + "/add", data);
+                $.operate.save(prefix + "/edit", data);
                 //$.operate.save(prefix + "/edit", $('#form-article-edit').serialize());
             }
         }

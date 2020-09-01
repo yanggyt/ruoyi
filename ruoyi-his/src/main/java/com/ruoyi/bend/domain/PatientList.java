@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * 就诊人列表对象 bend_patient_list
  * 
  * @author bend
- * @date 2020-08-30
+ * @date 2020-09-01
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

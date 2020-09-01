@@ -1,23 +1,26 @@
 package com.ruoyi.bend.controller;
 
-import java.util.List;
+import com.ruoyi.bend.domain.Article;
+import com.ruoyi.bend.service.IArticleService;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.bend.domain.Article;
-import com.ruoyi.bend.service.IArticleService;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+
+import java.util.List;
 
 /**
  * 内容管理Controller
- * 
+ *
  * @author bend
  * @date 2020-08-30
  */
@@ -109,6 +112,12 @@ public class ArticleController extends BaseController
     @ResponseBody
     public AjaxResult addSave(Article article)
     {
+        //根据文章发布状态(文章状态（0草稿 1正常 2删除）)，添加额外数据
+        if(article.getArticleStatus().equals(1)){
+            article.setReleaseTime(DateUtils.getNowDate());
+        }
+        String operName = ShiroUtils.getSysUser().getLoginName();
+        article.setCreateBy(operName);
         return toAjax(articleService.insertArticle(article));
     }
 
@@ -132,6 +141,12 @@ public class ArticleController extends BaseController
     @ResponseBody
     public AjaxResult editSave(Article article)
     {
+        //根据文章发布状态(文章状态（0草稿 1正常 2删除）)，添加额外数据
+        if(article.getArticleStatus().equals(1)){
+            article.setReleaseTime(DateUtils.getNowDate());
+        }
+        String operName = ShiroUtils.getSysUser().getLoginName();
+        article.setCreateBy(operName);
         return toAjax(articleService.updateArticle(article));
     }
 

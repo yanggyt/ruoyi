@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增微信服务商')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-wechatProvider-add">
+            <h4 class="form-header h4">微信服务商信息</h4>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">客户端ID：</label>
+                <div class="col-sm-8">
+                    <input name="clientId" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">客户端密钥：</label>
+                <div class="col-sm-8">
+                    <input name="clientSecret" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">AppID：</label>
+                <div class="col-sm-8">
+                    <input name="appId" class="form-control" type="text" required>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 公众号AppID.</span>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">AppSecret：</label>
+                <div class="col-sm-8">
+                    <input name="appSecret" class="form-control" type="text" required>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 公众号AppSecret.</span>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">服务商AppId：</label>
+                <div class="col-sm-8">
+                    <input name="mchAppId" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">服务商账号：</label>
+                <div class="col-sm-8">
+                    <input name="mchId" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">服务商密钥：</label>
+                <div class="col-sm-8">
+                    <input name="mchKey" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">证书路径：</label>
+                <div class="col-sm-8">
+                    <input name="keyPath" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">前端地址：</label>
+                <div class="col-sm-8">
+                    <input name="frontUrl" class="form-control" type="text">
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 公众号前端地址.</span>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">后台接口：</label>
+                <div class="col-sm-8">
+                    <input name="openApi" class="form-control" type="text">
+                </div>
+            </div>
+            <h4 class="form-header h4">特约商户信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "his/wechatProvider"
+        $("#form-wechatProvider-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-wechatProvider-add').serialize());
+            }
+        }
+
+        $(function() {
+            var options = {
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'subAppId',
+                    align: 'center',
+                    title: '特约商户',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisMerchantWechatList[%s].subAppId' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'orgCode',
+                    align: 'center',
+                    title: '机构ID',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisMerchantWechatList[%s].orgCode' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'orgName',
+                    align: 'center',
+                    title: '机构名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisMerchantWechatList[%s].orgName' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                /*{
+                    field: 'createTime',
+                    align: 'center',
+                    title: '创建时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisMerchantWechatList[%s].createTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'deleted',
+                    align: 'center',
+                    title: '删除标记',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisMerchantWechatList[%s].deleted' value='%s'>", index, value);
+                        return html;
+                    }
+                
+                },*/
+                ]
+            };
+            $.table.init(options);
+        });
+
+        function addColumn() {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+        	
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    subAppId: "",
+                    orgCode: "",
+                    orgName: "",
+                    createTime: "",
+                    deleted: ""
+                }
+            });
+        }
+    </script>
+</body>
+</html>

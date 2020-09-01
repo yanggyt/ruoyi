@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisDepartmentMapper">
+    
+    <resultMap type="HisDepartment" id="HisDepartmentResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="deptProfile"    column="dept_profile"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisDepartmentVo">
+        select id, dept_id, dept_name, org_code, org_name, dept_profile, is_show, sort_no, create_time, update_time, deleted from his_department
+    </sql>
+
+    <select id="selectHisDepartmentList" parameterType="HisDepartment" resultMap="HisDepartmentResult">
+        <include refid="selectHisDepartmentVo"/>
+        <where>  
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="orgCode != null  and orgCode != ''"> and org_code = #{orgCode}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisDepartmentById" parameterType="Long" resultMap="HisDepartmentResult">
+        <include refid="selectHisDepartmentVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectHisDepartmentByDeptId" parameterType="String" resultMap="HisDepartmentResult">
+        <include refid="selectHisDepartmentVo"/>
+        where dept_id = #{deptId}
+    </select>
+
+    <insert id="insertHisDepartment" parameterType="HisDepartment" useGeneratedKeys="true" keyProperty="id">
+        insert into his_department
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="deptName != null and deptName != ''">dept_name,</if>
+            <if test="orgCode != null">org_code,</if>
+            <if test="orgName != null">org_name,</if>
+            <if test="deptProfile != null">dept_profile,</if>
+            <if test="isShow != null">is_show,</if>
+            <if test="sortNo != null">sort_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="deptName != null and deptName != ''">#{deptName},</if>
+            <if test="orgCode != null">#{orgCode},</if>
+            <if test="orgName != null">#{orgName},</if>
+            <if test="deptProfile != null">#{deptProfile},</if>
+            <if test="isShow != null">#{isShow},</if>
+            <if test="sortNo != null">#{sortNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisDepartment" parameterType="HisDepartment">
+        update his_department
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+            <if test="orgCode != null">org_code = #{orgCode},</if>
+            <if test="orgName != null">org_name = #{orgName},</if>
+            <if test="deptProfile != null">dept_profile = #{deptProfile},</if>
+            <if test="isShow != null">is_show = #{isShow},</if>
+            <if test="sortNo != null">sort_no = #{sortNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHisDepartmentById" parameterType="Long">
+        delete from his_department where id = #{id}
+    </delete>
+
+    <delete id="deleteHisDepartmentByIds" parameterType="String">
+        delete from his_department where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

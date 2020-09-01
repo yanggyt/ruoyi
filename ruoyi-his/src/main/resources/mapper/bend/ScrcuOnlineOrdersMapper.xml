@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.ScrcuOnlineOrdersMapper">
+    
+    <resultMap type="ScrcuOnlineOrders" id="ScrcuOnlineOrdersResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="merId"    column="mer_id"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="orderSendTime"    column="order_send_time"    />
+        <result property="orderAmt"    column="order_amt"    />
+        <result property="payAmt"    column="pay_amt"    />
+        <result property="goodsSubject"    column="goods_subject"    />
+        <result property="orderCurrency"    column="order_currency"    />
+        <result property="channel"    column="channel"    />
+        <result property="mobileWay"    column="mobile_way"    />
+        <result property="mobileType"    column="mobile_type"    />
+        <result property="frontEndUrl"    column="front_end_url"    />
+        <result property="backEndUrl"    column="back_end_url"    />
+        <result property="orderSeqId"    column="order_seq_id"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="transType"    column="trans_type"    />
+        <result property="payStatus"    column="pay_status"    />
+        <result property="orderSpecies"    column="order_species"    />
+        <result property="orderState"    column="order_state"    />
+        <result property="orderTranTime"    column="order_tran_time"    />
+        <result property="orderCreateTime"    column="order_create_time"    />
+        <result property="expenseType"    column="expense_type"    />
+        <result property="payWayType"    column="pay_way_type"    />
+        <result property="payNo"    column="pay_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <resultMap id="ScrcuOnlineOrdersScrcuOnlineOrderDetailsResult" type="ScrcuOnlineOrders" extends="ScrcuOnlineOrdersResult">
+        <collection property="scrcuOnlineOrderDetailsList" notNullColumn="id" javaType="java.util.List" resultMap="ScrcuOnlineOrderDetailsResult" />
+    </resultMap>
+
+    <resultMap type="ScrcuOnlineOrderDetails" id="ScrcuOnlineOrderDetailsResult">
+        <result property="id"    column="id"    />
+        <result property="merId"    column="mer_id"    />
+        <result property="parentMerId"    column="parent_mer_id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="subOrderNumber"    column="sub_order_number"    />
+        <result property="subOrderAmt"    column="sub_order_amt"    />
+        <result property="subPayAmt"    column="sub_pay_amt"    />
+        <result property="logisCode"    column="logis_code"    />
+        <result property="redPacketOrgNo"    column="red_packet_org_no"    />
+        <result property="autoSettleFlag"    column="auto_settle_flag"    />
+        <result property="goodsInfo"    column="goods_info"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectScrcuOnlineOrdersVo">
+        select id, member_id, mer_id, order_type, order_number, order_send_time, order_amt, pay_amt, goods_subject, order_currency, channel, mobile_way, mobile_type, front_end_url, back_end_url, order_seq_id, pay_type, trans_type, pay_status, order_species, order_state, order_tran_time, order_create_time, expense_type, pay_way_type, pay_no, create_time, update_time, deleted from scrcu_online_orders
+    </sql>
+
+    <select id="selectScrcuOnlineOrdersList" parameterType="ScrcuOnlineOrders" resultMap="ScrcuOnlineOrdersResult">
+        <include refid="selectScrcuOnlineOrdersVo"/>
+        <where>  
+            <if test="merId != null  and merId != ''"> and mer_id = #{merId}</if>
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number = #{orderNumber}</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="transType != null  and transType != ''"> and trans_type = #{transType}</if>
+            <if test="payStatus != null  and payStatus != ''"> and pay_status = #{payStatus}</if>
+            <if test="orderState != null  and orderState != ''"> and order_state = #{orderState}</if>
+            <if test="params.beginOrderTranTime != null and params.beginOrderTranTime != '' and params.endOrderTranTime != null and params.endOrderTranTime != ''"> and order_tran_time between #{params.beginOrderTranTime} and #{params.endOrderTranTime}</if>
+            <if test="expenseType != null "> and expense_type = #{expenseType}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectScrcuOnlineOrdersById" parameterType="Long" resultMap="ScrcuOnlineOrdersScrcuOnlineOrderDetailsResult">
+        select a.id, a.member_id, a.mer_id, a.order_type, a.order_number, a.order_send_time, a.order_amt, a.pay_amt, a.goods_subject, a.order_currency, a.channel, a.mobile_way, a.mobile_type, a.front_end_url, a.back_end_url, a.order_seq_id, a.pay_type, a.trans_type, a.pay_status, a.order_species, a.order_state, a.order_tran_time, a.order_create_time, a.expense_type, a.pay_way_type, a.pay_no, a.create_time, a.update_time, a.deleted,
+            b.id, b.mer_id, b.parent_mer_id, b.org_code, b.order_number, b.sub_order_number, b.sub_order_amt, b.sub_pay_amt, b.logis_code, b.red_packet_org_no, b.auto_settle_flag, b.goods_info, b.create_time, b.deleted
+        from scrcu_online_orders a
+        left join scrcu_online_order_details b on b.order_number = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertScrcuOnlineOrders" parameterType="ScrcuOnlineOrders" useGeneratedKeys="true" keyProperty="id">
+        insert into scrcu_online_orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="merId != null">mer_id,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="orderNumber != null">order_number,</if>
+            <if test="orderSendTime != null">order_send_time,</if>
+            <if test="orderAmt != null">order_amt,</if>
+            <if test="payAmt != null">pay_amt,</if>
+            <if test="goodsSubject != null">goods_subject,</if>
+            <if test="orderCurrency != null">order_currency,</if>
+            <if test="channel != null">channel,</if>
+            <if test="mobileWay != null">mobile_way,</if>
+            <if test="mobileType != null">mobile_type,</if>
+            <if test="frontEndUrl != null">front_end_url,</if>
+            <if test="backEndUrl != null">back_end_url,</if>
+            <if test="orderSeqId != null">order_seq_id,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="transType != null">trans_type,</if>
+            <if test="payStatus != null">pay_status,</if>
+            <if test="orderSpecies != null">order_species,</if>
+            <if test="orderState != null">order_state,</if>
+            <if test="orderTranTime != null">order_tran_time,</if>
+            <if test="orderCreateTime != null">order_create_time,</if>
+            <if test="expenseType != null">expense_type,</if>
+            <if test="payWayType != null">pay_way_type,</if>
+            <if test="payNo != null">pay_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="merId != null">#{merId},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="orderSendTime != null">#{orderSendTime},</if>
+            <if test="orderAmt != null">#{orderAmt},</if>
+            <if test="payAmt != null">#{payAmt},</if>
+            <if test="goodsSubject != null">#{goodsSubject},</if>
+            <if test="orderCurrency != null">#{orderCurrency},</if>
+            <if test="channel != null">#{channel},</if>
+            <if test="mobileWay != null">#{mobileWay},</if>
+            <if test="mobileType != null">#{mobileType},</if>
+            <if test="frontEndUrl != null">#{frontEndUrl},</if>
+            <if test="backEndUrl != null">#{backEndUrl},</if>
+            <if test="orderSeqId != null">#{orderSeqId},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="transType != null">#{transType},</if>
+            <if test="payStatus != null">#{payStatus},</if>
+            <if test="orderSpecies != null">#{orderSpecies},</if>
+            <if test="orderState != null">#{orderState},</if>
+            <if test="orderTranTime != null">#{orderTranTime},</if>
+            <if test="orderCreateTime != null">#{orderCreateTime},</if>
+            <if test="expenseType != null">#{expenseType},</if>
+            <if test="payWayType != null">#{payWayType},</if>
+            <if test="payNo != null">#{payNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScrcuOnlineOrders" parameterType="ScrcuOnlineOrders">
+        update scrcu_online_orders
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="merId != null">mer_id = #{merId},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="orderSendTime != null">order_send_time = #{orderSendTime},</if>
+            <if test="orderAmt != null">order_amt = #{orderAmt},</if>
+            <if test="payAmt != null">pay_amt = #{payAmt},</if>
+            <if test="goodsSubject != null">goods_subject = #{goodsSubject},</if>
+            <if test="orderCurrency != null">order_currency = #{orderCurrency},</if>
+            <if test="channel != null">channel = #{channel},</if>
+            <if test="mobileWay != null">mobile_way = #{mobileWay},</if>
+            <if test="mobileType != null">mobile_type = #{mobileType},</if>
+            <if test="frontEndUrl != null">front_end_url = #{frontEndUrl},</if>
+            <if test="backEndUrl != null">back_end_url = #{backEndUrl},</if>
+            <if test="orderSeqId != null">order_seq_id = #{orderSeqId},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="transType != null">trans_type = #{transType},</if>
+            <if test="payStatus != null">pay_status = #{payStatus},</if>
+            <if test="orderSpecies != null">order_species = #{orderSpecies},</if>
+            <if test="orderState != null">order_state = #{orderState},</if>
+            <if test="orderTranTime != null">order_tran_time = #{orderTranTime},</if>
+            <if test="orderCreateTime != null">order_create_time = #{orderCreateTime},</if>
+            <if test="expenseType != null">expense_type = #{expenseType},</if>
+            <if test="payWayType != null">pay_way_type = #{payWayType},</if>
+            <if test="payNo != null">pay_no = #{payNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScrcuOnlineOrdersById" parameterType="Long">
+        delete from scrcu_online_orders where id = #{id}
+    </delete>
+
+    <delete id="deleteScrcuOnlineOrdersByIds" parameterType="String">
+        delete from scrcu_online_orders where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteScrcuOnlineOrderDetailsByOrderNumbers" parameterType="String">
+        delete from scrcu_online_order_details where order_number in 
+        <foreach item="orderNumber" collection="array" open="(" separator="," close=")">
+            #{orderNumber}
+        </foreach>
+    </delete>
+
+    <delete id="deleteScrcuOnlineOrderDetailsByOrderNumber" parameterType="Long">
+        delete from scrcu_online_order_details where order_number = #{orderNumber}
+    </delete>
+
+    <insert id="batchScrcuOnlineOrderDetails">
+        insert into scrcu_online_order_details( id, mer_id, parent_mer_id, org_code, order_number, sub_order_number, sub_order_amt, sub_pay_amt, logis_code, red_packet_org_no, auto_settle_flag, goods_info, create_time, deleted) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.merId}, #{item.parentMerId}, #{item.orgCode}, #{item.orderNumber}, #{item.subOrderNumber}, #{item.subOrderAmt}, #{item.subPayAmt}, #{item.logisCode}, #{item.redPacketOrgNo}, #{item.autoSettleFlag}, #{item.goodsInfo}, #{item.createTime}, #{item.deleted})
+        </foreach>
+    </insert>
+
+</mapper>

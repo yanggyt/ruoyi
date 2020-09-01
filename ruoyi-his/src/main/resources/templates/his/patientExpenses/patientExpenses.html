@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('费用记录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>病人姓名：</label>
+                                <input type="text" name="patientName"/>
+                            </li>
+                            <li>
+                                <label>身份证号：</label>
+                                <input type="text" name="idCardNo"/>
+                            </li>
+                            <li>
+                                <label>业务编号：</label>
+                                <input type="text" name="expenseBusinessNo"/>
+                            </li>
+                            <li>
+                                <label>业务类型：</label>
+                                <select name="expenseType" th:with="type=${@dict.getType('biz_expense_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li class="select-time">
+                                <label>创建时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreateTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreateTime]"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="his:patientExpenses:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="his:patientExpenses:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="his:patientExpenses:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="his:patientExpenses:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var detailFlag = [[${@permission.hasPermi('his:patientExpenses:detail')}]];
+        var editFlag = [[${@permission.hasPermi('his:patientExpenses:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('his:patientExpenses:remove')}]];
+        var expenseTypeDatas = [[${@dict.getType('biz_expense_type')}]];
+        var prefix = ctx + "his/patientExpenses";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                detailUrl: prefix + "/detail",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "费用记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '主键ID',
+                    visible: false
+                },
+                {
+                    field: 'patientName',
+                    title: '病人姓名',
+                    align: 'center',
+                },
+                {
+                    field: 'idCardNo',
+                    title: '身份证号',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'orgName',
+                    title: '医院名称',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'billDept',
+                    title: '开单科室',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'billDoctor',
+                    title: '开单医生',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'businessId',
+                    title: '业务ID',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'expenseBusinessNo',
+                    title: '业务编号',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'expenseType',
+                    title: '业务类型',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(expenseTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'chargeRecordId',
+                    title: '收费记录ID',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    align: 'center',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="detail(\'' + row.id + '\')"><i class="fa fa-edit"></i>详情</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        /* 费用详情 */
+        function detail(expensesId) {
+            var url = prefix + '/detail';
+            if ($.common.isNotEmpty(expensesId)) {
+                url += '?expensesId=' + expensesId;
+            }
+            $.modal.openTab("费用详情", url);
+        }
+    </script>
+</body>
+</html>

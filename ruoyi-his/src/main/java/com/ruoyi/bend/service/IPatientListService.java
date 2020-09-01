@@ -7,7 +7,7 @@ import com.ruoyi.bend.domain.PatientList;
  * 就诊人列表Service接口
  * 
  * @author bend
- * @date 2020-08-30
+ * @date 2020-09-01
  */
 public interface IPatientListService 
 {

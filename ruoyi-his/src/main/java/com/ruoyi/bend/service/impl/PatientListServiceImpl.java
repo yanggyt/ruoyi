@@ -13,7 +13,7 @@ import com.ruoyi.common.core.text.Convert;
  * 就诊人列表Service业务层处理
  * 
  * @author bend
- * @date 2020-08-30
+ * @date 2020-09-01
  */
 @Service
 public class PatientListServiceImpl implements IPatientListService 

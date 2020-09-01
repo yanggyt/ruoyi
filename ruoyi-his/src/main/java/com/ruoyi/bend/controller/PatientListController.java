@@ -23,7 +23,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 就诊人列表Controller
  * 
  * @author bend
- * @date 2020-08-30
+ * @date 2020-09-01
  */
 @Controller
 @RequestMapping("/bend/patientList")

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisInpatientPrepaymentMapper">
+    
+    <resultMap type="HisInpatientPrepayment" id="HisInpatientPrepaymentResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="patientId"    column="patient_id"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="idCardNo"    column="id_card_no"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="orderCode"    column="order_code"    />
+        <result property="prepayId"    column="prepay_id"    />
+        <result property="paySerialNo"    column="pay_serial_no"    />
+        <result property="paymentListStr"    column="payment_list_str"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="vendorId"    column="vendor_id"    />
+        <result property="hisSerialNo"    column="his_serial_no"    />
+        <result property="totalFee"    column="total_fee"    />
+        <result property="totalCost"    column="total_cost"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="prepayStatus"    column="prepay_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisInpatientPrepaymentVo">
+        select id, member_id, mobile_phone, patient_id, patient_name, id_card_no, business_id, order_code, prepay_id, pay_serial_no, payment_list_str, user_id, user_name, vendor_id, his_serial_no, total_fee, total_cost, org_code, org_name, prepay_status, remark, create_time, update_time, deleted from his_inpatient_prepayment
+    </sql>
+
+    <select id="selectHisInpatientPrepaymentList" parameterType="HisInpatientPrepayment" resultMap="HisInpatientPrepaymentResult">
+        <include refid="selectHisInpatientPrepaymentVo"/>
+        <where>  
+            <if test="mobilePhone != null  and mobilePhone != ''"> and mobile_phone = #{mobilePhone}</if>
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="idCardNo != null  and idCardNo != ''"> and id_card_no = #{idCardNo}</if>
+            <if test="businessId != null  and businessId != ''"> and business_id = #{businessId}</if>
+            <if test="orderCode != null  and orderCode != ''"> and order_code = #{orderCode}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="prepayStatus != null "> and prepay_status = #{prepayStatus}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisInpatientPrepaymentById" parameterType="Long" resultMap="HisInpatientPrepaymentResult">
+        <include refid="selectHisInpatientPrepaymentVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>

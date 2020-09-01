@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisInspectionApplyMapper">
+    
+    <resultMap type="HisInspectionApply" id="HisInspectionApplyResult">
+        <result property="id"    column="id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="idCardNo"    column="id_card_no"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="applyItemName"    column="apply_item_name"    />
+        <result property="billTime"    column="bill_time"    />
+        <result property="operator"    column="operator"    />
+        <result property="userId"    column="user_id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisInspectionApplyVo">
+        select id, org_code, patient_name, id_card_no, org_name, apply_id, apply_item_name, bill_time, operator, user_id, business_id, create_time, deleted from his_inspection_apply
+    </sql>
+
+    <select id="selectHisInspectionApplyList" parameterType="HisInspectionApply" resultMap="HisInspectionApplyResult">
+        <include refid="selectHisInspectionApplyVo"/>
+        <where>  
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="idCardNo != null  and idCardNo != ''"> and id_card_no = #{idCardNo}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectHisInspectionApplyById" parameterType="Long" resultMap="HisInspectionApplyResult">
+        <include refid="selectHisInspectionApplyVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>

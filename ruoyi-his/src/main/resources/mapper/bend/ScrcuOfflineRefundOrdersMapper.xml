@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.ScrcuOfflineRefundOrdersMapper">
+    
+    <resultMap type="ScrcuOfflineRefundOrders" id="ScrcuOfflineRefundOrdersResult">
+        <result property="id"    column="id"    />
+        <result property="mchtNo"    column="mcht_no"    />
+        <result property="reqSsn"    column="req_ssn"    />
+        <result property="reqTime"    column="req_time"    />
+        <result property="origReqSsn"    column="orig_req_ssn"    />
+        <result property="origReqTime"    column="orig_req_time"    />
+        <result property="origRespSsn"    column="orig_resp_ssn"    />
+        <result property="origRespTime"    column="orig_resp_time"    />
+        <result property="orderAmt"    column="order_amt"    />
+        <result property="orderDesc"    column="order_desc"    />
+        <result property="respSsn"    column="resp_ssn"    />
+        <result property="respTime"    column="resp_time"    />
+        <result property="orderState"    column="order_state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectScrcuOfflineRefundOrdersVo">
+        select id, mcht_no, req_ssn, req_time, orig_req_ssn, orig_req_time, orig_resp_ssn, orig_resp_time, order_amt, order_desc, resp_ssn, resp_time, order_state, create_time, deleted from scrcu_offline_refund_orders
+    </sql>
+
+    <select id="selectScrcuOfflineRefundOrdersList" parameterType="ScrcuOfflineRefundOrders" resultMap="ScrcuOfflineRefundOrdersResult">
+        <include refid="selectScrcuOfflineRefundOrdersVo"/>
+        <where>  
+            <if test="mchtNo != null  and mchtNo != ''"> and mcht_no = #{mchtNo}</if>
+            <if test="reqSsn != null  and reqSsn != ''"> and req_ssn = #{reqSsn}</if>
+            <if test="origReqSsn != null  and origReqSsn != ''"> and orig_req_ssn = #{origReqSsn}</if>
+            <if test="orderState != null  and orderState != ''"> and order_state = #{orderState}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectScrcuOfflineRefundOrdersById" parameterType="Long" resultMap="ScrcuOfflineRefundOrdersResult">
+        <include refid="selectScrcuOfflineRefundOrdersVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertScrcuOfflineRefundOrders" parameterType="ScrcuOfflineRefundOrders" useGeneratedKeys="true" keyProperty="id">
+        insert into scrcu_offline_refund_orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mchtNo != null">mcht_no,</if>
+            <if test="reqSsn != null">req_ssn,</if>
+            <if test="reqTime != null">req_time,</if>
+            <if test="origReqSsn != null">orig_req_ssn,</if>
+            <if test="origReqTime != null">orig_req_time,</if>
+            <if test="origRespSsn != null">orig_resp_ssn,</if>
+            <if test="origRespTime != null">orig_resp_time,</if>
+            <if test="orderAmt != null">order_amt,</if>
+            <if test="orderDesc != null">order_desc,</if>
+            <if test="respSsn != null">resp_ssn,</if>
+            <if test="respTime != null">resp_time,</if>
+            <if test="orderState != null">order_state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mchtNo != null">#{mchtNo},</if>
+            <if test="reqSsn != null">#{reqSsn},</if>
+            <if test="reqTime != null">#{reqTime},</if>
+            <if test="origReqSsn != null">#{origReqSsn},</if>
+            <if test="origReqTime != null">#{origReqTime},</if>
+            <if test="origRespSsn != null">#{origRespSsn},</if>
+            <if test="origRespTime != null">#{origRespTime},</if>
+            <if test="orderAmt != null">#{orderAmt},</if>
+            <if test="orderDesc != null">#{orderDesc},</if>
+            <if test="respSsn != null">#{respSsn},</if>
+            <if test="respTime != null">#{respTime},</if>
+            <if test="orderState != null">#{orderState},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScrcuOfflineRefundOrders" parameterType="ScrcuOfflineRefundOrders">
+        update scrcu_offline_refund_orders
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mchtNo != null">mcht_no = #{mchtNo},</if>
+            <if test="reqSsn != null">req_ssn = #{reqSsn},</if>
+            <if test="reqTime != null">req_time = #{reqTime},</if>
+            <if test="origReqSsn != null">orig_req_ssn = #{origReqSsn},</if>
+            <if test="origReqTime != null">orig_req_time = #{origReqTime},</if>
+            <if test="origRespSsn != null">orig_resp_ssn = #{origRespSsn},</if>
+            <if test="origRespTime != null">orig_resp_time = #{origRespTime},</if>
+            <if test="orderAmt != null">order_amt = #{orderAmt},</if>
+            <if test="orderDesc != null">order_desc = #{orderDesc},</if>
+            <if test="respSsn != null">resp_ssn = #{respSsn},</if>
+            <if test="respTime != null">resp_time = #{respTime},</if>
+            <if test="orderState != null">order_state = #{orderState},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScrcuOfflineRefundOrdersById" parameterType="Long">
+        delete from scrcu_offline_refund_orders where id = #{id}
+    </delete>
+
+    <delete id="deleteScrcuOfflineRefundOrdersByIds" parameterType="String">
+        delete from scrcu_offline_refund_orders where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

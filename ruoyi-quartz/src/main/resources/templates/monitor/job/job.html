@@ -102,6 +102,13 @@
                     	return $.table.tooltip(value);
                     }
 		        },
+				{
+					field: 'methodParams',
+					title: '调用目标参数',
+					formatter: function(value, row, index) {
+						return $.table.tooltip(value,20,"open");
+					}
+				},
 		        {
 		            field: 'cronExpression',
 		            title: '执行表达式'

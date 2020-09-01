@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改费用记录')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-patientExpenses-edit" th:object="${hisPatientExpenses}">
+            <h4 class="form-header h4">费用记录信息</h4>
+            <input name="id" th:field="*{id}" type="hidden">
+            <h4 class="form-header h4">费用详情信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "his/patientExpenses";
+        var isChargeFeeDatas = [[${@dict.getType('biz_normal_disable')}]];
+        $("#form-patientExpenses-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-patientExpenses-edit').serialize());
+            }
+        }
+
+        $(function() {
+            var options = {
+                data: [[${hisPatientExpenses.hisPatientExpensesDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'costDetailId',
+                    align: 'center',
+                    title: '费用明细ID',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].costDetailId' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'costItemName',
+                    align: 'center',
+                    title: '项目名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].costItemName' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'costItemCode',
+                    align: 'center',
+                    title: '项目编码',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].costItemCode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'costItemCategoryName',
+                    align: 'center',
+                    title: '项目类别名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].costItemCategoryName' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'costItemCategoryCode',
+                    align: 'center',
+                    title: '项目类别编码',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].costItemCategoryCode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'unit',
+                    align: 'center',
+                    title: '单位',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].unit' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'formulation',
+                    align: 'center',
+                    title: '剂型',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].formulation' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'specification',
+                    align: 'center',
+                    title: '规格',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].specification' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'unitPrice',
+                    align: 'center',
+                    title: '单价',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].unitPrice' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'quantity',
+                    align: 'center',
+                    title: '数量',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].quantity' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'amount',
+                    align: 'center',
+                    title: '金额',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].amount' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'drugDosage',
+                    align: 'center',
+                    title: '药品用量',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].drugDosage' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'drugUsage',
+                    align: 'center',
+                    title: '药品用法',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].drugUsage' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'frequency',
+                    align: 'center',
+                    title: '用药频次',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].frequency' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'medicateDays',
+                    align: 'center',
+                    title: '用药天数',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].medicateDays' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'hospitalPricingUnit',
+                    align: 'center',
+                    title: '医院计价单位',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].hospitalPricingUnit' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'isImportedDrugs',
+                    align: 'center',
+                    title: '是否进口药品',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].isImportedDrugs' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'drugProducingArea',
+                    align: 'center',
+                    title: '药品产地',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].drugProducingArea' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'recipeCode',
+                    align: 'center',
+                    title: '处方号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].recipeCode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'costDocumentType',
+                    align: 'center',
+                    title: '费用单据类型',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].costDocumentType' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'billDeptName',
+                    align: 'center',
+                    title: '开单科室名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].billDeptName' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'billDeptId',
+                    align: 'center',
+                    title: '开单科室编码',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].billDeptId' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'billDoctorName',
+                    align: 'center',
+                    title: '开单医生姓名',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].billDoctorName' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'billDoctorId',
+                    align: 'center',
+                    title: '开单医生编码',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].billDoctorId' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'billTime',
+                    align: 'center',
+                    title: '开单时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].billTime' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'operateDeptName',
+                    align: 'center',
+                    title: '执行科室名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].operateDeptName' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'operateDeptId',
+                    align: 'center',
+                    title: '执行科室编码',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].operateDeptId' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'operateDoctorName',
+                    align: 'center',
+                    title: '执行医生姓名',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].operateDoctorName' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'operateDoctorId',
+                    align: 'center',
+                    title: '执行医生编码',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].operateDoctorId' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'operateTime',
+                    align: 'center',
+                    title: '执行时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].operateTime' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'prescribe',
+                    align: 'center',
+                    title: '处方医师',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].prescribe' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'operator',
+                    align: 'center',
+                    title: '经办人',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].operator' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'doctorNumber',
+                    align: 'center',
+                    title: '执业医师证号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].doctorNumber' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'costWriteOffId',
+                    align: 'center',
+                    title: '费用冲销ID',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].costWriteOffId' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'isChargeFee',
+                    align: 'center',
+                    title: '是否收费',
+                    formatter: function(value, row, index) {
+                        var name = $.common.sprintf("hisPatientExpensesDetailList[%s].isChargeFee", index);
+                        return $.common.dictToSelect(isChargeFeeDatas, value, name);
+                    }
+                },
+                {
+                    field: 'chargeTime',
+                    align: 'center',
+                    title: '费用时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].chargeTime' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'orgCode',
+                    align: 'center',
+                    title: '机构编码',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].orgCode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'orgName',
+                    align: 'center',
+                    title: '机构名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].orgName' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'packageSpec',
+                    align: 'center',
+                    title: '包装规格',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].packageSpec' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'dosageSpec',
+                    align: 'center',
+                    title: '与单次用量同单位规格',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].dosageSpec' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'everyTimeDosage',
+                    align: 'center',
+                    title: '每次用量',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].everyTimeDosage' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'dirCode',
+                    align: 'center',
+                    title: '目录CODE',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].dirCode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'createTime',
+                    align: 'center',
+                    title: '创建时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].createTime' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'deleted',
+                    align: 'center',
+                    title: '删除标记',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisPatientExpensesDetailList[%s].deleted' value='%s'>", index, value);
+                        return html;
+                    }
+				
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function addColumn() {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+        	
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    costDetailId: "",
+                    costItemName: "",
+                    costItemCode: "",
+                    costItemCategoryName: "",
+                    costItemCategoryCode: "",
+                    unit: "",
+                    formulation: "",
+                    specification: "",
+                    unitPrice: "",
+                    quantity: "",
+                    amount: "",
+                    drugDosage: "",
+                    drugUsage: "",
+                    frequency: "",
+                    medicateDays: "",
+                    hospitalPricingUnit: "",
+                    isImportedDrugs: "",
+                    drugProducingArea: "",
+                    recipeCode: "",
+                    costDocumentType: "",
+                    billDeptName: "",
+                    billDeptId: "",
+                    billDoctorName: "",
+                    billDoctorId: "",
+                    billTime: "",
+                    operateDeptName: "",
+                    operateDeptId: "",
+                    operateDoctorName: "",
+                    operateDoctorId: "",
+                    operateTime: "",
+                    prescribe: "",
+                    operator: "",
+                    doctorNumber: "",
+                    costWriteOffId: "",
+                    isChargeFee: "",
+                    chargeTime: "",
+                    orgCode: "",
+                    orgName: "",
+                    packageSpec: "",
+                    dosageSpec: "",
+                    everyTimeDosage: "",
+                    dirCode: "",
+                    createTime: "",
+                    deleted: ""
+        	    }
+            });
+        }
+    </script>
+</body>
+</html>

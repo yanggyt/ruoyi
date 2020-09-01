@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('检查检验列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>申请单：</label>
+                                <input type="text" name="applyId"/>
+                            </li>
+                            <li>
+                                <label>病人姓名：</label>
+                                <input type="text" name="patientName"/>
+                            </li>
+                            <li>
+                                <label>身份证号：</label>
+                                <input type="text" name="idCardNo"/>
+                            </li>
+                            <li>
+                                <label>单据类型：</label>
+                                <select name="billType" th:with="type=${@dict.getType('biz_bill_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>异常类型：</label>
+                                <select name="infectious" th:with="type=${@dict.getType('biz_infectious_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li class="select-time">
+                                <label>开单时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginBillTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endBillTime]"/>
+                            </li>
+                            <li class="select-time">
+                                <label>报告时间：</label>
+                                <input type="text" class="time-input" id="startTime_1" placeholder="开始时间" name="params[beginExecTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime_1" placeholder="结束时间" name="params[endExecTime]"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="his:inspectionReport:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="his:inspectionReport:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="his:inspectionReport:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="his:inspectionReport:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table" style="width: 2000px"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('his:inspectionReport:edit')}]];
+        var detailFlag = [[${@permission.hasPermi('his:inspectionReport:detail')}]];
+        var removeFlag = [[${@permission.hasPermi('his:inspectionReport:remove')}]];
+        var billTypeDatas = [[${@dict.getType('biz_bill_type')}]];
+        var specimenTypeDatas = [[${@dict.getType('biz_specimen_type')}]];
+        var infectiousDatas = [[${@dict.getType('biz_infectious_type')}]];
+        var prefix = ctx + "his/inspectionReport";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "检查检验",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '主键ID',
+                    visible: false
+                },
+                {
+                    field: 'applyId',
+                    title: '申请单ID',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'patientName',
+                    title: '病人姓名',
+                    align: 'center',
+                },
+                {
+                    field: 'idCardNo',
+                    title: '身份证号',
+                    align: 'center',
+                },
+                {
+                    field: 'patientSex',
+                    title: '性别',
+                    align: 'center',
+                },
+                {
+                    field: 'age',
+                    title: '年龄',
+                    align: 'center',
+                },
+                {
+                    field: 'fee',
+                    title: '金额',
+                    align: 'center',
+                },
+                {
+                    field: 'billCode',
+                    title: '单据号',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'billType',
+                    title: '单据类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(billTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'billTime',
+                    title: '开单时间',
+                    align: 'center',
+                },
+                {
+                    field: 'subjective',
+                    title: '主诉',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'assessment',
+                    title: '诊断',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'packName',
+                    title: '包名称',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'specimenType',
+                    title: '标本类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(specimenTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'dataResult',
+                    title: '结果',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'infectious',
+                    title: '异常类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(infectiousDatas, value);
+                    }
+                },
+                {
+                    field: 'conclusion',
+                    title: '结论',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'deptName',
+                    title: '科室名称',
+                    align: 'center',
+                },
+                {
+                    field: 'userName',
+                    title: '开单医生',
+                    align: 'center',
+                },
+                {
+                    field: 'actorName',
+                    title: '执行人',
+                    align: 'center',
+                },
+                {
+                    field: 'operators',
+                    title: '操作员',
+                    align: 'center',
+                },
+                {
+                    field: 'execTime',
+                    title: '报告时间',
+                    align: 'center',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="detail(\'' + row.id + '\')"><i class="fa fa-edit"></i>详情</a> ');
+                        /*actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');*/
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+        /* 报告详情 */
+        function detail(id) {
+            var url = prefix + '/detail';
+            if ($.common.isNotEmpty(id)) {
+                url += '?id=' + id;
+            }
+            $.modal.openTab("报告详情", url);
+        }
+    </script>
+</body>
+</html>

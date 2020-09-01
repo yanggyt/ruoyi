@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisRegistrationRecordMapper">
+    
+    <resultMap type="HisRegistrationRecord" id="HisRegistrationRecordResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="patientId"    column="patient_id"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="patientSex"    column="patient_sex"    />
+        <result property="idCardNo"    column="id_card_no"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="doctorId"    column="doctor_id"    />
+        <result property="doctorName"    column="doctor_name"    />
+        <result property="vendorId"    column="vendor_id"    />
+        <result property="fee"    column="fee"    />
+        <result property="paySerialNo"    column="pay_serial_no"    />
+        <result property="paymentListStr"    column="payment_list_str"    />
+        <result property="userId"    column="user_id"    />
+        <result property="registeredId"    column="registered_id"    />
+        <result property="registeredCode"    column="registered_code"    />
+        <result property="registeredDate"    column="registered_date"    />
+        <result property="visitDate"    column="visit_date"    />
+        <result property="visitTime"    column="visit_time"    />
+        <result property="registeredType"    column="registered_type"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="outpatientNumber"    column="outpatient_number"    />
+        <result property="seq"    column="seq"    />
+        <result property="refundAble"    column="refund_able"    />
+        <result property="feeTypeId"    column="fee_type_id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="orderCode"    column="order_code"    />
+        <result property="registeredSource"    column="registered_source"    />
+        <result property="registeredStatus"    column="registered_status"    />
+        <result property="cancelTime"    column="cancel_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisRegistrationRecordVo">
+        select id, member_id, patient_id, patient_name, patient_sex, id_card_no, org_code, org_name, dept_id, dept_name, doctor_id, doctor_name, vendor_id, fee, pay_serial_no, payment_list_str, user_id, registered_id, registered_code, registered_date, visit_date, visit_time, registered_type, business_id, outpatient_number, seq, refund_able, fee_type_id, template_id, order_code, registered_source, registered_status, cancel_time, remark, create_time, update_time, deleted from his_registration_record
+    </sql>
+
+    <select id="selectHisRegistrationRecordList" parameterType="HisRegistrationRecord" resultMap="HisRegistrationRecordResult">
+        <include refid="selectHisRegistrationRecordVo"/>
+        <where>  
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="idCardNo != null  and idCardNo != ''"> and id_card_no = #{idCardNo}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="doctorName != null  and doctorName != ''"> and doctor_name like concat('%', #{doctorName}, '%')</if>
+            <if test="registeredId != null  and registeredId != ''"> and registered_id = #{registeredId}</if>
+            <if test="registeredDate != null "> and registered_date = #{registeredDate}</if>
+            <if test="registeredType != null "> and registered_type = #{registeredType}</if>
+            <if test="businessId != null  and businessId != ''"> and business_id = #{businessId}</if>
+            <if test="outpatientNumber != null  and outpatientNumber != ''"> and outpatient_number = #{outpatientNumber}</if>
+            <if test="orderCode != null  and orderCode != ''"> and order_code = #{orderCode}</if>
+            <if test="registeredSource != null "> and registered_source = #{registeredSource}</if>
+            <if test="registeredStatus != null "> and registered_status = #{registeredStatus}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != ''">
+                AND date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginCreateTime},'%y%m%d')
+            </if>
+            <if test="params.endCreateTime != null and params.endCreateTime != ''">
+                AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endCreateTime},'%y%m%d')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectHisRegistrationRecordById" parameterType="Long" resultMap="HisRegistrationRecordResult">
+        <include refid="selectHisRegistrationRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectHisRegistrationRecord" parameterType="HisRegistrationRecord" resultMap="HisRegistrationRecordResult">
+        <include refid="selectHisRegistrationRecordVo"/>
+        where registered_id = #{registeredId} and org_code =#{orgCode}
+    </select>
+        
+    <insert id="insertHisRegistrationRecord" parameterType="HisRegistrationRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into his_registration_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="patientId != null">patient_id,</if>
+            <if test="patientName != null">patient_name,</if>
+            <if test="patientSex != null">patient_sex,</if>
+            <if test="idCardNo != null">id_card_no,</if>
+            <if test="orgCode != null">org_code,</if>
+            <if test="orgName != null">org_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="doctorId != null">doctor_id,</if>
+            <if test="doctorName != null">doctor_name,</if>
+            <if test="vendorId != null">vendor_id,</if>
+            <if test="fee != null">fee,</if>
+            <if test="paySerialNo != null">pay_serial_no,</if>
+            <if test="paymentListStr != null">payment_list_str,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="registeredId != null">registered_id,</if>
+            <if test="registeredCode != null">registered_code,</if>
+            <if test="registeredDate != null">registered_date,</if>
+            <if test="visitDate != null">visit_date,</if>
+            <if test="visitTime != null">visit_time,</if>
+            <if test="registeredType != null">registered_type,</if>
+            <if test="businessId != null">business_id,</if>
+            <if test="outpatientNumber != null">outpatient_number,</if>
+            <if test="seq != null">seq,</if>
+            <if test="refundAble != null">refund_able,</if>
+            <if test="feeTypeId != null">fee_type_id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="orderCode != null">order_code,</if>
+            <if test="registeredSource != null">registered_source,</if>
+            <if test="registeredStatus != null">registered_status,</if>
+            <if test="cancelTime != null">cancel_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="patientId != null">#{patientId},</if>
+            <if test="patientName != null">#{patientName},</if>
+            <if test="patientSex != null">#{patientSex},</if>
+            <if test="idCardNo != null">#{idCardNo},</if>
+            <if test="orgCode != null">#{orgCode},</if>
+            <if test="orgName != null">#{orgName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="doctorId != null">#{doctorId},</if>
+            <if test="doctorName != null">#{doctorName},</if>
+            <if test="vendorId != null">#{vendorId},</if>
+            <if test="fee != null">#{fee},</if>
+            <if test="paySerialNo != null">#{paySerialNo},</if>
+            <if test="paymentListStr != null">#{paymentListStr},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="registeredId != null">#{registeredId},</if>
+            <if test="registeredCode != null">#{registeredCode},</if>
+            <if test="registeredDate != null">#{registeredDate},</if>
+            <if test="visitDate != null">#{visitDate},</if>
+            <if test="visitTime != null">#{visitTime},</if>
+            <if test="registeredType != null">#{registeredType},</if>
+            <if test="businessId != null">#{businessId},</if>
+            <if test="outpatientNumber != null">#{outpatientNumber},</if>
+            <if test="seq != null">#{seq},</if>
+            <if test="refundAble != null">#{refundAble},</if>
+            <if test="feeTypeId != null">#{feeTypeId},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="orderCode != null">#{orderCode},</if>
+            <if test="registeredSource != null">#{registeredSource},</if>
+            <if test="registeredStatus != null">#{registeredStatus},</if>
+            <if test="cancelTime != null">#{cancelTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisRegistrationRecord" parameterType="HisRegistrationRecord">
+        update his_registration_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="patientId != null">patient_id = #{patientId},</if>
+            <if test="patientName != null">patient_name = #{patientName},</if>
+            <if test="patientSex != null">patient_sex = #{patientSex},</if>
+            <if test="idCardNo != null">id_card_no = #{idCardNo},</if>
+            <if test="orgCode != null">org_code = #{orgCode},</if>
+            <if test="orgName != null">org_name = #{orgName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="doctorId != null">doctor_id = #{doctorId},</if>
+            <if test="doctorName != null">doctor_name = #{doctorName},</if>
+            <if test="vendorId != null">vendor_id = #{vendorId},</if>
+            <if test="fee != null">fee = #{fee},</if>
+            <if test="paySerialNo != null">pay_serial_no = #{paySerialNo},</if>
+            <if test="paymentListStr != null">payment_list_str = #{paymentListStr},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="registeredId != null">registered_id = #{registeredId},</if>
+            <if test="registeredCode != null">registered_code = #{registeredCode},</if>
+            <if test="registeredDate != null">registered_date = #{registeredDate},</if>
+            <if test="visitDate != null">visit_date = #{visitDate},</if>
+            <if test="visitTime != null">visit_time = #{visitTime},</if>
+            <if test="registeredType != null">registered_type = #{registeredType},</if>
+            <if test="businessId != null">business_id = #{businessId},</if>
+            <if test="outpatientNumber != null">outpatient_number = #{outpatientNumber},</if>
+            <if test="seq != null">seq = #{seq},</if>
+            <if test="refundAble != null">refund_able = #{refundAble},</if>
+            <if test="feeTypeId != null">fee_type_id = #{feeTypeId},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="orderCode != null">order_code = #{orderCode},</if>
+            <if test="registeredSource != null">registered_source = #{registeredSource},</if>
+            <if test="registeredStatus != null">registered_status = #{registeredStatus},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHisRegistrationRecordById" parameterType="Long">
+        delete from his_registration_record where id = #{id}
+    </delete>
+
+    <delete id="deleteHisRegistrationRecordByIds" parameterType="String">
+        delete from his_registration_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

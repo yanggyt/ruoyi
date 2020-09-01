@@ -22,13 +22,6 @@
                                 <label>手机号：</label>
                                 <input type="text" name="mobilePhone"/>
                             </li>
-                            <li>
-                                <label>绑定状态：</label>
-                                <select name="bindStatus" th:with="type=${@dict.getType('biz_bind_status')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
                             <li class="select-time">
                                 <label>创建时间：</label>
                                 <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreateTime]"/>

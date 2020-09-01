@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增医生排班')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-doctorSchedule-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">显示状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('biz_normal_disable')}">
+                        <input type="radio" th:id="${'isShow_' + dict.dictCode}" name="isShow" th:value="${dict.dictValue}" th:checked="${dict.default}" required>
+                        <label th:for="${'isShow_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "his/doctorSchedule"
+        $("#form-doctorSchedule-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-doctorSchedule-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

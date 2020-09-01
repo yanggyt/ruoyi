@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('支付账户列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>支付名称：</label>
+                                <input type="text" name="accName"/>
+                            </li>
+                            <li>
+                                <label>默认显示：</label>
+                                <select name="isDefaultShow" th:with="type=${@dict.getType('biz_normal_disable')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="his:payAccount:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="his:payAccount:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="his:payAccount:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="his:payAccount:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('his:payAccount:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('his:payAccount:remove')}]];
+        var isDefaultShowDatas = [[${@dict.getType('biz_normal_disable')}]];
+        var paymentDatas = [[${@dict.getType('biz_payment_type')}]];
+        var prefix = ctx + "his/payAccount";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "支付账户",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '主键ID',
+                    visible: false
+                },
+                {
+                    field: 'accId',
+                    title: '账户ID'
+                },
+                {
+                    field: 'accPy',
+                    title: '拼音简写'
+                },
+                {
+                    field: 'accName',
+                    title: '支付名称'
+                },
+                {
+                    field: 'payment',
+                    title: '支付类型',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(paymentDatas, value);
+                    }
+                },
+                {
+                    field: 'payPy',
+                    title: '拼音简写'
+                },
+                {
+                    field: 'paymentId',
+                    title: '支付方式ID'
+                },
+                {
+                    visible: editFlag == 'hidden' ? false : true,
+                    field: 'isDefaultShow',
+                    title: '默认显示',
+                    align: "center",
+                    formatter: function (value, row, index) {
+                        return statusTools(row);
+                    }
+                },
+                {
+                    field: 'sortNo',
+                    title: '排序号'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        /* 账户状态显示 */
+        function statusTools(row) {
+            if (row.isDefaultShow === 0) {
+                return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.id + '\')"></i> ';
+            } else {
+                return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.id + '\')"></i> ';
+            }
+        }
+        /* 账户-停用 */
+        function disable(id) {
+            $.modal.confirm("确认要停用账户吗？", function() {
+                $.operate.post(prefix + "/changeStatus", { "id": id, "isDefaultShow": 0 });
+            })
+        }
+
+        /* 账户启用 */
+        function enable(id) {
+            $.modal.confirm("确认要启用账户吗？", function() {
+                $.operate.post(prefix + "/changeStatus", { "id": id, "isDefaultShow": 1 });
+            })
+        }
+    </script>
+</body>
+</html>

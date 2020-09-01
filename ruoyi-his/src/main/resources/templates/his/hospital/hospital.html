@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('医疗机构列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>机构名称：</label>
+                                <input type="text" name="orgName"/>
+                            </li>
+                            <li>
+                                <label>医院类别：</label>
+                                <select name="orgType" th:with="type=${@dict.getType('biz_org_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>医院等级：</label>
+                                <select name="orgLevel" th:with="type=${@dict.getType('biz_org_level')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>显示状态：</label>
+                                <select name="isShow" th:with="type=${@dict.getType('biz_normal_disable')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <!--<a class="btn btn-success" onclick="$.operate.addTab()" shiro:hasPermission="his:hospital:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>-->
+                <a class="btn btn-primary single disabled" onclick="$.operate.editTab()" shiro:hasPermission="his:hospital:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="his:hospital:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="his:hospital:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('his:hospital:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('his:hospital:remove')}]];
+        var orgTypeDatas = [[${@dict.getType('biz_org_type')}]];
+        var orgLevelDatas = [[${@dict.getType('biz_org_level')}]];
+        var isShowDatas = [[${@dict.getType('biz_normal_disable')}]];
+        var prefix = ctx + "his/hospital";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "医疗机构",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '主键ID',
+                    visible: false
+                },
+                {
+                    title: "序号",
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'orgCode',
+                    title: '机构编码',
+                    visible: false
+                },
+                {
+                    field: 'orgName',
+                    title: '机构名称',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 20, "open");
+                    }
+                },
+                {
+                    field: 'orgAddress',
+                    title: '注册地址',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 10, "open");
+                    }
+                },
+                {
+                    field: 'contactPerson',
+                    title: '联系人',
+                    align: 'center',
+                },
+                {
+                    field: 'contactPhone',
+                    title: '联系电话',
+                    align: 'center',
+                },
+                {
+                    field: 'logo',
+                    title: '机构图标',
+                    formatter: function(value, row, index) {
+                        return $.table.imageView(value);
+                    }
+                },
+                {
+                    field: 'vmUserName',
+                    title: '虚拟操作员',
+                    align: 'center',
+                },
+                {
+                    field: 'orgType',
+                    title: '医院类别',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(orgTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'orgLevel',
+                    title: '医院等级',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(orgLevelDatas, value);
+                    }
+                },
+                {
+                    field: 'sortNo',
+                    title: '排序号',
+                    align: "center"
+                },
+                {
+                    field: 'isShow',
+                    title: '显示状态',
+                    align: "center",
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(isShowDatas, value);
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editTab(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisInspectionReportItemMapper">
+    
+    <resultMap type="HisInspectionReportItem" id="HisInspectionReportItemResult">
+        <result property="id"    column="id"    />
+        <result property="reportId"    column="report_id"    />
+        <result property="itemId"    column="item_id"    />
+        <result property="execRecordId"    column="exec_record_id"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="itemValue"    column="item_value"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="unit"    column="unit"    />
+        <result property="referenceValue"    column="reference_value"    />
+        <result property="qualityResult"    column="quality_result"    />
+        <result property="archivedFlag"    column="archived_flag"    />
+        <result property="fee"    column="fee"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisInspectionReportItemVo">
+        select id, report_id, item_id, exec_record_id, item_name, item_value, sort_no, unit, reference_value, quality_result, archived_flag, fee, create_time, update_time, deleted from his_inspection_report_item
+    </sql>
+
+    <select id="selectHisInspectionReportItemList" parameterType="HisInspectionReportItem" resultMap="HisInspectionReportItemResult">
+        <include refid="selectHisInspectionReportItemVo"/>
+        <where>  
+            <if test="reportId != null "> and report_id = #{reportId}</if>
+            <if test="itemName != null  and itemName != ''"> and item_name like concat('%', #{itemName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectHisInspectionReportItemById" parameterType="Long" resultMap="HisInspectionReportItemResult">
+        <include refid="selectHisInspectionReportItemVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>
