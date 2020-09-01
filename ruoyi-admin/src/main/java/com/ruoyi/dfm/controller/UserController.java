@@ -1,5 +1,6 @@
 package com.ruoyi.dfm.controller;
 
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
@@ -17,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user.do")
@@ -52,8 +56,9 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 	 * @throws Exception
 	 */
 	@RequestMapping("/addSave")
-	public ModelAndView addSave(HttpServletRequest req,
-                            HttpServletResponse res) throws Exception {
+	@ResponseBody
+	public AjaxResult addSave(HttpServletRequest req,
+							  HttpServletResponse res) throws Exception {
 		String name = req.getParameter("name");
 		String username = req.getParameter("username");
 		String pwd = req.getParameter("password");
@@ -71,10 +76,10 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 			user.setCcEmail(ccEmail);
 			user.setPassword(Md5Util.md5(pwd));
 			int groupId = UserConstants.USER_LEVEL_NORMAL;
-			if(StringUtils.isNotBlank(isAdmin) && "1".equals(isAdmin))
+			if(StringUtils.isNotBlank(isAdmin) && "on".equals(isAdmin))
 			{
 				groupId = UserConstants.USER_LEVEL_ADMIN;
-			} else if(StringUtils.isNotBlank(isDepAdmin) && "1".equals(isDepAdmin))
+			} else if(StringUtils.isNotBlank(isDepAdmin) && "on".equals(isDepAdmin))
 			{
 				groupId = UserConstants.USER_LEVEL_DEP_ADMIN;
 			}
@@ -86,27 +91,28 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 			//创建用户目录
 			String dir = fileService.getRootPath() + user.getUsername();
 			fileService.createDir(dir);
-			outputMsg(res, "<script>alert('添加成功，点击确定跳转到用户列表！');document.location.href='user.do?method=getUserList';</script>");
-			return null;
+//			outputMsg(res, "<script>alert('添加成功，点击确定跳转到用户列表！');document.location.href='user.do?method=getUserList';</script>");
+//			return null;
+			//返回数据库影响行数
+			return toAjax(1);
+
 		} catch (Exception e) {
 			logger.error("添加用户失败", e);
-			outputMsg(res, "<script>alert('添加用户失败，请检查数据正确性，重新添加！');window.history.go(-1)';</script>");
-			return null;
+			return toAjax(0);
 		}
 		
 	}
 
 	/**
 	 * 添加用户页面
-	 * @param req
-	 * @param res
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/add")
-	public ModelAndView add(HttpServletRequest req,
-							 HttpServletResponse res) throws Exception {
-		return new ModelAndView("dfm/addUser");
+	@GetMapping("/add")
+	public String add(ModelMap mmap) {
+		UserInfo loginUser = ShiroUtils.getLoginUser();
+		mmap.put("groupId", loginUser.getGroupId());
+		return "dfm/addUser";
 	}
 
 
@@ -208,9 +214,9 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/getModifyUser")
+	@RequestMapping("/edit")
 	public ModelAndView getModifyUser(HttpServletRequest req,
-                                      HttpServletResponse res) throws Exception {
+                                      HttpServletResponse res, ModelMap mmap) throws Exception {
 		int uid = 0 ;
 		String ustr = req.getParameter("uid");
 		if(ustr == null || "".equals(ustr))
@@ -222,12 +228,14 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 		}
 		 
 		UserInfo user = userService.getUserById(uid);
-		req.setAttribute("user", user);
-		return new ModelAndView("modifyUser");
+		mmap.put("user", user);
+		mmap.put("groupId", ShiroUtils.getLoginUser().getGroupId());
+		return new ModelAndView("dfm/editUser");
 	}
 
-	@RequestMapping("/modifyUser")
-	public ModelAndView modifyUser(HttpServletRequest req,
+	@RequestMapping("/editSave")
+	@ResponseBody
+	public AjaxResult modifyUser(HttpServletRequest req,
                                    HttpServletResponse res) throws Exception {
 		String id = req.getParameter("id");
 		String name = req.getParameter("name");
@@ -244,10 +252,10 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 		String isDepAdmin = req.getParameter("isDepAdmin");
 		String isAdmin = req.getParameter("isAdmin");
 //		int groupId = UserConstants.USER_LEVEL_NORMAL;
-		if("1".equals(isAdmin))
+		if("on".equals(isAdmin))
 		{
 			groupId = UserConstants.USER_LEVEL_ADMIN;
-		} else if("1".equals(isDepAdmin))
+		} else if("on".equals(isDepAdmin))
 		{
 			groupId = UserConstants.USER_LEVEL_DEP_ADMIN;
 		}
@@ -266,20 +274,21 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 			user.setUsername(username);
 			user.setGroupId(groupId);
 			userService.updateUser(user);
-			if(UserConstants.USER_LEVEL_ADMIN == user1.getGroupId())
-			{
-				outputMsg(res, "<script>alert('修改成功，点击确定跳转到用户列表！');document.location.href='user.do?method=getUserList';</script>");
-			}
-			else
-			{
-				outputMsg(res, "<script>alert('修改成功，点击确定跳转项目提交页面！');document.location.href='project.do?method=getAddPage';</script>");
-			}
-			
-			return null;
+//			if(UserConstants.USER_LEVEL_ADMIN == user1.getGroupId())
+//			{
+//				outputMsg(res, "<script>alert('修改成功，点击确定跳转到用户列表！');document.location.href='user.do?method=getUserList';</script>");
+//			}
+//			else
+//			{
+//				outputMsg(res, "<script>alert('修改成功，点击确定跳转项目提交页面！');document.location.href='project.do?method=getAddPage';</script>");
+//			}
+			return toAjax(1);
+//			return null;
 		} catch (Exception e) {
 			logger.error("修改用户失败", e);
-			outputMsg(res, "<script>alert('修改用户失败，请检查数据正确性，重新添加！');window.history.go(-1)';</script>");
-			return null;
+//			outputMsg(res, "<script>alert('修改用户失败，请检查数据正确性，重新添加！');window.history.go(-1)';</script>");
+//			return null;
+			return toAjax(0);
 		}
 	}
 

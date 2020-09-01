@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-	<th:block th:include="include :: header('新增用户')" />
+	<th:block th:include="include :: header('修改用户')" />
 	<th:block th:include="include :: select2-css" />
 </head>
 <body>
     <div class="main-content">
-        <form id="form-user-add" class="form-horizontal">
-            <input name="deptId" type="hidden" id="treeId"/>
+        <form id="form-user-edit" class="form-horizontal" th:object="${user}">
+            <input name="id"  type="hidden"  th:field="*{id}" />
+            <input name="gid" type="hidden"  th:field="*{groupId}" />
             <h4 class="form-header h4">基本信息</h4>
             <div class="row">
             	<div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">员工姓名：</label>
                         <div class="col-sm-8">
-                            <input name="name" placeholder="请输入用户姓名" class="form-control" type="text" maxlength="30" required>
+                            <input name="name" placeholder="请输入用户姓名" class="form-control" type="text" maxlength="30" th:field="*{name}" required>
                         </div>
                     </div>
                 </div>
@@ -22,7 +23,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">用户名：</label>
                         <div class="col-sm-8">
-                            <input name="username" placeholder="请输入登录用户名" class="form-control" type="text" maxlength="30" required>
+                            <input name="username" placeholder="请输入登录用户名" class="form-control" type="text" maxlength="30" th:field="*{username}" required>
                         </div>
                     </div>
                 </div>
@@ -33,7 +34,7 @@
                         <label class="col-sm-4 control-label is-required">登录密码：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input id="password" name="password" placeholder="请输入登录密码" class="form-control" type="password"  required>
+                                <input id="password" name="password" placeholder="请输入登录密码" class="form-control" type="password"  th:field="*{password}"  required>
                                 <span class="input-group-addon" title="登录密码,鼠标按下显示密码"
                                       onmousedown="$('#password').attr('type','text')"
                                       onmouseup="$('#password').attr('type','password')"><i class="fa fa-key"></i></span>
@@ -46,7 +47,7 @@
                         <label class="col-sm-4 control-label is-required">确认密码：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input id="password1" name="password1" placeholder="请再次输入登录密码" class="form-control" type="password"  required>
+                                <input id="password1" name="password1" placeholder="请再次输入登录密码" class="form-control" type="password" th:field="*{password}" required>
                                 <span class="input-group-addon" title="登录密码,鼠标按下显示密码"
                                       onmousedown="$('#password').attr('type','text')"
                                       onmouseup="$('#password').attr('type','password')"><i class="fa fa-key"></i></span>
@@ -61,7 +62,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">所在部门：</label>
                         <div class="col-sm-8">
-                            <input name="name" placeholder="请输入部门" class="form-control" type="text" maxlength="30" required>
+                            <input name="name" placeholder="请输入部门" class="form-control" type="text" maxlength="30" th:field="*{department}" required>
                         </div>
                     </div>
                 </div>
@@ -69,7 +70,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">项目组：</label>
                         <div class="col-sm-8">
-                            <input name="name" placeholder="请输入项目组" class="form-control" type="text" maxlength="30" required>
+                            <input name="name" placeholder="请输入项目组" class="form-control" type="text" maxlength="30" th:field="*{projectGroup}" required>
                         </div>
                     </div>
                 </div>
@@ -81,7 +82,7 @@
                         <label class="col-sm-4 control-label is-required">Email：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input id="email" name="email" class="form-control email" type="text" maxlength="50" placeholder="请输入邮箱" required>
+                                <input id="email" name="email" class="form-control email" type="text" maxlength="50" placeholder="请输入邮箱"  th:field="*{email}" required>
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                         </div>
@@ -92,7 +93,7 @@
                         <label class="col-sm-4 control-label is-required">抄送Email：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input id="ccEmail" name="ccEmail" class="form-control email" type="text" maxlength="50" placeholder="请输入抄送邮箱" required>
+                                <input id="ccEmail" name="ccEmail" class="form-control email" type="text" maxlength="50" th:field="*{ccEmail}" placeholder="请输入抄送邮箱" required>
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                         </div>
@@ -100,26 +101,26 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" th:if="${groupId == 1 || groupId == 3 }">
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label class="col-xs-2 control-label">是否部门管理员：</label>
                         <div class="col-xs-10">
                             <label class="check-box">
-                                <input name="isDepAdmin" type="checkbox" onclick="checkAdmin(this);">
+                                <input name="isDepAdmin" type="checkbox" th:checked="*{groupId==3}" onclick="checkAdmin(this);">
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row" th:if="${groupId == 1}">
+            <div class="row" th:if="${groupId == 1 }">
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label class="col-xs-2 control-label">是否系统管理员：</label>
                         <div class="col-xs-10">
                             <label  class="check-box">
-                                <input name="isAdmin" type="checkbox" onclick="checkAdmin(this);" >
+                                <input name="isAdmin" type="checkbox" th:checked="*{groupId==1}" onclick="checkAdmin(this);" >
                             </label>
                         </div>
                     </div>
@@ -139,9 +140,27 @@
 	<th:block th:include="include :: footer" />
 	<th:block th:include="include :: select2-js" />
 	<script>
+
+        jQuery(function($) {
+            initIsAdmin();
+        });
+
+        function initIsAdmin()
+        {
+            if('1' == $("input[name=isAdmin]").val())
+            {
+                $("input[name=isAdmin]").attr("checked",true);
+            }
+
+            if('3' == $("input[name=isDepAdmin]").val())
+            {
+                $("input[name=isDepAdmin]").attr("checked",true);
+            }
+        }
+
 	    var prefix = ctx + "user.do";
 	
-        $("#form-user-add").validate({
+        $("#form-user-edit").validate({
         	onkeyup: false,
         	rules:{
                 name:{
@@ -181,8 +200,8 @@
 			// var password = $("#password").val();
 	        // if ($.validate.form() && checkpwd(chrtype, password)) {
             if ($.validate.form() ) {
-	        	var data = $("#form-user-add").serializeArray();
-	        	$.operate.save(prefix + "/addSave", data);
+	        	var data = $("#form-user-edit").serializeArray();
+	        	$.operate.saveTab(prefix + "/editSave", data);
 	        }
 	    }
 
