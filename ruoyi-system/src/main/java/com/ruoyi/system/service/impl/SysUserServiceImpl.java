@@ -28,7 +28,7 @@ import com.ruoyi.system.service.ISysUserService;
 
 /**
  * 用户 业务层处理
- * 
+ *
  * @author ruoyi
  */
 @Service
@@ -56,7 +56,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 根据条件分页查询用户列表
-     * 
+     *
      * @param user 用户信息
      * @return 用户信息集合信息
      */
@@ -69,7 +69,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 根据条件分页查询已分配用户角色列表
-     * 
+     *
      * @param user 用户信息
      * @return 用户信息集合信息
      */
@@ -82,7 +82,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 根据条件分页查询未分配用户角色列表
-     * 
+     *
      * @param user 用户信息
      * @return 用户信息集合信息
      */
@@ -95,7 +95,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 通过用户名查询用户
-     * 
+     *
      * @param userName 用户名
      * @return 用户对象信息
      */
@@ -107,7 +107,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 通过手机号码查询用户
-     * 
+     *
      * @param phoneNumber 手机号码
      * @return 用户对象信息
      */
@@ -119,7 +119,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 通过邮箱查询用户
-     * 
+     *
      * @param email 邮箱
      * @return 用户对象信息
      */
@@ -131,7 +131,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 通过用户ID查询用户
-     * 
+     *
      * @param userId 用户ID
      * @return 用户对象信息
      */
@@ -143,7 +143,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 通过用户ID查询用户和角色关联
-     * 
+     *
      * @param userId 用户ID
      * @return 用户和角色关联列表
      */
@@ -155,7 +155,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 通过用户ID删除用户
-     * 
+     *
      * @param userId 用户ID
      * @return 结果
      */
@@ -171,7 +171,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 批量删除用户信息
-     * 
+     *
      * @param ids 需要删除的数据ID
      * @return 结果
      */
@@ -183,12 +183,18 @@ public class SysUserServiceImpl implements ISysUserService
         {
             checkUserAllowed(new SysUser(userId));
         }
+        for (Long userId : userIds) {
+            // 删除用户与角色关联
+            userRoleMapper.deleteUserRoleByUserId(userId);
+            // 删除用户与岗位表
+            userPostMapper.deleteUserPostByUserId(userId);
+        }
         return userMapper.deleteUserByIds(userIds);
     }
 
     /**
      * 新增保存用户信息
-     * 
+     *
      * @param user 用户信息
      * @return 结果
      */
@@ -207,7 +213,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 注册用户信息
-     * 
+     *
      * @param user 用户信息
      * @return 结果
      */
@@ -220,7 +226,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 修改保存用户信息
-     * 
+     *
      * @param user 用户信息
      * @return 结果
      */
@@ -242,7 +248,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 修改用户个人详细信息
-     * 
+     *
      * @param user 用户信息
      * @return 结果
      */
@@ -254,7 +260,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 用户授权角色
-     * 
+     *
      * @param userId 用户ID
      * @param roleIds 角色组
      */
@@ -267,7 +273,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 修改用户密码
-     * 
+     *
      * @param user 用户信息
      * @return 结果
      */
@@ -279,7 +285,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 新增用户角色信息
-     * 
+     *
      * @param user 用户对象
      */
     public void insertUserRole(Long userId, Long[] roleIds)
@@ -304,7 +310,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 新增用户岗位信息
-     * 
+     *
      * @param user 用户对象
      */
     public void insertUserPost(SysUser user)
@@ -330,7 +336,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 校验登录名称是否唯一
-     * 
+     *
      * @param loginName 用户名
      * @return
      */
@@ -383,7 +389,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 校验用户是否允许操作
-     * 
+     *
      * @param user 用户信息
      */
     @Override
@@ -397,7 +403,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 查询用户所属角色组
-     * 
+     *
      * @param userId 用户ID
      * @return 结果
      */
@@ -419,7 +425,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 查询用户所属岗位组
-     * 
+     *
      * @param userId 用户ID
      * @return 结果
      */
@@ -441,7 +447,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 导入用户数据
-     * 
+     *
      * @param userList 用户数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
      * @param operName 操作用户
@@ -508,7 +514,7 @@ public class SysUserServiceImpl implements ISysUserService
 
     /**
      * 用户状态修改
-     * 
+     *
      * @param user 用户信息
      * @return 结果
      */
