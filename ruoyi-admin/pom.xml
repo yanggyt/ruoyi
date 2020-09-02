@@ -79,6 +79,12 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!-- HIS 管理模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-his</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
