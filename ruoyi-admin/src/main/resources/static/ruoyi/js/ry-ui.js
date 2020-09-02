@@ -983,6 +983,36 @@ var table = {
             	});
             	
             },
+			removeUser: function(id) {
+				table.set();
+				$.modal.confirm("确定删除该条" + table.options.modalName + "信息吗？", function() {
+					var delProject;
+					if (confirm("是否删除该账户下的所有项目？")) {
+						delProject = "yes";
+					} else {
+						delProject = "no";
+					}
+					var url = table.options.removeUrl;
+					var data = { "uid": id, "delProject": delProject };
+					$.operate.submit(url, "post", "json", data);
+				});
+			},
+			// 删除信息
+			pauseUser: function(uid, state) {
+				table.set();
+				// $.modal.confirm("确定删除该条" + table.options.modalName + "信息吗？", function() {
+				// 	var url = $.common.isEmpty(id) ? table.options.removeUrl : table.options.removeUrl.replace("{id}", id);
+				// 	if(table.options.type == table_type.bootstrapTreeTable) {
+				// 		$.operate.get(url);
+				// 	} else {
+				// 		var data = { "ids": id };
+				// 		$.operate.submit(url, "post", "json", data);
+				// 	}
+				// });
+
+				var data = { "uid": uid, "state": state };
+				$.operate.submit(table.options.pauseUrl, "post", "json", data);
+			},
             // 批量删除信息
             removeAll: function() {
             	table.set();

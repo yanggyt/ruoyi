@@ -9,6 +9,7 @@
         <form id="form-user-edit" class="form-horizontal" th:object="${user}">
             <input name="id"  type="hidden"  th:field="*{id}" />
             <input name="gid" type="hidden"  th:field="*{groupId}" />
+            <input name="editSelf" id="editSelf" type="hidden"  th:value="${editSelf}" />
             <h4 class="form-header h4">基本信息</h4>
             <div class="row">
             	<div class="col-sm-6">
@@ -201,7 +202,12 @@
 	        // if ($.validate.form() && checkpwd(chrtype, password)) {
             if ($.validate.form() ) {
 	        	var data = $("#form-user-edit").serializeArray();
-	        	$.operate.saveTab(prefix + "/editSave", data);
+	        	var editSelf = $("#editSelf").val();
+	        	if("true" == editSelf) {
+                    $.operate.save(prefix + "/editSave", data);
+                } else {
+                    $.operate.saveTab(prefix + "/editSave", data);
+                }
 	        }
 	    }
 

@@ -45,9 +45,9 @@
 	            <a class="btn btn-primary single disabled" onclick="$.operate.editTab()" >
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
-				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" >
-		            <i class="fa fa-remove"></i> 删除
-		        </a>
+				<!--<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" >-->
+		            <!--<i class="fa fa-remove"></i> 删除-->
+		        <!--</a>-->
 		        <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" >-->
 		            <!--<i class="fa fa-download"></i> 导出-->
 		        <!--</a>-->
@@ -69,6 +69,7 @@
 		        updateUrl: prefix + "/edit?uid={id}",
 		        removeUrl: prefix + "/remove",
 		        exportUrl: prefix + "/export",
+				pauseUrl: prefix + "/changeUserState",
 		        sortName: "roleSort",
 		        modalName: "用户",
 		        columns: [
@@ -112,13 +113,29 @@
 		        {
 		            field: 'groupId',
 		            title: '是否管理员',
-		            sortable: true
+		            sortable: true,
+					formatter: function (value, row, index) {
+		            	if(1 == value) {
+		            		return "系统管理员";
+						} else if(3 == value) {
+							return "部门管理员";
+						} else {
+		            		return "否"
+						}
+					}
 		        },
 				{
 					field: 'status',
 					title: '状态',
-					sortable: true
-				}
+					sortable: true,
+					formatter: function (value, row, index) {
+						if(0 == value) {
+							return "启用";
+						} else {
+							return "暂停";
+						}
+					}
+				},
 				// {
 				// 	field: 'roleSort',
 				// 	title: '操作',
@@ -137,20 +154,30 @@
 		        //     title: '创建时间',
 		        //     sortable: true
 		        // },
-		        // {
-		        //     title: '操作',
-		        //     align: 'center',
-		        //     formatter: function(value, row, index) {
-		        //         var actions = [];
-		        //         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.roleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-		        //         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.roleId + '\')"><i class="fa fa-remove"></i>删除</a> ');
-		        //         var more = [];
-		        //         more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authDataScope(" + row.roleId + ")'><i class='fa fa-check-square-o'></i>数据权限</a> ");
-		        //         more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authUser(" + row.roleId + ")'><i class='fa fa-user'></i>分配用户</a>");
-		        //         actions.push('<a tabindex="0" class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
-		        //         return actions.join('');
-		        //     }
-		        // }
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		                var actions = [];
+		                var pauseOperType = "";
+		                var userState = 0;
+						if(0 == row.status) {
+							pauseOperType = "暂停";
+							userState = 1;
+						} else {
+							pauseOperType = "启用";
+							userState = 0;
+						}
+		                // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.roleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+		                actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.removeUser(' + row.id + ')"><i class="fa fa-remove"></i>删除</a> ');
+						actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.pauseUser(' + row.id + ',' + userState + ')"><i class="fa fa-edit"></i>' + pauseOperType + '</a> ');
+		                // var more = [];
+		                // more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authDataScope(" + row.roleId + ")'><i class='fa fa-check-square-o'></i>数据权限</a> ");
+		                // more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authUser(" + row.roleId + ")'><i class='fa fa-user'></i>分配用户</a>");
+		                // actions.push('<a tabindex="0" class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
+		                return actions.join('');
+		            }
+		        }
 		        ]
 		    };
 		    $.table.init(options);

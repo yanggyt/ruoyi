@@ -167,19 +167,21 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/deleteUser")
-	public ModelAndView deleteUser(HttpServletRequest req,
+	@RequestMapping("/remove")
+	@ResponseBody
+	public AjaxResult deleteUser(HttpServletRequest req,
                                    HttpServletResponse res) throws Exception {
 		try {
 			String delProject = req.getParameter("delProject");
 			int uid = Integer.parseInt(req.getParameter("uid"));
 			userService.deleteUser(uid,delProject);
-			outputMsg(res, "<script>alert('删除用户成功！');document.location.href='user.do?method=getUserList';</script>");
+//			outputMsg(res, "<script>alert('删除用户成功！');document.location.href='user.do?method=getUserList';</script>");
+			return toAjax(1);
 		} catch (Exception e) {
 			logger.error("删除用户失败", e);
-			outputMsg(res, "<script>alert('删除用户失败，请重试！');window.history.go(-1);</script>");
+//			outputMsg(res, "<script>alert('删除用户失败，请重试！');window.history.go(-1);</script>");
+			return toAjax(0);
 		}
-		return null;
 	}
 	
 	
@@ -191,20 +193,23 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 	 * @throws Exception
 	 */
 	@RequestMapping("/changeUserState")
-	public ModelAndView changeUserState(HttpServletRequest req,
+	@ResponseBody
+	public AjaxResult changeUserState(HttpServletRequest req,
                                         HttpServletResponse res) throws Exception {
 		try {
 			int uid = Integer.parseInt(req.getParameter("uid"));
 			int state = Integer.parseInt(req.getParameter("state"));
 			//构造分页参数
-			String currentPage = req.getParameter("currentPage");
+//			String currentPage = req.getParameter("currentPage");
 			userService.changeUserState(uid , state);
-			outputMsg(res, "<script>alert('操作用户成功！');document.location.href='user.do?method=getUserList&currentPage="+currentPage+"';</script>");
+//			outputMsg(res, "<script>alert('操作用户成功！');document.location.href='user.do?method=getUserList&currentPage="+currentPage+"';</script>");
+			return toAjax(1);
 		} catch (Exception e) {
 			logger.error("暂停用户失败", e);
-			outputMsg(res, "<script>alert('操作用户失败，请重试！');window.history.go(-1);</script>");
+//			outputMsg(res, "<script>alert('操作用户失败，请重试！');window.history.go(-1);</script>");
+			return toAjax(0);
 		}
-		return null;
+//		return null;
 	}
 	
 	/**
@@ -222,9 +227,11 @@ public class UserController extends com.ruoyi.common.core.controller.BaseControl
 		if(ustr == null || "".equals(ustr))
 		{
 			uid = ShiroUtils.getLoginUser().getId();
+			mmap.put("editSelf", true);
 		}else
 		{
 			uid = Integer.parseInt(ustr);
+			mmap.put("editSelf", false);
 		}
 		 
 		UserInfo user = userService.getUserById(uid);
