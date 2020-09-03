@@ -12,7 +12,6 @@ import com.ruoyi.dfm.service.FileService;
 import com.ruoyi.dfm.service.UserService;
 import com.ruoyi.dfm.util.Md5Util;
 import com.ruoyi.framework.util.ShiroUtils;
-import com.ruoyi.system.domain.SysRole;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user.do")
