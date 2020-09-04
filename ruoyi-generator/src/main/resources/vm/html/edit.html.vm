@@ -39,6 +39,13 @@
 #end
 #set($field=$column.javaField)
 #set($dictType=$column.dictType)
+#set($isVarchar=$column.columnType.indexOf("varchar")!=-1)
+#set($vcl='')
+#if($isVarchar)
+#set($vcS=$column.columnType.indexOf("(") + 1)
+#set($vcE=$column.columnType.indexOf(")"))
+#set($vcl=$column.columnType.substring($vcS, $vcE))
+#end
 #if("" != $treeParentCode && $column.javaField == $treeParentCode)
             <div class="form-group">    
                 <label class="col-sm-3 control-label#if($column.required) is-required#end">${comment}：</label>
@@ -55,7 +62,7 @@
             <div class="form-group">    
                 <label class="col-sm-3 control-label#if($column.required) is-required#end">${comment}：</label>
                 <div class="col-sm-8">
-                    <input name="${field}" th:field="*{${field}}" class="form-control" type="text"#if($column.required) required#end>
+                    <input name="${field}" th:field="*{${field}}" class="form-control" type="text"#if($column.required) required#end #if($vcl!='') maxlength="$vcl"#end>
                 </div>
             </div>
 #elseif($column.htmlType == "upload")
@@ -149,7 +156,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label#if($column.required) is-required#end">${comment}：</label>
                 <div class="col-sm-8">
-                    <textarea name="${field}" class="form-control"#if($column.required) required#end>[[*{${field}}]]</textarea>
+                    <textarea name="${field}" class="form-control"#if($column.required) required#end #if($vcl!='') maxlength="$vcl"#end>[[*{${field}}]]</textarea>
                 </div>
             </div>
 #end
