@@ -13,7 +13,9 @@ public class BaseController {
 	{
 		PrintWriter out = res.getWriter();
 		res.setContentType("text/html");
+		res.setHeader("Content-Type","text/json;charset=utf8");
 		res.setCharacterEncoding("utf-8");
+		res.setContentType("text/json;charset=utf8");
 		out.write(msg);
 		out.flush();
 		out.close();
@@ -23,7 +25,9 @@ public class BaseController {
 	{
 		PrintWriter out = res.getWriter();
 		res.setContentType("text/json");
+		res.setHeader("Content-Type","text/json;charset=utf8");
 		res.setCharacterEncoding("utf-8");
+		res.setContentType("text/json;charset=utf8");
 		out.write(msg);
 		out.flush();
 		out.close();

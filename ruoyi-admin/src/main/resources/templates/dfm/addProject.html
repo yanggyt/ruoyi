@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增项目')" />
+	<th:block th:include="include :: select2-css" />
+</head>
+<body>
+    <div class="main-content">
+        <form id="form-project-add" class="form-horizontal">
+            <!--<input name="deptId" type="hidden" id="treeId"/>-->
+            <h4 class="form-header h4">任务描述</h4>
+            <div class="row">
+            	<div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">任务类型：</label>
+                        <div class="col-sm-8">
+                            <select id="checkType" name="checkType" onchange="showDfmCheck(this);" class="form-control m-b">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <!-- DFM Check可变项 -->
+                        <span id="taskType" style="padding-left:30px;display:none;">
+                            <table style="font-size: 12px">
+                                    <tr>
+                                        <td>
+                                            <input id='netlistcheck' type="checkbox"
+                                                   name='dfmCheck' value="NetlistCheck" />
+                                            <label for='netlistcheck'>
+                                                NetlistCheck
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='fiducial' type="checkbox"
+                                                   name='dfmCheck' value="Fiducial" />
+                                            <label for='fiducial'>
+                                                Fiducial
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='component' type="checkbox"
+                                                   name='dfmCheck' value="Component" />
+                                            <label for='component'>
+                                                Component
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='padstack' type="checkbox"
+                                                   name='dfmCheck' value="Padstack" />
+                                            <label for='padstack'>
+                                                Padstack
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='solderpaste' type="checkbox"
+                                                   name='dfmCheck' value="Solderpaste" />
+                                            <label for='solderpaste'>
+                                                Solderpaste
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='pin2pad' type="checkbox"
+                                                   name='dfmCheck' value="Pin2Pad" />
+                                            <label for='pin2pad'>
+                                                Pin2Pad
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id='testpoint' type="checkbox"
+                                                   name='dfmCheck' value="Testpoint" />
+                                            <label for='testpoint'>
+                                                Testpoint
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='drill' type="checkbox" name='dfmCheck'
+                                                   value="Drill" />
+                                            <label for='drill'>
+                                                Drill
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='signallayer' type="checkbox"
+                                                   name='dfmCheck' value="Signal Layer" />
+                                            <label for='signallayer'>
+                                                Signal Layer
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='pglayer' type="checkbox"
+                                                   name='dfmCheck' value="P/G Layer" />
+                                            <label for='pglayer'>
+                                                P/G Layer
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='silkscreen' type="checkbox"
+                                                   name='dfmCheck' value="Silk Screen" />
+                                            <label for='silkscreen'>
+                                                Silk Screen
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='soldermask' type="checkbox"
+                                                   name='dfmCheck' value="Solder Mask" />
+                                            <label for='soldermask'>
+                                                Solder Mask
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id='extchk1' type="checkbox"
+                                                   name='dfmCheck' value="extchk1" />
+                                            <label for='extchk1'>
+                                                extchk1
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='extchk2' type="checkbox"
+                                                   name='dfmCheck' value="extchk2" />
+                                            <label for='extchk2'>
+                                                extchk2
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='extchk3' type="checkbox"
+                                                   name='dfmCheck' value="extchk3" />
+                                            <label for='extchk3'>
+                                                extchk3
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='extchk4' type="checkbox"
+                                                   name='dfmCheck' value="extchk4" />
+                                            <label for='extchk4'>
+                                                extchk4
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='extchk5' type="checkbox"
+                                                   name='dfmCheck' value="extchk5" />
+                                            <label for='extchk5'>
+                                                extchk5
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id='extchk6' type="checkbox"
+                                                   name='dfmCheck' value="extchk6" />
+                                            <label for='extchk6'>
+                                                extchk6
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                            </table>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">项目描述：</label>
+                        <div class="col-sm-8">
+                            <input name="projectName" id="projectName" placeholder="请输入项目描述" class="form-control" type="text" maxlength="30" onBlur="getVersion(this.value);" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">版本：</label>
+                        <div class="col-sm-8">
+                            <input name="version" id="version"  class="form-control" type="text" maxlength="30" readOnly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">PCB文件包：</label>
+                        <div class="col-sm-8">
+                            <input type="file" id="pcbFile" name="pcbFile" class="form-control" onblur="fillProjectName(this);"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">布局密度：</label>
+                        <div class="col-sm-8">
+                            <select id="density" name="density"  class="form-control m-b">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">BOM文件：</label>
+                        <div class="col-sm-8">
+                            <input type="file" name="bomFile" id="bomFile" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">任务优先级：</label>
+                        <div class="col-sm-8">
+                            <select name="pri" class="form-control m-b">
+                                <option value="99999" selected>低</option>
+                                <option value="1000">高</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="form-header h4">单板参数</h4>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">单板类型：</label>
+                        <div class="col-sm-8">
+                            <select name="pcbType" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">HDI层叠方式：</label>
+                        <div class="col-sm-8">
+                            <select name="hdiModel" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">板厚(mm)：</label>
+                        <div class="col-sm-8">
+                            <input name="boardThickness" id="boardThickness" placeholder="请输入板厚" class="form-control" type="text" maxlength="30" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">拼板方式：</label>
+                        <div class="col-sm-8">
+                            <select name="panelModel" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">Top面限高(mm)：</label>
+                        <div class="col-sm-8">
+                            <input name="maxHeightTop" id="maxHeightTop" placeholder="请输入板厚" class="form-control" type="text" maxlength="30" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">几拼板：</label>
+                        <div class="col-sm-8">
+                            <input name="subPcbNum" id="subPcbNum" placeholder="请输入板厚" class="form-control" type="text" maxlength="30" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">Bottom限高(mm)：</label>
+                        <div class="col-sm-8">
+                            <input name="maxHeightBot" id="maxHeightBot" placeholder="请输入板厚" class="form-control" type="text" maxlength="30" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">辅助边位置：</label>
+                        <div class="col-sm-8">
+                            <select name="railwayPosition" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="form-header h4">工艺参数</h4>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">是否无铅：</label>
+                        <div class="col-sm-8">
+                            <select name="havePb" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">Top工艺路线：</label>
+                        <div class="col-sm-8">
+                            <select name="assemblyProcessTop" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">表面处理方式：</label>
+                        <div class="col-sm-8">
+                            <select name="surfaceProcess" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">Bottom工艺路线：</label>
+                        <div class="col-sm-8">
+                            <select name="assemblyProcessBot" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">主要面：</label>
+                        <div class="col-sm-8">
+                            <select name="primarySide" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">Top回流过板方向：</label>
+                        <div class="col-sm-8">
+                            <select name="directionTop" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">Bottom回流过板方向：</label>
+                        <div class="col-sm-8">
+                            <select name="directionBot" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">Bottom波峰过板方向：</label>
+                        <div class="col-sm-8">
+                            <select name="directionBotFs" class="form-control m-b">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+      
+    <div class="row">
+        <div class="col-sm-offset-5 col-sm-10">
+            <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+        </div>
+    </div>
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: select2-js" />
+	<script>
+
+
+        jQuery(function($) {
+            initAllElement();
+        });
+
+
+	    var prefix = ctx + "project.do";
+	
+        $("#form-project-add").validate({
+        	onkeyup: false,
+        	rules:{
+                name:{
+                    minlength: 1,
+                    maxlength: 32
+                },
+                username:{
+                    minlength: 1,
+                    maxlength: 32
+                },
+        		password:{
+        			minlength: 4,
+        			maxlength: 32
+        		},
+                password1:{
+                    minlength: 4,
+                    maxlength: 32,
+                    equalTo: "#password"
+                },
+        		email:{
+                    email:true,
+        		},
+                ccEmail:{
+                    email:true,
+                },
+                department:{
+
+                },
+                projectGroup:{
+
+                }
+        	},
+            messages: {
+                password1: {
+                    required: "请再次输入新密码",
+                    equalTo: "两次密码输入不一致"
+                }
+            },
+            focusCleanup: true
+        });
+        
+        function submitHandler() {
+        	// var chrtype = [[${#strings.defaultString(@config.getKey('sys.account.chrtype'), 0)}]];
+			// var password = $("#password").val();
+	        // if ($.validate.form() && checkpwd(chrtype, password)) {
+            if ($.validate.form() ) {
+	        	var data = $("#form-project-add").serializeArray();
+	        	$.operate.save(prefix + "/addSave", data);
+	        }
+	    }
+
+        var dfmCheckValue = '2';
+        //如有修改DFM分析自定义的名称,修改这个变量即可
+        var dfmCheckName = 'PCB版本对比';
+
+        //选择任务类型
+        function showDfmCheck(select) {
+            var dfmCheck = $(select).children(":selected").text();
+            //var dfmCheck = $(select).val();
+            if (dfmCheckName == dfmCheck) {
+                $("#taskType").show();
+            } else {
+                $("#taskType").hide();
+            }
+        }
+
+        var hasOldVersion = false;
+        var oldProjectData = null;
+        /**
+         * 获取当前用户及项目名单最大版本号
+         */
+        function getVersion(v) {
+            if (null == v || "" == v) {
+                return false;
+            }
+            $.ajax({
+                url:  prefix + "/getLastVersion",
+                data: "projectName=" + v,
+                cache: false,
+                success: function (json) {
+                    if (null == json || "" == json) {
+                        $("#version").val(1);
+                        hasOldVersion = false;
+                        resetForm();
+                    } else //有相同项目，开始赋值
+                    {
+                        hasOldVersion = true;
+                        oldProjectData = json;
+                        fillParams();
+                    }
+                }
+            });
+        }
+
+
+        //重置表单数据
+        function resetForm() {
+            if (hasOldVersion) {
+                fillParams();
+                return false;
+            } else {
+                initAllElement();
+                return false;
+            }
+        }
+
+        //有相同版本时填充其他参数
+        function fillParams()
+        {
+            data = oldProjectData;
+            $("#version").val(data.version + 1);
+            var checkType = $("select[name='checkType']");
+            checkType.val(data.checkType).trigger("change");
+            var dfmCheck = checkType.children(":selected").text();
+            //var dfmCheck = $(checkType).val();
+            if(dfmCheck == dfmCheckName)
+            {
+                $("#taskType").show();
+            }
+            else
+            {
+                $("#taskType").hide();
+            }
+            var dfmCheckArr = data.dfmCheck.split(',');
+            //$("#wbfx").attr("checked",false);
+            //$("#lbfx").attr("checked",false);
+            //$("#zpfx").attr("checked",false);
+            $("input[name='dfmCheck']").each(function(i,item){
+                $(item).attr("checked",false);
+                //TODO 取消选中
+                $(item).iCheck('uncheck');
+            });
+
+            for(var i=0;i< dfmCheckArr.length;i++)
+            {
+                if(dfmCheckArr[i] == $("#netlistcheck").val())
+                {
+                    $("#netlistcheck").attr("checked",true);
+                    $("#netlistcheck").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#fiducial").val())
+                {
+                    $("#fiducial").attr("checked",true);
+                    $("#fiducial").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#component").val())
+                {
+                    $("#component").attr("checked",true);
+                    $("#component").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#padstack").val())
+                {
+                    $("#padstack").attr("checked",true);
+                    $("#padstack").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#solderpaste").val())
+                {
+                    $("#solderpaste").attr("checked",true);
+                    $("#solderpaste").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#pin2pad").val())
+                {
+                    $("#pin2pad").attr("checked",true);
+                    $("#pin2pad").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#testpoint").val())
+                {
+                    $("#testpoint").attr("checked",true);
+                    $("#testpoint").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#drill").val())
+                {
+                    $("#drill").attr("checked",true);
+                    $("#drill").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#signallayer").val())
+                {
+                    $("#signallayer").attr("checked",true);
+                    $("#signallayer").iCheck('check');
+
+                }
+                else if(dfmCheckArr[i] == $("#pglayer").val())
+                {
+                    $("#pglayer").attr("checked",true);
+                    $("#pglayer").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#silkscreen").val())
+                {
+                    $("#silkscreen").attr("checked",true);
+                    $("#silkscreen").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#soldermask").val())
+                {
+                    $("#soldermask").attr("checked",true);
+                    $("#soldermask").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#extchk1").val())
+                {
+                    $("#extchk1").attr("checked",true);
+                    $("#extchk1").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#extchk2").val())
+                {
+                    $("#extchk2").attr("checked",true);
+                    $("#extchk2").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#extchk3").val())
+                {
+                    $("#extchk3").attr("checked",true);
+                    $("#extchk3").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#extchk4").val())
+                {
+                    $("#extchk4").attr("checked",true);
+                    $("#extchk4").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#extchk5").val())
+                {
+                    $("#extchk5").attr("checked",true);
+                    $("#extchk5").iCheck('check');
+                }
+                else if(dfmCheckArr[i] == $("#extchk6").val())
+                {
+                    $("#extchk6").attr("checked",true);
+                    $("#extchk6").iCheck('check');
+                }
+            }
+            /*
+            for(var i=0;i< dfmCheckArr.length;i++)
+            {
+                var str = dfmCheckArr[i].toLowerCase().replace(' ','');
+                if(dfmCheckArr[i] == $("#"+str).val())
+                {
+                    $("#"+str).attr("checked",true);
+                }
+            }
+            */
+            $("select[name='pcbType']").val(data.pcbType).trigger("change");
+            $("select[name='hdiModel']").val(data.hdiModel).trigger("change");
+            $("input[name='boardThickness']").val(data.boardThickness);
+            $("select[name='panelModel']").val(data.panelModel).trigger("change");
+            $("input[name='maxHeightTop']").val(data.maxHeightTop);
+            $("input[name='subPcbNum']").val(data.subPcbNum);
+            $("input[name='maxHeightBot']").val(data.maxHeightBot);
+            $("select[name='railwayPosition']").val(data.railwayPosition).trigger("change");
+            //$("select[name='viacapLayer']").val(data.viacapLayer);
+            $("select[name='assemblyProcessTop']").val(data.assemblyProcessTop).trigger("change");
+            $("select[name='havePb']").val(data.havePb).trigger("change");
+            $("select[name='assemblyProcessBot']").val(data.assemblyProcessBot).trigger("change");
+            $("select[name='surfaceProcess']").val(data.surfaceProcess).trigger("change");
+            $("select[name='directionTop']").val(data.directionTop).trigger("change");
+            $("select[name='primarySide']").val(data.primarySide).trigger("change");
+            $("select[name='directionBot']").val(data.directionBot).trigger("change");
+            $("select[name='directionBotFs']").val(data.directionBotFs).trigger("change");
+            $("select[name='density']").val(data.density).trigger("change");
+        }
+
+        /**
+         * 初始化页面SELECT数据
+         */
+        function initAllElement()
+        {
+            var selects = $("select");
+            for(var i=0;i<selects.length;i++)
+            {
+                var selectName = $(selects[i]).attr("name");
+                if(selectName == 'pri' || selectName == 'reportLanguage')
+                {
+                    continue;
+                }
+                initElement($(selects[i]));
+            }
+            $("input[name='boardThickness']").val(2);
+            $("input[name='maxHeightTop']").val(5);
+            $("input[name='subPcbNum']").val(2);
+            $("input[name='maxHeightBot']").val(5);
+            $("input[name='dfmCheck']").each(function(){
+                $(this).attr("checked",true);
+                $(this).iCheck('check');
+            });
+            //var dfmCheck = $("input[name='checkType']").children(":selected").html();
+            //var dfmCheck = $("input[name='checkType']");
+            //showDfmCheck(dfmCheck);
+        }
+
+
+        /**
+         * Ajax获取元素值，并赋值到相应元素
+         */
+        function initElement(element)
+        {
+            $.ajax({
+                url: prefix + "/getAttrValue",
+                data: "attrName="+element.attr("name"),
+                success: function(json){
+                    var html = "<option value=''>--请选择--</option>";
+                    for(var i=0;i<json.length;i++)
+                    {
+                        if(json[i].isDefault == '1')
+                        {
+                            html += "<option value='"+ json[i].value +"' selected='true'>" + json[i].text + "</option>";
+                            //新增checkType面板初始化
+                            if('checkType' == element.attr('name'))
+                            {
+                                if(dfmCheckName == json[i].text)
+                                {
+                                    $("#taskType").show();
+                                }
+                                else
+                                {
+                                    $("#taskType").hide();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            html += "<option value='"+ json[i].value +"'>" + json[i].text + "</option>";
+                        }
+                    }
+                    element.html(html);
+                }
+            });
+        }
+
+
+        //自动获取项目名称
+        function fillProjectName(o)
+        {
+            var fileName = getFileName($(o).val());
+            var index = fileName.lastIndexOf(".");
+            fileName = fileName.substring(0,index);
+            $("input[name='projectName']").val(fileName);
+            $("input[name='projectName']").blur();
+        }
+
+        function getFileName(path)
+        {
+            var pos1 = path.lastIndexOf('/');
+            var pos2 = path.lastIndexOf('\\');
+            var pos = Math.max(pos1, pos2)
+            return path.substring(pos+1);
+        }
+
+        function showProcess()
+        {
+            $(document).progressDialog.showDialog("正在上传文件，请耐心等待...");
+        }
+
+    </script>
+</body>
+</html>

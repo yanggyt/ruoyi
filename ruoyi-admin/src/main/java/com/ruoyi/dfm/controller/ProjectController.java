@@ -10,12 +10,14 @@ import com.ruoyi.dfm.service.ProjectService;
 import com.ruoyi.dfm.service.UserService;
 import com.ruoyi.dfm.util.PropertiesUtils;
 import com.ruoyi.dfm.util.TimeUtil;
+import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
@@ -50,16 +52,16 @@ public class ProjectController extends BaseController
   public ModelAndView defaultHandle(HttpServletRequest req, HttpServletResponse res)
     throws Exception
   {
-    return new ModelAndView("addProject");
+    return new ModelAndView("dfm/addProject");
   }
-  @RequestMapping("/getAddPage")
+  @RequestMapping("/add")
   public ModelAndView getAddPage(HttpServletRequest req, HttpServletResponse res)
     throws Exception
   {
-    return new ModelAndView("addProject");
+    return new ModelAndView("dfm/addProject");
   }
 
-  @RequestMapping("/add")
+  @RequestMapping("/addSave")
   public ModelAndView add(HttpServletRequest request, HttpServletResponse res)
     throws Exception
   {
@@ -167,32 +169,35 @@ public class ProjectController extends BaseController
   }
 
   @RequestMapping("/getLastVersion")
-  public void getLastVersion(HttpServletRequest req, HttpServletResponse res)
+  @ResponseBody
+  public Project getLastVersion(HttpServletRequest req, HttpServletResponse res)
     throws Exception
   {
-    int uid = getUserInfo(req).getId();
+    int uid = ShiroUtils.getLoginUser().getId();
     String projectName = req.getParameter("projectName");
     Project project = this.projectService.getLastVersion(uid, projectName);
-
-    String msg = "";
-    if (project != null)
-    {
-      //msg = JSONObject.fromObject(project).toString();
-      msg = JSON.toJSONString(project);
-    }
-
-    outputJson(res, msg);
+    return project;
+//    String msg = "";
+//    if (project != null)
+//    {
+//      //msg = JSONObject.fromObject(project).toString();
+//      msg = JSON.toJSONString(project);
+//    }
+//
+//    outputJson(res, msg);
   }
 
   @RequestMapping("/getAttrValue")
-  public void getAttrValue(HttpServletRequest req, HttpServletResponse res) throws Exception
+  @ResponseBody
+  public JSONArray getAttrValue(HttpServletRequest req, HttpServletResponse res) throws Exception
   {
     String attrName = req.getParameter("attrName");
     List list = this.projectService.getAttrValue(attrName);
-    String msg = "";
+//    String msg = "";
+    JSONArray arr = new JSONArray();
     if ((list != null) || (!(list.isEmpty())))
     {
-      JSONArray arr = new JSONArray();
+
       for (int i = 0; i < list.size(); ++i)
       {
         JSONObject obj = new JSONObject();
@@ -201,10 +206,11 @@ public class ProjectController extends BaseController
         obj.put("isDefault", ((Map)list.get(i)).get("F_IS_DEFAULT"));
         arr.add(obj);
       }
-      msg = arr.toString();
+//      msg = arr.toString();
     }
 
-    outputJson(res, msg);
+//    outputJson(res, msg);
+    return arr;
   }
 
   @RequestMapping("/queueManage")
