@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
@@ -29,15 +31,18 @@ public class ProjectService
   @Autowired
   private FileService fileService;
 
-  public void addProject(MultipartHttpServletRequest req, Project project) throws Exception
+  public void addProject(UserInfo loginUser, MultipartFile pcbFile, MultipartFile bomFile, Project project) throws Exception
   {
     try
     {
-      String dir = ((UserInfo)req.getSession().getAttribute("user")).getUsername() + "/" +
-        project.getProjectName() + "/" + "Ver" + project.getVersion();
+//      String dir = ((UserInfo)req.getSession().getAttribute("user")).getUsername() + "/" +
+//        project.getProjectName() + "/" + "Ver" + project.getVersion();
+      String dir = loginUser.getUsername() + "/" +
+              project.getProjectName() + "/" + "Ver" + project.getVersion();
 
+      MultipartFile[] multipartFiles = new MultipartFile[]{pcbFile, bomFile};
       List fileList = new ArrayList();
-      this.fileService.savePhysicFile(req, fileList, dir, false , null);
+      this.fileService.savePhysicFile(loginUser, multipartFiles, fileList, dir, false , null);
       for (int i = 0; i < fileList.size(); ++i)
       {
         FileInfo file = (FileInfo)fileList.get(i);

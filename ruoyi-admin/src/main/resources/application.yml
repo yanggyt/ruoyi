@@ -135,3 +135,6 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+
+#上传文件根路径
+FILE_PHYSICAL_ROOT: E:/FileRoot/

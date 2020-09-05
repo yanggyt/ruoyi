@@ -1,6 +1,7 @@
 package com.ruoyi.dfm.controller;
 
 import com.ruoyi.dfm.pojo.UserInfo;
+import com.ruoyi.framework.util.ShiroUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,8 +37,6 @@ public class BaseController {
 	
 	protected UserInfo getUserInfo(HttpServletRequest req)
 	{
-		UserInfo user = null;
-		user = (UserInfo)req.getSession().getAttribute("user");
-		return user;
+		return ShiroUtils.getLoginUser();
 	}
 }

@@ -3,6 +3,7 @@ package com.ruoyi.dfm.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.dfm.constant.UserConstants;
 import com.ruoyi.dfm.pojo.*;
 import com.ruoyi.dfm.service.FileService;
@@ -17,8 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 //import org.springframework.web.multipart.cos.CosMultipartResolver;
@@ -62,15 +65,16 @@ public class ProjectController extends BaseController
   }
 
   @RequestMapping("/addSave")
-  public ModelAndView add(HttpServletRequest request, HttpServletResponse res)
+  @ResponseBody
+  public AjaxResult add(HttpServletRequest req, HttpServletResponse res, @RequestParam("pcbFile") MultipartFile pcbFile, @RequestParam(value = "bomFile", required = false) MultipartFile bomFile)
     throws Exception
   {
     try
     {
       //FIXME 修改上传文件
-      MultipartResolver cmr = null;//new CosMultipartResolver(request.getSession().getServletContext());
+//      MultipartResolver cmr = null;//new CosMultipartResolver(request.getSession().getServletContext());
 
-      MultipartHttpServletRequest req = cmr.resolveMultipart(request);
+//      MultipartHttpServletRequest req = cmr.resolveMultipart(request);
 
       String projectName = req.getParameter("projectName");
       String[] dfmCheckArr = req.getParameterValues("dfmCheck");
@@ -137,7 +141,7 @@ public class ProjectController extends BaseController
       
       project.setReportLanguage(reportLanguage);
 
-      UserInfo user = getUserInfo(req);
+      UserInfo user = ShiroUtils.getLoginUser();
       project.setSubmitUser(user.getId());
       project.setSubmitUserName(user.getUsername());
       project.setSubmitTime(TimeUtil.getNowChar14());
@@ -159,13 +163,16 @@ public class ProjectController extends BaseController
       
       project.setCCtoOther(ccEmail);
 
-      this.projectService.addProject(req, project);
-      outputMsg(res, "<script>alert('添加项目成功，点击确定继续添加！');document.location.href='project.do?method=getAddPage';</script>");
-      return null;
+      this.projectService.addProject(ShiroUtils.getLoginUser(), pcbFile, bomFile, project);
+//      outputMsg(res, "<script>alert('添加项目成功，点击确定继续添加！');document.location.href='project.do?method=getAddPage';</script>");
+//      return null;
+      return AjaxResult.success();
     } catch (Exception e) {
       logger.error("添加项目失败", e);
-      outputMsg(res, "<script>alert('添加项目失败，请检查数据正确性，重新添加！');document.location.href='project.do?method=getAddPage';</script>"); }
-    return null;
+//      outputMsg(res, "<script>alert('添加项目失败，请检查数据正确性，重新添加！');document.location.href='project.do?method=getAddPage';</script>"); }
+////    return null;
+      return AjaxResult.error();
+    }
   }
 
   @RequestMapping("/getLastVersion")
@@ -872,7 +879,8 @@ public class ProjectController extends BaseController
     	        project.getProjectName() + "/" + "Ver" + project.getVersion();
 
       List<FileInfo> fileList = new ArrayList<FileInfo>();
-      this.fileService.savePhysicFile(req, fileList, dir, true, "pre-");
+      //FIXME 修复上传文件错误
+//      this.fileService.savePhysicFile(req, fileList, dir, true, "pre-");
       projectService.updateProjectPreDFMFile(pid, fileList.get(0).getId(), fileList.get(0).getFileName());
       req.setAttribute("uploadResult", "上传成功");
       req.setAttribute("uploadType", "preDFM");
@@ -916,7 +924,8 @@ public class ProjectController extends BaseController
     	        project.getProjectName() + "/" + "Ver" + project.getVersion();
 
       List<FileInfo> fileList = new ArrayList<FileInfo>();
-      this.fileService.savePhysicFile(req, fileList, dir, true, "post-");
+      //FIXME 修复上传文件错误
+//      this.fileService.savePhysicFile(req, fileList, dir, true, "post-");
       
       projectService.updateProjectPostDFMFile(pid, fileList.get(0).getId(), fileList.get(0).getFileName());
       

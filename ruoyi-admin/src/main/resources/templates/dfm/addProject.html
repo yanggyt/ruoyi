@@ -3,10 +3,11 @@
 <head>
 	<th:block th:include="include :: header('新增项目')" />
 	<th:block th:include="include :: select2-css" />
+    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
 </head>
 <body>
     <div class="main-content">
-        <form id="form-project-add" class="form-horizontal">
+        <form id="form-project-add" class="form-horizontal" enctype="multipart/form-data">
             <!--<input name="deptId" type="hidden" id="treeId"/>-->
             <h4 class="form-header h4">任务描述</h4>
             <div class="row">
@@ -14,7 +15,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">任务类型：</label>
                         <div class="col-sm-8">
-                            <select id="checkType" name="checkType" onchange="showDfmCheck(this);" class="form-control m-b">
+                            <select id="checkType" name="checkType" onchange="showDfmCheck(this);" class="form-control m-b" required>
 
                             </select>
                         </div>
@@ -189,7 +190,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">PCB文件包：</label>
                         <div class="col-sm-8">
-                            <input type="file" id="pcbFile" name="pcbFile" class="form-control" onblur="fillProjectName(this);"/>
+                            <input type="file" id="pcbFile" name="pcbFile" class="form-control" onblur="fillProjectName(this);" required/>
                         </div>
                     </div>
                 </div>
@@ -209,7 +210,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">BOM文件：</label>
+                        <label class="col-sm-4 control-label">BOM文件：</label>
                         <div class="col-sm-8">
                             <input type="file" name="bomFile" id="bomFile" class="form-control" />
                         </div>
@@ -235,7 +236,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">单板类型：</label>
                         <div class="col-sm-8">
-                            <select name="pcbType" class="form-control m-b">
+                            <select name="pcbType" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -244,7 +245,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">HDI层叠方式：</label>
                         <div class="col-sm-8">
-                            <select name="hdiModel" class="form-control m-b">
+                            <select name="hdiModel" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -264,7 +265,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">拼板方式：</label>
                         <div class="col-sm-8">
-                            <select name="panelModel" class="form-control m-b">
+                            <select name="panelModel" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -303,7 +304,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">辅助边位置：</label>
                         <div class="col-sm-8">
-                            <select name="railwayPosition" class="form-control m-b">
+                            <select name="railwayPosition" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -318,7 +319,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">是否无铅：</label>
                         <div class="col-sm-8">
-                            <select name="havePb" class="form-control m-b">
+                            <select name="havePb" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -327,7 +328,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">Top工艺路线：</label>
                         <div class="col-sm-8">
-                            <select name="assemblyProcessTop" class="form-control m-b">
+                            <select name="assemblyProcessTop" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -339,7 +340,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">表面处理方式：</label>
                         <div class="col-sm-8">
-                            <select name="surfaceProcess" class="form-control m-b">
+                            <select name="surfaceProcess" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -348,7 +349,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">Bottom工艺路线：</label>
                         <div class="col-sm-8">
-                            <select name="assemblyProcessBot" class="form-control m-b">
+                            <select name="assemblyProcessBot" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -360,7 +361,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">主要面：</label>
                         <div class="col-sm-8">
-                            <select name="primarySide" class="form-control m-b">
+                            <select name="primarySide" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -369,7 +370,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">Top回流过板方向：</label>
                         <div class="col-sm-8">
-                            <select name="directionTop" class="form-control m-b">
+                            <select name="directionTop" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -381,7 +382,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">Bottom回流过板方向：</label>
                         <div class="col-sm-8">
-                            <select name="directionBot" class="form-control m-b">
+                            <select name="directionBot" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -390,7 +391,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">Bottom波峰过板方向：</label>
                         <div class="col-sm-8">
-                            <select name="directionBotFs" class="form-control m-b">
+                            <select name="directionBotFs" class="form-control m-b" required>
                             </select>
                         </div>
                     </div>
@@ -402,7 +403,7 @@
       
     <div class="row">
         <div class="col-sm-offset-5 col-sm-10">
-            <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+            <button type="submit" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
             <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
         </div>
     </div>
@@ -421,57 +422,121 @@
         $("#form-project-add").validate({
         	onkeyup: false,
         	rules:{
-                name:{
-                    minlength: 1,
-                    maxlength: 32
-                },
-                username:{
-                    minlength: 1,
-                    maxlength: 32
-                },
-        		password:{
-        			minlength: 4,
-        			maxlength: 32
-        		},
-                password1:{
-                    minlength: 4,
+                projectName:{
+                    minlength: 6,
                     maxlength: 32,
-                    equalTo: "#password"
                 },
-        		email:{
-                    email:true,
+                boardThickness:{
+                    number: true
+                },
+                maxHeightTop:{
+                    number: true
         		},
-                ccEmail:{
-                    email:true,
+                subPcbNum:{
+                    number: true
                 },
-                department:{
-
-                },
-                projectGroup:{
-
-                }
+                maxHeightBot:{
+                    number: true
+        		}
         	},
-            messages: {
-                password1: {
-                    required: "请再次输入新密码",
-                    equalTo: "两次密码输入不一致"
-                }
-            },
             focusCleanup: true
         });
         
         function submitHandler() {
-        	// var chrtype = [[${#strings.defaultString(@config.getKey('sys.account.chrtype'), 0)}]];
-			// var password = $("#password").val();
-	        // if ($.validate.form() && checkpwd(chrtype, password)) {
             if ($.validate.form() ) {
+                var checkResult = submitForm();
+                if(!checkResult) {
+                    return false;
+                }
+
 	        	var data = $("#form-project-add").serializeArray();
-	        	$.operate.save(prefix + "/addSave", data);
+	        	// $.operate.save(prefix + "/addSave", data);
+                var url = prefix + "/addSave";
+
+                var formData = new FormData();
+                formData.append('pcbFile', $('#pcbFile')[0].files[0]);
+                formData.append('bomFile', $('#bomFile')[0].files[0]);
+
+                $.each( data, function(i, obj){
+                    formData.append(obj.name, obj.value);
+                });
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    beforeSend: function () {
+                        $.modal.loading("正在处理中，请稍后...");
+                        $.modal.disable();
+                    },
+                    success: function(result) {
+                        $.operate.successCallback(result);
+                    }
+                });
 	        }
 	    }
 
+
+        //验证form
+        function submitForm() {
+
+            if (!$.validate.form() ) {
+                return false;
+            }
+
+            if ($.trim($("input[name='projectName']").val()) == "") {
+                // alert("项目名不能为空！");
+                $modal.alertError("项目名不能为空！");
+                return false;
+            }
+            if ($.trim($("input[name='version']").val()) == "") {
+                // alert("版本不能为空！");
+                $modal.alertError("版本不能为空！");
+                return false;
+            }
+            if ($("select[name='checkType']").val() == "") {
+                // alert("请选择任务类型！");
+                $modal.alertError("请选择任务类型！");
+                return false;
+            }
+
+            var checkType = $("select[name='checkType']");
+            var dfmCheck = checkType.children(":selected").text();
+            //var dfmCheck = $(checkType).val();
+            if (dfmCheckName == dfmCheck) {	//必须提供PCB文件包与BOM文件，需提供所有的单板参数、工艺参数。
+                // if (!doValidate('addProjectForm')) {
+                //     return false;
+                // }
+            } else if ("BOM预审" == dfmCheck) {
+                //只需提供BOM文件，无需提供PCB文件包。无需提供单板参数、工艺参数。
+                if ($("input[name='bomFile']").val() == "") {
+                    // alert("必需提供BOM文件！");
+                    $modal.alertError("必需提供BOM文件！");
+                    return false;
+                }
+
+            } else if ("CAM验证" == dfmCheck) {
+                //只需提供PCB文件包，无需提供BOM文件。无需提供单板参数、工艺参数。
+                if ($("input[name='pcbFile']").val() == "") {
+                    // alert("必需提供PCB文件！");
+                    $modal.alertError("必需提供PCB文件！");
+                    return false;
+                }
+            }
+
+            //显示进度条
+            // setTimeout(showProcess, 200);
+            $.modal.loading("正在上传文件，请耐心等待...");
+            return true;
+        }
+
         var dfmCheckValue = '2';
         //如有修改DFM分析自定义的名称,修改这个变量即可
+        //TODO 记得恢复成原样
         var dfmCheckName = 'PCB版本对比';
 
         //选择任务类型
@@ -762,10 +827,10 @@
             return path.substring(pos+1);
         }
 
-        function showProcess()
-        {
-            $(document).progressDialog.showDialog("正在上传文件，请耐心等待...");
-        }
+        // function showProcess()
+        // {
+        //     $(document).progressDialog.showDialog("正在上传文件，请耐心等待...");
+        // }
 
     </script>
 </body>

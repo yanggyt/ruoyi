@@ -8,6 +8,7 @@ import com.ruoyi.dfm.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -37,8 +38,8 @@ public class FileService {
 	// 获取系统文件根路径
 	static {
 		try {
-			rootPath = PropertiesUtils.getProperties().getProperty(
-					"FILE_PHYSICAL_ROOT");
+//			rootPath = PropertiesUtils.getProperties().getProperty(
+//					"FILE_PHYSICAL_ROOT");
 			File file = new File(rootPath);
 			if (!file.exists()) {
 				file.mkdir();
@@ -68,7 +69,7 @@ public class FileService {
 	 * @return boolean
 	 * @throws
 	 */
-	public void savePhysicFile(MultipartHttpServletRequest request, List<FileInfo> list , String filePath, boolean isRename, String reNameKey) throws Exception{
+	public void savePhysicFile(UserInfo loginUser, MultipartFile[] multipartFiles, List<FileInfo> list , String filePath, boolean isRename, String reNameKey) throws Exception{
 
 		try {
 			String path = rootPath + filePath;
@@ -77,42 +78,19 @@ public class FileService {
 				log.error("创建项目文件目录失败");
 				throw new IOException();
 			}
-			/*MultipartRequest multi = new MultipartRequest(request, path,
-					maxPostSize, fileEncoding);
-			Enumeration fileNames = multi.getFileNames();
-			
-			int count = 0;
+//			Iterator<String> it =  request.getFileNames();
+//			MultipartFile[] fileArr = new MultipartFile[]{pcbFile, bomFile};
 			FileInfo fileInfo;
-			while (fileNames.hasMoreElements()) {
-				// 表单file元素name属性值
-				String name = fileNames.nextElement().toString();
-				// 原文件名值
-				String original = multi.getOriginalFileName(name);
-				File file = multi.getFile(name);
-				if (null == file) {
+//			while (it.hasNext()) {
+			for(MultipartFile multipartFile : multipartFiles) {
+				if(null == multipartFile) {
 					continue;
 				}
-				fileInfo = new FileInfo();
-				fileInfo.setFieldName(name);
-				fileInfo.setFileName(original);
-				fileInfo.setFileSize(file.length());
-				fileInfo.setRelaPath(filePath);
-				fileInfo.setUploadTime(TimeUtil.getNowChar14());
-				// 设置实际名称
-				String extendName = file.getName().substring(
-						file.getName().lastIndexOf(".") + 1);
-				fileInfo.setExtendName(extendName);
-				fileDAO.add(fileInfo);
-				list.add(fileInfo);
-				count++;
-			}*/
-			Iterator<String> it =  request.getFileNames();
-			FileInfo fileInfo;
-			while (it.hasNext()) {
 				// 表单file元素name属性值
-				String name = it.next();
+//				String name = it.next();
+				String name =  multipartFile.getName();
 				// 原文件名值
-				MultipartFile multipartFile = request.getFile(name);
+//				MultipartFile multipartFile = request.getFile(name);
 				String original = multipartFile.getOriginalFilename();
 				if(null == original || "".equals(original))
 				{
@@ -151,7 +129,8 @@ public class FileService {
 				fileInfo.setFileSize(multipartFile.getSize());
 				fileInfo.setRelaPath(filePath);
 				fileInfo.setUploadTime(TimeUtil.getNowChar14());
-				fileInfo.setUploadUser(((UserInfo)request.getSession().getAttribute("user")).getId());
+//				fileInfo.setUploadUser(((UserInfo)request.getSession().getAttribute("user")).getId());
+				fileInfo.setUploadUser(loginUser.getId());
 				// 设置实际名称
 				String extendName = original.substring(original.lastIndexOf(".") + 1);
 				fileInfo.setExtendName(extendName);
@@ -234,5 +213,9 @@ public class FileService {
 	{
 		return fileDAO.getById(fid);
 	}
-	
+
+	@Value("${FILE_PHYSICAL_ROOT}")
+	public void setRootPath(String rootPath) {
+		FileService.rootPath = rootPath;
+	}
 }
