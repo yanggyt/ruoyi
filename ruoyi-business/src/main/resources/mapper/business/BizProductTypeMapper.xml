@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizProductTypeMapper">
+    
+    <resultMap type="BizProductType" id="BizProductTypeResult">
+        <result property="productTypeId"    column="product_type_id"    />
+        <result property="productTypeCode"    column="product_type_code"    />
+        <result property="productTypeName"    column="product_type_name"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="sort"    column="sort"    />
+        <result property="isEnable"    column="is_enable"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizProductTypeVo">
+        select product_type_id, product_type_code, product_type_name, image_url, sort, is_enable, create_by, create_time, update_by, update_time from biz_product_type
+    </sql>
+
+    <select id="selectBizProductTypeList" parameterType="BizProductType" resultMap="BizProductTypeResult">
+        <include refid="selectBizProductTypeVo"/>
+        <where>  
+            <if test="productTypeName != null  and productTypeName != ''"> and product_type_name like concat('%', #{productTypeName}, '%')</if>
+            <if test="isEnable != null "> and is_enable = #{isEnable}</if>
+        </where>
+        order by sort desc, product_type_id desc
+    </select>
+    
+    <select id="selectBizProductTypeById" parameterType="Long" resultMap="BizProductTypeResult">
+        <include refid="selectBizProductTypeVo"/>
+        where product_type_id = #{productTypeId}
+    </select>
+        
+    <insert id="insertBizProductType" parameterType="BizProductType" useGeneratedKeys="true" keyProperty="productTypeId">
+        insert into biz_product_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productTypeCode != null">product_type_code,</if>
+            <if test="productTypeName != null and productTypeName != ''">product_type_name,</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url,</if>
+            <if test="sort != null">sort,</if>
+            <if test="isEnable != null">is_enable,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productTypeCode != null">#{productTypeCode},</if>
+            <if test="productTypeName != null and productTypeName != ''">#{productTypeName},</if>
+            <if test="imageUrl != null and imageUrl != ''">#{imageUrl},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="isEnable != null">#{isEnable},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizProductType" parameterType="BizProductType">
+        update biz_product_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productTypeCode != null">product_type_code = #{productTypeCode},</if>
+            <if test="productTypeName != null and productTypeName != ''">product_type_name = #{productTypeName},</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url = #{imageUrl},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="isEnable != null">is_enable = #{isEnable},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where product_type_id = #{productTypeId}
+    </update>
+
+    <delete id="deleteBizProductTypeById" parameterType="Long">
+        delete from biz_product_type where product_type_id = #{productTypeId}
+    </delete>
+
+    <delete id="deleteBizProductTypeByIds" parameterType="String">
+        delete from biz_product_type where product_type_id in 
+        <foreach item="productTypeId" collection="array" open="(" separator="," close=")">
+            #{productTypeId}
+        </foreach>
+    </delete>
+
+</mapper>
