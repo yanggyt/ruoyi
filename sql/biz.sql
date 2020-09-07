@@ -17,6 +17,18 @@ CREATE TABLE `biz_member` (
   PRIMARY KEY (`member_id`)
 ) COMMENT='会员表';
 
+CREATE TABLE `biz_member_address` (
+  `member_address_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员ID',
+  `mobile` varchar(16) NOT NULL DEFAULT '0' COMMENT '手机号码',
+  `member_name` varchar(32) NOT NULL DEFAULT '' COMMENT '收货人姓名',
+  `address` varchar(64) NOT NULL DEFAULT '' COMMENT '收货人地址',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`member_address_id`)
+) COMMENT='会员收货地址表';
+
 CREATE TABLE `biz_account` (
   `account_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员账户ID',
   `account_no` varchar(64) NOT NULL DEFAULT '' COMMENT '会员账户编号',
@@ -86,7 +98,8 @@ CREATE TABLE `biz_product` (
   `product_name` varchar(64) NOT NULL DEFAULT '' COMMENT '产品名称',
   `product_type_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '产品分类ID',
   `product_class` tinyint(4) NOT NULL DEFAULT 0 COMMENT '产品类型：0-销售产品，1-兑换产品',
-  `amount` bigint(20) NOT NULL DEFAULT 0 COMMENT '产品单价',
+  `amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '产品单价',
+  `cashback_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '返现金额',
   `sort` int(11) NOT NULL DEFAULT 0 COMMENT '排序',
   `online_status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否上架：0-否，1-是',
   `online_time` datetime DEFAULT NULL COMMENT '上架时间',
@@ -100,14 +113,43 @@ CREATE TABLE `biz_product` (
 ) COMMENT='产品分类表';
 
 CREATE TABLE `biz_product_image` (
-   `product_image_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品图片ID',
-   `product_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '产品ID',
-   `image_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '附件类型：0-主图，1-详情图，2-轮播图',
-   `image_name` varchar(64) NOT NULL DEFAULT '' COMMENT '附件名称',
-   `image_url` varchar(128) NOT NULL DEFAULT '' COMMENT '附件地址',
-   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
-   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
-   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `product_image_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品图片ID',
+  `product_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '产品ID',
+  `image_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '附件类型：0-主图，1-详情图，2-轮播图',
+  `image_name` varchar(64) NOT NULL DEFAULT '' COMMENT '附件名称',
+  `image_url` varchar(128) NOT NULL DEFAULT '' COMMENT '附件地址',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
    PRIMARY KEY (`product_id`)
-) COMMENT='产品图片表'
+) COMMENT='产品图片表';
+
+CREATE TABLE `biz_order` (
+  `order_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单ID',
+  `order_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '订单编码',
+  `member_id` bigint(20) NOT NULL COMMENT '会员ID',
+  `mobile` varchar(16) NOT NULL DEFAULT '0' COMMENT '手机号码',
+  `member_name` varchar(32) NOT NULL DEFAULT '' COMMENT '用户姓名',
+  `order_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '订单金额',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`order_id`)
+) COMMENT='订单表';
+
+CREATE TABLE `biz_order_detail` (
+ `order_detail_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单明细ID',
+ `order_id` bigint(20) NOT NULL COMMENT '订单ID',
+ `order_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '订单编码',
+ `product_id` bigint(20) NOT NULL COMMENT '产品ID',
+ `product_code` varchar(64) NOT NULL DEFAULT '' COMMENT '产品编码',
+ `product_count` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '商品数量',
+ `product_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '商品金额',
+ `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+ `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+ `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+ `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+ PRIMARY KEY (`order_detail_id`)
+) COMMENT='订单明细表';
