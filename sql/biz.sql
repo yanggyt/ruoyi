@@ -132,6 +132,7 @@ CREATE TABLE `biz_order` (
   `mobile` varchar(16) NOT NULL DEFAULT '0' COMMENT '手机号码',
   `member_name` varchar(32) NOT NULL DEFAULT '' COMMENT '用户姓名',
   `order_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '订单金额',
+  `order_status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '订单状态：0-待支付，1-已支付，2-已取消',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
