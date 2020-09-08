@@ -1,5 +1,5 @@
 CREATE TABLE `biz_member` (
-  `member_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员ID',
   `mobile` varchar(16) NOT NULL DEFAULT '0' COMMENT '手机号码',
   `member_name` varchar(32) NOT NULL DEFAULT '' COMMENT '用户姓名',
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '用户密码',
@@ -14,23 +14,30 @@ CREATE TABLE `biz_member` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`member_id`)
+  PRIMARY KEY (`id`)
 ) COMMENT='会员表';
 
 CREATE TABLE `biz_member_address` (
-  `member_address_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员ID',
   `mobile` varchar(16) NOT NULL DEFAULT '0' COMMENT '手机号码',
   `member_name` varchar(32) NOT NULL DEFAULT '' COMMENT '收货人姓名',
   `address` varchar(64) NOT NULL DEFAULT '' COMMENT '收货人地址',
+  `province_code` varchar(16) NOT NULL DEFAULT '' COMMENT '省编码',
+  `province_name` varchar(16) NOT NULL DEFAULT '' COMMENT '省名称',
+  `city_code` varchar(16) NOT NULL DEFAULT '' COMMENT '市编码',
+  `city_name` varchar(16) NOT NULL DEFAULT '' COMMENT '市名称',
+  `area_code` varchar(16) NOT NULL DEFAULT '' COMMENT '区编码',
+  `area_name` varchar(16) NOT NULL DEFAULT '' COMMENT '区名称',
+  `is_delete` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否删除：0-否，1-是',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`member_address_id`)
+  PRIMARY KEY (`id`)
 ) COMMENT='会员收货地址表';
 
 CREATE TABLE `biz_account` (
-  `account_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员账户ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员账户ID',
   `account_no` varchar(64) NOT NULL DEFAULT '' COMMENT '会员账户编号',
   `account_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '账户类型：0-福豆余额，1-可用福豆，2-团队福豆，3-专项福豆，4-福豆田',
   `amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '账户金额',
@@ -38,11 +45,11 @@ CREATE TABLE `biz_account` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`account_id`)
+  PRIMARY KEY (`id`)
 ) COMMENT='会员账户表';
 
 CREATE TABLE `biz_account_detail` (
-   `account_detail_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员账户明细ID',
+   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会员账户明细ID',
    `account_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '会员账户ID',
    `account_type_cn` varchar(16) NOT NULL DEFAULT 0 COMMENT '账户类型中文',
    `change_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '变更类型；1:收入(加)；-1:支出(减)',
@@ -53,11 +60,11 @@ CREATE TABLE `biz_account_detail` (
    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
    `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
    `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-   PRIMARY KEY (`account_detail_id`)
+   PRIMARY KEY (`id`)
 ) COMMENT='会员账户明细表';
 
 CREATE TABLE `biz_transaction_flow` (
-  `transaction_flow_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '交易流水ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '交易流水ID',
   `transaction_flow_no` varchar(64) NOT NULL DEFAULT '' COMMENT '交易流水编号',
   `business_no` varchar(64) NOT NULL DEFAULT '' COMMENT '业务订单编号',
   `from_acc_no` varchar(64) NOT NULL DEFAULT '' COMMENT '付款方账号',
@@ -75,11 +82,11 @@ CREATE TABLE `biz_transaction_flow` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`transaction_flow_id`)
+  PRIMARY KEY (`id`)
 ) COMMENT='会员账户明细表';
 
 CREATE TABLE `biz_product_type` (
-  `product_type_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品分类ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品分类ID',
   `product_type_code` varchar(64) NOT NULL DEFAULT '' COMMENT '产品分类编码',
   `product_type_name` varchar(64) NOT NULL DEFAULT '' COMMENT '产品分类名称',
   `image_url` varchar(128) NOT NULL DEFAULT '' COMMENT '附件地址',
@@ -89,11 +96,11 @@ CREATE TABLE `biz_product_type` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`product_type_id`)
+  PRIMARY KEY (`id`)
 ) COMMENT='产品分类表';
 
 CREATE TABLE `biz_product` (
-  `product_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品ID',
   `product_code` varchar(64) NOT NULL DEFAULT '' COMMENT '产品编码',
   `product_name` varchar(64) NOT NULL DEFAULT '' COMMENT '产品名称',
   `product_type_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '产品分类ID',
@@ -109,11 +116,11 @@ CREATE TABLE `biz_product` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`product_id`)
+  PRIMARY KEY (`id`)
 ) COMMENT='产品分类表';
 
 CREATE TABLE `biz_product_image` (
-  `product_image_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品图片ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品图片ID',
   `product_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '产品ID',
   `image_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '附件类型：0-主图，1-详情图，2-轮播图',
   `image_name` varchar(64) NOT NULL DEFAULT '' COMMENT '附件名称',
@@ -122,26 +129,27 @@ CREATE TABLE `biz_product_image` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-   PRIMARY KEY (`product_id`)
+   PRIMARY KEY (`id`)
 ) COMMENT='产品图片表';
 
 CREATE TABLE `biz_order` (
-  `order_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单ID',
   `order_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '订单编码',
   `member_id` bigint(20) NOT NULL COMMENT '会员ID',
   `mobile` varchar(16) NOT NULL DEFAULT '0' COMMENT '手机号码',
   `member_name` varchar(32) NOT NULL DEFAULT '' COMMENT '用户姓名',
   `order_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '订单金额',
   `order_status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '订单状态：0-待支付，1-已支付，2-已取消',
+  `address_id` bigint(20) NOT NULL COMMENT '收货人地址ID',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`order_id`)
+  PRIMARY KEY (`id`)
 ) COMMENT='订单表';
 
 CREATE TABLE `biz_order_detail` (
- `order_detail_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单明细ID',
+ `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单明细ID',
  `order_id` bigint(20) NOT NULL COMMENT '订单ID',
  `order_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '订单编码',
  `product_id` bigint(20) NOT NULL COMMENT '产品ID',
@@ -152,5 +160,5 @@ CREATE TABLE `biz_order_detail` (
  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
- PRIMARY KEY (`order_detail_id`)
+ PRIMARY KEY (`id`)
 ) COMMENT='订单明细表';
