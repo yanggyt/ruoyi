@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="productTypeId"    column="product_type_id"    />
         <result property="productClass"    column="product_class"    />
         <result property="amount"    column="amount"    />
+        <result property="cashbackAmount"    column="cashback_amount"    />
         <result property="sort"    column="sort"    />
         <result property="onlineStatus"    column="online_status"    />
         <result property="onlineTime"    column="online_time"    />
@@ -30,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBizProductVo">
-        select product_id, product_code, product_name, product_type_id, product_class, amount, sort, online_status, online_time, offline_time, remark, create_by, create_time, update_by, update_time from biz_product
+        select product_id, product_code, product_name, product_type_id, product_class, amount, cashback_amount, sort, online_status, online_time, offline_time, remark, create_by, create_time, update_by, update_time from biz_product
     </sql>
 
     <select id="selectBizProductList" parameterType="BizProduct" resultMap="BizProductResult">
@@ -49,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectBizProductImageList" parameterType="Long" resultMap="BizProductImageResult">
-        select product_image_id, product_id, image_type, b.image_url
+        select product_image_id, product_id, image_type, image_url
         from biz_product_image
         where product_id = #{productId}
         order by product_image_id
@@ -63,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productTypeId != null">product_type_id,</if>
             <if test="productClass != null">product_class,</if>
             <if test="amount != null">amount,</if>
+            <if test="cashbackAmount != null">cashback_amount,</if>
             <if test="sort != null">sort,</if>
             <if test="onlineStatus != null">online_status,</if>
             <if test="onlineTime != null">online_time,</if>
@@ -79,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productTypeId != null">#{productTypeId},</if>
             <if test="productClass != null">#{productClass},</if>
             <if test="amount != null">#{amount},</if>
+            <if test="cashbackAmount != null">#{cashbackAmount},</if>
             <if test="sort != null">#{sort},</if>
             <if test="onlineStatus != null">#{onlineStatus},</if>
             <if test="onlineTime != null">#{onlineTime},</if>
@@ -99,6 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productTypeId != null">product_type_id = #{productTypeId},</if>
             <if test="productClass != null">product_class = #{productClass},</if>
             <if test="amount != null">amount = #{amount},</if>
+            <if test="cashbackAmount != null">cashback_amount = #{cashbackAmount},</if>
             <if test="sort != null">sort = #{sort},</if>
             <if test="onlineStatus != null">online_status = #{onlineStatus},</if>
             <if test="onlineTime != null">online_time = #{onlineTime},</if>

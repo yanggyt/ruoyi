@@ -40,6 +40,10 @@ public class BizProduct extends BaseEntity
     @Excel(name = "产品单价")
     private Long amount;
 
+    /** 产品返现 */
+    @Excel(name = "产品单价")
+    private Long cashbackAmount;
+
     /** 排序 */
     @Excel(name = "排序")
     private Long sort;
@@ -119,7 +123,15 @@ public class BizProduct extends BaseEntity
         this.sort = sort;
     }
 
-    public Long getSort() 
+    public Long getCashbackAmount() {
+        return cashbackAmount;
+    }
+
+    public void setCashbackAmount(Long cashbackAmount) {
+        this.cashbackAmount = cashbackAmount;
+    }
+
+    public Long getSort()
     {
         return sort;
     }
