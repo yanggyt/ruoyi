@@ -2,195 +2,195 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="include :: header('修改产品')" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
 </head>
 <body class="white-bg">
-    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-product-edit" th:object="${bizProduct}">
-            <h4 class="form-header h4">产品信息</h4>
-            <input name="productId" th:field="*{productId}" type="hidden">
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">产品名称：</label>
-                <div class="col-sm-8">
-                    <input name="productName" th:field="*{productName}" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">产品分类：</label>
-                <div class="col-sm-8">
-                    <select name="productTypeId" class="form-control m-b" required>
-                        <option value="">所有</option>
-                    </select>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">产品类型：</label>
-                <div class="col-sm-8">
-                    <select name="productClass" class="form-control m-b" required>
-                        <option value="">所有</option>
-                    </select>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">产品单价：</label>
-                <div class="col-sm-8">
-                    <input name="amount" th:field="*{amount}" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">排序：</label>
-                <div class="col-sm-8">
-                    <input name="sort" th:field="*{sort}" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">是否上架：</label>
-                <div class="col-sm-8">
-                    <label class="check-box">
-                        <input name="onlineStatus" type="checkbox" required> 无
-                    </label>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">产品描述：</label>
-                <div class="col-sm-8">
-                    <input name="remark" th:field="*{remark}" class="form-control" type="text" required>
-                </div>
-            </div>
-            <h4 class="form-header h4">产品图片信息</h4>
-            <div class="row">
-                <div class="col-sm-12">
-                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
-                    <div class="col-sm-12 select-table table-striped">
-                        <table id="bootstrap-table"></table>
+<form class="form-horizontal m" id="form-product-edit" >
+    <input name="productId" th:field="*{bizProduct.productId}" type="hidden">
+    <input id="hiddenDetail" th:value="*{bizProduct.detailImages}" type="hidden">
+    <input id="hiddenLoop" th:value="*{bizProduct.loopImages}" type="hidden">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">1产品基础信息</a>
+            </li>
+            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">2产品相关图片</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品名称：</label>
+                        <div class="col-sm-8">
+                            <input name="productName" th:field="*{bizProduct.productName}" class="form-control" type="text" required maxlength="20">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品分类：</label>
+                        <div class="col-sm-8">
+                            <select th:field="*{bizProduct.productTypeId}" name="productTypeId" class="form-control m-b" required>
+                                <option th:each="ptype:${productTypeList}" th:value="*{ptype.productTypeId}" th:text="*{ptype.productTypeName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品类型：</label>
+                        <div class="col-sm-8">
+                            <select th:field="*{bizProduct.productClass}" name="productClass" class="form-control m-b" required>
+                                <option th:each="dict:${@dict.getType('busi_product_class')}" th:value="*{dict.dictCode}" th:text="*{dict.dictLabel}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品单价：</label>
+                        <div class="col-sm-8">
+                            <input name="amount" th:field="*{bizProduct.amount}" class="form-control" type="text" required digits="true" min="0" max="100000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品返现金额：</label>
+                        <div class="col-sm-8">
+                            <input name="cashbackAmount" th:field="*{bizProduct.cashbackAmount}" class="form-control" type="text" required digits="true" min="0" max="100000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">排序：</label>
+                        <div class="col-sm-8">
+                            <input name="sort" th:field="*{bizProduct.sort}" class="form-control" type="text" digits="true" min="0" max="100">
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 排序数字越大排列越靠前</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否上架：</label>
+                        <div class="col-sm-8">
+                            <div class="radio-box">
+                                <input type="radio" name="onlineStatus" th:checked="*{bizProduct.onlineStatus==1}" value="1">
+                                <label th:for="onlineStatus" th:text="是"></label>
+                            </div>
+                            <div class="radio-box">
+                                <input type="radio" name="onlineStatus" th:checked="*{bizProduct.onlineStatus==0}" value="0">
+                                <label th:for="onlineStatus" th:text="否"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品描述：</label>
+                        <div class="col-sm-8">
+                            <textarea name="remark" th:field="*{bizProduct.remark}" class="form-control" required maxlength="80"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
-        </form>
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品主图：</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" name="mainImage" th:value="*{bizProduct.mainImage}">
+                            <div class="file-loading">
+                                <input class="form-control file-upload" id="mainImage" name="file" type="file">
+                            </div>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 只能上传png jpg gif图片且大小不能超过200KB</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品详情图(最多20张)：</label>
+                        <div class="col-sm-8">
+                            <div class="file-loading">
+                                <input class="form-control file-upload" id="detailImages" multiple  name="file" type="file">
+                            </div>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 只能上传png jpg gif图片且大小不能超过200KB</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">产品轮播图(最多5张)：</label>
+                        <div class="col-sm-8">
+                            <div class="file-loading">
+                                <input class="form-control file-upload" id="loopImages" multiple  name="file" type="file">
+                            </div>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 只能上传png jpg gif图片且大小不能超过200KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <th:block th:include="include :: footer" />
-    <script th:inline="javascript">
-        var prefix = ctx + "business/product";
-        $("#form-product-edit").validate({
-            focusCleanup: true
-        });
+</form>
+<style>
+    .file-drop-zone-title{padding:45px 10px}
+    .file-thumbnail-footer{height:30px !important;}
+    .file-footer-caption{margin-bottom:0 !important;}
+    .kv-file-content{width: 150px !important;height: 100px !important;}
+</style>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: bootstrap-fileinput-js"/>
+<script th:inline="javascript">
+    var prefix = ctx + "business/product";
+    $("#form-product-edit").validate({
+        focusCleanup: true
+    });
 
-        function submitHandler() {
-            if ($.validate.form()) {
-                $.operate.save(prefix + "/edit", $('#form-product-edit').serialize());
+    var detailStr = $("#hiddenDetail").val().replace(/[\[\]]/g, "");
+    var loopStr = $("#hiddenLoop").val().replace(/[\[\]]/g, "");
+    var detailImagesArr = detailStr.length ? detailStr.split(",") : [];
+    var loopImagesArr = loopStr.length ? loopStr.split(",") : [];
+    function submitHandler() {
+        if ($.validate.form()) {
+            let saveData = $('#form-product-edit').serialize();
+            if(detailImagesArr.length > 0){
+                detailImagesArr.forEach((url)=>saveData += "&detailImages=" + url);
             }
+            if(loopImagesArr.length > 0){
+                loopImagesArr.forEach((url)=>saveData += "&loopImages=" + url);
+            }
+            $.operate.save(prefix + "/edit", saveData);
         }
+    }
 
-        $(function() {
-            var options = {
-                data: [[${bizProduct.bizProductImageList}]],
-                pagination: false,
-                showSearch: false,
-                showRefresh: false,
-                showToggle: false,
-                showColumns: false,
-                sidePagination: "client",
-                columns: [{
-                    checkbox: true
-                },
-                {
-                    field: 'index',
-                    align: 'center',
-                    title: "序号",
-                    formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
-                    	return columnIndex + $.table.serialNumber(index);
-                    }
-                },
-                {
-                    field: 'imageType',
-                    align: 'center',
-                    title: '附件类型：0-主图，1-详情图，2-轮播图',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bizProductImageList[%s].imageType' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
-                    field: 'imageName',
-                    align: 'center',
-                    title: '附件名称',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bizProductImageList[%s].imageName' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
-                    field: 'imageUrl',
-                    align: 'center',
-                    title: '附件地址',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bizProductImageList[%s].imageUrl' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
-                    field: 'createBy',
-                    align: 'center',
-                    title: '创建者',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bizProductImageList[%s].createBy' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
-                    field: 'createTime',
-                    align: 'center',
-                    title: '创建时间',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bizProductImageList[%s].createTime' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
-                    field: 'updateBy',
-                    align: 'center',
-                    title: '更新者',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bizProductImageList[%s].updateBy' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
-                    field: 'updateTime',
-                    align: 'center',
-                    title: '更新时间',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bizProductImageList[%s].updateTime' value='%s'>", index, value);
-                        return html;
-                    }
-				
-                }]
-            };
-            $.table.init(options);
-        });
+    $("#mainImage").fileinput({
+        uploadUrl: '/common/upload',
+        initialPreviewAsData: true,
+        initialPreview: [$("input[name=mainImage]").val()],
+        maxFileCount: 1,
+        maxFileSize: 200,
+        allowedFileTypes: ['image'],
+        allowedFileExtensions: ['jpg','png','gif','jpeg'],
+        autoReplace: true
+    }).on('fileuploaded', function (event, data, previewId, index) {
+        $("input[name='" + event.currentTarget.id + "']").val(data.response.url)
+    }).on('fileremoved', function (event, id, index) {
+        $("input[name='" + event.currentTarget.id + "']").val('')
+    });
 
-        function addColumn() {
-            var count = $("#" + table.options.id).bootstrapTable('getData').length;
-            sub.editColumn();
-        	
-            $("#" + table.options.id).bootstrapTable('insertRow', {
-                index: count,
-                row: {
-                    index: $.table.serialNumber(count),
-                    imageType: "",
-                    imageName: "",
-                    imageUrl: "",
-                    createBy: "",
-                    createTime: "",
-                    updateBy: "",
-                    updateTime: ""
-        	    }
-            });
-        }
-    </script>
+    $("#detailImages").fileinput({
+        uploadUrl: '/common/upload',
+        initialPreviewAsData: true,
+        initialPreview: detailImagesArr,
+        maxFileCount: 20,
+        maxFilesNum : 20,
+        maxFileSize: 200,
+        allowedFileTypes: ['image'],
+        allowedFileExtensions: ['jpg','png','gif','jpeg']
+    }).on('fileuploaded', function (event, data, previewId, index) {
+        detailImagesArr.push(data.response.url);
+    }).on('fileremoved', function (event, id, index) {
+        detailImagesArr.splice(detailImagesArr.indexOf(data.response.url), 1);
+    });
+
+    $("#loopImages").fileinput({
+        uploadUrl: '/common/upload',
+        initialPreviewAsData: true,
+        initialPreview: loopImagesArr,
+        maxFileCount: 5,
+        maxFilesNum : 5,
+        maxFileSize: 200,
+        allowedFileTypes: ['image'],
+        allowedFileExtensions: ['jpg','png','gif','jpeg']
+    }).on('fileuploaded', function (event, data, previewId, index) {
+        loopImagesArr.push(data.response.url);
+    }).on('fileremoved', function (event, id, index) {
+        loopImagesArr.splice(loopImagesArr.indexOf(data.response.url), 1);
+    });
+</script>
 </body>
 </html>
