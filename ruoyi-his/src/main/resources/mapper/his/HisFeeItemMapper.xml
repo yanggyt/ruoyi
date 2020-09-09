@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisFeeItemMapper">
+    
+    <resultMap type="HisFeeItem" id="HisFeeItemResult">
+        <result property="id"    column="id"    />
+        <result property="feeTypeId"    column="fee_type_id"    />
+        <result property="feeTypeName"    column="fee_type_name"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisFeeItemVo">
+        select id, fee_type_id, fee_type_name, is_show, create_time, deleted from his_fee_item
+    </sql>
+
+    <select id="selectHisFeeItemList" parameterType="HisFeeItem" resultMap="HisFeeItemResult">
+        <include refid="selectHisFeeItemVo"/>
+        <where>  
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisFeeItemById" parameterType="Long" resultMap="HisFeeItemResult">
+        <include refid="selectHisFeeItemVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>

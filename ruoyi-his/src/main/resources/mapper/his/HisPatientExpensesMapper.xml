@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisPatientExpensesMapper">
+    
+    <resultMap type="HisPatientExpenses" id="HisPatientExpensesResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="patientId"    column="patient_id"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="idCardNo"    column="id_card_no"    />
+        <result property="orderCode"    column="order_code"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="billDept"    column="bill_dept"    />
+        <result property="billDoctor"    column="bill_doctor"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="expenseBusinessNo"    column="expense_business_no"    />
+        <result property="expenseType"    column="expense_type"    />
+        <result property="chargeRecordId"    column="charge_record_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <resultMap id="HisPatientExpensesHisPatientExpensesDetailResult" type="HisPatientExpenses" extends="HisPatientExpensesResult">
+        <collection property="hisPatientExpensesDetailList" notNullColumn="id" javaType="java.util.List" resultMap="HisPatientExpensesDetailResult" />
+    </resultMap>
+
+    <resultMap type="HisPatientExpensesDetail" id="HisPatientExpensesDetailResult">
+        <result property="id"    column="id"    />
+        <result property="expensesId"    column="expenses_id"    />
+        <result property="costDetailId"    column="cost_detail_id"    />
+        <result property="costItemName"    column="cost_item_name"    />
+        <result property="costItemCode"    column="cost_item_code"    />
+        <result property="costItemCategoryName"    column="cost_item_category_name"    />
+        <result property="costItemCategoryCode"    column="cost_item_category_code"    />
+        <result property="unit"    column="unit"    />
+        <result property="formulation"    column="formulation"    />
+        <result property="specification"    column="specification"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="amount"    column="amount"    />
+        <result property="drugDosage"    column="drug_dosage"    />
+        <result property="drugUsage"    column="drug_usage"    />
+        <result property="frequency"    column="frequency"    />
+        <result property="medicateDays"    column="medicate_days"    />
+        <result property="hospitalPricingUnit"    column="hospital_pricing_unit"    />
+        <result property="isImportedDrugs"    column="is_imported_drugs"    />
+        <result property="drugProducingArea"    column="drug_producing_area"    />
+        <result property="recipeCode"    column="recipe_code"    />
+        <result property="costDocumentType"    column="cost_document_type"    />
+        <result property="billDeptName"    column="bill_dept_name"    />
+        <result property="billDeptId"    column="bill_dept_id"    />
+        <result property="billDoctorName"    column="bill_doctor_name"    />
+        <result property="billDoctorId"    column="bill_doctor_id"    />
+        <result property="billTime"    column="bill_time"    />
+        <result property="operateDeptName"    column="operate_dept_name"    />
+        <result property="operateDeptId"    column="operate_dept_id"    />
+        <result property="operateDoctorName"    column="operate_doctor_name"    />
+        <result property="operateDoctorId"    column="operate_doctor_id"    />
+        <result property="operateTime"    column="operate_time"    />
+        <result property="prescribe"    column="prescribe"    />
+        <result property="operator"    column="operator"    />
+        <result property="doctorNumber"    column="doctor_number"    />
+        <result property="costWriteOffId"    column="cost_write_off_id"    />
+        <result property="isChargeFee"    column="is_charge_fee"    />
+        <result property="chargeTime"    column="charge_time"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="packageSpec"    column="package_spec"    />
+        <result property="dosageSpec"    column="dosage_spec"    />
+        <result property="everyTimeDosage"    column="every_time_dosage"    />
+        <result property="dirCode"    column="dir_code"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisPatientExpensesVo">
+        select id, member_id, patient_id, patient_name, id_card_no, order_code, org_code, org_name, bill_dept, bill_doctor, business_id, expense_business_no, expense_type, charge_record_id, create_time, update_time, deleted from his_patient_expenses
+    </sql>
+
+    <select id="selectHisPatientExpensesList" parameterType="HisPatientExpenses" resultMap="HisPatientExpensesResult">
+        <include refid="selectHisPatientExpensesVo"/>
+        <where>  
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="idCardNo != null  and idCardNo != ''"> and id_card_no = #{idCardNo}</if>
+            <if test="expenseBusinessNo != null  and expenseBusinessNo != ''"> and expense_business_no = #{expenseBusinessNo}</if>
+            <if test="expenseType != null "> and expense_type = #{expenseType}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisPatientExpensesById" parameterType="Long" resultMap="HisPatientExpensesHisPatientExpensesDetailResult">
+        select a.id, a.member_id, a.patient_id, a.patient_name, a.id_card_no, a.order_code, a.org_code, a.org_name, a.bill_dept, a.bill_doctor, a.business_id, a.expense_business_no, a.expense_type, a.charge_record_id, a.create_time, a.update_time, a.deleted,
+            b.id, b.expenses_id, b.cost_detail_id, b.cost_item_name, b.cost_item_code, b.cost_item_category_name, b.cost_item_category_code, b.unit, b.formulation, b.specification, b.unit_price, b.quantity, b.amount, b.drug_dosage, b.drug_usage, b.frequency, b.medicate_days, b.hospital_pricing_unit, b.is_imported_drugs, b.drug_producing_area, b.recipe_code, b.cost_document_type, b.bill_dept_name, b.bill_dept_id, b.bill_doctor_name, b.bill_doctor_id, b.bill_time, b.operate_dept_name, b.operate_dept_id, b.operate_doctor_name, b.operate_doctor_id, b.operate_time, b.prescribe, b.operator, b.doctor_number, b.cost_write_off_id, b.is_charge_fee, b.charge_time, b.org_code, b.org_name, b.package_spec, b.dosage_spec, b.every_time_dosage, b.dir_code, b.create_time, b.deleted
+        from his_patient_expenses a
+        left join his_patient_expenses_detail b on b.expenses_id = a.id
+        where a.id = #{id}
+    </select>
+    
+    <delete id="deleteHisPatientExpensesDetailByExpensesIds" parameterType="String">
+        delete from his_patient_expenses_detail where expenses_id in 
+        <foreach item="expensesId" collection="array" open="(" separator="," close=")">
+            #{expensesId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteHisPatientExpensesDetailByExpensesId" parameterType="Long">
+        delete from his_patient_expenses_detail where expenses_id = #{expensesId}
+    </delete>
+
+    <insert id="batchHisPatientExpensesDetail">
+        insert into his_patient_expenses_detail(id ,expenses_id, cost_detail_id, cost_item_name, cost_item_code, cost_item_category_name, cost_item_category_code, unit, formulation, specification, unit_price, quantity, amount, drug_dosage, drug_usage, frequency, medicate_days, hospital_pricing_unit, is_imported_drugs, drug_producing_area, recipe_code, cost_document_type, bill_dept_name, bill_dept_id, bill_doctor_name, bill_doctor_id, bill_time, operate_dept_name, operate_dept_id, operate_doctor_name, operate_doctor_id, operate_time, prescribe, operator, doctor_number, cost_write_off_id, is_charge_fee, charge_time, org_code, org_name, package_spec, dosage_spec, every_time_dosage, dir_code, create_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            (#{item.id}, #{item.expensesId}, #{item.costDetailId}, #{item.costItemName}, #{item.costItemCode}, #{item.costItemCategoryName}, #{item.costItemCategoryCode}, #{item.unit}, #{item.formulation}, #{item.specification}, #{item.unitPrice}, #{item.quantity}, #{item.amount}, #{item.drugDosage}, #{item.drugUsage}, #{item.frequency}, #{item.medicateDays}, #{item.hospitalPricingUnit}, #{item.isImportedDrugs}, #{item.drugProducingArea}, #{item.recipeCode}, #{item.costDocumentType}, #{item.billDeptName}, #{item.billDeptId}, #{item.billDoctorName}, #{item.billDoctorId}, #{item.billTime}, #{item.operateDeptName}, #{item.operateDeptId}, #{item.operateDoctorName}, #{item.operateDoctorId}, #{item.operateTime}, #{item.prescribe}, #{item.operator}, #{item.doctorNumber}, #{item.costWriteOffId}, #{item.isChargeFee}, #{item.chargeTime}, #{item.orgCode}, #{item.orgName}, #{item.packageSpec}, #{item.dosageSpec}, #{item.everyTimeDosage}, #{item.dirCode}, #{item.createTime})
+        </foreach>
+    </insert>
+
+</mapper>

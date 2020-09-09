@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisOutpatientExpensesBillDetailMapper">
+    
+    <resultMap type="HisOutpatientExpensesBillDetail" id="HisOutpatientExpensesBillDetailResult">
+        <result property="id"    column="id"    />
+        <result property="billId"    column="bill_id"    />
+        <result property="billDetailId"    column="bill_detail_id"    />
+        <result property="recipeId"    column="recipe_id"    />
+        <result property="recipeCode"    column="recipe_code"    />
+        <result property="fee"    column="fee"    />
+        <result property="feeName"    column="fee_name"    />
+        <result property="billDoctor"    column="bill_doctor"    />
+        <result property="billDept"    column="bill_dept"    />
+        <result property="operateDept"    column="operate_dept"    />
+        <result property="billTime"    column="bill_time"    />
+        <result property="amount"    column="amount"    />
+        <result property="unit"    column="unit"    />
+        <result property="specification"    column="specification"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="costItemName"    column="cost_item_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisOutpatientExpensesBillDetailVo">
+        select id, bill_id, bill_detail_id, recipe_id, recipe_code, fee, fee_name, bill_doctor, bill_dept, operate_dept, bill_time, amount, unit, specification, unit_price, cost_item_name, create_time, deleted from his_outpatient_expenses_bill_detail
+    </sql>
+
+    <select id="selectHisOutpatientExpensesBillDetailList" parameterType="HisOutpatientExpensesBillDetail" resultMap="HisOutpatientExpensesBillDetailResult">
+        <include refid="selectHisOutpatientExpensesBillDetailVo"/>
+        <where>  
+            <if test="billId != null  and billId != ''"> and bill_id = #{billId}</if>
+            <if test="recipeId != null  and recipeId != ''"> and recipe_id = #{recipeId}</if>
+            <if test="recipeCode != null  and recipeCode != ''"> and recipe_code = #{recipeCode}</if>
+            <if test="feeName != null  and feeName != ''"> and fee_name like concat('%', #{feeName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectHisOutpatientExpensesBillDetailById" parameterType="String" resultMap="HisOutpatientExpensesBillDetailResult">
+        <include refid="selectHisOutpatientExpensesBillDetailVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>

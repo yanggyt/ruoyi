@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisPayAccountMapper">
+    
+    <resultMap type="HisPayAccount" id="HisPayAccountResult">
+        <result property="id"    column="id"    />
+        <result property="accId"    column="acc_id"    />
+        <result property="accPy"    column="acc_py"    />
+        <result property="accName"    column="acc_name"    />
+        <result property="payment"    column="payment"    />
+        <result property="payPy"    column="pay_py"    />
+        <result property="paymentId"    column="payment_id"    />
+        <result property="isDefaultShow"    column="is_default_show"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisPayAccountVo">
+        select id, acc_id, acc_py, acc_name, payment, pay_py, payment_id, is_default_show, sort_no, create_time, deleted from his_pay_account
+    </sql>
+
+    <select id="selectHisPayAccountList" parameterType="HisPayAccount" resultMap="HisPayAccountResult">
+        <include refid="selectHisPayAccountVo"/>
+        <where>  
+            <if test="accName != null  and accName != ''"> and acc_name like concat('%', #{accName}, '%')</if>
+            <if test="isDefaultShow != null "> and is_default_show = #{isDefaultShow}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisPayAccountById" parameterType="Long" resultMap="HisPayAccountResult">
+        <include refid="selectHisPayAccountVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisOutpatientPaymentMapper">
+    
+    <resultMap type="HisOutpatientPayment" id="HisOutpatientPaymentResult">
+        <result property="id"    column="id"    />
+        <result property="orderCode"    column="order_code"    />
+        <result property="registeredId"    column="registered_id"    />
+        <result property="recipeIds"    column="recipe_ids"    />
+        <result property="userId"    column="user_id"    />
+        <result property="totalFee"    column="total_fee"    />
+        <result property="paySerialNo"    column="pay_serial_no"    />
+        <result property="paymentListStr"    column="payment_list_str"    />
+        <result property="vendorId"    column="vendor_id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisOutpatientPaymentVo">
+        select id, order_code, registered_id, recipe_ids, user_id, total_fee, pay_serial_no, payment_list_str, vendor_id, org_code, org_name, create_time, deleted from his_outpatient_payment
+    </sql>
+
+    <select id="selectHisOutpatientPaymentList" parameterType="HisOutpatientPayment" resultMap="HisOutpatientPaymentResult">
+        <include refid="selectHisOutpatientPaymentVo"/>
+        <where>  
+            <if test="orderCode != null  and orderCode != ''"> and order_code = #{orderCode}</if>
+            <if test="registeredId != null  and registeredId != ''"> and registered_id = #{registeredId}</if>
+            <if test="paySerialNo != null  and paySerialNo != ''"> and pay_serial_no = #{paySerialNo}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisOutpatientPaymentById" parameterType="Long" resultMap="HisOutpatientPaymentResult">
+        <include refid="selectHisOutpatientPaymentVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('扫码退款列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>商户编号：</label>
+                                <input type="text" name="mchtNo"/>
+                            </li>
+                            <li>
+                                <label>退款订单：</label>
+                                <input type="text" name="reqSsn"/>
+                            </li>
+                            <li>
+                                <label>原订单号：</label>
+                                <input type="text" name="origReqSsn"/>
+                            </li>
+                            <li>
+                                <label>订单状态：</label>
+                                <select name="orderState" th:with="type=${@dict.getType('biz_off_order_state')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li class="select-time">
+                                <label>创建时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreateTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreateTime]"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="bend:offlineRefund:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="bend:offlineRefund:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="bend:offlineRefund:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="bend:offlineRefund:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table" style="width: 2200px"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('bend:offlineRefund:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('bend:offlineRefund:remove')}]];
+        var orderStateDatas = [[${@dict.getType('biz_off_order_state')}]];
+        var prefix = ctx + "bend/offlineRefund";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "扫码退款",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '主键ID',
+                    visible: false
+                },
+                {
+                    field: 'mchtNo',
+                    title: '商户编号',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 20, "open");
+                    }
+                },
+                {
+                    field: 'reqSsn',
+                    title: '退款订单',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 32, "open");
+                    }
+                },
+                {
+                    field: 'reqTime',
+                    title: '请求时间',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return dateFormat(value);
+                    }
+                },
+                {
+                    field: 'origReqSsn',
+                    title: '原订单号',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 32, "open");
+                    }
+                },
+                {
+                    field: 'origReqTime',
+                    title: '原请求时间',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return dateFormat(value);
+                    }
+                },
+                {
+                    field: 'origRespSsn',
+                    title: '原响应流水',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 20, "open");
+                    }
+                },
+                {
+                    field: 'origRespTime',
+                    title: '原响应时间',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return dateFormat(value);
+                    }
+                },
+                {
+                    field: 'orderAmt',
+                    title: '退款金额'
+                },
+                {
+                    field: 'orderDesc',
+                    title: '退款描述',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 20, "open");
+                    }
+                },
+                {
+                    field: 'respSsn',
+                    title: '响应流水',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.tooltip(value, 20, "open");
+                    }
+                },
+                {
+                    field: 'respTime',
+                    title: '响应时间',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return dateFormat(value);
+                    }
+                },
+                {
+                    field: 'orderState',
+                    title: '订单状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(orderStateDatas, value);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function dateFormat(cellVal) {
+            const dateVal = cellVal + "";
+            if (cellVal != null) {
+                //匹配yyyyMMddHHmmss格式的日期，例如：20200317112000
+                const pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+                //将时间格式化成 yyyy-MM-dd HH:mm:ss
+                return dateVal.replace(pattern, '$1-$2-$3 $4:$5:$6');
+            }
+        }
+    </script>
+</body>
+</html>

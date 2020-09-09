@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增检查检验')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-inspectionReport-add">
+            <h4 class="form-header h4">检查检验信息</h4>
+            <h4 class="form-header h4">检查检验明细信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "his/inspectionReport"
+        $("#form-inspectionReport-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-inspectionReport-add').serialize());
+            }
+        }
+
+        $(function() {
+            var options = {
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'itemId',
+                    align: 'center',
+                    title: '检查项ID',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].itemId' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'execRecordId',
+                    align: 'center',
+                    title: '执行记录ID',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].execRecordId' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'itemName',
+                    align: 'center',
+                    title: '项目名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].itemName' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'itemValue',
+                    align: 'center',
+                    title: '项目内容',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].itemValue' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'sortNo',
+                    align: 'center',
+                    title: '排序',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].sortNo' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'unit',
+                    align: 'center',
+                    title: '单位',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].unit' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'referenceValue',
+                    align: 'center',
+                    title: '参考值',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].referenceValue' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'qualityResult',
+                    align: 'center',
+                    title: '定性结果',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].qualityResult' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'archivedFlag',
+                    align: 'center',
+                    title: '档案标志',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].archivedFlag' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'fee',
+                    align: 'center',
+                    title: '金额',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].fee' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'createTime',
+                    align: 'center',
+                    title: '生成时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].createTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'updateTime',
+                    align: 'center',
+                    title: '更新时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].updateTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'deleted',
+                    align: 'center',
+                    title: '删除标记',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='hisInspectionReportItemList[%s].deleted' value='%s'>", index, value);
+                        return html;
+                    }
+                
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function addColumn() {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+        	
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    itemId: "",
+                    execRecordId: "",
+                    itemName: "",
+                    itemValue: "",
+                    sortNo: "",
+                    unit: "",
+                    referenceValue: "",
+                    qualityResult: "",
+                    archivedFlag: "",
+                    fee: "",
+                    createTime: "",
+                    updateTime: "",
+                    deleted: ""
+                }
+            });
+        }
+    </script>
+</body>
+</html>

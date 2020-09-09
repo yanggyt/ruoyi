@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.ScrcuOnlineRefundOrdersMapper">
+    
+    <resultMap type="ScrcuOnlineRefundOrders" id="ScrcuOnlineRefundOrdersResult">
+        <result property="id"    column="id"    />
+        <result property="merId"    column="mer_id"    />
+        <result property="merNo"    column="mer_no"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="orderSendTime"    column="order_send_time"    />
+        <result property="backEndUrl"    column="back_end_url"    />
+        <result property="oriOrderNumber"    column="ori_order_number"    />
+        <result property="oriSubOrderNumber"    column="ori_sub_order_number"    />
+        <result property="orderAmt"    column="order_amt"    />
+        <result property="channel"    column="channel"    />
+        <result property="orderState"    column="order_state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectScrcuOnlineRefundOrdersVo">
+        select id, mer_id, mer_no, order_number, order_send_time, back_end_url, ori_order_number, ori_sub_order_number, order_amt, channel, order_state, create_time, deleted from scrcu_online_refund_orders
+    </sql>
+
+    <select id="selectScrcuOnlineRefundOrdersList" parameterType="ScrcuOnlineRefundOrders" resultMap="ScrcuOnlineRefundOrdersResult">
+        <include refid="selectScrcuOnlineRefundOrdersVo"/>
+        <where>  
+            <if test="merId != null  and merId != ''"> and mer_id = #{merId}</if>
+            <if test="merNo != null  and merNo != ''"> and mer_no = #{merNo}</if>
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number = #{orderNumber}</if>
+            <if test="oriOrderNumber != null  and oriOrderNumber != ''"> and ori_order_number = #{oriOrderNumber}</if>
+            <if test="oriSubOrderNumber != null  and oriSubOrderNumber != ''"> and ori_sub_order_number = #{oriSubOrderNumber}</if>
+            <if test="orderState != null  and orderState != ''"> and order_state = #{orderState}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectScrcuOnlineRefundOrdersById" parameterType="Long" resultMap="ScrcuOnlineRefundOrdersResult">
+        <include refid="selectScrcuOnlineRefundOrdersVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertScrcuOnlineRefundOrders" parameterType="ScrcuOnlineRefundOrders" useGeneratedKeys="true" keyProperty="id">
+        insert into scrcu_online_refund_orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="merId != null">mer_id,</if>
+            <if test="merNo != null">mer_no,</if>
+            <if test="orderNumber != null">order_number,</if>
+            <if test="orderSendTime != null">order_send_time,</if>
+            <if test="backEndUrl != null">back_end_url,</if>
+            <if test="oriOrderNumber != null">ori_order_number,</if>
+            <if test="oriSubOrderNumber != null">ori_sub_order_number,</if>
+            <if test="orderAmt != null">order_amt,</if>
+            <if test="channel != null">channel,</if>
+            <if test="orderState != null">order_state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="merId != null">#{merId},</if>
+            <if test="merNo != null">#{merNo},</if>
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="orderSendTime != null">#{orderSendTime},</if>
+            <if test="backEndUrl != null">#{backEndUrl},</if>
+            <if test="oriOrderNumber != null">#{oriOrderNumber},</if>
+            <if test="oriSubOrderNumber != null">#{oriSubOrderNumber},</if>
+            <if test="orderAmt != null">#{orderAmt},</if>
+            <if test="channel != null">#{channel},</if>
+            <if test="orderState != null">#{orderState},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScrcuOnlineRefundOrders" parameterType="ScrcuOnlineRefundOrders">
+        update scrcu_online_refund_orders
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="merId != null">mer_id = #{merId},</if>
+            <if test="merNo != null">mer_no = #{merNo},</if>
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="orderSendTime != null">order_send_time = #{orderSendTime},</if>
+            <if test="backEndUrl != null">back_end_url = #{backEndUrl},</if>
+            <if test="oriOrderNumber != null">ori_order_number = #{oriOrderNumber},</if>
+            <if test="oriSubOrderNumber != null">ori_sub_order_number = #{oriSubOrderNumber},</if>
+            <if test="orderAmt != null">order_amt = #{orderAmt},</if>
+            <if test="channel != null">channel = #{channel},</if>
+            <if test="orderState != null">order_state = #{orderState},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScrcuOnlineRefundOrdersById" parameterType="Long">
+        delete from scrcu_online_refund_orders where id = #{id}
+    </delete>
+
+    <delete id="deleteScrcuOnlineRefundOrdersByIds" parameterType="String">
+        delete from scrcu_online_refund_orders where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

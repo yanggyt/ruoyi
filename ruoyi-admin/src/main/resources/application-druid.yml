@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                username: root
-                password: password
+                url: jdbc:mysql://39.97.252.22:3306/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: devry
+                password: Devry@#123
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -55,3 +55,12 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+
+#HIS WEBSERVICE CONFIG
+his:
+    client:
+        his-url: http://47.111.29.88:11013/WebService.asmx
+        his-public-url: http://47.111.29.88:11004/webservice.asmx
+        auth-code: 44200F7B173B00E136C04106FB29AA4A
+        his-host: http://127.0.0.1:8082
+        vendor-id: 510303001

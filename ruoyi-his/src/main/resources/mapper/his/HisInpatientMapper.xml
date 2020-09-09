@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisInpatientMapper">
+    
+    <resultMap type="HisInpatient" id="HisInpatientResult">
+        <result property="id"    column="id"    />
+        <result property="patientId"    column="patient_id"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="idCardNo"    column="id_card_no"    />
+        <result property="patientSex"    column="patient_sex"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="contactName"    column="contact_name"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="familyAddress"    column="family_address"    />
+        <result property="admissionDate"    column="admission_date"    />
+        <result property="leaveDate"    column="leave_date"    />
+        <result property="hospitalizedNo"    column="hospitalized_no"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="doctorId"    column="doctor_id"    />
+        <result property="doctorName"    column="doctor_name"    />
+        <result property="bedId"    column="bed_id"    />
+        <result property="bedName"    column="bed_name"    />
+        <result property="mainDiagnose"    column="main_diagnose"    />
+        <result property="mainDiagnoseIcd10"    column="main_diagnose_icd10"    />
+        <result property="secondaryDiagnose"    column="secondary_diagnose"    />
+        <result property="secondaryDiagnoseIcd10"    column="secondary_diagnose_icd10"    />
+        <result property="wardId"    column="ward_id"    />
+        <result property="wardName"    column="ward_name"    />
+        <result property="operator"    column="operator"    />
+        <result property="operateTime"    column="operate_time"    />
+        <result property="totalFee"    column="total_fee"    />
+        <result property="remark"    column="remark"    />
+        <result property="leaveDeptId"    column="leave_dept_id"    />
+        <result property="leaveDeptName"    column="leave_dept_name"    />
+        <result property="leaveWardId"    column="leave_ward_id"    />
+        <result property="leaveWardName"    column="leave_ward_name"    />
+        <result property="leaveBedId"    column="leave_bed_id"    />
+        <result property="leaveBedName"    column="leave_bed_name"    />
+        <result property="leaveMainDiagnose"    column="leave_main_diagnose"    />
+        <result property="leaveMainDiagnoseIcd10"    column="leave_main_diagnose_icd10"    />
+        <result property="leaveSecondaryDiagnose"    column="leave_secondary_diagnose"    />
+        <result property="leaveSecondaryDiagnoseIcd10"    column="leave_secondary_diagnose_icd10"    />
+        <result property="inpatientStatus"    column="inpatient_status"    />
+        <result property="prepaidTotalFee"    column="prepaid_total_fee"    />
+        <result property="doctorNumber"    column="doctor_number"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisInpatientVo">
+        select id, patient_id, patient_name, id_card_no, patient_sex, birthday, contact_name, mobile_phone, family_address, admission_date, leave_date, hospitalized_no, business_id, org_code, org_name, dept_id, dept_name, doctor_id, doctor_name, bed_id, bed_name, main_diagnose, main_diagnose_icd10, secondary_diagnose, secondary_diagnose_icd10, ward_id, ward_name, operator, operate_time, total_fee, remark, leave_dept_id, leave_dept_name, leave_ward_id, leave_ward_name, leave_bed_id, leave_bed_name, leave_main_diagnose, leave_main_diagnose_icd10, leave_secondary_diagnose, leave_secondary_diagnose_icd10, inpatient_status, prepaid_total_fee, doctor_number, create_time, update_time, deleted from his_inpatient
+    </sql>
+
+    <select id="selectHisInpatientList" parameterType="HisInpatient" resultMap="HisInpatientResult">
+        <include refid="selectHisInpatientVo"/>
+        <where>  
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="idCardNo != null  and idCardNo != ''"> and id_card_no = #{idCardNo}</if>
+            <if test="params.beginAdmissionDate != null and params.beginAdmissionDate != ''">
+                AND date_format(admission_date,'%y%m%d') &gt;= date_format(#{params.beginAdmissionDate},'%y%m%d')
+            </if>
+            <if test="params.endAdmissionDate != null and params.endAdmissionDate != ''">
+                AND date_format(admission_date,'%y%m%d') &lt;= date_format(#{params.endAdmissionDate},'%y%m%d')
+            </if>
+            <if test="params.beginLeaveDate != null and params.beginLeaveDate != ''">
+                AND date_format(leave_date,'%y%m%d') &gt;= date_format(#{params.beginLeaveDate},'%y%m%d')
+            </if>
+            <if test="params.endLeaveDate != null and params.endLeaveDate != ''">
+                AND date_format(leave_date,'%y%m%d') &lt;= date_format(#{params.endLeaveDate},'%y%m%d')
+            </if>
+            <if test="hospitalizedNo != null  and hospitalizedNo != ''"> and hospitalized_no = #{hospitalizedNo}</if>
+            <if test="businessId != null  and businessId != ''"> and business_id = #{businessId}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="inpatientStatus != null "> and inpatient_status = #{inpatientStatus}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+
+
+</mapper>

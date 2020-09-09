@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.PatientListMapper">
+    
+    <resultMap type="PatientList" id="PatientListResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="realName"    column="real_name"    />
+        <result property="idCardNo"    column="id_card_no"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="defaultPatient"    column="default_patient"    />
+        <result property="relationShip"    column="relation_ship"    />
+        <result property="familyRelationship"    column="family_relationship"    />
+        <result property="sex"    column="sex"    />
+        <result property="bindStatus"    column="bind_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectPatientListVo">
+        select id, member_id, real_name, id_card_no, mobile_phone, default_patient, relation_ship, family_relationship, sex, bind_status, create_time, update_time, deleted from bend_patient_list
+    </sql>
+
+    <select id="selectPatientListList" parameterType="PatientList" resultMap="PatientListResult">
+        <include refid="selectPatientListVo"/>
+        <where>  
+            <if test="realName != null  and realName != ''"> and real_name like concat('%', #{realName}, '%')</if>
+            <if test="idCardNo != null  and idCardNo != ''"> and id_card_no = #{idCardNo}</if>
+            <if test="mobilePhone != null  and mobilePhone != ''"> and mobile_phone = #{mobilePhone}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPatientListById" parameterType="Long" resultMap="PatientListResult">
+        <include refid="selectPatientListVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPatientList" parameterType="PatientList" useGeneratedKeys="true" keyProperty="id">
+        insert into bend_patient_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="realName != null">real_name,</if>
+            <if test="idCardNo != null">id_card_no,</if>
+            <if test="mobilePhone != null">mobile_phone,</if>
+            <if test="defaultPatient != null">default_patient,</if>
+            <if test="relationShip != null">relation_ship,</if>
+            <if test="familyRelationship != null">family_relationship,</if>
+            <if test="sex != null">sex,</if>
+            <if test="bindStatus != null">bind_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="realName != null">#{realName},</if>
+            <if test="idCardNo != null">#{idCardNo},</if>
+            <if test="mobilePhone != null">#{mobilePhone},</if>
+            <if test="defaultPatient != null">#{defaultPatient},</if>
+            <if test="relationShip != null">#{relationShip},</if>
+            <if test="familyRelationship != null">#{familyRelationship},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="bindStatus != null">#{bindStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePatientList" parameterType="PatientList">
+        update bend_patient_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="idCardNo != null">id_card_no = #{idCardNo},</if>
+            <if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
+            <if test="defaultPatient != null">default_patient = #{defaultPatient},</if>
+            <if test="relationShip != null">relation_ship = #{relationShip},</if>
+            <if test="familyRelationship != null">family_relationship = #{familyRelationship},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="bindStatus != null">bind_status = #{bindStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePatientListById" parameterType="Long">
+        delete from bend_patient_list where id = #{id}
+    </delete>
+
+    <delete id="deletePatientListByIds" parameterType="String">
+        delete from bend_patient_list where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

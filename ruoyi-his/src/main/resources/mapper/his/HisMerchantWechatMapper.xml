@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisMerchantWechatMapper">
+    
+    <resultMap type="HisMerchantWechat" id="HisMerchantWechatResult">
+        <result property="id"    column="id"    />
+        <result property="providerId"    column="provider_id"    />
+        <result property="subAppId"    column="sub_app_id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisMerchantWechatVo">
+        select id, provider_id, sub_app_id, org_code, org_name, create_time, deleted from his_merchant_wechat
+    </sql>
+
+    <select id="selectHisMerchantWechatList" parameterType="HisMerchantWechat" resultMap="HisMerchantWechatResult">
+        <include refid="selectHisMerchantWechatVo"/>
+        <where>  
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectHisMerchantWechatById" parameterType="Long" resultMap="HisMerchantWechatResult">
+        <include refid="selectHisMerchantWechatVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>

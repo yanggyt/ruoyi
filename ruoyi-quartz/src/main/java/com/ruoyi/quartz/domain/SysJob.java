@@ -37,6 +37,10 @@ public class SysJob extends BaseEntity implements Serializable
     @Excel(name = "调用目标字符串")
     private String invokeTarget;
 
+    /** 调用目标参数列表 */
+    @Excel(name = "调用目标参数列表")
+    private String methodParams;
+
     /** cron执行表达式 */
     @Excel(name = "执行表达式 ")
     private String cronExpression;
@@ -95,6 +99,14 @@ public class SysJob extends BaseEntity implements Serializable
     public void setInvokeTarget(String invokeTarget)
     {
         this.invokeTarget = invokeTarget;
+    }
+
+    public String getMethodParams() {
+        return methodParams;
+    }
+
+    public void setMethodParams(String methodParams) {
+        this.methodParams = methodParams;
     }
 
     @NotBlank(message = "Cron执行表达式不能为空")

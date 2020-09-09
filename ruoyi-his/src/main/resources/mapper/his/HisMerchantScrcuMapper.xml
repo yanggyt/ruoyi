@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisMerchantScrcuMapper">
+    
+    <resultMap type="HisMerchantScrcu" id="HisMerchantScrcuResult">
+        <result property="id"    column="id"    />
+        <result property="mchNo"    column="mch_no"    />
+        <result property="mchName"    column="mch_name"    />
+        <result property="subMchNo"    column="sub_mch_no"    />
+        <result property="subMchName"    column="sub_mch_name"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="clientId"    column="client_id"    />
+        <result property="secret"    column="secret"    />
+        <result property="openClientId"    column="open_client_id"    />
+        <result property="openApi"    column="open_api"    />
+        <result property="publicKeyPath"    column="public_key_path"    />
+        <result property="privateKeyPath"    column="private_key_path"    />
+        <result property="privateKeyPassword"    column="private_key_password"    />
+        <result property="txnAreaInfo"    column="txn_area_info"    />
+        <result property="version"    column="version"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisMerchantScrcuVo">
+        select id, mch_no, mch_name, sub_mch_no, sub_mch_name, org_code, org_name, client_id, secret, open_client_id, open_api, public_key_path, private_key_path, private_key_password, txn_area_info, version, create_time, deleted from his_merchant_scrcu
+    </sql>
+
+    <select id="selectHisMerchantScrcuList" parameterType="HisMerchantScrcu" resultMap="HisMerchantScrcuResult">
+        <include refid="selectHisMerchantScrcuVo"/>
+        <where>  
+            <if test="mchNo != null  and mchNo != ''"> and mch_no = #{mchNo}</if>
+            <if test="mchName != null  and mchName != ''"> and mch_name like concat('%', #{mchName}, '%')</if>
+            <if test="subMchNo != null  and subMchNo != ''"> and sub_mch_no = #{subMchNo}</if>
+            <if test="subMchName != null  and subMchName != ''"> and sub_mch_name like concat('%', #{subMchName}, '%')</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectHisMerchantScrcuById" parameterType="Long" resultMap="HisMerchantScrcuResult">
+        <include refid="selectHisMerchantScrcuVo"/>
+        where id = #{id}
+    </select>
+
+</mapper>

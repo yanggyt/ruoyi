@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisHospitalInfoMapper">
+    
+    <resultMap type="HisHospitalInfo" id="HisHospitalInfoResult">
+        <result property="id"    column="id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="orgAddress"    column="org_address"    />
+        <result property="contactPhone"    column="contact_phone"    />
+        <result property="contactPerson"    column="contact_person"    />
+        <result property="postalCode"    column="postal_code"    />
+        <result property="logo"    column="logo"    />
+        <result property="introduction"    column="introduction"    />
+        <result property="orgType"    column="org_type"    />
+        <result property="orgLevel"    column="org_level"    />
+        <result property="excellentDeptIds"    column="excellent_dept_ids"    />
+        <result property="excellentDoctorIds"    column="excellent_doctor_ids"    />
+        <result property="fans"    column="fans"    />
+        <result property="starRating"    column="star_rating"    />
+        <result property="businessLicense"    column="business_license"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="regionId"    column="region_id"    />
+        <result property="regionCode"    column="region_code"    />
+        <result property="vmUserId"     column="vm_user_id"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisHospitalInfoVo">
+        select id, org_code, org_name, org_address, contact_phone, contact_person, postal_code, logo, introduction, org_type, org_level, excellent_dept_ids, excellent_doctor_ids, fans, star_rating, business_license, sort_no, longitude, latitude, region_id, region_code, vm_user_id, is_show, create_time, update_time, deleted from his_hospital_info
+    </sql>
+
+    <select id="selectHisHospitalInfoList" parameterType="HisHospitalInfo" resultMap="HisHospitalInfoResult">
+        <include refid="selectHisHospitalInfoVo"/>
+        <where>  
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="orgType != null "> and org_type = #{orgType}</if>
+            <if test="orgLevel != null "> and org_level = #{orgLevel}</if>
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisHospitalInfoById" parameterType="Long" resultMap="HisHospitalInfoResult">
+        <include refid="selectHisHospitalInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectHisHospitalInfoByOrgCode" parameterType="String" resultMap="HisHospitalInfoResult">
+        <include refid="selectHisHospitalInfoVo"/>
+        where org_code = #{orgCode}
+    </select>
+        
+    <insert id="insertHisHospitalInfo" parameterType="HisHospitalInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into his_hospital_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgCode != null">org_code,</if>
+            <if test="orgName != null">org_name,</if>
+            <if test="orgAddress != null">org_address,</if>
+            <if test="contactPhone != null">contact_phone,</if>
+            <if test="contactPerson != null">contact_person,</if>
+            <if test="postalCode != null">postal_code,</if>
+            <if test="logo != null">logo,</if>
+            <if test="introduction != null">introduction,</if>
+            <if test="orgType != null">org_type,</if>
+            <if test="orgLevel != null">org_level,</if>
+            <if test="excellentDeptIds != null">excellent_dept_ids,</if>
+            <if test="excellentDoctorIds != null">excellent_doctor_ids,</if>
+            <if test="fans != null">fans,</if>
+            <if test="starRating != null">star_rating,</if>
+            <if test="businessLicense != null">business_license,</if>
+            <if test="sortNo != null">sort_no,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="regionId != null">region_id,</if>
+            <if test="regionCode != null">region_code,</if>
+            <if test="vmUserId != null">vm_user_id,</if>
+            <if test="isShow != null">is_show,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgCode != null">#{orgCode},</if>
+            <if test="orgName != null">#{orgName},</if>
+            <if test="orgAddress != null">#{orgAddress},</if>
+            <if test="contactPhone != null">#{contactPhone},</if>
+            <if test="contactPerson != null">#{contactPerson},</if>
+            <if test="postalCode != null">#{postalCode},</if>
+            <if test="logo != null">#{logo},</if>
+            <if test="introduction != null">#{introduction},</if>
+            <if test="orgType != null">#{orgType},</if>
+            <if test="orgLevel != null">#{orgLevel},</if>
+            <if test="excellentDeptIds != null">#{excellentDeptIds},</if>
+            <if test="excellentDoctorIds != null">#{excellentDoctorIds},</if>
+            <if test="fans != null">#{fans},</if>
+            <if test="starRating != null">#{starRating},</if>
+            <if test="businessLicense != null">#{businessLicense},</if>
+            <if test="sortNo != null">#{sortNo},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="regionId != null">#{regionId},</if>
+            <if test="regionCode != null">#{regionCode},</if>
+            <if test="vmUserId != null">#{vmUserId},</if>
+            <if test="isShow != null">#{isShow},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisHospitalInfo" parameterType="HisHospitalInfo">
+        update his_hospital_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orgCode != null">org_code = #{orgCode},</if>
+            <if test="orgName != null">org_name = #{orgName},</if>
+            <if test="orgAddress != null">org_address = #{orgAddress},</if>
+            <if test="contactPhone != null">contact_phone = #{contactPhone},</if>
+            <if test="contactPerson != null">contact_person = #{contactPerson},</if>
+            <if test="postalCode != null">postal_code = #{postalCode},</if>
+            <if test="logo != null">logo = #{logo},</if>
+            <if test="introduction != null">introduction = #{introduction},</if>
+            <if test="orgType != null">org_type = #{orgType},</if>
+            <if test="orgLevel != null">org_level = #{orgLevel},</if>
+            <if test="excellentDeptIds != null">excellent_dept_ids = #{excellentDeptIds},</if>
+            <if test="excellentDoctorIds != null">excellent_doctor_ids = #{excellentDoctorIds},</if>
+            <if test="fans != null">fans = #{fans},</if>
+            <if test="starRating != null">star_rating = #{starRating},</if>
+            <if test="businessLicense != null">business_license = #{businessLicense},</if>
+            <if test="sortNo != null">sort_no = #{sortNo},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="regionId != null">region_id = #{regionId},</if>
+            <if test="regionCode != null">region_code = #{regionCode},</if>
+            <if test="vmUserId != null">vm_user_id = #{vmUserId},</if>
+            <if test="isShow != null">is_show = #{isShow},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHisHospitalInfoById" parameterType="Long">
+        delete from his_hospital_info where id = #{id}
+    </delete>
+
+    <delete id="deleteHisHospitalInfoByIds" parameterType="String">
+        delete from his_hospital_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

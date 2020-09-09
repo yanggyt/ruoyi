@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增医疗机构')" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-hospital-add">
+            <!--1行2列-->
+            <h4 class="form-header h4">基本信息</h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">机构编码：</label>
+                        <div class="col-sm-8">
+                            <input name="orgCode" class="form-control" type="text" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label is-required">机构名称：</label>
+                        <div class="col-sm-8">
+                            <input name="orgName" class="form-control" type="text" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">注册地址：</label>
+                        <div class="col-sm-8">
+                            <input name="orgAddress" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">联系电话：</label>
+                        <div class="col-sm-8">
+                            <input name="contactPhone" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">医院类别：</label>
+                        <div class="col-sm-8">
+                            <select name="orgType" class="form-control m-b" th:with="type=${@dict.getType('biz_org_type')}" required>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">医院等级：</label>
+                        <div class="col-sm-8">
+                            <select name="orgLevel" class="form-control m-b" th:with="type=${@dict.getType('biz_org_level')}" required>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">优秀科室：</label>
+                        <div class="col-sm-8">
+                            <select id="excellentDeptIds" name="excellentDeptIds" class="form-control select2-multiple" multiple>
+                                <option value="1">广东省</option>
+                            </select>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 最多可选5个优秀科室.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">优秀医生：</label>
+                        <div class="col-sm-8">
+                            <select id="excellentDoctorIds" name="excellentDoctorIds" class="form-control select2-multiple" multiple>
+                                <option value="1">广东省</option>
+                            </select>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 最多可选5个优秀医生.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">联系人：</label>
+                        <div class="col-sm-8">
+                            <input name="contactPerson" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">经度：</label>
+                        <div class="col-sm-8">
+                            <input name="longitude" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">排序号：</label>
+                        <div class="col-sm-8">
+                            <input name="sortNo" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">纬度：</label>
+                        <div class="col-sm-8">
+                            <input name="latitude" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">显示状态：</label>
+                        <div class="col-sm-8">
+                            <div class="radio-box" th:each="dict : ${@dict.getType('biz_normal_disable')}">
+                                <input type="radio" th:id="${'isShow_' + dict.dictCode}" name="isShow" th:value="${dict.dictValue}" th:checked="${dict.default}" required>
+                                <label th:for="${'isShow_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="form-header h4">其他信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">机构图标：</label>
+                        <div class="col-sm-8">
+                            <!--<input name="logo" class="form-control" type="text">-->
+                            <div class="file-loading">
+                                <input id="logo" name="logo" type="file" class="file" data-theme="fas">
+                            </div>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 仅支持PNG,JPEG/JPG格式,图片大小不超过5MB。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">机构简介：</label>
+                        <div class="col-sm-8">
+                            <textarea name="introduction" class="form-control" rows="6"></textarea>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 机构简介最多600字.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-5 col-sm-10">
+            <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+        </div>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "his/hospital"
+        $("#form-hospital-add").validate({
+            focusCleanup: true
+        });
+        $("#logo").fileinput({
+            'theme': 'explorer-fas',
+            'uploadUrl': prefix + "/update/logo",
+            overwriteInitial: true,
+            initialPreviewAsData: true,
+            initialPreview: ["/img/profile.jpg"],
+            allowedFileExtensions : [ 'jpg', 'png',"jpeg" ],
+            maxFileSize : 5120,
+            maxFileCount : 1,
+        }).on("fileuploaded", function(event, data) {
+            $("#logo").attr("value", data.response.data);//上传成功后处理方法
+        });
+        function submitHandler() {
+            if ($.validate.form()) {
+                //$('#form-hospital-add').serialize()
+                var data = $("#form-hospital-add").serializeArray();
+                data.push({"name": "logo", "value": $("#logo").attr("value")});
+                $.operate.save(prefix + "/add", data);
+            }
+        }
+    </script>
+</body>
+</html>

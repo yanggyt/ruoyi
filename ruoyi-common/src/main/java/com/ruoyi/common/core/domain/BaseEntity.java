@@ -5,98 +5,64 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import javax.persistence.*;
 
 /**
  * Entity基类
  * 
  * @author ruoyi
  */
+@ApiModel(value = "Entity基类")
+@Data
 public class BaseEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(notes = "主键ID")
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     /** 搜索值 */
+    @ApiModelProperty(notes = "搜索值",hidden = true)
+    @Transient
     private String searchValue;
 
     /** 创建者 */
+    @ApiModelProperty(notes = "创建者",hidden = true)
+    @Transient
     private String createBy;
 
     /** 创建时间 */
+    @ApiModelProperty(notes = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /** 更新者 */
+    @ApiModelProperty(notes = "更新者",hidden = true)
+    @Transient
     private String updateBy;
 
     /** 更新时间 */
+    @ApiModelProperty(notes = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Transient
     private Date updateTime;
 
     /** 备注 */
+    @ApiModelProperty(notes = "备注",hidden = true)
+    @Transient
     private String remark;
 
     /** 请求参数 */
+    @ApiModelProperty(notes = "请求参数",hidden = true)
+    @Transient
     private Map<String, Object> params;
-
-    public String getSearchValue()
-    {
-        return searchValue;
-    }
-
-    public void setSearchValue(String searchValue)
-    {
-        this.searchValue = searchValue;
-    }
-
-    public String getCreateBy()
-    {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy)
-    {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateTime()
-    {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime)
-    {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy()
-    {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy)
-    {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime()
-    {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime)
-    {
-        this.updateTime = updateTime;
-    }
-
-    public String getRemark()
-    {
-        return remark;
-    }
-
-    public void setRemark(String remark)
-    {
-        this.remark = remark;
-    }
 
     public Map<String, Object> getParams()
     {

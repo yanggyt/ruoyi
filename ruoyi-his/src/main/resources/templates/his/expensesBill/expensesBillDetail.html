@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('清单详情列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+	<div class="row">
+		<div class="col-sm-12 search-collapse">
+			<form id="formId">
+				<div class="select-list">
+					<ul>
+						<li>
+							<label>处方ID：</label>
+							<input type="text" name="recipeId" th:value="${bill!=null?bill.recipeId:''}"/>
+						</li>
+						<li>
+							<label>费用名称：</label>
+							<input type="text" name="feeName" th:value="${bill!=null?bill.feeName:''}"/>
+						</li>
+						<li>
+							<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+							<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+
+		<div class="btn-group-sm" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="his:detail:add">
+				<i class="fa fa-plus"></i> 添加
+			</a>
+			<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="his:detail:edit">
+				<i class="fa fa-edit"></i> 修改
+			</a>
+			<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="his:detail:remove">
+				<i class="fa fa-remove"></i> 删除
+			</a>
+			<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="his:detail:export">
+				<i class="fa fa-download"></i> 导出
+			</a>
+		</div>
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table"></table>
+		</div>
+	</div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+	var editFlag = [[${@permission.hasPermi('his:detail:edit')}]];
+	var removeFlag = [[${@permission.hasPermi('his:detail:remove')}]];
+	var prefix = ctx + "his/expensesBill/detail";
+
+	$(function() {
+		var options = {
+			url: prefix + "/list",
+			createUrl: prefix + "/add",
+			updateUrl: prefix + "/edit/{id}",
+			removeUrl: prefix + "/remove",
+			exportUrl: prefix + "/export",
+			modalName: "清单详情",
+			columns: [{
+				checkbox: true
+			},
+				{
+					field: 'id',
+					title: '主键ID',
+					visible: false
+				},
+				{
+					field: 'billId',
+					title: '清单ID',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					field: 'billDetailId',
+					title: '清单详情ID',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					field: 'recipeId',
+					title: '处方ID',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					field: 'recipeCode',
+					title: '处方号',
+					visible: false
+				},
+				{
+					field: 'fee',
+					title: '金额',
+					align: 'center',
+				},
+				{
+					field: 'feeName',
+					title: '费用名称',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					field: 'billDoctor',
+					title: '处方医生',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					field: 'billDept',
+					title: '开单科室',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					field: 'operateDept',
+					title: '执行科室',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					field: 'billTime',
+					title: '开单时间',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					field: 'amount',
+					title: '数量',
+					align: 'center',
+				},
+				{
+					field: 'unit',
+					title: '单位',
+					align: 'center',
+				},
+				{
+					field: 'specification',
+					title: '规格',
+					align: 'center',
+				},
+				{
+					field: 'unitPrice',
+					title: '单价',
+					align: 'center',
+				},
+				{
+					field: 'costItemName',
+					title: '费用项目名称',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return $.table.tooltip(value, 10, "open");
+					}
+				},
+				{
+					title: '操作',
+					align: 'center',
+					formatter: function(value, row, index) {
+						var actions = [];
+						actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+						actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+					}
+				}]
+		};
+		$.table.init(options);
+	});
+</script>
+</body>
+</html>

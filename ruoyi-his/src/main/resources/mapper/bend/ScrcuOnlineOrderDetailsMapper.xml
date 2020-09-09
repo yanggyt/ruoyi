@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bend.mapper.ScrcuOnlineOrderDetailsMapper">
+    
+    <resultMap type="ScrcuOnlineOrderDetails" id="ScrcuOnlineOrderDetailsResult">
+        <result property="id"    column="id"    />
+        <result property="merId"    column="mer_id"    />
+        <result property="parentMerId"    column="parent_mer_id"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="subOrderNumber"    column="sub_order_number"    />
+        <result property="subOrderAmt"    column="sub_order_amt"    />
+        <result property="subPayAmt"    column="sub_pay_amt"    />
+        <result property="logisCode"    column="logis_code"    />
+        <result property="redPacketOrgNo"    column="red_packet_org_no"    />
+        <result property="autoSettleFlag"    column="auto_settle_flag"    />
+        <result property="goodsInfo"    column="goods_info"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectScrcuOnlineOrderDetailsVo">
+        select id, mer_id, parent_mer_id, org_code, order_number, sub_order_number, sub_order_amt, sub_pay_amt, logis_code, red_packet_org_no, auto_settle_flag, goods_info, create_time, deleted from scrcu_online_order_details
+    </sql>
+
+    <select id="selectScrcuOnlineOrderDetailsList" parameterType="ScrcuOnlineOrderDetails" resultMap="ScrcuOnlineOrderDetailsResult">
+        <include refid="selectScrcuOnlineOrderDetailsVo"/>
+        <where>  
+            <if test="merId != null  and merId != ''"> and mer_id = #{merId}</if>
+            <if test="orgCode != null  and orgCode != ''"> and org_code = #{orgCode}</if>
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number = #{orderNumber}</if>
+            <if test="subOrderNumber != null  and subOrderNumber != ''"> and sub_order_number = #{subOrderNumber}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectScrcuOnlineOrderDetailsById" parameterType="Long" resultMap="ScrcuOnlineOrderDetailsResult">
+        <include refid="selectScrcuOnlineOrderDetailsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertScrcuOnlineOrderDetails" parameterType="ScrcuOnlineOrderDetails" useGeneratedKeys="true" keyProperty="id">
+        insert into scrcu_online_order_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="merId != null">mer_id,</if>
+            <if test="parentMerId != null">parent_mer_id,</if>
+            <if test="orgCode != null">org_code,</if>
+            <if test="orderNumber != null">order_number,</if>
+            <if test="subOrderNumber != null">sub_order_number,</if>
+            <if test="subOrderAmt != null">sub_order_amt,</if>
+            <if test="subPayAmt != null">sub_pay_amt,</if>
+            <if test="logisCode != null">logis_code,</if>
+            <if test="redPacketOrgNo != null">red_packet_org_no,</if>
+            <if test="autoSettleFlag != null">auto_settle_flag,</if>
+            <if test="goodsInfo != null">goods_info,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="merId != null">#{merId},</if>
+            <if test="parentMerId != null">#{parentMerId},</if>
+            <if test="orgCode != null">#{orgCode},</if>
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="subOrderNumber != null">#{subOrderNumber},</if>
+            <if test="subOrderAmt != null">#{subOrderAmt},</if>
+            <if test="subPayAmt != null">#{subPayAmt},</if>
+            <if test="logisCode != null">#{logisCode},</if>
+            <if test="redPacketOrgNo != null">#{redPacketOrgNo},</if>
+            <if test="autoSettleFlag != null">#{autoSettleFlag},</if>
+            <if test="goodsInfo != null">#{goodsInfo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScrcuOnlineOrderDetails" parameterType="ScrcuOnlineOrderDetails">
+        update scrcu_online_order_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="merId != null">mer_id = #{merId},</if>
+            <if test="parentMerId != null">parent_mer_id = #{parentMerId},</if>
+            <if test="orgCode != null">org_code = #{orgCode},</if>
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="subOrderNumber != null">sub_order_number = #{subOrderNumber},</if>
+            <if test="subOrderAmt != null">sub_order_amt = #{subOrderAmt},</if>
+            <if test="subPayAmt != null">sub_pay_amt = #{subPayAmt},</if>
+            <if test="logisCode != null">logis_code = #{logisCode},</if>
+            <if test="redPacketOrgNo != null">red_packet_org_no = #{redPacketOrgNo},</if>
+            <if test="autoSettleFlag != null">auto_settle_flag = #{autoSettleFlag},</if>
+            <if test="goodsInfo != null">goods_info = #{goodsInfo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScrcuOnlineOrderDetailsById" parameterType="Long">
+        delete from scrcu_online_order_details where id = #{id}
+    </delete>
+
+    <delete id="deleteScrcuOnlineOrderDetailsByIds" parameterType="String">
+        delete from scrcu_online_order_details where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

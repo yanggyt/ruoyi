@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.his.mapper.HisDoctorMapper">
+    
+    <resultMap type="HisDoctor" id="HisDoctorResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="doctorId"    column="doctor_id"    />
+        <result property="doctorName"    column="doctor_name"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="jobTitle"    column="job_title"    />
+        <result property="workingYears"    column="working_years"    />
+        <result property="expertiseAreas"    column="expertise_areas"    />
+        <result property="doctorProfile"    column="doctor_profile"    />
+        <result property="fans"    column="fans"    />
+        <result property="starRating"    column="star_rating"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="isVirtualAccount"    column="is_virtual_account"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="dailyRegisteredNum"    column="daily_registered_num"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectHisDoctorVo">
+        select id, member_id, doctor_id, doctor_name, org_code, org_name, dept_id, dept_name, mobile_phone, avatar, job_title, working_years, expertise_areas, doctor_profile, fans, star_rating, is_show, is_virtual_account, template_id, template_name, daily_registered_num, sort_no, create_time, update_time, deleted from his_doctor
+    </sql>
+
+    <select id="selectHisDoctorList" parameterType="HisDoctor" resultMap="HisDoctorResult">
+        <include refid="selectHisDoctorVo"/>
+        <where>  
+            <if test="doctorId != null  and doctorId != ''"> and doctor_id = #{doctorId}</if>
+            <if test="doctorName != null  and doctorName != ''"> and doctor_name like concat('%', #{doctorName}, '%')</if>
+            <if test="orgCode != null  and orgCode != ''"> and org_code = #{orgCode}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+            <if test="isVirtualAccount != null "> and is_virtual_account = #{isVirtualAccount}</if>
+        </where>
+    </select>
+    <select id="selectHisDoctorOrgCode" parameterType="String" resultMap="HisDoctorResult">
+        <include refid="selectHisDoctorVo"/>
+        <where>
+            <if test="orgCode != null  and orgCode != ''"> and org_code = #{orgCode}</if>
+        </where>
+    </select>
+
+    <select id="getVirtualAccount" parameterType="String" resultMap="HisDoctorResult">
+        <include refid="selectHisDoctorVo"/>
+        where is_virtual_account = 1
+        limit 1
+    </select>
+
+    <select id="getVirtualAccountById" parameterType="String" resultMap="HisDoctorResult">
+        <include refid="selectHisDoctorVo"/>
+        where is_virtual_account = 1 and doctor_id =#{vmUserId}
+        limit 1
+    </select>
+
+    <select id="selectHisDoctorById" parameterType="Long" resultMap="HisDoctorResult">
+        <include refid="selectHisDoctorVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHisDoctor" parameterType="HisDoctor" useGeneratedKeys="true" keyProperty="id">
+        insert into his_doctor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="doctorId != null and doctorId != ''">doctor_id,</if>
+            <if test="doctorName != null and doctorName != ''">doctor_name,</if>
+            <if test="orgCode != null">org_code,</if>
+            <if test="orgName != null">org_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="mobilePhone != null">mobile_phone,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="jobTitle != null">job_title,</if>
+            <if test="workingYears != null">working_years,</if>
+            <if test="expertiseAreas != null">expertise_areas,</if>
+            <if test="doctorProfile != null">doctor_profile,</if>
+            <if test="fans != null">fans,</if>
+            <if test="starRating != null">star_rating,</if>
+            <if test="isShow != null">is_show,</if>
+            <if test="isVirtualAccount != null">is_virtual_account,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="templateName != null">template_name,</if>
+            <if test="dailyRegisteredNum != null">daily_registered_num,</if>
+            <if test="sortNo != null">sort_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="doctorId != null and doctorId != ''">#{doctorId},</if>
+            <if test="doctorName != null and doctorName != ''">#{doctorName},</if>
+            <if test="orgCode != null">#{orgCode},</if>
+            <if test="orgName != null">#{orgName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="mobilePhone != null">#{mobilePhone},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="jobTitle != null">#{jobTitle},</if>
+            <if test="workingYears != null">#{workingYears},</if>
+            <if test="expertiseAreas != null">#{expertiseAreas},</if>
+            <if test="doctorProfile != null">#{doctorProfile},</if>
+            <if test="fans != null">#{fans},</if>
+            <if test="starRating != null">#{starRating},</if>
+            <if test="isShow != null">#{isShow},</if>
+            <if test="isVirtualAccount != null">#{isVirtualAccount},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="templateName != null">#{templateName},</if>
+            <if test="dailyRegisteredNum != null">#{dailyRegisteredNum},</if>
+            <if test="sortNo != null">#{sortNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisDoctor" parameterType="HisDoctor">
+        update his_doctor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="doctorId != null and doctorId != ''">doctor_id = #{doctorId},</if>
+            <if test="doctorName != null and doctorName != ''">doctor_name = #{doctorName},</if>
+            <if test="orgCode != null">org_code = #{orgCode},</if>
+            <if test="orgName != null">org_name = #{orgName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="jobTitle != null">job_title = #{jobTitle},</if>
+            <if test="workingYears != null">working_years = #{workingYears},</if>
+            <if test="expertiseAreas != null">expertise_areas = #{expertiseAreas},</if>
+            <if test="doctorProfile != null">doctor_profile = #{doctorProfile},</if>
+            <if test="fans != null">fans = #{fans},</if>
+            <if test="starRating != null">star_rating = #{starRating},</if>
+            <if test="isShow != null">is_show = #{isShow},</if>
+            <if test="isVirtualAccount != null">is_virtual_account = #{isVirtualAccount},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="templateName != null">template_name = #{templateName},</if>
+            <if test="dailyRegisteredNum != null">daily_registered_num = #{dailyRegisteredNum},</if>
+            <if test="sortNo != null">sort_no = #{sortNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHisDoctorById" parameterType="Long">
+        delete from his_doctor where id = #{id}
+    </delete>
+
+    <delete id="deleteHisDoctorByIds" parameterType="String">
+        delete from his_doctor where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
