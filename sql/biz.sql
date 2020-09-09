@@ -58,6 +58,7 @@ CREATE TABLE `biz_account_detail` (
    `type_detail` tinyint(4) NOT NULL COMMENT '变动详情.1：充值；2:提现；3:转账；4:冲正；5:支付',
    `before_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '账户变更前金额',
    `after_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '账户变更后金额',
+   `change_desc` varchar(64) DEFAULT '' COMMENT '交易备注：充值【一级推荐奖励】，充值【二级推荐奖励】，充值【团队奖励】，充值【专项划拨】，转账【专项划拨】',
    `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
    `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
@@ -66,10 +67,34 @@ CREATE TABLE `biz_account_detail` (
 ) COMMENT='会员账户明细表';
 
 -- 个人团队奖励明细表
-
+CREATE TABLE `biz_team_reward` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '团队奖励ID',
+  `member_id` bigint(20) NOT NULL COMMENT '会员ID',
+  `reward_member_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '团队用户ID',
+  `reward_product_count` int(11) NOT NULL DEFAULT 0 COMMENT '用户购买产品数量',
+  `reward_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '奖励的福豆数量',
+  `product_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '产品ID',
+  `reward_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '奖励类型：0:一级直推；1:二级推荐；2:平级；',
+  `reward_date` datetime DEFAULT NULL COMMENT '奖励时间',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) COMMENT='团队奖励明细表';
 -- 三方回调表
 
 -- 兑现申请记录表
+CREATE TABLE `biz_cash_info` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '兑现申请ID',
+  `member_id` bigint(20) NOT NULL COMMENT '会员ID',
+  `account_id` bigint(20) NOT NULL COMMENT '会员账户ID',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) COMMENT='兑现申请记录表';
 
 CREATE TABLE `biz_product_type` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '产品分类ID',
