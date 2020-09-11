@@ -1000,18 +1000,49 @@ var table = {
 			// 删除信息
 			pauseUser: function(uid, state) {
 				table.set();
-				// $.modal.confirm("确定删除该条" + table.options.modalName + "信息吗？", function() {
-				// 	var url = $.common.isEmpty(id) ? table.options.removeUrl : table.options.removeUrl.replace("{id}", id);
-				// 	if(table.options.type == table_type.bootstrapTreeTable) {
-				// 		$.operate.get(url);
-				// 	} else {
-				// 		var data = { "ids": id };
-				// 		$.operate.submit(url, "post", "json", data);
-				// 	}
-				// });
-
 				var data = { "uid": uid, "state": state };
 				$.operate.submit(table.options.pauseUrl, "post", "json", data);
+			},
+			changeProjectPri: function(pid, change) {
+				table.set();
+				var data = { "pid": pid, "change": change };
+				$.operate.submit(table.options.changePriUrl, "post", "json", data);
+			},
+			pauseProject: function(pid) {
+        		if(-1 == pid) {
+					var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (rows.length == 0) {
+						$.modal.alertWarning("请至少选择一条记录");
+						return;
+					}
+					$.modal.confirm("确认要暂停选中的" + rows.length + "条数据吗?", function() {
+						var url = table.options.pauseUrl;
+						var data = { "ids": rows.join() };
+						$.operate.submit(url, "post", "json", data);
+					});
+				} else {
+					table.set();
+					var data = { "ids": pid};
+					$.operate.submit(table.options.pauseUrl, "post", "json", data);
+				}
+			},
+			restoreProject: function(pid) {
+				table.set();
+				var data = { "pid": pid};
+				$.operate.submit(table.options.restoreUrl, "post", "json", data);
+			},
+			startAllProjects: function() {
+				table.set();
+				var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一条记录");
+					return;
+				}
+				$.modal.confirm("确认要开始选中的" + rows.length + "条数据吗?", function() {
+					var url = table.options.startUrl;
+					var data = { "ids": rows.join() };
+					$.operate.submit(url, "post", "json", data);
+				});
 			},
             // 批量删除信息
             removeAll: function() {

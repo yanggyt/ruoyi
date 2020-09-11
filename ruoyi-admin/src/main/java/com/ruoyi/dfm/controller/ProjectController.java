@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.dfm.constant.UserConstants;
 import com.ruoyi.dfm.pojo.*;
 import com.ruoyi.dfm.service.FileService;
@@ -13,9 +16,11 @@ import com.ruoyi.dfm.util.PropertiesUtils;
 import com.ruoyi.dfm.util.TimeUtil;
 import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
+import org.aspectj.weaver.loadtime.Aj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,9 +46,13 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/project.do")
-public class ProjectController extends BaseController
+public class ProjectController extends com.ruoyi.common.core.controller.BaseController
 {
   private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
+
+  @Value("${wait.time:10}")
+  private Integer waitTime;
+
   @Autowired
   private ProjectService projectService;
   @Autowired
@@ -239,7 +248,7 @@ public class ProjectController extends BaseController
     {
       page.setCurrentPage(Integer.parseInt(currentPage));
     }
-    UserInfo user = getUserInfo(req);
+    UserInfo user = ShiroUtils.getLoginUser();
     List<Project> projects = null;
     Project pre = null;
     Project next = null;
@@ -295,7 +304,7 @@ public class ProjectController extends BaseController
       users = depUsers;
     }
 
-    Integer waitTime = Integer.parseInt(PropertiesUtils.getProperties().getProperty("wait.time", "10"));
+//    Integer waitTime = Integer.parseInt(PropertiesUtils.getProperties().getProperty("wait.time", "10"));
 
     if(null != projects && !projects.isEmpty()) {
       //融合实际排序
@@ -316,77 +325,90 @@ public class ProjectController extends BaseController
     req.setAttribute("projects", projects);
     req.setAttribute("page", page);
     req.setAttribute("users", users);
-    return new ModelAndView("queueManage");
+    return new ModelAndView("dfm/queueManage");
   }
 
+
   @RequestMapping("/pause")
-  public void pause(HttpServletRequest req, HttpServletResponse res)
+  @ResponseBody
+  public AjaxResult pause(HttpServletRequest req, HttpServletResponse res)
     throws Exception
   {
     try
     {
-      String pid = req.getParameter("pid");
+      String pid = req.getParameter("ids");
       String[] pids = pid.split(",");
 
-      String currentPage = req.getParameter("currentPage");
+//      String currentPage = req.getParameter("currentPage");
       this.projectService.pauseProject(pids);
-      outputMsg(res, "<script>document.location.href='project.do?method=queueManage&currentPage=" + currentPage + "';</script>");
+      return toAjax(1);
+//      outputMsg(res, "<script>document.location.href='project.do?method=queueManage&currentPage=" + currentPage + "';</script>");
     } catch (Exception e) {
       logger.error("暂停项目失败！", e);
-      outputMsg(res, "<script>alert('暂停项目失败，请联系管理员！');window.history.go(-1);</script>");
+      return toAjax(0);
+//      outputMsg(res, "<script>alert('暂停项目失败，请联系管理员！');window.history.go(-1);</script>");
     }
   }
 
   @RequestMapping("/start")
-  public void start(HttpServletRequest req, HttpServletResponse res)
+  @ResponseBody
+  public AjaxResult start(HttpServletRequest req, HttpServletResponse res)
 		    throws Exception
   {
     try
     {
-      String pid = req.getParameter("pid");
+      String pid = req.getParameter("ids");
       String[] pids = pid.split(",");
 
-      String currentPage = req.getParameter("currentPage");
+//      String currentPage = req.getParameter("currentPage");
       this.projectService.startProject(pids);
-      outputMsg(res, "<script>document.location.href='project.do?method=queueManage&currentPage=" + currentPage + "';</script>");
+//      outputMsg(res, "<script>document.location.href='project.do?method=queueManage&currentPage=" + currentPage + "';</script>");
+      return toAjax(1);
     } catch (Exception e) {
       logger.error("批量开始项目失败！", e);
-      outputMsg(res, "<script>alert('暂停开始失败，请联系管理员！');window.history.go(-1);</script>");
+      return toAjax(0);
+//      outputMsg(res, "<script>alert('暂停开始失败，请联系管理员！');window.history.go(-1);</script>");
     }
   }
 
   @RequestMapping("/restore")
-  public void restore(HttpServletRequest req, HttpServletResponse res) throws Exception
+  @ResponseBody
+  public AjaxResult restore(HttpServletRequest req, HttpServletResponse res) throws Exception
   {
     try
     {
       String pid = req.getParameter("pid");
 
-      String currentPage = req.getParameter("currentPage");
+//      String currentPage = req.getParameter("currentPage");
       this.projectService.restoreProject(pid);
-      outputMsg(res, "<script>document.location.href='project.do?method=queueManage&currentPage=" + currentPage + "';</script>");
+      return toAjax(1);
+//      outputMsg(res, "<script>document.location.href='project.do?method=queueManage&currentPage=" + currentPage + "';</script>");
     } catch (Exception e) {
       logger.error("恢复项目失败！", e);
-      outputMsg(res, "<script>alert('恢复项目失败，请联系管理员！');window.history.go(-1);</script>");
+//      outputMsg(res, "<script>alert('恢复项目失败，请联系管理员！');window.history.go(-1);</script>");
+      return toAjax(0);
     }
   }
 
   @RequestMapping("/delete")
-  public void delete(HttpServletRequest req, HttpServletResponse res) throws Exception
+  @ResponseBody
+  public AjaxResult delete(HttpServletRequest req, HttpServletResponse res) throws Exception
   {
     try
     {
-      String source = req.getParameter("source");
-      String pid = req.getParameter("pid");
+//      String source = req.getParameter("source");
+      String pid = req.getParameter("ids");
 
       String[] pids = pid.split(",");
       this.projectService.deleteProject(pids);
 
-      String currentPage = req.getParameter("currentPage");
-      outputMsg(res, "<script>alert('删除成功，确定跳转到队列管理！');document.location.href='project.do?method=" + source + "&currentPage=" + currentPage + "';</script>");
+//      String currentPage = req.getParameter("currentPage");
+      return toAjax(1);
+//      outputMsg(res, "<script>alert('删除成功，确定跳转到队列管理！');document.location.href='project.do?method=" + source + "&currentPage=" + currentPage + "';</script>");
     } catch (Exception e) {
       logger.error("删除项目失败！", e);
-      outputMsg(res, "<script>alert('删除失败，确定跳转到队列管理！');window.history.go(-1);</script>");
+//      outputMsg(res, "<script>alert('删除失败，确定跳转到队列管理！');window.history.go(-1);</script>");
+      return toAjax(0);
     }
   }
 
@@ -412,7 +434,7 @@ public class ProjectController extends BaseController
       page.setCurrentPage(Integer.parseInt(currentPage));
     }
 
-    UserInfo user = getUserInfo(req);
+    UserInfo user = ShiroUtils.getLoginUser();
     List projects = null;
     List users = null;
 
@@ -594,7 +616,7 @@ public class ProjectController extends BaseController
 			String fid = req.getParameter("fid");
 			FileInfo fileInfo = fileService.getById(Integer.parseInt(fid));
 
-			UserInfo currentUser = getUserInfo(req);
+			UserInfo currentUser = ShiroUtils.getLoginUser();
 			if (currentUser.getGroupId() == UserConstants.USER_LEVEL_NORMAL
 					&& currentUser.getId() != fileInfo.getUploadUser()) {
 				outputMsg(response, "{\"success\":false,\"message\":\"该文件没有权限下载，请联系管理员！\"}");
@@ -616,9 +638,11 @@ public class ProjectController extends BaseController
 
 
   @RequestMapping("/queryProject")
-  public ModelAndView queryProject(HttpServletRequest req, HttpServletResponse res)
+  @ResponseBody
+  public TableDataInfo queryProject(HttpServletRequest req, HttpServletResponse res)
     throws Exception
   {
+    startPage();
     String queryType = req.getParameter("queryType");
     String projectName = req.getParameter("projectName");
     String username = req.getParameter("username");
@@ -633,20 +657,26 @@ public class ProjectController extends BaseController
     queryBean.setState(state);
     queryBean.setUsername(username);
 
-    String currentPage = req.getParameter("currentPage");
+//    String currentPage = req.getParameter("currentPage");
     Page page = new Page();
-    if ((currentPage == null) || ("".equals(currentPage.trim())))
-    {
-      page.setCurrentPage(1);
-    }
-    else
-    {
-      page.setCurrentPage(Integer.parseInt(currentPage));
-    }
+    PageDomain pageDomain = TableSupport.getPageDomain();
+    page.setCurrentPage(pageDomain.getPageNum());
+    page.setPageSize(pageDomain.getPageSize());
+
+
+
+//    if ((currentPage == null) || ("".equals(currentPage.trim())))
+//    {
+//      page.setCurrentPage(1);
+//    }
+//    else
+//    {
+//      page.setCurrentPage(Integer.parseInt(currentPage));
+//    }
 
     String[] states = new String[3];
     List<Project> projects = null;
-    UserInfo user = getUserInfo(req);
+    UserInfo user = ShiroUtils.getLoginUser();
     List users = null;
     if ("resultDownload".equals(queryType))
     {
@@ -692,7 +722,9 @@ public class ProjectController extends BaseController
 //      req.setAttribute("queryParam", JSONObject.fromObject(queryBean));
       req.setAttribute("queryParam", JSON.toJSONString(queryBean));
       req.setAttribute("loadType", "query");
-      return new ModelAndView("resultDownload");
+      //FIXME 修改返回类型
+//      return new ModelAndView("resultDownload");
+      return null;
     }
     if ("queueManage".equals(queryType))
     {
@@ -704,35 +736,56 @@ public class ProjectController extends BaseController
       Page tempPage = new Page();
       tempPage.setCurrentPage(1);
       tempPage.setPageSize(999999);
+      Project pre = null;
+      Project next = null;
       //查询所有的项目，按照优先级排序
       List<Project> totalByStates = projectService.getProjectByStates(states, tempPage, null);
 
       if (UserConstants.USER_LEVEL_ADMIN == user.getGroupId())
       {
         projects = this.projectService.getProjectByStates(states, page, queryBean);
+        if ((projects != null) && (!(projects.isEmpty())))
+        {
+          pre = this.projectService.getByPriState("up", ((Project)projects.get(0)).getId(), null, "待查");
+          next = this.projectService.getByPriState("down", ((Project)projects.get(projects.size() - 1)).getId(), null, "待查");
+        }
         users = this.userService.getAllUser();
       }
       else if (UserConstants.USER_LEVEL_NORMAL == user.getGroupId() || UserConstants.USER_LEVEL_SUPER_USER == user.getGroupId())
       {
         projects = this.projectService.getProjectByStates(states, new int[]{user.getId()}, page, queryBean);
+        if ((projects != null) && (!(projects.isEmpty())))
+        {
+          pre = this.projectService.getByPriState("up", ((Project)projects.get(0)).getId(), new int[]{user.getId()}, "待查");
+          next = this.projectService.getByPriState("down", ((Project)projects.get(projects.size() - 1)).getId(), new int[]{user.getId()}, "待查");
+        }
         users = Arrays.asList(user);
       }
       //部门管理员可以查看部门所有人的项目
       else if (UserConstants.USER_LEVEL_DEP_ADMIN == user.getGroupId())
       {
         String department = user.getDepartment();
+        //根据部门查询部门所有用户
         List<UserInfo> depUsers = userService.getByDepartment(department);
         int[] uids = new int [depUsers.size()];
         for (int i=0;i<uids.length;i++) {
           uids[i] = depUsers.get(i).getId();
         }
+        //根据部门用户查询出所有部门的项目
         projects = this.projectService.getProjectByStates(states, uids, page, queryBean);
+        if ((projects != null) && (!(projects.isEmpty())))
+        {
+          pre = this.projectService.getByPriState("up", ((Project)projects.get(0)).getId(), uids, "待查");
+          next = this.projectService.getByPriState("down", ((Project)projects.get(projects.size() - 1)).getId(), uids, "待查");
+        }
         users = depUsers;
       }
-      Integer waitTime = Integer.parseInt(PropertiesUtils.getProperties().getProperty("wait.time", "10"));
+//      Integer waitTime = Integer.parseInt(PropertiesUtils.getProperties().getProperty("wait.time", "10"));
       if(null != projects && !projects.isEmpty()) {
         //融合实际排序
         for(Project project : projects) {
+          project.setHasNext(null != next);
+          project.setHasPre(null != pre);
           for(int i=0;i<totalByStates.size();i++) {
             Project projectOrder = totalByStates.get(i);
             if(project.getId() == projectOrder.getId()) {
@@ -744,17 +797,21 @@ public class ProjectController extends BaseController
         }
       }
 
-      req.setAttribute("projects", projects);
-      req.setAttribute("page", page);
-      req.setAttribute("users", users);
-      return new ModelAndView("queueManage");
+//      req.setAttribute("projects", projects);
+//      req.setAttribute("page", page);
+//      req.setAttribute("users", users);
+//      req.setAttribute("hasPre", null != pre);
+//      req.setAttribute("hasNext", null != next);
+//      return new ModelAndView("queueManage");
+      return getDataTable(projects, page.getTotalCount());
     }
 
     return null;
   }
 
+  @ResponseBody
   @RequestMapping("/changePri")
-  public void changePri(HttpServletRequest req, HttpServletResponse res)
+  public AjaxResult changePri(HttpServletRequest req, HttpServletResponse res)
     throws Exception
   {
     try
@@ -762,16 +819,17 @@ public class ProjectController extends BaseController
       String pid = req.getParameter("pid");
       String change = req.getParameter("change");
 
-      String currentPage = req.getParameter("currentPage");
+//      String currentPage = req.getParameter("currentPage");
       int uids[] = null;
-      if (UserConstants.USER_LEVEL_NORMAL == getUserInfo(req).getGroupId())
+      UserInfo loginUser = ShiroUtils.getLoginUser();
+      if (UserConstants.USER_LEVEL_NORMAL == loginUser.getGroupId())
       {
-        uids = new int[]{getUserInfo(req).getId()};
+        uids = new int[]{loginUser.getId()};
       }
-      else if (UserConstants.USER_LEVEL_DEP_ADMIN == getUserInfo(req).getGroupId())
+      else if (UserConstants.USER_LEVEL_DEP_ADMIN == loginUser.getGroupId())
       {
         //根据部门查询部门所有用户
-        String department = getUserInfo(req).getDepartment();
+        String department = loginUser.getDepartment();
         List<UserInfo> depUsers = userService.getByDepartment(department);
         uids = new int [depUsers.size()];
         for (int i=0;i<uids.length;i++) {
@@ -779,11 +837,13 @@ public class ProjectController extends BaseController
         }
       }
       this.projectService.changePri(pid, uids, change);
-      outputMsg(res, "<script>document.location.href='project.do?method=queueManage&currentPage=" + currentPage + "';</script>");
+      return toAjax(1);
+//      outputMsg(res, "<script>document.location.href='project.do?method=queueManage&currentPage=" + currentPage + "';</script>");
     }
     catch (Exception e) {
       logger.error("调整优先级失败！", e);
-      outputMsg(res, "<script>alert('调整优先级失败，请联系管理员！');window.history.go(-1);</script>");
+//      outputMsg(res, "<script>alert('调整优先级失败，请联系管理员！');window.history.go(-1);</script>");
+      return toAjax(0);
     }
   }
 

@@ -116,7 +116,7 @@ public class ProjectDAO extends JdbcBaseDao
         sql = sql + " ORDER BY T.F_END_TIME DESC limit ?,?";
         break;
       }
-      if (!("在查".equals(state)))
+      if (!(ProjectConstants.PROJECT_STATE_ZAICHA.equals(state)))
       {
     	  continue;
       }
@@ -127,7 +127,7 @@ public class ProjectDAO extends JdbcBaseDao
 
     params.add(Integer.valueOf(start));
     params.add(Integer.valueOf(page.getPageSize()));
-    List<Project> list = getJdbcTemplate().queryForList(sql, params.toArray(), Project.class);
+    List<Map<String, Object>> list = getJdbcTemplate().queryForList(sql, params.toArray());
     List<Project> rs = null;
     if ((list == null) || (list.size() <= 0)) {
       return rs;
@@ -135,12 +135,12 @@ public class ProjectDAO extends JdbcBaseDao
     rs = new ArrayList();
     for (int k = 0; k < list.size(); ++k)
     {
-      Map map = (Map)list.get(k);
-      ((List)rs).add(map2Bean(map));
+      Map map = list.get(k);
+      rs.add(map2Bean(map));
     }
 
     PageUtil.constructPage(page, totalCount);
-    return ((List<Project>)rs);
+    return rs;
   }
 
   private int getCountByStates(String[] states, ProjectQueryBean queryBean)
@@ -199,7 +199,9 @@ public class ProjectDAO extends JdbcBaseDao
     project.setDirectionBotFs((map.get("F_Direction_Bot_Fs") == null) ? 0 : Integer.parseInt(map.get("F_Direction_Bot_Fs").toString()));
     project.setDensity((map.get("F_Density") == null) ? "" : map.get("F_Density").toString());
     project.setSubmitUser((map.get("F_SUBMIT_USER") == null) ? 0 : Integer.parseInt(map.get("F_SUBMIT_USER").toString()));
-    project.setSubmitTime((map.get("F_SUBMIT_TIME") == null) ? "" : map.get("F_SUBMIT_TIME").toString());
+    String submitTime = (map.get("F_SUBMIT_TIME") == null) ? "" : map.get("F_SUBMIT_TIME").toString();
+    //project.setSubmitTime();
+    project.setSubmitTime(TimeUtil.getDateStrByFormat(submitTime,"yyyy-MM-dd HH:mm:ss"));
     project.setEndTime((map.get("F_END_TIME") == null) ? "" : map.get("F_END_TIME").toString());
     project.setState((map.get("F_STATE") == null) ? "" : map.get("F_STATE").toString());
     project.setTaskNum((map.get("T_TASK_NUM") == null) ? 0 : Integer.parseInt(map.get("T_TASK_NUM").toString()));

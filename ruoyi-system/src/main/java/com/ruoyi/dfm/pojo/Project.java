@@ -57,9 +57,27 @@ public class Project implements Serializable {
 	private Integer waitTime;
 	//备注
 	private String remark;
-	
-	
-	public String getRunTime() {
+
+	private boolean hasPre;
+	private boolean hasNext;
+
+    public boolean isHasPre() {
+        return hasPre;
+    }
+
+    public void setHasPre(boolean hasPre) {
+        this.hasPre = hasPre;
+    }
+
+    public boolean isHasNext() {
+        return hasNext;
+    }
+
+    public void setHasNext(boolean hasNext) {
+        this.hasNext = hasNext;
+    }
+
+    public String getRunTime() {
 		return this.runTime;
 	}
 

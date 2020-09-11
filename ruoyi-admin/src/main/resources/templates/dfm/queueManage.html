@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('队列管理')" />
+	<th:block th:include="include :: select2-css" />
+	<th:block th:include="include :: select2-js" />
+	<th:block th:include="include :: layout-latest-css" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="role-form">
+					<div class="select-list">
+						<ul>
+							<li>
+								项目名：<input type="text" name="projectName"/>
+							</li>
+							<li>
+								上传人：
+								<select name="status" class="form-control m-b">
+									<option value="">--请选择--</option>
+									<option th:each="user : ${users}" th:text="${user.username}" th:value="${user.username}"></option>
+								</select>
+							</li>
+							<li>
+								状态：
+								<select name="state" class="form-control m-b">
+									<option value="">--请选择--</option>
+									<option value="在查">在查</option>
+									<option value="待查">待查</option>
+									<option value="暂停">暂停</option>
+								</select>
+							</li>
+							<li class="select-time">
+								上传时间：
+								<div>
+									<input type="text" class="time-input" id="startSubmitTime" placeholder="开始时间" name="params[startSubmitTime]" readOnly/>
+									<span>-</span>
+									<input type="text" class="time-input" id="endSubmitTime" placeholder="结束时间" name="params[endSubmitTime]" readOnly/>
+								</div>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+		
+			<div class="btn-group-sm" id="toolbar" role="group">
+				<!--<a class="btn btn-success" onclick="$.operate.addTab()" >-->
+	                <!--<i class="fa fa-plus"></i> 新增-->
+	            <!--</a>-->
+	            <a class="btn btn-danger multiple disabled" onclick="$.operate.pauseProject(-1)" >
+		            <i class="fa fa-edit"></i> 暂停
+		        </a>
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" >
+		            <i class="fa fa-remove"></i> 删除
+		        </a>
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.startAllProjects()" >
+					<i class="fa fa-play"></i> 开始
+				</a>
+		        <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" >-->
+		            <!--<i class="fa fa-download"></i> 导出-->
+		        <!--</a>-->
+	        </div>
+	        
+	        <div class="col-sm-12 select-table table-striped">
+			    <table id="bootstrap-table"></table>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+		var prefix = ctx + "project.do";
+
+		$(function() {
+		    var options = {
+		        url: prefix + "/queryProject?queryType=queueManage",
+		        createUrl: prefix + "/add",
+		        updateUrl: prefix + "/edit?uid={id}",
+		        removeUrl: prefix + "/delete",
+		        exportUrl: prefix + "/export",
+				pauseUrl: prefix + "/pause",
+				restoreUrl: prefix + "/restore",
+				startUrl: prefix + "/start",
+				changePriUrl : prefix + "/changePri",
+		        sortName: "roleSort",
+		        modalName: "用户",
+		        columns: [
+					{
+		            checkbox: true
+		        },
+		        {
+		            field: 'id',
+					visible: false
+		        },
+		        {
+		            field: 'realOrder',
+		            title: '任务编号',
+		            sortable: false
+		        },
+				{
+					field: 'projectName',
+					title: '项目名',
+					sortable: true
+				},
+				{
+					field: 'version',
+					title: '版本',
+					sortable: true
+				},
+				{
+					field: 'submitUserName',
+					title: '上传人',
+					sortable: true
+				},
+				{
+					field: 'pcbFile',
+					title: '文件名',
+					sortable: false,
+					formatter: function (value, row, index) {
+						var html="";
+						html += "<span>PCB文件:</span><A href='javascript:getFile(\""+ row.pcbFile + "\");'>"+ row.pcbFileName +"</A></br>";
+						html += "<span>BOM文件:</span><A href='javascript:getFile(\""+ row.bomFile + "\");'>"+ row.bomFileName +"</A></br>";
+						var fid;
+						if(0 != row.pcbFile) {
+							fid = row.pcbFile;
+						} else if(0 != row.bomFile) {
+							fid = row.bomFile;
+						}
+						var paramFile = row.projectName + "_" + row.version + ".param";
+						html += "<span >参数文件:</span><A href=\"javascript:getParamFile(" + fid +",'" + paramFile +"');\">"+ paramFile +"</A>";
+						return html;
+					}
+				},
+		        {
+		            field: 'submitTime',
+		            title: '上传时间',
+		            sortable: true
+		        },
+				{
+					field: 'state',
+					title: '状态',
+					sortable: true
+				},{
+					field: 'waitTime',
+					title: '预估等待时间(分钟)',
+					sortable: true
+				},{
+					field: 'pri',
+					title: '优先级调整',
+					sortable: false,
+					formatter: function (value, row, index) {
+						var PROJECT_STATE_DAICHA = '待查';
+
+						if(PROJECT_STATE_DAICHA != row.state) {
+							return "";
+						}
+						var hasPre = row.hasPre;
+						var hasNext = row.hasNext;
+						var html = "";
+
+						//获取列表中所有数据
+						var rows = $('#bootstrap-table').bootstrapTable('getData',{useCurrentPage:true,includeHiddenRows:true});
+						var upImg = "/img/up.gif";
+						var downImg = "/img/down.gif";
+
+						if(index == 0) {
+							if(hasPre) {
+								html += "<a  href=\"javascript:changePri("+ row.id +",'up');\"><img style=\"border:0px;\"src=\""+ upImg +"\" /></a>";
+							}
+						} else {
+							if(PROJECT_STATE_DAICHA == rows[index-1].state)
+							{
+								html += "<a  href=\"javascript:changePri("+ row.id +",'up');\"><img style=\"border:0px;\"src=\""+ upImg + "\" /></a>";
+							}
+						}
+
+						if(index == rows.length-1) {
+							if(hasNext) {
+								html += "<a  href=\"javascript:changePri("+ row.id +",'down');\"><img style=\"border:0px;\"src=\"/img/down.gif\" /></a>";
+							}
+						} else {
+							if(PROJECT_STATE_DAICHA == rows[index+1].state)
+							{
+								html += "<a  href=\"javascript:changePri("+ row.id +",'down');\"><img style=\"border:0px;\"src=\"/img/down.gif\" /></a>";
+							}
+						}
+						return html;
+					}
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		                var actions = [];
+		                var pauseOperType = "";
+						if("暂停" == row.state) {
+							pauseOperType = "继续";
+						} else {
+							pauseOperType = "暂停";
+						}
+		                // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.roleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+		                actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.remove(' + row.id + ')"><i class="fa fa-remove"></i>删除</a> ');
+						if("继续" == pauseOperType) {
+							actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.restoreProject(' + row.id + ')"><i class="fa fa-edit"></i>' + pauseOperType + '</a> ');
+						} else if("暂停" == pauseOperType) {
+							actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.pauseProject(' + row.id + ')"><i class="fa fa-edit"></i>' + pauseOperType + '</a> ');
+						}
+
+
+						// var more = [];
+		                // more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authDataScope(" + row.roleId + ")'><i class='fa fa-check-square-o'></i>数据权限</a> ");
+		                // more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authUser(" + row.roleId + ")'><i class='fa fa-user'></i>分配用户</a>");
+		                // actions.push('<a tabindex="0" class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
+		                return actions.join('');
+		            }
+		        }
+		        ]
+		    };
+		    $.table.init(options);
+		});
+
+		//下载文件
+		function getFile(fid)
+		{
+			// document.location.href='file.do/download?fid=' + fid;
+			var url = ctx + 'file.do/download?fid=' + fid;
+			window.location.href = url;
+		}
+
+		//下载参数文件
+		function getParamFile(fid,fname)
+		{
+			// document.location.href='project.do/downloadParamFile&fid=' + fid + '&fname=' + encodeURI(fname);
+			var url = ctx + 'project.do/downloadParamFile?fid=' + fid + '&fname=' + encodeURI(fname);
+			window.location.href = url;
+		}
+
+
+		//上调优先级
+		function changePri( pid,change )
+		{
+
+			$.operate.changeProjectPri(pid, change);
+			// document.location.href='project.do/changePri?pid='
+			// 		+ pid +
+			// 		'&change='+change +
+			// 		'&currentPage=<%=myPage.getCurrentPage()%>';
+		}
+
+	</script>
+</body>
+</html>

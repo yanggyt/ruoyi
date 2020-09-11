@@ -138,3 +138,9 @@ swagger:
 
 #上传文件根路径
 FILE_PHYSICAL_ROOT: E:/FileRoot/
+FILE_WEB_ROOT: http://localhost:8080/FileRoot/uploadfile
+wait:
+  time: 10
+task:
+  result:
+    inquire=admin: admin
