@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.business.mapper.BizProductTypeMapper">
     
     <resultMap type="BizProductType" id="BizProductTypeResult">
-        <result property="productTypeId"    column="product_type_id"    />
+        <result property="productTypeId"    column="id"    />
         <result property="productTypeCode"    column="product_type_code"    />
         <result property="productTypeName"    column="product_type_name"    />
         <result property="imageUrl"    column="image_url"    />
@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBizProductTypeVo">
-        select product_type_id, product_type_code, product_type_name, image_url, sort, is_enable, create_by, create_time, update_by, update_time from biz_product_type
+        select id, product_type_code, product_type_name, image_url, sort, is_enable, create_by, create_time, update_by, update_time from biz_product_type
     </sql>
 
     <select id="selectBizProductTypeList" parameterType="BizProductType" resultMap="BizProductTypeResult">
@@ -27,12 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productTypeName != null  and productTypeName != ''"> and product_type_name like concat('%', #{productTypeName}, '%')</if>
             <if test="isEnable != null "> and is_enable = #{isEnable}</if>
         </where>
-        order by sort desc, product_type_id desc
+        order by sort desc, id desc
     </select>
     
     <select id="selectBizProductTypeById" parameterType="Long" resultMap="BizProductTypeResult">
         <include refid="selectBizProductTypeVo"/>
-        where product_type_id = #{productTypeId}
+        where id = #{productTypeId}
     </select>
         
     <insert id="insertBizProductType" parameterType="BizProductType" useGeneratedKeys="true" keyProperty="productTypeId">
@@ -74,15 +74,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where product_type_id = #{productTypeId}
+        where id = #{productTypeId}
     </update>
 
     <delete id="deleteBizProductTypeById" parameterType="Long">
-        delete from biz_product_type where product_type_id = #{productTypeId}
+        delete from biz_product_type where id = #{productTypeId}
     </delete>
 
     <delete id="deleteBizProductTypeByIds" parameterType="String">
-        delete from biz_product_type where product_type_id in 
+        delete from biz_product_type where id in
         <foreach item="productTypeId" collection="array" open="(" separator="," close=")">
             #{productTypeId}
         </foreach>

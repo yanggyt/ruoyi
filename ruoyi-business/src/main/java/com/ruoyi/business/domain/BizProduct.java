@@ -40,8 +40,8 @@ public class BizProduct extends BaseEntity
     @Excel(name = "产品单价")
     private Long amount;
 
-    /** 产品返现 */
-    @Excel(name = "产品单价")
+    /** 产品返现金额 */
+    @Excel(name = "产品返现金额")
     private Long cashbackAmount;
 
     /** 排序 */

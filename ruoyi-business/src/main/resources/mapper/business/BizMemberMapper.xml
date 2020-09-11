@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizMemberMapper">
+    
+    <resultMap type="BizMember" id="BizMemberResult">
+        <result property="id"    column="id"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="memberName"    column="member_name"    />
+        <result property="password"    column="password"    />
+        <result property="recommendId"    column="recommend_id"    />
+        <result property="recommendAllId"    column="recommend_all_id"    />
+        <result property="recommendMobile"    column="recommend_mobile"    />
+        <result property="recommendName"    column="recommend_name"    />
+        <result property="memberType"    column="member_type"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="isEnable"    column="is_enable"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizMemberVo">
+        select id, mobile, member_name, password, recommend_id, recommend_all_id, recommend_mobile, recommend_name, member_type, is_delete, is_enable, create_by, create_time, update_by, update_time from biz_member
+    </sql>
+
+    <select id="selectBizMemberList" parameterType="BizMember" resultMap="BizMemberResult">
+        <include refid="selectBizMemberVo"/>
+        <where>  
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="memberName != null  and memberName != ''"> and member_name like concat('%', #{memberName}, '%')</if>
+            <if test="recommendId != null "> and recommend_id = #{recommendId}</if>
+            <if test="memberType != null "> and member_type = #{memberType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizMemberById" parameterType="Long" resultMap="BizMemberResult">
+        <include refid="selectBizMemberVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBizMember" parameterType="BizMember" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mobile != null and mobile != ''">mobile,</if>
+            <if test="memberName != null and memberName != ''">member_name,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="recommendId != null">recommend_id,</if>
+            <if test="recommendAllId != null and recommendAllId != ''">recommend_all_id,</if>
+            <if test="recommendMobile != null and recommendMobile != ''">recommend_mobile,</if>
+            <if test="recommendName != null and recommendName != ''">recommend_name,</if>
+            <if test="memberType != null">member_type,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="isEnable != null">is_enable,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mobile != null and mobile != ''">#{mobile},</if>
+            <if test="memberName != null and memberName != ''">#{memberName},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="recommendId != null">#{recommendId},</if>
+            <if test="recommendAllId != null and recommendAllId != ''">#{recommendAllId},</if>
+            <if test="recommendMobile != null and recommendMobile != ''">#{recommendMobile},</if>
+            <if test="recommendName != null and recommendName != ''">#{recommendName},</if>
+            <if test="memberType != null">#{memberType},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="isEnable != null">#{isEnable},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizMember" parameterType="BizMember">
+        update biz_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
+            <if test="memberName != null and memberName != ''">member_name = #{memberName},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="recommendId != null">recommend_id = #{recommendId},</if>
+            <if test="recommendAllId != null and recommendAllId != ''">recommend_all_id = #{recommendAllId},</if>
+            <if test="recommendMobile != null and recommendMobile != ''">recommend_mobile = #{recommendMobile},</if>
+            <if test="recommendName != null and recommendName != ''">recommend_name = #{recommendName},</if>
+            <if test="memberType != null">member_type = #{memberType},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="isEnable != null">is_enable = #{isEnable},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizMemberById" parameterType="Long">
+        delete from biz_member where id = #{id}
+    </delete>
+
+    <delete id="deleteBizMemberByIds" parameterType="String">
+        delete from biz_member where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

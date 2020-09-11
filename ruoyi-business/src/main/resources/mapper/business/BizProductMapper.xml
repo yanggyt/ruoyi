@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.business.mapper.BizProductMapper">
     
     <resultMap type="BizProduct" id="BizProductResult">
-        <result property="productId"    column="product_id"    />
+        <result property="productId"    column="id"    />
         <result property="productCode"    column="product_code"    />
         <result property="productName"    column="product_name"    />
         <result property="productTypeId"    column="product_type_id"    />
@@ -24,14 +24,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <resultMap type="BizProductImage" id="BizProductImageResult">
-        <result property="productImageId"    column="product_image_id"    />
+        <result property="productImageId"    column="id"    />
         <result property="productId"    column="product_id"    />
         <result property="imageType"    column="image_type"    />
         <result property="imageUrl"    column="image_url"    />
     </resultMap>
 
     <sql id="selectBizProductVo">
-        select product_id, product_code, product_name, product_type_id, product_class, amount, cashback_amount, sort, online_status, online_time, offline_time, remark, create_by, create_time, update_by, update_time from biz_product
+        select id, product_code, product_name, product_type_id, product_class, amount, cashback_amount, sort, online_status, online_time, offline_time, remark, create_by, create_time, update_by, update_time from biz_product
     </sql>
 
     <select id="selectBizProductList" parameterType="BizProduct" resultMap="BizProductResult">
@@ -41,19 +41,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="productTypeId != null "> and product_type_id = #{productTypeId}</if>
             <if test="productClass != null "> and product_class = #{productClass}</if>
         </where>
-        order by sort desc, product_id desc
+        order by sort desc, id desc
     </select>
     
     <select id="selectBizProductById" parameterType="Long" resultMap="BizProductResult">
         <include refid="selectBizProductVo"/>
-        where product_id = #{productId}
+        where id = #{productId}
     </select>
 
     <select id="selectBizProductImageList" parameterType="Long" resultMap="BizProductImageResult">
-        select product_image_id, product_id, image_type, image_url
+        select id, product_id, image_type, image_url
         from biz_product_image
         where product_id = #{productId}
-        order by product_image_id
+        order by id
     </select>
         
     <insert id="insertBizProduct" parameterType="BizProduct" useGeneratedKeys="true" keyProperty="productId">
@@ -113,15 +113,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where product_id = #{productId}
+        where id = #{productId}
     </update>
 
     <delete id="deleteBizProductById" parameterType="Long">
-        delete from biz_product where product_id = #{productId}
+        delete from biz_product where id = #{productId}
     </delete>
 
     <delete id="deleteBizProductByIds" parameterType="String">
-        delete from biz_product where product_id in 
+        delete from biz_product where id in
         <foreach item="productId" collection="array" open="(" separator="," close=")">
             #{productId}
         </foreach>
