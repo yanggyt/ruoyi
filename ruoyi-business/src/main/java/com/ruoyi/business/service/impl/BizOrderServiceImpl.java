@@ -1,7 +1,9 @@
 package com.ruoyi.business.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.framework.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.business.mapper.BizOrderMapper;
@@ -68,6 +70,28 @@ public class BizOrderServiceImpl implements IBizOrderService
     public int updateBizOrder(BizOrder bizOrder)
     {
         bizOrder.setUpdateTime(DateUtils.getNowDate());
+        return bizOrderMapper.updateBizOrder(bizOrder);
+    }
+
+    /**
+     * 订单发货
+     *
+     * @param orderID 订单ID
+     * @return 结果
+     */
+    public int deliverBizOrder(Long orderID)
+    {
+        BizOrder bizOrder = bizOrderMapper.selectBizOrderById(orderID);
+        if (bizOrder == null) {
+            return 0;
+        }
+        //校验订单状态
+        if (bizOrder.getOrderStatus() != BizOrder.STATUS_PAYED) {
+            return 0;
+        }
+        bizOrder.setOrderStatus(BizOrder.STATUS_DELIVERY);
+        bizOrder.setUpdateBy(ShiroUtils.getLoginName());
+        bizOrder.setUpdateTime(new Date());
         return bizOrderMapper.updateBizOrder(bizOrder);
     }
 

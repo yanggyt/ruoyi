@@ -44,6 +44,14 @@ public interface IBizOrderService
     public int updateBizOrder(BizOrder bizOrder);
 
     /**
+     * 订单发货
+     *
+     * @param orderID 订单ID
+     * @return 结果
+     */
+    public int deliverBizOrder(Long orderID);
+
+    /**
      * 批量删除订单
      * 
      * @param ids 需要删除的数据ID

@@ -15,6 +15,12 @@ import com.ruoyi.common.core.domain.BaseEntity;
 public class BizOrder extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
+    //订单状态(0-待支付，1-已支付，2-已取消, 3-待收货, 4-已完成)
+    public static final int STATUS_INITIAL = 0;
+    public static final int STATUS_PAYED = 1;
+    public static final int STATUS_CANCELED = 2;
+    public static final int STATUS_DELIVERY = 3;
+    public static final int STATUS_COMPLETED = 4;
 
     /** 订单ID */
     private Long id;
@@ -38,13 +44,46 @@ public class BizOrder extends BaseEntity
     @Excel(name = "订单金额")
     private BigDecimal orderAmount;
 
-    /** 订单状态：0-待支付，1-已支付，2-已取消 */
-    @Excel(name = "订单状态：0-待支付，1-已支付，2-已取消")
+    /** 订单状态：0-待支付，1-已支付，2-已取消, 3-待收货, 4-已完成 */
+    @Excel(name = "0-待支付，1-已支付，2-已取消, 3-待收货, 4-已完成")
     private Integer orderStatus;
 
+    /** 订单备注 */
+    @Excel(name = "订单备注")
+    private String remark;
+
+    /** 收货人详细地址 */
+    @Excel(name = "收货人详细地址")
+    private String addressDetail;
+
     /** 收货人地址ID */
-    @Excel(name = "收货人地址ID")
     private Long addressId;
+
+    /** 商品信息 */
+    @Excel(name = "商品名称")
+    private String productName;
+
+    @Excel(name = "商品总额")
+    private String productAmount;
+
+    @Excel(name = "商品数量")
+    private String productCount;
+
+    /** 收货人地址信息 */
+    @Excel(name = "收货人姓名")
+    private String addressName;
+
+    @Excel(name = "收货人手机")
+    private String addressMobile;
+
+    @Excel(name = "收货人省份")
+    private String addressProvince;
+
+    @Excel(name = "收货人城市")
+    private String addressCity;
+
+    @Excel(name = "收货人区域")
+    private String addressArea;
 
     public void setId(Long id) 
     {
@@ -117,6 +156,86 @@ public class BizOrder extends BaseEntity
     public Long getAddressId() 
     {
         return addressId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getAddressDetail() {
+        return addressDetail;
+    }
+
+    public void setAddressDetail(String addressDetail) {
+        this.addressDetail = addressDetail;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductAmount() {
+        return productAmount;
+    }
+
+    public void setProductAmount(String productAmount) {
+        this.productAmount = productAmount;
+    }
+
+    public String getProductCount() {
+        return productCount;
+    }
+
+    public void setProductCount(String productCount) {
+        this.productCount = productCount;
+    }
+
+    public String getAddressName() {
+        return addressName;
+    }
+
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
+    }
+
+    public String getAddressMobile() {
+        return addressMobile;
+    }
+
+    public void setAddressMobile(String addressMobile) {
+        this.addressMobile = addressMobile;
+    }
+
+    public String getAddressProvince() {
+        return addressProvince;
+    }
+
+    public void setAddressProvince(String addressProvince) {
+        this.addressProvince = addressProvince;
+    }
+
+    public String getAddressCity() {
+        return addressCity;
+    }
+
+    public void setAddressCity(String addressCity) {
+        this.addressCity = addressCity;
+    }
+
+    public String getAddressArea() {
+        return addressArea;
+    }
+
+    public void setAddressArea(String addressArea) {
+        this.addressArea = addressArea;
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.ruoyi.business.controller;
 
+import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -93,7 +96,7 @@ public class BizOrderController extends BaseController
      * 修改订单
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable(value = "id", required = true)  Long id, ModelMap mmap)
     {
         BizOrder bizOrder = bizOrderService.selectBizOrderById(id);
         mmap.put("bizOrder", bizOrder);
@@ -109,6 +112,39 @@ public class BizOrderController extends BaseController
     @ResponseBody
     public AjaxResult editSave(BizOrder bizOrder)
     {
+        return toAjax(bizOrderService.updateBizOrder(bizOrder));
+    }
+
+    /**
+     * 订单发货
+     */
+    @RequiresPermissions("business:order:edit")
+    @Log(title = "订单", businessType = BusinessType.UPDATE)
+    @PostMapping("/deliver")
+    @ResponseBody
+    public AjaxResult editDeliver(Long orderID)
+    {
+        return toAjax(bizOrderService.deliverBizOrder(orderID));
+    }
+
+    /**
+     * 订单修改地址/备注
+     */
+    @RequiresPermissions("business:order:edit")
+    @Log(title = "订单", businessType = BusinessType.UPDATE)
+    @PostMapping("/updateAddressOrRemark")
+    @ResponseBody
+    public AjaxResult updateAddress(Long orderID, String content, Integer type)
+    {
+        BizOrder bizOrder = bizOrderService.selectBizOrderById(orderID);
+        if (bizOrder == null) return toAjax(0);
+        if (type == 0) {
+            bizOrder.setAddressDetail(content);
+        } else {
+            bizOrder.setRemark(content);
+        }
+        bizOrder.setUpdateBy(ShiroUtils.getLoginName());
+        bizOrder.setUpdateTime(new Date());
         return toAjax(bizOrderService.updateBizOrder(bizOrder));
     }
 
