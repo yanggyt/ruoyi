@@ -63,7 +63,7 @@ public class BizOrder extends BaseEntity
     @Excel(name = "商品名称")
     private String productName;
 
-    @Excel(name = "商品总额")
+    @Excel(name = "商品单价")
     private String productAmount;
 
     @Excel(name = "商品数量")

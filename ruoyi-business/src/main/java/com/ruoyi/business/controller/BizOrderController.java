@@ -134,7 +134,7 @@ public class BizOrderController extends BaseController
     @Log(title = "订单", businessType = BusinessType.UPDATE)
     @PostMapping("/updateAddressOrRemark")
     @ResponseBody
-    public AjaxResult updateAddress(Long orderID, String content, Integer type)
+    public AjaxResult updateAddressOrRemark(Long orderID, String content, Integer type)
     {
         BizOrder bizOrder = bizOrderService.selectBizOrderById(orderID);
         if (bizOrder == null) return toAjax(0);

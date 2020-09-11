@@ -33,13 +33,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBizOrderList" parameterType="BizOrder" resultMap="BizOrderResult">
         <include refid="selectBizOrderVo"/>
         <where>  
-            <if test="memberName != null  and memberName != ''"> and member_name like concat('%', #{memberName}, '%')</if>
+            <if test="memberName != null  and memberName != ''"> and a.member_name like concat('%', #{memberName}, '%')</if>
         </where>
     </select>
     
     <select id="selectBizOrderById" parameterType="Long" resultMap="BizOrderResult">
         <include refid="selectBizOrderVo"/>
-        where id = #{id}
+        where a.id = #{id}
     </select>
         
     <insert id="insertBizOrder" parameterType="BizOrder" useGeneratedKeys="true" keyProperty="id">
