@@ -2,43 +2,39 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
 	<th:block th:include="include :: header('队列管理')" />
-	<th:block th:include="include :: select2-css" />
-	<th:block th:include="include :: select2-js" />
 	<th:block th:include="include :: layout-latest-css" />
 </head>
 <body class="gray-bg">
 	<div class="container-div">
 		<div class="row">
 			<div class="col-sm-12 search-collapse">
-				<form id="role-form">
+				<form id="project-queue-manage-form">
 					<div class="select-list">
 						<ul>
 							<li>
 								项目名：<input type="text" name="projectName"/>
 							</li>
 							<li>
-								上传人：
-								<select name="status" class="form-control m-b">
-									<option value="">--请选择--</option>
-									<option th:each="user : ${users}" th:text="${user.username}" th:value="${user.username}"></option>
-								</select>
+								上传人：<select name="username" >
+											<option value="">--请选择--</option>
+											<option th:each="user : ${users}" th:text="${user.username}" th:value="${user.username}"></option>
+										</select>
+
 							</li>
 							<li>
-								状态：
-								<select name="state" class="form-control m-b">
-									<option value="">--请选择--</option>
-									<option value="在查">在查</option>
-									<option value="待查">待查</option>
-									<option value="暂停">暂停</option>
-								</select>
+								状态：<select name="state" >
+										<option value="">--请选择--</option>
+										<option value="在查">在查</option>
+										<option value="待查">待查</option>
+										<option value="暂停">暂停</option>
+									</select>
+
 							</li>
 							<li class="select-time">
-								上传时间：
-								<div>
-									<input type="text" class="time-input" id="startSubmitTime" placeholder="开始时间" name="params[startSubmitTime]" readOnly/>
-									<span>-</span>
-									<input type="text" class="time-input" id="endSubmitTime" placeholder="结束时间" name="params[endSubmitTime]" readOnly/>
-								</div>
+								<label>上传时间： </label>
+								<input type="text" class="time-input" id="startSubmitTime" placeholder="开始时间" name="startSubmitTime" readOnly/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endSubmitTime" placeholder="结束时间" name="endSubmitTime" readOnly/>
 							</li>
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -79,10 +75,7 @@
 		$(function() {
 		    var options = {
 		        url: prefix + "/queryProject?queryType=queueManage",
-		        createUrl: prefix + "/add",
-		        updateUrl: prefix + "/edit?uid={id}",
 		        removeUrl: prefix + "/delete",
-		        exportUrl: prefix + "/export",
 				pauseUrl: prefix + "/pause",
 				restoreUrl: prefix + "/restore",
 				startUrl: prefix + "/start",

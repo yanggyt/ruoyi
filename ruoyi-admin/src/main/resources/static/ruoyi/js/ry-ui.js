@@ -1044,6 +1044,24 @@ var table = {
 					$.operate.submit(url, "post", "json", data);
 				});
 			},
+			recheckProjects: function(pid) {
+				if(-1 == pid) {
+					var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (rows.length == 0) {
+						$.modal.alertWarning("请至少选择一条记录");
+						return;
+					}
+					$.modal.confirm("确认要再查选中的" + rows.length + "条数据吗?", function() {
+						var url = table.options.recheckUrl;
+						var data = { "ids": rows.join() };
+						$.operate.submit(url, "post", "json", data);
+					});
+				} else {
+					table.set();
+					var data = { "ids": pid};
+					$.operate.submit(table.options.recheckUrl, "post", "json", data);
+				}
+			},
             // 批量删除信息
             removeAll: function() {
             	table.set();

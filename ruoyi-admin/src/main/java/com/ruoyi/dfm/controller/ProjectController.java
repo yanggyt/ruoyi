@@ -1,6 +1,5 @@
 package com.ruoyi.dfm.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -12,11 +11,9 @@ import com.ruoyi.dfm.pojo.*;
 import com.ruoyi.dfm.service.FileService;
 import com.ruoyi.dfm.service.ProjectService;
 import com.ruoyi.dfm.service.UserService;
-import com.ruoyi.dfm.util.PropertiesUtils;
 import com.ruoyi.dfm.util.TimeUtil;
 import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.weaver.loadtime.Aj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartResolver;
-//import org.springframework.web.multipart.cos.CosMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +32,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/project.do")
@@ -475,7 +465,7 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
     req.setAttribute("oper", user);
     req.setAttribute("queryParam", "{}");
     req.setAttribute("loadType", "init");
-    return new ModelAndView("resultDownload");
+    return new ModelAndView("dfm/resultDownload");
   }
 
 
@@ -657,22 +647,10 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
     queryBean.setState(state);
     queryBean.setUsername(username);
 
-//    String currentPage = req.getParameter("currentPage");
     Page page = new Page();
     PageDomain pageDomain = TableSupport.getPageDomain();
     page.setCurrentPage(pageDomain.getPageNum());
     page.setPageSize(pageDomain.getPageSize());
-
-
-
-//    if ((currentPage == null) || ("".equals(currentPage.trim())))
-//    {
-//      page.setCurrentPage(1);
-//    }
-//    else
-//    {
-//      page.setCurrentPage(Integer.parseInt(currentPage));
-//    }
 
     String[] states = new String[3];
     List<Project> projects = null;
@@ -686,12 +664,6 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
 
       page.setOrderCase(" ORDER BY F_END_TIME DESC ");
 
-//      String taskResultInquire = (String)PropertiesUtils.getProperties().get("task.result.inquire");
-//      if ("user".equals(taskResultInquire))
-//      {
-//        projects = this.projectService.getProjectByStates(states, page, queryBean);
-//      }
-//      else
       if (UserConstants.USER_LEVEL_ADMIN == user.getGroupId() || UserConstants.USER_LEVEL_SUPER_USER == user.getGroupId())
       {
         projects = this.projectService.getProjectByStates(states, page, queryBean);
@@ -716,15 +688,19 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
       }
 
       req.setAttribute("projects", projects);
-      req.setAttribute("page", page);
-      req.setAttribute("users", users);
+//      req.setAttribute("page", page);
+//      req.setAttribute("users", users);
       //FIXME 修正查询条件中的时间 json
 //      req.setAttribute("queryParam", JSONObject.fromObject(queryBean));
-      req.setAttribute("queryParam", JSON.toJSONString(queryBean));
-      req.setAttribute("loadType", "query");
+//      req.setAttribute("queryParam", JSON.toJSONString(queryBean));
+//      req.setAttribute("loadType", "query");
       //FIXME 修改返回类型
 //      return new ModelAndView("resultDownload");
-      return null;
+//      return null;
+      if(null == projects) {
+        projects = Collections.emptyList();
+      }
+      return getDataTable(projects, page.getTotalCount());
     }
     if ("queueManage".equals(queryType))
     {
@@ -803,6 +779,9 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
 //      req.setAttribute("hasPre", null != pre);
 //      req.setAttribute("hasNext", null != next);
 //      return new ModelAndView("queueManage");
+      if(null == projects) {
+        projects = Collections.emptyList();
+      }
       return getDataTable(projects, page.getTotalCount());
     }
 
@@ -848,21 +827,24 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
   }
 
   @RequestMapping("/recheck")
-  public void recheck(HttpServletRequest req, HttpServletResponse res)
+  @ResponseBody
+  public AjaxResult recheck(HttpServletRequest req, HttpServletResponse res)
     throws Exception
   {
     try
     {
-      String pid = req.getParameter("pid");
+      String pid = req.getParameter("ids");
       String[] pids = pid.split(",");
 
-      String currentPage = req.getParameter("currentPage");
+//      String currentPage = req.getParameter("currentPage");
       this.projectService.recheck(pids);
-      outputMsg(res, "<script>document.location.href='project.do?method=resultDownload&currentPage=" + currentPage + "';</script>");
+      return toAjax(1);
+//      outputMsg(res, "<script>document.location.href='project.do?method=resultDownload&currentPage=" + currentPage + "';</script>");
     }
     catch (Exception e) {
       logger.error("再查项目失败！", e);
-      outputMsg(res, "<script>alert('再查项目失败，请联系管理员！');window.history.go(-1);</script>");
+      return toAjax(0);
+//      outputMsg(res, "<script>alert('再查项目失败，请联系管理员！');window.history.go(-1);</script>");
     }
   }
 
@@ -912,19 +894,16 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
 
   /**
    * 上传preDFM文件
-   * @param request
+   * @param req
    * @param res
    * @return
    * @throws Exception
    */
   @RequestMapping("/uploadPreDFM")
-  public ModelAndView uploadPreDFM(HttpServletRequest request, HttpServletResponse res)
+  @ResponseBody
+  public AjaxResult uploadPreDFM(HttpServletRequest req, HttpServletResponse res, @RequestParam("preDFMFile") MultipartFile preDFMFile)
     throws Exception
   {
-    //FIXME 修改上传文件
-    MultipartResolver cmr = null;//new CosMultipartResolver(request.getSession().getServletContext());
-
-      MultipartHttpServletRequest req = cmr.resolveMultipart(request);
     try
     {
      
@@ -941,38 +920,44 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
       List<FileInfo> fileList = new ArrayList<FileInfo>();
       //FIXME 修复上传文件错误
 //      this.fileService.savePhysicFile(req, fileList, dir, true, "pre-");
+
+      UserInfo loginUser = ShiroUtils.getLoginUser();
+      MultipartFile[] multipartFiles = new MultipartFile[]{preDFMFile};
+      this.fileService.savePhysicFile(loginUser, multipartFiles, fileList, dir, true , "pre-");
+
       projectService.updateProjectPreDFMFile(pid, fileList.get(0).getId(), fileList.get(0).getFileName());
-      req.setAttribute("uploadResult", "上传成功");
-      req.setAttribute("uploadType", "preDFM");
-      req.setAttribute("fid", fileList.get(0).getId());
-      req.setAttribute("fname", fileList.get(0).getFileName());
-      req.setAttribute("pid", pid);
+//      req.setAttribute("uploadResult", "上传成功");
+//      req.setAttribute("uploadType", "preDFM");
+//      req.setAttribute("fid", fileList.get(0).getId());
+//      req.setAttribute("fname", fileList.get(0).getFileName());
+//      req.setAttribute("pid", pid);
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("fid", fileList.get(0).getId());
+      jsonObject.put("fname", fileList.get(0).getFileName());
+      return AjaxResult.success("上传成功", jsonObject);
     } catch (Exception e) {
       logger.error("上传PreDFM报告失败", e);
-      req.setAttribute("uploadResult", "上传失败");
-      req.setAttribute("uploadType", "preDFM");
+//      req.setAttribute("uploadResult", "上传失败");
+//      req.setAttribute("uploadType", "preDFM");
+      return toAjax(false);
     }
-    return new ModelAndView("upload");
+//    return new ModelAndView("upload");
   }
   
   /**
    * 上传preDFM文件
-   * @param request
+   * @param req
    * @param res
    * @return
    * @throws Exception
    */
   @RequestMapping("/uploadPostDFM")
-  public ModelAndView uploadPostDFM(HttpServletRequest request, HttpServletResponse res)
+  @ResponseBody
+  public AjaxResult uploadPostDFM(HttpServletRequest req, HttpServletResponse res, @RequestParam("postDFMFile") MultipartFile postDFMFile)
     throws Exception
   {
-    //FIXME 修改上传文件
-    MultipartResolver cmr = null;//new CosMultipartResolver(request.getSession().getServletContext());
-
-      MultipartHttpServletRequest req = cmr.resolveMultipart(request);
     try
     {
-     
       //项目ID
       Integer pid = Integer.parseInt(req.getParameter("pid"));
       
@@ -986,20 +971,28 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
       List<FileInfo> fileList = new ArrayList<FileInfo>();
       //FIXME 修复上传文件错误
 //      this.fileService.savePhysicFile(req, fileList, dir, true, "post-");
+      UserInfo loginUser = ShiroUtils.getLoginUser();
+      MultipartFile[] multipartFiles = new MultipartFile[]{postDFMFile};
+      this.fileService.savePhysicFile(loginUser, multipartFiles, fileList, dir, true , "post-");
       
       projectService.updateProjectPostDFMFile(pid, fileList.get(0).getId(), fileList.get(0).getFileName());
       
-      req.setAttribute("uploadResult", "上传成功");
-      req.setAttribute("uploadType", "postDFM");
-      req.setAttribute("fid", fileList.get(0).getId());
-      req.setAttribute("fname", fileList.get(0).getFileName());
-      req.setAttribute("pid", pid);
+//      req.setAttribute("uploadResult", "上传成功");
+//      req.setAttribute("uploadType", "postDFM");
+//      req.setAttribute("fid", fileList.get(0).getId());
+//      req.setAttribute("fname", fileList.get(0).getFileName());
+//      req.setAttribute("pid", pid);
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("fid", fileList.get(0).getId());
+      jsonObject.put("fname", fileList.get(0).getFileName());
+      return AjaxResult.success("上传成功", jsonObject);
     } catch (Exception e) {
       logger.error("上传PostDFM报告失败", e);
-      req.setAttribute("uploadResult", "上传失败");
-      req.setAttribute("uploadType", "postDFM");
+//      req.setAttribute("uploadResult", "上传失败");
+//      req.setAttribute("uploadType", "postDFM");
+      return toAjax(false);
     }
-    return new ModelAndView("upload");
+//    return new ModelAndView("upload");
   }
   
 }

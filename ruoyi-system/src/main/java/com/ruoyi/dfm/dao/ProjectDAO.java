@@ -202,7 +202,10 @@ public class ProjectDAO extends JdbcBaseDao
     String submitTime = (map.get("F_SUBMIT_TIME") == null) ? "" : map.get("F_SUBMIT_TIME").toString();
     //project.setSubmitTime();
     project.setSubmitTime(TimeUtil.getDateStrByFormat(submitTime,"yyyy-MM-dd HH:mm:ss"));
-    project.setEndTime((map.get("F_END_TIME") == null) ? "" : map.get("F_END_TIME").toString());
+    String endTime = (map.get("F_END_TIME") == null) ? "" : map.get("F_END_TIME").toString();
+    if(!"".equalsIgnoreCase(endTime) ){
+      project.setEndTime(TimeUtil.getDateStrByFormat(endTime,"yyyy-MM-dd HH:mm:ss"));
+    }
     project.setState((map.get("F_STATE") == null) ? "" : map.get("F_STATE").toString());
     project.setTaskNum((map.get("T_TASK_NUM") == null) ? 0 : Integer.parseInt(map.get("T_TASK_NUM").toString()));
     project.setPri((map.get("F_PRI") == null) ? 0 : Integer.parseInt(map.get("F_PRI").toString()));
