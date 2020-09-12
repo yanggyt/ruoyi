@@ -168,7 +168,7 @@ CREATE TABLE `biz_order_detail` (
  `order_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '订单编码',
  `product_id` bigint(20) NOT NULL COMMENT '产品ID',
  `product_code` varchar(64) NOT NULL DEFAULT '' COMMENT '产品编码',
- `product_count` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '商品数量',
+ `product_count` int NOT NULL DEFAULT 0 COMMENT '商品数量',
  `product_amount` decimal(12,2) NOT NULL DEFAULT 0.0 COMMENT '商品金额',
  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
  `create_time` datetime DEFAULT NULL COMMENT '创建时间',

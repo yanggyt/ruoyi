@@ -10,7 +10,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="memberName"    column="member_name"    />
         <result property="password"    column="password"    />
         <result property="recommendId"    column="recommend_id"    />
-        <result property="recommendAllId"    column="recommend_all_id"    />
         <result property="recommendMobile"    column="recommend_mobile"    />
         <result property="recommendName"    column="recommend_name"    />
         <result property="memberType"    column="member_type"    />
@@ -23,7 +22,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBizMemberVo">
-        select id, mobile, member_name, password, recommend_id, recommend_all_id, recommend_mobile, recommend_name, member_type, is_delete, is_enable, create_by, create_time, update_by, update_time from biz_member
+        select a.id, mobile, member_name, password, recommend_id, recommend_mobile, recommend_name, member_type, is_delete, is_enable, create_by, create_time, update_by, update_time,
+        (select amount from biz_account where member_id = a.id and account_type = 0) douBalance,
+        (select amount from biz_account where member_id = a.id and account_type = 1) douPerson,
+        (select amount from biz_account where member_id = a.id and account_type = 0) douTeam,
+        (select amount from biz_account where member_id = a.id and account_type = 0) douField
+        from biz_member a
     </sql>
 
     <select id="selectBizMemberList" parameterType="BizMember" resultMap="BizMemberResult">
@@ -34,11 +38,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="recommendId != null "> and recommend_id = #{recommendId}</if>
             <if test="memberType != null "> and member_type = #{memberType}</if>
         </where>
+        order by a.id desc
     </select>
     
     <select id="selectBizMemberById" parameterType="Long" resultMap="BizMemberResult">
         <include refid="selectBizMemberVo"/>
-        where id = #{id}
+        where a.id = #{id}
     </select>
         
     <insert id="insertBizMember" parameterType="BizMember" useGeneratedKeys="true" keyProperty="id">

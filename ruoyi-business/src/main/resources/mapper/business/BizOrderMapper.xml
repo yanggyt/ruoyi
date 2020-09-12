@@ -23,11 +23,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="selectBizOrderVo">
         select a.id, order_sn, a.member_id, a.mobile, a.member_name, order_amount, order_status, remark, address_detail, address_id, a.create_by, a.create_time, a.update_by, a.update_time,
-        b.mobile addressMobile, b.member_name addressName, b.province_name addressProvince, b.city_name addressCity, b.area_name addressArea
+        b.mobile addressMobile, b.member_name addressName, b.province_name addressProvince, b.city_name addressCity, b.area_name addressArea,
+        c.productName, c.productCount, c.productAmount
         from biz_order a
         left join biz_member_address b on a.member_id = b.member_id
-        left join (select max(id), product_id, product_code productName, product_count productCount, product_amount productAmount from biz_order_detail group by product_id) c
-        on a.id = c.product_id
+        left join (select max(id), order_id, product_code productName, product_count productCount, product_amount productAmount from biz_order_detail group by product_id) c
+        on a.id = c.order_id
     </sql>
 
     <select id="selectBizOrderList" parameterType="BizOrder" resultMap="BizOrderResult">
@@ -35,6 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="memberName != null  and memberName != ''"> and a.member_name like concat('%', #{memberName}, '%')</if>
         </where>
+        order by a.id desc
     </select>
     
     <select id="selectBizOrderById" parameterType="Long" resultMap="BizOrderResult">

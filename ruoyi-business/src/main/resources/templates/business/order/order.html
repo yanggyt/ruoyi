@@ -11,7 +11,7 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>用户姓名：</label>
+                                <label>会员姓名：</label>
                                 <input type="text" name="memberName"/>
                             </li>
                             <li>
@@ -117,11 +117,11 @@
                     title: '订单状态',
                     formatter: function(value, row, index) {
                         switch (value){
-                            case 0: return "待支付";
-                            case 1: return "已支付";
-                            case 2: return "已取消";
-                            case 3: return "待收货";
-                            case 4: return "已完成";
+                            case 0: return "<span style='color:#5c5c5c'>待支付</span>";
+                            case 1: return "<span style='color:#db8301'>已支付</span>";
+                            case 2: return "<span style='color:#ad3636'>已取消</span>";
+                            case 3: return "<span style='color:#a5a544'>待收货</span>";
+                            case 4: return "<span style='color:#04c404'>已完成</span>";
                         }
                     }
                 },
@@ -135,10 +135,10 @@
                     formatter: function(value, row, index) {
                         var actions = [];
                         if(row.orderStatus == 1){
-                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="deliver(\'' + row.id + '\')"><i class="fa fa-edit"></i>设为已发货</a> ');
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="deliver(\'' + row.id + '\')"><i class="fa fa-truck"></i>发货</a> ');
                         }
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="updateRemark(\'' + row.id + '\', \'' + row.remark + '\')"><i class="fa fa-edit"></i>修改备注</a> ');
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="updateAddress(\'' + row.id + '\', \'' + row.addressDetail + '\')"><i class="fa fa-edit"></i>修改收货地址</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="updateRemark(\'' + row.id + '\', \'' + row.remark + '\')"><i class="fa fa-book"></i>修改备注</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="updateAddress(\'' + row.id + '\', \'' + row.addressDetail + '\')"><i class="fa fa fa-map-marker"></i>收货地址</a> ');
                         return actions.join('');
                     }
                 }]

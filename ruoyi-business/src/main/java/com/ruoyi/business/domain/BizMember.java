@@ -33,9 +33,6 @@ public class BizMember extends BaseEntity
     @Excel(name = "推荐人ID")
     private Long recommendId;
 
-    /** 所有上级推荐人ID */
-    private String recommendAllId;
-
     /** 推荐人手机 */
     private String recommendMobile;
 
@@ -52,6 +49,19 @@ public class BizMember extends BaseEntity
     /** 是否禁用：0-否，1-是 */
     @Excel(name = "是否禁用：0-否，1-是")
     private Integer isEnable;
+
+    /** 福豆相关数据 */
+    @Excel(name = "福豆余额")
+    private Long douBalance;
+
+    @Excel(name = "福豆余额")
+    private Long douPerson;
+
+    @Excel(name = "团队福豆")
+    private Long douTeam;
+
+    @Excel(name = "福豆田")
+    private Long douField;
 
     public void setId(Long id) 
     {
@@ -98,15 +108,7 @@ public class BizMember extends BaseEntity
     {
         return recommendId;
     }
-    public void setRecommendAllId(String recommendAllId) 
-    {
-        this.recommendAllId = recommendAllId;
-    }
 
-    public String getRecommendAllId() 
-    {
-        return recommendAllId;
-    }
     public void setRecommendMobile(String recommendMobile) 
     {
         this.recommendMobile = recommendMobile;
@@ -153,6 +155,38 @@ public class BizMember extends BaseEntity
         return isEnable;
     }
 
+    public Long getDouBalance() {
+        return douBalance;
+    }
+
+    public void setDouBalance(Long douBalance) {
+        this.douBalance = douBalance;
+    }
+
+    public Long getDouPerson() {
+        return douPerson;
+    }
+
+    public void setDouPerson(Long douPerson) {
+        this.douPerson = douPerson;
+    }
+
+    public Long getDouTeam() {
+        return douTeam;
+    }
+
+    public void setDouTeam(Long douTeam) {
+        this.douTeam = douTeam;
+    }
+
+    public Long getDouField() {
+        return douField;
+    }
+
+    public void setDouField(Long douField) {
+        this.douField = douField;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -161,7 +195,6 @@ public class BizMember extends BaseEntity
             .append("memberName", getMemberName())
             .append("password", getPassword())
             .append("recommendId", getRecommendId())
-            .append("recommendAllId", getRecommendAllId())
             .append("recommendMobile", getRecommendMobile())
             .append("recommendName", getRecommendName())
             .append("memberType", getMemberType())

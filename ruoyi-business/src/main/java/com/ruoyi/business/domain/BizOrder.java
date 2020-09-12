@@ -64,10 +64,10 @@ public class BizOrder extends BaseEntity
     private String productName;
 
     @Excel(name = "商品单价")
-    private String productAmount;
+    private Long productAmount;
 
     @Excel(name = "商品数量")
-    private String productCount;
+    private Integer productCount;
 
     /** 收货人地址信息 */
     @Excel(name = "收货人姓名")
@@ -182,19 +182,19 @@ public class BizOrder extends BaseEntity
         this.productName = productName;
     }
 
-    public String getProductAmount() {
+    public Long getProductAmount() {
         return productAmount;
     }
 
-    public void setProductAmount(String productAmount) {
+    public void setProductAmount(Long productAmount) {
         this.productAmount = productAmount;
     }
 
-    public String getProductCount() {
+    public Integer getProductCount() {
         return productCount;
     }
 
-    public void setProductCount(String productCount) {
+    public void setProductCount(Integer productCount) {
         this.productCount = productCount;
     }
 
