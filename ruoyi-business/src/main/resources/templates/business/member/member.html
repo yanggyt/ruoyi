@@ -11,23 +11,8 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>手机号码：</label>
-                                <input type="text" name="mobile"/>
-                            </li>
-                            <li>
-                                <label>用户姓名：</label>
-                                <input type="text" name="memberName"/>
-                            </li>
-                            <li>
-                                <label>推荐人ID：</label>
-                                <input type="text" name="recommendId"/>
-                            </li>
-                            <li>
-                                <label>会员类型：</label>
-                                <select name="memberType">
-                                    <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
-                                </select>
+                                <label>会员搜索：</label>
+                                <input type="text" name="memberName" placeholder="请输入会员姓名或手机号"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -80,24 +65,62 @@
                     visible: false
                 },
                 {
-                    field: 'mobile',
-                    title: '手机号码'
-                },
-                {
                     field: 'memberName',
-                    title: '用户姓名'
+                    title: '会员姓名'
                 },
                 {
-                    field: 'recommendId',
-                    title: '推荐人ID'
+                    field: 'mobile',
+                    title: '会员手机号码'
+                },
+                {
+                    field: 'recommendName',
+                    title: '推荐人姓名'
+                },
+                {
+                    field: 'recommendMobile',
+                    title: '推荐人手机号码'
+                },
+                {
+                    field: 'createTime',
+                    title: '注册时间'
+                },
+                {
+                    field: 'douBalance',
+                    align: 'center',
+                    title: '福豆余额'
+                },
+                {
+                    field: 'douPerson',
+                    align: 'center',
+                    title: '个人福豆'
+                },
+                {
+                    field: 'douTeam',
+                    align: 'center',
+                    title: '团队福豆'
+                },
+                {
+                    field: 'douField',
+                    align: 'center',
+                    title: '福豆田'
                 },
                 {
                     field: 'memberType',
-                    title: '会员类型'
+                    title: '会员类型',
+                    formatter: function(value, row, index) {
+                        return  value ? "个人用户" : "经销商";
+                    }
                 },
                 {
                     field: 'isEnable',
-                    title: '是否禁用：0-否，1-是'
+                    title: '是否有效',
+                    formatter: function(value, row, index) {
+                        if(value){
+                            return "<span style='color:#00AA00'>有效</span>";
+                        }else{
+                            return "<span style='color:#AA0000'>失效</span>";
+                        }
+                    }
                 },
                 {
                     title: '操作',
