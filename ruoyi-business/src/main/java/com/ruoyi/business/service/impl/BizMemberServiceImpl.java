@@ -34,6 +34,18 @@ public class BizMemberServiceImpl implements IBizMemberService
     }
 
     /**
+     * 查询会员
+     *
+     * @param id 会员ID
+     * @return 会员
+     */
+    @Override
+    public BizMember selectBizMemberSimple(Long id)
+    {
+        return bizMemberMapper.selectBizMemberSimple(id);
+    }
+
+    /**
      * 查询会员列表
      * 
      * @param bizMember 会员

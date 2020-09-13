@@ -138,7 +138,7 @@ public class BizProductController extends BaseController
      * 上架下架产品
      */
     @RequiresPermissions("business:product:edit")
-    @Log(title = "产品", businessType = BusinessType.UPDATE)
+    @Log(title = "产品状态", businessType = BusinessType.UPDATE)
     @PostMapping("/status")
     @ResponseBody
     public AjaxResult editStatus(@PathVariable(value = "productId", required = true) Long productID)

@@ -1,6 +1,8 @@
 package com.ruoyi.business.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -109,6 +111,21 @@ public class BizMemberController extends BaseController
     @ResponseBody
     public AjaxResult editSave(BizMember bizMember)
     {
+        return toAjax(bizMemberService.updateBizMember(bizMember));
+    }
+
+    /**
+     * 修改会员密码
+     */
+    @RequiresPermissions("business:member:edit")
+    @Log(title = "会员密码", businessType = BusinessType.UPDATE)
+    @PostMapping("/editPassword")
+    @ResponseBody
+    public AjaxResult editPassword(Long memberID, String password)
+    {
+        BizMember bizMember = bizMemberService.selectBizMemberSimple(memberID);
+        if(bizMember == null || StringUtils.isEmpty(password)) return toAjax(0);
+        bizMember.setPassword(password);
         return toAjax(bizMemberService.updateBizMember(bizMember));
     }
 

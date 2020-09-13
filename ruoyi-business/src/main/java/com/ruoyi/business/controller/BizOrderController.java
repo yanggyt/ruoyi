@@ -119,7 +119,7 @@ public class BizOrderController extends BaseController
      * 订单发货
      */
     @RequiresPermissions("business:order:edit")
-    @Log(title = "订单", businessType = BusinessType.UPDATE)
+    @Log(title = "订单发货", businessType = BusinessType.UPDATE)
     @PostMapping("/deliver")
     @ResponseBody
     public AjaxResult editDeliver(Long orderID)
@@ -131,7 +131,7 @@ public class BizOrderController extends BaseController
      * 订单修改地址/备注
      */
     @RequiresPermissions("business:order:edit")
-    @Log(title = "订单", businessType = BusinessType.UPDATE)
+    @Log(title = "订单修改地址/备注", businessType = BusinessType.UPDATE)
     @PostMapping("/updateAddressOrRemark")
     @ResponseBody
     public AjaxResult updateAddressOrRemark(Long orderID, String content, Integer type)
