@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -597,9 +599,29 @@ public class ProjectDAO extends JdbcBaseDao
       ProjectStage stage = new ProjectStage();
       stage.setStageName((map.get("F_STAGE_NAME") == null) ? "" : map.get("F_STAGE_NAME").toString());
       stage.setId((map.get("F_ID") == null) ? 0 : Integer.parseInt(map.get("F_ID").toString()));
-      stage.setEndTime((map.get("F_END_TIME") == null) ? "" : map.get("F_END_TIME").toString());
       stage.setId((map.get("F_PROJECT_ID") == null) ? 0 : Integer.parseInt(map.get("F_PROJECT_ID").toString()));
-      stage.setStatrTime((map.get("F_START_TIME") == null) ? "" : map.get("F_START_TIME").toString());
+
+      String startTime = (map.get("F_START_TIME") == null) ? "" : map.get("F_START_TIME").toString();
+      if(!"".equalsIgnoreCase(startTime) ){
+        stage.setStatrTime(TimeUtil.getDateStrByFormat(startTime,"yyyy-MM-dd HH:mm:ss"));
+      }
+      String endTime = (map.get("F_END_TIME") == null) ? "" : map.get("F_END_TIME").toString();
+      if(!"".equalsIgnoreCase(endTime) ){
+        stage.setEndTime(TimeUtil.getDateStrByFormat(endTime,"yyyy-MM-dd HH:mm:ss"));
+      }
+
+      try {
+        Date start = TimeUtil.toUtilDateFromStrDateByFormat(startTime,"yyyyMMddHHmmss");
+        Date end = TimeUtil.toUtilDateFromStrDateByFormat(endTime,"yyyyMMddHHmmss");
+        Long start1 = TimeUtil.getMillisOfDate(start);
+        Long end1 = TimeUtil.getMillisOfDate(end);
+        Long m = (end1 - start1)/60000;
+        Long s = (end1 - start1)%60000/1000;
+        stage.setCostTime(m+"分钟"+s+"秒");
+      } catch (ParseException e) {
+        logger.error("计算耗时失败", e);
+      }
+
       stage.setStageOrder((map.get("F_STAGE_ORDER") == null) ? 0 : Integer.parseInt(map.get("F_STAGE_ORDER").toString()));
       rs.add(stage);
     }
@@ -608,8 +630,7 @@ public class ProjectDAO extends JdbcBaseDao
   }
 
   public void stop(String pid) {
-    String sql = "update t_project set F_CANCEL= 1 where f_id = " + 
-      pid;
+    String sql = "update t_project set F_CANCEL= 1 where f_id = " + pid;
     getJdbcTemplate().update(sql);
   }
   

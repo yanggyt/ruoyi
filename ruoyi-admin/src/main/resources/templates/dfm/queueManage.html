@@ -46,9 +46,6 @@
 			</div>
 		
 			<div class="btn-group-sm" id="toolbar" role="group">
-				<!--<a class="btn btn-success" onclick="$.operate.addTab()" >-->
-	                <!--<i class="fa fa-plus"></i> 新增-->
-	            <!--</a>-->
 	            <a class="btn btn-danger multiple disabled" onclick="$.operate.pauseProject(-1)" >
 		            <i class="fa fa-edit"></i> 暂停
 		        </a>
@@ -58,9 +55,6 @@
 				<a class="btn btn-danger multiple disabled" onclick="$.operate.startAllProjects()" >
 					<i class="fa fa-play"></i> 开始
 				</a>
-		        <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" >-->
-		            <!--<i class="fa fa-download"></i> 导出-->
-		        <!--</a>-->
 	        </div>
 	        
 	        <div class="col-sm-12 select-table table-striped">
@@ -196,19 +190,12 @@
 						} else {
 							pauseOperType = "暂停";
 						}
-		                // actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.roleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
 		                actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.remove(' + row.id + ')"><i class="fa fa-remove"></i>删除</a> ');
 						if("继续" == pauseOperType) {
 							actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.restoreProject(' + row.id + ')"><i class="fa fa-edit"></i>' + pauseOperType + '</a> ');
 						} else if("暂停" == pauseOperType) {
 							actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.pauseProject(' + row.id + ')"><i class="fa fa-edit"></i>' + pauseOperType + '</a> ');
 						}
-
-
-						// var more = [];
-		                // more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authDataScope(" + row.roleId + ")'><i class='fa fa-check-square-o'></i>数据权限</a> ");
-		                // more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authUser(" + row.roleId + ")'><i class='fa fa-user'></i>分配用户</a>");
-		                // actions.push('<a tabindex="0" class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
 		                return actions.join('');
 		            }
 		        }
@@ -220,7 +207,6 @@
 		//下载文件
 		function getFile(fid)
 		{
-			// document.location.href='file.do/download?fid=' + fid;
 			var url = ctx + 'file.do/download?fid=' + fid;
 			window.location.href = url;
 		}
@@ -228,7 +214,6 @@
 		//下载参数文件
 		function getParamFile(fid,fname)
 		{
-			// document.location.href='project.do/downloadParamFile&fid=' + fid + '&fname=' + encodeURI(fname);
 			var url = ctx + 'project.do/downloadParamFile?fid=' + fid + '&fname=' + encodeURI(fname);
 			window.location.href = url;
 		}
@@ -237,12 +222,7 @@
 		//上调优先级
 		function changePri( pid,change )
 		{
-
 			$.operate.changeProjectPri(pid, change);
-			// document.location.href='project.do/changePri?pid='
-			// 		+ pid +
-			// 		'&change='+change +
-			// 		'&currentPage=<%=myPage.getCurrentPage()%>';
 		}
 
 	</script>

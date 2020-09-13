@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('服务器监控')" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<div class="select-list">
+					<ul>
+						<li>
+							<strong>服务器：</strong>
+							<select name="server" onchange='getProject(this.value)'>
+								<option value="-1">--请选择--</option>
+								<option th:each="server : ${servers}" th:text="${server}" th:value="${server}"></option>
+							</select>
+						</li>
+						<li>
+							<strong>状态：</strong><span id="state">-</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		
+			<div class="btn-group-sm" id="toolbar" role="group">
+				<strong>当前任务：</strong><span id="projectName">-</span> &nbsp;&nbsp;
+				<strong>版本：</strong><span id="version">-</span>&nbsp;&nbsp;
+				<strong>提交人：</strong><span id="submitUserName">-</span>&nbsp;&nbsp;
+				<strong>提交时间：</strong><span id="submitTime">-</span>&nbsp;&nbsp;
+				<strong>任务类型：</strong><span id="checkType">-</span>&nbsp;&nbsp;
+				<span id="stopOperation"></span>
+	        </div>
+	        
+	        <div class="col-sm-12 select-table table-striped">
+			    <table id="bootstrap-table"></table>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+
+		var prefix = ctx + "project.do";
+
+		$(function() {
+		    var options = {
+		        sortName: "roleSort",
+		        modalName: "服务器监控",
+				pagination: false,
+		        columns: [
+					{
+						field: 'id',
+						visible: false
+					},
+					{
+						field: 'stageOrder',
+						title: '序号',
+						sortable: false
+					},
+					{
+						field: 'stageName',
+						title: '运行阶段',
+						sortable: false
+					},
+					{
+						field: 'statrTime',
+						title: '开始时间',
+						sortable: false
+					},
+					{
+						field: 'endTime',
+						title: '完成时间',
+						sortable: false
+					},
+					{
+						field: 'costTime',
+						title: '耗时（分钟）',
+						sortable: false
+					}
+		        ]
+		    };
+		    $.table.init(options);
+		});
+
+
+		function getProject(v) {
+			if ("-1" == v || -1 == v) {
+				fillParams(null);
+				$('#bootstrap-table').bootstrapTable('load',[]);
+				return;
+			}
+			$.ajax({
+				url:  prefix + "/serverMonitor/list",
+				data: "server=" + v,
+				cache: false,
+				success: function (json) {
+					if (null == json || "" == json || json.code != 0) {
+						//失败
+						fillParams(null);
+						//清空表格
+						$('#bootstrap-table').bootstrapTable('load',[]);
+					} else {
+						//成功
+						fillParams(json.data.project);
+						if(null == json.data.stages || json.data.stages.length<1) {
+							$('#bootstrap-table').bootstrapTable('load',[]);
+						} else {
+							$('#bootstrap-table').bootstrapTable('load', json.data.stages);
+						}
+					}
+				}
+			});
+			// document.location.href = 'project.do?method=serverMonitor&server=' + v;
+		}
+
+		function fillParams(project) {
+			if(null == project) {
+				$("#projectName").html("-");
+				$("#version").html("-");
+				$("#submitUserName").html("-");
+				$("#submitTime").html("-");
+				$("#checkType").html("-");
+				$("#stopOperation").hide();
+				$("#state").html("<span style='color:green;'>空闲</span>");
+			} else {
+				$("#projectName").html(project.projectName);
+				$("#version").html(project.version);
+				$("#submitUserName").html(project.submitUserName);
+				$("#submitTime").html(project.submitTime);
+				$("#checkType").html(project.checkTypeStr);
+				var stopOperationHtml = "<a class=\"btn btn-danger single\" onclick=\"stopProject("+project.id+");\" ><i class=\"fa fa-stop\"></i> 中止</a>";
+				$("#stopOperation").html(stopOperationHtml);
+				$("#state").html("<span style='color:red;'>忙</span>");
+			}
+		}
+
+
+		function stopProject(v) {
+			if ("-1" == v || -1 == v) {
+				return false;
+			}
+			$.ajax({
+				url:  prefix + "/stopProject",
+				data: "pid=" + v,
+				cache: false,
+				success: function (json) {
+					if (null == json || "" == json || json.code != 0) {
+						$.modal.alertError("中止项目失败");
+					} else {
+						$.modal.alertSuccess("中止项目成功");
+					}
+				}
+			});
+			// document.location.href = 'project.do?method=stopProject&pid=' + pid + '&server=' + server;
+		}
+
+	</script>
+</body>
+</html>

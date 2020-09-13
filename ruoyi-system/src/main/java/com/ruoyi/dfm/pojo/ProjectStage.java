@@ -9,6 +9,7 @@ public class ProjectStage implements Serializable {
 	private int stageOrder;
 	private String statrTime;
 	private String endTime;
+	private String costTime;
 	private int projectId;
 	public int getId() {
 		return id;
@@ -47,7 +48,12 @@ public class ProjectStage implements Serializable {
 	public void setProjectId(int projectId) {
 		this.projectId = projectId;
 	}
-	
-	
-	
+
+	public String getCostTime() {
+		return costTime;
+	}
+
+	public void setCostTime(String costTime) {
+		this.costTime = costTime;
+	}
 }

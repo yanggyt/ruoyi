@@ -14,6 +14,7 @@ import com.ruoyi.dfm.service.UserService;
 import com.ruoyi.dfm.util.TimeUtil;
 import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
+import org.aspectj.weaver.loadtime.Aj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -853,42 +854,48 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
     throws Exception
   {
     List servers = this.projectService.getAllServers();
-    String server = req.getParameter("server");
-    if ((server == null) && (servers != null))
-    {
-      server = (String)servers.get(0);
-    }
-    if ((server != null) || ("".equals(server)))
-    {
-      server = new String(server.getBytes("iso-8859-1"), "utf-8");
-      Project project = this.projectService.getProjectByServerState(server, "在查");
-      if (project != null)
-      {
-        int pid = project.getId();
-        List stages = this.projectService.getStagesByProject(pid);
-        req.setAttribute("project", project);
-        req.setAttribute("stages", stages);
-      }
-    }
     req.setAttribute("servers", servers);
-    req.setAttribute("server", server);
-    return new ModelAndView("serverMonitor");
+    return new ModelAndView("dfm/serverMonitor");
   }
 
+
+  @RequestMapping("/serverMonitor/list")
+  @ResponseBody
+  public AjaxResult serverMonitorList(HttpServletRequest req, HttpServletResponse res)
+          throws Exception
+  {
+    String server = req.getParameter("server");
+    if (StringUtils.isBlank(server)) {
+      return AjaxResult.success();
+    }
+    server = new String(server.getBytes("iso-8859-1"), "utf-8");
+    Project project = this.projectService.getProjectByServerState(server, "在查");
+    if (project != null) {
+      int pid = project.getId();
+      List stages = this.projectService.getStagesByProject(pid);
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("project", project);
+      jsonObject.put("stages", stages);
+      return AjaxResult.success(jsonObject);
+    }
+    return AjaxResult.error();
+  }
+
+
   @RequestMapping("/stopProject")
-  public void stopProject(HttpServletRequest req, HttpServletResponse res)
+  @ResponseBody
+  public AjaxResult stopProject(HttpServletRequest req, HttpServletResponse res)
     throws Exception
   {
     try
     {
       String pid = req.getParameter("pid");
       this.projectService.stopProject(pid);
-      String server = new String(req.getParameter("server").getBytes("iso-8859-1"), "utf-8");
-      outputMsg(res, "<script>document.location.href='project.do?method=serverMonitor&server=" + server + "';</script>");
+      return AjaxResult.success();
     }
     catch (Exception e) {
       logger.error("中止项目失败！", e);
-      outputMsg(res, "<script>alert('中止项目失败，请联系管理员！');window.history.go(-1);</script>");
+      return AjaxResult.error();
     }
   }
 
