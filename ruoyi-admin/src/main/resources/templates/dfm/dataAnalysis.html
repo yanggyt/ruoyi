@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('数据分析')" />
+	<th:block th:include="include :: select2-css" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+
+		<div class="main-content">
+			<form id="dataAnalysisForm" class="form-horizontal">
+				<h4 class="form-header h4">数据分析</h4>
+				<div class="row">
+					<div class="col-sm-10">
+						<div class="form-group">
+							<div class="col-sm-1" style="text-align:right;">
+								<label  class="check-box">
+									<input type="checkbox" name="analysisType" value="submitProject">
+								</label>
+							</div>
+							<label class="col-sm-2 control-label">项目描述：</label>
+							<div class="col-sm-7">
+								<input name="projectName" id="projectName" placeholder="请输入项目名称" class="form-control" type="text" maxlength="30" >
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-10">
+						<div class="form-group">
+							<div class="col-sm-1" style="text-align:right;">
+								<label  class="check-box">
+									<input type="checkbox" name="analysisType" value="submitUser">
+								</label>
+							</div>
+							<label class="col-sm-2 control-label">上传人：</label>
+							<div class="col-sm-7">
+								<select name="submitUser" id="submitUser" class="form-control m-b">
+									<option value="-1">--请选择--</option>
+									<option th:each="user : ${users}" th:text="${user.username}" th:value="${user.username}"></option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-10">
+						<div class="form-group">
+							<div class="col-sm-1" style="text-align:right;"></div>
+							<label class="col-sm-2 control-label is-required">上传时间段：</label>
+							<div class="select-time col-sm-7">
+								<input type="text" style="width: 200px;display: inline" class="form-control time-input" id="startSubmitTime" placeholder="开始时间" name="startSubmitTime" required readOnly/>
+								<span>-</span>
+								<input type="text" style="width: 200px;display: inline" class="form-control time-input" id="endSubmitTime" placeholder="结束时间" name="endSubmitTime" required readOnly/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-10" >
+						<div class="form-group">
+							<div class="col-sm-1"></div>
+							<label class="col-sm-2 control-label">所有用户：</label>
+							<div class="col-sm-7">
+								<label  class="check-box">
+									<input type="checkbox" name="analysisType" value="allUser" >
+								</label>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-sm-10" >
+						<div class="form-group">
+							<div class="col-sm-1"></div>
+							<label class="col-sm-2 control-label">所有问题：</label>
+							<div class="col-sm-7">
+								<label  class="check-box">
+									<input type="checkbox" name="analysisType" value="allIssue" checked="checked">
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-offset-5 col-sm-10">
+						<button type="button" class="btn btn-sm btn-primary" onclick="submitAnalysis()"><i class="fa fa-check"></i>提 交</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="row">
+
+	        <div class="col-sm-12 select-table table-striped" >
+				<table id="analysisResultTable"></table>
+			</div>
+
+		</div>
+		<div id="analysisResultChart" style="width:98%;height:400px;"></div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+
+		var prefix = ctx + "dataAnalysis.do";
+
+		$(function() {
+
+			var options = {
+		        sortName: "roleSort",
+		        modalName: "用户数据分析",
+				pagination: false,
+		        columns: [
+					{
+						field: 'submitUserName',
+						title: '上传人',
+						sortable: true
+					},
+					{
+						field: 'issueQty',
+						title: '问题数量',
+						sortable: true
+					}
+		        ]
+		    };
+		    $.table.init(options);
+
+		});
+
+		/**
+		 * 初始化
+		 */
+		$(document).ready(function(){
+
+			$.each($("input:checkbox[name='analysisType']"), function(i, obj){
+				$(this).on("ifClicked",function(){
+					$.each($("input:checkbox[name='analysisType']"), function(i, obj){
+						$(this).iCheck('uncheck');
+					});
+				});
+			});
+
+			//设置时间默认值
+			var today = new Date();
+			var endSubmitTime = today.getFullYear().toString() + '-'+addzero(today.getMonth() + 1) + '-' + addzero(today.getDate());
+			$('#endSubmitTime').val(endSubmitTime);
+
+			//
+			var startTime = new Date(today.getFullYear(),today.getMonth() - 3 ,today.getDate());
+			var startSubmitTime = startTime.getFullYear().toString() + '-'+addzero(startTime.getMonth() + 1) + '-' + addzero(startTime.getDate());
+			$('#startSubmitTime').val(startSubmitTime);
+
+		});
+
+		function addzero(v) {
+			if (v < 10) return '0' + v;
+			return v.toString();
+		}
+
+		//提交分析
+		function submitAnalysis(){
+
+			//验证业务选择条件
+			var analysisType = $("[name='analysisType']:checked").val();
+
+			if(!analysisType) {
+				$.modal.alertError("请选择分析类型");
+				return false;
+			}
+
+			if("submitUser" == analysisType) {
+				if($("#submitUser").val().trim() == "") {
+					$.modal.alertError("请填写提交人");
+					return false;
+				}
+			} else if("submitProject" == analysisType) {
+				if($("#projectName").val().trim() == "") {
+					$.modal.alertError("请填写项目描述");
+					return false;
+				}
+			}
+
+			var data = $("#dataAnalysisForm").serialize();
+
+			$.ajax({
+				url: prefix + "/analysis",
+				data: data,
+				cache:false,
+				dataType:"json",
+				success: function(json){
+					//销毁表格
+					$("#analysisResultTable").html("");
+					//销毁图表
+					$("#analysisResultChart").html("");
+					var myChart = echarts.init(document.getElementById('analysisResultChart'));
+					myChart.dispose();
+					if (json.success) {
+						$.modal.alertSuccess("分析成功");
+						showAnalysisResult(json.data);
+					} else {
+						$.modal.alertError("分析失败，原因是：" + json.message);
+					}
+				}
+			});
+		}
+
+		//展示分析结果
+		function showAnalysisResult(data) {
+			var analysisType = $("[name='analysisType']:checked").val();
+
+			if ("submitUser" == analysisType) {
+				showAnalysisResultByUserWithTable(data);
+				showAnalysisResultByUserWithChart(data);
+			} else if ("submitProject" == analysisType) {
+				showAnalysisResultByProjectWithTable(data);
+				showAnalysisResultByProjectWithChart(data);
+			} else if ("allUser" == analysisType) {
+				showAnalysisResultByAllUserWithTable(data);
+				showAnalysisResultByAllUserWithChart(data);
+			} else if ("allIssue" == analysisType) {
+				showAnalysisResultByUserWithTable(data);
+				showAnalysisResultByUserWithChart(data);
+			}
+		}
+
+
+		//按照提交人
+		function showAnalysisResultByAllUserWithTable(data) {
+
+			var options = {
+				sortName: "roleSort",
+				modalName: "问题数据分析",
+				pagination: false,
+				id:"analysisResultTable"
+			};
+
+
+			var table = $("#analysisResultTable");
+			var result = data.result;
+			var tableHtml = "";
+			tableHtml += "<TABLE id=grid ";
+			tableHtml += "style='BORDER-TOP-WIDTH: 0px; FONT-WEIGHT: normal; BORDER-LEFT-WIDTH: 0px; BORDER-LEFT-COLOR: #cccccc;BORDER-BOTTOM-WIDTH: 0px; BORDER-BOTTOM-COLOR: #cccccc; WIDTH: 100%; BORDER-TOP-COLOR: #cccccc; FONT-STYLE: normal; BACKGROUND-COLOR: #cccccc; BORDER-RIGHT-WIDTH: 0px; TEXT-DECORATION: none; BORDER-RIGHT-COLOR: #cccccc'";
+			tableHtml += "cellSpacing=1 cellPadding=2 rules=all border=0> ";
+			tableHtml += "<TBODY>";
+			tableHtml += "<TR style='FONT-WEIGHT: bold;text-align:center; FONT-STYLE: normal; BACKGROUND-COLOR: #eeeeee; TEXT-DECORATION: none'>";
+
+			tableHtml += "<TD>上传人</TD>";
+			tableHtml += "<TD>问题数量</TD>";
+
+			tableHtml += "</TR>";
+
+			//构造数据行
+			if (null == result || result.length == 0) {
+				tableHtml += "<TR style='FONT-WEIGHT: normal; FONT-STYLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none'>";
+				tableHtml += "<TD colspan=2>--没有数据--</TD>";
+				tableHtml += "</TR>";
+			} else {
+				for (var i=0;i<result.length;i++) {
+					tableHtml += "<TR style='FONT-WEIGHT: normal; FONT-STYLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none'>";
+					tableHtml += "<TD >" + result[i].submitUserName + "</TD>";
+					tableHtml += "<TD >" + result[i].issueQty + "</TD>";
+					tableHtml += "</TR>";
+				}
+			}
+
+			tableHtml += "</TBODY>";
+			tableHtml += "</TABLE>";
+
+			$(table).html(tableHtml);
+
+			$("#analysisResultTable").bootstrapTable(options);
+		}
+
+		//按照提交人
+		function showAnalysisResultByAllUserWithChart(data) {
+			if (null == data || null == data.result) {
+				return false;
+			}
+			var result = data.result;
+			var myChart = echarts.init(document.getElementById('analysisResultChart'));
+
+			var xAxisData = new Array();
+			var seriesData = new Array();
+
+			for(var i=0;i<result.length;i++) {
+				xAxisData.push(result[i].submitUserName);
+				seriesData.push(result[i].issueQty);
+			}
+
+			// 指定图表的配置项和数据
+			var option = {
+				title: {
+					text: '根据提交人数据分析图表展示'
+				},
+				tooltip: {},
+				legend: {
+					data:['问题数量']
+				},
+				xAxis: {
+					data: xAxisData
+				},
+				yAxis: {},
+				series: [{
+					name: '问题数量',
+					type: 'bar',
+					data: seriesData
+				}]
+			};
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+
+		}
+
+		//按照提交人
+		function showAnalysisResultByUserWithTable(data) {
+			var result = data.result;
+			var options = {
+				sortName: "roleSort",
+				modalName: "问题数据分析",
+				pagination: false,
+				id:"analysisResultTable",
+				columns: [
+					{
+						field: 'issueDescription',
+						title: '问题描述',
+						sortable: true
+					},
+					{
+						field: 'issueQty',
+						title: '问题数量',
+						sortable: true
+					}
+				]
+			};
+			$.table.init(options);
+			$("#analysisResultTable").bootstrapTable('load', result);
+		}
+
+		//按照提交人
+		function showAnalysisResultByUserWithChart(data) {
+			if (null == data || null == data.result) {
+				return false;
+			}
+			var result = data.result;
+			var myChart = echarts.init(document.getElementById('analysisResultChart'));
+
+			var xAxisData = new Array();
+			var seriesData = new Array();
+
+			for(var i=0;i<result.length;i++) {
+				xAxisData.push(result[i].issueDescription);
+				seriesData.push(result[i].issueQty);
+			}
+
+			// 指定图表的配置项和数据
+			var option = {
+				title: {
+					text: '根据提交人数据分析图表展示'
+				},
+				tooltip: {},
+				legend: {
+					data:['问题数量']
+				},
+				xAxis: {
+					data: xAxisData
+				},
+				yAxis: {},
+				series: [{
+					name: '问题数量',
+					type: 'bar',
+					data: seriesData
+				}]
+			};
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+
+		}
+
+		//按照项目
+		function showAnalysisResultByProjectWithTable(data) {
+
+			var result = data.result;
+			var versions = data.versions;
+			var options = {
+				sortName: "roleSort",
+				modalName: "问题数据分析",
+				pagination: false,
+				id:"analysisResultTable"
+			};
+
+			var table = $("#analysisResultTable");
+			var tableHtml = "";
+			tableHtml += "<TABLE id=grid ";
+			tableHtml += "style='BORDER-TOP-WIDTH: 0px; FONT-WEIGHT: normal; BORDER-LEFT-WIDTH: 0px; BORDER-LEFT-COLOR: #cccccc;BORDER-BOTTOM-WIDTH: 0px; BORDER-BOTTOM-COLOR: #cccccc; WIDTH: 100%; BORDER-TOP-COLOR: #cccccc; FONT-STYLE: normal; BACKGROUND-COLOR: #cccccc; BORDER-RIGHT-WIDTH: 0px; TEXT-DECORATION: none; BORDER-RIGHT-COLOR: #cccccc'";
+			tableHtml += "cellSpacing=1 cellPadding=2 rules=all border=0> ";
+			tableHtml += "<TBODY>";
+			tableHtml += "<TR style='FONT-WEIGHT: bold;text-align:center; FONT-STYLE: normal; BACKGROUND-COLOR: #eeeeee; TEXT-DECORATION: none'>";
+
+			tableHtml += "<TD>问题描述</TD>";
+			if (null != versions && versions.length > 0) {
+				//构造表头
+				for (var i = 0; i < versions.length; i++) {
+					tableHtml += "<TD>版本" + versions[i] + "</TD>";
+				}
+			}
+
+			tableHtml += "</TR>";
+
+			//构造数据行
+			if (null == result || result.length == 0) {
+				tableHtml += "<TR style='FONT-WEIGHT: normal; FONT-STYLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none'>";
+				if (null != versions && versions.length > 0) {
+					tableHtml += "<TD colspan=" + (versions.length + 1)
+							+ ">--没有数据--</TD>";
+				} else {
+					tableHtml += "<TD >--没有数据--</TD>";
+				}
+				tableHtml += "</TR>";
+			} else {
+				for ( var key in result) {
+					tableHtml += "<TR style='FONT-WEIGHT: normal; FONT-STYLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none'>";
+					tableHtml += "<TD >" + key + "</TD>";
+					for (var i = 0; i < result[key].length; i++) {
+						tableHtml += "<TD >" + result[key][i].issueQty + "</TD>";
+					}
+					tableHtml += "</TR>";
+				}
+			}
+
+			tableHtml += "</TBODY>";
+			tableHtml += "</TABLE>";
+
+			$(table).html(tableHtml);
+			$("#analysisResultTable").bootstrapTable(options);
+		}
+
+		//按照项目
+		function showAnalysisResultByProjectWithChart(data) {
+			if (null == data || null == data.result || null == data.versions) {
+				return false;
+			}
+			var GROUP_VERSION_COUNT = 3;
+			var result = data.result;
+			var versions = data.versions;
+			var myChart = echarts.init(document.getElementById('analysisResultChart'));
+
+			var xAxisData = new Array();
+
+			for ( var key in result) {
+				xAxisData.push(key);
+			}
+			var seriesDataArr = new Array();
+			for (var i = 0; i < versions.length; i++) {
+				var seriesData = {};
+				seriesData.name = "版本" + versions[i];
+				seriesData.type = "bar";
+				seriesData.data = [];
+				for ( var key in result) {
+					var list = result[key];
+					for (var j = 0; j < list.length; j++) {
+						if (list[j].version == versions[i]) {
+							seriesData.data.push(list[j].issueQty);
+							break;
+						}
+					}
+				}
+				seriesDataArr.push(seriesData);
+			}
+
+			// 指定图表的配置项和数据
+			var option = {
+				title : {
+					text : '根据项目描述数据分析图表展示'
+				},
+				tooltip : {},
+				legend : {
+					data : [ '问题数量' ]
+				},
+				xAxis : {
+					type : 'category',
+					data : xAxisData
+				},
+				yAxis : {},
+				series : seriesDataArr
+			};
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+		}
+
+	</script>
+</body>
+</html>

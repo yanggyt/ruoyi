@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class DataAnalysisController extends BaseController{
 	public ModelAndView defaultHandle(HttpServletRequest req,
                                       HttpServletResponse res) throws Exception {
 		req.setAttribute("users", getSubmitUsers(req));
-		return new ModelAndView("dataAnalysis");
+		return new ModelAndView("dfm/dataAnalysis");
 	}
 
 	/**
@@ -154,7 +155,8 @@ public class DataAnalysisController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/analysis")
-	public void analysis(HttpServletRequest req, HttpServletResponse res) throws Exception {
+	@ResponseBody
+	public Result analysis(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		String projectName = req.getParameter("projectName");
 		String submitUser = req.getParameter("submitUser");
 		
@@ -163,10 +165,8 @@ public class DataAnalysisController extends BaseController{
 		
 		String analysisType = req.getParameter("analysisType");
 		
-		//List<DataAnalysisBean> data = null;
 		Map<String, Object> data = new TreeMap<>();
 
-		UserInfo currentUser = getUserInfo(req);
 		//获取当前登陆用户的用户组
 		//分析原则：系统管理员分析所有的，部门管理员只能分析本部门的，普通用户只能分析自己的
 
@@ -174,7 +174,8 @@ public class DataAnalysisController extends BaseController{
 			//校验projectName是否是当前用户可以看到的
 			Result checkResult = checkProjectNameByLoginUser(req, res);
 			if(null == checkResult || !checkResult.isSuccess()) {
-				outputJson(res, JSON.toJSONString(checkResult));
+//				outputJson(res, JSON.toJSONString(checkResult));
+				return checkResult;
 			}
 
 			List<DataAnalysisBean> result = dataAnalysisService.analysisByProject(projectName, startSubmitTime, endSubmitTime);
@@ -256,8 +257,8 @@ public class DataAnalysisController extends BaseController{
 				Result result = new Result();
 				result.setSuccess(false);
 				result.setMessage("分析失败，未选择分析类型！");
-				outputJson(res, JSON.toJSONString(result));
-				return;
+//				outputJson(res, JSON.toJSONString(result));
+				return result;
 			}
 		}
 		
@@ -266,7 +267,8 @@ public class DataAnalysisController extends BaseController{
 		result.setSuccess(true);
 		result.setMessage("分析成功");
 		result.setData(data);
-		outputJson(res, JSON.toJSONString(result));
+//		outputJson(res, JSON.toJSONString(result));
+		return result;
 	}
 
 }

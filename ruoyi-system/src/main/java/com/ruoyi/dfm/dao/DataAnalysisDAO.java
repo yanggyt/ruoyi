@@ -17,7 +17,7 @@ public class DataAnalysisDAO extends JdbcBaseDao {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT t.F_PROJECT_NAME, t.F_VERSION , t.F_ISSUE_DESCRIPTION, SUM(t.F_ISSUE_QTY) F_ISSUE_QTY ");
-		sb.append("FROM dfm.t_dataays t ");
+		sb.append("FROM t_dataays t ");
 		sb.append("where t.F_PROJECT_NAME = ? AND T.F_SUBMIT_TIME >= ? AND T.F_SUBMIT_TIME <= ? ");
 		sb.append("group by t.F_PROJECT_NAME, t.F_VERSION , t.F_ISSUE_DESCRIPTION ");
 		sb.append("order by SUM(t.F_ISSUE_QTY) desc, t.F_VERSION ASC");
@@ -47,7 +47,7 @@ public class DataAnalysisDAO extends JdbcBaseDao {
 	public List<DataAnalysisBean> analysisByUser(String userName, String startSubmitTime, String endSubmitTime) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT t.F_SUBMIT_USERNAME, t.F_ISSUE_DESCRIPTION, SUM(t.F_ISSUE_QTY) F_ISSUE_QTY ");
-		sb.append("FROM dfm.t_dataays t ");
+		sb.append("FROM t_dataays t ");
 		sb.append("where t.F_SUBMIT_USERNAME = ? AND T.F_SUBMIT_TIME >= ? AND T.F_SUBMIT_TIME <= ? ");
 		sb.append("group by t.F_SUBMIT_USERNAME, t.F_ISSUE_DESCRIPTION ");
 		sb.append("order by SUM(t.F_ISSUE_QTY) DESC");
@@ -75,7 +75,7 @@ public class DataAnalysisDAO extends JdbcBaseDao {
 	public List<DataAnalysisBean> analysisByAllUser(String startSubmitTime, String endSubmitTime, List<UserInfo> submitUsers) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT t.F_SUBMIT_USERNAME, SUM(t.F_ISSUE_QTY) F_ISSUE_QTY ");
-		sb.append("FROM dfm.t_dataays t ");
+		sb.append("FROM t_dataays t ");
 		sb.append("where T.F_SUBMIT_TIME >= ? AND T.F_SUBMIT_TIME <= ? ");
 		sb.append("AND T.F_SUBMIT_USER IN (-1");
 		for (int i = 0; i < submitUsers.size(); ++i)
@@ -108,7 +108,7 @@ public class DataAnalysisDAO extends JdbcBaseDao {
 	public List<DataAnalysisBean> analysisByAllIssue(String startSubmitTime, String endSubmitTime, List<UserInfo> submitUsers) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT t.F_ISSUE_DESCRIPTION, SUM(t.F_ISSUE_QTY) F_ISSUE_QTY ");
-		sb.append("FROM dfm.t_dataays t ");
+		sb.append("FROM t_dataays t ");
 		sb.append("where T.F_SUBMIT_TIME >= ? AND T.F_SUBMIT_TIME <= ? ");
 		sb.append("AND T.F_SUBMIT_USER IN (-1");
 		for (int i = 0; i < submitUsers.size(); ++i)
