@@ -37,6 +37,7 @@
 		</div>
 	</div>
 	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: bootstrap-table-export-js" />
 	<script th:inline="javascript">
 		var forceFlag = [[${@permission.hasPermi('monitor:online:forceLogout')}]];
 		var prefix = ctx + "monitor/online";
@@ -61,7 +62,10 @@
                 },
 		        {
 		            field: 'sessionId',
-		            title: '会话编号'
+		            title: '会话编号',
+		            formatter: function(value, row, index) {
+                    	return $.table.tooltip(value);
+                    }
 		        },
 		        {
 		            field: 'loginName',
@@ -125,8 +129,8 @@
 		// 单条强退
 		function forceLogout(sessionId) {
 		    $.modal.confirm("确定要强制选中用户下线吗？", function() {
-		    	var data = { "sessionId": sessionId };
-		        $.operate.post(prefix + "/forceLogout", data);
+		    	var data = { "ids": sessionId };
+		        $.operate.post(prefix + "/batchForceLogout", data);
 		    })
 		}
 
@@ -139,7 +143,7 @@
 		    }
 		    $.modal.confirm("确认要强退选中的" + rows.length + "条数据吗?", function() {
 		        var url = prefix + "/batchForceLogout";
-		        var data = { "ids": rows };
+		        var data = { "ids": rows.join() };
 		        $.operate.post(url, data);
 		    });
 		}

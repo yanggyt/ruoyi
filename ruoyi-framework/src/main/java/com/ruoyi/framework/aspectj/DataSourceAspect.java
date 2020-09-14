@@ -42,7 +42,9 @@ public class DataSourceAspect {
 
         try {
             return point.proceed();
-        } finally {
+        }
+        finally
+        {
             // 销毁数据源 在执行方法之后
             DynamicDataSourceContextHolder.clearDataSourceType();
         }
@@ -53,14 +55,12 @@ public class DataSourceAspect {
      */
     public DataSource getDataSource(ProceedingJoinPoint point) {
         MethodSignature signature = (MethodSignature) point.getSignature();
-        Class<? extends Object> targetClass = point.getTarget().getClass();
-        DataSource targetDataSource = targetClass.getAnnotation(DataSource.class);
-        if (StringUtils.isNotNull(targetDataSource)) {
-            return targetDataSource;
-        } else {
-            Method method = signature.getMethod();
-            DataSource dataSource = method.getAnnotation(DataSource.class);
+        DataSource dataSource = AnnotationUtils.findAnnotation(signature.getMethod(), DataSource.class);
+        if (Objects.nonNull(dataSource))
+        {
             return dataSource;
         }
+
+        return AnnotationUtils.findAnnotation(signature.getDeclaringType(), DataSource.class);
     }
 }

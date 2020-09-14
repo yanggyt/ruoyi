@@ -4,15 +4,22 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.math.BigDecimal;
 
 /**
  * 自定义导出Excel数据注解
- *
+ * 
  * @author ruoyi
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Excel {
+public @interface Excel
+{
+    /**
+     * 导出时在excel中排序
+     */
+    public int sort() default Integer.MAX_VALUE;
+
     /**
      * 导出到Excel中的名字.
      */
@@ -24,9 +31,29 @@ public @interface Excel {
     public String dateFormat() default "";
 
     /**
+     * 如果是字典类型，请设置字典的type值 (如: sys_user_sex)
+     */
+    public String dictType() default "";
+
+    /**
      * 读取内容转表达式 (如: 0=男,1=女,2=未知)
      */
     public String readConverterExp() default "";
+
+    /**
+     * 分隔符，读取字符串组内容
+     */
+    public String separator() default ",";
+
+    /**
+     * BigDecimal 精度 默认:-1(默认不开启BigDecimal格式化)
+     */
+    public int scale() default -1;
+
+    /**
+     * BigDecimal 舍入规则 默认:BigDecimal.ROUND_HALF_EVEN
+     */
+    public int roundingMode() default BigDecimal.ROUND_HALF_EVEN;
 
     /**
      * 导出类型（0数字 1字符串）
@@ -74,32 +101,43 @@ public @interface Excel {
     public String targetAttr() default "";
 
     /**
+     * 是否自动统计数据,在最后追加一行统计数据总和
+     */
+    public boolean isStatistics() default false;
+
+    /**
      * 字段类型（0：导出导入；1：仅导出；2：仅导入）
      */
     Type type() default Type.ALL;
 
-    public enum Type {
+    public enum Type
+    {
         ALL(0), EXPORT(1), IMPORT(2);
         private final int value;
 
-        Type(int value) {
+        Type(int value)
+        {
             this.value = value;
         }
 
-        public int value() {
+        public int value()
+        {
             return this.value;
         }
     }
 
-    public enum ColumnType {
+    public enum ColumnType
+    {
         NUMERIC(0), STRING(1);
         private final int value;
 
-        ColumnType(int value) {
+        ColumnType(int value)
+        {
             this.value = value;
         }
 
-        public int value() {
+        public int value()
+        {
             return this.value;
         }
     }

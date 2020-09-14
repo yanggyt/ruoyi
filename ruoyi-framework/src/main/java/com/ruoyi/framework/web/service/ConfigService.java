@@ -16,7 +16,6 @@ public class ConfigService {
 
     /**
      * 根据键名查询参数配置信息
-     *
      * @param configKey 参数名称
      * @return 参数键值
      */

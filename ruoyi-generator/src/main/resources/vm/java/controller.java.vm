@@ -1,4 +1,4 @@
-package ${basePackage}.web.controller.${moduleName};
+package ${packageName}.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,7 +18,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.utils.StringUtils;
-#if($table.crud)
+#if($table.crud || $table.sub)
 import com.ruoyi.common.core.page.TableDataInfo;
 #elseif($table.tree)
 import com.ruoyi.common.core.domain.Ztree;
@@ -46,7 +46,7 @@ public class ${ClassName}Controller extends BaseController
         return prefix + "/${businessName}";
     }
 
-#if($table.crud)
+#if($table.crud || $table.sub)
     /**
      * 查询${functionName}列表
      */
@@ -84,7 +84,7 @@ public class ${ClassName}Controller extends BaseController
         return util.exportExcel(list, "${businessName}");
     }
 
-#if($table.crud)
+#if($table.crud || $table.sub)
     /**
      * 新增${functionName}
      */
@@ -153,7 +153,7 @@ public class ${ClassName}Controller extends BaseController
         }
     }
 
-#if($table.crud)
+#if($table.crud || $table.sub)
     /**
      * 删除${functionName}
      */
