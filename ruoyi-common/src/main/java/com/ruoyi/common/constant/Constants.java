@@ -2,11 +2,10 @@ package com.ruoyi.common.constant;
 
 /**
  * 通用常量信息
- * 
+ *
  * @author ruoyi
  */
-public class Constants
-{
+public class Constants {
     /**
      * UTF-8 字符集
      */
@@ -46,6 +45,11 @@ public class Constants
      * 登录失败
      */
     public static final String LOGIN_FAIL = "Error";
+
+    /**
+     * 自动去除表前缀
+     */
+    public static final String AUTO_REOMVE_PRE = "true";
 
     /**
      * 当前记录起始索引

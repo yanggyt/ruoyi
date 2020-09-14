@@ -23,6 +23,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+		<!-- 打war包需要，不影响jar正常运行 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
         <!-- SpringBoot 拦截器 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -87,6 +94,22 @@
             <artifactId>ruoyi-system</artifactId>
         </dependency>
 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jcache</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.cache</groupId>
+			<artifactId>cache-api</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>3.8.0</version>
+		</dependency>
     </dependencies>
 
 </project>

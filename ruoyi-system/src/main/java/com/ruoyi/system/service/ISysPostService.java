@@ -1,41 +1,36 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
 import com.ruoyi.system.domain.SysPost;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * 岗位信息 服务层
- * 
+ *
  * @author ruoyi
  */
-public interface ISysPostService
-{
+public interface ISysPostService {
     /**
      * 查询岗位信息集合
-     * 
+     *
      * @param post 岗位信息
+     * @param pageRequest
      * @return 岗位信息集合
      */
-    public List<SysPost> selectPostList(SysPost post);
+    public Page<SysPost> selectPostList(SysPost post, Pageable pageRequest);
 
     /**
      * 查询所有岗位
-     * 
+     *
      * @return 岗位列表
      */
     public List<SysPost> selectPostAll();
 
     /**
-     * 根据用户ID查询岗位
-     * 
-     * @param userId 用户ID
-     * @return 岗位列表
-     */
-    public List<SysPost> selectPostsByUserId(Long userId);
-
-    /**
      * 通过岗位ID查询岗位信息
-     * 
+     *
      * @param postId 岗位ID
      * @return 角色对象信息
      */
@@ -43,7 +38,7 @@ public interface ISysPostService
 
     /**
      * 批量删除岗位信息
-     * 
+     *
      * @param ids 需要删除的数据ID
      * @return 结果
      * @throws Exception 异常
@@ -52,23 +47,23 @@ public interface ISysPostService
 
     /**
      * 新增保存岗位信息
-     * 
+     *
      * @param post 岗位信息
      * @return 结果
      */
-    public int insertPost(SysPost post);
+    public SysPost insertPost(SysPost post);
 
     /**
      * 修改保存岗位信息
-     * 
+     *
      * @param post 岗位信息
      * @return 结果
      */
-    public int updatePost(SysPost post);
+    public SysPost updatePost(SysPost post);
 
     /**
      * 通过岗位ID查询岗位使用数量
-     * 
+     *
      * @param postId 岗位ID
      * @return 结果
      */
@@ -76,7 +71,7 @@ public interface ISysPostService
 
     /**
      * 校验岗位名称
-     * 
+     *
      * @param post 岗位信息
      * @return 结果
      */
@@ -84,7 +79,7 @@ public interface ISysPostService
 
     /**
      * 校验岗位编码
-     * 
+     *
      * @param post 岗位信息
      * @return 结果
      */

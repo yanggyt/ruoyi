@@ -1,0 +1,16 @@
+package ${packageName}.repository;
+
+import ${packageName}.entity.${ClassName};
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+/**
+ * ${functionName} dao层实现
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Repository
+public interface ${ClassName}Repository extends BaseRepository<${ClassName}, ${primaryKeyType}>{
+
+}

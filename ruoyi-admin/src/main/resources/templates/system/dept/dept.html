@@ -29,7 +29,7 @@
 			</div>
                 
             <div class="btn-group-sm" id="toolbar" role="group">
-		        <a class="btn btn-success" onclick="$.operate.add(100)" shiro:hasPermission="system:dept:add">
+		        <a class="btn btn-success" onclick="$.operate.add(1)" shiro:hasPermission="system:dept:add">
                     <i class="fa fa-plus"></i> 新增
                 </a>
                 <a class="btn btn-primary" onclick="$.operate.edit()" shiro:hasPermission="system:dept:edit">
@@ -50,13 +50,13 @@
 		var editFlag = [[${@permission.hasPermi('system:dept:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:dept:remove')}]];
 		var datas = [[${@dict.getType('sys_normal_disable')}]];
-		var prefix = ctx + "system/dept"
-
+		var prefix = ctx + "system/dept";
 		$(function() {
 		    var options = {
 		        code: "deptId",
 		        parentCode: "parentId",
 		        uniqueId: "deptId",
+				rootIdValue: null,
 		        url: prefix + "/list",
 		        createUrl: prefix + "/add/{id}",
 		        updateUrl: prefix + "/edit/{id}",

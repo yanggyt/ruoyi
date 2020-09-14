@@ -31,8 +31,10 @@ server:
 # 日志配置
 logging:
   level:
+    root: warn
     com.ruoyi: debug
-    org.springframework: warn
+    com.ruoyi.quartz.mapper: warn
+    com.ruoyi.system.mapper: warn
 
 # 用户配置
 user:
@@ -68,7 +70,21 @@ spring:
   devtools:
     restart:
       # 热部署开关
-      enabled: true
+      enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL55Dialect
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+  cache:
+    type: jcache
+    jcache:
+      provider: org.ehcache.jsr107.EhcacheCachingProvider
 
 # MyBatis
 mybatis:

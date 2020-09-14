@@ -7,12 +7,12 @@
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-dept-edit" th:object="${dept}">
 			<input name="deptId" type="hidden" th:field="*{deptId}" />
-			<input id="treeId" name="parentId" type="hidden" th:field="*{parentId}" />
+			<input id="treeId" name="parent" type="hidden" th:field="*{parent.deptId}" />
 			<div class="form-group">
 				<label class="col-sm-3 control-label">上级部门：</label>
 				<div class="col-sm-8">
 				    <div class="input-group">
-						<input class="form-control" type="text" id="treeName" onclick="selectDeptTree()" readonly="true" th:field="*{parentName}">
+						<input class="form-control" type="text" id="treeName" onclick="selectDeptTree()" readonly="true" th:field="*{parent.deptName}">
 					    <span class="input-group-addon"><i class="fa fa-search"></i></span>
 				    </div>
 				</div>

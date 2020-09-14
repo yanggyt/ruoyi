@@ -1,0 +1,23 @@
+<config xmlns="http://www.ehcache.org/v3"
+        xmlns:jsr107="http://www.ehcache.org/v3/jsr107">
+
+    <service>
+        <jsr107:defaults enable-management="true" enable-statistics="false"/>
+    </service>
+
+    <!--指定缓存目录-->
+    <persistence directory="${java.io.tmpdir}/hibernate-ehcache"/>
+
+    <!--缓存模板-->
+    <cache-template name="default">
+        <expiry>
+            <tti>600</tti>
+        </expiry>
+        <resources>
+            <heap>500</heap>
+        </resources>
+    </cache-template>
+
+    <cache alias="com.ruoyi.system.domain.SysDept" uses-template="default"/>
+
+</config>
