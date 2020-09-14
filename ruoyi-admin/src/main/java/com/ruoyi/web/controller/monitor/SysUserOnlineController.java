@@ -49,11 +49,8 @@ public class SysUserOnlineController extends BaseController
     @RequiresPermissions("monitor:online:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysUserOnline userOnline)
-    {
-        startPage();
-        List<SysUserOnline> list = userOnlineService.selectUserOnlineList(userOnline);
-        return getDataTable(list);
+    public TableDataInfo list(SysUserOnline userOnline) {
+        return getDataTable(userOnlineService.selectUserOnlineList(userOnline, getPageRequest()));
     }
 
     @RequiresPermissions(value = { "monitor:online:batchForceLogout", "monitor:online:forceLogout" }, logical = Logical.OR)
