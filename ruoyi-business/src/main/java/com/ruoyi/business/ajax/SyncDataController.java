@@ -1,4 +1,4 @@
-package com.ruoyi.business.controller;
+package com.ruoyi.business.ajax;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/data")
+@RequestMapping("/ajax/data")
 public class SyncDataController extends BaseController {
 
     @Resource
