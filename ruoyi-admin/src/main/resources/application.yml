@@ -144,3 +144,10 @@ wait:
 task:
   result:
     inquire=admin: admin
+
+
+api:
+  root:
+    url: http://101.133.130.84:8210/
+  doe:
+    GetDataByKeyParam: api/DOEAnalysis/GetDataByKeyParam

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('用户列表')" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="role-form">
+					<div class="select-list">
+						<ul>
+							<li>
+								板名：<input type="text" name="productname"/>
+							</li>
+							<li>
+								版本：<input type="text" name="version"/>
+							</li>
+							<li>
+								筛选：
+								<select name="dataType" required>
+									<option value="-1">--请选择--</option>
+									<option value="keyParam" selected>关键工艺参数</option>
+									<option value="rework">维修不良</option>
+								</select>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;检索</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+	        
+	        <div class="col-sm-12 select-table table-striped" style="overflow: scroll;height: 500px;">
+			    <table id="bootstrap-table"></table>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+		var prefix = ctx + "doeAnalysis.do";
+
+		$(function() {
+		    var options = {
+		        // url: prefix + "/getUserList",
+		        // createUrl: prefix + "/add",
+		        // updateUrl: prefix + "/edit?uid={id}",
+		        // removeUrl: prefix + "/remove",
+		        // exportUrl: prefix + "/export",
+				// pauseUrl: prefix + "/changeUserState",
+		        sortName: "roleSort",
+		        modalName: "DOE分析-关键工艺参数",
+		        columns: [
+					{
+		            	checkbox: true
+					},
+					{
+						field: 'keyparamtype',
+						title: '规则名',
+						sortable: false
+					},
+					{
+						field: 'refdes',
+						title: '位号',
+						sortable: false
+					},
+					{
+						field: 'keyparttype',
+						title: '器件类型',
+						sortable: false
+					},
+					{
+						field: 'relativerefdes',
+						title: '关联位号',
+						sortable: false
+					},
+					{
+						field: 'relativeparttype',
+						title: '关联类型',
+						sortable: false
+					},
+					{
+						field: 'measurementvalue',
+						title: '测量值',
+						sortable: false
+					},
+					{
+						field: 'checkvalue',
+						title: '规则值',
+						sortable: false
+					},
+					{
+						field: 'isRework',
+						title: '是否维修',
+						sortable: false
+					},
+					{
+						field: 'defecttype',
+						title: '维修类型关联',
+						sortable: false,
+						formatter: function (value, row, index) {
+
+						}
+					}
+		        ]
+		    };
+		    $.table.init(options);
+		});
+
+	</script>
+</body>
+</html>

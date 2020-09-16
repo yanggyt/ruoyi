@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import com.github.pagehelper.PageHelper;
@@ -31,6 +32,9 @@ import com.ruoyi.common.utils.sql.SqlUtil;
 public class BaseController
 {
     protected final Logger logger = LoggerFactory.getLogger(BaseController.class);
+
+    @Value("${api.root.url}")
+    protected String apiRootUrl;
 
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型
