@@ -151,3 +151,6 @@ api:
     url: http://101.133.130.84:8210/
   doe:
     GetDataByKeyParam: api/DOEAnalysis/GetDataByKeyParam
+    GetDataByRework: api/DOEAnalysis/GetDataByRework
+    Calculate: api/DOEAnalysis/Calculate
+    Save: api/DOEAnalysis/Save
