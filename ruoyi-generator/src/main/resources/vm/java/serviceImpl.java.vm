@@ -7,6 +7,7 @@ import com.ruoyi.common.core.domain.Ztree;
 #end
 #foreach ($column in $columns)
 #if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
+import com.ruoyi.common.core.service.impl.BaseServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
 #break
 #end
@@ -26,43 +27,41 @@ import com.ruoyi.common.core.text.Convert;
 
 /**
  * ${functionName}Service业务层处理
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
 @Service
-public class ${ClassName}ServiceImpl implements I${ClassName}Service 
+public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service
 {
-    @Autowired
-    private ${ClassName}Mapper ${className}Mapper;
 
     /**
      * 查询${functionName}
-     * 
+     *
      * @param ${pkColumn.javaField} ${functionName}ID
      * @return ${functionName}
      */
     @Override
     public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField})
     {
-        return ${className}Mapper.select${ClassName}ById(${pkColumn.javaField});
+        return this.baseMapper.select${ClassName}ById(${pkColumn.javaField});
     }
 
     /**
      * 查询${functionName}列表
-     * 
+     *
      * @param ${className} ${functionName}
      * @return ${functionName}
      */
     @Override
     public List<${ClassName}> select${ClassName}List(${ClassName} ${className})
     {
-        return ${className}Mapper.select${ClassName}List(${className});
+        return this.baseMapper.select${ClassName}List(${className});
     }
 
     /**
      * 新增${functionName}
-     * 
+     *
      * @param ${className} ${functionName}
      * @return 结果
      */
@@ -78,17 +77,17 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
 #end
 #end
 #if($table.sub)
-        int rows = ${className}Mapper.insert${ClassName}(${className});
+        int rows = this.baseMapper.insert${ClassName}(${className});
         insert${subClassName}(${className});
         return rows;
 #else
-        return ${className}Mapper.insert${ClassName}(${className});
+        return this.baseMapper.insert${ClassName}(${className});
 #end
     }
 
     /**
      * 修改${functionName}
-     * 
+     *
      * @param ${className} ${functionName}
      * @return 结果
      */
@@ -104,15 +103,15 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
 #end
 #end
 #if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${className}.get${pkColumn.capJavaField}());
+        this.baseMapper.delete${subClassName}By${subTableFkClassName}(${className}.get${pkColumn.capJavaField}());
         insert${subClassName}(${className});
 #end
-        return ${className}Mapper.update${ClassName}(${className});
+        return this.baseMapper.update${ClassName}(${className});
     }
 
     /**
      * 删除${functionName}对象
-     * 
+     *
      * @param ids 需要删除的数据ID
      * @return 结果
      */
@@ -123,14 +122,14 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     public int delete${ClassName}ByIds(String ids)
     {
 #if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}s(Convert.toStrArray(ids));
+        this.baseMapper.delete${subClassName}By${subTableFkClassName}s(Convert.toStrArray(ids));
 #end
-        return ${className}Mapper.delete${ClassName}ByIds(Convert.toStrArray(ids));
+        return this.baseMapper.delete${ClassName}ByIds(Convert.toStrArray(ids));
     }
 
     /**
      * 删除${functionName}信息
-     * 
+     *
      * @param ${pkColumn.javaField} ${functionName}ID
      * @return 结果
      */
@@ -138,21 +137,21 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField})
     {
 #if($table.sub)
-        ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${pkColumn.javaField});
+        this.baseMapper.delete${subClassName}By${subTableFkClassName}(${pkColumn.javaField});
 #end
-        return ${className}Mapper.delete${ClassName}ById(${pkColumn.javaField});
+        return this.baseMapper.delete${ClassName}ById(${pkColumn.javaField});
     }
 #if($table.tree)
 
     /**
      * 查询${functionName}树列表
-     * 
+     *
      * @return 所有${functionName}信息
      */
     @Override
     public List<Ztree> select${ClassName}Tree()
     {
-        List<${ClassName}> ${className}List = ${className}Mapper.select${ClassName}List(new ${ClassName}());
+        List<${ClassName}> ${className}List = this.baseMapper.select${ClassName}List(new ${ClassName}());
         List<Ztree> ztrees = new ArrayList<Ztree>();
         for (${ClassName} ${className} : ${className}List)
         {
@@ -173,7 +172,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
 
     /**
      * 新增${subTable.functionName}信息
-     * 
+     *
      * @param ${className} ${functionName}对象
      */
     public void insert${subClassName}(${ClassName} ${className})
@@ -190,7 +189,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
             }
             if (list.size() > 0)
             {
-                ${className}Mapper.batch${subClassName}(list);
+                this.baseMapper.batch${subClassName}(list);
             }
         }
     }

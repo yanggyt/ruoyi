@@ -1,5 +1,22 @@
 ## 平台简介
 
+本项目FORK自  [若依/RuoYi](https://gitee.com/y_project/RuoYi)
+
+花了点时间做了以下改动：
+###### 更新springboot
+更新springboot版本至2.1.16.RELEASE
+
+###### 集成mybatis-plus
+一直在项目中使用mybatis-plus，觉得这个方便好用，尽量保持原代码以方便从主干合并，
+core包提供BaseCrudMapper、BaseService、BaseServiceImpl继承即可，并且在代码生成器中已更新
+
+###### 添加lombok
+为开发方便集成了lombok以提高开发效率
+
+###### 控制台日志分等级彩色渲染和多环境修改
+具体看logback-spring.xml和application.xml改动
+
+
 一直想做一款后台管理系统，看了很多优秀的开源项目但是发现没有合适的。于是利用空闲休息时间开始自己写了一套后台系统。如此有了若依。她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA。所有前端后台代码封装过后十分精简易上手，出错概率低。同时支持移动客户端访问。系统会陆续更新一些实用功能。
 
 性别男，若依是给还没有出生女儿取的名字（寓意：你若不离不弃，我必生死相依）
