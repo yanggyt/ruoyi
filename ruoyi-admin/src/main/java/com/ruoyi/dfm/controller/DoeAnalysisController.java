@@ -40,6 +40,9 @@ public class DoeAnalysisController extends BaseController {
     @Value("${api.doe.GetDataByRework}")
     private String getDataByReworkUrl;
 
+    @Value("${api.doe.Calculate}")
+    private String calculateUrl;
+
     /**
      * 获取分析页面
      *
@@ -56,7 +59,7 @@ public class DoeAnalysisController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/list")
+    @RequestMapping("/list")
     @ResponseBody
     public TableDataInfo list(@RequestParam("productname") String productname, @RequestParam("version") String version, @RequestParam("dataType") String dataType) {
         String apiUrl = apiRootUrl;
@@ -68,11 +71,9 @@ public class DoeAnalysisController extends BaseController {
         }
         log.info("request remote api, url={}, param={}", apiUrl, param);
         String result = HttpUtils.sendGet(apiUrl, param);
+
         log.info("response remote api, url={}, param={}, result={}", apiUrl, param, result);
-        if(StringUtils.isBlank(result)) {
-            log.error("reponse result is null. url={}, param={}", apiUrl, param);
-            return getDataTable(Collections.emptyList());
-        }
+        result = StringUtils.replace(result, "\\\"", "\"");
         JSONObject resultObj = JSON.parseObject(result);
         if(null != resultObj && SUCCESS_CODE.equals(resultObj.getInteger("code"))) {
             JSONArray data = resultObj.getJSONArray("data");
@@ -81,6 +82,15 @@ public class DoeAnalysisController extends BaseController {
             log.error("reponse result failed. url={}, param={}, result={}", apiUrl, param, result);
         }
         return getDataTable(Collections.emptyList());
+    }
+
+
+    @RequestMapping("/calculate")
+    @ResponseBody
+    public TableDataInfo calculate(@RequestParam("productname") String productname, @RequestParam("version") String version, @RequestParam("dataType") String dataType) {
+        String url = apiRootUrl + calculateUrl;
+//        HttpUtils.sendPost();
+        return null;
     }
 
 }
