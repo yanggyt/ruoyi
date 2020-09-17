@@ -62,6 +62,14 @@ public interface IBizMemberService
     public int updateBizMember(BizMember bizMember);
 
     /**
+     * 修改会员
+     *
+     * @param bizMember 会员
+     * @return 结果
+     */
+    public int updateBizMemberAndDou(BizMember bizMember);
+
+    /**
      * 批量删除会员
      * 
      * @param ids 需要删除的数据ID

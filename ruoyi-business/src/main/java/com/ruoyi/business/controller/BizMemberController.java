@@ -111,7 +111,7 @@ public class BizMemberController extends BaseController
     @ResponseBody
     public AjaxResult editSave(BizMember bizMember)
     {
-        return toAjax(bizMemberService.updateBizMember(bizMember));
+        return toAjax(bizMemberService.updateBizMemberAndDou(bizMember));
     }
 
     /**

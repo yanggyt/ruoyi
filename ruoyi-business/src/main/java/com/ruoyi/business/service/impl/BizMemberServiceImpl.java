@@ -110,6 +110,55 @@ public class BizMemberServiceImpl implements IBizMemberService
     }
 
     /**
+     * 修改会员
+     *
+     * @param bizMember 会员
+     * @return 结果
+     */
+    @Override
+    public int updateBizMemberAndDou(BizMember bizMember)
+    {
+        Long memberId = bizMember.getId();
+        //修改姓名和手机号
+        BizMember oldBizMember = selectBizMemberSimple(memberId);
+        oldBizMember.setMobile(bizMember.getMobile());
+        oldBizMember.setMemberName(bizMember.getMemberName());
+        updateBizMember(oldBizMember);
+        //修改五项福豆
+        BizAccount bizAccount = new BizAccount();
+        bizAccount.setMemberId(memberId);
+        List<BizAccount> accountList = bizAccountMapper.selectBizAccountList(bizAccount);
+        for (BizAccount account : accountList) {
+            Long oldAmount = account.getAmount().longValue();
+            Long newAmount = 0L;
+            switch (account.getAccountType()) {
+                case BizAccount.DOU_BALANCE:
+                    newAmount = bizMember.getDouBalance();
+                    break;
+                case BizAccount.DOU_PERSON:
+                    newAmount = bizMember.getDouPerson();
+                    break;
+                case BizAccount.DOU_TEAM:
+                    newAmount = bizMember.getDouTeam();
+                    break;
+                case BizAccount.DOU_SPECIAL:
+                    newAmount = bizMember.getDouSpecial();
+                    break;
+                case BizAccount.DOU_FIELD:
+                    newAmount = bizMember.getDouField();
+                    break;
+            }
+            //数据不一致则更新最新账户余额
+            if (!newAmount.equals(oldAmount)) {
+                account.setAmount(new BigDecimal(newAmount));
+                bizAccountMapper.updateBizAccount(account);
+            }
+        }
+
+        return 1;
+    }
+
+    /**
      * 删除会员对象
      * 
      * @param ids 需要删除的数据ID

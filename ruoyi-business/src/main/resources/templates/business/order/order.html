@@ -17,6 +17,7 @@
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                <a class="btn btn-success btn-rounded btn-sm" onclick="$.table.exportExcel()" shiro:hasPermission="business:order:export"><i class="fa fa-download"></i> 导出</a>
                             </li>
                         </ul>
                     </div>
@@ -43,9 +44,9 @@
         </div>
     </div>
     <th:block th:include="include :: footer" />
-     <style>
-         .fixed-table-toolbar{height: 0;overflow: hidden}
-     </style>
+    <style>
+        .fixed-table-toolbar{height: 0;overflow: hidden}
+    </style>
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('business:order:edit')}]];
         var removeFlag = [[${@permission.hasPermi('business:order:remove')}]];
