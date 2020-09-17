@@ -2,6 +2,9 @@ package com.ruoyi.business.ajax;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
+import com.ruoyi.business.domain.BizAccount;
+import com.ruoyi.business.mapper.BizAccountMapper;
+import com.ruoyi.business.mapper.BizMemberMapper;
 import com.ruoyi.business.service.IBizMemberService;
 import com.ruoyi.business.sync.UserData;
 import com.ruoyi.business.sync.UserDataListener;
@@ -21,13 +24,15 @@ import java.io.IOException;
 public class SyncDataController extends BaseController {
 
     @Resource
-    private IBizMemberService bizMemberService;
+    private BizMemberMapper memberMapper;
+    @Resource
+    private BizAccountMapper accountMapper;
 
     @PostMapping("/user")
     public AjaxResult user(@RequestParam("file") MultipartFile file) {
         ExcelReader reader = null;
         try {
-            reader = EasyExcel.read(file.getInputStream(), UserData.class, new UserDataListener(bizMemberService)).build();
+            reader = EasyExcel.read(file.getInputStream(), UserData.class, new UserDataListener(memberMapper, accountMapper)).build();
             reader.readAll();
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,6 +40,11 @@ public class SyncDataController extends BaseController {
             assert reader != null;
             reader.finish();
         }
+        return AjaxResult.success();
+    }
+
+    @PostMapping("/initUserTree")
+    public AjaxResult initUserTree() {
         return AjaxResult.success();
     }
 }

@@ -33,6 +33,9 @@ public class BizMember extends BaseEntity
     @Excel(name = "推荐人ID")
     private Long recommendId;
 
+    /** 所有推荐人ID */
+    private String recommendAllId;
+
     /** 推荐人手机 */
     private String recommendMobile;
 
@@ -109,7 +112,15 @@ public class BizMember extends BaseEntity
         return recommendId;
     }
 
-    public void setRecommendMobile(String recommendMobile) 
+    public String getRecommendAllId() {
+        return recommendAllId;
+    }
+
+    public void setRecommendAllId(String recommendAllId) {
+        this.recommendAllId = recommendAllId;
+    }
+
+    public void setRecommendMobile(String recommendMobile)
     {
         this.recommendMobile = recommendMobile;
     }
@@ -195,6 +206,7 @@ public class BizMember extends BaseEntity
             .append("memberName", getMemberName())
             .append("password", getPassword())
             .append("recommendId", getRecommendId())
+            .append("recommendAllId", getRecommendAllId())
             .append("recommendMobile", getRecommendMobile())
             .append("recommendName", getRecommendName())
             .append("memberType", getMemberType())
