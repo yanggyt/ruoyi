@@ -1,6 +1,9 @@
 package com.ruoyi.business.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,20 @@ public class BizMemberServiceImpl implements IBizMemberService
     public List<BizMember> selectBizMemberList(BizMember bizMember)
     {
         return bizMemberMapper.selectBizMemberList(bizMember);
+    }
+
+    /**
+     * 会员福豆余额
+     *
+     * @param memberID type
+     * @return 结果
+     */
+    public Long selectBizMemberDou(Long memberID, int type)
+    {
+        Map map = new HashMap<>();
+        map.put("memberID", memberID);
+        map.put("type", type);
+        return bizMemberMapper.selectBizMemberDou(map);
     }
 
     /**

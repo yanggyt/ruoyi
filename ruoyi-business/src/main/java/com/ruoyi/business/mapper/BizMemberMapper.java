@@ -1,6 +1,8 @@
 package com.ruoyi.business.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.business.domain.BizMember;
 
 /**
@@ -34,6 +36,14 @@ public interface BizMemberMapper
      * @return 会员集合
      */
     public List<BizMember> selectBizMemberList(BizMember bizMember);
+
+    /**
+     * 会员福豆余额
+     *
+     * @param map
+     * @return 结果
+     */
+    public Long selectBizMemberDou(Map map);
 
     /**
      * 新增会员

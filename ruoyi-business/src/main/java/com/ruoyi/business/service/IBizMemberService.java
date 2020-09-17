@@ -1,6 +1,8 @@
 package com.ruoyi.business.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.business.domain.BizMember;
 
 /**
@@ -34,6 +36,14 @@ public interface IBizMemberService
      * @return 会员集合
      */
     public List<BizMember> selectBizMemberList(BizMember bizMember);
+
+    /**
+     * 会员福豆余额
+     *
+     * @param memberID type
+     * @return 结果
+     */
+    public Long selectBizMemberDou(Long memberID, int type);
 
     /**
      * 新增会员

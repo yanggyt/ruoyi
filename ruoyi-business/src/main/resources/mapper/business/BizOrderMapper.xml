@@ -34,7 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBizOrderList" parameterType="BizOrder" resultMap="BizOrderResult">
         <include refid="selectBizOrderVo"/>
         <where>  
-            <if test="memberName != null  and memberName != ''"> and (a.member_name like concat('%', #{memberName}, '%') or a.mobile like concat('%', #{memberName}, '%'))</if>
+            <if test="memberName != null and memberName != ''"> and (a.member_name like concat('%', #{memberName}, '%') or a.mobile like concat('%', #{memberName}, '%'))</if>
+            <if test="memberId != null"> and a.member_id = #{memberId}</if>
+            <if test="orderStatus != null and orderStatus != -1"> and a.order_status = #{orderStatus}</if>
         </where>
         order by a.id desc
     </select>
