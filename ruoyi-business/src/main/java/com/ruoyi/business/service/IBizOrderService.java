@@ -2,6 +2,7 @@ package com.ruoyi.business.service;
 
 import java.util.List;
 import com.ruoyi.business.domain.BizOrder;
+import com.ruoyi.common.core.domain.AjaxResult;
 
 /**
  * 订单Service接口
@@ -66,4 +67,20 @@ public interface IBizOrderService
      * @return 结果
      */
     public int deleteBizOrderById(Long id);
+
+    /**
+     * 添加订单
+     *
+     * @param
+     * @return AjaxResult
+     */
+    public AjaxResult orderAdd(Long memberID, Long productID, int productNum, Long addressID, String remark);
+
+    /**
+     * 订单收货
+     *
+     * @param
+     * @return AjaxResult
+     */
+    public AjaxResult orderConfirm(Long userID, Long orderID);
 }

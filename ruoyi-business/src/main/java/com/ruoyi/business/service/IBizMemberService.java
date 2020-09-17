@@ -76,4 +76,5 @@ public interface IBizMemberService
      * @return 结果
      */
     public int deleteBizMemberById(Long id);
+
 }

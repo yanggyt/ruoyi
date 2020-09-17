@@ -1,9 +1,14 @@
 package com.ruoyi.business.service.impl;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.business.domain.BizAccount;
+import com.ruoyi.business.domain.BizAccountDetail;
+import com.ruoyi.business.mapper.BizAccountMapper;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +28,9 @@ public class BizMemberServiceImpl implements IBizMemberService
 {
     @Autowired
     private BizMemberMapper bizMemberMapper;
+
+    @Autowired
+    private BizAccountMapper bizAccountMapper;
 
     /**
      * 查询会员
@@ -66,6 +74,7 @@ public class BizMemberServiceImpl implements IBizMemberService
      * @param memberID type
      * @return 结果
      */
+    @Override
     public Long selectBizMemberDou(Long memberID, int type)
     {
         Map map = new HashMap<>();
@@ -123,4 +132,5 @@ public class BizMemberServiceImpl implements IBizMemberService
     {
         return bizMemberMapper.deleteBizMemberById(id);
     }
+
 }

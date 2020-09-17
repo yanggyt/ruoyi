@@ -16,6 +16,13 @@ public class BizAccount extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+    //用户豆账户(0-福豆余额，1-个人福豆，2-团队福豆, 3-福豆田)
+    public static final int DOU_BALANCE = 0;
+    public static final int DOU_PERSON = 1;
+    public static final int DOU_TEAM = 2;
+    public static final int DOU_SPECIAL = 3;
+    public static final int DOU_FIELD = 4;
+
     /** 会员账户ID */
     private Long id;
 
@@ -58,12 +65,12 @@ public class BizAccount extends BaseEntity
     {
         return accountType;
     }
-    public void setAmount(BigDecimal amount) 
+    public void setAmount(BigDecimal amount)
     {
         this.amount = amount;
     }
 
-    public BigDecimal getAmount() 
+    public BigDecimal getAmount()
     {
         return amount;
     }

@@ -15,6 +15,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
+    <resultMap type="BizAccountDetail" id="BizAccountDetailResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="accountId"    column="account_id"    />
+        <result property="accountType"    column="account_type"    />
+        <result property="businessNo"    column="business_no"    />
+        <result property="changeType"    column="change_type"    />
+        <result property="typeDetail"    column="type_detail"    />
+        <result property="beforeAmount"    column="before_amount"    />
+        <result property="afterAmount"    column="after_amount"    />
+        <result property="changeDesc"    column="change_desc"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
     <sql id="selectBizAccountVo">
         select id, member_id, account_type, amount, create_by, create_time, update_by, update_time from biz_account
     </sql>
@@ -24,7 +41,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="memberId != null "> and member_id = #{memberId}</if>
             <if test="accountType != null "> and account_type = #{accountType}</if>
-            <if test="amount != null "> and amount = #{amount}</if>
         </where>
     </select>
     
@@ -80,4 +96,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="selectBizAccountDetailList" parameterType="BizAccountDetail" resultMap="BizAccountDetailResult">
+        select id, member_id, account_id, account_type, business_no, change_type, type_detail, before_amount, after_amount, change_desc, create_by, create_time, update_by, update_time from biz_account_detail
+        <where>
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="accountId != null "> and account_id = #{accountId}</if>
+            <if test="accountType != null "> and account_type = #{accountType}</if>
+            <if test="typeDetail != null "> and type_detail = #{typeDetail}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insertBizAccountDetail" parameterType="BizAccountDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_account_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="accountId != null">account_id,</if>
+            <if test="accountType != null">account_type,</if>
+            <if test="businessNo != null and businessNo != ''">business_no,</if>
+            <if test="changeType != null">change_type,</if>
+            <if test="typeDetail != null">type_detail,</if>
+            <if test="beforeAmount != null">before_amount,</if>
+            <if test="afterAmount != null">after_amount,</if>
+            <if test="changeDesc != null">change_desc,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="accountId != null">#{accountId},</if>
+            <if test="accountType != null">#{accountType},</if>
+            <if test="businessNo != null and businessNo != ''">#{businessNo},</if>
+            <if test="changeType != null">#{changeType},</if>
+            <if test="typeDetail != null">#{typeDetail},</if>
+            <if test="beforeAmount != null">#{beforeAmount},</if>
+            <if test="afterAmount != null">#{afterAmount},</if>
+            <if test="changeDesc != null">#{changeDesc},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
 </mapper>

@@ -39,6 +39,7 @@ public class BizMemberAddressServiceImpl implements IBizMemberAddressService
      * @param memberID 会员ID
      * @return 会员收货地址
      */
+    @Override
     public BizMemberAddress selectDefaultAddressByMemberId(Long memberID)
     {
         return bizMemberAddressMapper.selectDefaultAddressByMemberId(memberID);
@@ -50,6 +51,7 @@ public class BizMemberAddressServiceImpl implements IBizMemberAddressService
      * @param memberID 会员ID
      * @return int
      */
+    @Override
     public int cancelDefaultAddress(Long memberID)
     {
         return bizMemberAddressMapper.cancelDefaultAddress(memberID);

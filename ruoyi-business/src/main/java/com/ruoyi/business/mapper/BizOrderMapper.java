@@ -2,6 +2,7 @@ package com.ruoyi.business.mapper;
 
 import java.util.List;
 import com.ruoyi.business.domain.BizOrder;
+import com.ruoyi.business.domain.BizOrderDetail;
 
 /**
  * 订单Mapper接口
@@ -58,4 +59,12 @@ public interface BizOrderMapper
      * @return 结果
      */
     public int deleteBizOrderByIds(String[] ids);
+
+    /**
+     * 新增订单明细
+     *
+     * @param bizOrderDetail 订单明细
+     * @return 结果
+     */
+    public int insertBizOrderDetail(BizOrderDetail bizOrderDetail);
 }

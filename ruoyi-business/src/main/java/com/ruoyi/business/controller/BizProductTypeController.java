@@ -92,7 +92,7 @@ public class BizProductTypeController extends BaseController
     {
         bizProductType.setCreateBy(ShiroUtils.getLoginName());
         bizProductType.setCreateTime(new Date());
-        bizProductType.setProductTypeCode("BPT" + DateUtils.dateTimeNow("YYYYMMDDHHMMSSSSS"));
+        bizProductType.setProductTypeCode("BPT" + DateUtils.getMilliTime());
         return toAjax(bizProductTypeService.insertBizProductType(bizProductType));
     }
 

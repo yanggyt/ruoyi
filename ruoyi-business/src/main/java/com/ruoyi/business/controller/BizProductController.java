@@ -100,7 +100,7 @@ public class BizProductController extends BaseController
         Date now = new Date();
         bizProduct.setCreateBy(ShiroUtils.getLoginName());
         bizProduct.setCreateTime(now);
-        bizProduct.setProductCode("BPD" + DateUtils.dateTimeNow("YYYYMMDDHHMMSSSSS"));
+        bizProduct.setProductCode("BPD" + DateUtils.getMilliTime());
         //如果上架设置上架时间
         if (bizProduct.getOnlineStatus() == 1) {
             bizProduct.setOnlineTime(now);

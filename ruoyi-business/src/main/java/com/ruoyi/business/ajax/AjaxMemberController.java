@@ -38,6 +38,7 @@ public class AjaxMemberController extends AuthController {
         resultMap.put("douBalance", member.getDouBalance());
         resultMap.put("douPerson", member.getDouPerson());
         resultMap.put("douTeam", member.getDouTeam());
+        resultMap.put("douSpecial", member.getDouSpecial());
         resultMap.put("douField", member.getDouField());
         return AjaxResult.success(resultMap);
     }

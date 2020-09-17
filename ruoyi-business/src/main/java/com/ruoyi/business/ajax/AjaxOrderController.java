@@ -1,9 +1,6 @@
 package com.ruoyi.business.ajax;
 
-import com.ruoyi.business.domain.BizMember;
-import com.ruoyi.business.domain.BizMemberAddress;
-import com.ruoyi.business.domain.BizOrder;
-import com.ruoyi.business.domain.BizProduct;
+import com.ruoyi.business.domain.*;
 import com.ruoyi.business.service.*;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -62,7 +59,7 @@ public class AjaxOrderController extends AuthController {
         Long userID = getUserID();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         //取出福豆余额
-        resultMap.put("douBalance", bizMemberService.selectBizMemberDou(userID, BizMember.DOU_BALANCE));
+        resultMap.put("douBalance", bizMemberService.selectBizMemberDou(userID, BizAccount.DOU_BALANCE));
         //取出默认地址
         BizMemberAddress defaultAddress = bizMemberAddressService.selectDefaultAddressByMemberId(userID);
         resultMap.put("defaultAddress", defaultAddress);
@@ -84,7 +81,25 @@ public class AjaxOrderController extends AuthController {
     {
         Long userID = getUserID();
 
+        return bizOrderService.orderAdd(userID, productID, productNum, addressID, remark);
+    }
 
-        return AjaxResult.success();
+    //取消订单
+    @PostMapping("/orderCancel")
+    public AjaxResult orderCancel(Long orderID)
+    {
+        Long userID = getUserID();
+
+        //TODO 取消订单延后(专项划拨处理??)
+        return bizOrderService.orderConfirm(userID, orderID);
+    }
+
+    //订单收货
+    @PostMapping("/orderConfirm")
+    public AjaxResult orderConfirm(Long orderID)
+    {
+        Long userID = getUserID();
+
+        return bizOrderService.orderConfirm(userID, orderID);
     }
 }

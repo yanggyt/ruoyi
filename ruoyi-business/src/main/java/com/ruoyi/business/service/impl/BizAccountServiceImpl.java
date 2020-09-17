@@ -1,8 +1,11 @@
 package com.ruoyi.business.service.impl;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.business.domain.BizAccount;
+import com.ruoyi.business.domain.BizAccountDetail;
 import com.ruoyi.business.mapper.BizAccountMapper;
 import com.ruoyi.business.service.IBizAccountService;
 import com.ruoyi.common.utils.DateUtils;
@@ -94,5 +97,50 @@ public class BizAccountServiceImpl implements IBizAccountService
     public int deleteBizAccountById(Long id)
     {
         return bizAccountMapper.deleteBizAccountById(id);
+    }
+
+    /**
+     * 会员福豆变动明细
+     *
+     * @param memberID accountType detailType money businessInfo desc
+     * @return boolean
+     */
+    @Override
+    public boolean accountChange(Long memberID, int accountType, int detailType, Long money, String businessInfo, String desc)
+    {
+        //取出用户账户
+        BizAccount bizAccount = new BizAccount();
+        bizAccount.setMemberId(memberID);
+        bizAccount.setAccountType(accountType);
+        List<BizAccount> accountList = bizAccountMapper.selectBizAccountList(bizAccount);
+        if (accountList.size() == 0) {
+            return false;
+        }
+        bizAccount = accountList.get(0);
+        //减去的话判断金额
+        int changeType = money >= 0 ? BizAccountDetail.DOU_CHANGE_TYPE_ADD : BizAccountDetail.DOU_CHANGE_TYPE_REDUSE;
+        Long beforeMoney = bizAccount.getAmount().longValue();
+        if (changeType == BizAccountDetail.DOU_CHANGE_TYPE_REDUSE && beforeMoney < -money) {
+            return false;
+        }
+        //增加余额
+        Long afterMoney = beforeMoney + money;
+        bizAccount.setAmount(new BigDecimal(afterMoney));
+        bizAccountMapper.updateBizAccount(bizAccount);
+
+        //详细记录
+        BizAccountDetail detail = new BizAccountDetail();
+        detail.setMemberId(memberID);
+        detail.setAccountId(bizAccount.getId());
+        detail.setAccountType(accountType);
+        detail.setBusinessNo(businessInfo);
+        detail.setChangeType(changeType);
+        detail.setTypeDetail(detailType);
+        detail.setBeforeAmount(beforeMoney);
+        detail.setAfterAmount(afterMoney);
+        detail.setChangeDesc(desc);
+        detail.setUpdateTime(new Date());
+        bizAccountMapper.insertBizAccountDetail(detail);
+        return true;
     }
 }

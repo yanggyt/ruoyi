@@ -1,6 +1,7 @@
 package com.ruoyi.business.mapper;
 
 import com.ruoyi.business.domain.BizAccount;
+import com.ruoyi.business.domain.BizAccountDetail;
 
 import java.util.List;
 
@@ -59,4 +60,20 @@ public interface BizAccountMapper
      * @return 结果
      */
     public int deleteBizAccountByIds(String[] ids);
+
+    /**
+     * 查询会员账户明细列表
+     *
+     * @param bizAccountDetail 会员账户明细
+     * @return 会员账户明细集合
+     */
+    public List<BizAccountDetail> selectBizAccountDetailList(BizAccountDetail bizAccountDetail);
+
+    /**
+     * 新增会员账户明细
+     *
+     * @param bizAccountDetail 会员账户明细
+     * @return 结果
+     */
+    public int insertBizAccountDetail(BizAccountDetail bizAccountDetail);
 }

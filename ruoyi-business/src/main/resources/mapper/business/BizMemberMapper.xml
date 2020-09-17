@@ -26,7 +26,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         (select amount from biz_account where member_id = a.id and account_type = 0) douBalance,
         (select amount from biz_account where member_id = a.id and account_type = 1) douPerson,
         (select amount from biz_account where member_id = a.id and account_type = 2) douTeam,
-        (select amount from biz_account where member_id = a.id and account_type = 3) douField
+        (select amount from biz_account where member_id = a.id and account_type = 3) douSpecial,
+        (select amount from biz_account where member_id = a.id and account_type = 4) douField
         from biz_member a
     </sql>
 

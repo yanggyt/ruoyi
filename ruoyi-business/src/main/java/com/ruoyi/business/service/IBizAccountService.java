@@ -59,4 +59,12 @@ public interface IBizAccountService
      * @return 结果
      */
     public int deleteBizAccountById(Long id);
+
+    /**
+     * 会员福豆变动明细
+     *
+     * @param memberID accountType detailType money businessInfo desc
+     * @return boolean
+     */
+    public boolean accountChange(Long memberID, int accountType, int detailType, Long money, String businessInfo, String desc);
 }
