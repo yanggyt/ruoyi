@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class AjaxOrderController extends AuthController {
     {
         Long userID = getUserID();
         BizOrder order = bizOrderService.selectBizOrderById(orderID);
-        if (order == null || userID != order.getMemberId()) {
+        if (order == null || !userID.equals(order.getMemberId())) {
             return AjaxResult.error();
         }
         return AjaxResult.success(order);
@@ -71,7 +72,7 @@ public class AjaxOrderController extends AuthController {
         resultMap.put("productName", product.getProductName());
         resultMap.put("productNum", productNum);
         resultMap.put("productPrice", product.getAmount());
-        resultMap.put("orderPrice", product.getAmount() * productNum);
+        resultMap.put("orderPrice", product.getAmount().multiply(new BigDecimal(productNum)));
         return AjaxResult.success(resultMap);
     }
 

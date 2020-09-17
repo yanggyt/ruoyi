@@ -16,7 +16,7 @@ public class BizProductType extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 产品分类ID */
-    private Long productTypeId;
+    private Long id;
 
     /** 产品分类编码 */
     @Excel(name = "产品分类编码")
@@ -37,16 +37,15 @@ public class BizProductType extends BaseEntity
     @Excel(name = "是否禁用：0-否，1-是")
     private Integer isEnable;
 
-    public void setProductTypeId(Long productTypeId) 
-    {
-        this.productTypeId = productTypeId;
+    public Long getId() {
+        return id;
     }
 
-    public Long getProductTypeId() 
-    {
-        return productTypeId;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public void setProductTypeCode(String productTypeCode) 
+
+    public void setProductTypeCode(String productTypeCode)
     {
         this.productTypeCode = productTypeCode;
     }
@@ -95,7 +94,7 @@ public class BizProductType extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("productTypeId", getProductTypeId())
+            .append("id", getId())
             .append("productTypeCode", getProductTypeCode())
             .append("productTypeName", getProductTypeName())
             .append("imageUrl", getImageUrl())

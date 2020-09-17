@@ -1,23 +1,23 @@
 package com.ruoyi.business.service.impl;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
 import com.ruoyi.business.domain.*;
 import com.ruoyi.business.mapper.BizMemberAddressMapper;
 import com.ruoyi.business.mapper.BizMemberMapper;
+import com.ruoyi.business.mapper.BizOrderMapper;
 import com.ruoyi.business.mapper.BizProductMapper;
+import com.ruoyi.business.service.IBizOrderService;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.util.ShiroUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.business.mapper.BizOrderMapper;
-import com.ruoyi.business.service.IBizOrderService;
-import com.ruoyi.common.core.text.Convert;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 订单Service业务层处理
@@ -28,19 +28,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BizOrderServiceImpl implements IBizOrderService 
 {
-    @Autowired
+    @Resource
     private BizOrderMapper bizOrderMapper;
 
-    @Autowired
+    @Resource
     private BizProductMapper bizProductMapper;
 
-    @Autowired
+    @Resource
     private BizMemberMapper bizMemberMapper;
 
-    @Autowired
+    @Resource
     private BizMemberAddressMapper bizMemberAddressMapper;
 
-    @Autowired
+    @Resource
     private BizAccountServiceImpl bizAccountService;
 
     /**
@@ -162,15 +162,15 @@ public class BizOrderServiceImpl implements IBizOrderService
             return AjaxResult.error("该商品不存在");
         }
         //订单总价
-        Long amount = product.getAmount();
-        Long orderTotal = amount * productNum;
+        BigDecimal amount = product.getAmount();
+        BigDecimal orderTotal = amount.multiply(new BigDecimal(productNum));
         //判断余额
         BizMember member = bizMemberMapper.selectBizMemberById(memberID);
         Long douBalance = member.getDouBalance();
-        if (douBalance < orderTotal) {
+        if (douBalance < orderTotal.longValue()) {
             return AjaxResult.error("福豆余额不足");
         }
-        Long cashbackAmount = product.getCashbackAmount() * productNum;
+        BigDecimal cashbackAmount = product.getCashbackAmount().multiply(new BigDecimal(productNum));
         //TODO cashbackAmount 专项划拨金额等级判断
 
         //判断地址
@@ -185,7 +185,7 @@ public class BizOrderServiceImpl implements IBizOrderService
         order.setMemberId(memberID);
         order.setMobile(address.getMobile());
         order.setMemberName(member.getMemberName());
-        order.setOrderAmount(new BigDecimal(orderTotal));
+        order.setOrderAmount(orderTotal);
         order.setOrderStatus(BizOrder.STATUS_PAYED);    //已支付
         order.setRemark(remark);
         order.setAddressDetail(address.getAddress());
@@ -198,16 +198,18 @@ public class BizOrderServiceImpl implements IBizOrderService
         orderDetail.setProductId(productID);
         orderDetail.setProductCode(product.getProductName());
         orderDetail.setProductCount(productNum);
-        orderDetail.setProductAmount(new BigDecimal(amount));
+        orderDetail.setProductAmount(amount);
         bizOrderMapper.insertBizOrderDetail(orderDetail);
         //减去福豆余额账户
-        boolean result = bizAccountService.accountChange(memberID, BizAccount.DOU_BALANCE, BizAccountDetail.DOU_DETAIL_TYPE_ORDER, -orderTotal, String.valueOf(order.getId()), BizAccountDetail.DOU_DESC_ORDER);
+        // TODO 类型不对，同步完数据后在修改
+        boolean result = bizAccountService.accountChange(memberID, BizAccount.DOU_BALANCE, BizAccountDetail.DOU_DETAIL_TYPE_ORDER, -orderTotal.longValue(), String.valueOf(order.getId()), BizAccountDetail.DOU_DESC_ORDER);
         if (!result) {
             return AjaxResult.error("扣款失败,请联系管理员");
         }
         //增加专项账户
-        if(cashbackAmount > 0) {
-            result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, cashbackAmount, String.valueOf(order.getId()), BizAccountDetail.DOU_DESC_SPECIAL1);
+        if(cashbackAmount.longValue() > 0) {
+            // TODO 类型不对，同步完数据后在修改
+            result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, cashbackAmount.longValue(), String.valueOf(order.getId()), BizAccountDetail.DOU_DESC_SPECIAL1);
             if (!result) {
                 return AjaxResult.error("扣款失败,请联系管理员");
             }
@@ -227,7 +229,7 @@ public class BizOrderServiceImpl implements IBizOrderService
     {
         BizOrder order = selectBizOrderById(orderID);
         //验证
-        if (order == null || order.getMemberId() != userID || order.getOrderStatus() != BizOrder.STATUS_DELIVERY) {
+        if (order == null || !order.getMemberId().equals(userID) || order.getOrderStatus() != BizOrder.STATUS_DELIVERY) {
             return AjaxResult.error("订单操作失败");
         }
         order.setOrderStatus(BizOrder.STATUS_COMPLETED);

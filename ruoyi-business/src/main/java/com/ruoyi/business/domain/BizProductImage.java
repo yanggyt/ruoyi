@@ -16,7 +16,7 @@ public class BizProductImage extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 产品图片ID */
-    private Long productImageId;
+    private Long id;
 
     /** 产品ID */
     private Long productId;
@@ -28,16 +28,15 @@ public class BizProductImage extends BaseEntity
     private String imageUrl;
 
 
-    public void setProductImageId(Long productImageId)
-    {
-        this.productImageId = productImageId;
+    public Long getId() {
+        return id;
     }
 
-    public Long getProductImageId() 
-    {
-        return productImageId;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public void setProductId(Long productId) 
+
+    public void setProductId(Long productId)
     {
         this.productId = productId;
     }
@@ -67,7 +66,7 @@ public class BizProductImage extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("productImageId", getProductImageId())
+            .append("id", getId())
             .append("productId", getProductId())
             .append("imageUrl", getImageUrl())
             .toString();

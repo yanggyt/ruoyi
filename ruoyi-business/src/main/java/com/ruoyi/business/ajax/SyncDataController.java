@@ -5,7 +5,11 @@ import com.alibaba.excel.ExcelReader;
 import com.ruoyi.business.domain.BizAccount;
 import com.ruoyi.business.mapper.BizAccountMapper;
 import com.ruoyi.business.mapper.BizMemberMapper;
+import com.ruoyi.business.mapper.BizProductMapper;
+import com.ruoyi.business.mapper.BizProductTypeMapper;
 import com.ruoyi.business.service.IBizMemberService;
+import com.ruoyi.business.sync.GoodsData;
+import com.ruoyi.business.sync.GoodsDataListener;
 import com.ruoyi.business.sync.UserData;
 import com.ruoyi.business.sync.UserDataListener;
 import com.ruoyi.common.core.controller.BaseController;
@@ -27,12 +31,31 @@ public class SyncDataController extends BaseController {
     private BizMemberMapper memberMapper;
     @Resource
     private BizAccountMapper accountMapper;
+    @Resource
+    private BizProductMapper productMapper;
+    @Resource
+    private BizProductTypeMapper productTypeMapper;
 
     @PostMapping("/user")
     public AjaxResult user(@RequestParam("file") MultipartFile file) {
         ExcelReader reader = null;
         try {
             reader = EasyExcel.read(file.getInputStream(), UserData.class, new UserDataListener(memberMapper, accountMapper)).build();
+            reader.readAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            assert reader != null;
+            reader.finish();
+        }
+        return AjaxResult.success();
+    }
+
+    @PostMapping("/goods")
+    public AjaxResult goods(@RequestParam("file") MultipartFile file) {
+        ExcelReader reader = null;
+        try {
+            reader = EasyExcel.read(file.getInputStream(), GoodsData.class, new GoodsDataListener(productMapper, productTypeMapper)).build();
             reader.readAll();
         } catch (IOException e) {
             e.printStackTrace();

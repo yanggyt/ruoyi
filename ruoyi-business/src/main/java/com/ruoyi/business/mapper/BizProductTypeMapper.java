@@ -20,6 +20,14 @@ public interface BizProductTypeMapper
     public BizProductType selectBizProductTypeById(Long productTypeId);
 
     /**
+     * 查询产品分类
+     *
+     * @param productTypeCode 产品分类Code
+     * @return 产品分类
+     */
+    public BizProductType selectBizProductTypeByCode(String productTypeCode);
+
+    /**
      * 查询产品分类列表
      * 
      * @param bizProductType 产品分类

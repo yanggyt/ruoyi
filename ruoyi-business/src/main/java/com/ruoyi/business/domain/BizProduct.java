@@ -1,5 +1,6 @@
 package com.ruoyi.business.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,7 +19,7 @@ public class BizProduct extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 产品ID */
-    private Long productId;
+    private Long id;
 
     /** 产品编码 */
     @Excel(name = "产品编码")
@@ -38,15 +39,15 @@ public class BizProduct extends BaseEntity
 
     /** 产品单价 */
     @Excel(name = "产品单价")
-    private Long amount;
+    private BigDecimal amount;
 
     /** 产品返现金额 */
     @Excel(name = "产品返现金额")
-    private Long cashbackAmount;
+    private BigDecimal cashbackAmount;
 
     /** 排序 */
     @Excel(name = "排序")
-    private Long sort;
+    private Integer sort;
 
     /** 是否上架 */
     @Excel(name = "是否上架")
@@ -64,16 +65,15 @@ public class BizProduct extends BaseEntity
     private List<String> detailImages;
     private List<String> loopImages;
 
-    public void setProductId(Long productId) 
-    {
-        this.productId = productId;
+    public Long getId() {
+        return id;
     }
 
-    public Long getProductId() 
-    {
-        return productId;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public void setProductCode(String productCode) 
+
+    public void setProductCode(String productCode)
     {
         this.productCode = productCode;
     }
@@ -109,29 +109,29 @@ public class BizProduct extends BaseEntity
     {
         return productClass;
     }
-    public void setAmount(Long amount) 
+    public void setAmount(BigDecimal amount)
     {
         this.amount = amount;
     }
 
-    public Long getAmount() 
+    public BigDecimal getAmount()
     {
         return amount;
     }
-    public void setSort(Long sort) 
+    public void setSort(Integer sort)
     {
         this.sort = sort;
     }
 
-    public Long getCashbackAmount() {
+    public BigDecimal getCashbackAmount() {
         return cashbackAmount;
     }
 
-    public void setCashbackAmount(Long cashbackAmount) {
+    public void setCashbackAmount(BigDecimal cashbackAmount) {
         this.cashbackAmount = cashbackAmount;
     }
 
-    public Long getSort()
+    public Integer getSort()
     {
         return sort;
     }
@@ -190,7 +190,7 @@ public class BizProduct extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("productId", getProductId())
+            .append("id", getId())
             .append("productCode", getProductCode())
             .append("productName", getProductName())
             .append("productTypeId", getProductTypeId())

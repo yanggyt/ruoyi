@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.business.mapper.BizProductMapper">
     
     <resultMap type="BizProduct" id="BizProductResult">
-        <result property="productId"    column="id"    />
+        <result property="id"    column="id"    />
         <result property="productCode"    column="product_code"    />
         <result property="productName"    column="product_name"    />
         <result property="productTypeId"    column="product_type_id"    />
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <resultMap type="BizProductImage" id="BizProductImageResult">
-        <result property="productImageId"    column="id"    />
+        <result property="id"    column="id"    />
         <result property="productId"    column="product_id"    />
         <result property="imageType"    column="image_type"    />
         <result property="imageUrl"    column="image_url"    />

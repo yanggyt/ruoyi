@@ -99,7 +99,7 @@ public class BizProductServiceImpl implements IBizProductService
     public int updateBizProduct(BizProduct bizProduct)
     {
         bizProduct.setUpdateTime(DateUtils.getNowDate());
-        bizProductMapper.deleteBizProductImageByProductId(bizProduct.getProductId());
+        bizProductMapper.deleteBizProductImageByProductId(bizProduct.getId());
         insertBizProductImage(bizProduct);
         return bizProductMapper.updateBizProduct(bizProduct);
     }
@@ -167,7 +167,7 @@ public class BizProductServiceImpl implements IBizProductService
         List<String> detailImages = bizProduct.getDetailImages();
         List<String> loopImages = bizProduct.getLoopImages();
         String mainImage = bizProduct.getMainImage();
-        Long productId = bizProduct.getProductId();
+        Long productId = bizProduct.getId();
         List<BizProductImage> list = new ArrayList<BizProductImage>();
         //插入三类产品图片
         if (StringUtils.isNotEmpty(mainImage)) {

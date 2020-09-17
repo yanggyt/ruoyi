@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.business.mapper.BizProductTypeMapper">
     
     <resultMap type="BizProductType" id="BizProductTypeResult">
-        <result property="productTypeId"    column="id"    />
+        <result property="id"    column="id"    />
         <result property="productTypeCode"    column="product_type_code"    />
         <result property="productTypeName"    column="product_type_name"    />
         <result property="imageUrl"    column="image_url"    />
@@ -34,7 +34,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectBizProductTypeVo"/>
         where id = #{productTypeId}
     </select>
-        
+
+    <select id="selectBizProductTypeByCode" parameterType="String" resultMap="BizProductTypeResult">
+        <include refid="selectBizProductTypeVo"/>
+        where product_type_code = #{productTypeCode} limit 1
+    </select>
+
     <insert id="insertBizProductType" parameterType="BizProductType" useGeneratedKeys="true" keyProperty="productTypeId">
         insert into biz_product_type
         <trim prefix="(" suffix=")" suffixOverrides=",">
