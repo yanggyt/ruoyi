@@ -48,6 +48,9 @@ public class BizOrder extends BaseEntity
     @Excel(name = "0-待支付，1-已支付，2-已取消, 3-待收货, 4-已完成")
     private Integer orderStatus;
 
+    /** 是否团队福豆影响 */
+    private Integer isTeam;
+
     /** 订单备注 */
     @Excel(name = "订单备注")
     private String remark;
@@ -148,7 +151,16 @@ public class BizOrder extends BaseEntity
     {
         return orderStatus;
     }
-    public void setAddressId(Long addressId) 
+
+    public Integer getIsTeam() {
+        return isTeam;
+    }
+
+    public void setIsTeam(Integer isTeam) {
+        this.isTeam = isTeam;
+    }
+
+    public void setAddressId(Long addressId)
     {
         this.addressId = addressId;
     }

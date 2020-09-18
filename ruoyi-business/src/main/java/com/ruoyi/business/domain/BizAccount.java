@@ -23,6 +23,9 @@ public class BizAccount extends BaseEntity
     public static final int DOU_SPECIAL = 3;
     public static final int DOU_FIELD = 4;
 
+    //二级直推拥有有效下级用户数量条件
+    public static final int SECOND_AWARD_CHILD_LIMIT = 3;
+
     /** 会员账户ID */
     private Long id;
 

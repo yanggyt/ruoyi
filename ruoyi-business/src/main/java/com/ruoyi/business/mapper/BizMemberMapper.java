@@ -76,4 +76,13 @@ public interface BizMemberMapper
      * @return 结果
      */
     public int deleteBizMemberByIds(String[] ids);
+
+    /**
+     * 取出有效下级数量(有订单)
+     *
+     * @param memberID 上级用户ID
+     * @return 结果
+     */
+    public int getValidChildCount(Long memberID);
+
 }

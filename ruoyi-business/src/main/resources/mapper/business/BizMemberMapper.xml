@@ -122,4 +122,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="getValidChildCount" parameterType="Long" resultType="Integer">
+        select count(id) from biz_member a where recommend_id = #{memberID}
+        and exists(select id from biz_order b where b.member_id = a.id and is_team = 1)
+    </select>
 </mapper>

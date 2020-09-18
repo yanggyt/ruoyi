@@ -11,6 +11,7 @@ import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.utils.DictUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -187,6 +188,7 @@ public class BizOrderServiceImpl implements IBizOrderService
         order.setMemberName(member.getMemberName());
         order.setOrderAmount(orderTotal);
         order.setOrderStatus(BizOrder.STATUS_PAYED);    //已支付
+        order.setIsTeam(cashbackAmount.longValue() > 0 ? 1 : 0);  //是否团队福豆影响订单
         order.setRemark(remark);
         order.setAddressDetail(address.getAddress());
         order.setAddressId(addressID);
@@ -200,18 +202,42 @@ public class BizOrderServiceImpl implements IBizOrderService
         orderDetail.setProductCount(productNum);
         orderDetail.setProductAmount(amount);
         bizOrderMapper.insertBizOrderDetail(orderDetail);
+
+        String businessCode = String.valueOf(order.getOrderSn());
         //减去福豆余额账户
         // TODO 类型不对，同步完数据后在修改
-        boolean result = bizAccountService.accountChange(memberID, BizAccount.DOU_BALANCE, BizAccountDetail.DOU_DETAIL_TYPE_ORDER, -orderTotal.longValue(), String.valueOf(order.getId()), BizAccountDetail.DOU_DESC_ORDER);
+        boolean result = bizAccountService.accountChange(memberID, BizAccount.DOU_BALANCE, BizAccountDetail.DOU_DETAIL_TYPE_ORDER, -orderTotal.longValue(), businessCode, BizAccountDetail.DOU_DESC_ORDER);
         if (!result) {
             return AjaxResult.error("扣款失败,请联系管理员");
         }
         //增加专项账户
         if(cashbackAmount.longValue() > 0) {
             // TODO 类型不对，同步完数据后在修改
-            result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, cashbackAmount.longValue(), String.valueOf(order.getId()), BizAccountDetail.DOU_DESC_SPECIAL1);
+            result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, cashbackAmount.longValue(), businessCode, BizAccountDetail.DOU_DESC_SPECIAL1);
             if (!result) {
                 return AjaxResult.error("扣款失败,请联系管理员");
+            }
+
+            //增加直推奖励(团队福豆账户)
+            Long recMemberID = member.getRecommendId();
+            if (recMemberID != null && recMemberID != 0) {
+                //取出直推奖励金额
+                String award1 = DictUtils.getDictLabel("busi_recommend_award", "1");
+                result = bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, Long.parseLong(award1), businessCode, BizAccountDetail.DOU_DESC_RECOMM);
+                if (!result) {
+                    return AjaxResult.error("扣款失败,请联系管理员");
+                }
+                //判断二级直推(需要3个下级)
+                BizMember recommendMember = bizMemberMapper.selectBizMemberSimple(recMemberID);
+                Long topMemberID = recommendMember.getRecommendId();
+                //判断有效下级数不少于三个
+                if (bizMemberMapper.getValidChildCount(topMemberID) >= BizAccount.SECOND_AWARD_CHILD_LIMIT) {
+                    String award2 = DictUtils.getDictLabel("busi_recommend_award", "2");
+                    result = bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, Long.parseLong(award2), businessCode, BizAccountDetail.DOU_DESC_SECOND);
+                    if (!result) {
+                        return AjaxResult.error("扣款失败,请联系管理员");
+                    }
+                }
             }
         }
         return AjaxResult.success();

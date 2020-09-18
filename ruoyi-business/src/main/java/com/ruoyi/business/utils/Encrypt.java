@@ -2,6 +2,7 @@ package com.ruoyi.business.utils;
 
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
+import com.ruoyi.system.utils.DictUtils;
 
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
@@ -72,7 +73,9 @@ public class Encrypt {
 
     public static void main(String args[]) {
         //System.out.println(encrypt("x123456"));
-        System.out.println(decrypt("248E135E28C103B4"));
+        //System.out.println(decrypt("248E135E28C103B4"));
+
+        //System.out.println(DictUtils.getDictLabel("busi_recommend_award", "1"));
     }
 
     private static final String HEX_CHAR = "0123456789ABCDEF";
