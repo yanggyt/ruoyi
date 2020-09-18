@@ -50,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectBizMemberSimple" parameterType="Long" resultMap="BizMemberResult">
-        select id, mobile, member_name, recommend_id, recommend_mobile, recommend_name, member_type, is_delete, is_enable, create_by, create_time, update_by, update_time
+        select id, mobile, member_name, password, recommend_id, recommend_mobile, recommend_name, member_type, is_delete, is_enable, create_by, create_time, update_by, update_time
         from biz_member where id = #{id}
     </select>
         

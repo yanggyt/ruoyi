@@ -1,7 +1,10 @@
 package com.ruoyi.business.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.ruoyi.business.utils.Encrypt;
 import com.ruoyi.common.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +118,21 @@ public class BizMemberController extends BaseController
     }
 
     /**
+     * 查看会员密码
+     */
+    @RequiresPermissions("business:member:edit")
+    @Log(title = "会员密码", businessType = BusinessType.UPDATE)
+    @PostMapping("/showPassword")
+    @ResponseBody
+    public AjaxResult showPassword(Long memberID)
+    {
+        BizMember bizMember = bizMemberService.selectBizMemberSimple(memberID);
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("pwd", Encrypt.decrypt(bizMember.getPassword()));
+        return AjaxResult.success(resultMap);
+    }
+
+    /**
      * 修改会员密码
      */
     @RequiresPermissions("business:member:edit")
@@ -125,7 +143,8 @@ public class BizMemberController extends BaseController
     {
         BizMember bizMember = bizMemberService.selectBizMemberSimple(memberID);
         if(bizMember == null || StringUtils.isEmpty(password)) return toAjax(0);
-        bizMember.setPassword(password);
+        //加密
+        bizMember.setPassword(Encrypt.encrypt(password));
         return toAjax(bizMemberService.updateBizMember(bizMember));
     }
 
