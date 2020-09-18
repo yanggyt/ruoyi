@@ -43,6 +43,9 @@ public class DoeAnalysisController extends BaseController {
     @Value("${api.doe.Calculate}")
     private String calculateUrl;
 
+    @Value("${api.doe.Save}")
+    private String saveUrl;
+
     /**
      * 获取分析页面
      *
@@ -71,9 +74,25 @@ public class DoeAnalysisController extends BaseController {
         }
         log.info("request remote api, url={}, param={}", apiUrl, param);
         String result = HttpUtils.sendGet(apiUrl, param);
-
         log.info("response remote api, url={}, param={}, result={}", apiUrl, param, result);
-        result = StringUtils.replace(result, "\\\"", "\"");
+        JSONObject resultObj = JSON.parseObject(result);
+        if(null != resultObj && SUCCESS_CODE.equals(resultObj.getInteger("code"))) {
+            JSONArray data = resultObj.getJSONArray("data");
+            return getDataTable(data);
+        } else {
+            log.error("reponse result failed. url={}, param={}, result={}", apiUrl, param, result);
+        }
+        return getDataTable(Collections.emptyList());
+    }
+
+    @RequestMapping("/calculate")
+    @ResponseBody
+    public TableDataInfo calculate(@RequestParam("productname") String productname, @RequestParam("version") String version, @RequestParam("dataType") String dataType) {
+        String apiUrl = apiRootUrl + calculateUrl;
+        String param = "";
+        log.info("request remote api, apiUrl={}, param={}", apiUrl, param);
+        String result = HttpUtils.sendPost(apiUrl, param);
+        log.info("response remote api, apiUrl={}, param={}, result={}", apiUrl, param, result);
         JSONObject resultObj = JSON.parseObject(result);
         if(null != resultObj && SUCCESS_CODE.equals(resultObj.getInteger("code"))) {
             JSONArray data = resultObj.getJSONArray("data");
@@ -85,12 +104,21 @@ public class DoeAnalysisController extends BaseController {
     }
 
 
-    @RequestMapping("/calculate")
+    @RequestMapping("/save")
     @ResponseBody
-    public TableDataInfo calculate(@RequestParam("productname") String productname, @RequestParam("version") String version, @RequestParam("dataType") String dataType) {
-        String url = apiRootUrl + calculateUrl;
-//        HttpUtils.sendPost();
-        return null;
+    public AjaxResult save(@RequestParam("productname") String productname, @RequestParam("version") String version, @RequestParam("dataType") String dataType) {
+        String apiUrl = apiRootUrl + saveUrl;
+        String param = "";
+        log.info("request remote api, apiUrl={}, param={}", apiUrl, param);
+        String result = HttpUtils.sendPost(apiUrl, param);
+        log.info("response remote api, apiUrl={}, param={}, result={}", apiUrl, param, result);
+        JSONObject resultObj = JSON.parseObject(result);
+        if(null != resultObj && SUCCESS_CODE.equals(resultObj.getInteger("code"))) {
+            return AjaxResult.success();
+        } else {
+            log.error("reponse result failed. url={}, param={}, result={}", apiUrl, param, result);
+        }
+        return AjaxResult.error();
     }
 
 }
