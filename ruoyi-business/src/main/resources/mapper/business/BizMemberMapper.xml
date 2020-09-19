@@ -53,6 +53,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, mobile, member_name, password, recommend_id, recommend_mobile, recommend_name, member_type, is_delete, is_enable, create_by, create_time, update_by, update_time
         from biz_member where id = #{id}
     </select>
+
+    <select id="selectBizMemberByMobile" resultMap="BizMemberResult">
+        select id, mobile, member_name, password, recommend_id, recommend_mobile, recommend_name, member_type, is_delete, is_enable, create_by, create_time, update_by, update_time
+        from biz_member where mobile = #{mobile}
+    </select>
         
     <insert id="insertBizMember" parameterType="BizMember" useGeneratedKeys="true" keyProperty="id">
         insert into biz_member
@@ -126,4 +131,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select count(id) from biz_member a where recommend_id = #{memberID}
         and exists(select id from biz_order b where b.member_id = a.id and is_team = 1)
     </select>
+
 </mapper>

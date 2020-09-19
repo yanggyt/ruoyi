@@ -30,7 +30,7 @@ public class UserDataListener extends AnalysisEventListener<UserData> {
         member.setIsEnable("Y".equals(userData.getEnable()) ? 1 : 0);
         member.setCreateTime(DateUtils.parseDate(userData.getAddtim()));
         member.setUpdateTime(DateUtils.parseDate(userData.getAddtim()));
-        member.setMobile(userData.getReferrerTelephone());
+        member.setMobile(userData.getUserTelephone());
         member.setRecommendMobile(userData.getReferrerTelephone());
         member.setRecommendName(userData.getReferrer());
         member.setId(Long.valueOf(userData.getId()));

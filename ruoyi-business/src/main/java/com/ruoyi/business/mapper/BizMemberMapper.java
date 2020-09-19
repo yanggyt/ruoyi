@@ -30,6 +30,14 @@ public interface BizMemberMapper
     public BizMember selectBizMemberSimple(Long id);
 
     /**
+     * 查询会员
+     *
+     * @param mobile 手机号
+     * @return 会员
+     */
+    public BizMember selectBizMemberByMobile(String mobile);
+
+    /**
      * 查询会员列表
      * 
      * @param bizMember 会员

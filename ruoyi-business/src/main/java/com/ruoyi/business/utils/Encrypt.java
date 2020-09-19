@@ -73,7 +73,7 @@ public class Encrypt {
 
     public static void main(String args[]) {
         //System.out.println(encrypt("x123456"));
-        //System.out.println(decrypt("248E135E28C103B4"));
+        System.out.println(decrypt("83A0D00DA5194E0E88CDC5FCADED588F"));
 
         //System.out.println(DictUtils.getDictLabel("busi_recommend_award", "1"));
     }

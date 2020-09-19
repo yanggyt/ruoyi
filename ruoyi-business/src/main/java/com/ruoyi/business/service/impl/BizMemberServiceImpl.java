@@ -17,6 +17,8 @@ import com.ruoyi.business.domain.BizMember;
 import com.ruoyi.business.service.IBizMemberService;
 import com.ruoyi.common.core.text.Convert;
 
+import javax.annotation.Resource;
+
 /**
  * 会员Service业务层处理
  * 
@@ -26,10 +28,10 @@ import com.ruoyi.common.core.text.Convert;
 @Service
 public class BizMemberServiceImpl implements IBizMemberService 
 {
-    @Autowired
+    @Resource
     private BizMemberMapper bizMemberMapper;
 
-    @Autowired
+    @Resource
     private BizAccountMapper bizAccountMapper;
 
     /**
@@ -54,6 +56,11 @@ public class BizMemberServiceImpl implements IBizMemberService
     public BizMember selectBizMemberSimple(Long id)
     {
         return bizMemberMapper.selectBizMemberSimple(id);
+    }
+
+    @Override
+    public BizMember selectBizMemberByMobile(String mobile) {
+        return bizMemberMapper.selectBizMemberByMobile(mobile);
     }
 
     /**
