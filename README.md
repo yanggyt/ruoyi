@@ -4,7 +4,7 @@
 
 花了点时间做了以下改动：
 ###### 更新springboot
-更新springboot版本至2.1.16.RELEASE
+更新springboot版本至2.1.17.RELEASE
 
 ###### 集成mybatis-plus
 一直在项目中使用mybatis-plus，觉得这个方便好用，尽量保持原代码以方便从主干合并，
