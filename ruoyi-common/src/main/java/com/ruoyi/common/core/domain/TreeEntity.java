@@ -1,8 +1,10 @@
 package com.ruoyi.common.core.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+
 /**
  * Tree基类
- * 
+ *
  * @author ruoyi
  */
 public class TreeEntity extends BaseEntity
@@ -10,6 +12,7 @@ public class TreeEntity extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 父菜单名称 */
+    @TableField(exist = false)
     private String parentName;
 
     /** 父菜单ID */

@@ -1,0 +1,21 @@
+package com.ruoyi.framework.config;
+
+import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import com.baomidou.mybatisplus.core.injector.ISqlInjector;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * mybatis-plus配置
+ *
+ * @author Mark sunlightcs@gmail.com
+ */
+@Configuration
+public class MybatisPlusConfig {
+
+    @Bean
+    public ISqlInjector sqlInjector() {
+        return new DefaultSqlInjector();
+    }
+}
