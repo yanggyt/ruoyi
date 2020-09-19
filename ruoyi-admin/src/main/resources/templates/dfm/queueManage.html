@@ -152,28 +152,28 @@
 
 						//获取列表中所有数据
 						var rows = $('#bootstrap-table').bootstrapTable('getData',{useCurrentPage:true,includeHiddenRows:true});
-						var upImg = "/img/up.gif";
-						var downImg = "/img/down.gif";
+						var upImg = "<i class='fa fa-arrow-up'></i>";
+						var downImg = "<i class='fa fa-arrow-down'></i>";
 
 						if(index == 0) {
 							if(hasPre) {
-								html += "<a  href=\"javascript:changePri("+ row.id +",'up');\"><img style=\"border:0px;\"src=\""+ upImg +"\" /></a>";
+								html += "<a style='margin-right: 10px' href=\"javascript:changePri("+ row.id +",'up');\">"+upImg+"</a>";
 							}
 						} else {
 							if(PROJECT_STATE_DAICHA == rows[index-1].state)
 							{
-								html += "<a  href=\"javascript:changePri("+ row.id +",'up');\"><img style=\"border:0px;\"src=\""+ upImg + "\" /></a>";
+								html += "<a  style='margin-right: 10px' href=\"javascript:changePri("+ row.id +",'up');\">"+upImg+"</a>";
 							}
 						}
 
 						if(index == rows.length-1) {
 							if(hasNext) {
-								html += "<a  href=\"javascript:changePri("+ row.id +",'down');\"><img style=\"border:0px;\"src=\"/img/down.gif\" /></a>";
+								html += "<a  style='margin-right: 10px' href=\"javascript:changePri("+ row.id +",'down');\">"+downImg+"</a>";
 							}
 						} else {
 							if(PROJECT_STATE_DAICHA == rows[index+1].state)
 							{
-								html += "<a  href=\"javascript:changePri("+ row.id +",'down');\"><img style=\"border:0px;\"src=\"/img/down.gif\" /></a>";
+								html += "<a  style='margin-right: 10px' href=\"javascript:changePri("+ row.id +",'down');\">"+downImg+"</a>";
 							}
 						}
 						return html;
