@@ -2,10 +2,6 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
 	<th:block th:include="include :: header('DOE分析')" />
-	<!--<link href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css" rel="stylesheet">-->
-
-	<!--<script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>-->
-	<!--<script src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>-->
 </head>
 <body class="gray-bg">
 	<div class="container-div">
@@ -35,9 +31,13 @@
 				</form>
 			</div>
 	        
-	        <div id="search-result-div" class="col-sm-12 select-table table-striped" style="overflow: scroll;height:90%;">
-			    <table id="search-result-keyparam-table"></table>
-				<table id="search-result-rework-table" style="display: none"></table>
+	        <div id="search-result-div1" class="col-sm-12 select-table table-striped" style="overflow: scroll;height:90%;">
+			    <table id="search-result-keyparam-table" class="table table-striped table-fixed-header"   data-filter-control="true"
+					   data-filter-show-clear="true" ></table>
+			</div>
+			<div id="search-result-div2" class="col-sm-12 select-table table-striped" style="overflow: scroll;height:90%; display: none;">
+				<table id="search-result-rework-table" class="table table-striped table-fixed-header" data-filter-control="true"
+					   data-filter-show-clear="true"></table>
 			</div>
 		</div>
 		<div class="row" style="height: 50%;">
@@ -58,7 +58,7 @@
 			</div>
 
 			<div id="calculate-result-div" class="col-sm-12 select-table table-striped" style="overflow: scroll;height:80%;">
-				<table id="calculate-result-table" style="display: none"></table>
+				<table id="calculate-result-table" class="table table-striped table-fixed-header" data-height="300" style="display: none"></table>
 			</div>
 		</div>
 	</div>
@@ -71,18 +71,31 @@
 		var currentVersion = "";
 
 		$(document).ready(function(){
-			initKeyParamTable();
-			initReworkTable();
-			$("#search-result-rework-table").hide();
+
+			var divHeight = $("#search-result-div1").height() - 40;
+			initKeyParamTable(divHeight);
+			initReworkTable(divHeight);
+			$("#search-result-div2").hide();
 			initCalculateResultTable();
 			$("#calculate-result-table").hide();
 		});
+		//onmouseup松开鼠标时执行
+		//模拟鼠标滚动事件，以实现横向滚动条的移动，表头跟数据对应
+		function onmouseUP(){
+			var scrollTop = document.getElementsByTagName("body")[0].scrollTop;
+			scrollTop -= 10;
+			// $(".table-fixed-header").fixedHeader();
+			//alert(scrollTop)
+		}
 
-		function initKeyParamTable() {
+
+		function initKeyParamTable(divHeight) {
 		    var options = {
 		        sortName: "roleSort",
 				pagination: false,
 				modalName: "DOE分析-关键工艺参数",
+				height: divHeight,
+				filterControl: true,
 		        columns: [
 					{
 		            	checkbox: true
@@ -98,59 +111,79 @@
 					{
 						field: 'keyparamtype',
 						title: '规则名',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'refdes',
 						title: '位号',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'keyparttype',
 						title: '器件类型',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'relativerefdes',
 						title: '关联位号',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'relativeparttype',
 						title: '关联类型',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'measurementvalue',
 						title: '测量值',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'checkvalue',
 						title: '规则值',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'isRework',
 						title: '是否维修',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'defecttype',
 						title: '维修类型关联',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					}
 		        ]
 		    };
 			$("#search-result-keyparam-table").bootstrapTable(options);
+
+			//固定表头
+			$("#search-result-keyparam-table").on("post-body.bs.table",function(){
+				//alert(1);
+				$("#search-result-keyparam-table thead").addClass("header");
+				// $(".table-fixed-header").fixedHeader();
+				onmouseUP();
+			});
+
 		}
 
 
-		function initReworkTable() {
+		function initReworkTable(divHeight) {
 			var options = {
 				sortName: "roleSort",
 				pagination: false,
 				modalName: "DOE分析-关键工艺参数",
+				filterControl: true,
+				height: divHeight,
 				columns: [
 					{
 						checkbox: true
@@ -166,36 +199,49 @@
 					{
 						field: 'refdes',
 						title: '位号',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'defecttype',
 						title: '维修类型',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'isRelativeKeyParam',
 						title: '是否关联关键工艺参数',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'keyparamtype',
 						title: '规则名',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'measurementvalue',
 						title: '测量值',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					},
 					{
 						field: 'checkvalue',
 						title: '规则值',
-						sortable: false
+						sortable: false,
+						filterControl: 'select'
 					}
 				]
 			};
 			$("#search-result-rework-table").bootstrapTable(options);
+			//固定表头
+			$("#search-result-rework-table").on("post-body.bs.table",function(){
+				//alert(1);
+				$("#search-result-rework-table thead").addClass("header");
+				// $(".table-fixed-header").fixedHeader();
+				onmouseUP();
+			});
 		}
 
 		function fillKeyParamTable(data) {
@@ -223,12 +269,12 @@
 					currentVersion = $("#version").val();
 					if("keyParam"== dataType) {
 						fillKeyParamTable(json);
-						$("#search-result-rework-table").hide();
-						$("#search-result-keyparam-table").show();
+						$("#search-result-div2").hide();
+						$("#search-result-div1").show();
 					} else {
 						fillReworkTable(json);
-						$("#search-result-keyparam-table").hide();
-						$("#search-result-rework-table").show();
+						$("#search-result-div1").hide();
+						$("#search-result-div2").show();
 					}
 				}
 			});
@@ -353,6 +399,13 @@
 			};
 			$("#calculate-result-table").bootstrapTable(options);
 			$("#calculate-result-table").show();
+			//固定表头
+			$("#calculate-result-table").on("post-body.bs.table",function(){
+				//alert(1);
+				$("#calculate-result-table thead").addClass("header");
+				// $(".table-fixed-header").fixedHeader();
+				onmouseUP();
+			});
 		}
 
 		function doeSave() {
@@ -386,5 +439,7 @@
 
 
 	</script>
+	<!--<script src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>-->
+	<script type="text/javascript" th:src="@{/ajax/libs/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js}" th:inline="none"></script>
 </body>
 </html>

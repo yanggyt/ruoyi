@@ -56,11 +56,12 @@ public class DoeAnalysisService {
 				JSONObject jsonObj = ((JSONObject)obj);
 				String defecttypes = jsonObj.getString("defecttype");
 				if(StringUtils.isEmpty(defecttypes)) {
-					newJSONArray.add(obj);
+					newJSONArray.add(jsonObj);
 				} else {
 					String[] defecttypeArr = defecttypes.split(",");
 					for (String defecttype : defecttypeArr) {
-						JSONObject newObj = new JSONObject(jsonObj);
+						JSONObject newObj = new JSONObject();
+						newObj.putAll(jsonObj);
 						newObj.put("defecttype", defecttype);
 						newJSONArray.add(newObj);
 					}
