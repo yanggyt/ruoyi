@@ -2,11 +2,9 @@ package com.ruoyi.business.ajax;
 
 import com.ruoyi.business.domain.BizMember;
 import com.ruoyi.business.domain.BizMemberAddress;
-import com.ruoyi.business.domain.BizProduct;
 import com.ruoyi.business.service.IBizMemberAddressService;
 import com.ruoyi.business.service.IBizMemberService;
-import com.ruoyi.business.service.IBizProductService;
-import com.ruoyi.business.service.IBizProductTypeService;
+import com.ruoyi.common.annotation.AjaxLogin;
 import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+@AjaxLogin
 @RestController
 @RequestMapping("/ajax/member")
 public class AjaxMemberController extends AuthController {

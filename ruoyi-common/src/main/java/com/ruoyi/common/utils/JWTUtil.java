@@ -1,4 +1,4 @@
-package com.ruoyi.business.utils;
+package com.ruoyi.common.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
