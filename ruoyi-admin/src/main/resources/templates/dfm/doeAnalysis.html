@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-	<th:block th:include="include :: header('用户列表')" />
+	<th:block th:include="include :: header('DOE分析')" />
 	<!--<link href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css" rel="stylesheet">-->
 
 	<!--<script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>-->
@@ -9,16 +9,16 @@
 </head>
 <body class="gray-bg">
 	<div class="container-div">
-		<div class="row">
+		<div class="row" style="height: 50%;">
 			<div class="col-sm-12 search-collapse">
 				<form id="search-form">
 					<div class="select-list">
 						<ul>
 							<li>
-								板名：<input type="text" name="productname" required/>
+								板名：<input type="text" name="productname" id="productname" required/>
 							</li>
 							<li>
-								版本：<input type="text" name="version" required/>
+								版本：<input type="text" name="version" id="version" required/>
 							</li>
 							<li>
 								筛选：
@@ -35,12 +35,12 @@
 				</form>
 			</div>
 	        
-	        <div id="search-result-div" class="col-sm-12 select-table table-striped" style="overflow: scroll;height: 300px;">
-			    <table id="search-result-keyparam-table">
-				</table>
+	        <div id="search-result-div" class="col-sm-12 select-table table-striped" style="overflow: scroll;height:90%;">
+			    <table id="search-result-keyparam-table"></table>
 				<table id="search-result-rework-table" style="display: none"></table>
 			</div>
-
+		</div>
+		<div class="row" style="height: 50%;">
 			<div class="col-sm-12 search-collapse">
 				<form id="calculate-form">
 					<div class="select-list">
@@ -57,10 +57,9 @@
 				</form>
 			</div>
 
-			<div id="calculate-result-div" class="col-sm-12 select-table table-striped" style="overflow: scroll;height: 200px;">
-				<table id="calculate-result-table"></table>
+			<div id="calculate-result-div" class="col-sm-12 select-table table-striped" style="overflow: scroll;height:80%;">
+				<table id="calculate-result-table" style="display: none"></table>
 			</div>
-
 		</div>
 	</div>
 	<th:block th:include="include :: footer" />
@@ -68,11 +67,15 @@
 		var prefix = ctx + "doeAnalysis.do";
 		//当前表格检索结果，使用的dataType
 		var currentDataType = "";
+		var currentProductName = "";
+		var currentVersion = "";
 
 		$(document).ready(function(){
 			initKeyParamTable();
 			initReworkTable();
 			$("#search-result-rework-table").hide();
+			initCalculateResultTable();
+			$("#calculate-result-table").hide();
 		});
 
 		function initKeyParamTable() {
@@ -83,6 +86,14 @@
 		        columns: [
 					{
 		            	checkbox: true
+					},
+					{
+						field: 'index',
+						title: '序号',
+						sortable: false,
+						formatter: function (value, row, index) {
+							return index + 1;
+						}
 					},
 					{
 						field: 'keyparamtype',
@@ -127,26 +138,12 @@
 					{
 						field: 'defecttype',
 						title: '维修类型关联',
-						sortable: false,
-						formatter: function (value, row, index) {
-							var html="";
-							html += "<select name=\"status\" class=\"form-control m-b\" multiple>";
-							if($.trim(value) != "") {
-								var defecttypes = value.split(",");
-								for (var i = 0; i < defecttypes.length; i++) {
-									html += "<option value=\""+defecttypes[i]+"\">"+defecttypes[i]+"</option>";
-								}
-							}
-							html += "</select>";
-							return html;
-						}
+						sortable: false
 					}
 		        ]
 		    };
-		    $.table.init(options);
 			$("#search-result-keyparam-table").bootstrapTable(options);
 		}
-
 
 
 		function initReworkTable() {
@@ -157,6 +154,14 @@
 				columns: [
 					{
 						checkbox: true
+					},
+					{
+						field: 'index',
+						title: '序号',
+						sortable: false,
+						formatter: function (value, row, index) {
+							return index + 1;
+						}
 					},
 					{
 						field: 'refdes',
@@ -190,8 +195,6 @@
 					}
 				]
 			};
-			$.table.init(options);
-
 			$("#search-result-rework-table").bootstrapTable(options);
 		}
 
@@ -216,6 +219,8 @@
 					$("#search-result-table").html("");
 					var dataType = $("#dataType").val();
 					currentDataType = dataType;
+					currentProductName = $("#productname").val();
+					currentVersion = $("#version").val();
 					if("keyParam"== dataType) {
 						fillKeyParamTable(json);
 						$("#search-result-rework-table").hide();
@@ -230,11 +235,153 @@
 		}
 
 		function doeCalculate() {
+			var quantity = $("#quantity").val();
+			if($.trim(quantity) == "") {
+				$.modal.alertError("请填写计算数量！");
+				return;
+			}
+			var data;
+			if("keyParam"== currentDataType) {
+				data = $('#search-result-keyparam-table').bootstrapTable('getAllSelections');
+			} else {
+				data = $('#search-result-rework-table').bootstrapTable('getAllSelections');
+			}
+			if(data.length <= 0) {
+				$.modal.alertError("请选择需要计算的数据！");
+				return;
+			}
 
+			var newData = new Array();
+			for (var i = 0; i < data.length; i++) {
+				var newObj = {
+					Keyparamtype: data[i].keyparamtype,
+					Refdes: data[i].refdes,
+					Defecttype: data[i].defecttype
+				};
+				newData.push(newObj);
+			}
+			var param = {
+				quantity: $("#quantity").val(),
+				productname : currentProductName,
+				version: currentVersion,
+				body: JSON.stringify(newData)
+			};
+
+			// var arr = [{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"LX(连锡)"
+			// },{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"9",
+			// 	"Defecttype":"LX(连锡)"
+			// },{
+			// 	"Keyparamtype":"9",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"9",
+			// 	"Defecttype":"JH(假焊)"
+			// },{
+			// 	"Keyparamtype":"7",
+			// 	"Defecttype":"LX(连锡)"
+			// }];
+			//
+			// var param = {
+			// 	quantity: 10000,
+			// 	productname : '130000161095AJB',
+			// 	version: '160500',
+			// 	body: JSON.stringify(arr)
+			// };
+			$.ajax({
+				url: prefix + "/calculate",
+				data: param,
+				type: 'post',
+				cache:false,
+				dataType:"json",
+				success: function(json){
+					$("#calculate-result-table").bootstrapTable('load', json);
+					$("#calculate-result-table").show();
+				}
+			});
+		}
+
+
+		function initCalculateResultTable() {
+			var options = {
+				sortName: "roleSort",
+				pagination: false,
+				modalName: "DOE分析-计算结果",
+				columns: [
+					{
+						field: 'index',
+						title: '序号',
+						sortable: false,
+						formatter: function (value, row, index) {
+							return index + 1;
+						}
+					},
+					{
+						field: 'DataType',
+						title: '规则名',
+						sortable: false
+					},
+					{
+						field: 'DataValue',
+						title: 'DPPM值影响',
+						sortable: false
+					}
+				]
+			};
+			$("#calculate-result-table").bootstrapTable(options);
+			$("#calculate-result-table").show();
 		}
 
 		function doeSave() {
+			//获取所有数据
+			var rows = $('#calculate-result-table').bootstrapTable('getData',{useCurrentPage:true,includeHiddenRows:true});
+			if(rows.length <= 0) {
+				$.modal.alertError("请先计算出结果，再保存数据");
+				return;
+			}
+			var param = {
+				productname : currentProductName,
+				version: currentVersion,
+				body: JSON.stringify(rows)
+			};
 
+			$.ajax({
+				url: prefix + "/save",
+				data: param,
+				type: 'post',
+				cache:false,
+				dataType:"json",
+				success: function(json){
+					if(null == json || 0 != json.code) {
+						$.modal.alertSuccess("结果入库失败！");
+					} else {
+						$.modal.alertSuccess("结果入库成功！");
+					}
+				}
+			});
 		}
 
 
