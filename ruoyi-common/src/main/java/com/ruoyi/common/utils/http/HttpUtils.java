@@ -15,6 +15,7 @@ import com.ruoyi.common.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -180,7 +181,12 @@ public class HttpUtils
 //        }
 //        return result.toString();
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.postForObject(url, param, String.class);
+        String result = null;
+        try {
+            result = restTemplate.postForObject(url, param, String.class);
+        } catch (RestClientException e) {
+            log.error("请求远程url失败,url={}, param={}", url, param, e);
+        }
         return result;
     }
 
