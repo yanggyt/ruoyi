@@ -9,6 +9,8 @@ import com.ruoyi.business.domain.BizProductType;
 import com.ruoyi.business.service.IBizProductTypeService;
 import com.ruoyi.common.core.text.Convert;
 
+import javax.annotation.Resource;
+
 /**
  * 产品分类Service业务层处理
  * 
@@ -18,7 +20,7 @@ import com.ruoyi.common.core.text.Convert;
 @Service
 public class BizProductTypeServiceImpl implements IBizProductTypeService 
 {
-    @Autowired
+    @Resource
     private BizProductTypeMapper bizProductTypeMapper;
 
     /**

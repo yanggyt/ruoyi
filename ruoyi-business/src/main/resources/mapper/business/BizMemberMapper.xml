@@ -132,4 +132,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and exists(select id from biz_order b where b.member_id = a.id and is_team = 1)
     </select>
 
+    <select id="selectTeamData" parameterType="Map" resultType="Map">
+        select a.id,a.member_name,a.recommend_id, sum(IF(c.product_count IS NULL,0,c.product_count)) as num from biz_member a
+        left join biz_order b on a.id = b.member_id and b.order_status > 0 and b.is_team = 1
+        left join biz_order_detail c on c.order_id = b.id
+        <if test="productId != null">and c.product_id = #{productId}</if>
+        where recommend_all_id like concat('%,', #{memberID}, ',%')
+        group by a.id,a.member_name,a.recommend_id
+    </select>
+
 </mapper>

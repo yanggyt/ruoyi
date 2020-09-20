@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.core.text.Convert;
 
+import javax.annotation.Resource;
+
 /**
  * 会员账户Service业务层处理
  * 
@@ -22,7 +24,7 @@ import com.ruoyi.common.core.text.Convert;
 @Service
 public class BizAccountServiceImpl implements IBizAccountService
 {
-    @Autowired
+    @Resource
     private BizAccountMapper bizAccountMapper;
 
     /**
@@ -99,6 +101,18 @@ public class BizAccountServiceImpl implements IBizAccountService
         return bizAccountMapper.deleteBizAccountById(id);
     }
 
+
+    /**
+     * 查询会员账户明细列表
+     *
+     * @param bizAccountDetail 会员账户明细
+     * @return 会员账户明细集合
+     */
+    public List<BizAccountDetail> selectBizAccountDetailList(BizAccountDetail bizAccountDetail)
+    {
+        return bizAccountMapper.selectBizAccountDetailList(bizAccountDetail);
+    }
+
     /**
      * 会员福豆变动明细
      *
@@ -136,10 +150,11 @@ public class BizAccountServiceImpl implements IBizAccountService
         detail.setBusinessNo(businessInfo);
         detail.setChangeType(changeType);
         detail.setTypeDetail(detailType);
+        detail.setAmount(money);
         detail.setBeforeAmount(beforeMoney);
         detail.setAfterAmount(afterMoney);
         detail.setChangeDesc(desc);
-        detail.setUpdateTime(new Date());
+        detail.setCreateTime(new Date());
         bizAccountMapper.insertBizAccountDetail(detail);
         return true;
     }

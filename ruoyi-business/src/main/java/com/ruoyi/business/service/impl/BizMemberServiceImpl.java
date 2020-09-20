@@ -189,4 +189,15 @@ public class BizMemberServiceImpl implements IBizMemberService
         return bizMemberMapper.deleteBizMemberById(id);
     }
 
+    /**
+     * 取出会员等级明细及商品购买数
+     *
+     * @param paramMap
+     * @return 结果
+     */
+    @Override
+    public List<Map> selectTeamData(Map paramMap)
+    {
+        return bizMemberMapper.selectTeamData(paramMap);
+    }
 }

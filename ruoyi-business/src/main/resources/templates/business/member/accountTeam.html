@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('会员架构')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <input id="memberID" th:value="*{memberID}" type="hidden">
+        <div class="form-group">
+            <div class="col-sm-8">
+                <select id="productID" class="form-control" onchange="showTeam(this.value)">
+                    <option th:each="product:${productList}" th:value="*{product.id}" th:text="*{product.productName}"></option>
+                </select>
+            </div>
+            <div class="col-sm-1" style="width: 30%;line-height: 31px;font-size:16px">
+                团队总盒数：<span id="numSpan">0</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-8">
+                <div id="teamDiv"></div>
+                <!--<input name="memberName" th:field="*{memberName}" class="form-control" type="text" required maxlength="10">-->
+            </div>
+        </div>
+
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/member";
+
+        $(function() {
+            showTeam($("#productID").val());
+        });
+
+        //读取团队架构
+        function showTeam(productID){
+            $.post(prefix + "/accountTeamDetail", "memberID=" + $("#memberID").val() + "&productID=" + productID, function(resp){
+                if(resp.code != 0) return;
+
+            });
+        }
+
+        //列出子级
+        function showChildren(){
+
+        }
+    </script>
+</body>
+</html>

@@ -60,6 +60,10 @@ public class BizAccountDetail extends BaseEntity
     @Excel(name = "变动详情.1：充值；2:提现；3:转账；4:冲正；5:支付")
     private Integer typeDetail;
 
+    /** 账户变更金额 */
+    @Excel(name = "账户变更金额")
+    private Long amount;
+
     /** 账户变更前金额 */
     @Excel(name = "账户变更前金额")
     private Long beforeAmount;
@@ -138,6 +142,14 @@ public class BizAccountDetail extends BaseEntity
     public void setBeforeAmount(Long beforeAmount)
     {
         this.beforeAmount = beforeAmount;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 
     public Long getBeforeAmount()

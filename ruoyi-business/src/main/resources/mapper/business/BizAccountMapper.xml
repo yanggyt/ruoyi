@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="businessNo"    column="business_no"    />
         <result property="changeType"    column="change_type"    />
         <result property="typeDetail"    column="type_detail"    />
+        <result property="amount"    column="amount"    />
         <result property="beforeAmount"    column="before_amount"    />
         <result property="afterAmount"    column="after_amount"    />
         <result property="changeDesc"    column="change_desc"    />
@@ -48,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectBizAccountVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertBizAccount" parameterType="BizAccount" useGeneratedKeys="true" keyProperty="id">
         insert into biz_account
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -97,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <select id="selectBizAccountDetailList" parameterType="BizAccountDetail" resultMap="BizAccountDetailResult">
-        select id, member_id, account_id, account_type, business_no, change_type, type_detail, before_amount, after_amount, change_desc, create_by, create_time, update_by, update_time from biz_account_detail
+        select id, member_id, account_id, account_type, business_no, change_type, type_detail, amount, before_amount, after_amount, change_desc, create_by, create_time, update_by, update_time from biz_account_detail
         <where>
             <if test="memberId != null "> and member_id = #{memberId}</if>
             <if test="accountId != null "> and account_id = #{accountId}</if>
@@ -116,6 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="businessNo != null and businessNo != ''">business_no,</if>
             <if test="changeType != null">change_type,</if>
             <if test="typeDetail != null">type_detail,</if>
+            <if test="amount != null">amount,</if>
             <if test="beforeAmount != null">before_amount,</if>
             <if test="afterAmount != null">after_amount,</if>
             <if test="changeDesc != null">change_desc,</if>
@@ -131,6 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="businessNo != null and businessNo != ''">#{businessNo},</if>
             <if test="changeType != null">#{changeType},</if>
             <if test="typeDetail != null">#{typeDetail},</if>
+            <if test="amount != null">#{amount},</if>
             <if test="beforeAmount != null">#{beforeAmount},</if>
             <if test="afterAmount != null">#{afterAmount},</if>
             <if test="changeDesc != null">#{changeDesc},</if>

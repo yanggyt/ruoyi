@@ -86,27 +86,42 @@
                 {
                     field: 'douBalance',
                     align: 'center',
-                    title: '福豆余额'
+                    title: '福豆余额',
+                    formatter: function(value, row, index) {
+                        return  "<a href='javascript:void(0)' onclick='showDetail(" + row.id + ", 0)'>" + value + "</a>";
+                    }
                 },
                 {
                     field: 'douPerson',
                     align: 'center',
-                    title: '个人福豆'
+                    title: '个人福豆',
+                    formatter: function(value, row, index) {
+                        return  "<a href='javascript:void(0)' onclick='showDetail(" + row.id + ", 1)'>" + value + "</a>";
+                    }
                 },
                 {
                     field: 'douTeam',
                     align: 'center',
-                    title: '团队福豆'
+                    title: '团队福豆',
+                    formatter: function(value, row, index) {
+                        return  "<a href='javascript:void(0)' onclick='showDetail(" + row.id + ", 2)'>" + value + "</a>";
+                    }
                 },
                 {
                     field: 'douField',
                     align: 'center',
-                    title: '福豆田'
+                    title: '福豆田',
+                    formatter: function(value, row, index) {
+                        return  "<a href='javascript:void(0)' onclick='showDetail(" + row.id + ", 4)'>" + value + "</a>";
+                    }
                 },
                 {
                     field: 'douSpecial',
                     align: 'center',
-                    title: '专项福豆'
+                    title: '专项福豆',
+                    formatter: function(value, row, index) {
+                        return  "<a href='javascript:void(0)' onclick='showDetail(" + row.id + ", 3)'>" + value + "</a>";
+                    }
                 },
                 {
                     field: 'memberType',
@@ -131,7 +146,8 @@
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="updatePwd(\'' + row.id + '\')"><i class="fa fa-cog"></i>修改密码</a> ');
+                        actions.push('<a class="btn btn-warning btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="showTeam(\'' + row.id + '\', \'' + row.memberName + row.mobile + '\')"><i class="fa fa-share-alt"></i>会员架构</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="updatePwd(\'' + row.id + '\', \'' + row.memberName + '\')"><i class="fa fa-cog"></i>修改密码</a> ');
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
@@ -141,8 +157,18 @@
             $.table.init(options);
         });
 
+        //查看明细
+        function showDetail(memberID, accountType){
+            location.href = prefix + "/accountDetail?memberID=" + memberID + "&accountType=" + accountType;
+        }
+
+        //会员架构
+        function showTeam(memberID, title){
+            $.modal.open(title + " 会员架构", prefix + "/accountTeam?memberID=" + memberID);
+        }
+
         //修改密码
-        function updatePwd(memberID){
+        function updatePwd(memberID, memberName){
             $.post(prefix + "/showPassword", {
                 memberID:memberID
             }, function(response){
@@ -152,7 +178,7 @@
             });
 
             let showPwd = function(oldPwd){
-                $.modal.confirm("<div id='anch'>请输入新的密码<br/><input class='form-control' id='newPwd' value='" + oldPwd + "' maxlength='30'></div>", function() {
+                $.modal.confirm("<div id='anch'>请输入新的密码&nbsp;&nbsp;" + memberName + "<br/><input class='form-control' id='newPwd' value='" + oldPwd + "' maxlength='30'></div>", function() {
                     let pwd = $("#newPwd").val();
                     if(pwd.length == 0){
                         $.modal.msgError("请输入新密码");

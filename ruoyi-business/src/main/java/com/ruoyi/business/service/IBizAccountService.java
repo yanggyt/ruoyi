@@ -1,6 +1,7 @@
 package com.ruoyi.business.service;
 
 import com.ruoyi.business.domain.BizAccount;
+import com.ruoyi.business.domain.BizAccountDetail;
 
 import java.util.List;
 
@@ -59,6 +60,14 @@ public interface IBizAccountService
      * @return 结果
      */
     public int deleteBizAccountById(Long id);
+
+    /**
+     * 查询会员账户明细列表
+     *
+     * @param bizAccountDetail 会员账户明细
+     * @return 会员账户明细集合
+     */
+    public List<BizAccountDetail> selectBizAccountDetailList(BizAccountDetail bizAccountDetail);
 
     /**
      * 会员福豆变动明细

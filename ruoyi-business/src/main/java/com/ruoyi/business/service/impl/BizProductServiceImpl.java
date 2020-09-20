@@ -15,6 +15,8 @@ import com.ruoyi.business.domain.BizProduct;
 import com.ruoyi.business.service.IBizProductService;
 import com.ruoyi.common.core.text.Convert;
 
+import javax.annotation.Resource;
+
 /**
  * 产品Service业务层处理
  * 
@@ -24,7 +26,7 @@ import com.ruoyi.common.core.text.Convert;
 @Service
 public class BizProductServiceImpl implements IBizProductService 
 {
-    @Autowired
+    @Resource
     private BizProductMapper bizProductMapper;
 
     /**
@@ -70,6 +72,18 @@ public class BizProductServiceImpl implements IBizProductService
     public List<BizProduct> selectBizProductList(BizProduct bizProduct)
     {
         return bizProductMapper.selectBizProductList(bizProduct);
+    }
+
+    /**
+     * 查询团队产品列表
+     *
+     * @param
+     * @return 产品集合
+     */
+    @Override
+    public List<BizProduct> selectTeamProductList()
+    {
+        return bizProductMapper.selectTeamProductList();
     }
 
     /**

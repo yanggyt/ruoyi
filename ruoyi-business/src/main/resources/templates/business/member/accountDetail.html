@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('会员账户明细列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label style="font-size:20px;width:500px;text-align: left">
+                                <a class="btn btn-success " onclick="history.back()">
+                                    <i class="fa fa-reply"></i> 返回
+                                </a>
+                                &nbsp;&nbsp;<span th:text="*{memberName}"></span><span th:text="*{mobile}"></span>
+                                &nbsp;&nbsp;
+                                <select style="font-size: 16px;display: inline" class="form-control" id="accountType" name="accountType" th:value="*{accountType}" onchange="$.table.search()">
+                                    <option value="0" th:selected="*{accountType==0}">福豆余额</option>
+                                    <option  value="1" th:selected="*{accountType==1}">个人福豆</option>
+                                    <option  value="2" th:selected="*{accountType==2}">团队福豆</option>
+                                    <option  value="3" th:selected="*{accountType==3}">专项福豆</option>
+                                    <option  value="4" th:selected="*{accountType==4}">福豆田</option>
+                                </select>
+                            </label>
+                            <input id="memberId" name="memberId" th:value="*{memberID}" type="hidden">
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <!--
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:detail:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="business:detail:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:detail:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:detail:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>-->
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<style>
+    .fixed-table-toolbar{height: 0;overflow: hidden}
+</style>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('business:detail:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('business:detail:remove')}]];
+    var prefix = ctx + "business/member";
+
+    $(function() {
+        var options = {
+            url: prefix + "/listAccountDetail",
+            modalName: "会员账户明细",
+            columns: [
+                {
+                    field: 'id',
+                    title: '会员账户明细ID',
+                    visible: false
+                },
+                {
+                    field: 'typeDetail',
+                    title: '变动类型',
+                    formatter: function(value, row, index) {
+                        switch (value){
+                            case 1:return "账户充值";
+                            case 2:return "账户提现";
+                            case 3:return "转账";
+                            case 4:return "冲正";
+                            case 5:return "支付";
+                        }
+                    }
+                },
+                {
+                    field: 'amount',
+                    title: '变更金额',
+                    formatter: function(value, row, index) {
+                        let type = value >= 0;
+                        return "<span style='color:" + (type ? "#00AA00" : "#FF0000") + "'>" + (value > 0 ? "+" : "") + value + "</span>"
+                    }
+                },
+                {
+                    field: 'beforeAmount',
+                    title: '变更前金额'
+                },
+                {
+                    field: 'afterAmount',
+                    title: '变更后金额'
+                },
+                {
+                    field: 'changeDesc',
+                    title: '交易备注'
+                },
+                {
+                    field: 'businessNo',
+                    title: '业务相关'
+                },
+                {
+                    field: 'createTime',
+                    title: '交易时间'
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

@@ -37,6 +37,14 @@ public interface BizProductMapper
     public List<BizProduct> selectBizProductList(BizProduct bizProduct);
 
     /**
+     * 查询团队产品列表
+     *
+     * @param
+     * @return 产品集合
+     */
+    public List<BizProduct> selectTeamProductList();
+
+    /**
      * 新增产品
      * 
      * @param bizProduct 产品

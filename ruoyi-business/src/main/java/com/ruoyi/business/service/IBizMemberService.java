@@ -92,4 +92,11 @@ public interface IBizMemberService
      */
     public int deleteBizMemberById(Long id);
 
+    /**
+     * 取出会员等级明细及商品购买数
+     *
+     * @param paramMap
+     * @return 结果
+     */
+    public List<Map> selectTeamData(Map paramMap);
 }

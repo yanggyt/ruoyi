@@ -43,6 +43,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by sort desc, id desc
     </select>
+
+    <select id="selectTeamProductList" resultMap="BizProductResult">
+        select id, product_name from biz_product where cashback_amount > 0 and online_status = 1 order by sort desc, id desc
+    </select>
     
     <select id="selectBizProductById" parameterType="Long" resultMap="BizProductResult">
         <include refid="selectBizProductVo"/>

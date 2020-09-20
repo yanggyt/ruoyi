@@ -8,6 +8,7 @@ import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 /**
  * 会员收货地址Service业务层处理
@@ -18,7 +19,7 @@ import java.util.List;
 @Service
 public class BizMemberAddressServiceImpl implements IBizMemberAddressService
 {
-    @Autowired
+    @Resource
     private BizMemberAddressMapper bizMemberAddressMapper;
 
     /**
