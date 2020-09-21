@@ -9,6 +9,7 @@ import java.util.Map;
 import com.ruoyi.business.domain.BizAccount;
 import com.ruoyi.business.domain.BizAccountDetail;
 import com.ruoyi.business.mapper.BizAccountMapper;
+import com.ruoyi.business.service.IBizAccountService;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class BizMemberServiceImpl implements IBizMemberService
 {
     @Resource
     private BizMemberMapper bizMemberMapper;
+
+    @Autowired
+    private IBizAccountService bizAccountService;
 
     @Resource
     private BizAccountMapper bizAccountMapper;
@@ -157,8 +161,9 @@ public class BizMemberServiceImpl implements IBizMemberService
             }
             //数据不一致则更新最新账户余额
             if (!newAmount.equals(oldAmount)) {
-                account.setAmount(new BigDecimal(newAmount));
-                bizAccountMapper.updateBizAccount(account);
+                //account.setAmount(new BigDecimal(newAmount));
+                //bizAccountMapper.updateBizAccount(account);
+                bizAccountService.accountChange(memberId, account.getAccountType(), BizAccountDetail.DOU_DETAIL_TYPE_SYSTEM, newAmount - oldAmount, "", BizAccountDetail.DOU_DESC_SYSTEM);
             }
         }
 

@@ -14,6 +14,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.SysDictData;
+import com.ruoyi.system.utils.DictUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -122,6 +124,7 @@ public class BizMemberController extends BaseController
         paramMap.put("productID", productID);
         List<Map> teamList = bizMemberService.selectTeamData(paramMap);
         Map temp = new HashMap();
+        Map temp2 = new HashMap();
         long teamNum = 0;
         //取出架构人员数据
         for (Map item : teamList) {
@@ -142,10 +145,55 @@ public class BizMemberController extends BaseController
                 item.put("children", chList);
             }
         }
+        //取出团队盒数等级配置
+        List<SysDictData> levels = DictUtils.getDictCache("busi_teamaward_level");
+        int numLimit = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "1"));
+        //归总直属下级盒数
+        List<Map> list = (List<Map>) temp.get(memberID);
+        for (Map item : list) {
+            Long id = (Long) item.get("id");
+            long num = ((BigDecimal) item.get("num")).longValue();
+            item.put("totalNum", num);
+            long totalNum = getTeamNum((List<Map>) temp.get(id), item);
+            item.put("desc", getTeamDesc(totalNum, levels, numLimit));
+        }
         Map resultMap = new HashMap();
         resultMap.put("teamNum", teamNum);
-        resultMap.put("memberList", temp.get(memberID));
+        resultMap.put("memberList", list);
         return AjaxResult.success(resultMap);
+    }
+
+    //取出子级团队盒数
+    private long getTeamNum(List<Map> chList, Map parent)
+    {
+        if (chList == null) return 0;
+        for (Map item : chList) {
+            long num = ((BigDecimal) item.get("num")).longValue();
+            long totalNum = (Long) parent.get("totalNum");
+            parent.put("totalNum", totalNum + num);
+            List<Map> children = (List<Map>) item.get("children");
+            if (children != null) {
+                getTeamNum(children, parent);
+            }
+        }
+        return (Long) parent.get("totalNum");
+    }
+
+    //取出团队盒数说明
+    private String getTeamDesc(long totalNum, List<SysDictData> levels, int numLimit)
+    {
+        if (totalNum <= numLimit) return "[团队盒数" + totalNum + " 无分成]";
+        for (SysDictData data : levels) {
+            String label = data.getDictLabel();
+            long dou = Long.parseLong(data.getDictValue());
+            String[] split = label.split("-");
+            long begin = Long.parseLong(split[0]);
+            long end = Long.parseLong(split[1]);
+            if (totalNum >= begin && totalNum <= end) {
+                return "[团队盒数" + totalNum + " 分成" + dou + "福豆]";
+            }
+        }
+        return "";
     }
 
     /**

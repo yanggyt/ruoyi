@@ -44,18 +44,18 @@
             $.post(prefix + "/accountTeamDetail", "memberID=" + $("#memberID").val() + "&productID=" + productID, function(resp){
                 if(resp.code != 0) return;
                 $("#numSpan").text(resp.data.teamNum);
-                showChildren($("#container"), resp.data.memberList);
+                showChildren($("#container"), resp.data.memberList, true);
                 $("#container .cont").hide();
             });
         }
 
         //列出子级
-        function showChildren(div, list){
+        function showChildren(div, list, flag){
             for(let i=0;i<list.length;i++){
                 let item = list[i];
                 let children = item.children;
                 let child = clone.clone().show();
-                child.html("<span class='" + (children ? "glyphicon glyphicon-chevron-right" : "noneChild") + "'>&nbsp;" + item.member_name + " " + item.num + "盒</span>");
+                child.html("<span class='" + (children ? "glyphicon glyphicon-chevron-right" : "noneChild") + "'>&nbsp;" + item.member_name + item.mobile + "(" + item.num + "盒)&nbsp;<b style='color:#0000FF'>" + (flag ? item.desc : "") + "</b></span>");
                 div.append(child);
                 if(children){
                     child.append("<div class='cont'></div>");

@@ -25,6 +25,7 @@ public class BizAccountDetail extends BaseEntity
     public static final int DOU_DETAIL_TYPE_EXCHANGE = 3;
     public static final int DOU_DETAIL_TYPE_RESET = 4;
     public static final int DOU_DETAIL_TYPE_ORDER = 5;
+    public static final int DOU_DETAIL_TYPE_SYSTEM = 6;
     //福豆使用备注
     public static final String DOU_DESC_RECOMM = "直推奖励";
     public static final String DOU_DESC_SECOND = "二级推荐奖励";
@@ -32,6 +33,7 @@ public class BizAccountDetail extends BaseEntity
     public static final String DOU_DESC_SPECIAL1 = "专项账户充值";
     public static final String DOU_DESC_SPECIAL2 = "专项划拨";
     public static final String DOU_DESC_ORDER = "订单消费";
+    public static final String DOU_DESC_SYSTEM = "系统调整";
 
     /** 会员账户明细ID */
     private Long id;
