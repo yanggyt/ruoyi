@@ -3,15 +3,9 @@ package com.ruoyi.business.ajax;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.ruoyi.business.domain.BizAccount;
-import com.ruoyi.business.mapper.BizAccountMapper;
-import com.ruoyi.business.mapper.BizMemberMapper;
-import com.ruoyi.business.mapper.BizProductMapper;
-import com.ruoyi.business.mapper.BizProductTypeMapper;
+import com.ruoyi.business.mapper.*;
 import com.ruoyi.business.service.IBizMemberService;
-import com.ruoyi.business.sync.GoodsData;
-import com.ruoyi.business.sync.GoodsDataListener;
-import com.ruoyi.business.sync.UserData;
-import com.ruoyi.business.sync.UserDataListener;
+import com.ruoyi.business.sync.*;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +29,10 @@ public class SyncDataController extends BaseController {
     private BizProductMapper productMapper;
     @Resource
     private BizProductTypeMapper productTypeMapper;
+    @Resource
+    private BizMemberAddressMapper memberAddressMapper;
+    @Resource
+    private BizOrderMapper orderMapper;
 
     @PostMapping("/user")
     public AjaxResult user(@RequestParam("file") MultipartFile file) {
@@ -56,6 +54,36 @@ public class SyncDataController extends BaseController {
         ExcelReader reader = null;
         try {
             reader = EasyExcel.read(file.getInputStream(), GoodsData.class, new GoodsDataListener(productMapper, productTypeMapper)).build();
+            reader.readAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            assert reader != null;
+            reader.finish();
+        }
+        return AjaxResult.success();
+    }
+
+    @PostMapping("/memberAddress")
+    public AjaxResult memberAddress(@RequestParam("file") MultipartFile file) {
+        ExcelReader reader = null;
+        try {
+            reader = EasyExcel.read(file.getInputStream(), UserAddressData.class, new UserAddressDataListener(memberAddressMapper, memberMapper)).build();
+            reader.readAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            assert reader != null;
+            reader.finish();
+        }
+        return AjaxResult.success();
+    }
+
+    @PostMapping("/order")
+    public AjaxResult order(@RequestParam("file") MultipartFile file) {
+        ExcelReader reader = null;
+        try {
+            reader = EasyExcel.read(file.getInputStream(), OrderData.class, new OrderDataListener(orderMapper, memberMapper)).build();
             reader.readAll();
         } catch (IOException e) {
             e.printStackTrace();
