@@ -562,23 +562,23 @@
             if (null == v || "" == v) {
                 return false;
             }
-            // $.ajax({
-            //     url:  prefix + "/getLastVersion",
-            //     data: "projectName=" + v,
-            //     cache: false,
-            //     success: function (json) {
-            //         if (null == json || "" == json) {
-            //             $("#version").val(1);
-            //             hasOldVersion = false;
-            //             resetForm();
-            //         } else //有相同项目，开始赋值
-            //         {
-            //             hasOldVersion = true;
-            //             oldProjectData = json;
-            //             fillParams();
-            //         }
-            //     }
-            // });
+            $.ajax({
+                url:  prefix + "/getLastVersion",
+                data: "projectName=" + v,
+                cache: false,
+                success: function (json) {
+                    if (null == json || "" == json) {
+                        // $("#version").val(1);
+                        hasOldVersion = false;
+                        resetForm();
+                    } else //有相同项目，开始赋值
+                    {
+                        hasOldVersion = true;
+                        oldProjectData = json;
+                        fillParams();
+                    }
+                }
+            });
         }
 
 
