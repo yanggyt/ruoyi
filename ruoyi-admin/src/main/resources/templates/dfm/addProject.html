@@ -179,7 +179,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">版本：</label>
                         <div class="col-sm-8">
-                            <input name="version" id="version"  class="form-control" type="text" maxlength="30" readOnly>
+                            <input name="version" id="version"  class="form-control" type="text" maxlength="30" required>
                         </div>
                     </div>
                 </div>
@@ -437,7 +437,10 @@
                 },
                 maxHeightBot:{
                     number: true
-        		}
+        		},
+                version:{
+                    number: true
+                }
         	},
             focusCleanup: true
         });
@@ -559,23 +562,23 @@
             if (null == v || "" == v) {
                 return false;
             }
-            $.ajax({
-                url:  prefix + "/getLastVersion",
-                data: "projectName=" + v,
-                cache: false,
-                success: function (json) {
-                    if (null == json || "" == json) {
-                        $("#version").val(1);
-                        hasOldVersion = false;
-                        resetForm();
-                    } else //有相同项目，开始赋值
-                    {
-                        hasOldVersion = true;
-                        oldProjectData = json;
-                        fillParams();
-                    }
-                }
-            });
+            // $.ajax({
+            //     url:  prefix + "/getLastVersion",
+            //     data: "projectName=" + v,
+            //     cache: false,
+            //     success: function (json) {
+            //         if (null == json || "" == json) {
+            //             $("#version").val(1);
+            //             hasOldVersion = false;
+            //             resetForm();
+            //         } else //有相同项目，开始赋值
+            //         {
+            //             hasOldVersion = true;
+            //             oldProjectData = json;
+            //             fillParams();
+            //         }
+            //     }
+            // });
         }
 
 
@@ -594,7 +597,7 @@
         function fillParams()
         {
             data = oldProjectData;
-            $("#version").val(data.version + 1);
+            // $("#version").val(data.version + 1);
             var checkType = $("select[name='checkType']");
             checkType.val(data.checkType).trigger("change");
             var dfmCheck = checkType.children(":selected").text();
