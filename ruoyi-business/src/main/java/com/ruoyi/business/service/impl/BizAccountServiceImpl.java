@@ -12,6 +12,7 @@ import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.core.text.Convert;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -157,5 +158,19 @@ public class BizAccountServiceImpl implements IBizAccountService
         detail.setCreateTime(new Date());
         bizAccountMapper.insertBizAccountDetail(detail);
         return true;
+    }
+
+    /**
+     * 清空福豆田
+     *
+     * @param
+     * @return
+     */
+    @Override
+    @Transactional
+    public void clearAllDouField()
+    {
+
+        bizAccountMapper.clearAllDouField();
     }
 }

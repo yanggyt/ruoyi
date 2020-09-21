@@ -76,4 +76,13 @@ public interface BizAccountMapper
      * @return 结果
      */
     public int insertBizAccountDetail(BizAccountDetail bizAccountDetail);
+
+    /**
+     * 清空福豆田
+     *
+     * @param
+     * @return
+     */
+    public void clearAllDouField();
+
 }

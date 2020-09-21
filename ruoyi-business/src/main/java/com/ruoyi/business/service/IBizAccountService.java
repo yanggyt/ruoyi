@@ -76,4 +76,12 @@ public interface IBizAccountService
      * @return boolean
      */
     public boolean accountChange(Long memberID, int accountType, int detailType, Long money, String businessInfo, String desc);
+
+    /**
+     * 清空福豆田
+     *
+     * @param
+     * @return
+     */
+    public void clearAllDouField();
 }

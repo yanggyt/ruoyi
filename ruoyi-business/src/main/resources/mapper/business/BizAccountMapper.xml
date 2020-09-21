@@ -143,4 +143,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
     </insert>
+
+    <update id="clearAllDouField">
+        insert into biz_account_detail(member_id,account_id,account_type,change_type,type_detail,amount,before_amount,after_amount,create_time)
+        select member_id,id,account_type,-1,4,-amount,amount,0,now()
+        from biz_account
+        where account_type = 4 and amount > 0;
+        update biz_account set amount = 0 where account_type = 4 and amount > 0;
+    </update>
 </mapper>

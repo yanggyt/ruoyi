@@ -137,7 +137,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join biz_order b on a.id = b.member_id and b.order_status > 0 and b.is_team = 1
         left join biz_order_detail c on c.order_id = b.id
         <if test="productId != null">and c.product_id = #{productId}</if>
-        where recommend_all_id like concat('%,', #{memberID}, ',%')
+        where concat(',', recommend_all_id, ',') like concat('%,', #{memberID}, ',%')
         group by a.id,a.member_name,a.recommend_id
     </select>
 
