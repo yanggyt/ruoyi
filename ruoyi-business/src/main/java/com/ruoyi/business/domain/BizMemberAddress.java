@@ -62,6 +62,9 @@ public class BizMemberAddress extends BaseEntity
     @Excel(name = "是否删除：0-否，1-是")
     private Integer isDelete;
 
+    /** 是否默认：0-否，1-是 */
+    private Integer isDefault;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -170,6 +173,14 @@ public class BizMemberAddress extends BaseEntity
         return isDelete;
     }
 
+    public Integer getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Integer isDefault) {
+        this.isDefault = isDefault;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -184,6 +195,7 @@ public class BizMemberAddress extends BaseEntity
             .append("areaCode", getAreaCode())
             .append("areaName", getAreaName())
             .append("isDelete", getIsDelete())
+            .append("isDefault", getIsDefault())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
