@@ -3,6 +3,7 @@ package com.ruoyi.common.utils;
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -48,6 +49,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static String getDate()
     {
         return dateTimeNow(YYYY_MM_DD);
+    }
+
+    /**
+     * 获取当前日期偏差日期, 默认格式为yyyy-MM-dd
+     *
+     * @return String
+     */
+    public static String getDate(int diff)
+    {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH, diff);
+        return dateTime(now.getTime());
     }
 
     public static final String getTime()

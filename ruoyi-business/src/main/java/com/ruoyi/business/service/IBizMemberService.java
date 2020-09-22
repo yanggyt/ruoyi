@@ -107,4 +107,12 @@ public interface IBizMemberService
      * @return 结果
      */
     public int doSpecialTask();
+
+    /**
+     * 执行团队福豆分成每日任务
+     *
+     * @param
+     * @return 结果
+     */
+    public int doTeamTask();
 }

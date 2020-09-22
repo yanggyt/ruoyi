@@ -182,7 +182,7 @@ public class BizMemberController extends BaseController
     }
 
     //取得当前团队盒数对应分成
-    private long getTeamDou(long totalNum, List<SysDictData> levels, int numLimit)
+    public static long getTeamDou(long totalNum, List<SysDictData> levels, int numLimit)
     {
         if (totalNum <= numLimit) return 0L;
         for (SysDictData data : levels) {

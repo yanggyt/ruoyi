@@ -124,4 +124,21 @@ public interface BizMemberMapper
      * @return 结果
      */
     public int updateMemberLevel(BizMember bizMember);
+
+    /**
+     * 查询需结算团队分成会员列表
+     *
+     * @param minValue 团队分成最少盒数
+     * @return 会员集合
+     */
+    public List<Map> selectTeamBenefitMember(int minValue);
+
+    /**
+     * 查询直接下级会员列表
+     *
+     * @param memberID 会员ID
+     * @return 会员ID集合
+     */
+    public List<Long> selectSubMember(Long memberID);
+
 }

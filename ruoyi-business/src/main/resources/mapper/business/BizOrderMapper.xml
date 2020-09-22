@@ -156,4 +156,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
     </insert>
 
+    <select id="selectTeamBizOrder" parameterType="Long" resultType="Map">
+        select b.id, b.recommend_all_id all_id, c.product_count from biz_order a
+        left join biz_member b on a.member_id = b.id
+        left join (select max(id), order_id, product_id, product_count from biz_order_detail group by order_id) c on a.id = c.order_id
+        where a.order_status > 0 and a.is_team = 1 and concat(',', b.recommend_all_id, ',') like concat('%', #{memberID}, '%')
+        order by a.id asc
+    </select>
 </mapper>

@@ -163,4 +163,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         set special_level = #{specialLevel}
         where id = #{id}
     </update>
+
+    <select id="selectTeamBenefitMember" parameterType="Integer" resultType="Map">
+        select id, totalNum from (
+            select t1.id, IF(sum(num) IS NULL,0,sum(num)) totalNum from (
+                select distinct(m1.id) from biz_member m1
+                inner join biz_order o1 on m1.id = o1.member_id and o1.order_status > 0 and o1.is_team = 1
+                where m1.is_delete = 0 and (select count(id) from biz_member m2 where m2.recommend_id=m1.id) >= 3
+            ) t1
+            inner join
+            (
+                select a.id, a.recommend_all_id, sum(IF(c.product_count IS NULL,0,c.product_count)) as num from biz_member a
+                left join biz_order b on a.id = b.member_id and b.order_status > 0 and b.is_team = 1
+                left join biz_order_detail c on c.order_id = b.id
+                where a.is_delete = 0
+                group by a.id
+            ) t2 on concat(',', t2.recommend_all_id, ',') like concat('%', t1.id, '%') and t2.num > 0
+            group by t1.id
+        ) t3
+        where totalNum > #{minValue}
+        order by id
+    </select>
+
+    <select id="selectSubMember" parameterType="Long" resultType="Long">
+        select id from biz_member where recommend_id = #{memberID}
+    </select>
 </mapper>

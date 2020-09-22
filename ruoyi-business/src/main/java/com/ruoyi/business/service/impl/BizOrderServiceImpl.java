@@ -44,6 +44,9 @@ public class BizOrderServiceImpl implements IBizOrderService
     @Resource
     private BizAccountServiceImpl bizAccountService;
 
+    @Resource
+    private BizTeamRewardServiceImpl bizTeamRewardService;
+
     /**
      * 查询订单
      * 
@@ -231,21 +234,26 @@ public class BizOrderServiceImpl implements IBizOrderService
             Long recMemberID = member.getRecommendId();
             if (recMemberID != null && recMemberID != 0) {
                 //取出直推奖励金额
-                String award1 = DictUtils.getDictLabel("busi_recommend_award", "1");
-                result = bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, Long.parseLong(award1), businessCode, BizAccountDetail.DOU_DESC_RECOMM);
+                long award1 = productNum * Long.parseLong(DictUtils.getDictLabel("busi_recommend_award", "1"));
+                result = bizAccountService.accountChange(recMemberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, award1, businessCode, BizAccountDetail.DOU_DESC_RECOMM);
                 if (!result) {
                     return AjaxResult.error("扣款失败,请联系管理员");
                 }
+                //增加团队积分数据(直推)
+                String dateStr = DateUtils.getDate(-1); //日期记录上一天的
+                bizTeamRewardService.addTeamReward(recMemberID, memberID, (long) productNum, award1, productID, BizTeamReward.TEAM_REWARD_TYPE_RECOMM, dateStr);
                 //判断二级直推(需要3个下级)
                 BizMember recommendMember = bizMemberMapper.selectBizMemberSimple(recMemberID);
                 Long topMemberID = recommendMember.getRecommendId();
                 //判断有效下级数不少于三个
-                if (bizMemberMapper.getValidChildCount(topMemberID) >= BizAccount.SECOND_AWARD_CHILD_LIMIT) {
-                    String award2 = DictUtils.getDictLabel("busi_recommend_award", "2");
-                    result = bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, Long.parseLong(award2), businessCode, BizAccountDetail.DOU_DESC_SECOND);
+                if (recMemberID != null && bizMemberMapper.getValidChildCount(topMemberID) >= BizAccount.SECOND_AWARD_CHILD_LIMIT) {
+                    long award2 = productNum * Long.parseLong(DictUtils.getDictLabel("busi_recommend_award", "2"));
+                    result = bizAccountService.accountChange(topMemberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, award2, businessCode, BizAccountDetail.DOU_DESC_SECOND);
                     if (!result) {
                         return AjaxResult.error("扣款失败,请联系管理员");
                     }
+                    //增加团队积分数据(二推)
+                    bizTeamRewardService.addTeamReward(topMemberID, memberID, (long) productNum, award2, productID, BizTeamReward.TEAM_REWARD_TYPE_SECOND, dateStr);
                 }
             }
         }

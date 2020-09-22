@@ -1,26 +1,30 @@
 package com.ruoyi.business.service.impl;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.ruoyi.business.controller.BizMemberController;
 import com.ruoyi.business.domain.BizAccount;
 import com.ruoyi.business.domain.BizAccountDetail;
+import com.ruoyi.business.domain.BizMember;
+import com.ruoyi.business.domain.BizTeamReward;
 import com.ruoyi.business.mapper.BizAccountMapper;
+import com.ruoyi.business.mapper.BizMemberMapper;
+import com.ruoyi.business.mapper.BizOrderMapper;
 import com.ruoyi.business.service.IBizAccountService;
+import com.ruoyi.business.service.IBizMemberService;
+import com.ruoyi.business.service.IBizTeamRewardService;
+import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.utils.DictUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.business.mapper.BizMemberMapper;
-import com.ruoyi.business.domain.BizMember;
-import com.ruoyi.business.service.IBizMemberService;
-import com.ruoyi.common.core.text.Convert;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 会员Service业务层处理
@@ -34,8 +38,14 @@ public class BizMemberServiceImpl implements IBizMemberService
     @Resource
     private BizMemberMapper bizMemberMapper;
 
-    @Autowired
+    @Resource
+    private BizOrderMapper bizOrderMapper;
+
+    @Resource
     private IBizAccountService bizAccountService;
+
+    @Resource
+    private IBizTeamRewardService bizTeamRewardService;
 
     @Resource
     private BizAccountMapper bizAccountMapper;
@@ -252,5 +262,109 @@ public class BizMemberServiceImpl implements IBizMemberService
             }
         }
         return accessCount;
+    }
+
+    /**
+     * 执行团队福豆分成每日任务
+     *
+     * @param
+     * @return 结果
+     */
+    @Override
+    @Transactional
+    public int doTeamTask()
+    {
+        //分成标准
+        List<SysDictData> levels = DictUtils.getDictCache("busi_teamaward_level");
+        //分成盒数限制
+        int numLimit = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "1"));
+        //日期记录上一天的
+        String dateStr = DateUtils.getDate(-1);
+
+        List<Map> memberList = bizMemberMapper.selectTeamBenefitMember(numLimit);
+        int accessCount = 0;
+        for (Map member : memberList) {
+            Long memberID = (Long) member.get("id");
+            Long totalNum = ((BigDecimal) member.get("totalNum")).longValue();
+            long selfDou = BizMemberController.getTeamDou(totalNum, levels, numLimit);
+
+            Map<Long, Map> temp = new HashMap();
+            Map<Long, Integer> numMap = new HashMap();
+            //直接下级列表
+            List<Long> subList = bizMemberMapper.selectSubMember(memberID);
+            for (Long subID : subList) {
+                Map map = new HashMap();
+                map.put("num", 0);
+                map.put("teamMembers", new ArrayList());
+                temp.put(subID, map);
+            }
+
+            List<Map> orderList = bizOrderMapper.selectTeamBizOrder(memberID);
+            int counter = 0;  //剔除前numLimit盒
+            for (Map order : orderList) {
+                Long buyerID = (Long) order.get("id");
+                String allID = (String) order.get("all_id");
+                int count = (Integer) order.get("product_count");
+                for (Long subID : subList) {
+                    if (buyerID.equals(subID) || testContains(allID, subID)) {   //是自己或子级
+                        Map subMap = temp.get(subID);
+                        int num = (Integer) subMap.get("num");
+                        subMap.put("num", num + count);
+                        List chList = (List) subMap.get("teamMembers");
+                        if (!chList.contains(buyerID)) {
+                            chList.add(buyerID);
+                        }
+                        break;
+                    }
+                }
+                //没到限制盒数的订单剔除掉
+                int oldCount = counter;
+                counter += count;
+                if (counter <= numLimit) continue;
+                if (oldCount <= numLimit) {
+                    //有可能一个订单同时包含有效盒和无效盒
+                    count = counter - numLimit;
+                }
+                //存入每个团队成员的明细
+                Integer chTotal = (Integer) numMap.get(buyerID);
+                if (chTotal == null) chTotal = 0;
+                chTotal += count;
+                numMap.put(buyerID, chTotal);
+            }
+            //根据直接下级计算数据
+            long totalBenifit = 0L;
+            for (Long subID : subList) {
+                Map subMap = temp.get(subID);
+                int subTeamNum = (Integer) subMap.get("num");
+                //比较subDou和selfDou得出分成数值
+                long subDou = BizMemberController.getTeamDou(subTeamNum, levels, numLimit);
+                long getDou = selfDou - subDou;
+                if (getDou <= 0) continue;
+                List<Long> chList = (List<Long>) subMap.get("teamMembers");
+                //子级用户对数据
+                for (Long chID : chList) {
+                    //子级盒数
+                    Integer chTotal = numMap.get(chID);
+                    if (chTotal == null || chTotal <= 0) continue;
+                    long benifit = getDou * chTotal;    //该子用户分成
+                    //插入数据
+                    bizTeamRewardService.addTeamReward(memberID, chID, (long) chTotal, benifit, null, BizTeamReward.TEAM_REWARD_TYPE_TEAM, dateStr);
+                    totalBenifit += benifit;
+                }
+            }
+            //团队福豆及福豆田
+            if (totalBenifit > 0) {
+                accessCount ++;
+                bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, totalBenifit,"", BizAccountDetail.DOU_DESC_TEAM);
+                bizAccountService.accountChange(memberID, BizAccount.DOU_FIELD, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, totalBenifit,"", BizAccountDetail.DOU_DESC_TEAM);
+            }
+        }
+        return accessCount;
+    }
+
+    //测试all包含字符串
+    private boolean testContains(String allID, Long id)
+    {
+        return ("," + allID + ",").indexOf("," + id + ",") >= 0;
     }
 }
