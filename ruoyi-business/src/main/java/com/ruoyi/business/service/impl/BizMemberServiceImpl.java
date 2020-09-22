@@ -288,7 +288,9 @@ public class BizMemberServiceImpl implements IBizMemberService
             Long totalNum = ((BigDecimal) member.get("totalNum")).longValue();
             long selfDou = BizMemberController.getTeamDou(totalNum, levels, numLimit);
 
+            //存入直接子级的团队盒数和团队成员数据
             Map<Long, Map> temp = new HashMap();
+            //存入每个子团队用户的结算盒数
             Map<Long, Integer> numMap = new HashMap();
             //直接下级列表
             List<Long> subList = bizMemberMapper.selectSubMember(memberID);
@@ -317,7 +319,7 @@ public class BizMemberServiceImpl implements IBizMemberService
                         break;
                     }
                 }
-                //没到限制盒数的订单剔除掉
+                //筛选出没到限制盒数的无效订单
                 int oldCount = counter;
                 counter += count;
                 if (counter <= numLimit) continue;
@@ -332,31 +334,32 @@ public class BizMemberServiceImpl implements IBizMemberService
                 numMap.put(buyerID, chTotal);
             }
             //根据直接下级计算数据
-            long totalBenifit = 0L;
+            long totalBenefit = 0L;
             for (Long subID : subList) {
                 Map subMap = temp.get(subID);
                 int subTeamNum = (Integer) subMap.get("num");
-                //比较subDou和selfDou得出分成数值
+                //比较subDou和selfDou得出子团队分成数值
                 long subDou = BizMemberController.getTeamDou(subTeamNum, levels, numLimit);
                 long getDou = selfDou - subDou;
                 if (getDou <= 0) continue;
+                //子团队用户列表取出
                 List<Long> chList = (List<Long>) subMap.get("teamMembers");
-                //子级用户对数据
+                //每个子级用户添加teamAward数据
                 for (Long chID : chList) {
                     //子级盒数
                     Integer chTotal = numMap.get(chID);
                     if (chTotal == null || chTotal <= 0) continue;
-                    long benifit = getDou * chTotal;    //该子用户分成
+                    long benefit = getDou * chTotal;    //该子用户分成
                     //插入数据
-                    bizTeamRewardService.addTeamReward(memberID, chID, (long) chTotal, benifit, null, BizTeamReward.TEAM_REWARD_TYPE_TEAM, dateStr);
-                    totalBenifit += benifit;
+                    bizTeamRewardService.addTeamReward(memberID, chID, (long) chTotal, benefit, null, BizTeamReward.TEAM_REWARD_TYPE_TEAM, dateStr);
+                    totalBenefit += benefit;
                 }
             }
             //团队福豆及福豆田
-            if (totalBenifit > 0) {
+            if (totalBenefit > 0) {
                 accessCount ++;
-                bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, totalBenifit,"", BizAccountDetail.DOU_DESC_TEAM);
-                bizAccountService.accountChange(memberID, BizAccount.DOU_FIELD, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, totalBenifit,"", BizAccountDetail.DOU_DESC_TEAM);
+                bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, totalBenefit,"", BizAccountDetail.DOU_DESC_TEAM);
+                bizAccountService.accountChange(memberID, BizAccount.DOU_FIELD, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, totalBenefit,"", BizAccountDetail.DOU_DESC_TEAM);
             }
         }
         return accessCount;
