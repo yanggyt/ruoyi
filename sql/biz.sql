@@ -8,6 +8,7 @@ CREATE TABLE `biz_member` (
   `recommend_mobile` varchar(32) NOT NULL DEFAULT '' COMMENT '推荐人手机',
   `recommend_name` varchar(32) NOT NULL DEFAULT '' COMMENT '推荐人姓名',
   `member_type` tinyint(4) NOT NULL DEFAULT 0 COMMENT '会员类型',
+  `special_level` tinyint(1) NOT NULL DEFAULT 1 COMMENT '专项返还次数(默认1, 若出局为0)',
   `is_delete` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否删除：0-否，1-是',
   `is_enable` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否禁用：0-否，1-是',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',

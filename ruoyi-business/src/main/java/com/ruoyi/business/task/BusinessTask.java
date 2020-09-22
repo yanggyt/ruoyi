@@ -67,10 +67,9 @@ public class BusinessTask {
     private void doSpecialTask()
     {
         try {
-            int dailyAmount = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "2"));
+            int accessCount = bizMemberService.doSpecialTask();
 
-
-            LogUtils.getAccessLog().info("======执行专项划拨任务完成======");
+            LogUtils.getAccessLog().info("======执行专项划拨任务完成,处理会员" + accessCount + "条======");
         } catch (Exception ex) {
             ex.printStackTrace();
             LogUtils.getAccessLog().error("======执行专项划拨任务出错======" + ex.getMessage());

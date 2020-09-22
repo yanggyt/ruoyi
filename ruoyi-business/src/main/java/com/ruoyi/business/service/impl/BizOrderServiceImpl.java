@@ -171,8 +171,17 @@ public class BizOrderServiceImpl implements IBizOrderService
         if (douBalance < orderTotal.longValue()) {
             return AjaxResult.error("福豆余额不足");
         }
-        BigDecimal cashbackAmount = product.getCashbackAmount().multiply(new BigDecimal(productNum));
-        //TODO cashbackAmount 专项划拨金额等级判断
+        //判断专项划拨相关金额
+        int decreaseAmount = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "4"));
+        BigDecimal cashbackAmount = product.getCashbackAmount();
+        boolean isTeam = cashbackAmount.longValue() > 0;
+        Integer specialLevel = member.getSpecialLevel();
+        BigDecimal cashbackTotalAmount = new BigDecimal(0);
+        if (specialLevel != null && specialLevel > 0) {    //未出局
+            //重新计算专项金额
+            cashbackAmount = cashbackAmount.add(new BigDecimal((specialLevel - 1) * decreaseAmount));
+            cashbackTotalAmount = cashbackAmount.multiply(new BigDecimal(productNum));
+        }
 
         //判断地址
         BizMemberAddress address = bizMemberAddressMapper.selectBizMemberAddressById(addressID);
@@ -188,7 +197,7 @@ public class BizOrderServiceImpl implements IBizOrderService
         order.setMemberName(member.getMemberName());
         order.setOrderAmount(orderTotal);
         order.setOrderStatus(BizOrder.STATUS_PAYED);    //已支付
-        order.setIsTeam(cashbackAmount.longValue() > 0 ? 1 : 0);  //是否团队福豆影响订单
+        order.setIsTeam(isTeam ? 1 : 0);  //是否团队福豆影响订单
         order.setRemark(remark);
         order.setAddressDetail(address.getAddress());
         order.setAddressId(addressID);
@@ -205,17 +214,17 @@ public class BizOrderServiceImpl implements IBizOrderService
 
         String businessCode = String.valueOf(order.getOrderSn());
         //减去福豆余额账户
-        // TODO 类型不对，同步完数据后在修改
         boolean result = bizAccountService.accountChange(memberID, BizAccount.DOU_BALANCE, BizAccountDetail.DOU_DETAIL_TYPE_ORDER, -orderTotal.longValue(), businessCode, BizAccountDetail.DOU_DESC_ORDER);
         if (!result) {
             return AjaxResult.error("扣款失败,请联系管理员");
         }
         //增加专项账户
-        if(cashbackAmount.longValue() > 0) {
-            // TODO 类型不对，同步完数据后在修改
-            result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, cashbackAmount.longValue(), businessCode, BizAccountDetail.DOU_DESC_SPECIAL1);
-            if (!result) {
-                return AjaxResult.error("扣款失败,请联系管理员");
+        if(isTeam) {
+            if (cashbackTotalAmount.longValue() > 0) {
+                result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, cashbackTotalAmount.longValue(), businessCode, BizAccountDetail.DOU_DESC_SPECIAL1);
+                if (!result) {
+                    return AjaxResult.error("扣款失败,请联系管理员");
+                }
             }
 
             //增加直推奖励(团队福豆账户)

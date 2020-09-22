@@ -11,12 +11,14 @@ import com.ruoyi.business.domain.BizAccountDetail;
 import com.ruoyi.business.mapper.BizAccountMapper;
 import com.ruoyi.business.service.IBizAccountService;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.utils.DictUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.business.mapper.BizMemberMapper;
 import com.ruoyi.business.domain.BizMember;
 import com.ruoyi.business.service.IBizMemberService;
 import com.ruoyi.common.core.text.Convert;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -204,5 +206,51 @@ public class BizMemberServiceImpl implements IBizMemberService
     public List<Map> selectTeamData(Map paramMap)
     {
         return bizMemberMapper.selectTeamData(paramMap);
+    }
+
+    /**
+     * 执行专项划拨每日任务
+     *
+     * @param
+     * @return 结果
+     */
+    @Override
+    @Transactional
+    public int doSpecialTask()
+    {
+        //划拨金额
+        int dailyAmount = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "2"));
+        //出局次数
+        int maxLevel = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "5"));
+        //团队盒数标准
+        int teamCountLimit = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "3"));
+
+        List<BizMember> memberList = bizMemberMapper.selectSpecialMember(dailyAmount);
+        int accessCount = 0;
+        for (BizMember member : memberList) {
+            Long memberID = member.getId();
+            Long douSpecial = member.getDouSpecial();
+            //先扣款
+            boolean result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_EXCHANGE, (long) -dailyAmount, "", BizAccountDetail.DOU_DESC_SPECIAL2);
+            if (result) {
+                //加入个人账户
+                result = bizAccountService.accountChange(memberID, BizAccount.DOU_PERSON, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, (long) dailyAmount, "", BizAccountDetail.DOU_DESC_SPECIAL2);
+                if (result) {
+                    accessCount ++;
+                    if (douSpecial <= dailyAmount) {
+                        //已经划拨完余额为0,更新用户出局情况
+                        long teamCount = bizMemberMapper.getMemberTeamCount(memberID);
+                        int specialLevel = member.getSpecialLevel();
+                        if (teamCount < teamCountLimit) {   //团队盒数不足设定值盒则更新level
+                            //达到最大等级则出局
+                            specialLevel = specialLevel == maxLevel ? 0 : (specialLevel + 1);
+                            member.setSpecialLevel(specialLevel);
+                            bizMemberMapper.updateMemberLevel(member);
+                        }
+                    }
+                }
+            }
+        }
+        return accessCount;
     }
 }

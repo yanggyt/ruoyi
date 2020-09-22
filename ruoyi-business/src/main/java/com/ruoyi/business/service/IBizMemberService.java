@@ -99,4 +99,12 @@ public interface IBizMemberService
      * @return 结果
      */
     public List<Map> selectTeamData(Map paramMap);
+
+    /**
+     * 执行专项划拨每日任务
+     *
+     * @param
+     * @return 结果
+     */
+    public int doSpecialTask();
 }

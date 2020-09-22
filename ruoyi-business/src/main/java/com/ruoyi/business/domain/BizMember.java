@@ -46,6 +46,9 @@ public class BizMember extends BaseEntity
     @Excel(name = "会员类型")
     private Integer memberType;
 
+    /** 专项返还等级：0-出局，1-第一次 */
+    private Integer specialLevel;
+
     /** 是否删除：0-否，1-是 */
     private Integer isDelete;
 
@@ -150,7 +153,16 @@ public class BizMember extends BaseEntity
     {
         return memberType;
     }
-    public void setIsDelete(Integer isDelete) 
+
+    public Integer getSpecialLevel() {
+        return specialLevel;
+    }
+
+    public void setSpecialLevel(Integer specialLevel) {
+        this.specialLevel = specialLevel;
+    }
+
+    public void setIsDelete(Integer isDelete)
     {
         this.isDelete = isDelete;
     }

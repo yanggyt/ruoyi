@@ -100,4 +100,28 @@ public interface BizMemberMapper
      * @return 结果
      */
     public List<Map> selectTeamData(Map paramMap);
+
+    /**
+     * 查询专项划拨任务会员列表
+     *
+     * @param minValue 专项划拨每日金额
+     * @return 会员集合
+     */
+    public List<BizMember> selectSpecialMember(int minValue);
+
+    /**
+     * 取出某用户团队盒数
+     *
+     * @param memberID 上级用户ID
+     * @return 结果
+     */
+    public long getMemberTeamCount(Long memberID);
+
+    /**
+     * 修改会员出局等级
+     *
+     * @param bizMember 会员
+     * @return 结果
+     */
+    public int updateMemberLevel(BizMember bizMember);
 }

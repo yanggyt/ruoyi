@@ -30,6 +30,7 @@
         .childDiv .cont{padding-left: 20px}
         .childDiv span{display:block;font-size: 14px;line-height: 24px;padding:0 0 4px 4px;cursor:pointer;border-radius: 5px;border:1px solid #AAAAAA}
         .childDiv span.noneChild{padding-left: 29px;padding-top: 2px;padding-bottom: 2px}
+        .childDiv span ss{font-family: 宋体}
     </style>
     <script th:inline="javascript">
         var prefix = ctx + "business/member";
@@ -44,7 +45,12 @@
             $.post(prefix + "/accountTeamDetail", "memberID=" + $("#memberID").val() + "&productID=" + productID, function(resp){
                 if(resp.code != 0) return;
                 $("#numSpan").text(resp.data.teamNum);
-                showChildren($("#container"), resp.data.memberList, true);
+                let members = resp.data.memberList;
+                if(!members){
+                    $("#container").html("&nbsp;该用户没有子级");
+                    return;
+                }
+                showChildren($("#container"), members, true);
                 $("#container .cont").hide();
             });
         }
@@ -55,7 +61,7 @@
                 let item = list[i];
                 let children = item.children;
                 let child = clone.clone().show();
-                child.html("<span class='" + (children ? "glyphicon glyphicon-chevron-right" : "noneChild") + "'>&nbsp;" + item.member_name + item.mobile + "(" + item.num + "盒)&nbsp;<b style='color:#0000FF'>" + (flag ? item.desc : "") + "</b></span>");
+                child.html("<span class='" + (children ? "glyphicon glyphicon-chevron-right" : "noneChild") + "'><ss>&nbsp;" + item.member_name + item.mobile + "(" + item.num + "盒)&nbsp;<b style='color:#0000FF'>" + (flag ? item.desc : "") + "</b></ss></span>");
                 div.append(child);
                 if(children){
                     child.append("<div class='cont'></div>");
