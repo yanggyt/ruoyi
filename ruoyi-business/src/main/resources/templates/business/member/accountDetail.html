@@ -101,7 +101,11 @@
                 },
                 {
                     field: 'changeDesc',
-                    title: '交易备注'
+                    title: '交易备注',
+                    formatter: function(value, row, index) {
+                        let isTeam = value == "团队奖励";
+                        return isTeam ? (value + "&nbsp;<a href='javascript:;' onclick='showTeamDetail(\"" + row.createTime + "\")'>[查看详细]</a>") : value;
+                    }
                 },
                 {
                     field: 'businessNo',
@@ -114,6 +118,12 @@
         };
         $.table.init(options);
     });
+
+    //团队奖励明细
+    function showTeamDetail(createTime){
+        let dateStr = createTime.split(" ")[0];
+        $.modal.open(dateStr + "团队奖励明细", ctx + "business/reward?memberID=" + $("#memberId").val() + "&rewardDate=" + dateStr);
+    }
 </script>
 </body>
 </html>
