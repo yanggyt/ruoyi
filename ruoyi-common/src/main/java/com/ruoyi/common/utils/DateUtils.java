@@ -56,9 +56,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
      *
      * @return String
      */
-    public static String getDate(int diff)
+    public static String getDate(int diff, String ... dateStr)
     {
         Calendar now = Calendar.getInstance();
+        if (dateStr.length > 0) {
+            try {
+                now.setTime(parseDate(dateStr[0], YYYY_MM_DD));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
         now.add(Calendar.DAY_OF_MONTH, diff);
         return dateTime(now.getTime());
     }

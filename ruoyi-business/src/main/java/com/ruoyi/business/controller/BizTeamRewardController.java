@@ -1,6 +1,8 @@
 package com.ruoyi.business.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
+import javax.annotation.Resource;
+
 /**
  * 团队奖励明细Controller
  * 
@@ -31,20 +35,24 @@ public class BizTeamRewardController extends BaseController
 {
     private String prefix = "business/reward";
 
-    @Autowired
+    @Resource
     private IBizTeamRewardService bizTeamRewardService;
 
-    @RequiresPermissions("business:reward:view")
+    @RequiresPermissions("business:member:view")
     @GetMapping()
-    public String reward()
+    public String reward(Long memberID, String rewardDate, ModelMap mmap)
     {
+        mmap.put("memberID", memberID);
+        //检索当前一天结算
+        mmap.put("rewardDate", DateUtils.getDate(-1, rewardDate));
+        mmap.put("rewardType", BizTeamReward.TEAM_REWARD_TYPE_TEAM);
         return prefix + "/reward";
     }
 
     /**
      * 查询团队奖励明细列表
      */
-    @RequiresPermissions("business:reward:list")
+    @RequiresPermissions("business:member:view")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(BizTeamReward bizTeamReward)
@@ -54,73 +62,4 @@ public class BizTeamRewardController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出团队奖励明细列表
-     */
-    @RequiresPermissions("business:reward:export")
-    @Log(title = "团队奖励明细", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(BizTeamReward bizTeamReward)
-    {
-        List<BizTeamReward> list = bizTeamRewardService.selectBizTeamRewardList(bizTeamReward);
-        ExcelUtil<BizTeamReward> util = new ExcelUtil<BizTeamReward>(BizTeamReward.class);
-        return util.exportExcel(list, "reward");
-    }
-
-    /**
-     * 新增团队奖励明细
-     */
-    @GetMapping("/add")
-    public String add()
-    {
-        return prefix + "/add";
-    }
-
-    /**
-     * 新增保存团队奖励明细
-     */
-    @RequiresPermissions("business:reward:add")
-    @Log(title = "团队奖励明细", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(BizTeamReward bizTeamReward)
-    {
-        return toAjax(bizTeamRewardService.insertBizTeamReward(bizTeamReward));
-    }
-
-    /**
-     * 修改团队奖励明细
-     */
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
-    {
-        BizTeamReward bizTeamReward = bizTeamRewardService.selectBizTeamRewardById(id);
-        mmap.put("bizTeamReward", bizTeamReward);
-        return prefix + "/edit";
-    }
-
-    /**
-     * 修改保存团队奖励明细
-     */
-    @RequiresPermissions("business:reward:edit")
-    @Log(title = "团队奖励明细", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(BizTeamReward bizTeamReward)
-    {
-        return toAjax(bizTeamRewardService.updateBizTeamReward(bizTeamReward));
-    }
-
-    /**
-     * 删除团队奖励明细
-     */
-    @RequiresPermissions("business:reward:remove")
-    @Log(title = "团队奖励明细", businessType = BusinessType.DELETE)
-    @PostMapping( "/remove")
-    @ResponseBody
-    public AjaxResult remove(String ids)
-    {
-        return toAjax(bizTeamRewardService.deleteBizTeamRewardByIds(ids));
-    }
 }

@@ -32,6 +32,10 @@ public class BizTeamReward extends BaseEntity
     @Excel(name = "团队用户ID")
     private Long rewardMemberId;
 
+    /** 团队用户名称 */
+    @Excel(name = "团队用户名称")
+    private String rewardMemberName;
+
     /** 用户购买产品数量 */
     @Excel(name = "用户购买产品数量")
     private Long rewardProductCount;
@@ -70,7 +74,16 @@ public class BizTeamReward extends BaseEntity
     {
         return memberId;
     }
-    public void setRewardMemberId(Long rewardMemberId) 
+
+    public String getRewardMemberName() {
+        return rewardMemberName;
+    }
+
+    public void setRewardMemberName(String rewardMemberName) {
+        this.rewardMemberName = rewardMemberName;
+    }
+
+    public void setRewardMemberId(Long rewardMemberId)
     {
         this.rewardMemberId = rewardMemberId;
     }
