@@ -3,6 +3,7 @@ package com.ruoyi.business.ajax;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.ruoyi.business.domain.BizAccount;
+import com.ruoyi.business.domain.BizMember;
 import com.ruoyi.business.mapper.*;
 import com.ruoyi.business.service.IBizMemberService;
 import com.ruoyi.business.sync.*;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/ajax/data")
@@ -83,7 +85,7 @@ public class SyncDataController extends BaseController {
     public AjaxResult order(@RequestParam("file") MultipartFile file) {
         ExcelReader reader = null;
         try {
-            reader = EasyExcel.read(file.getInputStream(), OrderData.class, new OrderDataListener(orderMapper, memberMapper)).build();
+            reader = EasyExcel.read(file.getInputStream(), OrderData.class, new OrderDataListener(orderMapper, memberMapper, productMapper)).build();
             reader.readAll();
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,6 +98,42 @@ public class SyncDataController extends BaseController {
 
     @PostMapping("/initUserTree")
     public AjaxResult initUserTree() {
+        List<BizMember> memberList = memberMapper.selectBizMemberAll();
+        BizMember member = memberMapper.selectBizMemberByMobile("13971055153");
+        getChild(member, memberList);
         return AjaxResult.success();
+    }
+
+    private void getChild(BizMember member, List<BizMember> memberList) {
+        for (BizMember m : memberList) {
+            if (member.getMobile().equals(m.getRecommendMobile())) {
+                m.setRecommendId(member.getId());
+                memberMapper.updateBizMember(m);
+                getChild(m, memberList);
+            }
+        }
+    }
+
+    @PostMapping("/initRecommendIds")
+    public AjaxResult initRecommendIds() {
+        List<BizMember> memberList = memberMapper.selectBizMemberAll();
+        for (BizMember member : memberList) {
+            String id = getChildIds(member, memberList, new StringBuffer());
+            member.setRecommendAllId(id.substring(0, id.length()));
+            memberMapper.updateBizMember(member);
+        }
+
+        return AjaxResult.success();
+    }
+
+    private String getChildIds(BizMember member, List<BizMember> memberList, StringBuffer sb) {
+        for (BizMember m : memberList) {
+            if (member.getRecommendId().equals(m.getId())) {
+                String id = m.getId() + ",";
+                sb.insert(0,  id);
+                getChildIds(m, memberList, sb);
+            }
+        }
+        return sb.toString();
     }
 }

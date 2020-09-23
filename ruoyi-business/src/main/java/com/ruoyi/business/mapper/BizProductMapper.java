@@ -21,6 +21,14 @@ public interface BizProductMapper
     public BizProduct selectBizProductById(Long productId);
 
     /**
+     * 查询产品
+     *
+     * @param productCode 产品编码
+     * @return 产品
+     */
+    public BizProduct selectBizProductByCode(String productCode);
+
+    /**
      * 查询产品图片列表
      *
      * @param productId 产品ID

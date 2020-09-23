@@ -31,6 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from biz_member a
     </sql>
 
+    <sql id="selectBizMemberAllVo">
+        select id, mobile, member_name, password, recommend_id, recommend_mobile, recommend_name, member_type, is_delete, is_enable, create_by, create_time, update_by, update_time
+        from biz_member a
+    </sql>
+
     <select id="selectBizMemberList" parameterType="BizMember" resultMap="BizMemberResult">
         <include refid="selectBizMemberVo"/>
         <where>
@@ -39,13 +44,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by a.id desc
     </select>
+
+    <select id="selectBizMemberAll" resultMap="BizMemberResult">
+        <include refid="selectBizMemberAllVo"/>
+    </select>
     
     <select id="selectBizMemberById" parameterType="Long" resultMap="BizMemberResult">
         <include refid="selectBizMemberVo"/>
         where a.id = #{id}
     </select>
 
-    <select id="selectBizMemberDou" parameterType="java.util.Map" resultType="Long">
+    <select id="selectBizMemberDou" parameterType="java.util.Map" resultType="java.lang.Long">
         select amount from biz_account where member_id = #{memberID} and account_type = #{type}
     </select>
 
@@ -127,12 +136,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <select id="getValidChildCount" parameterType="Long" resultType="Integer">
+    <select id="getValidChildCount" parameterType="Long" resultType="java.lang.Integer">
         select count(id) from biz_member a where recommend_id = #{memberID}
         and exists(select id from biz_order b where b.member_id = a.id and is_team = 1)
     </select>
 
-    <select id="selectTeamData" parameterType="Map" resultType="Map">
+    <select id="selectTeamData" parameterType="Map" resultType="java.util.Map">
         select a.id,a.mobile,a.member_name,a.recommend_id, sum(IF(c.product_count IS NULL,0,c.product_count)) as num from biz_member a
         left join biz_order b on a.id = b.member_id and b.order_status > 0 and b.is_team = 1
         left join biz_order_detail c on c.order_id = b.id
