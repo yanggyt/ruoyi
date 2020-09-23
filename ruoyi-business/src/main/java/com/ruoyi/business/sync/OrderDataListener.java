@@ -22,9 +22,12 @@ public class OrderDataListener extends AnalysisEventListener<OrderData> {
 
     private BizMemberMapper memberMapper;
 
-    public OrderDataListener(BizOrderMapper orderMapper, BizMemberMapper memberMapper) {
+    private BizProductMapper productMapper;
+
+    public OrderDataListener(BizOrderMapper orderMapper, BizMemberMapper memberMapper, BizProductMapper productMapper) {
         this.orderMapper = orderMapper;
         this.memberMapper = memberMapper;
+        this.productMapper = productMapper;
     }
 
     @Override
@@ -32,12 +35,21 @@ public class OrderDataListener extends AnalysisEventListener<OrderData> {
         BizOrder order = new BizOrder();
         order.setId(Long.valueOf(orderData.getId()));
         order.setOrderSn(orderData.getOrderNumber());
-        order.setMobile(orderData.getMobile());
+        order.setMobile(orderData.getUserTelephone());
         order.setOrderAmount(new BigDecimal(orderData.getPayCount()));
-        order.setOrderStatus(Integer.parseInt(orderData.getOrderStatus()));
+
+        int status;
+        if ("2".equals(orderData.getOrderStatus())) {
+            status = 3;
+        } else if ("3".equals(orderData.getOrderStatus())) {
+            status = 4;
+        } else {
+            status = Integer.parseInt(orderData.getOrderStatus());
+        }
+        order.setOrderStatus(status);
         order.setCreateBy("admin");
         order.setCreateTime(DateUtils.parseDate(orderData.getAddtime()));
-        order.setAddressId(StringUtils.isBlank(orderData.getAddID()) ? 0L : Long.parseLong(orderData.getAddID()));
+        order.setAddressId(StringUtils.isBlank(orderData.getAddId()) ? 0L : Long.parseLong(orderData.getAddId()));
         order.setAddressDetail(orderData.getDetailsAddress());
         order.setRemark(orderData.getOrderRemark());
 
@@ -59,7 +71,14 @@ public class OrderDataListener extends AnalysisEventListener<OrderData> {
         orderDetail.setProductCount(Integer.parseInt(orderData.getBuyGoodsNums()));
         orderDetail.setCreateBy("admin");
         orderDetail.setCreateTime(order.getCreateTime());
-        orderDetail.setProductId(0L);
+
+        BizProduct product = productMapper.selectBizProductByCode(orderData.getGoodsId());
+        if (Objects.isNull(product)) {
+            orderDetail.setProductId(0L);
+        } else {
+            orderDetail.setProductId(product.getId());
+        }
+
         orderMapper.insertBizOrderDetail(orderDetail);
     }
 

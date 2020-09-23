@@ -46,6 +46,12 @@ public interface BizMemberMapper
     public List<BizMember> selectBizMemberList(BizMember bizMember);
 
     /**
+     * 查询所有会员
+     * @return 会员集合
+     */
+    public List<BizMember> selectBizMemberAll();
+
+    /**
      * 会员福豆余额
      *
      * @param map

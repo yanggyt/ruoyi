@@ -17,8 +17,8 @@ public class OrderData {
     private String orderRemark;
     private String addtime;
     private String detailsAddress;
-    private String addID;
-    private String mobile;
+    private String addId;
+    private String userTelephone;
 
     public String getId() {
         return id;
@@ -140,19 +140,19 @@ public class OrderData {
         this.detailsAddress = detailsAddress;
     }
 
-    public String getAddID() {
-        return addID;
+    public String getAddId() {
+        return addId;
     }
 
-    public void setAddID(String addID) {
-        this.addID = addID;
+    public void setAddId(String addId) {
+        this.addId = addId;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getUserTelephone() {
+        return userTelephone;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setUserTelephone(String userTelephone) {
+        this.userTelephone = userTelephone;
     }
 }

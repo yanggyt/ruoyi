@@ -53,13 +53,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{productId}
     </select>
 
+    <select id="selectBizProductByCode" parameterType="Long" resultMap="BizProductResult">
+        <include refid="selectBizProductVo"/>
+        where product_code = #{productCode} limit 1
+    </select>
+
     <select id="selectBizProductImageList" parameterType="Long" resultMap="BizProductImageResult">
         select id, product_id, image_type, image_url
         from biz_product_image
         where product_id = #{productId}
         order by id
     </select>
-        
+
     <insert id="insertBizProduct" parameterType="BizProduct" useGeneratedKeys="true" keyProperty="productId">
         insert into biz_product
         <trim prefix="(" suffix=")" suffixOverrides=",">
