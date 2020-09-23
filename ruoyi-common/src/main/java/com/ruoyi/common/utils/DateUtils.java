@@ -77,7 +77,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
 
     public static final String getMilliTime()
     {
-        return dateTimeNow(YYYY_MM_DD_HH_MM_SS_SSS);
+        return dateTimeNow(YYYY_MM_DD_HH_MM_SS_SSS) + getRandomNumber(6);
+    }
+
+    //随机N位数字
+    public static final String getRandomNumber(int size)
+    {
+        String rand = String.valueOf(Math.random());
+        return rand.substring(2, 2 + size);
     }
 
     public static final String dateTimeNow()

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,16 +18,16 @@ import java.util.Map;
 @RequestMapping("/ajax/order")
 public class AjaxOrderController extends AuthController {
 
-    @Autowired
+    @Resource
     private IBizOrderService bizOrderService;
 
-    @Autowired
+    @Resource
     private IBizProductService bizProductService;
 
-    @Autowired
+    @Resource
     private IBizMemberService bizMemberService;
 
-    @Autowired
+    @Resource
     private IBizMemberAddressService bizMemberAddressService;
 
 

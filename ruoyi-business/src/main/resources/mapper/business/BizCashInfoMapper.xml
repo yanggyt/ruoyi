@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizCashInfoMapper">
+    
+    <resultMap type="BizCashInfo" id="BizCashInfoResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="accountId"    column="account_id"    />
+        <result property="accountType"    column="account_type"    />
+        <result property="bankId"    column="bank_id"    />
+        <result property="bankUser"    column="bank_user"    />
+        <result property="bankCity"    column="bank_city"    />
+        <result property="bankCard"    column="bank_card"    />
+        <result property="drawMoney"    column="draw_money"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizCashInfoVo">
+        select a.id, a.member_id, (concat(b.member_name, b.mobile)) memberName, account_id, account_type, bank_id, bank_user, bank_city, bank_card, draw_money, status, a.create_by, a.create_time, a.update_by, a.update_time from biz_cash_info a
+        left join biz_member b on a.member_id = b.id
+    </sql>
+
+    <select id="selectBizCashInfoList" parameterType="BizCashInfo" resultMap="BizCashInfoResult">
+        <include refid="selectBizCashInfoVo"/>
+        <where>  
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="memberName != null and memberName != ''"> and (b.member_name like concat('%', #{memberName}, '%') or b.mobile like concat('%', #{memberName}, '%'))</if>
+            <if test="accountId != null "> and account_id = #{accountId}</if>
+            <if test="accountType != null "> and account_type = #{accountType}</if>
+            <if test="bankId != null "> and bank_id = #{bankId}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+        order by id desc
+    </select>
+    
+    <select id="selectBizCashInfoById" parameterType="Long" resultMap="BizCashInfoResult">
+        <include refid="selectBizCashInfoVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertBizCashInfo" parameterType="BizCashInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_cash_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="accountId != null">account_id,</if>
+            <if test="accountType != null">account_type,</if>
+            <if test="bankId != null">bank_id,</if>
+            <if test="bankUser != null and bankUser != ''">bank_user,</if>
+            <if test="bankCity != null and bankCity != ''">bank_city,</if>
+            <if test="bankCard != null and bankCard != ''">bank_card,</if>
+            <if test="drawMoney != null">draw_money,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="accountId != null">#{accountId},</if>
+            <if test="accountType != null">#{accountType},</if>
+            <if test="bankId != null">#{bankId},</if>
+            <if test="bankUser != null and bankUser != ''">#{bankUser},</if>
+            <if test="bankCity != null and bankCity != ''">#{bankCity},</if>
+            <if test="bankCard != null and bankCard != ''">#{bankCard},</if>
+            <if test="drawMoney != null">#{drawMoney},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizCashInfo" parameterType="BizCashInfo">
+        update biz_cash_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="accountId != null">account_id = #{accountId},</if>
+            <if test="accountType != null">account_type = #{accountType},</if>
+            <if test="bankId != null">bank_id = #{bankId},</if>
+            <if test="bankUser != null and bankUser != ''">bank_user = #{bankUser},</if>
+            <if test="bankCity != null and bankCity != ''">bank_city = #{bankCity},</if>
+            <if test="bankCard != null and bankCard != ''">bank_card = #{bankCard},</if>
+            <if test="drawMoney != null">draw_money = #{drawMoney},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizCashInfoById" parameterType="Long">
+        delete from biz_cash_info where id = #{id}
+    </delete>
+
+    <delete id="deleteBizCashInfoByIds" parameterType="String">
+        delete from biz_cash_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

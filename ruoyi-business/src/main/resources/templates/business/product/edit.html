@@ -37,7 +37,7 @@
                         <label class="col-sm-3 control-label is-required">产品类型：</label>
                         <div class="col-sm-8">
                             <select th:field="*{bizProduct.productClass}" name="productClass" class="form-control m-b" required>
-                                <option th:each="dict:${@dict.getType('busi_product_class')}" th:value="*{dict.dictCode}" th:text="*{dict.dictLabel}"></option>
+                                <option th:each="dict:${@dict.getType('busi_product_class')}" th:value="*{dict.dictValue}" th:text="*{dict.dictLabel}"></option>
                             </select>
                         </div>
                     </div>

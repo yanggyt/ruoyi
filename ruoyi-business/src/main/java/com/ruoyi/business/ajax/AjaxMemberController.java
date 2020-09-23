@@ -1,5 +1,6 @@
 package com.ruoyi.business.ajax;
 
+import com.ruoyi.business.domain.BizCashInfo;
 import com.ruoyi.business.domain.BizMember;
 import com.ruoyi.business.domain.BizMemberAddress;
 import com.ruoyi.business.service.IBizMemberAddressService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,10 +21,10 @@ import java.util.Map;
 @RequestMapping("/ajax/member")
 public class AjaxMemberController extends AuthController {
 
-    @Autowired
+    @Resource
     private IBizMemberService bizMemberService;
 
-    @Autowired
+    @Resource
     private IBizMemberAddressService bizMemberAddressService;
 
     //个人中心
@@ -87,5 +89,28 @@ public class AjaxMemberController extends AuthController {
             return AjaxResult.error("不能删除默认收货地址");
         }
         return AjaxResult.success(bizMemberAddressService.deleteBizMemberAddressById(addressID));
+    }
+
+    //提现信息
+    @PostMapping("/getCashInfo")
+    public AjaxResult getCashInfo(int type)
+    {
+        return null;
+    }
+
+    //提现申请
+    @PostMapping("/addCashInfo")
+    public AjaxResult addCashInfo(BizCashInfo bizCashInfo)
+    {
+
+        return null;
+    }
+
+    //我的提现信息列表
+    @PostMapping("/listCashInfo")
+    public AjaxResult listCashInfo()
+    {
+
+        return null;
     }
 }

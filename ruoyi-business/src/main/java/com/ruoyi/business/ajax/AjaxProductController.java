@@ -26,10 +26,10 @@ import java.util.*;
 @RequestMapping("/ajax/product")
 public class AjaxProductController extends AuthController {
 
-    @Autowired
+    @Resource
     private IBizProductService bizProductService;
 
-    @Autowired
+    @Resource
     private IBizProductTypeService bizProductTypeService;
 
     //分类和推荐商品

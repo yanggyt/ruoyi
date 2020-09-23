@@ -18,12 +18,12 @@
                                 <label>产品类型：</label>
                                 <select name="productClass">
                                     <option value="">所有</option>
-                                    <option class="classOption" th:each="dict:${@dict.getType('busi_product_class')}" th:value="*{dict.dictCode}" th:text="*{dict.dictLabel}"></option>
+                                    <option class="classOption" th:each="dict:${@dict.getType('busi_product_class')}" th:value="*{dict.dictValue}" th:text="*{dict.dictLabel}"></option>
                                 </select>
                             </li>
                             <li>
                                 <label>产品分类：</label>
-                                <select name="id">
+                                <select name="productTypeId">
                                     <option value="">所有</option>
                                     <option class="typeOption" th:each="ptype:${productTypeList}" th:value="*{ptype.id}" th:text="*{ptype.productTypeName}"></option>
                                 </select>
