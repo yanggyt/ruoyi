@@ -119,7 +119,7 @@ public class SyncDataController extends BaseController {
         List<BizMember> memberList = memberMapper.selectBizMemberAll();
         for (BizMember member : memberList) {
             String id = getChildIds(member, memberList, new StringBuffer());
-            member.setRecommendAllId(id.substring(0, id.length()));
+            member.setRecommendAllId(id.substring(0, id.length() - 1));
             memberMapper.updateBizMember(member);
         }
 
