@@ -148,14 +148,17 @@ public class BizMemberController extends BaseController
         //取出团队盒数等级配置
         List<SysDictData> levels = DictUtils.getDictCache("busi_teamaward_level");
         int numLimit = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "1"));
+        long teamDou = getTeamDou(teamNum, levels, numLimit);
         //归总直属下级盒数
         List<Map> list = (List<Map>) temp.get(memberID);
-        for (Map item : list) {
-            Long id = (Long) item.get("id");
-            long num = ((BigDecimal) item.get("num")).longValue();
-            item.put("totalNum", num);
-            long totalNum = getTeamNum((List<Map>) temp.get(id), item);
-            item.put("desc", getTeamDesc(totalNum, levels, numLimit));
+        if (list != null) {
+            for (Map item : list) {
+                Long id = (Long) item.get("id");
+                long num = ((BigDecimal) item.get("num")).longValue();
+                item.put("totalNum", num);
+                getTeamNum((List<Map>) temp.get(id), item);
+                item.put("desc", getTeamDesc((Long) item.get("totalNum"), levels, numLimit, teamDou));
+            }
         }
         Map resultMap = new HashMap();
         resultMap.put("teamNum", teamNum);
@@ -164,9 +167,9 @@ public class BizMemberController extends BaseController
     }
 
     //取出子级团队盒数
-    private long getTeamNum(List<Map> chList, Map parent)
+    private void getTeamNum(List<Map> chList, Map parent)
     {
-        if (chList == null) return 0;
+        if (chList == null) return;
         for (Map item : chList) {
             long num = ((BigDecimal) item.get("num")).longValue();
             long totalNum = (Long) parent.get("totalNum");
@@ -176,13 +179,12 @@ public class BizMemberController extends BaseController
                 getTeamNum(children, parent);
             }
         }
-        return (Long) parent.get("totalNum");
     }
 
-    //取出团队盒数说明
-    private String getTeamDesc(long totalNum, List<SysDictData> levels, int numLimit)
+    //取得当前团队盒数对应分成
+    public static long getTeamDou(long totalNum, List<SysDictData> levels, int numLimit)
     {
-        if (totalNum <= numLimit) return "[团队盒数" + totalNum + " 无分成]";
+        if (totalNum <= numLimit) return 0L;
         for (SysDictData data : levels) {
             String label = data.getDictLabel();
             long dou = Long.parseLong(data.getDictValue());
@@ -190,10 +192,20 @@ public class BizMemberController extends BaseController
             long begin = Long.parseLong(split[0]);
             long end = Long.parseLong(split[1]);
             if (totalNum >= begin && totalNum <= end) {
-                return "[团队盒数" + totalNum + " 分成" + dou + "福豆]";
+                return dou;
             }
         }
-        return "";
+        return 0L;
+    }
+
+    //取出团队盒数说明
+    private String getTeamDesc(long totalNum, List<SysDictData> levels, int numLimit, long teamDou)
+    {
+        long dou = getTeamDou(totalNum, levels, numLimit);
+        if (teamDou == 0) {
+            return "[团队盒数" + totalNum + " 无分成]";
+        }
+        return "[团队盒数" + totalNum + " 分成" + teamDou + "-" + dou + "=" + (teamDou - dou) + "福豆]";
     }
 
     /**

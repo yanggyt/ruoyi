@@ -1,6 +1,8 @@
 package com.ruoyi.business.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.business.domain.BizOrder;
 import com.ruoyi.business.domain.BizOrderDetail;
 
@@ -67,4 +69,12 @@ public interface BizOrderMapper
      * @return 结果
      */
     public int insertBizOrderDetail(BizOrderDetail bizOrderDetail);
+
+    /**
+     * 查询团队订单
+     *
+     * @param memberID 会员ID
+     * @return 订单集合
+     */
+    public List<Map> selectTeamBizOrder(Long memberID);
 }

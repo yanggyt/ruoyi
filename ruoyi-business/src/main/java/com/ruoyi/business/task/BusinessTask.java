@@ -43,7 +43,7 @@ public class BusinessTask {
         LogUtils.getAccessLog().info("======今日非休息日,开始执行福豆相关任务======");
 
         //专项划拨任务
-        doSpecialTask();
+        //doSpecialTask();
 
         //团队福豆分成任务
         doTeamTask();
@@ -67,10 +67,9 @@ public class BusinessTask {
     private void doSpecialTask()
     {
         try {
-            int dailyAmount = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "2"));
+            int accessCount = bizMemberService.doSpecialTask();
 
-
-            LogUtils.getAccessLog().info("======执行专项划拨任务完成======");
+            LogUtils.getAccessLog().info("======执行专项划拨任务完成,处理会员数据" + accessCount + "条======");
         } catch (Exception ex) {
             ex.printStackTrace();
             LogUtils.getAccessLog().error("======执行专项划拨任务出错======" + ex.getMessage());
@@ -81,10 +80,9 @@ public class BusinessTask {
     private void doTeamTask()
     {
         try {
-            int numLimit = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "1"));
+            int accessCount = bizMemberService.doTeamTask();
 
-
-            LogUtils.getAccessLog().info("======执行团队福豆分成任务完成======");
+            LogUtils.getAccessLog().info("======执行团队福豆分成任务完成,处理会员数据" + accessCount + "条======");
         } catch (Exception ex) {
             ex.printStackTrace();
             LogUtils.getAccessLog().error("======执行团队福豆分成任务出错======" + ex.getMessage());

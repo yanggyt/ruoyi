@@ -44,6 +44,9 @@ public class BizOrderServiceImpl implements IBizOrderService
     @Resource
     private BizAccountServiceImpl bizAccountService;
 
+    @Resource
+    private BizTeamRewardServiceImpl bizTeamRewardService;
+
     /**
      * 查询订单
      * 
@@ -171,8 +174,17 @@ public class BizOrderServiceImpl implements IBizOrderService
         if (douBalance < orderTotal.longValue()) {
             return AjaxResult.error("福豆余额不足");
         }
-        BigDecimal cashbackAmount = product.getCashbackAmount().multiply(new BigDecimal(productNum));
-        //TODO cashbackAmount 专项划拨金额等级判断
+        //判断专项划拨相关金额
+        int decreaseAmount = Integer.parseInt(DictUtils.getDictLabel("busi_award_set", "4"));
+        BigDecimal cashbackAmount = product.getCashbackAmount();
+        boolean isTeam = cashbackAmount.longValue() > 0;
+        Integer specialLevel = member.getSpecialLevel();
+        BigDecimal cashbackTotalAmount = new BigDecimal(0);
+        if (specialLevel != null && specialLevel > 0) {    //未出局
+            //重新计算专项金额
+            cashbackAmount = cashbackAmount.add(new BigDecimal((specialLevel - 1) * decreaseAmount));
+            cashbackTotalAmount = cashbackAmount.multiply(new BigDecimal(productNum));
+        }
 
         //判断地址
         BizMemberAddress address = bizMemberAddressMapper.selectBizMemberAddressById(addressID);
@@ -188,7 +200,7 @@ public class BizOrderServiceImpl implements IBizOrderService
         order.setMemberName(member.getMemberName());
         order.setOrderAmount(orderTotal);
         order.setOrderStatus(BizOrder.STATUS_PAYED);    //已支付
-        order.setIsTeam(cashbackAmount.longValue() > 0 ? 1 : 0);  //是否团队福豆影响订单
+        order.setIsTeam(isTeam ? 1 : 0);  //是否团队福豆影响订单
         order.setRemark(remark);
         order.setAddressDetail(address.getAddress());
         order.setAddressId(addressID);
@@ -205,38 +217,43 @@ public class BizOrderServiceImpl implements IBizOrderService
 
         String businessCode = String.valueOf(order.getOrderSn());
         //减去福豆余额账户
-        // TODO 类型不对，同步完数据后在修改
         boolean result = bizAccountService.accountChange(memberID, BizAccount.DOU_BALANCE, BizAccountDetail.DOU_DETAIL_TYPE_ORDER, -orderTotal.longValue(), businessCode, BizAccountDetail.DOU_DESC_ORDER);
         if (!result) {
             return AjaxResult.error("扣款失败,请联系管理员");
         }
         //增加专项账户
-        if(cashbackAmount.longValue() > 0) {
-            // TODO 类型不对，同步完数据后在修改
-            result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, cashbackAmount.longValue(), businessCode, BizAccountDetail.DOU_DESC_SPECIAL1);
-            if (!result) {
-                return AjaxResult.error("扣款失败,请联系管理员");
+        if(isTeam) {
+            if (cashbackTotalAmount.longValue() > 0) {
+                result = bizAccountService.accountChange(memberID, BizAccount.DOU_SPECIAL, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, cashbackTotalAmount.longValue(), businessCode, BizAccountDetail.DOU_DESC_SPECIAL1);
+                if (!result) {
+                    return AjaxResult.error("扣款失败,请联系管理员");
+                }
             }
 
             //增加直推奖励(团队福豆账户)
             Long recMemberID = member.getRecommendId();
             if (recMemberID != null && recMemberID != 0) {
                 //取出直推奖励金额
-                String award1 = DictUtils.getDictLabel("busi_recommend_award", "1");
-                result = bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, Long.parseLong(award1), businessCode, BizAccountDetail.DOU_DESC_RECOMM);
+                long award1 = productNum * Long.parseLong(DictUtils.getDictLabel("busi_recommend_award", "1"));
+                result = bizAccountService.accountChange(recMemberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, award1, businessCode, BizAccountDetail.DOU_DESC_RECOMM);
                 if (!result) {
                     return AjaxResult.error("扣款失败,请联系管理员");
                 }
+                //增加团队积分数据(直推)
+                String dateStr = DateUtils.getDate(-1); //日期记录上一天的
+                bizTeamRewardService.addTeamReward(recMemberID, memberID, (long) productNum, award1, productID, BizTeamReward.TEAM_REWARD_TYPE_RECOMM, dateStr);
                 //判断二级直推(需要3个下级)
                 BizMember recommendMember = bizMemberMapper.selectBizMemberSimple(recMemberID);
                 Long topMemberID = recommendMember.getRecommendId();
                 //判断有效下级数不少于三个
-                if (bizMemberMapper.getValidChildCount(topMemberID) >= BizAccount.SECOND_AWARD_CHILD_LIMIT) {
-                    String award2 = DictUtils.getDictLabel("busi_recommend_award", "2");
-                    result = bizAccountService.accountChange(memberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, Long.parseLong(award2), businessCode, BizAccountDetail.DOU_DESC_SECOND);
+                if (recMemberID != null && bizMemberMapper.getValidChildCount(topMemberID) >= BizAccount.SECOND_AWARD_CHILD_LIMIT) {
+                    long award2 = productNum * Long.parseLong(DictUtils.getDictLabel("busi_recommend_award", "2"));
+                    result = bizAccountService.accountChange(topMemberID, BizAccount.DOU_TEAM, BizAccountDetail.DOU_DETAIL_TYPE_CHARGE, award2, businessCode, BizAccountDetail.DOU_DESC_SECOND);
                     if (!result) {
                         return AjaxResult.error("扣款失败,请联系管理员");
                     }
+                    //增加团队积分数据(二推)
+                    bizTeamRewardService.addTeamReward(topMemberID, memberID, (long) productNum, award2, productID, BizTeamReward.TEAM_REWARD_TYPE_SECOND, dateStr);
                 }
             }
         }
