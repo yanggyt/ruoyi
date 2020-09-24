@@ -33,8 +33,6 @@ public class SysLogininforServiceImpl extends BaseService implements ISysLoginin
     private SysLogininfoRepository sysLogininfoRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired
-    private EntityManager entityManager;
 
     /**
      * 新增系统登录日志

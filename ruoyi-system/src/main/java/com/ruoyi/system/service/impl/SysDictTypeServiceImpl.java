@@ -1,206 +1,174 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
+import com.ruoyi.common.base.BaseService;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.system.domain.SysDictData;
+import com.ruoyi.system.domain.QSysDictType;
 import com.ruoyi.system.domain.SysDictType;
-import com.ruoyi.system.mapper.SysDictDataMapper;
-import com.ruoyi.system.mapper.SysDictTypeMapper;
+import com.ruoyi.system.repository.SysDictDataRepository;
+import com.ruoyi.system.repository.SysDictTypeRepository;
 import com.ruoyi.system.service.ISysDictTypeService;
-import com.ruoyi.system.utils.DictUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 字典 业务层处理
- * 
+ *
  * @author ruoyi
  */
 @Service
-public class SysDictTypeServiceImpl implements ISysDictTypeService
-{
+public class SysDictTypeServiceImpl extends BaseService implements ISysDictTypeService {
     @Autowired
-    private SysDictTypeMapper dictTypeMapper;
-
+    private SysDictTypeRepository sysDictTypeRepository;
     @Autowired
-    private SysDictDataMapper dictDataMapper;
-
-    /**
-     * 项目启动时，初始化字典到缓存
-     */
-    @PostConstruct
-    public void init()
-    {
-        List<SysDictType> dictTypeList = dictTypeMapper.selectDictTypeAll();
-        for (SysDictType dictType : dictTypeList)
-        {
-            List<SysDictData> dictDatas = dictDataMapper.selectDictDataByType(dictType.getDictType());
-            DictUtils.setDictCache(dictType.getDictType(), dictDatas);
-        }
-    }
+    private SysDictDataRepository sysDictDataRepository;
 
     /**
      * 根据条件分页查询字典类型
-     * 
+     *
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
     @Override
-    public List<SysDictType> selectDictTypeList(SysDictType dictType)
-    {
-        return dictTypeMapper.selectDictTypeList(dictType);
+    public Page<SysDictType> selectDictTypeList(SysDictType dictType, Pageable pageable) {
+        return sysDictTypeRepository.findAll(getPredicate(dictType), pageable);
+    }
+
+    private Predicate getPredicate(SysDictType sysDictType){
+        QSysDictType qSysDictType = QSysDictType.sysDictType;
+        List<Predicate> predicates = new ArrayList<>();
+        if(StringUtils.isNotEmpty(sysDictType.getDictName())){
+            predicates.add(buildLike(qSysDictType.dictName, sysDictType.getDictName()));
+        }
+        if(StringUtils.isNotEmpty(sysDictType.getStatus())){
+            predicates.add(buildEqual(qSysDictType.status, sysDictType.getStatus()));
+        }
+        if(StringUtils.isNotEmpty(sysDictType.getDictType())){
+            predicates.add(buildLike(qSysDictType.dictType, sysDictType.getDictType()));
+        }
+        if(sysDictType.getStartTime() != null){
+            predicates.add(buildGreaterThanOrEqualTo(qSysDictType.createTime, sysDictType.getStartTime()));
+        }
+        if(sysDictType.getEndTime() != null){
+            predicates.add(buildLessThanOrEqualTo(qSysDictType.createTime, sysDictType.getEndTime()));
+        }
+        return ExpressionUtils.allOf(predicates);
     }
 
     /**
      * 根据所有字典类型
-     * 
+     *
      * @return 字典类型集合信息
      */
     @Override
-    public List<SysDictType> selectDictTypeAll()
-    {
-        return dictTypeMapper.selectDictTypeAll();
-    }
-
-    /**
-     * 根据字典类型查询字典数据
-     * 
-     * @param dictType 字典类型
-     * @return 字典数据集合信息
-     */
-    @Override
-    public List<SysDictData> selectDictDataByType(String dictType)
-    {
-        List<SysDictData> dictDatas = DictUtils.getDictCache(dictType);
-        if (StringUtils.isNotEmpty(dictDatas))
-        {
-            return dictDatas;
-        }
-        dictDatas = dictDataMapper.selectDictDataByType(dictType);
-        if (StringUtils.isNotEmpty(dictDatas))
-        {
-            DictUtils.setDictCache(dictType, dictDatas);
-            return dictDatas;
-        }
-        return null;
+    public List<SysDictType> selectDictTypeAll() {
+        return sysDictTypeRepository.findAll();
     }
 
     /**
      * 根据字典类型ID查询信息
-     * 
+     *
      * @param dictId 字典类型ID
      * @return 字典类型
      */
     @Override
-    public SysDictType selectDictTypeById(Long dictId)
-    {
-        return dictTypeMapper.selectDictTypeById(dictId);
+    public SysDictType selectDictTypeById(Long dictId) {
+        return sysDictTypeRepository.findById(dictId).get();
     }
 
     /**
      * 根据字典类型查询信息
-     * 
+     *
      * @param dictType 字典类型
      * @return 字典类型
      */
+    public SysDictType selectDictTypeByType(String dictType) {
+        return sysDictTypeRepository.findFirstByDictType(dictType);
+    }
+
+    /**
+     * 通过字典ID删除字典信息
+     *
+     * @param dictId 字典ID
+     * @return 结果
+     */
+    @Transactional
     @Override
-    public SysDictType selectDictTypeByType(String dictType)
-    {
-        return dictTypeMapper.selectDictTypeByType(dictType);
+    public int deleteDictTypeById(Long dictId) {
+        sysDictTypeRepository.deleteById(dictId);
+        return 1;
     }
 
     /**
      * 批量删除字典类型
-     * 
+     *
      * @param ids 需要删除的数据
      * @return 结果
      */
+    @Transactional
     @Override
-    public int deleteDictTypeByIds(String ids)
-    {
+    public int deleteDictTypeByIds(String ids) throws BusinessException {
         Long[] dictIds = Convert.toLongArray(ids);
-        for (Long dictId : dictIds)
-        {
+        for (Long dictId : dictIds) {
             SysDictType dictType = selectDictTypeById(dictId);
-            if (dictDataMapper.countDictDataByType(dictType.getDictType()) > 0)
-            {
+            if (sysDictDataRepository.countByDictType(dictType.getDictType()) > 0) {
                 throw new BusinessException(String.format("%1$s已分配,不能删除", dictType.getDictName()));
             }
+            deleteDictTypeById(dictId);
         }
-        int count = dictTypeMapper.deleteDictTypeByIds(dictIds);
-        if (count > 0)
-        {
-            DictUtils.clearDictCache();
-        }
-        return count;
-    }
-
-    /**
-     * 清空缓存数据
-     */
-    @Override
-    public void clearCache()
-    {
-        DictUtils.clearDictCache();
+        return dictIds.length;
     }
 
     /**
      * 新增保存字典类型信息
-     * 
+     *
      * @param dictType 字典类型信息
      * @return 结果
      */
     @Override
-    public int insertDictType(SysDictType dictType)
-    {
-        int row = dictTypeMapper.insertDictType(dictType);
-        if (row > 0)
-        {
-            DictUtils.clearDictCache();
-        }
-        return row;
+    public int insertDictType(SysDictType dictType) {
+        sysDictTypeRepository.save(dictType);
+        return 1;
     }
 
     /**
      * 修改保存字典类型信息
-     * 
+     *
      * @param dictType 字典类型信息
      * @return 结果
      */
     @Override
     @Transactional
-    public int updateDictType(SysDictType dictType)
-    {
-        SysDictType oldDict = dictTypeMapper.selectDictTypeById(dictType.getDictId());
-        dictDataMapper.updateDictDataType(oldDict.getDictType(), dictType.getDictType());
-        int row = dictTypeMapper.updateDictType(dictType);
-        if (row > 0)
-        {
-            DictUtils.clearDictCache();
-        }
-        return row;
+    public int updateDictType(SysDictType dictType) {
+        SysDictType oldDict = sysDictTypeRepository.findById(dictType.getDictId()).get();
+        sysDictDataRepository.updateDictType(dictType.getDictType(), oldDict.getDictType());
+        sysDictTypeRepository.save(dictType);
+        return 1;
     }
 
     /**
      * 校验字典类型称是否唯一
-     * 
+     *
      * @param dict 字典类型
      * @return 结果
      */
     @Override
-    public String checkDictTypeUnique(SysDictType dict)
-    {
+    public String checkDictTypeUnique(SysDictType dict) {
         Long dictId = StringUtils.isNull(dict.getDictId()) ? -1L : dict.getDictId();
-        SysDictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType());
-        if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue())
-        {
+        SysDictType dictType = sysDictTypeRepository.findFirstByDictType(dict.getDictType());
+        if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue()) {
             return UserConstants.DICT_TYPE_NOT_UNIQUE;
         }
         return UserConstants.DICT_TYPE_UNIQUE;
@@ -208,19 +176,15 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
 
     /**
      * 查询字典类型树
-     * 
+     *
      * @param dictType 字典类型
      * @return 所有字典类型
      */
-    @Override
-    public List<Ztree> selectDictTree(SysDictType dictType)
-    {
+    public List<Ztree> selectDictTree(SysDictType dictType) {
         List<Ztree> ztrees = new ArrayList<Ztree>();
-        List<SysDictType> dictList = dictTypeMapper.selectDictTypeList(dictType);
-        for (SysDictType dict : dictList)
-        {
-            if (UserConstants.DICT_NORMAL.equals(dict.getStatus()))
-            {
+        List<SysDictType> dictList = sysDictTypeRepository.findAll();
+        for (SysDictType dict : dictList) {
+            if (UserConstants.DICT_NORMAL.equals(dict.getStatus())) {
                 Ztree ztree = new Ztree();
                 ztree.setId(dict.getDictId());
                 ztree.setName(transDictName(dict));
@@ -231,8 +195,13 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
         return ztrees;
     }
 
-    public String transDictName(SysDictType dictType)
-    {
+    @CacheEvict(allEntries = true)
+    @Override
+    public void clearCache() {
+
+    }
+
+    public String transDictName(SysDictType dictType) {
         StringBuffer sb = new StringBuffer();
         sb.append("(" + dictType.getDictName() + ")");
         sb.append("&nbsp;&nbsp;&nbsp;" + dictType.getDictType());

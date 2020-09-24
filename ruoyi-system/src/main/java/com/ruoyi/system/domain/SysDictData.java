@@ -19,6 +19,14 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "sys_dict_data")
 public class SysDictData extends BaseEntity {
+
+    public SysDictData() {
+    }
+
+    public SysDictData(Long id) {
+        this.dictCode = id;
+    }
+
     private static final long serialVersionUID = 1L;
 
     /**

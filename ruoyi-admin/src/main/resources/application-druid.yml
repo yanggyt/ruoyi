@@ -2,7 +2,7 @@
 db:
     # mysql, oracle, sqlserver
     type: mysql
-    name: framework
+    name: framework_jpa
     username: root
     password: root
 # 数据源配置
@@ -13,7 +13,7 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/${db.name}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://localhost:3306/${db.name}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
                 username: ${db.username}
                 password: ${db.password}
             # 从库数据源

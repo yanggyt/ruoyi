@@ -1,7 +1,13 @@
 package com.ruoyi.common.base;
 
 import com.querydsl.core.types.dsl.*;
+import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.querydsl.ExpressionUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class BaseService {
 
@@ -31,5 +37,26 @@ public class BaseService {
 
     protected BooleanExpression notStartWith(StringPath path, String value){
         return ExpressionUtils.notStartWith(path, value);
+    }
+
+    public static Collection<Long> toLongIterable(String str){
+        return Arrays.stream(Convert.toStrArray(str))
+                .map(Long::parseLong)
+                .collect(Collectors.toSet());
+    }
+
+    public static Collection<Integer> toIntegerIterable(String str){
+        return Arrays.stream(Convert.toStrArray(str))
+                .map(Integer::parseInt)
+                .collect(Collectors.toSet());
+    }
+
+    public static Collection<String> toStringIterable(String str){
+        return Arrays.stream(Convert.toStrArray(str))
+                .collect(Collectors.toSet());
+    }
+
+    protected  <ID, ENTITY> Collection<ENTITY> toEntityIterable(Collection<ID> ids, Function<ID, ENTITY> function){
+        return Convert.toEntityIterable(ids, function);
     }
 }

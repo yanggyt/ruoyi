@@ -27,14 +27,6 @@ server:
     max-threads: 800
     # Tomcat启动初始化的线程数，默认值25
     min-spare-threads: 30
- 
-# 日志配置
-logging:
-  level:
-    root: warn
-    com.ruoyi: debug
-    com.ruoyi.quartz.mapper: warn
-    com.ruoyi.system.mapper: warn
 
 # 用户配置
 user:
@@ -85,22 +77,6 @@ spring:
     type: jcache
     jcache:
       provider: org.ehcache.jsr107.EhcacheCachingProvider
-
-# MyBatis
-mybatis:
-    # 搜索指定包别名
-    typeAliasesPackage: com.ruoyi.**.domain
-    # 配置mapper的扫描，找到所有的mapper.xml映射文件
-    mapperLocations: classpath*:mapper/**/*Mapper.xml
-    # 加载全局的配置文件
-    configLocation: classpath:mybatis/mybatis-config.xml
-
-# PageHelper分页插件
-pagehelper: 
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql 
 
 # Shiro
 shiro:

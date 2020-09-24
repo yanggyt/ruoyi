@@ -27,15 +27,15 @@ create table QRTZ_TRIGGERS (
     job_name             varchar(200)    not null,
     job_group            varchar(200)    not null,
     description          varchar(250)    null,
-    next_fire_time       bigint(13)      null,
-    prev_fire_time       bigint(13)      null,
+    next_fire_time       bigint      null,
+    prev_fire_time       bigint      null,
     priority             integer         null,
     trigger_state        varchar(16)     not null,
     trigger_type         varchar(8)      not null,
-    start_time           bigint(13)      not null,
-    end_time             bigint(13)      null,
+    start_time           bigint      not null,
+    end_time             bigint      null,
     calendar_name        varchar(200)    null,
-    misfire_instr        smallint(2)     null,
+    misfire_instr        smallint     null,
     job_data             blob            null,
     primary key (sched_name,trigger_name,trigger_group),
     foreign key (sched_name,job_name,job_group) references QRTZ_JOB_DETAILS(sched_name,job_name,job_group)
@@ -49,9 +49,9 @@ create table QRTZ_SIMPLE_TRIGGERS (
     sched_name           varchar(120)    not null,
     trigger_name         varchar(200)    not null,
     trigger_group        varchar(200)    not null,
-    repeat_count         bigint(7)       not null,
-    repeat_interval      bigint(12)      not null,
-    times_triggered      bigint(10)      not null,
+    repeat_count         bigint       not null,
+    repeat_interval      bigint      not null,
+    times_triggered      bigint      not null,
     primary key (sched_name,trigger_name,trigger_group),
     foreign key (sched_name,trigger_name,trigger_group) references QRTZ_TRIGGERS(sched_name,trigger_name,trigger_group)
 ) engine=innodb;
@@ -114,8 +114,8 @@ create table QRTZ_FIRED_TRIGGERS (
     trigger_name         varchar(200)    not null,
     trigger_group        varchar(200)    not null,
     instance_name        varchar(200)    not null,
-    fired_time           bigint(13)      not null,
-    sched_time           bigint(13)      not null,
+    fired_time           bigint      not null,
+    sched_time           bigint      not null,
     priority             integer         not null,
     state                varchar(16)     not null,
     job_name             varchar(200)    null,
@@ -132,8 +132,8 @@ drop table if exists QRTZ_SCHEDULER_STATE;
 create table QRTZ_SCHEDULER_STATE (
     sched_name           varchar(120)    not null,
     instance_name        varchar(200)    not null,
-    last_checkin_time    bigint(13)      not null,
-    checkin_interval     bigint(13)      not null,
+    last_checkin_time    bigint      not null,
+    checkin_interval     bigint      not null,
     primary key (sched_name,instance_name)
 ) engine=innodb;
 

@@ -1,13 +1,17 @@
 package com.ruoyi.common.core.text;
 
+import com.ruoyi.common.utils.StringUtils;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
-
-import com.ruoyi.common.utils.StringUtils;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 类型转换器
@@ -312,6 +316,34 @@ public class Convert {
      */
     public static String[] toStrArray(String str) {
         return toStrArray(",", str);
+    }
+
+    public static Collection<Long> toLongIterable(String str){
+        return toIdIterable(str, Long::parseLong);
+    }
+
+    public static Collection<Integer> toIntegerIterable(String str){
+        return toIdIterable(str, Integer::parseInt);
+    }
+
+    public static Collection<String> toStringIterable(String str){
+        return toIdIterable(str, s -> s);
+    }
+
+    public static <T> Collection<T> toIdIterable(String str, Function<String, T> function){
+        return Arrays.stream(toStrArray(str))
+                .map(function)
+                .collect(Collectors.toSet());
+    }
+
+    public static <ID, ENTITY> Collection<ENTITY> toIdIterable(String ids, Function<String, ID> toIDFunction, Function<ID, ENTITY> idToEntityFunction){
+        return toEntityIterable(toIdIterable(ids, toIDFunction), idToEntityFunction);
+    }
+
+    public static <ID, ENTITY> Collection<ENTITY> toEntityIterable(Collection<ID> ids, Function<ID, ENTITY> function){
+        return ids.stream()
+                .map(function)
+                .collect(Collectors.toSet());
     }
 
     /**
