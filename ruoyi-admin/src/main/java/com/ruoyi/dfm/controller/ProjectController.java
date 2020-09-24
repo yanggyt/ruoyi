@@ -14,11 +14,11 @@ import com.ruoyi.dfm.service.UserService;
 import com.ruoyi.dfm.util.TimeUtil;
 import com.ruoyi.framework.util.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.weaver.loadtime.Aj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,14 +69,13 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
   public AjaxResult add(HttpServletRequest req, HttpServletResponse res, @RequestParam("pcbFile") MultipartFile pcbFile, @RequestParam(value = "bomFile", required = false) MultipartFile bomFile)
     throws Exception
   {
+
+    String projectName = req.getParameter("projectName");
+    String version = req.getParameter("version").trim();
+
     try
     {
-      //FIXME 修改上传文件
-//      MultipartResolver cmr = null;//new CosMultipartResolver(request.getSession().getServletContext());
-
-//      MultipartHttpServletRequest req = cmr.resolveMultipart(request);
-
-      String projectName = req.getParameter("projectName");
+//      String projectName = req.getParameter("projectName");
       String[] dfmCheckArr = req.getParameterValues("dfmCheck");
       String dfmCheck = "";
       if (dfmCheckArr != null)
@@ -86,7 +85,8 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
           dfmCheck = dfmCheck + check + ",";
         }
       }
-      int version = (req.getParameter("version").trim() == "") ? 0 : Integer.parseInt(req.getParameter("version").trim());
+      //int version = (req.getParameter("version").trim() == "") ? 0 : Integer.parseInt(req.getParameter("version").trim());
+//      String version = req.getParameter("version").trim();
       int pri = (req.getParameter("pri").trim() == "") ? 0 : Integer.parseInt(req.getParameter("pri").trim());
       int checkType = (req.getParameter("checkType").trim() == "") ? 0 : Integer.parseInt(req.getParameter("checkType").trim());
       int pcbType = (req.getParameter("pcbType").trim() == "") ? 0 : Integer.parseInt(req.getParameter("pcbType").trim());
@@ -106,6 +106,7 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
       int primarySide = (req.getParameter("primarySide").trim() == "") ? 0 : Integer.parseInt(req.getParameter("primarySide").trim());
       int directionBot = (req.getParameter("directionBot").trim() == "") ? 0 : Integer.parseInt(req.getParameter("directionBot").trim());
       int directionBotFs = (req.getParameter("directionBotFs").trim() == "") ? 0 : Integer.parseInt(req.getParameter("directionBotFs").trim());
+      int pcbMaterial = (req.getParameter("pcbMaterial").trim() == "") ? 0 : Integer.parseInt(req.getParameter("pcbMaterial").trim());
       String density = req.getParameter("density");
       
       String lastVersion = null == req.getParameter("lastVersion") ? "" : req.getParameter("lastVersion").trim();
@@ -137,6 +138,7 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
       project.setPanelModel(panelModel);
       project.setDirectionBotFs(directionBotFs);
       project.setDensity(density);
+      project.setPcbMaterial(pcbMaterial);
       project.setLastVersion(lastVersion);
       
       project.setReportLanguage(reportLanguage);
@@ -160,17 +162,15 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
         	  ccEmail = userCC + ";" + CCtoOther;
           }
       }
-      
       project.setCCtoOther(ccEmail);
 
       this.projectService.addProject(ShiroUtils.getLoginUser(), pcbFile, bomFile, project);
-//      outputMsg(res, "<script>alert('添加项目成功，点击确定继续添加！');document.location.href='project.do?method=getAddPage';</script>");
-//      return null;
       return AjaxResult.success();
-    } catch (Exception e) {
+    } catch (DuplicateKeyException e) {
+      logger.error("添加项目失败，project={},version={}重复", projectName,version,  e);
+      return AjaxResult.error("项目名和版本已存在");
+    }catch (Exception e) {
       logger.error("添加项目失败", e);
-//      outputMsg(res, "<script>alert('添加项目失败，请检查数据正确性，重新添加！');document.location.href='project.do?method=getAddPage';</script>"); }
-////    return null;
       return AjaxResult.error();
     }
   }
@@ -184,14 +184,6 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
     String projectName = req.getParameter("projectName");
     Project project = this.projectService.getLastVersion(uid, projectName);
     return project;
-//    String msg = "";
-//    if (project != null)
-//    {
-//      //msg = JSONObject.fromObject(project).toString();
-//      msg = JSON.toJSONString(project);
-//    }
-//
-//    outputJson(res, msg);
   }
 
   @RequestMapping("/getAttrValue")
@@ -200,7 +192,6 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
   {
     String attrName = req.getParameter("attrName");
     List list = this.projectService.getAttrValue(attrName);
-//    String msg = "";
     JSONArray arr = new JSONArray();
     if ((list != null) || (!(list.isEmpty())))
     {
@@ -213,10 +204,7 @@ public class ProjectController extends com.ruoyi.common.core.controller.BaseCont
         obj.put("isDefault", ((Map)list.get(i)).get("F_IS_DEFAULT"));
         arr.add(obj);
       }
-//      msg = arr.toString();
     }
-
-//    outputJson(res, msg);
     return arr;
   }
 

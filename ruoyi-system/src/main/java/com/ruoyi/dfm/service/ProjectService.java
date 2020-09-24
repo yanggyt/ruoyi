@@ -7,6 +7,7 @@ import com.ruoyi.dfm.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,11 +36,13 @@ public class ProjectService
   {
     try
     {
-//      String dir = ((UserInfo)req.getSession().getAttribute("user")).getUsername() + "/" +
-//        project.getProjectName() + "/" + "Ver" + project.getVersion();
-      String dir = loginUser.getUsername() + "/" +
-              project.getProjectName() + "/" + "Ver" + project.getVersion();
+      //检查 projectName + version 是否存在
+      boolean exists = checkProjectExists(project.getProjectName(), project.getVersion());
+      if(exists) {
+        throw new DuplicateKeyException("项目名和版本已存在");
+      }
 
+      String dir = loginUser.getUsername() + "/" + project.getProjectName() + "/" + "Ver" + project.getVersion();
       MultipartFile[] multipartFiles = new MultipartFile[]{pcbFile, bomFile};
       List fileList = new ArrayList();
       this.fileService.savePhysicFile(loginUser, multipartFiles, fileList, dir, false , null);
@@ -62,12 +65,15 @@ public class ProjectService
 
       this.projectDAO.add(project);
       createParamFile(dir, project);
-
       reOrderPriByState("待查", project.getPri());
-    } catch (IOException e) {
+    } catch (Exception e) {
       logger.error("创建文件失败！", e);
       throw e;
     }
+  }
+
+  private boolean checkProjectExists(String projectName, String version) {
+    return this.projectDAO.checkProjectExists(projectName, version);
   }
 
   private void createParamFile(String dir, Project project)
@@ -76,7 +82,7 @@ public class ProjectService
     String fileName = project.getProjectName() + "_" + project.getVersion() + ".param";
     File file = this.fileService.createFile(dir + "/" + fileName);
 
-    int[] ids = new int[15];
+    int[] ids = new int[16];
     ids[0] = project.getCheckType();
     ids[1] = project.getPcbType();
     ids[2] = project.getHdiModel();
@@ -92,11 +98,11 @@ public class ProjectService
     ids[12] = project.getDirectionBot();
     ids[13] = project.getDirectionBotFs();
     ids[14] = Integer.parseInt(project.getDensity());
+    ids[15] = project.getPcbMaterial();
 
     List<Map<String, Object>> attrValues = this.projectDAO.getAttrValueByIds(ids);
     
     UserInfo userInfo = this.userDAO.getById(project.getSubmitUser());
-    
 
     StringBuilder sb = new StringBuilder();
 
@@ -208,6 +214,8 @@ public class ProjectService
     sb.append("Direction_Top=" + getValueById(attrValues, project.getDirectionTop()));
     sb.append("\r\n");
     sb.append("Direction_Bot=" + getValueById(attrValues, project.getDirectionBot()));
+    sb.append("\r\n");
+    sb.append("Pcb_Material=" + getValueById(attrValues, project.getPcbMaterial()));
     sb.append("\r\n");
     sb.append("Density=" + getValueById(attrValues, Integer.parseInt(project.getDensity())));
     OutputStream os = new FileOutputStream(file);
@@ -331,8 +339,7 @@ public class ProjectService
           file.delete();
         }
 
-        if ((project.getVersion() > 1) || 
-          (!(file.getParentFile().exists())))
+        if (!(file.getParentFile().exists()))
           continue;
         file.getParentFile().delete();
       }

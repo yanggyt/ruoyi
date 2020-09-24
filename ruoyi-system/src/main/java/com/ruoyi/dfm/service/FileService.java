@@ -78,19 +78,14 @@ public class FileService {
 				log.error("创建项目文件目录失败");
 				throw new IOException();
 			}
-//			Iterator<String> it =  request.getFileNames();
-//			MultipartFile[] fileArr = new MultipartFile[]{pcbFile, bomFile};
 			FileInfo fileInfo;
-//			while (it.hasNext()) {
 			for(MultipartFile multipartFile : multipartFiles) {
 				if(null == multipartFile) {
 					continue;
 				}
 				// 表单file元素name属性值
-//				String name = it.next();
 				String name =  multipartFile.getName();
 				// 原文件名值
-//				MultipartFile multipartFile = request.getFile(name);
 				String original = multipartFile.getOriginalFilename();
 				if(null == original || "".equals(original))
 				{
@@ -129,7 +124,6 @@ public class FileService {
 				fileInfo.setFileSize(multipartFile.getSize());
 				fileInfo.setRelaPath(filePath);
 				fileInfo.setUploadTime(TimeUtil.getNowChar14());
-//				fileInfo.setUploadUser(((UserInfo)request.getSession().getAttribute("user")).getId());
 				fileInfo.setUploadUser(loginUser.getId());
 				// 设置实际名称
 				String extendName = original.substring(original.lastIndexOf(".") + 1);

@@ -26,11 +26,11 @@ public class ProjectDAO extends JdbcBaseDao
 
   public void add(Project project)
   {
-    String sql = "INSERT INTO T_PROJECT (F_PROJECT_NAME ,F_VERSION, F_PCB_FILE,F_BOM_FILE,F_CHECK_TYPE,F_DFM_CHECK,F_PCB_TYPE,F_HDI_Model ,F_Board_Thickness, F_Panel_Model,F_Max_Heigh_Top,F_SubPCB_Num,F_Max_Heigh_Bot ,F_Railway_Position, F_Viacap_layer,F_Assembly_Process_Top,F_Have_Pb ,F_Assembly_Process_Bot, F_Surface_Process,F_Direction_Top,F_Primary_Side,F_Direction_Bot, F_Direction_Bot_Fs ,F_Density,F_SUBMIT_USER, F_SUBMIT_TIME,F_STATE,F_PRI ,F_FILE_RESULT, F_SERVER,F_PCB_FILE_NAME,F_BOM_FILE_NAME,F_SUBMIT_USERNAME,F_REPORT_LANGUAGE,F_CC_USERNAME)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    String sql = "INSERT INTO T_PROJECT (F_PROJECT_NAME ,F_VERSION, F_PCB_FILE,F_BOM_FILE,F_CHECK_TYPE,F_DFM_CHECK,F_PCB_TYPE,F_HDI_Model ,F_Board_Thickness, F_Panel_Model,F_Max_Heigh_Top,F_SubPCB_Num,F_Max_Heigh_Bot ,F_Railway_Position, F_Viacap_layer,F_Assembly_Process_Top,F_Have_Pb ,F_Assembly_Process_Bot, F_Surface_Process,F_Direction_Top,F_Primary_Side,F_Direction_Bot, F_Direction_Bot_Fs ,F_Density,F_SUBMIT_USER, F_SUBMIT_TIME,F_STATE,F_PRI ,F_FILE_RESULT, F_SERVER,F_PCB_FILE_NAME,F_BOM_FILE_NAME,F_SUBMIT_USERNAME,F_REPORT_LANGUAGE,F_CC_USERNAME, F_Pcb_Material)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    Object[] args = new Object[35];
+    Object[] args = new Object[36];
     args[0] = project.getProjectName();
-    args[1] = Integer.valueOf(project.getVersion());
+    args[1] = project.getVersion();
     args[2] = Integer.valueOf(project.getPcbFile());
     args[3] = Integer.valueOf(project.getBomFile());
     args[4] = Integer.valueOf(project.getCheckType());
@@ -66,6 +66,7 @@ public class ProjectDAO extends JdbcBaseDao
     args[32] = project.getSubmitUserName();
     args[33] = project.getReportLanguage();
     args[34] = project.getCCtoOther();
+    args[35] = project.getPcbMaterial();
     getJdbcTemplate().update(sql, args);
   }
 
@@ -177,7 +178,7 @@ public class ProjectDAO extends JdbcBaseDao
     Project project = new Project();
     project.setId(Integer.parseInt(map.get("F_ID").toString()));
     project.setProjectName((map.get("F_PROJECT_NAME") == null) ? "" : map.get("F_PROJECT_NAME").toString());
-    project.setVersion((map.get("F_VERSION") == null) ? 0 : Integer.parseInt(map.get("F_VERSION").toString()));
+    project.setVersion((String)map.get("F_VERSION"));
     project.setPcbFile((map.get("F_PCB_FILE") == null) ? 0 : Integer.parseInt(map.get("F_PCB_FILE").toString()));
     project.setBomFile((map.get("F_BOM_FILE") == null) ? 0 : Integer.parseInt(map.get("F_BOM_FILE").toString()));
     project.setCheckType((map.get("F_CHECK_TYPE") == null) ? 0 : Integer.parseInt(map.get("F_CHECK_TYPE").toString()));
@@ -200,6 +201,7 @@ public class ProjectDAO extends JdbcBaseDao
     project.setDirectionBot((map.get("F_Direction_Bot") == null) ? 0 : Integer.parseInt(map.get("F_Direction_Bot").toString()));
     project.setDirectionBotFs((map.get("F_Direction_Bot_Fs") == null) ? 0 : Integer.parseInt(map.get("F_Direction_Bot_Fs").toString()));
     project.setDensity((map.get("F_Density") == null) ? "" : map.get("F_Density").toString());
+    project.setPcbMaterial((map.get("F_Pcb_Material") == null) ? 0 : Integer.parseInt(map.get("F_Pcb_Material").toString()));
     project.setSubmitUser((map.get("F_SUBMIT_USER") == null) ? 0 : Integer.parseInt(map.get("F_SUBMIT_USER").toString()));
     String submitTime = (map.get("F_SUBMIT_TIME") == null) ? "" : map.get("F_SUBMIT_TIME").toString();
     //project.setSubmitTime();
@@ -658,6 +660,12 @@ public class ProjectDAO extends JdbcBaseDao
 			  postDFMFileName,
 			  pid
 	  });
+  }
+
+  public boolean checkProjectExists(String projectName, String version) {
+    String sql = "select count(1) from t_project where F_PROJECT_NAME = ? and F_VERSION = ?";
+    Integer exists = getJdbcTemplate().queryForObject(sql, new Object[]{projectName, version}, Integer.class);
+    return exists > 0;
   }
 
 }

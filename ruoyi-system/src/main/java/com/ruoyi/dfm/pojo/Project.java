@@ -6,7 +6,7 @@ public class Project implements Serializable {
 	private static final long serialVersionUID = 6352252350113283745L;
 	private int id;
 	private String projectName;
-	private int version = 1;
+	private String version = "";
 	private int pcbFile;
 	private int bomFile;
 	private String pcbFileName;
@@ -32,6 +32,7 @@ public class Project implements Serializable {
 	private int directionBot;
 	private int directionBotFs;
 	private String density;
+	private int pcbMaterial;
 	private int submitUser;
 	private String submitUserName;
 	private String submitTime;
@@ -93,11 +94,11 @@ public class Project implements Serializable {
 		this.projectName = projectName;
 	}
 
-	public int getVersion() {
+	public String getVersion() {
 		return this.version;
 	}
 
-	public void setVersion(int version) {
+	public void setVersion(String version) {
 		this.version = version;
 	}
 
@@ -467,5 +468,13 @@ public class Project implements Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public int getPcbMaterial() {
+		return pcbMaterial;
+	}
+
+	public void setPcbMaterial(int pcbMaterial) {
+		this.pcbMaterial = pcbMaterial;
 	}
 }

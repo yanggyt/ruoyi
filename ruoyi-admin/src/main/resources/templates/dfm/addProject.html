@@ -398,6 +398,18 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label is-required">PCB板材：</label>
+                        <div class="col-sm-8">
+                            <select name="pcbMaterial" class="form-control m-b" required>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
       
@@ -422,10 +434,10 @@
         $("#form-project-add").validate({
         	onkeyup: false,
         	rules:{
-                projectName:{
-                    minlength: 6,
-                    maxlength: 32,
-                },
+                // projectName:{
+                //     minlength: 6,
+                //     maxlength: 32,
+                // },
                 boardThickness:{
                     number: true
                 },
@@ -437,10 +449,11 @@
                 },
                 maxHeightBot:{
                     number: true
-        		},
-                version:{
-                    number: true
-                }
+        		}
+        		// ,
+                // version:{
+                //     number: true
+                // }
         	},
             focusCleanup: true
         });
@@ -742,6 +755,7 @@
             $("select[name='directionBot']").val(data.directionBot).trigger("change");
             $("select[name='directionBotFs']").val(data.directionBotFs).trigger("change");
             $("select[name='density']").val(data.density).trigger("change");
+            $("select[name='pcbMaterial']").val(data.pcbMaterial).trigger("change");
         }
 
         /**

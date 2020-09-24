@@ -7,3 +7,20 @@
 实际：
 1.完成菜单移植
 2.完成用户列表
+
+2020-09-24
+-- t_project表增加唯一索引
+ALTER TABLE `t_project`
+ADD UNIQUE INDEX `idx_name_version`(`F_PROJECT_NAME`, `F_VERSION`);
+
+-- 修改version字段类型
+ALTER TABLE `t_project`
+MODIFY COLUMN `F_VERSION` varchar(100) NULL DEFAULT 1 COMMENT '版本' AFTER `F_PROJECT_NAME`;
+
+-- 增加字段 F_Pcb_Material
+ALTER TABLE `t_project`
+ADD COLUMN `F_Pcb_Material` int(10) NULL AFTER `F_Direction_Bot`;
+
+测试数据
+160500
+bpq0
