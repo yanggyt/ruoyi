@@ -2,7 +2,6 @@ package com.ruoyi.system.service.impl;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
-import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.text.Convert;
@@ -29,7 +28,6 @@ import java.util.*;
  *
  * @author ruoyi
  */
-@DataScope(userFieldName = "user")
 @Service
 public class SysRoleServiceImpl extends BusinessService implements ISysRoleService {
 
