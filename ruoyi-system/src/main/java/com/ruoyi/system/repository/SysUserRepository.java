@@ -13,10 +13,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SysUserRepository extends BaseRepository<SysUser, Long> {
 
+    @EntityGraph(attributePaths = {"roles", "posts"})
     SysUser findFirstByDelFlagAndLoginName(String delFlag, String loginName);
 
+    @EntityGraph(attributePaths = {"roles", "posts"})
     SysUser findFirstByDelFlagAndAndPhonenumber(String delFlag, String phone);
 
+    @EntityGraph(attributePaths = {"roles", "posts"})
     SysUser findFirstByDelFlagAndEmail(String delFlag, String email);
 
     int countByDelFlagAndDept(String delFlag, SysDept dept);
@@ -28,10 +31,13 @@ public interface SysUserRepository extends BaseRepository<SysUser, Long> {
 
     int countByLoginName(String loginName);
 
+    @EntityGraph(attributePaths = {"roles", "posts"})
     SysUser findFirstByPhonenumber(String phone);
 
+    @EntityGraph(attributePaths = {"roles", "posts"})
     SysUser findFirstByEmail(String email);
 
+    @EntityGraph(attributePaths = {"roles", "posts"})
     SysUser findFirstByLoginName(String loginName);
 
     @Modifying

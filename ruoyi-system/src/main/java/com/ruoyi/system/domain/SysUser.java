@@ -6,8 +6,6 @@ import com.ruoyi.common.annotation.Excel.Type;
 import com.ruoyi.common.annotation.Excels;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.annotations.SelectBeforeUpdate;
@@ -16,8 +14,10 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.security.Principal;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -30,7 +30,7 @@ import java.util.Set;
 @Table(name = "sys_user")
 @DynamicUpdate
 @SelectBeforeUpdate
-public class SysUser extends BaseEntity {
+public class SysUser extends BaseEntity implements Principal {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -169,5 +169,44 @@ public class SysUser extends BaseEntity {
             dept = new SysDept();
         }
         return dept;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SysUser sysUser = (SysUser) o;
+        return userId.equals(sysUser.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
+
+    @Override
+    public String getName() {
+        return getUserName();
+    }
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "userId=" + userId +
+                ", loginName='" + loginName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", sex='" + sex + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", loginIp='" + loginIp + '\'' +
+                ", loginDate=" + loginDate +
+                ", userType='" + userType + '\'' +
+                ", dept=" + dept +
+                '}';
     }
 }
