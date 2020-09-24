@@ -20,6 +20,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Header',
   props: {
@@ -40,6 +41,16 @@ export default {
     return {
     }
   },
+  created() {
+    //未登录检测
+    if(this.$route.path == "/") return;
+    let token = localStorage.getItem("loginToken");
+    if(!token || token.length == 0){
+      this.$router.push({
+        path: '/',
+      });
+    }
+  },
   methods: {
     back() {
       if(this.type === 'close') {
@@ -47,7 +58,7 @@ export default {
       } else {
         this.$router.back();
       }
-    },
+    }
   }
 }
 </script>

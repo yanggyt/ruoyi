@@ -6,6 +6,7 @@ const verbs = {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization' : localStorage.getItem("loginUser")
       },
       body: JSON.stringify(params),
     });

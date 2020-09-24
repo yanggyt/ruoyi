@@ -15,10 +15,12 @@
 import { Field } from 'mint-ui';
 import { Button } from 'mint-ui';
 import request from '../utils/request.js';
+import util from '../utils/util.js';
 import { Toast } from 'mint-ui';
 import { MessageBox } from 'mint-ui';
 import field from '../components/field';
 import Header from '../components/header';
+
 
 export default {
   components: {
@@ -31,14 +33,21 @@ export default {
   },
   data () {
     return {
-      username: '',
-      password: '',
-    }
+      shopPhone: '',
+      shopPwd: '',
+    };
   },
   async created() {
     const url = 'https://api.apiopen.top/getJoke?page=1&count=2&type=video';
     const res = await request({}, url);
     console.log('res >>> ', res);
+
+    let dataStr = localStorage.getItem("loginUser");
+    if(dataStr && dataStr.length > 0) {
+      let user = JSON.parse(dataStr);
+      this.$refs.shopPhone.val = user.mobile;
+      this.$refs.shopPwd.val = user.password;
+    }
   },
   methods: {
     login() {
@@ -51,8 +60,17 @@ export default {
           showCancelButton: false
         });
       } else {
-        this.$router.push({
-          path: '/home',
+        let data = {mobile:username, password:password};
+        request(data, "/ajax/login").then(res => {
+          window.top.resss = res;
+          if(util.warnFunc(res)) return;
+          if(res.code == 0){
+            localStorage.setItem("loginToken", res.msg);
+            localStorage.setItem("loginUser", JSON.stringify(data));
+            this.$router.push({
+              path: '/home',
+            });
+          }
         });
       }
     },

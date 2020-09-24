@@ -3,6 +3,7 @@ package com.ruoyi.business.ajax;
 import com.ruoyi.business.domain.BizCashInfo;
 import com.ruoyi.business.domain.BizMember;
 import com.ruoyi.business.domain.BizMemberAddress;
+import com.ruoyi.business.service.IBizCashInfoService;
 import com.ruoyi.business.service.IBizMemberAddressService;
 import com.ruoyi.business.service.IBizMemberService;
 import com.ruoyi.common.annotation.AjaxLogin;
@@ -26,6 +27,9 @@ public class AjaxMemberController extends AuthController {
 
     @Resource
     private IBizMemberAddressService bizMemberAddressService;
+
+    @Resource
+    private IBizCashInfoService bizCashInfoService;
 
     //个人中心
     @PostMapping("/center")
