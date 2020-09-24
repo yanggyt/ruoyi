@@ -1,6 +1,7 @@
 package com.ruoyi.business.ajax;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.business.ajax.request.LoginRequest;
 import com.ruoyi.business.domain.BizMember;
 import com.ruoyi.business.model.Member;
 import com.ruoyi.business.service.IBizMemberService;
@@ -10,6 +11,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.JWTUtil;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,17 +30,17 @@ public class AjaxLoginController extends BaseController {
     private IBizMemberService bizMemberService;
 
     @PostMapping("/login")
-    public AjaxResult login(String mobile, String password) {
-        if (StringUtils.isBlank(mobile) || StringUtils.isBlank(password)) {
+    public AjaxResult login(@RequestBody LoginRequest request) {
+        if (StringUtils.isBlank(request.getMobile()) || StringUtils.isBlank(request.getPassword())) {
             return AjaxResult.warn("请输入用户名密码");
         }
 
-        BizMember bizMember = bizMemberService.selectBizMemberByMobile(mobile);
+        BizMember bizMember = bizMemberService.selectBizMemberByMobile(request.getMobile());
         if (Objects.isNull(bizMember)) {
             return AjaxResult.warn("用户名或密码错误");
         }
         // DES加密
-        String encryptPassword = Encrypt.encrypt(password);
+        String encryptPassword = Encrypt.encrypt(request.getPassword());
         if (!encryptPassword.equals(bizMember.getPassword())) {
             return AjaxResult.warn("用户名或密码错误");
         }
