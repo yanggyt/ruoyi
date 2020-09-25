@@ -220,6 +220,7 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>ruoyi-business</module>
+<!--        <module>ruoyi-vue-ui</module>-->
     </modules>
     <packaging>pom</packaging>
 
