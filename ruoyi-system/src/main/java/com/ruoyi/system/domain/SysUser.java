@@ -125,7 +125,7 @@ public class SysUser extends BaseEntity implements Principal {
             @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
             @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
     })
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "dept_id", referencedColumnName = "deptId")
     @ForeignKey(name = "none")
     private SysDept dept;
@@ -143,8 +143,6 @@ public class SysUser extends BaseEntity implements Principal {
             joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
     @org.hibernate.annotations.ForeignKey(name = "none")
     private Set<SysPost> posts = new HashSet<>();
-
-
 
     public SysUser() {
 

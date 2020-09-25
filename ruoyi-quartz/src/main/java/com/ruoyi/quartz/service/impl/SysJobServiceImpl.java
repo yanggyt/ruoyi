@@ -66,6 +66,7 @@ public class SysJobServiceImpl extends BaseService implements ISysJobService {
     private Predicate getPredicate(SysJob job){
         QSysJob qSysJob = QSysJob.sysJob;
         List<Predicate> predicates = new ArrayList<>();
+        predicates.add(alwaysTrue());
         if(StringUtils.isNotEmpty(job.getJobName())){
             predicates.add(buildLike(qSysJob.jobName, job.getJobName()));
         }

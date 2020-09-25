@@ -68,6 +68,7 @@ public class SysConfigServiceImpl extends BaseService implements ISysConfigServi
     private Predicate getPredicate(SysConfig config){
         QSysConfig qSysConfig = QSysConfig.sysConfig;
         List<Predicate> predicates = new ArrayList<>();
+        predicates.add(alwaysTrue());
         if(StringUtils.isNotEmpty(config.getConfigName())){
             predicates.add(buildLike(qSysConfig.configName, config.getConfigName()));
         }

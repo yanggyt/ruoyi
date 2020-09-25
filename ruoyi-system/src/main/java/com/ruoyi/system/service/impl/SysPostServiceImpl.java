@@ -11,6 +11,8 @@ import com.ruoyi.system.repository.SysPostRepository;
 import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,6 +32,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
+@CacheConfig(cacheNames = "sys_post")
 public class SysPostServiceImpl extends BaseService implements ISysPostService {
 
     @Autowired
@@ -44,6 +47,7 @@ public class SysPostServiceImpl extends BaseService implements ISysPostService {
      * @param pageRequest
      * @return 岗位信息集合
      */
+    @Cacheable
     @Override
     public Page<SysPost> selectPostList(SysPost post, Pageable pageRequest) {
         return sysPostRepository.findAll(getSpecification(post), pageRequest);

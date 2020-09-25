@@ -16,6 +16,8 @@ import com.ruoyi.system.repository.SysUserRepository;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.base.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ import java.util.*;
  * @author ruoyi
  */
 @Service
+@CacheConfig(cacheNames = "sys_role")
 public class SysRoleServiceImpl extends BusinessService implements ISysRoleService {
 
     @Autowired
@@ -43,6 +46,7 @@ public class SysRoleServiceImpl extends BusinessService implements ISysRoleServi
      * @param user
      * @return 角色数据集合信息
      */
+    @Cacheable
     @Override
     public Page<SysRole> selectRoleList(SysRole role, Pageable pageable, SysUser user) {
         return sysRoleRepository.findAll(getPredicate(role, user), pageable);

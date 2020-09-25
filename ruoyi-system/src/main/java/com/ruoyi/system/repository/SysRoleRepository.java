@@ -21,6 +21,6 @@ public interface SysRoleRepository extends BaseRepository<SysRole, Long> {
     @Modifying
     void updateStatus(String status, Long roleId);
 
-    @EntityGraph(attributePaths = {"depts", "menus"})
+    @EntityGraph(attributePaths = {"depts", "menus"}, type = EntityGraph.EntityGraphType.LOAD )
     SysRole findByRoleId(Long roleId);
 }

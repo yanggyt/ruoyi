@@ -1,5 +1,8 @@
 package com.ruoyi.common.base;
 
+import com.querydsl.core.types.Constant;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.*;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.querydsl.ExpressionUtils;
@@ -37,6 +40,11 @@ public class BaseService {
 
     protected BooleanExpression notStartWith(StringPath path, String value){
         return ExpressionUtils.notStartWith(path, value);
+    }
+
+    protected Predicate alwaysTrue(){
+        Constant<Boolean> expression = (Constant<Boolean>) com.querydsl.core.types.ExpressionUtils.toExpression(Boolean.TRUE);
+        return com.querydsl.core.types.ExpressionUtils.eqConst(expression, true);
     }
 
     public static Collection<Long> toLongIterable(String str){

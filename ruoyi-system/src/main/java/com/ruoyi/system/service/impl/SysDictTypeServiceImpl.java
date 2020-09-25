@@ -13,8 +13,11 @@ import com.ruoyi.system.domain.SysDictType;
 import com.ruoyi.system.repository.SysDictDataRepository;
 import com.ruoyi.system.repository.SysDictTypeRepository;
 import com.ruoyi.system.service.ISysDictTypeService;
+import org.hibernate.query.criteria.internal.predicate.BooleanExpressionPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
+@CacheConfig(cacheNames = "sys_dict_type")
 public class SysDictTypeServiceImpl extends BaseService implements ISysDictTypeService {
     @Autowired
     private SysDictTypeRepository sysDictTypeRepository;
@@ -41,6 +45,7 @@ public class SysDictTypeServiceImpl extends BaseService implements ISysDictTypeS
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
+    @Cacheable
     @Override
     public Page<SysDictType> selectDictTypeList(SysDictType dictType, Pageable pageable) {
         return sysDictTypeRepository.findAll(getPredicate(dictType), pageable);
@@ -49,6 +54,7 @@ public class SysDictTypeServiceImpl extends BaseService implements ISysDictTypeS
     private Predicate getPredicate(SysDictType sysDictType){
         QSysDictType qSysDictType = QSysDictType.sysDictType;
         List<Predicate> predicates = new ArrayList<>();
+        predicates.add(alwaysTrue());
         if(StringUtils.isNotEmpty(sysDictType.getDictName())){
             predicates.add(buildLike(qSysDictType.dictName, sysDictType.getDictName()));
         }

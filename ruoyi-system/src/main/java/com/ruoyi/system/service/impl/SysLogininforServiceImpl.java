@@ -58,6 +58,7 @@ public class SysLogininforServiceImpl extends BaseService implements ISysLoginin
     private Predicate getPredicate(SysLogininfor logininfor){
         QSysLogininfor qSysLogininfor = QSysLogininfor.sysLogininfor;
         List<Predicate> predicates = new ArrayList<>();
+        predicates.add(alwaysTrue());
         if(StringUtils.isNotEmpty(logininfor.getIpaddr())){
             predicates.add(buildLike(qSysLogininfor.ipaddr, logininfor.getIpaddr()));
         }

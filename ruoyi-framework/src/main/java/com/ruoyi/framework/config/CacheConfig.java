@@ -8,11 +8,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ruoyi.common.properties.CacheProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
@@ -23,10 +24,9 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import java.util.HashMap;
 import java.util.Map;
 
-@ConditionalOnClass(name = "org.springframework.data.redis.connection.RedisConnectionFactory")
 @EnableCaching
 @Configuration
-@AutoConfigureAfter(CacheProperties.class)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class CacheConfig {
 
     @Autowired
@@ -43,6 +43,11 @@ public class CacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
+        RedisCacheConfiguration defaultConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+                .disableCachingNullValues()
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(genericJackson2JsonRedisSerializer))
+                .entryTtl(cacheProperties.getDefaultConfig().getTtl());
+
         Map<String, RedisCacheConfiguration> configurationMap = new HashMap<>();
         for(String key : cacheProperties.getNames().keySet()){
             configurationMap.put(key, RedisCacheConfiguration.defaultCacheConfig()
@@ -53,6 +58,7 @@ public class CacheConfig {
         return RedisCacheManager.builder(factory)
                 .initialCacheNames(cacheProperties.getNames().keySet())
                 .withInitialCacheConfigurations(configurationMap)
+                .cacheDefaults(defaultConfiguration)
                 .build();
     }
 

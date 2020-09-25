@@ -20,6 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,6 +42,7 @@ import java.util.stream.Collectors;
  * @author ruoyi
  */
 @Service
+@CacheConfig(cacheNames = "sys_user")
 public class SysUserServiceImpl extends BaseService implements ISysUserService {
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
@@ -56,6 +60,7 @@ public class SysUserServiceImpl extends BaseService implements ISysUserService {
      * @param pageRequest
      * @return 用户信息集合信息
      */
+    @Cacheable
     @Override
     public Page<SysUser> selectUserList(SysUser user, Pageable pageRequest) {
         return sysUserRepository.findAll(getPredicate(user), pageRequest);
@@ -169,6 +174,7 @@ public class SysUserServiceImpl extends BaseService implements ISysUserService {
      * @param userName 用户名
      * @return 用户对象信息
      */
+    @Cacheable
     @Override
     public SysUser selectUserByLoginName(String userName) {
         return sysUserRepository.findFirstByDelFlagAndLoginName(BaseEntity.NOT_DELETED, userName);
@@ -182,7 +188,7 @@ public class SysUserServiceImpl extends BaseService implements ISysUserService {
      */
     @Override
     public SysUser selectUserByPhoneNumber(String phoneNumber) {
-        return sysUserRepository.findFirstByDelFlagAndAndPhonenumber(BaseEntity.NOT_DELETED, phoneNumber);
+        return sysUserRepository.findFirstByDelFlagAndPhonenumber(BaseEntity.NOT_DELETED, phoneNumber);
     }
 
     /**
@@ -231,6 +237,7 @@ public class SysUserServiceImpl extends BaseService implements ISysUserService {
      * @param ids 需要删除的数据ID
      * @return 结果
      */
+    @CacheEvict(allEntries = true)
     @Transactional
     @Override
     public int deleteUserByIds(String ids) throws BusinessException {
@@ -427,6 +434,7 @@ public class SysUserServiceImpl extends BaseService implements ISysUserService {
         return depts;
     }
 
+    @Cacheable(key = "#user.userId", unless = "#result == null ")
     @Override
     public SysUser registerUser(SysUser user) {
         user.setUserType(UserConstants.REGISTER_USER_TYPE);

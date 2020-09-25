@@ -26,7 +26,7 @@ public class MyJCacheRegionFactory extends JCacheRegionFactory {
 
         final CachingProvider cachingProvider = getCachingProvider( properties );
         final CacheManager cacheManager;
-        final URI cacheManagerUri = getUri( properties );
+        final URI cacheManagerUri = getUri( settings, properties);
         // ***** begin patch ******
         URI uri = cacheManagerUri;
         URL url = null;

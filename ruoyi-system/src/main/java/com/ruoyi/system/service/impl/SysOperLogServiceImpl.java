@@ -56,6 +56,7 @@ public class SysOperLogServiceImpl extends BaseService implements ISysOperLogSer
     private Predicate getPredicate(SysOperLog operLog){
         QSysOperLog qSysOperLog = QSysOperLog.sysOperLog;
         List<Predicate> predicates = new ArrayList<>();
+        predicates.add(alwaysTrue());
         if(StringUtils.isNotEmpty(operLog.getTitle())){
             predicates.add(buildLike(qSysOperLog.title, operLog.getTitle()));
         }

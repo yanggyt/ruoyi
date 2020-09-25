@@ -55,6 +55,7 @@ public class SysNoticeServiceImpl extends BaseService implements ISysNoticeServi
     private Predicate getPredicate(SysNotice sysNotice){
         QSysNotice qSysNotice = QSysNotice.sysNotice;
         List<Predicate> predicates = new ArrayList<>();
+        predicates.add(alwaysTrue());
         if(StringUtils.isNotEmpty(sysNotice.getNoticeTitle())){
             predicates.add(buildLike(qSysNotice.noticeTitle, sysNotice.getNoticeTitle()));
         }
