@@ -9,6 +9,7 @@ import com.ruoyi.common.properties.CacheProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +28,7 @@ import java.util.Map;
 @EnableCaching
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class CacheConfig {
+public class CacheConfig extends CachingConfigurerSupport {
 
     @Autowired
     private RedisConnectionFactory factory;
@@ -42,6 +43,7 @@ public class CacheConfig {
     }
 
     @Bean
+    @Override
     public CacheManager cacheManager() {
         RedisCacheConfiguration defaultConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()

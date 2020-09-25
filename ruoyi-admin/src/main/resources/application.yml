@@ -93,6 +93,8 @@ spring:
         max-idle: 8
         min-idle: 2
         max-wait: -1
+  application:
+    name: framework
 # Shiro
 shiro:
   user:
@@ -146,10 +148,10 @@ swagger:
 cache:
   names:
     sys_dict_type:
-      ttl: PT1M
+      ttl: PT10M
     sys_user:
-      ttl: PT1M
+      ttl: PT10M
     sys_post:
-      ttl: PT1M
+      ttl: PT10M
     sys_role:
-      ttl: PT1M
+      ttl: PT10M
