@@ -249,19 +249,19 @@ public class ExcelUtil<T>
                             }
                         }
                     }
-                    else if ((Integer.TYPE == fieldType) || (Integer.class == fieldType))
+                    else if ((Integer.TYPE == fieldType || Integer.class == fieldType) && StringUtils.isNumeric(Convert.toStr(val)))
                     {
                         val = Convert.toInt(val);
                     }
-                    else if ((Long.TYPE == fieldType) || (Long.class == fieldType))
+                    else if (Long.TYPE == fieldType || Long.class == fieldType)
                     {
                         val = Convert.toLong(val);
                     }
-                    else if ((Double.TYPE == fieldType) || (Double.class == fieldType))
+                    else if (Double.TYPE == fieldType || Double.class == fieldType)
                     {
                         val = Convert.toDouble(val);
                     }
-                    else if ((Float.TYPE == fieldType) || (Float.class == fieldType))
+                    else if (Float.TYPE == fieldType || Float.class == fieldType)
                     {
                         val = Convert.toFloat(val);
                     }
@@ -509,7 +509,7 @@ public class ExcelUtil<T>
         else if (ColumnType.NUMERIC == attr.cellType())
         {
             cell.setCellType(CellType.NUMERIC);
-            cell.setCellValue(Integer.parseInt(value + ""));
+            cell.setCellValue(StringUtils.contains(Convert.toStr(value), ".") ? Convert.toDouble(value) : Convert.toInt(value));
         }
     }
 
