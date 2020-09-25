@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizOrderMapper">
+    
+    <resultMap type="BizOrder" id="BizOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderSn"    column="order_sn"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="memberName"    column="member_name"    />
+        <result property="orderAmount"    column="order_amount"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="isTeam"    column="is_team"    />
+        <result property="remark"    column="remark"    />
+        <result property="addressDetail"    column="address_detail"    />
+        <result property="addressId"    column="address_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap type="BizOrderDetail" id="BizOrderDetailResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="orderSn"    column="order_sn"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="productCount"    column="product_count"    />
+        <result property="productAmount"    column="product_amount"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizOrderVo">
+        select a.id, order_sn, a.member_id, a.mobile, a.member_name, order_amount, order_status, remark, address_detail, address_id, a.create_by, a.create_time, a.update_by, a.update_time,
+        b.mobile addressMobile, b.member_name addressName, b.province_name addressProvince, b.city_name addressCity, b.area_name addressArea,
+        c.productName, c.productCount, c.productAmount
+        from biz_order a
+        left join biz_member_address b on a.member_id = b.member_id
+        left join (select max(id), order_id, product_code productName, product_count productCount, product_amount productAmount from biz_order_detail group by order_id) c
+        on a.id = c.order_id
+    </sql>
+
+    <select id="selectBizOrderList" parameterType="BizOrder" resultMap="BizOrderResult">
+        <include refid="selectBizOrderVo"/>
+        <where>  
+            <if test="memberName != null and memberName != ''"> and (a.member_name like concat('%', #{memberName}, '%') or a.mobile like concat('%', #{memberName}, '%'))</if>
+            <if test="memberId != null"> and a.member_id = #{memberId}</if>
+            <if test="orderStatus != null and orderStatus != -1"> and a.order_status = #{orderStatus}</if>
+        </where>
+        order by a.id desc
+    </select>
+    
+    <select id="selectBizOrderById" parameterType="Long" resultMap="BizOrderResult">
+        <include refid="selectBizOrderVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertBizOrder" parameterType="BizOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">order_sn,</if>
+            <if test="memberId != null">member_id,</if>
+            <if test="mobile != null and mobile != ''">mobile,</if>
+            <if test="memberName != null and memberName != ''">member_name,</if>
+            <if test="orderAmount != null">order_amount,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="isTeam != null">is_team,</if>
+            <if test="addressDetail != null">address_detail,</if>
+            <if test="remark != null">remark,</if>
+            <if test="addressId != null">address_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">#{orderSn},</if>
+            <if test="memberId != null">#{memberId},</if>
+            <if test="mobile != null and mobile != ''">#{mobile},</if>
+            <if test="memberName != null and memberName != ''">#{memberName},</if>
+            <if test="orderAmount != null">#{orderAmount},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="isTeam != null">#{isTeam},</if>
+            <if test="addressDetail != null">#{addressDetail},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="addressId != null">#{addressId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizOrder" parameterType="BizOrder">
+        update biz_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">order_sn = #{orderSn},</if>
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
+            <if test="memberName != null and memberName != ''">member_name = #{memberName},</if>
+            <if test="orderAmount != null">order_amount = #{orderAmount},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="addressDetail != null">address_detail = #{addressDetail},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="addressId != null">address_id = #{addressId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizOrderById" parameterType="Long">
+        delete from biz_order where id = #{id}
+    </delete>
+
+    <delete id="deleteBizOrderByIds" parameterType="String">
+        delete from biz_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertBizOrderDetail" parameterType="BizOrderDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="orderSn != null and orderSn != ''">order_sn,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productCode != null and productCode != ''">product_code,</if>
+            <if test="productCount != null">product_count,</if>
+            <if test="productAmount != null">product_amount,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="orderSn != null and orderSn != ''">#{orderSn},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productCode != null and productCode != ''">#{productCode},</if>
+            <if test="productCount != null">#{productCount},</if>
+            <if test="productAmount != null">#{productAmount},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <select id="selectTeamBizOrder" parameterType="Long" resultType="Map">
+        select b.id, b.recommend_all_id all_id, c.product_count from biz_order a
+        left join biz_member b on a.member_id = b.id
+        left join (select max(id), order_id, product_id, product_count from biz_order_detail group by order_id) c on a.id = c.order_id
+        where a.order_status > 0 and a.is_team = 1 and concat(',', b.recommend_all_id, ',') like concat('%', #{memberID}, '%')
+        order by a.id asc
+    </select>
+</mapper>

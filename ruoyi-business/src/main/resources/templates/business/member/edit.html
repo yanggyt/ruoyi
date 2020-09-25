@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改会员')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-member-edit" th:object="${bizMember}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">手机号码：</label>
+                <div class="col-sm-8">
+                    <input name="mobile" th:field="*{mobile}" class="form-control" type="text" required maxlength="11">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">用户姓名：</label>
+                <div class="col-sm-8">
+                    <input name="memberName" th:field="*{memberName}" class="form-control" type="text" required maxlength="10">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">福豆余额：</label>
+                <div class="col-sm-8">
+                    <input name="amount" th:field="*{douBalance}" class="form-control" type="text" required digits="true" min="0" max="100000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">可用福豆：</label>
+                <div class="col-sm-8">
+                    <input name="amount" th:field="*{douPerson}" class="form-control" type="text" required digits="true" min="0" max="100000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">专项福豆：</label>
+                <div class="col-sm-8">
+                    <input name="amount" th:field="*{douSpecial}" class="form-control" type="text" required digits="true" min="0" max="100000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">团队福豆：</label>
+                <div class="col-sm-8">
+                    <input name="amount" th:field="*{douTeam}" class="form-control" type="text" required digits="true" min="0" max="100000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">福豆田：</label>
+                <div class="col-sm-8">
+                    <input name="amount" th:field="*{douField}" class="form-control" type="text" required digits="true" min="0" max="100000">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/member";
+        $("#form-member-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-member-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

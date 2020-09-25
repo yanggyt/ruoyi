@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizMemberAddressMapper">
+
+    <resultMap type="BizMemberAddress" id="BizMemberAddressResult">
+        <result property="id"    column="id"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="memberID"    column="member_id"    />
+        <result property="memberName"    column="member_name"    />
+        <result property="address"    column="address"    />
+        <result property="provinceCode"    column="province_code"    />
+        <result property="provinceName"    column="province_name"    />
+        <result property="cityCode"    column="city_code"    />
+        <result property="cityName"    column="city_name"    />
+        <result property="areaCode"    column="area_code"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizMemberAddressVo">
+        select id, mobile, member_id, member_name, address, province_code, province_name, city_code, city_name, area_code, area_name, is_delete, create_by, create_time, update_by, update_time from biz_member_address
+    </sql>
+
+    <select id="selectBizMemberAddressList" parameterType="Long" resultMap="BizMemberAddressResult">
+        <include refid="selectBizMemberAddressVo"/>
+        <where>
+            <if test="memberID != null"> and member_id = #{memberID}</if>
+        </where>
+        order by id
+    </select>
+
+    <select id="selectBizMemberAddressById" parameterType="Long" resultMap="BizMemberAddressResult">
+        <include refid="selectBizMemberAddressVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectDefaultAddressByMemberId" parameterType="Long" resultMap="BizMemberAddressResult">
+        <include refid="selectBizMemberAddressVo"/>
+        where member_id = #{memberID}
+        order by is_delete desc, id limit 1
+    </select>
+
+    <update id="cancelDefaultAddress" parameterType="Long">
+        update biz_member_address
+        set is_delete = 0 where member_id = #{memberID}
+    </update>
+
+    <insert id="insertBizMemberAddress" parameterType="BizMemberAddress" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_member_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mobile != null and mobile != ''">mobile,</if>
+            <if test="memberID != null">member_id,</if>
+            <if test="memberName != null and memberName != ''">member_name,</if>
+            <if test="address != null and address != ''">address,</if>
+            <if test="provinceCode != null and provinceCode != ''">province_code,</if>
+            <if test="provinceName != null and provinceName != ''">province_name,</if>
+            <if test="cityCode != null and cityCode != ''">city_code,</if>
+            <if test="cityName != null and cityName != ''">city_name,</if>
+            <if test="areaCode != null and areaCode != ''">area_code,</if>
+            <if test="areaName != null and areaName != ''">area_name,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mobile != null and mobile != ''">#{mobile},</if>
+            <if test="memberID != null">#{memberID},</if>
+            <if test="memberName != null and memberName != ''">#{memberName},</if>
+            <if test="address != null and address != ''">#{address},</if>
+            <if test="provinceCode != null and provinceCode != ''">#{provinceCode},</if>
+            <if test="provinceName != null and provinceName != ''">#{provinceName},</if>
+            <if test="cityCode != null and cityCode != ''">#{cityCode},</if>
+            <if test="cityName != null and cityName != ''">#{cityName},</if>
+            <if test="areaCode != null and areaCode != ''">#{areaCode},</if>
+            <if test="areaName != null and areaName != ''">#{areaName},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizMemberAddress" parameterType="BizMemberAddress">
+        update biz_member_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
+            <if test="memberName != null and memberName != ''">member_name = #{memberName},</if>
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="provinceCode != null and provinceCode != ''">province_code = #{provinceCode},</if>
+            <if test="provinceName != null and provinceName != ''">province_name = #{provinceName},</if>
+            <if test="cityCode != null and cityCode != ''">city_code = #{cityCode},</if>
+            <if test="cityName != null and cityName != ''">city_name = #{cityName},</if>
+            <if test="areaCode != null and areaCode != ''">area_code = #{areaCode},</if>
+            <if test="areaName != null and areaName != ''">area_name = #{areaName},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizMemberAddressById" parameterType="Long">
+        delete from biz_member_address where id = #{id}
+    </delete>
+
+    <delete id="deleteBizMemberAddressByIds" parameterType="String">
+        delete from biz_member_address where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('团队奖励明细列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse" style="height: 0;display: none">
+                <form id="formId">
+                    <div class="select-list">
+                        <input name="memberId" type="hidden" th:value="*{memberID}"/>
+                        <input name="rewardType" type="hidden" th:value="*{rewardType}"/>
+                        <input name="rewardDate" type="hidden" th:value="*{rewardDate}"/>
+                    </div>
+                </form>
+            </div>
+
+            <!--<div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:reward:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="business:reward:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:reward:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:reward:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>-->
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <style>
+        .fixed-table-toolbar{height: 0;overflow: hidden}
+    </style>
+    <script th:inline="javascript">
+        var prefix = ctx + "business/reward";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                modalName: "团队奖励明细",
+                columns: [
+                {
+                    field: 'id',
+                    title: '团队奖励ID',
+                    visible: false
+                },
+                {
+                    field: 'rewardMemberName',
+                    title: '团队用户',
+                    align: 'center',
+                },
+                {
+                    field: 'rewardProductCount',
+                    title: '盒数',
+                    align: 'center'
+                },
+                {
+                    field: 'rewardAmount',
+                    title: '福豆数量',
+                    align: 'center'
+                },
+                {
+                    field: 'rewardDate',
+                    title: '结算日期',
+                    align: 'center'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    align: 'center'
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

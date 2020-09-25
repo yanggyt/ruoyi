@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('订单列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>订单搜索：</label>
+                                <input type="text" name="memberName" placeholder="请输入会员姓名或手机号"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                <a class="btn btn-success btn-rounded btn-sm" onclick="$.table.exportExcel()" shiro:hasPermission="business:order:export"><i class="fa fa-download"></i> 导出</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <!--
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:order:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="business:order:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:order:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:order:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>-->
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <style>
+        .fixed-table-toolbar{height: 0;overflow: hidden}
+    </style>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:order:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:order:remove')}]];
+        var prefix = ctx + "business/order";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "订单",
+                toolbar: false,
+                columns: [
+                {
+                    field: 'id',
+                    title: '订单ID',
+                    visible: false
+                },
+                {
+                    field: 'orderSn',
+                    title: '订单编码'
+                },
+                {
+                    field: 'memberName',
+                    title: '会员姓名'
+                },
+                {
+                    field: 'mobile',
+                    title: '手机号码'
+                },
+                {
+                    field: 'productName',
+                    title: '商品名称'
+                },
+                {
+                    field: 'productAmount',
+                    title: '商品单价'
+                },
+                {
+                    field: 'productCount',
+                    title: '数量'
+                },
+                {
+                    field: 'orderAmount',
+                    title: '订单总额'
+                },
+                {
+                    field: 'addressName',
+                    title: '收货人姓名'
+                },
+                {
+                    field: 'addressMobile',
+                    title: '收货人电话'
+                },
+                {
+                    title: '收货区域',
+                    formatter: function(value, row, index) {
+                        return row.addressProvince + row.addressCity + row.addressArea;
+                    }
+                },
+                {
+                    field: 'addressDetail',
+                    title: '详细地址'
+                },
+                {
+                    field: 'orderStatus',
+                    title: '订单状态',
+                    formatter: function(value, row, index) {
+                        switch (value){
+                            case 0: return "<span style='color:#5c5c5c'>待支付</span>";
+                            case 1: return "<span style='color:#db8301'>已支付</span>";
+                            case 2: return "<span style='color:#ad3636'>已取消</span>";
+                            case 3: return "<span style='color:#a5a544'>待收货</span>";
+                            case 4: return "<span style='color:#04c404'>已完成</span>";
+                        }
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '下单时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        if(row.orderStatus == 1){
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="deliver(\'' + row.id + '\')"><i class="fa fa-truck"></i>发货</a> ');
+                        }
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="updateRemark(\'' + row.id + '\', \'' + row.remark + '\')"><i class="fa fa-book"></i>修改备注</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="updateAddress(\'' + row.id + '\', \'' + row.addressDetail + '\')"><i class="fa fa fa-map-marker"></i>收货地址</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        //发货
+        function deliver(orderID){
+            $.modal.confirm("此操作设置该订单为已发货吗, 是否继续?", function() {
+                $.operate.post(prefix + "/deliver", {
+                    orderID:orderID
+                }, function(response){
+                    if(response.code == 0){
+                        $.modal.alertSuccess('操作成功！')
+                    }
+                });
+            });
+        }
+
+        //修改备注
+        function updateRemark(orderID, oldRemark){
+            $.modal.confirm("<div id='anch'>请输入新的备注信息<br/><input class='form-control' id='newRemark' value='" + oldRemark + "' maxlength='30'></div>", function() {
+                let remark = $("#newRemark").val();
+                if(remark.length == 0){
+                    $.modal.msgError("请输入备注信息");
+                    return false;
+                }
+                $.operate.post(prefix + "/updateAddressOrRemark", {
+                    orderID:orderID,
+                    content:remark,
+                    type:1
+                }, function(response){
+                    if(response.code == 0){
+                        $.modal.alertSuccess('操作成功！')
+                    }
+                });
+            });
+            $("#anch").parent().css("padding", "10px 20px").children(".layui-layer-ico").hide();
+        }
+
+        //修改备注
+        function updateAddress(orderID, oldAddress){
+            $.modal.confirm("<div id='anch'>请输入新的收货地址<br/><input class='form-control' id='newAddress' value='" + oldAddress + "' maxlength='20'></div>", function() {
+                let address = $("#newAddress").val();
+                if(address.length == 0){
+                    $.modal.msgError("请输入收货地址");
+                    return false;
+                }
+                $.operate.post(prefix + "/updateAddressOrRemark", {
+                    orderID:orderID,
+                    content:address,
+                    type:0
+                }, function(response){
+                    if(response.code == 0){
+                        $.modal.alertSuccess('操作成功！')
+                    }
+                });
+            });
+            $("#anch").parent().css("padding", "10px 20px").children(".layui-layer-ico").hide();
+        }
+    </script>
+</body>
+</html>

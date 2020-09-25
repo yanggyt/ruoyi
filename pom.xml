@@ -214,6 +214,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 商业代码-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-business</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -224,6 +231,8 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>ruoyi-business</module>
+<!--        <module>ruoyi-vue-ui</module>-->
     </modules>
     <packaging>pom</packaging>
 

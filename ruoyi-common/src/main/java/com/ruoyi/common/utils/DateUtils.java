@@ -3,6 +3,7 @@ package com.ruoyi.common.utils;
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -22,7 +23,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
 
     public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
-    
+
+    public static String YYYY_MM_DD_HH_MM_SS_SSS = "yyyyMMddHHmmssSSS";
+
     private static String[] parsePatterns = {
             "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM", 
             "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM",
@@ -48,9 +51,40 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         return dateTimeNow(YYYY_MM_DD);
     }
 
+    /**
+     * 获取当前日期偏差日期, 默认格式为yyyy-MM-dd
+     *
+     * @return String
+     */
+    public static String getDate(int diff, String ... dateStr)
+    {
+        Calendar now = Calendar.getInstance();
+        if (dateStr.length > 0) {
+            try {
+                now.setTime(parseDate(dateStr[0], YYYY_MM_DD));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        now.add(Calendar.DAY_OF_MONTH, diff);
+        return dateTime(now.getTime());
+    }
+
     public static final String getTime()
     {
         return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
+    }
+
+    public static final String getMilliTime()
+    {
+        return dateTimeNow(YYYY_MM_DD_HH_MM_SS_SSS) + getRandomNumber(6);
+    }
+
+    //随机N位数字
+    public static final String getRandomNumber(int size)
+    {
+        String rand = String.valueOf(Math.random());
+        return rand.substring(2, 2 + size);
     }
 
     public static final String dateTimeNow()

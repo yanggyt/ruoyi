@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('产品列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>产品名称：</label>
+                                <input type="text" name="productName"/>
+                            </li>
+                            <li>
+                                <label>产品类型：</label>
+                                <select name="productClass">
+                                    <option value="">所有</option>
+                                    <option class="classOption" th:each="dict:${@dict.getType('busi_product_class')}" th:value="*{dict.dictValue}" th:text="*{dict.dictLabel}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>产品分类：</label>
+                                <select name="productTypeId">
+                                    <option value="">所有</option>
+                                    <option class="typeOption" th:each="ptype:${productTypeList}" th:value="*{ptype.id}" th:text="*{ptype.productTypeName}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:product:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="business:product:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:product:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:product:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:product:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:product:remove')}]];
+        var prefix = ctx + "business/product";
+        //取产品分类和类型数据
+        var typeDict = {};
+        $(".typeOption").each(function(){typeDict[$(this).val()] = $(this).text()});
+        var classDict = {};
+        $(".classOption").each(function(){classDict[$(this).val()] = $(this).text()});
+
+        //上架或下架
+        function productStatusEdit(productID, status){
+            $.modal.confirm("确认要将该产品" + (status ? "下" : "上") + "架吗?", function() {
+                $.operate.post(prefix + "/status", {
+                    productID:productID
+                }, function(response){
+                    if(response.code == 0){
+                        $.modal.alertSuccess('操作成功！')
+                    }
+                });
+            });
+        }
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "产品",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '产品ID',
+                    visible: false
+                },
+                {
+                    field: 'productCode',
+                    title: '产品编码'
+                },
+                {
+                    field: 'productName',
+                    title: '产品名称'
+                },
+                {
+                    field: 'productTypeId',
+                    title: '产品分类',
+                    formatter: function(value, row, index) {
+                        return typeDict[value];
+                    }
+                },
+                {
+                    field: 'productClass',
+                    title: '产品类型',
+                    formatter: function(value, row, index) {
+                        return classDict[value];
+                    }
+                },
+                {
+                    field: 'amount',
+                    title: '产品单价'
+                },
+                {
+                    field: 'sort',
+                    title: '排序'
+                },
+                {
+                    field: 'onlineStatus',
+                    title: '产品状态',
+                    formatter: function(value, row, index) {
+                        return "<span style='color:" + (value ? "#00FF00" :"#999999") + "'>" + ((value ? "上架中" :"已下架")) + "</span>";
+                    }
+                },
+                {
+                    field: 'onlineTime',
+                    title: '上架时间'
+                },
+                {
+                    field: 'remark',
+                    title: '产品描述'
+                },
+                {
+                    field: 'onlineStatus',
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-' + (value ? 'warning' : 'primary') + ' btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="productStatusEdit(\'' + row.id + '\', ' + value + ')"><i class="fa fa-' + (value ? 'level-down' : 'level-up') + '"></i>' + (value ? '下架' : '上架') + '</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

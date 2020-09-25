@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('会员架构')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <input id="memberID" th:value="*{memberID}" type="hidden">
+        <div class="form-group">
+            <div class="col-sm-8">
+                <select id="productID" class="form-control" onchange="showTeam(this.value)">
+                    <option th:each="product:${productList}" th:value="*{product.id}" th:text="*{product.productName}"></option>
+                </select>
+            </div>
+            <div class="col-sm-1" style="width: 30%;line-height: 31px;font-size:16px">
+                团队总盒数：<span id="numSpan">0</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="childDiv" style="display: none"></div>
+            <div id="container" class="col-sm-8" style="width: 90%;margin-top: 10px;">
+                <!--<input name="memberName" th:field="*{memberName}" class="form-control" type="text" required maxlength="10">-->
+            </div>
+        </div>
+
+    </div>
+    <th:block th:include="include :: footer" />
+    <style>
+        .childDiv{padding:7px 0 0 0}
+        .childDiv .cont{padding-left: 20px}
+        .childDiv span{display:block;font-size: 14px;line-height: 24px;padding:0 0 4px 4px;cursor:pointer;border-radius: 5px;border:1px solid #AAAAAA}
+        .childDiv span.noneChild{padding-left: 19px;padding-top: 2px;padding-bottom: 2px}
+        .childDiv span ss{font-family: 宋体}
+    </style>
+    <script th:inline="javascript">
+        var prefix = ctx + "business/member";
+        var clone = $(".childDiv");
+
+        $(function() {
+            showTeam($("#productID").val());
+        });
+
+        //读取团队架构
+        function showTeam(productID){
+            $.post(prefix + "/accountTeamDetail", "memberID=" + $("#memberID").val() + "&productID=" + productID, function(resp){
+                if(resp.code != 0) return;
+                $("#numSpan").text(resp.data.teamNum);
+                let members = resp.data.memberList;
+                if(!members){
+                    $("#container").html("&nbsp;该用户没有子级");
+                    return;
+                }
+                showChildren($("#container"), members, true);
+                $("#container .cont").hide();
+            });
+        }
+
+        //列出子级
+        function showChildren(div, list, flag){
+            for(let i=0;i<list.length;i++){
+                let item = list[i];
+                let children = item.children;
+                let child = clone.clone().show();
+                child.html("<span class='" + (children ? "glyphicon glyphicon-chevron-right" : "noneChild") + "'><ss>&nbsp;" + item.member_name + item.mobile + "(" + item.num + "盒)&nbsp;<b style='color:#0000FF'>" + (flag ? item.desc : "") + "</b></ss></span>");
+                div.append(child);
+                if(children){
+                    child.append("<div class='cont'></div>");
+                    showChildren(child.find(".cont").eq(0), children);
+                }
+            }
+        }
+
+        //点击事件
+        $("#container").on("click", ".childDiv span", function(){
+            let cont = $(this).next(".cont");
+            let isShow = cont.css("display") != "none";
+            isShow ? cont.hide() : cont.show();
+        });
+    </script>
+</body>
+</html>

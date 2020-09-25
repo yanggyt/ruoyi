@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizProductMapper">
+    
+    <resultMap type="BizProduct" id="BizProductResult">
+        <result property="id"    column="id"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productTypeId"    column="product_type_id"    />
+        <result property="productClass"    column="product_class"    />
+        <result property="amount"    column="amount"    />
+        <result property="cashbackAmount"    column="cashback_amount"    />
+        <result property="sort"    column="sort"    />
+        <result property="onlineStatus"    column="online_status"    />
+        <result property="onlineTime"    column="online_time"    />
+        <result property="offlineTime"    column="offline_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap type="BizProductImage" id="BizProductImageResult">
+        <result property="id"    column="id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="imageType"    column="image_type"    />
+        <result property="imageUrl"    column="image_url"    />
+    </resultMap>
+
+    <sql id="selectBizProductVo">
+        select id, product_code, product_name, product_type_id, product_class, amount, cashback_amount, sort, online_status, online_time, offline_time, remark, create_by, create_time, update_by, update_time from biz_product
+    </sql>
+
+    <select id="selectBizProductList" parameterType="BizProduct" resultMap="BizProductResult">
+        <include refid="selectBizProductVo"/>
+        <where>  
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productTypeId != null "> and product_type_id = #{productTypeId}</if>
+            <if test="productClass != null "> and product_class = #{productClass}</if>
+        </where>
+        order by sort desc, id desc
+    </select>
+
+    <select id="selectTeamProductList" resultMap="BizProductResult">
+        select id, product_name from biz_product where cashback_amount > 0 and online_status = 1 order by sort desc, id desc
+    </select>
+    
+    <select id="selectBizProductById" parameterType="Long" resultMap="BizProductResult">
+        <include refid="selectBizProductVo"/>
+        where id = #{productId}
+    </select>
+
+    <select id="selectBizProductByCode" parameterType="Long" resultMap="BizProductResult">
+        <include refid="selectBizProductVo"/>
+        where product_code = #{productCode} limit 1
+    </select>
+
+    <select id="selectBizProductImageList" parameterType="Long" resultMap="BizProductImageResult">
+        select id, product_id, image_type, image_url
+        from biz_product_image
+        where product_id = #{productId}
+        order by id
+    </select>
+
+    <insert id="insertBizProduct" parameterType="BizProduct" useGeneratedKeys="true" keyProperty="productId">
+        insert into biz_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productCode != null and productCode != ''">product_code,</if>
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="productTypeId != null">product_type_id,</if>
+            <if test="productClass != null">product_class,</if>
+            <if test="amount != null">amount,</if>
+            <if test="cashbackAmount != null">cashback_amount,</if>
+            <if test="sort != null">sort,</if>
+            <if test="onlineStatus != null">online_status,</if>
+            <if test="onlineTime != null">online_time,</if>
+            <if test="offlineTime != null">offline_time,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productCode != null and productCode != ''">#{productCode},</if>
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="productTypeId != null">#{productTypeId},</if>
+            <if test="productClass != null">#{productClass},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="cashbackAmount != null">#{cashbackAmount},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="onlineStatus != null">#{onlineStatus},</if>
+            <if test="onlineTime != null">#{onlineTime},</if>
+            <if test="offlineTime != null">#{offlineTime},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizProduct" parameterType="BizProduct">
+        update biz_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productCode != null and productCode != ''">product_code = #{productCode},</if>
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="productTypeId != null">product_type_id = #{productTypeId},</if>
+            <if test="productClass != null">product_class = #{productClass},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="cashbackAmount != null">cashback_amount = #{cashbackAmount},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="onlineStatus != null">online_status = #{onlineStatus},</if>
+            <if test="onlineTime != null">online_time = #{onlineTime},</if>
+            <if test="offlineTime != null">offline_time = #{offlineTime},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{productId}
+    </update>
+
+    <delete id="deleteBizProductById" parameterType="Long">
+        delete from biz_product where id = #{productId}
+    </delete>
+
+    <delete id="deleteBizProductByIds" parameterType="String">
+        delete from biz_product where id in
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteBizProductImageByProductIds" parameterType="String">
+        delete from biz_product_image where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBizProductImageByProductId" parameterType="Long">
+        delete from biz_product_image where product_id = #{productId}
+    </delete>
+
+    <insert id="batchBizProductImage">
+        insert into biz_product_image( product_id, image_type, image_url ) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.productId}, #{item.imageType}, #{item.imageUrl} )
+        </foreach>
+    </insert>
+
+</mapper>
