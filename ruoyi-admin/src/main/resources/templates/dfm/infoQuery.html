@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('信息查询')" />
+	<th:block th:include="include :: select2-css" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+
+		<div class="main-content">
+			<form id="dataAnalysisForm" class="form-horizontal">
+				<h4 class="form-header h4">单板信息</h4>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">单板名：</label>
+							<div class="col-sm-8">
+								<input  placeholder="请输入单板名" class="form-control" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">版本：</label>
+							<div class="col-sm-8">
+								<input  placeholder="请输入版本" class="form-control" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">料单号：</label>
+							<div class="col-sm-8">
+								<input  placeholder="请输入料单号" class="form-control" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">板材：</label>
+							<div class="col-sm-8">
+								<input  placeholder="请输入单板名" class="form-control" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">表面处理：</label>
+							<div class="col-sm-8">
+								<input  placeholder="请输入版本" class="form-control" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">单板长：</label>
+							<div class="col-sm-8">
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+								~
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">单板宽：</label>
+							<div class="col-sm-8">
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+								~
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">单板层数：</label>
+							<div class="col-sm-8">
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+								~
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">单板厚度：</label>
+							<div class="col-sm-8">
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+								~
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<h4 class="form-header h4">拼板信息</h4>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">拼板长：</label>
+							<div class="col-sm-8">
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+								~
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">拼板宽：</label>
+							<div class="col-sm-8">
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+								~
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<h4 class="form-header h4">关键参数</h4>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">规则名：</label>
+							<div class="col-sm-8">
+								<select name="primarySide" class="form-control m-b" required>
+									<option>--请选择--</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<h4 class="form-header h4">风险参数</h4>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">风险代码：</label>
+							<div class="col-sm-8">
+								<select name="primarySide" class="form-control m-b" required>
+									<option>--请选择--</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<h4 class="form-header h4">器件</h4>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">物料代码：</label>
+							<div class="col-sm-8">
+								<input  placeholder="请输入单板名" class="form-control" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">封装名：</label>
+							<div class="col-sm-8">
+								<input  placeholder="请输入版本" class="form-control" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<h4 class="form-header h4">DPPM值</h4>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">DPPM值：</label>
+							<div class="col-sm-8">
+								<select name="primarySide" style="width: 150px;display: inline"class="form-control m-b" required>
+									<option>大于</option>
+									<option>小于</option>
+								</select>
+								&nbsp;
+								<input class="form-control" style="width: 150px;display: inline" type="text" maxlength="30">
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="row">
+					<div class="col-sm-offset-5 col-sm-10">
+						<button type="button" class="btn btn-sm btn-primary" onclick="submitAnalysis()"><i class="fa fa-check"></i>查 询</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!--<div class="row" style="height: 100px;">-->
+
+	        <!--<div class="col-sm-12 select-table table-striped" >-->
+				<!--<table id="infoQueryResultTable"></table>-->
+			<!--</div>-->
+
+		<!--</div>-->
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+
+
+	</script>
+</body>
+</html>

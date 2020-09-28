@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('信息查询')" />
+	<th:block th:include="include :: select2-css" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+
+		<div class="main-content">
+			<form id="dataAnalysisForm" class="form-horizontal">
+
+
+				<h4 class="form-header h4">数据导入</h4>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">风险元件导入：</label>
+							<div class="col-sm-8">
+								<input type="file" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">维修不良导入：</label>
+							<div class="col-sm-8">
+								<input type="file" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">DPPM数据导入：</label>
+							<div class="col-sm-8">
+								<input type="file" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label is-required">DFM数据导入：</label>
+							<div class="col-sm-8">
+								<input type="file" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<div class="col-sm-offset-5 col-sm-10">
+						<button type="button" class="btn btn-sm btn-primary" onclick="submitAnalysis()"><i class="fa fa-check"></i>导 入</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!--<div class="row" style="height: 100px;">-->
+
+	        <!--<div class="col-sm-12 select-table table-striped" >-->
+				<!--<table id="infoQueryResultTable"></table>-->
+			<!--</div>-->
+
+		<!--</div>-->
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+
+
+	</script>
+</body>
+</html>
