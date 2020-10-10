@@ -22,3 +22,25 @@ create table service_organization (
   remark  varchar(255)    default null  comment '备注',
   primary key (id)
 ) engine=innodb auto_increment=10 comment = '服务组织表';
+
+
+-- ----------------------------
+-- 2、 合同代码生成业务表字段
+-- ----------------------------
+drop table if exists contract;
+create table contract (
+  id  int(4)  not null auto_increment  comment 'ID',
+  kind int(4)  not null auto_increment  comment '合同分类(来至于字典表)',
+  template  int(4)  not null auto_increment  comment '合同模板(来至于字典表)',
+  title  varchar(50) not null  comment '标题',
+  introduction  text not null comment '简介',
+  content  text  not null comment '详情内容',
+  hits  int (6)  comment '点击量',
+  enclosure_url  varchar(500)  not null  comment '附件下载（多个地址用，分隔）',
+  create_by  varchar(64)  default '' comment '创建者',
+  create_time  datetime    comment '创建时间',
+  update_by  varchar(64)  default ''  comment '更新者',
+  update_time  datetime  comment '更新时间',
+  remark  varchar(255)    default null  comment '备注',
+  primary key (id)
+) engine=innodb auto_increment=10 comment = '合同表';
