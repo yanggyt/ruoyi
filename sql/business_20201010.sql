@@ -44,3 +44,21 @@ create table contract (
   remark  varchar(255)    default null  comment '备注',
   primary key (id)
 ) engine=innodb auto_increment=10 comment = '合同表';
+
+
+-- ----------------------------
+-- 3、 典型案例代码生成业务表字段
+-- ----------------------------
+drop table if exists typical_case;
+create table typical_case (
+  id  int(4) not null auto_increment  comment 'ID',
+  title  varchar(50) not null  comment '标题',
+  introduction  text not null comment '简介',
+  content  text  not null comment '详情内容',
+  hits  int (6)  comment '点击量',
+  create_by  varchar(64)  default '' comment '创建者',
+  create_time  datetime    comment '创建时间',
+  update_by  varchar(64)  default ''  comment '更新者',
+  update_time  datetime  comment '更新时间',
+  primary key (id)
+) engine=innodb auto_increment=10 comment = '典型案例表';
