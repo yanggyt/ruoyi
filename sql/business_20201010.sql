@@ -4,8 +4,8 @@
 drop table if exists service_organization;
 create table service_organization (
   id  int(4)  not null auto_increment  comment 'ID',
-  name  int(4)  varchar(50) not null  comment '企业名称',
-  contacts  int(4)  varchar(50) not null  comment '联系人',
+  name   varchar(120) not null  comment '企业名称',
+  contacts   varchar(50) not null  comment '联系人',
   phone  varchar(12)  not null  comment '联系电话',
   license_url  varchar(500)  not null  comment '营业执照图片地址（多个地址用，分隔）',
   title  varchar(50) not null  comment '标题',
@@ -30,8 +30,8 @@ create table service_organization (
 drop table if exists contract;
 create table contract (
   id  int(4)  not null auto_increment  comment 'ID',
-  kind int(4)  not null auto_increment  comment '合同分类(来至于字典表)',
-  template  int(4)  not null auto_increment  comment '合同模板(来至于字典表)',
+  kind varchar(100)  not null comment '合同分类(来至于字典表)',
+  template  varchar(100)  not null  comment '合同模板(来至于字典表)',
   title  varchar(50) not null  comment '标题',
   introduction  text not null comment '简介',
   content  text  not null comment '详情内容',
