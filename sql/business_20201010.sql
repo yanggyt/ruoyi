@@ -1,6 +1,4 @@
-------------------------------
 -- 1、服务组织表
-------------------------------
 drop table if exists service_organization;
 create table service_organization (
   id  bigint(20)  not null auto_increment  comment 'ID',
@@ -12,7 +10,7 @@ create table service_organization (
   introduction  text not null comment '简介',
   content  text  not null comment '机构详情内容',
   hits  int (6)  default 0 comment '点击量',
-  status  char(1)  default '0'  comment '状态（0:待审核，1：审核不通过，2：审核通过）',
+  audit_status  char(1)  default '0'  comment '状态（0:待审核，1：审核不通过，2：审核通过）',
   picture_url  varchar(500)  not null  comment '图片地址（多个地址用，分隔）',
   status  char(1) default '0' comment '状态（0正常 1停用）',
   del_flag  char(1)  default '0' comment '删除标志（0代表存在 2代表删除）',
@@ -26,9 +24,7 @@ create table service_organization (
   primary key (id)
 ) engine=innodb auto_increment=10 comment = '服务组织表';
 
--- ----------------------------
 -- 2、 合同分类表
--- ----------------------------
 drop table if exists contract_type;
 create table contract_type (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -43,9 +39,7 @@ create table contract_type (
   primary key (id)
 ) engine=innodb auto_increment=10 comment = '合同分类表';
 
-------------------------------
 -- 3、 合同模板表
-------------------------------
 drop table if exists contract_template;
 create table contract_template (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -66,9 +60,7 @@ create table contract_template (
 ) engine=innodb auto_increment=10 comment = '合同模板表';
 
 
--- ----------------------------
 -- 4、 典型案例表
--- ----------------------------
 drop table if exists classsic_cases;
 create table classsic_cases (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -88,9 +80,7 @@ create table classsic_cases (
 ) engine=innodb auto_increment=10 comment = '典型案例表';
 
 
-------------------------------
 -- 5、 线上课程代表
-------------------------------
 drop table if exists online_courses;
 create table online_courses (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -112,9 +102,7 @@ create table online_courses (
 ) engine=innodb auto_increment=10 comment = '线上课程表';
 
 
--- ----------------------------
 -- 6、 线上课程评价表
--- ----------------------------
 drop table if exists online_courses_evaluate;
 create table online_courses_evaluate (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -129,9 +117,7 @@ create table online_courses_evaluate (
   primary key (id)
 ) engine=innodb auto_increment=10 comment = '线上课程评价表';
 
--- ----------------------------
 -- 7、 新闻动态表
--- ----------------------------
 drop table if exists news_information;
 create table news_information (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -149,9 +135,7 @@ create table news_information (
 ) engine=innodb auto_increment=10 comment = '新闻动态表';
 
 
--- ----------------------------
 -- 8、在线留言表
--- ----------------------------
 drop table if exists online_message;
 create table online_message (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -167,9 +151,7 @@ create table online_message (
   primary key (id)
 ) engine=innodb auto_increment=10 comment = '在线留言表';
 
--- ----------------------------
 -- 9、联系方式表
--- ----------------------------
 drop table if exists contact_information;
 create table contact_information (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -189,9 +171,7 @@ create table contact_information (
 ) engine=innodb auto_increment=10 comment = '联系方式表';
 
 
--- ----------------------------
 -- 10、法律服务表
--- ----------------------------
 drop table if exists legal_services;
 create table legal_services (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -205,9 +185,7 @@ create table legal_services (
   primary key (id)
 ) engine=innodb auto_increment=10 comment = '法律服务表';
 
--- ----------------------------
 -- 11、 常见问题表
--- ----------------------------
 drop table if exists common_problem;
 create table common_problem (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -223,9 +201,7 @@ create table common_problem (
 ) engine=innodb auto_increment=10 comment = '常见问题表';
 
 
--- ----------------------------
 -- 12、 活动招募表
--- ----------------------------
 drop table if exists event_recruitment;
 create table event_recruitment (
   id  bigint(20) not null auto_increment  comment 'ID',
@@ -243,9 +219,7 @@ create table event_recruitment (
   primary key (id)
 ) engine=innodb auto_increment=10 comment = '活动招募表';
 
--- ----------------------------
 -- 13、首页轮播图表
--- ----------------------------
 drop table if exists home_page_carousel;
 create table home_page_carousel (
   id  bigint(20) not null auto_increment  comment 'ID',
