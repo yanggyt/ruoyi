@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.front.mapper.OnlineCoursesEvaluateMapper">
+    
+    <resultMap type="OnlineCoursesEvaluate" id="OnlineCoursesEvaluateResult">
+        <result property="id"    column="id"    />
+        <result property="onlineCoursesId"    column="online_courses_id"    />
+        <result property="evaluateContent"    column="evaluate_content"    />
+        <result property="anonymousFlag"    column="anonymous_flag"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectOnlineCoursesEvaluateVo">
+        select id, online_courses_id, evaluate_content, anonymous_flag, del_flag, create_by, create_time, update_by, update_time from online_courses_evaluate
+    </sql>
+
+    <select id="selectOnlineCoursesEvaluateList" parameterType="OnlineCoursesEvaluate" resultMap="OnlineCoursesEvaluateResult">
+        <include refid="selectOnlineCoursesEvaluateVo"/>
+        <where>  
+            <if test="onlineCoursesId != null "> and online_courses_id = #{onlineCoursesId}</if>
+            <if test="evaluateContent != null  and evaluateContent != ''"> and evaluate_content = #{evaluateContent}</if>
+            <if test="anonymousFlag != null  and anonymousFlag != ''"> and anonymous_flag = #{anonymousFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectOnlineCoursesEvaluateById" parameterType="Long" resultMap="OnlineCoursesEvaluateResult">
+        <include refid="selectOnlineCoursesEvaluateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOnlineCoursesEvaluate" parameterType="OnlineCoursesEvaluate" useGeneratedKeys="true" keyProperty="id">
+        insert into online_courses_evaluate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="onlineCoursesId != null">online_courses_id,</if>
+            <if test="evaluateContent != null and evaluateContent != ''">evaluate_content,</if>
+            <if test="anonymousFlag != null and anonymousFlag != ''">anonymous_flag,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="onlineCoursesId != null">#{onlineCoursesId},</if>
+            <if test="evaluateContent != null and evaluateContent != ''">#{evaluateContent},</if>
+            <if test="anonymousFlag != null and anonymousFlag != ''">#{anonymousFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOnlineCoursesEvaluate" parameterType="OnlineCoursesEvaluate">
+        update online_courses_evaluate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="onlineCoursesId != null">online_courses_id = #{onlineCoursesId},</if>
+            <if test="evaluateContent != null and evaluateContent != ''">evaluate_content = #{evaluateContent},</if>
+            <if test="anonymousFlag != null and anonymousFlag != ''">anonymous_flag = #{anonymousFlag},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOnlineCoursesEvaluateById" parameterType="Long">
+        delete from online_courses_evaluate where id = #{id}
+    </delete>
+
+    <delete id="deleteOnlineCoursesEvaluateByIds" parameterType="String">
+        delete from online_courses_evaluate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

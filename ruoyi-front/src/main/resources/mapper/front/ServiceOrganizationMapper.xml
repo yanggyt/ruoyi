@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.front.mapper.ServiceOrganizationMapper">
+    
+    <resultMap type="ServiceOrganization" id="ServiceOrganizationResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="contacts"    column="contacts"    />
+        <result property="phone"    column="phone"    />
+        <result property="licenseUrl"    column="license_url"    />
+        <result property="title"    column="title"    />
+        <result property="introduction"    column="introduction"    />
+        <result property="content"    column="content"    />
+        <result property="hits"    column="hits"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="pictureUrl"    column="picture_url"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="checkBy"    column="check_by"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectServiceOrganizationVo">
+        select id, name, contacts, phone, license_url, title, introduction, content, hits, audit_status, picture_url, status, del_flag, create_by, create_time, update_by, update_time, check_by, check_time, remark from service_organization
+    </sql>
+
+    <select id="selectServiceOrganizationList" parameterType="ServiceOrganization" resultMap="ServiceOrganizationResult">
+        <include refid="selectServiceOrganizationVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="contacts != null  and contacts != ''"> and contacts = #{contacts}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="licenseUrl != null  and licenseUrl != ''"> and license_url = #{licenseUrl}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="introduction != null  and introduction != ''"> and introduction = #{introduction}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="hits != null "> and hits = #{hits}</if>
+            <if test="auditStatus != null  and auditStatus != ''"> and audit_status = #{auditStatus}</if>
+            <if test="pictureUrl != null  and pictureUrl != ''"> and picture_url = #{pictureUrl}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="checkBy != null  and checkBy != ''"> and check_by = #{checkBy}</if>
+            <if test="checkTime != null "> and check_time = #{checkTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectServiceOrganizationById" parameterType="Long" resultMap="ServiceOrganizationResult">
+        <include refid="selectServiceOrganizationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertServiceOrganization" parameterType="ServiceOrganization" useGeneratedKeys="true" keyProperty="id">
+        insert into service_organization
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="contacts != null and contacts != ''">contacts,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="licenseUrl != null and licenseUrl != ''">license_url,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="introduction != null and introduction != ''">introduction,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="hits != null">hits,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="pictureUrl != null and pictureUrl != ''">picture_url,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="checkBy != null">check_by,</if>
+            <if test="checkTime != null">check_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="contacts != null and contacts != ''">#{contacts},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="licenseUrl != null and licenseUrl != ''">#{licenseUrl},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="introduction != null and introduction != ''">#{introduction},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="hits != null">#{hits},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="pictureUrl != null and pictureUrl != ''">#{pictureUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="checkBy != null">#{checkBy},</if>
+            <if test="checkTime != null">#{checkTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateServiceOrganization" parameterType="ServiceOrganization">
+        update service_organization
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="contacts != null and contacts != ''">contacts = #{contacts},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="licenseUrl != null and licenseUrl != ''">license_url = #{licenseUrl},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="introduction != null and introduction != ''">introduction = #{introduction},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="hits != null">hits = #{hits},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="pictureUrl != null and pictureUrl != ''">picture_url = #{pictureUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="checkBy != null">check_by = #{checkBy},</if>
+            <if test="checkTime != null">check_time = #{checkTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteServiceOrganizationById" parameterType="Long">
+        delete from service_organization where id = #{id}
+    </delete>
+
+    <delete id="deleteServiceOrganizationByIds" parameterType="String">
+        delete from service_organization where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

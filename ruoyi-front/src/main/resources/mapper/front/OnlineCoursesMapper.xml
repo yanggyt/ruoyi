@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.front.mapper.OnlineCoursesMapper">
+    
+    <resultMap type="OnlineCourses" id="OnlineCoursesResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="introduction"    column="introduction"    />
+        <result property="hits"    column="hits"    />
+        <result property="targetPeople"    column="target_people"    />
+        <result property="coursesDuration"    column="courses_duration"    />
+        <result property="coursesLevel"    column="courses_level"    />
+        <result property="pictureUrl"    column="picture_url"    />
+        <result property="videoUrl"    column="video_url"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectOnlineCoursesVo">
+        select id, title, introduction, hits, target_people, courses_duration, courses_level, picture_url, video_url, status, del_flag, create_by, create_time, update_by, update_time from online_courses
+    </sql>
+
+    <select id="selectOnlineCoursesList" parameterType="OnlineCourses" resultMap="OnlineCoursesResult">
+        <include refid="selectOnlineCoursesVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="introduction != null  and introduction != ''"> and introduction = #{introduction}</if>
+            <if test="hits != null "> and hits = #{hits}</if>
+            <if test="targetPeople != null  and targetPeople != ''"> and target_people = #{targetPeople}</if>
+            <if test="coursesDuration != null  and coursesDuration != ''"> and courses_duration = #{coursesDuration}</if>
+            <if test="coursesLevel != null "> and courses_level = #{coursesLevel}</if>
+            <if test="pictureUrl != null  and pictureUrl != ''"> and picture_url = #{pictureUrl}</if>
+            <if test="videoUrl != null  and videoUrl != ''"> and video_url = #{videoUrl}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectOnlineCoursesById" parameterType="Long" resultMap="OnlineCoursesResult">
+        <include refid="selectOnlineCoursesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOnlineCourses" parameterType="OnlineCourses" useGeneratedKeys="true" keyProperty="id">
+        insert into online_courses
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="introduction != null and introduction != ''">introduction,</if>
+            <if test="hits != null">hits,</if>
+            <if test="targetPeople != null and targetPeople != ''">target_people,</if>
+            <if test="coursesDuration != null and coursesDuration != ''">courses_duration,</if>
+            <if test="coursesLevel != null">courses_level,</if>
+            <if test="pictureUrl != null and pictureUrl != ''">picture_url,</if>
+            <if test="videoUrl != null and videoUrl != ''">video_url,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="introduction != null and introduction != ''">#{introduction},</if>
+            <if test="hits != null">#{hits},</if>
+            <if test="targetPeople != null and targetPeople != ''">#{targetPeople},</if>
+            <if test="coursesDuration != null and coursesDuration != ''">#{coursesDuration},</if>
+            <if test="coursesLevel != null">#{coursesLevel},</if>
+            <if test="pictureUrl != null and pictureUrl != ''">#{pictureUrl},</if>
+            <if test="videoUrl != null and videoUrl != ''">#{videoUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOnlineCourses" parameterType="OnlineCourses">
+        update online_courses
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="introduction != null and introduction != ''">introduction = #{introduction},</if>
+            <if test="hits != null">hits = #{hits},</if>
+            <if test="targetPeople != null and targetPeople != ''">target_people = #{targetPeople},</if>
+            <if test="coursesDuration != null and coursesDuration != ''">courses_duration = #{coursesDuration},</if>
+            <if test="coursesLevel != null">courses_level = #{coursesLevel},</if>
+            <if test="pictureUrl != null and pictureUrl != ''">picture_url = #{pictureUrl},</if>
+            <if test="videoUrl != null and videoUrl != ''">video_url = #{videoUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOnlineCoursesById" parameterType="Long">
+        delete from online_courses where id = #{id}
+    </delete>
+
+    <delete id="deleteOnlineCoursesByIds" parameterType="String">
+        delete from online_courses where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

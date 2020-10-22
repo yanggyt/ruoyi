@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.front.mapper.ContactInformationMapper">
+    
+    <resultMap type="ContactInformation" id="ContactInformationResult">
+        <result property="id"    column="id"    />
+        <result property="address"    column="address"    />
+        <result property="servicePhone"    column="service_phone"    />
+        <result property="supervisePhone"    column="supervise_phone"    />
+        <result property="superviseDept"    column="supervise_dept"    />
+        <result property="email"    column="email"    />
+        <result property="serviceDate"    column="service_date"    />
+        <result property="copyright"    column="copyright"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectContactInformationVo">
+        select id, address, service_phone, supervise_phone, supervise_dept, email, service_date, copyright, del_flag, create_by, create_time, update_by, update_time from contact_information
+    </sql>
+
+    <select id="selectContactInformationList" parameterType="ContactInformation" resultMap="ContactInformationResult">
+        <include refid="selectContactInformationVo"/>
+        <where>  
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="servicePhone != null  and servicePhone != ''"> and service_phone = #{servicePhone}</if>
+            <if test="supervisePhone != null  and supervisePhone != ''"> and supervise_phone = #{supervisePhone}</if>
+            <if test="superviseDept != null  and superviseDept != ''"> and supervise_dept = #{superviseDept}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="serviceDate != null  and serviceDate != ''"> and service_date = #{serviceDate}</if>
+            <if test="copyright != null  and copyright != ''"> and copyright = #{copyright}</if>
+        </where>
+    </select>
+    
+    <select id="selectContactInformationById" parameterType="Long" resultMap="ContactInformationResult">
+        <include refid="selectContactInformationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertContactInformation" parameterType="ContactInformation" useGeneratedKeys="true" keyProperty="id">
+        insert into contact_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="address != null and address != ''">address,</if>
+            <if test="servicePhone != null and servicePhone != ''">service_phone,</if>
+            <if test="supervisePhone != null and supervisePhone != ''">supervise_phone,</if>
+            <if test="superviseDept != null and superviseDept != ''">supervise_dept,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="serviceDate != null and serviceDate != ''">service_date,</if>
+            <if test="copyright != null and copyright != ''">copyright,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="address != null and address != ''">#{address},</if>
+            <if test="servicePhone != null and servicePhone != ''">#{servicePhone},</if>
+            <if test="supervisePhone != null and supervisePhone != ''">#{supervisePhone},</if>
+            <if test="superviseDept != null and superviseDept != ''">#{superviseDept},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="serviceDate != null and serviceDate != ''">#{serviceDate},</if>
+            <if test="copyright != null and copyright != ''">#{copyright},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateContactInformation" parameterType="ContactInformation">
+        update contact_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="servicePhone != null and servicePhone != ''">service_phone = #{servicePhone},</if>
+            <if test="supervisePhone != null and supervisePhone != ''">supervise_phone = #{supervisePhone},</if>
+            <if test="superviseDept != null and superviseDept != ''">supervise_dept = #{superviseDept},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="serviceDate != null and serviceDate != ''">service_date = #{serviceDate},</if>
+            <if test="copyright != null and copyright != ''">copyright = #{copyright},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteContactInformationById" parameterType="Long">
+        delete from contact_information where id = #{id}
+    </delete>
+
+    <delete id="deleteContactInformationByIds" parameterType="String">
+        delete from contact_information where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

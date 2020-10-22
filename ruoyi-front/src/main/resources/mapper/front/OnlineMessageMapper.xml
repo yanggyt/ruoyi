@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.front.mapper.OnlineMessageMapper">
+    
+    <resultMap type="OnlineMessage" id="OnlineMessageResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="email"    column="email"    />
+        <result property="contactInformation"    column="contact_information"    />
+        <result property="messageContent"    column="message_content"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectOnlineMessageVo">
+        select id, name, email, contact_information, message_content, del_flag, create_by, create_time, update_by, update_time from online_message
+    </sql>
+
+    <select id="selectOnlineMessageList" parameterType="OnlineMessage" resultMap="OnlineMessageResult">
+        <include refid="selectOnlineMessageVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="contactInformation != null  and contactInformation != ''"> and contact_information = #{contactInformation}</if>
+            <if test="messageContent != null  and messageContent != ''"> and message_content = #{messageContent}</if>
+        </where>
+    </select>
+    
+    <select id="selectOnlineMessageById" parameterType="Long" resultMap="OnlineMessageResult">
+        <include refid="selectOnlineMessageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOnlineMessage" parameterType="OnlineMessage" useGeneratedKeys="true" keyProperty="id">
+        insert into online_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="contactInformation != null and contactInformation != ''">contact_information,</if>
+            <if test="messageContent != null and messageContent != ''">message_content,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="contactInformation != null and contactInformation != ''">#{contactInformation},</if>
+            <if test="messageContent != null and messageContent != ''">#{messageContent},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOnlineMessage" parameterType="OnlineMessage">
+        update online_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="contactInformation != null and contactInformation != ''">contact_information = #{contactInformation},</if>
+            <if test="messageContent != null and messageContent != ''">message_content = #{messageContent},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOnlineMessageById" parameterType="Long">
+        delete from online_message where id = #{id}
+    </delete>
+
+    <delete id="deleteOnlineMessageByIds" parameterType="String">
+        delete from online_message where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
