@@ -112,7 +112,10 @@
                 },
                 {
                     field: 'status',
-                    title: '状态'
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        return statusTools(row);
+                    }
                 },
                 {
                     title: '操作',
@@ -127,6 +130,15 @@
             };
             $.table.init(options);
         });
+
+        /* 用户状态显示 */
+        function statusTools(row) {
+            if (row.status == 1) {
+                return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.id + '\')"></i> ';
+            } else {
+                return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.id + '\')"></i> ';
+            }
+        }
     </script>
 </body>
 </html>
