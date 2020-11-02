@@ -455,3 +455,37 @@ $.ajaxSetup({
         }
     }
 });
+
+
+//上传文件
+function uploadFile(async, id) {
+	var formData = new FormData();
+	if ($('#filePath')[0].files[0] == null) {
+		$.modal.alertWarning("请先选择文件路径");
+		return false;
+	}
+	formData.append('fileName', $("#fileName").val());
+	formData.append('file', $('#filePath')[0].files[0]);
+	$.ajax({
+		url: "/common/upload",
+		type: 'post',
+		cache: false,
+		data: formData,
+		processData: false,
+		contentType: false,
+		dataType: "json",
+		async: async,
+		success: function(result) {
+			if (result.code == web_status.SUCCESS && id) {
+				$('#' + id).val(result.url);
+			} else {
+				$.modal.alertError(result.msg);
+				return;
+			}
+		},
+		error: function(error) {
+			$.modal.alertWarning("图片上传失败。");
+			return;
+		}
+	});
+}
