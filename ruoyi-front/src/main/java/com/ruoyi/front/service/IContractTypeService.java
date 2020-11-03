@@ -58,4 +58,12 @@ public interface IContractTypeService
      * @return 结果
      */
     public int deleteContractTypeById(Long id);
+
+
+    /**
+     * 查询 正常的合同分类列表
+     *
+     * @return 合同分类
+     */
+    public List<ContractType> getNormalContractTypeList();
 }

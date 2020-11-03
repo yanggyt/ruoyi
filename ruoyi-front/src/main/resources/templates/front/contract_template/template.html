@@ -11,29 +11,29 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>合同分类id(contract_type表主键id)：</label>
-                                <select name="type">
+                                <label>合同分类：</label>
+                                <select name="type" class="form-control m-b">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option th:each="contractType : ${contractTypes}" th:text="${contractType.name}" th:value="${contractType.id}"></option>
                                 </select>
                             </li>
                             <li>
                                 <label>标题：</label>
                                 <input type="text" name="title"/>
                             </li>
-                            <li>
+                            <!--<li>
                                 <label>简介：</label>
                                 <input type="text" name="introduction"/>
                             </li>
                             <li>
                                 <label>点击量：</label>
                                 <input type="text" name="hits"/>
-                            </li>
+                            </li>-->
                             <li>
                                 <label>状态：</label>
-                                <select name="status">
+                                <select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
                             <li>
@@ -46,7 +46,7 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:contractTemplate:add">
+                <a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="front:contractTemplate:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
                 <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:contractTemplate:edit">

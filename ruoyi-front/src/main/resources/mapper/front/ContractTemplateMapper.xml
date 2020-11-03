@@ -29,9 +29,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectContractTemplateVo"/>
         <where>  
             <if test="type != null  and type != ''"> and type = #{type}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
             <if test="introduction != null  and introduction != ''"> and introduction = #{introduction}</if>
-            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%') </if>
             <if test="hits != null "> and hits = #{hits}</if>
             <if test="enclosureUrl != null  and enclosureUrl != ''"> and enclosure_url = #{enclosureUrl}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectContractTemplateVo"/>
         where id = #{id}
     </select>
-        
+        sh
     <insert id="insertContractTemplate" parameterType="ContractTemplate" useGeneratedKeys="true" keyProperty="id">
         insert into contract_template
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -27,8 +27,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectClasssicCasesList" parameterType="ClasssicCases" resultMap="ClasssicCasesResult">
         <include refid="selectClasssicCasesVo"/>
         <where>  
-            <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="introduction != null  and introduction != ''"> and introduction = #{introduction}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="introduction != null  and introduction != ''"> and introduction  like concat('%', #{introduction}, '%')</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
             <if test="hits != null "> and hits = #{hits}</if>

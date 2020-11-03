@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.front;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ruoyi.front.service.IContractTypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,10 +37,14 @@ public class ContractTemplateController extends BaseController
     @Autowired
     private IContractTemplateService contractTemplateService;
 
+    @Autowired
+    private IContractTypeService contractTypeService;
+
     @RequiresPermissions("front:contract_template:view")
     @GetMapping()
-    public String template()
+    public String template(ModelMap mmap)
     {
+        mmap.put("contractTypes", contractTypeService.getNormalContractTypeList());
         return prefix + "/template";
     }
 
@@ -72,8 +79,9 @@ public class ContractTemplateController extends BaseController
      * 新增合同模板
      */
     @GetMapping("/add")
-    public String add()
+    public String add(ModelMap mmap)
     {
+        mmap.put("contractTypes", contractTypeService.getNormalContractTypeList());
         return prefix + "/add";
     }
 
@@ -97,6 +105,7 @@ public class ContractTemplateController extends BaseController
     {
         ContractTemplate contractTemplate = contractTemplateService.selectContractTemplateById(id);
         mmap.put("contractTemplate", contractTemplate);
+        mmap.put("contractTypes", contractTypeService.getNormalContractTypeList());
         return prefix + "/edit";
     }
 
