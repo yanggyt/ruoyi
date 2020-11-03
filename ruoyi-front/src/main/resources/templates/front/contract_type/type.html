@@ -15,7 +15,7 @@
                                 <input type="text" name="name"/>
                             </li>
                             <li>
-                                <label>分类名称：</label>
+                                <label>英文名称：</label>
                                 <input type="text" name="englishName"/>
                             </li>
                             <li>
@@ -37,9 +37,9 @@
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:contractType:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:contractType:export">
+                <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:contractType:export">
                     <i class="fa fa-download"></i> 导出
-                </a>
+                </a>-->
             </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
@@ -74,12 +74,12 @@
                 },
                 {
                     field: 'englishName',
-                    title: '分类名称'
+                    title: '分类英文名称'
                 },
-                {
+                /*{
                     field: 'remark',
                     title: '备注'
-                },
+                },*/
                 {
                     title: '操作',
                     align: 'center',
