@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectContractTemplateVo"/>
         where id = #{id}
     </select>
-        sh
+
     <insert id="insertContractTemplate" parameterType="ContractTemplate" useGeneratedKeys="true" keyProperty="id">
         insert into contract_template
         <trim prefix="(" suffix=")" suffixOverrides=",">
