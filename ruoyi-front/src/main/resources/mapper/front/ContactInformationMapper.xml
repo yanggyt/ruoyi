@@ -27,13 +27,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectContactInformationList" parameterType="ContactInformation" resultMap="ContactInformationResult">
         <include refid="selectContactInformationVo"/>
         <where>  
-            <if test="address != null  and address != ''"> and address = #{address}</if>
-            <if test="servicePhone != null  and servicePhone != ''"> and service_phone = #{servicePhone}</if>
-            <if test="supervisePhone != null  and supervisePhone != ''"> and supervise_phone = #{supervisePhone}</if>
-            <if test="superviseDept != null  and superviseDept != ''"> and supervise_dept = #{superviseDept}</if>
-            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
+            <if test="servicePhone != null  and servicePhone != ''"> and service_phone like concat('%', #{servicePhone}, '%')</if>
+            <if test="supervisePhone != null  and supervisePhone != ''"> and supervise_phone like concat('%', #{supervisePhone}, '%')</if>
+            <if test="superviseDept != null  and superviseDept != ''"> and supervise_dept like concat('%', #{superviseDept}, '%')</if>
+            <if test="email != null  and email != ''"> and email like concat('%', #{email}, '%')</if>
             <if test="serviceDate != null  and serviceDate != ''"> and service_date = #{serviceDate}</if>
-            <if test="copyright != null  and copyright != ''"> and copyright = #{copyright}</if>
+            <if test="copyright != null  and copyright != ''"> and copyright like concat('%', #{copyright}, '%')</if>
         </where>
     </select>
     
