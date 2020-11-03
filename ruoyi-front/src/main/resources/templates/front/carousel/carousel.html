@@ -6,7 +6,7 @@
 <body class="gray-bg">
      <div class="container-div">
         <div class="row">
-            <div class="col-sm-12 search-collapse">
+            <!--<div class="col-sm-12 search-collapse">
                 <form id="formId">
                     <div class="select-list">
                         <ul>
@@ -21,7 +21,7 @@
                         </ul>
                     </div>
                 </form>
-            </div>
+            </div>-->
 
             <div class="btn-group-sm" id="toolbar" role="group">
                 <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:carousel:add">
@@ -66,7 +66,10 @@
                 },
                 {
                     field: 'pictureUrl',
-                    title: '图片地址'
+                    title: '图片地址',
+                    formatter: function(value, row, index) {
+                        return $.table.imageView(value);
+                    }
                 },
                 {
                     title: '操作',
