@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('合同分类列表')" />
+    <th:block th:include="include :: header('合同模板列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -11,12 +11,30 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>分类名称：</label>
-                                <input type="text" name="name"/>
+                                <label>合同分类id(contract_type表主键id)：</label>
+                                <select name="type">
+                                    <option value="">所有</option>
+                                    <option value="-1">代码生成请选择字典属性</option>
+                                </select>
                             </li>
                             <li>
-                                <label>：</label>
-                                <input type="text" name="englishName"/>
+                                <label>标题：</label>
+                                <input type="text" name="title"/>
+                            </li>
+                            <li>
+                                <label>简介：</label>
+                                <input type="text" name="introduction"/>
+                            </li>
+                            <li>
+                                <label>点击量：</label>
+                                <input type="text" name="hits"/>
+                            </li>
+                            <li>
+                                <label>状态：</label>
+                                <select name="status">
+                                    <option value="">所有</option>
+                                    <option value="-1">代码生成请选择字典属性</option>
+                                </select>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -28,16 +46,16 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:contract:add">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:contractTemplate:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:contract:edit">
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:contractTemplate:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:contract:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:contractTemplate:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:contract:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:contractTemplate:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
@@ -48,9 +66,9 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('front:contract:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('front:contract:remove')}]];
-        var prefix = ctx + "front/contract";
+        var editFlag = [[${@permission.hasPermi('front:contractTemplate:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('front:contractTemplate:remove')}]];
+        var prefix = ctx + "front/contractTemplate";
 
         $(function() {
             var options = {
@@ -59,7 +77,7 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "合同分类",
+                modalName: "合同模板",
                 columns: [{
                     checkbox: true
                 },
@@ -69,12 +87,32 @@
                     visible: false
                 },
                 {
-                    field: 'name',
-                    title: '分类名称'
+                    field: 'type',
+                    title: '合同分类'
                 },
                 {
-                    field: 'englishName',
-                    title: ''
+                    field: 'title',
+                    title: '标题'
+                },
+                {
+                    field: 'introduction',
+                    title: '简介'
+                },
+                {
+                    field: 'content',
+                    title: '详情内容'
+                },
+                {
+                    field: 'hits',
+                    title: '点击量'
+                },
+                {
+                    field: 'enclosureUrl',
+                    title: '附件下载'
+                },
+                {
+                    field: 'status',
+                    title: '状态'
                 },
                 {
                     field: 'remark',

@@ -26,25 +26,25 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2020-10-21
  */
 @Controller
-@RequestMapping("/front/contract")
+@RequestMapping("/front/contractType")
 public class ContractTypeController extends BaseController
 {
-    private String prefix = "front/contract";
+    private String prefix = "front/contract_type";
 
     @Autowired
     private IContractTypeService contractTypeService;
 
-    @RequiresPermissions("front:contract:view")
+    @RequiresPermissions("front:contractType:view")
     @GetMapping()
     public String contract()
     {
-        return prefix + "/contract";
+        return prefix + "/type";
     }
 
     /**
      * 查询合同分类列表
      */
-    @RequiresPermissions("front:contract:list")
+    @RequiresPermissions("front:contractType:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(ContractType contractType)
@@ -57,7 +57,7 @@ public class ContractTypeController extends BaseController
     /**
      * 导出合同分类列表
      */
-    @RequiresPermissions("front:contract:export")
+    @RequiresPermissions("front:contractType:export")
     @Log(title = "合同分类", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
@@ -80,7 +80,7 @@ public class ContractTypeController extends BaseController
     /**
      * 新增保存合同分类
      */
-    @RequiresPermissions("front:contract:add")
+    @RequiresPermissions("front:contractType:add")
     @Log(title = "合同分类", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
@@ -103,7 +103,7 @@ public class ContractTypeController extends BaseController
     /**
      * 修改保存合同分类
      */
-    @RequiresPermissions("front:contract:edit")
+    @RequiresPermissions("front:contractType:edit")
     @Log(title = "合同分类", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
@@ -115,7 +115,7 @@ public class ContractTypeController extends BaseController
     /**
      * 删除合同分类
      */
-    @RequiresPermissions("front:contract:remove")
+    @RequiresPermissions("front:contractType:remove")
     @Log(title = "合同分类", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody
