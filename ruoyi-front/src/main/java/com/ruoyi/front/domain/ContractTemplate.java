@@ -39,8 +39,11 @@ public class ContractTemplate extends BaseEntity
     private Integer hits;
 
     /** 附件下载（多个地址用，分隔） */
-    @Excel(name = "附件下载", readConverterExp = "多=个地址用，分隔")
+    @Excel(name = "附件地址")
     private String enclosureUrl;
+
+    @Excel(name = "附件名称")
+    private String enclosureName;
 
     /** 状态（0正常 1停用） */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
@@ -129,6 +132,14 @@ public class ContractTemplate extends BaseEntity
     public String getDelFlag() 
     {
         return delFlag;
+    }
+
+    public String getEnclosureName() {
+        return enclosureName;
+    }
+
+    public void setEnclosureName(String enclosureName) {
+        this.enclosureName = enclosureName;
     }
 
     @Override

@@ -482,7 +482,7 @@ function uploadFile(async, filePathId, fileNameId) {
 					$('#' + filePathId).val(result.url);
 				}
 				if (fileNameId) {
-					$('#' + fileNameId).val(result.fileName);
+					$('#' + fileNameId).val(result.originalFilename);
 				}
 
 			} else {

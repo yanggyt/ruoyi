@@ -110,4 +110,36 @@ public class CommonController
 
         FileUtils.writeBytes(downloadPath, response.getOutputStream());
     }
+
+    /**
+     * 通用下载请求
+     *
+     * @param filePath 文件路径
+     * @param realFileName 文件名称
+     * @param delete 是否删除
+     */
+    @GetMapping("common/download2")
+    public void fileDownload(String filePath, String realFileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
+    {
+        try
+        {
+            if (!FileUtils.isValidFilename(realFileName))
+            {
+                throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", realFileName));
+            }
+
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            FileUtils.setAttachmentResponseHeader(response, realFileName);
+
+            FileUtils.writeBytes(filePath, response.getOutputStream());
+            if (delete)
+            {
+                FileUtils.deleteFile(filePath);
+            }
+        }
+        catch (Exception e)
+        {
+            log.error("下载文件失败", e);
+        }
+    }
 }
