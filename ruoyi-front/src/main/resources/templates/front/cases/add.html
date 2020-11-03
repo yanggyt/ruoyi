@@ -65,7 +65,10 @@
         function submitHandler() {
             if ($.validate.form()) {
                 //同步上传图片，并且将上传图片返回的地址，赋值到pictureUrl对应的隐藏域上
-                uploadFile(false, "pictureUrl");
+                let result = uploadFile(false, "pictureUrl");
+                if (result != web_status.SUCCESS) {
+                    return;
+                }
                 $.operate.save(prefix + "/add", $("#form-cases-add").serialize());
             }
         }

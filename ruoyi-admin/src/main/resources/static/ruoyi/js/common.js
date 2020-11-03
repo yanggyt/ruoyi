@@ -458,11 +458,12 @@ $.ajaxSetup({
 
 
 //上传文件
-function uploadFile(async, id) {
+function uploadFile(async, filePathId, fileNameId) {
+	let res = -1;
 	var formData = new FormData();
 	if ($('#filePath')[0].files[0] == null) {
 		$.modal.alertWarning("请先选择文件路径");
-		return false;
+		return res;
 	}
 	formData.append('fileName', $("#fileName").val());
 	formData.append('file', $('#filePath')[0].files[0]);
@@ -477,15 +478,23 @@ function uploadFile(async, id) {
 		async: async,
 		success: function(result) {
 			if (result.code == web_status.SUCCESS && id) {
-				$('#' + id).val(result.url);
+				if (filePathId) {
+					$('#' + filePathId).val(result.url);
+				}
+				if (fileNameId) {
+					$('#' + fileNameId).val(result.fileName);
+				}
+
 			} else {
 				$.modal.alertError(result.msg);
-				return;
 			}
+
+			res = result.code;
 		},
 		error: function(error) {
 			$.modal.alertWarning("图片上传失败。");
-			return;
 		}
 	});
+
+	return res;
 }

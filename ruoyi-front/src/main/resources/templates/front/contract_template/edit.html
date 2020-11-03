@@ -76,7 +76,12 @@
         function submitHandler() {
             if ($.validate.form()) {
                 //同步上传图片，并且将上传图片返回的地址，赋值到pictureUrl对应的隐藏域上
-                uploadFile(false, "enclosureUrl");
+                if ($('#filePath')[0].files[0]) {
+                    let result = uploadFile(false, "enclosureUrl", "enclosureName");
+                    if (result != web_status.SUCCESS) {
+                        return;
+                    }
+                }
                 $.operate.save(prefix + "/edit", $('#form-template-edit').serialize());
             }
         }

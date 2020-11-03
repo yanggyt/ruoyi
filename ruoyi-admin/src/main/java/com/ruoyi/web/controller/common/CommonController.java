@@ -81,6 +81,7 @@ public class CommonController
             String url = serverConfig.getUrl() + fileName;
             AjaxResult ajax = AjaxResult.success();
             ajax.put("fileName", fileName);
+            ajax.put("originalFilename", file.getOriginalFilename());
             ajax.put("url", url);
             return ajax;
         }
