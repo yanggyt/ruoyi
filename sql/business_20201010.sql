@@ -29,7 +29,7 @@ drop table if exists contract_type;
 create table contract_type (
   id  bigint(20) not null auto_increment  comment 'ID',
   name  varchar(50) not null  comment '分类名称',
-  english_name varchar(50) not null comment '',
+  english_name varchar(50) not null comment '英文名称',
   del_flag  char(1)  default '0' comment '删除标志（0代表存在 2代表删除）',
   create_by  varchar(64)  default '' comment '创建者',
   create_time  datetime    comment '创建时间',
