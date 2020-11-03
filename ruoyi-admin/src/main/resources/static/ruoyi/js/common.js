@@ -458,7 +458,7 @@ $.ajaxSetup({
 
 
 //上传文件
-function uploadFile(async, filePathId, fileNameId) {
+function uploadFile(async, fullPathId, fileNameId, absolutePAthId) {
 	let res = -1;
 	var formData = new FormData();
 	if ($('#filePath')[0].files[0] == null) {
@@ -477,12 +477,15 @@ function uploadFile(async, filePathId, fileNameId) {
 		dataType: "json",
 		async: async,
 		success: function(result) {
-			if (result.code == web_status.SUCCESS && id) {
-				if (filePathId) {
-					$('#' + filePathId).val(result.url);
+			if (result.code == web_status.SUCCESS) {
+				if (fullPathId) {
+					$('#' + fullPathId).val(result.url);
 				}
 				if (fileNameId) {
 					$('#' + fileNameId).val(result.originalFilename);
+				}
+				if (absolutePAthId) {
+					$('#' + absolutePAthId).val(result.fileName);
 				}
 
 			} else {

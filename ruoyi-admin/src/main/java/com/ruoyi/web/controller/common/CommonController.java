@@ -131,7 +131,11 @@ public class CommonController
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, realFileName);
 
-            FileUtils.writeBytes(filePath, response.getOutputStream());
+            // 本地资源路径
+            String localPath = Global.getProfile();
+            // 数据库资源地址
+            String downloadPath = localPath + StringUtils.substringAfter(filePath, Constants.RESOURCE_PREFIX);
+            FileUtils.writeBytes(downloadPath, response.getOutputStream());
             if (delete)
             {
                 FileUtils.deleteFile(filePath);
