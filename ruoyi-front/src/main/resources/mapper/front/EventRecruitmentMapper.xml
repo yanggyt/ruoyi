@@ -26,12 +26,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectEventRecruitmentList" parameterType="EventRecruitment" resultMap="EventRecruitmentResult">
         <include refid="selectEventRecruitmentVo"/>
         <where>  
-            <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="introduction != null  and introduction != ''"> and introduction = #{introduction}</if>
-            <if test="activityTime != null  and activityTime != ''"> and activity_time = #{activityTime}</if>
-            <if test="address != null  and address != ''"> and address = #{address}</if>
-            <if test="organizer != null  and organizer != ''"> and organizer = #{organizer}</if>
-            <if test="pictureUrl != null  and pictureUrl != ''"> and picture_url = #{pictureUrl}</if>
+            <if test="title != null  and title != ''"> and title like concat('%',#{title},'%')</if>
+            <if test="introduction != null  and introduction != ''"> and introduction like concat('%',#{introduction},'%')</if>
+            <if test="activityTime != null  and activityTime != ''"> and activity_time like concat('%',#{activityTime},'%') </if>
+            <if test="address != null  and address != ''"> and address like concat('%',#{address},'%') </if>
+            <if test="organizer != null  and organizer != ''"> and organizer like concat('%',#{organizer},'%') </if>
+            <if test="pictureUrl != null  and pictureUrl != ''"> and picture_url like concat('%',#{pictureUrl},'%') </if>
         </where>
     </select>
     
