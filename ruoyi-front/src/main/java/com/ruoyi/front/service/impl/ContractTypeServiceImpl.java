@@ -1,6 +1,9 @@
 package com.ruoyi.front.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.enums.UserStatus;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,18 @@ public class ContractTypeServiceImpl implements IContractTypeService
 {
     @Autowired
     private ContractTypeMapper contractTypeMapper;
+
+    /**
+     * 查询 正常的合同分类列表
+     *
+     * @return 合同分类
+     */
+    @Override
+    public List<ContractType> getNormalContractTypeList() {
+        ContractType contractType = new ContractType();
+        contractType.setDelFlag(Constants.NO_DELETE);
+        return this.selectContractTypeList(contractType);
+    }
 
     /**
      * 查询合同分类
