@@ -15,7 +15,7 @@
                                 <input type="text" name="name"/>
                             </li>
                             <li>
-                                <label>：</label>
+                                <label>英文名称：</label>
                                 <input type="text" name="englishName"/>
                             </li>
                             <li>
@@ -28,18 +28,18 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:contract:add">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:contractType:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:contract:edit">
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:contractType:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:contract:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:contractType:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:contract:export">
+                <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:contractType:export">
                     <i class="fa fa-download"></i> 导出
-                </a>
+                </a>-->
             </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
@@ -48,9 +48,9 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('front:contract:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('front:contract:remove')}]];
-        var prefix = ctx + "front/contract";
+        var editFlag = [[${@permission.hasPermi('front:contractType:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('front:contractType:remove')}]];
+        var prefix = ctx + "front/contractType";
 
         $(function() {
             var options = {
@@ -74,12 +74,12 @@
                 },
                 {
                     field: 'englishName',
-                    title: ''
+                    title: '分类英文名称'
                 },
-                {
+                /*{
                     field: 'remark',
                     title: '备注'
-                },
+                },*/
                 {
                     title: '操作',
                     align: 'center',

@@ -26,15 +26,15 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2020-10-21
  */
 @Controller
-@RequestMapping("/front/template")
+@RequestMapping("/front/contractTemplate")
 public class ContractTemplateController extends BaseController
 {
-    private String prefix = "front/template";
+    private String prefix = "front/contract_template";
 
     @Autowired
     private IContractTemplateService contractTemplateService;
 
-    @RequiresPermissions("front:template:view")
+    @RequiresPermissions("front:contract_template:view")
     @GetMapping()
     public String template()
     {
@@ -44,7 +44,7 @@ public class ContractTemplateController extends BaseController
     /**
      * 查询合同模板列表
      */
-    @RequiresPermissions("front:template:list")
+    @RequiresPermissions("front:contractTemplate:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(ContractTemplate contractTemplate)
@@ -57,7 +57,7 @@ public class ContractTemplateController extends BaseController
     /**
      * 导出合同模板列表
      */
-    @RequiresPermissions("front:template:export")
+    @RequiresPermissions("front:contractTemplate:export")
     @Log(title = "合同模板", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
@@ -80,7 +80,7 @@ public class ContractTemplateController extends BaseController
     /**
      * 新增保存合同模板
      */
-    @RequiresPermissions("front:template:add")
+    @RequiresPermissions("front:contractTemplate:add")
     @Log(title = "合同模板", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
@@ -103,7 +103,7 @@ public class ContractTemplateController extends BaseController
     /**
      * 修改保存合同模板
      */
-    @RequiresPermissions("front:template:edit")
+    @RequiresPermissions("front:contract_template:edit")
     @Log(title = "合同模板", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
@@ -115,7 +115,7 @@ public class ContractTemplateController extends BaseController
     /**
      * 删除合同模板
      */
-    @RequiresPermissions("front:template:remove")
+    @RequiresPermissions("front:contractTemplate:remove")
     @Log(title = "合同模板", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody

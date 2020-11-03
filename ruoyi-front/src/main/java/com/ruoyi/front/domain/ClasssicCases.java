@@ -39,7 +39,6 @@ public class ClasssicCases extends BaseEntity
     private Integer hits;
 
     /** 图片地址（多个地址用，分隔） */
-    @Excel(name = "图片地址", readConverterExp = "多=个地址用，分隔")
     private String pictureUrl;
 
     /** 状态（0正常 1停用） */
