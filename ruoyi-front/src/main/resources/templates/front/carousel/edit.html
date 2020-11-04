@@ -27,7 +27,10 @@
 
         function submitHandler() {
             if ($.validate.form()) {
-                uploadFile(false, "pictureUrl");
+                let result = uploadFile(false, "pictureUrl");
+                if (result != web_status.SUCCESS) {
+                    return;
+                }
                 $.operate.save(prefix + "/edit", $('#form-carousel-edit').serialize());
             }
         }
