@@ -68,11 +68,8 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:organization:add">
-                    <i class="fa fa-plus"></i> 添加
-                </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:organization:edit">
-                    <i class="fa fa-edit"></i> 修改
+                <a class="btn btn-primary multiple disabled" onclick="$.operate.auditAll()" shiro:hasPermission="front:organization:edit">
+                    <i class="fa fa-edit"></i> 审核
                 </a>
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:organization:remove">
                     <i class="fa fa-remove"></i> 删除
@@ -99,6 +96,7 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+                auditUrl: prefix + "/audit",
                 modalName: "服务组织",
                 columns: [{
                     checkbox: true

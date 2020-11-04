@@ -1,15 +1,14 @@
 package com.ruoyi.web.controller.front;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.front.domain.ServiceOrganization;
@@ -122,5 +121,30 @@ public class ServiceOrganizationController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(serviceOrganizationService.deleteServiceOrganizationByIds(ids));
+    }
+
+    /**
+     * 新增服务组织
+     */
+    @GetMapping("/audit")
+    public String audit(@RequestParam String ids, ModelMap mmap)
+    {
+        mmap.put("ids", ids);
+        return prefix + "/audit";
+    }
+
+    /**
+     * 审核服务组织
+     */
+    @PostMapping("/audit")
+    @ResponseBody
+    public AjaxResult audit(@RequestParam() String ids, @RequestParam String auditStatus, String remark)
+    {
+        // 未审核通过，则备注不能为空
+        if (StringUtils.isEmpty(remark) && auditStatus.equals(Constants.NO_PASS_AUDIT))  {
+            return error("备注不能为空");
+        }
+
+        return toAjax(serviceOrganizationService.audit(ids, auditStatus, remark));
     }
 }

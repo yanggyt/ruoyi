@@ -1227,7 +1227,20 @@ var table = {
                     $.modal.alertError(result.msg);
                 }
                 $.modal.closeLoading();
-            }
+            },
+
+			// 审核信息
+			auditAll: function() {
+				table.set();
+				let rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一条记录");
+					return;
+				}
+
+				let url =  table.options.auditUrl.concat("?ids=" + rows.join());
+				$.modal.open("审核" + table.options.modalName, url);
+			}
         },
         // 校验封装处理
         validate: {

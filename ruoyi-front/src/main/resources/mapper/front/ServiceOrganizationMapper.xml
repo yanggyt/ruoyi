@@ -138,4 +138,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <update id="auditServiceOrganization">
+        update service_organization
+        set check_by = #{checkBy},
+        check_time = now(),
+        remark = #{remark},
+        audit_status = #{auditStatus}
+        where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

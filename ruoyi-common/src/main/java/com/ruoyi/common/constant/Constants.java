@@ -106,4 +106,19 @@ public class Constants
      * 未删除
      */
     public static final String NO_DELETE = "0";
+
+    /**
+     * 待审核
+     */
+    public static final String WAIT_AUDIT = "0";
+
+    /**
+     * 审核不通过
+     */
+    public static final String NO_PASS_AUDIT = "1";
+
+    /**
+     * 审核通过
+     */
+    public static final String PASS_AUDIT = "2";
 }
