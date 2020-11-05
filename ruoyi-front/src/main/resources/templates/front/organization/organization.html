@@ -14,44 +14,44 @@
                                 <label>企业名称：</label>
                                 <input type="text" name="name"/>
                             </li>
-                            <li>
+                           <!-- <li>
                                 <label>联系人：</label>
                                 <input type="text" name="contacts"/>
                             </li>
                             <li>
                                 <label>联系电话：</label>
                                 <input type="text" name="phone"/>
-                            </li>
-                            <li>
+                            </li>-->
+                           <!-- <li>
                                 <label>标题：</label>
                                 <input type="text" name="title"/>
                             </li>
                             <li>
                                 <label>简介：</label>
                                 <input type="text" name="introduction"/>
-                            </li>
-                            <li>
+                            </li>-->
+                            <!--<li>
                                 <label>点击量：</label>
                                 <input type="text" name="hits"/>
+                            </li>-->
+                            <li>
+                                <label>审核状态：</label>
+                                    <select name="auditStatus" th:with="type=${@dict.getType('audit_status')}">
+                                        <option value="">所有</option>
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                    </select>
                             </li>
                             <li>
                                 <label>状态：</label>
-                                <select name="auditStatus">
+                                <select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
-                            <li>
-                                <label>状态：</label>
-                                <select name="status">
-                                    <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
-                                </select>
-                            </li>
-                            <li>
+                           <!-- <li>
                                 <label>审核者：</label>
                                 <input type="text" name="checkBy"/>
-                            </li>
+                            </li>-->
                             <li class="select-time">
                                 <label>审核时间：</label>
                                 <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCheckTime]"/>
@@ -68,18 +68,15 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:organization:add">
-                    <i class="fa fa-plus"></i> 添加
-                </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:organization:edit">
-                    <i class="fa fa-edit"></i> 修改
+                <a class="btn btn-primary multiple disabled" onclick="$.operate.auditAll()" shiro:hasPermission="front:organization:edit">
+                    <i class="fa fa-edit"></i> 审核
                 </a>
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:organization:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:organization:export">
+               <!-- <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:organization:export">
                     <i class="fa fa-download"></i> 导出
-                </a>
+                </a>-->
             </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
@@ -99,6 +96,7 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+                auditUrl: prefix + "/audit",
                 modalName: "服务组织",
                 columns: [{
                     checkbox: true
@@ -122,31 +120,31 @@
                 },
                 {
                     field: 'licenseUrl',
-                    title: '营业执照图片地址'
+                    title: '营业执照'
                 },
-                {
+               /* {
                     field: 'title',
                     title: '标题'
-                },
-                {
+                },*/
+              /*  {
                     field: 'introduction',
                     title: '简介'
-                },
-                {
+                },*/
+                /*{
                     field: 'content',
                     title: '机构详情内容'
-                },
+                },*/
                 {
                     field: 'hits',
                     title: '点击量'
                 },
                 {
                     field: 'auditStatus',
-                    title: '状态'
+                    title: '审核状态'
                 },
                 {
                     field: 'pictureUrl',
-                    title: '图片地址'
+                    title: '图片'
                 },
                 {
                     field: 'status',

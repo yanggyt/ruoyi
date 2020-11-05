@@ -2,6 +2,8 @@ package com.ruoyi.front.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.front.mapper.ServiceOrganizationMapper;
@@ -93,5 +95,19 @@ public class ServiceOrganizationServiceImpl implements IServiceOrganizationServi
     public int deleteServiceOrganizationById(Long id)
     {
         return serviceOrganizationMapper.deleteServiceOrganizationById(id);
+    }
+
+    /**
+     * 审核服务组织对象
+     * @param ids 服务组织IDs
+     * @param auditStatus 审核状态
+     * @param remark 审核备注
+     * @return
+     */
+    @Override
+    public int audit(String ids, String auditStatus, String remark)
+    {
+        SysUser user = ShiroUtils.getSysUser();
+        return serviceOrganizationMapper.auditServiceOrganization(Convert.toStrArray(ids), auditStatus, remark, user.getUserId().toString());
     }
 }

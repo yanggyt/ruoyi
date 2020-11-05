@@ -58,4 +58,13 @@ public interface IServiceOrganizationService
      * @return 结果
      */
     public int deleteServiceOrganizationById(Long id);
+
+    /**
+     * 审核服务组织对象
+     * @param ids 服务组织IDs
+     * @param auditStatus 审核状态
+     * @param remark 审核备注
+     * @return
+     */
+    public int audit(String ids, String auditStatus, String remark);
 }

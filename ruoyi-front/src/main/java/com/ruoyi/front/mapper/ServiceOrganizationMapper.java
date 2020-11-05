@@ -2,6 +2,7 @@ package com.ruoyi.front.mapper;
 
 import java.util.List;
 import com.ruoyi.front.domain.ServiceOrganization;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 服务组织Mapper接口
@@ -58,4 +59,13 @@ public interface ServiceOrganizationMapper
      * @return 结果
      */
     public int deleteServiceOrganizationByIds(String[] ids);
+
+    /**
+     * 审核组织
+     * @param ids
+     * @param auditStatus
+     * @param remark
+     * @return
+     */
+    public int auditServiceOrganization(@Param("ids") String[] ids, @Param("auditStatus")String auditStatus, @Param("remark")String remark, @Param("checkBy")String checkBy);
 }
