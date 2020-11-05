@@ -147,4 +147,14 @@ public class ServiceOrganizationController extends BaseController
 
         return toAjax(serviceOrganizationService.audit(ids, auditStatus, remark));
     }
+
+    /**
+     * 停用或者启用
+     */
+    @PostMapping("/updateStatus")
+    @ResponseBody
+    public AjaxResult updateStatus(@RequestParam() String ids, @RequestParam String status)
+    {
+        return toAjax(serviceOrganizationService.updateStatus(ids, status));
+    }
 }
