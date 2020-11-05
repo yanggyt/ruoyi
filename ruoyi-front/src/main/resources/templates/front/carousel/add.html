@@ -41,40 +41,40 @@
             }
         }
 
-        $(function() {
-            $('.summernote').summernote({
-                lang: 'zh-CN',
-                callbacks: {
-                    onChange: function(contents, $edittable) {
-                        $("input[name='" + this.id + "']").val(contents);
-                    },
-                    onImageUpload: function(files) {
-                        var obj = this;
-                        var data = new FormData();
-                        data.append("file", files[0]);
-                        $.ajax({
-                            type: "post",
-                            url: ctx + "common/upload",
-                            data: data,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: 'json',
-                            success: function(result) {
-                                if (result.code == web_status.SUCCESS) {
-                                    $('#' + obj.id).summernote('insertImage', result.url);
-                                } else {
-                                    $.modal.alertError(result.msg);
-                                }
-                            },
-                            error: function(error) {
-                                $.modal.alertWarning("图片上传失败。");
-                            }
-                        });
-                    }
-                }
-            });
-        });
+        // $(function() {
+        //     $('.summernote').summernote({
+        //         lang: 'zh-CN',
+        //         callbacks: {
+        //             onChange: function(contents, $edittable) {
+        //                 $("input[name='" + this.id + "']").val(contents);
+        //             },
+        //             onImageUpload: function(files) {
+        //                 var obj = this;
+        //                 var data = new FormData();
+        //                 data.append("file", files[0]);
+        //                 $.ajax({
+        //                     type: "post",
+        //                     url: ctx + "common/upload",
+        //                     data: data,
+        //                     cache: false,
+        //                     contentType: false,
+        //                     processData: false,
+        //                     dataType: 'json',
+        //                     success: function(result) {
+        //                         if (result.code == web_status.SUCCESS) {
+        //                             $('#' + obj.id).summernote('insertImage', result.url);
+        //                         } else {
+        //                             $.modal.alertError(result.msg);
+        //                         }
+        //                     },
+        //                     error: function(error) {
+        //                         $.modal.alertWarning("图片上传失败。");
+        //                     }
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
     </script>
 </body>
 </html>

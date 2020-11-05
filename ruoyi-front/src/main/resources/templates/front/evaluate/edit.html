@@ -2,6 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="include :: header('修改线上课程评价')" />
+    <th:block th:include="include :: datetimepicker-css" />
     <th:block th:include="include :: summernote-css" />
 </head>
 <body class="white-bg">
@@ -27,9 +28,35 @@
                     <input name="anonymousFlag" th:field="*{anonymousFlag}" class="form-control" type="text" required>
                 </div>
             </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box">
+                        <input type="radio" name="auditStatus" value="">
+                        <label th:for="auditStatus" th:text="未知"></label>
+                    </div>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">审核者：</label>
+                <div class="col-sm-8">
+                    <input name="checkBy" th:field="*{checkBy}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">审核时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="checkTime" th:value="${#dates.format(onlineCoursesEvaluate.checkTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
     <th:block th:include="include :: summernote-js" />
     <script th:inline="javascript">
         var prefix = ctx + "front/evaluate";
@@ -42,6 +69,12 @@
                 $.operate.save(prefix + "/edit", $('#form-evaluate-edit').serialize());
             }
         }
+
+        $("input[name='checkTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
 
         $(function() {
             $('.summernote').each(function(i) {

@@ -18,10 +18,10 @@
                                 <label>简介：</label>
                                 <input type="text" name="introduction"/>
                             </li>
-                            <li>
+                            <!--<li>
                                 <label>点击量：</label>
                                 <input type="text" name="hits"/>
-                            </li>
+                            </li>-->
                             <li>
                                 <label>针对人群：</label>
                                 <input type="text" name="targetPeople"/>
@@ -35,10 +35,15 @@
                                 <input type="text" name="coursesLevel"/>
                             </li>
                             <li>
-                                <label>状态：</label>
+                                <!--<label>状态：</label>
                                 <select name="status">
                                     <option value="">所有</option>
                                     <option value="-1">代码生成请选择字典属性</option>
+                                </select>-->
+                                <label>状态：</label>
+                                <select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
                             <li>
@@ -54,15 +59,19 @@
                 <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="front:courses:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:courses:edit">
+                <!--<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="front:courses:edit">
                     <i class="fa fa-edit"></i> 修改
-                </a>
+                </a>-->
+                <!--actions.push('<a class="btn btn-success btn-xs ' + evaluateFlag + '" href="javascript:void(0)" onclick="toEvaluateList(\'' + row.id + '\')"><i class="fa fa-edit"></i>管理评论</a>');-->
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:courses:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:courses:export">
-                    <i class="fa fa-download"></i> 导出
+                <a class="btn btn-success" onclick="toEvaluateList()" shiro:hasPermission="front:evaluate:view">
+                    <i class="fa fa-edit"></i> 评论管理
                 </a>
+                <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:courses:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>-->
             </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
@@ -74,8 +83,12 @@
         var editFlag = [[${@permission.hasPermi('front:courses:edit')}]];
         var removeFlag = [[${@permission.hasPermi('front:courses:remove')}]];
         var prefix = ctx + "front/courses";
-
+        function toEvaluateList() {
+            var url = ctx +"front/evaluate";
+            $.modal.openTab("评价管理" ,url );
+        }
         $(function() {
+
             var options = {
                 url: prefix + "/list",
                 createUrl: prefix + "/add",
@@ -117,7 +130,10 @@
                 },
                 {
                     field: 'pictureUrl',
-                    title: '图片地址'
+                    title: '图片地址',
+                    formatter: function(value, row, index) {
+                        return $.table.imageView(value);
+                    }
                 },
                 {
                     field: 'videoUrl',
@@ -140,6 +156,7 @@
             };
             $.table.init(options);
         });
+
     </script>
 </body>
 </html>

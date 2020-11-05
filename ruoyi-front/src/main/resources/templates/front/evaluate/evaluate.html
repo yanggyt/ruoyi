@@ -14,9 +14,26 @@
                                 <label>线上课程ID：</label>
                                 <input type="text" name="onlineCoursesId"/>
                             </li>
+                            <!--<li>-->
+                                <!--<label>匿名标志：</label>-->
+                                <!--<input type="text" name="anonymousFlag"/>-->
+                            <!--</li>-->
                             <li>
-                                <label>匿名标志：</label>
-                                <input type="text" name="anonymousFlag"/>
+                                <label>状态：</label>
+                                <select name="auditStatus">
+                                    <option value="">所有</option>
+                                    <option value="-1">代码生成请选择字典属性</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>审核者：</label>
+                                <input type="text" name="checkBy"/>
+                            </li>
+                            <li class="select-time">
+                                <label>审核时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCheckTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCheckTime]"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -79,6 +96,18 @@
                 {
                     field: 'anonymousFlag',
                     title: '匿名标志'
+                },
+                {
+                    field: 'auditStatus',
+                    title: '状态'
+                },
+                {
+                    field: 'checkBy',
+                    title: '审核者'
+                },
+                {
+                    field: 'checkTime',
+                    title: '审核时间'
                 },
                 {
                     title: '操作',

@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.front;
+package com.ruoyi.front.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,7 +23,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 线上课程评价Controller
  * 
  * @author ruoyi
- * @date 2020-10-21
+ * @date 2020-11-05
  */
 @Controller
 @RequestMapping("/front/evaluate")

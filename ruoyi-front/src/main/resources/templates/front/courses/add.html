@@ -18,12 +18,12 @@
                     <input name="introduction" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
+            <!--<div class="form-group">
                 <label class="col-sm-3 control-label">点击量：</label>
                 <div class="col-sm-8">
                     <input name="hits" class="form-control" type="text">
                 </div>
-            </div>
+            </div>-->
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">针对人群：</label>
                 <div class="col-sm-8">
@@ -43,18 +43,20 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label is-required">图片地址：</label>
+                <label class="col-sm-3 control-label is-required">图片：</label>
                 <div class="col-sm-8">
-                    <textarea name="pictureUrl" class="form-control" required></textarea>
+                    <input id="filePath" name="filePath" class="form-control" type="file">
+                    <input id="pictureUrl" name="pictureUrl" type="text" hidden>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label is-required">视频地址：</label>
+                <label class="col-sm-3 control-label is-required">视频信息：</label>
                 <div class="col-sm-8">
-                    <textarea name="videoUrl" class="form-control" required></textarea>
+                    <input id="videoFilePath" name="videoFilePath" class="form-control" type="file" multiple data-min-file-count="1" data-theme="fas">
+                    <input id="videoUrl" name="videoUrl"  type="text" hidden>
                 </div>
             </div>
-            <div class="form-group">    
+            <!--<div class="form-group">
                 <label class="col-sm-3 control-label">状态：</label>
                 <div class="col-sm-8">
                     <div class="radio-box">
@@ -63,13 +65,22 @@
                     </div>
                     <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
                 </div>
+            </div>-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">
+                        <input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${dict.default}">
+                        <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">    
+            <!--<div class="form-group">
                 <label class="col-sm-3 control-label">删除标志：</label>
                 <div class="col-sm-8">
                     <input name="delFlag" class="form-control" type="text">
                 </div>
-            </div>
+            </div>-->
         </form>
     </div>
     <th:block th:include="include :: footer" />
@@ -81,9 +92,51 @@
 
         function submitHandler() {
             if ($.validate.form()) {
+                let result = uploadFile(false, "pictureUrl");
+                if (result != web_status.SUCCESS) {
+                    return;
+                }
+                let result2 = uploadMoreFile(false, "videoUrl","videoFilePath");
+                if (result2 != web_status.SUCCESS) {
+                    return;
+                }
                 $.operate.save(prefix + "/add", $('#form-courses-add').serialize());
             }
         }
+        // $(function() {
+        //     $('.summernote').summernote({
+        //         lang: 'zh-CN',
+        //         callbacks: {
+        //             onChange: function(contents, $edittable) {
+        //                 $("input[name='" + this.id + "']").val(contents);
+        //             },
+        //             onImageUpload: function(files) {
+        //                 var obj = this;
+        //                 var data = new FormData();
+        //                 data.append("file", files[0]);
+        //                 $.ajax({
+        //                     type: "post",
+        //                     url: ctx + "common/upload",
+        //                     data: data,
+        //                     cache: false,
+        //                     contentType: false,
+        //                     processData: false,
+        //                     dataType: 'json',
+        //                     success: function(result) {
+        //                         if (result.code == web_status.SUCCESS) {
+        //                             $('#' + obj.id).summernote('insertImage', result.url);
+        //                         } else {
+        //                             $.modal.alertError(result.msg);
+        //                         }
+        //                     },
+        //                     error: function(error) {
+        //                         $.modal.alertWarning("图片上传失败。");
+        //                     }
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
     </script>
 </body>
 </html>

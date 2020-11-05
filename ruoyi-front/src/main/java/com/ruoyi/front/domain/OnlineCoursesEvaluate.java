@@ -1,5 +1,6 @@
 package com.ruoyi.front.domain;
 
+import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -9,7 +10,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 线上课程评价对象 online_courses_evaluate
  * 
  * @author ruoyi
- * @date 2020-10-21
+ * @date 2020-11-05
  */
 public class OnlineCoursesEvaluate extends BaseEntity
 {
@@ -32,6 +33,18 @@ public class OnlineCoursesEvaluate extends BaseEntity
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
+
+    /** 状态（0:待审核，1：审核不通过，2：审核通过） */
+    @Excel(name = "状态", readConverterExp = "0=:待审核，1：审核不通过，2：审核通过")
+    private String auditStatus;
+
+    /** 审核者 */
+    @Excel(name = "审核者")
+    private String checkBy;
+
+    /** 审核时间 */
+    @Excel(name = "审核时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date checkTime;
 
     public void setId(Long id) 
     {
@@ -78,6 +91,33 @@ public class OnlineCoursesEvaluate extends BaseEntity
     {
         return delFlag;
     }
+    public void setAuditStatus(String auditStatus) 
+    {
+        this.auditStatus = auditStatus;
+    }
+
+    public String getAuditStatus() 
+    {
+        return auditStatus;
+    }
+    public void setCheckBy(String checkBy) 
+    {
+        this.checkBy = checkBy;
+    }
+
+    public String getCheckBy() 
+    {
+        return checkBy;
+    }
+    public void setCheckTime(Date checkTime) 
+    {
+        this.checkTime = checkTime;
+    }
+
+    public Date getCheckTime() 
+    {
+        return checkTime;
+    }
 
     @Override
     public String toString() {
@@ -91,6 +131,9 @@ public class OnlineCoursesEvaluate extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
+            .append("auditStatus", getAuditStatus())
+            .append("checkBy", getCheckBy())
+            .append("checkTime", getCheckTime())
             .toString();
     }
 }

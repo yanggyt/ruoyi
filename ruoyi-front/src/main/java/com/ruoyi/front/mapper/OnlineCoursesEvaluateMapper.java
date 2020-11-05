@@ -7,7 +7,7 @@ import com.ruoyi.front.domain.OnlineCoursesEvaluate;
  * 线上课程评价Mapper接口
  * 
  * @author ruoyi
- * @date 2020-10-21
+ * @date 2020-11-05
  */
 public interface OnlineCoursesEvaluateMapper 
 {

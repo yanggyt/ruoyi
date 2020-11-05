@@ -14,10 +14,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="checkBy"    column="check_by"    />
+        <result property="checkTime"    column="check_time"    />
     </resultMap>
 
     <sql id="selectOnlineCoursesEvaluateVo">
-        select id, online_courses_id, evaluate_content, anonymous_flag, del_flag, create_by, create_time, update_by, update_time from online_courses_evaluate
+        select id, online_courses_id, evaluate_content, anonymous_flag, del_flag, create_by, create_time, update_by, update_time, audit_status, check_by, check_time from online_courses_evaluate
     </sql>
 
     <select id="selectOnlineCoursesEvaluateList" parameterType="OnlineCoursesEvaluate" resultMap="OnlineCoursesEvaluateResult">
@@ -26,6 +29,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="onlineCoursesId != null "> and online_courses_id = #{onlineCoursesId}</if>
             <if test="evaluateContent != null  and evaluateContent != ''"> and evaluate_content = #{evaluateContent}</if>
             <if test="anonymousFlag != null  and anonymousFlag != ''"> and anonymous_flag = #{anonymousFlag}</if>
+            <if test="auditStatus != null  and auditStatus != ''"> and audit_status = #{auditStatus}</if>
+            <if test="checkBy != null  and checkBy != ''"> and check_by = #{checkBy}</if>
+            <if test="checkTime != null "> and check_time = #{checkTime}</if>
         </where>
     </select>
     
@@ -45,6 +51,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="checkBy != null">check_by,</if>
+            <if test="checkTime != null">check_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="onlineCoursesId != null">#{onlineCoursesId},</if>
@@ -55,6 +64,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="checkBy != null">#{checkBy},</if>
+            <if test="checkTime != null">#{checkTime},</if>
          </trim>
     </insert>
 
@@ -69,6 +81,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="checkBy != null">check_by = #{checkBy},</if>
+            <if test="checkTime != null">check_time = #{checkTime},</if>
         </trim>
         where id = #{id}
     </update>
