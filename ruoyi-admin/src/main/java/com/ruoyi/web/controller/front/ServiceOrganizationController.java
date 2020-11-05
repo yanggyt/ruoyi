@@ -136,6 +136,7 @@ public class ServiceOrganizationController extends BaseController
     /**
      * 审核服务组织
      */
+    @RequiresPermissions("front:organization:audit")
     @PostMapping("/audit")
     @ResponseBody
     public AjaxResult audit(@RequestParam() String ids, @RequestParam String auditStatus, String remark)
@@ -151,6 +152,7 @@ public class ServiceOrganizationController extends BaseController
     /**
      * 停用或者启用
      */
+    @RequiresPermissions("front:organization:updateStatus")
     @PostMapping("/updateStatus")
     @ResponseBody
     public AjaxResult updateStatus(@RequestParam() String ids, @RequestParam String status)
