@@ -1155,6 +1155,20 @@ var table = {
         	    };
         	    $.ajax(config)
             },
+			// 审核信息
+			audit: function(id) {
+				table.set();
+				$.modal.confirm("确定该条" + table.options.modalName + "信息吗？", function() {
+					var url = $.common.isEmpty(id) ? table.options.removeUrl : table.options.removeUrl.replace("{id}", id);
+					if(table.options.type == table_type.bootstrapTreeTable) {
+						$.operate.get(url);
+					} else {
+						var data = { "ids": id };
+						$.operate.submit(url, "post", "json", data);
+					}
+				});
+
+			},
             // 保存结果弹出msg刷新table表格
             ajaxSuccess: function (result) {
             	if (result.code == web_status.SUCCESS && table.options.type == table_type.bootstrapTable) {
