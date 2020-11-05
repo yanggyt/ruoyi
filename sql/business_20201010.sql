@@ -191,7 +191,8 @@ drop table if exists common_problem;
 create table common_problem (
   id  bigint(20) not null auto_increment  comment 'ID',
   title  varchar(50) not null  comment '标题',
-  content  text  not null comment '内容',
+  content  text  not null comment '问题描述内容',
+  explains  text  not null comment '内容',
   hits  int (6)  default 0 comment '点击量',
   del_flag  char(1)  default '0' comment '删除标志（0代表存在 2代表删除）',
   create_by  varchar(64)  default '' comment '创建者',

@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="title"    column="title"    />
         <result property="content"    column="content"    />
+        <result property="explains"    column="explains"    />
         <result property="hits"    column="hits"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createBy"    column="create_by"    />
@@ -17,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectCommonProblemVo">
-        select id, title, content, hits, del_flag, create_by, create_time, update_by, update_time from common_problem
+        select id, title, content, explains, hits, del_flag, create_by, create_time, update_by, update_time from common_problem
     </sql>
 
     <select id="selectCommonProblemList" parameterType="CommonProblem" resultMap="CommonProblemResult">
@@ -39,6 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="title != null and title != ''">title,</if>
             <if test="content != null and content != ''">content,</if>
+            <if test="explains != null and explains != ''">explains,</if>
             <if test="hits != null">hits,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="createBy != null">create_by,</if>
@@ -49,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="title != null and title != ''">#{title},</if>
             <if test="content != null and content != ''">#{content},</if>
+            <if test="explains != null and explains != ''">#{explains},</if>
             <if test="hits != null">#{hits},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createBy != null">#{createBy},</if>
@@ -63,6 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="title != null and title != ''">title = #{title},</if>
             <if test="content != null and content != ''">content = #{content},</if>
+            <if test="explains != null and explains != ''">explains = #{explains},</if>
             <if test="hits != null">hits = #{hits},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="createBy != null">create_by = #{createBy},</if>

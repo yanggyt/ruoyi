@@ -26,6 +26,10 @@ public class CommonProblem extends BaseEntity
     @Excel(name = "内容")
     private String content;
 
+    /** 内容 */
+    @Excel(name = "解析")
+    private String explains;
+
     /** 点击量 */
     @Excel(name = "点击量")
     private Integer hits;
@@ -77,6 +81,14 @@ public class CommonProblem extends BaseEntity
     public String getDelFlag() 
     {
         return delFlag;
+    }
+
+    public String getExplains() {
+        return explains;
+    }
+
+    public void setExplains(String explains) {
+        this.explains = explains;
     }
 
     @Override
