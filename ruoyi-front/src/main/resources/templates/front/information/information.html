@@ -18,15 +18,15 @@
                                 <label>简介：</label>
                                 <input type="text" name="introduction"/>
                             </li>
-                            <li>
+                            <!--<li>
                                 <label>点击量：</label>
                                 <input type="text" name="hits"/>
-                            </li>
+                            </li>-->
                             <li>
                                 <label>状态：</label>
-                                <select name="status">
+                                <select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
                             <li>
@@ -48,9 +48,9 @@
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="front:information:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:information:export">
+                <!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="front:information:export">
                     <i class="fa fa-download"></i> 导出
-                </a>
+                </a>-->
             </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
@@ -61,6 +61,7 @@
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('front:information:edit')}]];
         var removeFlag = [[${@permission.hasPermi('front:information:remove')}]];
+        var dictStatus = [[${@dict.getType('sys_normal_disable')}]];
         var prefix = ctx + "front/information";
 
         $(function() {
@@ -97,7 +98,10 @@
                 },
                 {
                     field: 'status',
-                    title: '状态'
+                    title: '状态',
+                    formatter: function(value, item, index) {
+                        return $.table.selectDictLabel(dictStatus, item.status);
+                    }
                 },
                 {
                     title: '操作',
