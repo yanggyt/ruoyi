@@ -1240,6 +1240,20 @@ var table = {
 
 				let url =  table.options.auditUrl.concat("?ids=" + rows.join());
 				$.modal.open("审核" + table.options.modalName, url);
+			},
+
+			//启用or停用
+			updateStatusAll: function(status) {
+				table.set();
+				let rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一条记录");
+					return;
+				}
+
+				var url = table.options.updateStatusUrl;
+				var data = { "ids": rows.join(), "status": status};
+				$.operate.submit(url, "post", "json", data);
 			}
         },
         // 校验封装处理

@@ -68,4 +68,12 @@ public interface ServiceOrganizationMapper
      * @return
      */
     public int auditServiceOrganization(@Param("ids") String[] ids, @Param("auditStatus")String auditStatus, @Param("remark")String remark, @Param("checkBy")String checkBy);
+
+    /**
+     * 变更状态
+     * @param ids 组织机构id
+     * @param status 状态
+     * @return
+     */
+    public int updateStatus(@Param("ids") String[] ids, @Param("status")String status, @Param("updateBy")String updateBy);
 }

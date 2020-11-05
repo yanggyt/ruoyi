@@ -10,6 +10,7 @@ import com.ruoyi.front.mapper.ServiceOrganizationMapper;
 import com.ruoyi.front.domain.ServiceOrganization;
 import com.ruoyi.front.service.IServiceOrganizationService;
 import com.ruoyi.common.core.text.Convert;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 服务组织Service业务层处理
@@ -104,10 +105,24 @@ public class ServiceOrganizationServiceImpl implements IServiceOrganizationServi
      * @param remark 审核备注
      * @return
      */
+    @Transactional
     @Override
     public int audit(String ids, String auditStatus, String remark)
     {
         SysUser user = ShiroUtils.getSysUser();
         return serviceOrganizationMapper.auditServiceOrganization(Convert.toStrArray(ids), auditStatus, remark, user.getUserId().toString());
+    }
+
+    /**
+     * 停用或者启用服务组织对象
+     * @param ids 服务组织IDs
+     * @param status 状态
+     * @return
+     */
+    @Transactional
+    @Override
+    public int updateStatus(String ids, String status) {
+        SysUser user = ShiroUtils.getSysUser();
+        return serviceOrganizationMapper.updateStatus(Convert.toStrArray(ids), status, user.getUserId().toString());
     }
 }

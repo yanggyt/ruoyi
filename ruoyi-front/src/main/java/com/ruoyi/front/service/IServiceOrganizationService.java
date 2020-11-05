@@ -67,4 +67,12 @@ public interface IServiceOrganizationService
      * @return
      */
     public int audit(String ids, String auditStatus, String remark);
+
+    /**
+     * 停用或者启用服务组织对象
+     * @param ids 服务组织IDs
+     * @param status 状态
+     * @return
+     */
+    public int updateStatus(String ids, String status);
 }
