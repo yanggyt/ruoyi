@@ -2,6 +2,7 @@ package com.ruoyi.front.service;
 
 import java.util.List;
 import com.ruoyi.front.domain.OnlineCoursesEvaluate;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 线上课程评价Service接口
@@ -58,4 +59,11 @@ public interface IOnlineCoursesEvaluateService
      * @return 结果
      */
     public int deleteOnlineCoursesEvaluateById(Long id);
+    /**
+     * 审核评论
+     * @param ids
+     * @param auditStatus
+     * @return
+     */
+    public int audit(String ids, String auditStatus, String remark);
 }

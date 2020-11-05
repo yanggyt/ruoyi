@@ -134,6 +134,7 @@ public class OnlineCoursesEvaluate extends BaseEntity
             .append("auditStatus", getAuditStatus())
             .append("checkBy", getCheckBy())
             .append("checkTime", getCheckTime())
+            .append("remark", getRemark())
             .toString();
     }
 }

@@ -2,6 +2,7 @@ package com.ruoyi.front.mapper;
 
 import java.util.List;
 import com.ruoyi.front.domain.OnlineCoursesEvaluate;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 线上课程评价Mapper接口
@@ -58,4 +59,12 @@ public interface OnlineCoursesEvaluateMapper
      * @return 结果
      */
     public int deleteOnlineCoursesEvaluateByIds(String[] ids);
+
+    /**
+     * 审核评论
+     * @param ids
+     * @param auditStatus
+     * @return
+     */
+    public int auditOnlineCoursesEvaluateByIds(@Param("ids") String[] ids, @Param("auditStatus")String auditStatus,  @Param("checkBy")String checkBy,@Param("remark")String remark);
 }

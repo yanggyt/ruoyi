@@ -2,6 +2,8 @@ package com.ruoyi.front.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.front.mapper.OnlineCoursesEvaluateMapper;
@@ -93,5 +95,18 @@ public class OnlineCoursesEvaluateServiceImpl implements IOnlineCoursesEvaluateS
     public int deleteOnlineCoursesEvaluateById(Long id)
     {
         return onlineCoursesEvaluateMapper.deleteOnlineCoursesEvaluateById(id);
+    }
+
+    /**
+     * 评论批量审核
+     * @param ids IDs
+     * @param auditStatus 审核状态
+     * @return
+     */
+    @Override
+    public int audit(String ids, String auditStatus, String remark)
+    {
+        SysUser user = ShiroUtils.getSysUser();
+        return onlineCoursesEvaluateMapper.auditOnlineCoursesEvaluateByIds(Convert.toStrArray(ids), auditStatus, user.getUserId().toString(),remark);
     }
 }
