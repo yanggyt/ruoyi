@@ -39,9 +39,31 @@
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">课程难度等级：</label>
+                <!--<div class="col-sm-8">-->
+                    <!--<input name="coursesLevel" th:field="*{coursesLevel}" class="form-control" type="text" required>-->
+                <!--</div>-->
+                <!--<div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('course_level')}" th:field="*{coursesLevel}">
+                        <input type="radio" th:id="${dict.dictCode}" name="coursesLevel" th:value="${dict.dictValue}" th:checked="${dict.default}">
+                        <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>-->
+                <!--<select name="coursesLevel" th:with="type=${@dict.getType('course_level')}" class="col-sm-8">-->
+                    <!--<th:block th:each="dict : ${type}">-->
+                        <!--<th:block th:if="${dict.dictValue ne '0'}">-->
+                            <!--<option th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:selected="${dict.dictValue eq coursesLevel}"/>-->
+                        <!--</th:block>-->
+                    <!--</th:block>-->
+                <!--</select>-->
                 <div class="col-sm-8">
-                    <input name="coursesLevel" th:field="*{coursesLevel}" class="form-control" type="text" required>
+                    <select th:field="*{coursesLevel}" class="form-control">
+                        <option th:each="dict : ${@dict.getType('course_level')}" th:value="${dict.dictValue}" th:text="${dict.dictLabel}"></option>
+                    </select>
                 </div>
+                <!--<select name="coursesLevel" th:with="type=${@dict.getType('course_level')}">-->
+                    <!--<option value="">所有</option>-->
+                    <!--<option th:selected="${dict.dictValue eq *{coursesLevel}}" th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                <!--</select>-->
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">图片：</label>
