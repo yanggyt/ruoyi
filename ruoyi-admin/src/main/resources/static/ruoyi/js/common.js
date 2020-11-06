@@ -505,7 +505,7 @@ function uploadFile(async, fullPathId, fileNameId, absolutePAthId) {
 function uploadMoreFile(async, fullPathId,formNameId, fileNameId, absolutePAthId) {
     let res = -1;
     var formData = new FormData();
-    if ($('#filePath')[0].files[0] == null) {
+    if ($('#'+formNameId)[0].files[0] == null) {
         $.modal.alertWarning("请先选择文件路径");
         return res;
     }
