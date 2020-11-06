@@ -104,19 +104,25 @@ create table online_courses (
 
 
 -- 6、 线上课程评价表
-drop table if exists online_courses_evaluate;
-create table online_courses_evaluate (
-  id  bigint(20) not null auto_increment  comment 'ID',
-  online_courses_id  bigint(20) not null  comment '线上课程ID',
-  evaluate_content  varchar(1500) not null comment '评价内容',
-  anonymous_flag  char(1)  not null  comment '匿名标志（0匿名 1用户）',
-  del_flag   char(1)   default '0' comment '删除标志（0代表存在 2代表删除）',
-  create_by  varchar(64)  default '' comment '创建者',
-  create_time  datetime    comment '创建时间',
-  update_by  varchar(64)  default ''  comment '更新者',
-  update_time  datetime  comment '更新时间',
-  primary key (id)
-) engine=innodb auto_increment=10 comment = '线上课程评价表';
+DROP TABLE IF EXISTS `online_courses_evaluate`;
+CREATE TABLE `online_courses_evaluate`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `online_courses_id` bigint(20) NOT NULL COMMENT '线上课程ID',
+  `evaluate_content` varchar(1500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '评价内容',
+  `anonymous_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '匿名标志（0匿名 1用户）',
+  `del_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 1代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `audit_status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '状态（0:待审核，1：审核不通过，2：审核通过）',
+  `check_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '审核者',
+  `check_time` datetime(0) NULL DEFAULT NULL COMMENT '审核时间',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '线上课程评价表' ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- 7、 新闻动态表
 drop table if exists news_information;
