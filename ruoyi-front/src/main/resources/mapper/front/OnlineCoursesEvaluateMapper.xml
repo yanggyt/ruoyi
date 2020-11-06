@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="OnlineCoursesEvaluate" id="OnlineCoursesEvaluateResult">
         <result property="id"    column="id"    />
         <result property="onlineCoursesId"    column="online_courses_id"    />
+        <result property="onlineCoursesName"    column="online_courses_name"    />
         <result property="evaluateContent"    column="evaluate_content"    />
         <result property="anonymousFlag"    column="anonymous_flag"    />
         <result property="delFlag"    column="del_flag"    />
@@ -21,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectOnlineCoursesEvaluateVo">
-        select ce.id, ce.online_courses_id, ce.evaluate_content, ce.anonymous_flag, ce.create_by, ce.create_time, ce.update_by, ce.update_time, ce.audit_status, su.login_name check_by, ce.remark,ce.check_time from online_courses_evaluate ce left join sys_user su on ce.check_by=su.user_id
+        select ce.id, ce.online_courses_id,oc.title online_courses_name, ce.evaluate_content, ce.anonymous_flag, ce.create_by, ce.create_time, ce.update_by, ce.update_time, ce.audit_status, su.user_name check_by, ce.remark,ce.check_time from online_courses_evaluate ce join online_courses oc on ce.online_courses_id=oc.id left join sys_user su on ce.check_by=su.user_id
     </sql>
 
     <select id="selectOnlineCoursesEvaluateList" parameterType="OnlineCoursesEvaluate" resultMap="OnlineCoursesEvaluateResult">

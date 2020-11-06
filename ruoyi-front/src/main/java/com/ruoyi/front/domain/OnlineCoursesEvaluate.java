@@ -23,6 +23,9 @@ public class OnlineCoursesEvaluate extends BaseEntity
     @Excel(name = "线上课程ID")
     private Long onlineCoursesId;
 
+    //线上课程标题
+    private String onlineCoursesName;
+
     /** 评价内容 */
     @Excel(name = "评价内容")
     private String evaluateContent;
@@ -49,6 +52,15 @@ public class OnlineCoursesEvaluate extends BaseEntity
     public void setId(Long id) 
     {
         this.id = id;
+    }
+
+    public String getOnlineCoursesName()
+    {
+        return onlineCoursesName;
+    }
+    public void setOnlineCoursesName(String  onlineCoursesName)
+    {
+        this.onlineCoursesName = onlineCoursesName;
     }
 
     public Long getId() 
@@ -124,6 +136,7 @@ public class OnlineCoursesEvaluate extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("onlineCoursesId", getOnlineCoursesId())
+            .append("onlineCoursesName", getOnlineCoursesName())
             .append("evaluateContent", getEvaluateContent())
             .append("anonymousFlag", getAnonymousFlag())
             .append("delFlag", getDelFlag())
