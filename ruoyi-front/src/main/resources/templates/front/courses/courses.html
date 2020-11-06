@@ -136,7 +136,12 @@
                 },
                 {
                     field: 'videoUrl',
-                    title: '视频地址'
+                    title: '视频地址',
+                    width : 200,
+                    height : 300,
+                    formatter: function(value, row, index) {
+                        return $.table.videoView(value);
+                    }
                 },
                 {
                     field: 'status',

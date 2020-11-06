@@ -336,6 +336,22 @@ var table = {
 					return $.common.nullToStr(value);
 				}
 			},
+			// 图片预览
+			videoView: function (value, height, width, target) {
+				if ($.common.isEmpty(width)) {
+					width = 'auto';
+				}
+				if ($.common.isEmpty(height)) {
+					height = 'auto';
+				}
+				// blank or self
+				var _target = $.common.isEmpty(target) ? 'self' : target;
+				if ($.common.isNotEmpty(value)) {
+					return $.common.sprintf("<video controls data-height='%s' data-width='%s' data-target='%s'><source src='%s' type='video/mp4'></video>", height, width, _target, value);
+				} else {
+					return $.common.nullToStr(value);
+				}
+			},
             // 搜索-默认第一个form
             search: function(formId, tableId) {
             	table.set(tableId);
