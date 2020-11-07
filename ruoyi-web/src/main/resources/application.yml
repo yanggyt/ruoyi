@@ -47,7 +47,8 @@ spring:
     mode: HTML
     encoding: utf-8
     # 禁用缓存
-    cache: false
+    cache: false #cache: 是否缓存，开发模式下设置为false，避免改了模板还要重启服务器，线上设置为true，可以提高性能。
+    prefix: classpath:/templates/home/
   # 资源信息
   messages:
     # 国际化资源文件路径

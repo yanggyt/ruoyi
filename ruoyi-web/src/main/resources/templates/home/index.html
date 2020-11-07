@@ -22,61 +22,9 @@
 </head>
 
 <body>
+<div th:fragment="main">
     <!-- header -->
-    <header>
-        <div class="header">
-            <div class="logo">
-                <a href="">
-                    <img th:src="@{/images/logo.png}" alt="" class="hui">
-                    <img th:src="@{/images/logo_m.png}" alt="" class="zheng">
-                </a>
-
-            </div>
-            <div class="naver">
-                <div class="nav">
-                    <ul>
-                        <li><a href="" class="active">首页</a></li>
-                        <li><a href="">典型案例</a></li>
-                        <li><a href="">服务机构</a></li>
-                        <li><a href="">合同模板</a></li>
-                        <li><a href="">线上课程</a></li>
-                        <li><a href="">新闻动态</a></li>
-                        <li><a href="">扶持政策</a></li>
-                        <li><a href="">法律法规</a></li>
-                        <li><a href="">关于平台</a></li>
-                    </ul>
-                </div>
-                <div class="haer_l">
-                    <div class="schear">
-                        <img th:src="@{images/schear.png}" alt="" class="hui">
-                        <img th:src="@{images/schear_h.png}" alt="" class="hui_h">
-                        <img th:src="@{/images/gb_ss.png}" alt="" class="zheng">
-                    </div>
-                    <div class="login">
-                        <div class="user_img">
-                            <img th:src="@{/images/user.png}" alt="" class="hui">
-                            <img th:src="@{/images/user_h.png}" alt="" class="zheng">
-                        </div>
-                        <div class="login_index">
-                            <a href="">登录</a>
-                            <span>|</span>
-                            <a href="">注册</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 搜索 -->
-        <div class="search_bj">
-            <div class="sear_bj_t">
-                <form action="">
-                    <div class="search_box fix">
-                        <input type="text" class="inp_box" name="keywords" id="keyword" placeholder="搜索你想查找的内容">
-                        <button class="search_ico icon01"></button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <th:block th:replace="header :: header"/>
     </header>
     <!-- header  end-->
 
@@ -888,83 +836,9 @@
             </div>
         </div>
     </section>
-    <!-- 底部 -->
-    <footer class="fix">
-        <div class="warp">
-            <div class="footer_l">
-                <div class="index_title ab">
-                    <div class="index_h3">
-                        <h3>联系方式</h3> <span>/</span> <span>Contact Information</span></div>
-                </div>
-                <div class="footer_ul fix">
-                    <ul>
-                        <li>
-
-                            机构地址：中国上海市北海路8号8楼
-
-                        </li>
-                        <li>
-                            服务电话：021-6321225
-                        </li>
-                        <li>
-                            监督电话：021-63278777
-                        </li>
-                        <li>
-                            联系邮箱： zzcx@huangpuqu.sh.cn
-
-                        </li>
-                        <li>
-
-                            服务时间：周一至周五（09:00-11:30 13:00-16:30）
-                        </li>
-                    </ul>
-                </div>
-                <div class="bqyz fix">
-                    <div class="bayz_img">
-                        <a href=""> <img th:src="@{/images/icon26.png}" alt=""></a>
-
-                        <p>
-                            版权所有：<a href="">上海市黄浦区司法局</a> | <a href="">黄浦区商务委</a>
-                        </p>
-                    </div>
-                    <p>监督部门：<a href=""> 黄浦区中小企业服务中心</a></p>
-
-
-                </div>
-            </div>
-            <div class="footer_r">
-                <div class="index_title ab">
-                    <div class="index_h3">
-                        <h3>在线留言</h3> <span>/</span> <span>Online Message</span></div>
-                </div>
-                <div class="form_index">
-                    <form action="" class="layui-form">
-                        <div class="item rel">
-                            <div class="tit abs">请输入您的姓名</div>
-                            <input type="text" class="layui-input inp1" name="name" id="name" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？">
-                        </div>
-                        <div class="item rel">
-                            <div class="tit abs">请输入您的邮箱</div>
-                            <input type="text" name="email" lay-verify="email" lay-reqtext="邮箱是必填项，岂能为空？" autocomplete="off" class="layui-input inp1">
-                        </div>
-                        <div class="item rel">
-                            <div class="tit abs">请输入您的联系方式</div>
-                            <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input inp1" lay-reqtext="联系方式是必填项，岂能为空？">
-
-                        </div>
-                        <div class="item rel">
-                            <div class="tit abs">请输入企业名称</div>
-                            <input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input inp1" lay-reqtext="企业名称是必填项，岂能为空？">
-                        </div>
-                        <div class="tijiao">
-                            <button type="submit" class="layui-btn" lay-submit="">提交</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+    <!-- 底部start -->
+    <th:block th:replace="footer :: footer"/>
+    <!-- 底部end  -->
     <!-- 右侧悬浮 -->
     <ul class="xfList">
         <li>
@@ -1042,6 +916,7 @@
                 layer = layui.layer;
         });
     </script>
+</div>
 </body>
 
 </html>
