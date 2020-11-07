@@ -1,0 +1,56 @@
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header">
+    <div class="header">
+        <div class="logo">
+            <a href="">
+                <img th:src="@{/images/logo.png}" alt="" class="hui">
+                <img th:src="@{/images/logo_m.png}" alt="" class="zheng">
+            </a>
+
+        </div>
+        <div class="naver">
+            <div class="nav">
+                <ul>
+                    <li><a href="" class="active">首页</a></li>
+                    <li><a href="">典型案例</a></li>
+                    <li><a href="">服务机构</a></li>
+                    <li><a href="">合同模板</a></li>
+                    <li><a href="">线上课程</a></li>
+                    <li><a href="">新闻动态</a></li>
+                    <li><a href="">扶持政策</a></li>
+                    <li><a href="">法律法规</a></li>
+                    <li><a href="">关于平台</a></li>
+                </ul>
+            </div>
+            <div class="haer_l">
+                <div class="schear">
+                    <img th:src="@{images/schear.png}" alt="" class="hui">
+                    <img th:src="@{images/schear_h.png}" alt="" class="hui_h">
+                    <img th:src="@{/images/gb_ss.png}" alt="" class="zheng">
+                </div>
+                <div class="login">
+                    <div class="user_img">
+                        <img th:src="@{/images/user.png}" alt="" class="hui">
+                        <img th:src="@{/images/user_h.png}" alt="" class="zheng">
+                    </div>
+                    <div class="login_index">
+                        <a href="">登录</a>
+                        <span>|</span>
+                        <a href="">注册</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 搜索 -->
+    <div class="search_bj">
+        <div class="sear_bj_t">
+            <form action="">
+                <div class="search_box fix">
+                    <input type="text" class="inp_box" name="keywords" id="keyword" placeholder="搜索你想查找的内容">
+                    <button class="search_ico icon01"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+@charset"utf-8";
+
+/*公共样式*/
+
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: border-box;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: '微软雅黑';
+}
+
+body,
+html {
+    font-family: '微软雅黑';
+    font-size: 16px;
+    /* overflow-x: hidden; */
+    margin: 0 auto;
+    color: #333;
+    max-width: 2560px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: initial;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    border: none;
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+}
+
+input,
+select,
+textarea {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 0;
+    outline: none;
+    line-height: unset !important;
+}
+
+input[type="button"],
+input[type="submit"] {
+    cursor: pointer;
+}
+
+video {
+    width: 100%;
+    /* outline: auto; */
+    border: 0;
+}
+
+.r {
+    float: right;
+}
+
+.l {
+    float: left;
+}
+
+.fix:before,
+.fix:after,
+.clear {
+    display: table;
+    clear: both;
+    content: '';
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: 100%;
+    margin: 0;
+    outline: none;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+button,
+input {
+    line-height: normal;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    text-transform: none;
+    border: 0;
+}

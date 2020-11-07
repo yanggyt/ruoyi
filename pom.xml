@@ -233,6 +233,7 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>ruoyi-front</module>
+        <module>ruoyi-web</module>
     </modules>
     <packaging>pom</packaging>
 
