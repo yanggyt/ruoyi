@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.Filter;
+import com.ruoyi.common.constant.Constants;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
@@ -34,6 +35,7 @@ import com.ruoyi.framework.shiro.web.filter.sync.SyncOnlineSessionFilter;
 import com.ruoyi.framework.shiro.web.session.OnlineWebSessionManager;
 import com.ruoyi.framework.shiro.web.session.SpringSessionValidationScheduler;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import org.springframework.core.annotation.Order;
 
 /**
  * 权限配置加载
@@ -278,6 +280,9 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/ajax/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/ruoyi/**", "anon");
+
+        //上传到本地的图片允许匿名访问
+        filterChainDefinitionMap.put(Constants.RESOURCE_PREFIX + "/**", "anon");
 
         //网站允许匿名访问
         filterChainDefinitionMap.put("/home/**", "anon");

@@ -171,10 +171,10 @@
                 </div>
             </div>
             <div class="jdal_ul fix">
-                <ul>
+                <ul th:each="classsicCases : ${classsicCasesList}">
                     <li>
                         <div class="jdal_ul_img">
-                            <img th:src="@{/images/img3.jpg}" alt="">
+                            <img th:src="${classsicCases.pictureUrl}" alt="">
                             <div class="jdal_ul_hover">
                                 <a href="">
                                     <img th:src="@{/images/icon7.png}" alt="">免费咨询
@@ -186,58 +186,7 @@
                         </div>
                         <div class="jdal_ul_text">
                             <h3>中标后招标人反悔拒绝签订合同该怎么办</h3>
-                            <p>案例类型：商业案例</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="jdal_ul_img">
-                            <img th:src="@{/images/img4.jpg}" alt="">
-                            <div class="jdal_ul_hover">
-                                <a href="">
-                                    <img th:src="@{/images/icon7.png}" alt="">免费咨询
-                                </a>
-                                <a href="">
-                                    <img th:src="@{/images/icon8.png}" alt="">案例详情
-                                </a>
-                            </div>
-                        </div>
-                        <div class="jdal_ul_text">
-                            <h3>专项维修资金不可不交</h3>
-                            <p>案例类型：公共案例</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="jdal_ul_img">
-                            <img th:src="@{/images/img5.jpg}" alt="">
-                            <div class="jdal_ul_hover">
-                                <a href="">
-                                    <img th:src="@{/images/icon7.png}" alt="">免费咨询
-                                </a>
-                                <a href="">
-                                    <img th:src="@{/images/icon8.png}" alt="">案例详情
-                                </a>
-                            </div>
-                        </div>
-                        <div class="jdal_ul_text">
-                            <h3>"调岗降薪"专题讲座案例分析</h3>
-                            <p>案例类型：合同案例</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="jdal_ul_img">
-                            <img th:src="@{/images/img6.jpg}" alt="">
-                            <div class="jdal_ul_hover">
-                                <a href="">
-                                    <img th:src="@{/images/icon7.png}" alt="">免费咨询
-                                </a>
-                                <a href="">
-                                    <img th:src="@{/images/icon8.png}" alt="">案例详情
-                                </a>
-                            </div>
-                        </div>
-                        <div class="jdal_ul_text">
-                            <h3>解读企业运营中的风险高发点之字体侵权</h3>
-                            <p>案例类型：知识产权</p>
+                            <p>案例类型：<span th:text="${classsicCases.type}"></span></p>
                         </div>
                     </li>
                 </ul>
@@ -839,38 +788,11 @@
     <!-- 底部start -->
     <th:block th:replace="footer :: footer"/>
     <!-- 底部end  -->
-    <!-- 右侧悬浮 -->
-    <ul class="xfList">
-        <li>
-            <div class="div">
-                <dl><dt class="icont"><a href="" target="_blank">返回<br>平台</a></dt></dl>
-            </div>
-        </li>
-        <li class="">
-            <div class="div">
-                <dl><dt class="icon"><img class="blImg" th:src="@{/images/icon2.png}"></dt></dl>
-            </div>
-            <div class="telDiv"><i class="icons"><img th:src="@{/images/icon2.png}"></i>
-                <div class="divs">
-                    <div class="telSmldiv">021-63212255</div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <a href="" target="_blank">
-                <div class="div">
-                    <dl><dt class="icon"><img th:src="@{/images/icon3.png}" alt=""></dt></dl>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="javascript: initScrollToTop();">
-                <div class="div">
-                    <dl><dt class="icon"><img class="blImg" th:src="@{/images/icon4.png}"></dt></dl>
-                </div>
-            </a>
-        </li>
-    </ul>
+
+    <!-- 右侧悬浮start -->
+    <th:block th:replace="right_float :: right_float"/>
+    <!-- 右侧悬浮end -->
+
     <div class="tankugn_zzc"></div>
     <div class="tankuang_cont">
         <div class="colok">

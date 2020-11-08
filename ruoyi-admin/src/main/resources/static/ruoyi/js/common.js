@@ -458,7 +458,7 @@ $.ajaxSetup({
 
 
 //上传文件
-function uploadFile(async, fullPathId, fileNameId, absolutePAthId) {
+function uploadFile(async, filePathId, fileNameId, absolutePAthId) {
 	let res = -1;
 	var formData = new FormData();
 	if ($('#filePath')[0].files[0] == null) {
@@ -468,7 +468,7 @@ function uploadFile(async, fullPathId, fileNameId, absolutePAthId) {
 	formData.append('fileName', $("#fileName").val());
 	formData.append('file', $('#filePath')[0].files[0]);
 	$.ajax({
-		url: "/common/upload",
+		url: ctx + "/common/upload",
 		type: 'post',
 		cache: false,
 		data: formData,
@@ -478,8 +478,8 @@ function uploadFile(async, fullPathId, fileNameId, absolutePAthId) {
 		async: async,
 		success: function(result) {
 			if (result.code == web_status.SUCCESS) {
-				if (fullPathId) {
-					$('#' + fullPathId).val(result.url);
+				if (filePathId) {
+					$('#' + filePathId).val(result.url);
 				}
 				if (fileNameId) {
 					$('#' + fileNameId).val(result.originalFilename);
@@ -502,7 +502,7 @@ function uploadFile(async, fullPathId, fileNameId, absolutePAthId) {
 	return res;
 }
 //上传文件
-function uploadMoreFile(async, fullPathId,formNameId, fileNameId, absolutePAthId) {
+function uploadMoreFile(async, filePathId,formNameId, fileNameId, absolutePAthId) {
     let res = -1;
     var formData = new FormData();
     if ($('#'+formNameId)[0].files[0] == null) {
@@ -512,7 +512,7 @@ function uploadMoreFile(async, fullPathId,formNameId, fileNameId, absolutePAthId
     formData.append('fileName', $("#fileName").val());
     formData.append('file', $('#'+formNameId)[0].files[0]);
     $.ajax({
-        url: "/common/upload",
+        url: ctx + "/common/upload",
         type: 'post',
         cache: false,
         data: formData,
@@ -522,8 +522,8 @@ function uploadMoreFile(async, fullPathId,formNameId, fileNameId, absolutePAthId
         async: async,
         success: function(result) {
             if (result.code == web_status.SUCCESS) {
-                if (fullPathId) {
-                    $('#' + fullPathId).val(result.url);
+                if (filePathId) {
+                    $('#' + filePathId).val(result.url);
                 }
                 if (fileNameId) {
                     $('#' + fileNameId).val(result.originalFilename);
