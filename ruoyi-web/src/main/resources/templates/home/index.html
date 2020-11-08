@@ -1,0 +1,844 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <title>帛台</title>
+    <!-- css -->
+    <link rel="stylesheet"  th:href="@{/css/swiper.min.css}">
+    <link rel="stylesheet"  th:href='@{/css/animate.css}'>
+    <link rel="stylesheet"  th:href='@{/css/jquery.mCustomScrollbar.css}'>
+    <link rel="stylesheet"  th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet"  th:href="@{/css/css.css}" />
+    <link rel="stylesheet"  th:href="@{/css/style.css}" />
+
+</head>
+
+<body>
+<div th:fragment="main">
+    <!-- header -->
+        <th:block th:replace="header :: header"/>
+    </header>
+    <!-- header  end-->
+
+    <!-- banner -->
+    <section class="banner">
+        <div class="swiper-container swiper_banner">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href="">
+                        <img th:src="@{/images/banner.jpg}" alt="">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="">
+                        <img th:src="@{/images/banner.jpg}" alt="">
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="">
+                        <img th:src="@{/images/banner.jpg}" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Add Arrows -->
+            <div class="pag_swiper">
+                <div class="swiper-button-next swpAct-but">
+                    <img th:src="@{/images/icon5.png}" alt="" class="hui">
+                    <img th:src="@{/images/icon5_hover.png}" alt="" class="zheng">
+                </div>
+                <div class="shubiao">
+                    <img th:src="@{/images/shubiao.png}" alt="">
+                </div>
+                <div class="swiper-button-prev swpAct-but">
+                    <img th:src="@{/images/icon6.png}" alt="" class="hui">
+                    <img th:src="@{/images/icon6_hover.png}" alt="" class="zheng">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- banner -->
+    <!-- 活动招募 -->
+    <section class="hdzm_index fix">
+        <div class="warp">
+            <div class="hdzm_cont fix wow fadeInUp">
+                <div class="hdzm_l">
+                    <div class="index_title">
+                        <div class="index_h3">
+                            <h4>法律服务</h4> <span class="span">/</span> <span class="span">Legal Seravices</span></div>
+                    </div>
+                    <div class="hdzm_l_ul">
+
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <div class="icon_hzr">
+                                        <img th:src="@{/images/icon17.png}" alt="">
+                                    </div>
+                                    <p>政策检索</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="icon_hzr">
+                                        <img th:src="@{/images/icon18.png}" alt="">
+                                    </div>
+                                    <p>政策申请</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="icon_hzr">
+                                        <img th:src="@{/images/icon19.png}" alt="">
+                                    </div>
+                                    <p>法律法规</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="icon_hzr">
+                                        <img th:src="@{/images/icon20.png}" alt="">
+                                    </div>
+                                    <p>法律咨询</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="hdzm_c">
+                    <div class="index_title">
+                        <div class="index_h3">
+                            <h4>活动招募</h4> <span>/</span> <span>Event Recruitment</span></div>
+                        <a href="" class="icon1"></a>
+                    </div>
+                    <div class="hdzm_ul">
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <div class="hdzm_ul_date">
+                                        <h3>09</h3>
+                                        <p>2019</p>
+                                    </div>
+                                    <div class="hdzm_ul_text">
+                                        <h3>
+                                            黄浦区破解民营企业困难专题沙龙活动 --《民营企业如何 运用供应链金融》
+                                        </h3>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="hdzm_ul_date">
+                                        <h3>09</h3>
+                                        <p>2019</p>
+                                    </div>
+                                    <div class="hdzm_ul_text">
+                                        <h3>
+                                            黄浦区破解民营企业困难—知识产权篇沙龙活动 </h3>
+
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="hdzm_r">
+                    <a href="">
+                        <img th:src="@{/images/img2.jpg}" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 经典案例 -->
+    <section class="jdal_index fix wow fadeInUp">
+        <div class="warp">
+            <div class="index_title ab">
+                <div class="index_h3">
+                    <h3>经典案例</h3> <span>/</span> <span>Classic Cases </span></div>
+                <div class="qbal">
+                    <a href="">全部案例</a>
+                </div>
+            </div>
+            <div class="jdal_ul fix">
+                <ul th:each="classsicCases : ${classsicCasesList}">
+                    <li>
+                        <div class="jdal_ul_img">
+                            <img th:src="${classsicCases.pictureUrl}" alt="">
+                            <div class="jdal_ul_hover">
+                                <a href="">
+                                    <img th:src="@{/images/icon7.png}" alt="">免费咨询
+                                </a>
+                                <a href="">
+                                    <img th:src="@{/images/icon8.png}" alt="">案例详情
+                                </a>
+                            </div>
+                        </div>
+                        <div class="jdal_ul_text">
+                            <h3>中标后招标人反悔拒绝签订合同该怎么办</h3>
+                            <p>案例类型：<span th:text="${classsicCases.type}"></span></p>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </section>
+    <!-- 律师团队 -->
+
+    <section class="lstd_index fix">
+        <div class="warp">
+            <div class="index_title ab wow fadeInUp">
+                <div class="index_h3">
+                    <h3>律师团队</h3> <span>/</span> <span>Lawyer Team</span></div>
+                <div class="qbal">
+                    <a href=""> <i class="icon_zx"></i> 咨询律师</a>
+                </div>
+            </div>
+            <div class="lsts_swipar wow fadeInUp">
+                <div class="swiper-container lstd_swipet">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="swiper_lstd_cont">
+                                <div class="lstd_topimg">
+                                    <img th:src="@{/images/img11.jpg}" alt="">
+                                </div>
+                                <div class="lstd_text">
+                                    <div class="lstd_h3">
+                                        <h3>汪智豪</h3><span>律所主任</span>
+                                    </div>
+                                    <div class="lstd_p">
+                                        <p>上海翰鸿律师事务所</p>
+                                        <p>
+                                            擅长领域：股权激励、知识产权、税务风控等税务风控
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="swiper_lstd_cont">
+                                <div class="lstd_topimg">
+                                    <img th:src="@{/images/img11.jpg}" alt="">
+                                </div>
+                                <div class="lstd_text">
+                                    <div class="lstd_h3">
+                                        <h3>
+                                            王徐苗
+                                        </h3><span>
+                                            党支部书记  执行主任
+                                       </span>
+                                    </div>
+                                    <div class="lstd_p">
+                                        <p>上海翰鸿律师事务所</p>
+                                        <p>
+                                            擅长领域：股权激励、知识产权、税务风控等税务风控
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="swiper_lstd_cont">
+                                <div class="lstd_topimg">
+                                    <img th:src="@{/images/img11.jpg}" alt="">
+                                </div>
+                                <div class="lstd_text">
+                                    <div class="lstd_h3">
+                                        <h3>
+                                            潘雄
+                                        </h3><span>
+                                            主任、高级合伙人
+                                        </span>
+                                    </div>
+                                    <div class="lstd_p">
+                                        <p>上海翰鸿律师事务所</p>
+                                        <p>
+                                            擅长领域：股权激励、知识产权、税务风控等税务风控
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="swiper_lstd_cont">
+                                <div class="lstd_topimg">
+                                    <img th:src="@{/images/img11.jpg}" alt="">
+                                </div>
+                                <div class="lstd_text">
+                                    <div class="lstd_h3">
+                                        <h3>
+                                            叶志林
+                                        </h3><span>
+                                            叶志林    创始合伙人
+                                       </span>
+                                    </div>
+                                    <div class="lstd_p">
+                                        <p>上海翰鸿律师事务所</p>
+                                        <p>
+                                            擅长领域：股权激励、知识产权、税务风控等税务风控
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="swiper_lstd_cont">
+                                <div class="lstd_topimg">
+                                    <img th:src="@{/images/img11.jpg}" alt="">
+                                </div>
+                                <div class="lstd_text">
+                                    <div class="lstd_h3">
+                                        <h3>汪智豪</h3><span>律所主任</span>
+                                    </div>
+                                    <div class="lstd_p">
+                                        <p>上海翰鸿律师事务所</p>
+                                        <p>
+                                            擅长领域：股权激励、知识产权、税务风控等税务风控
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="swiper_lstd_cont">
+                                <div class="lstd_topimg">
+                                    <img th:src="@{/images/img11.jpg}" alt="">
+                                </div>
+                                <div class="lstd_text">
+                                    <div class="lstd_h3">
+                                        <h3>汪智豪</h3><span>律所主任</span>
+                                    </div>
+                                    <div class="lstd_p">
+                                        <p>上海翰鸿律师事务所</p>
+                                        <p>
+                                            擅长领域：股权激励、知识产权、税务风控等税务风控
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="swiper_lstd_cont">
+                                <div class="lstd_topimg">
+                                    <img th:src="@{/images/img11.jpg}" alt="">
+                                </div>
+                                <div class="lstd_text">
+                                    <div class="lstd_h3">
+                                        <h3>汪智豪</h3><span>律所主任</span>
+                                    </div>
+                                    <div class="lstd_p">
+                                        <p>上海翰鸿律师事务所</p>
+                                        <p>
+                                            擅长领域：股权激励、知识产权、税务风控等税务风控
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="swiper_lstd_cont">
+                                <div class="lstd_topimg">
+                                    <img th:src="@{/images/img11.jpg}" alt="">
+                                </div>
+                                <div class="lstd_text">
+                                    <div class="lstd_h3">
+                                        <h3>汪智豪</h3><span>律所主任</span>
+                                    </div>
+                                    <div class="lstd_p">
+                                        <p>上海翰鸿律师事务所</p>
+                                        <p>
+                                            擅长领域：股权激励、知识产权、税务风控等税务风控
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Add Pagination -->
+
+                <!-- Add Arrows -->
+                <div class="pag_ld_swiper">
+                    <div class="lsd_next">
+                        <img th:src="@{/images/icon11.png}" alt="" class="hui">
+                        <img th:src="@{/images/icon13.png}" alt="" class="zheng">
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="lsd_prev">
+                        <img th:src="@{/images/icon12.png}" alt="" class="hui">
+                        <img th:src="@{/images/icon10.png}" alt="" class="zheng">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- 线上课程 -->
+    <section class="xskc_cont fix">
+        <div class="warp ">
+
+            <div class="index_title ab wow fadeInUp">
+                <div class="index_h3">
+                    <h3>线上课程</h3> <span>/</span> <span>Online Course</span></div>
+                <div class="qbal">
+                    <a href="">全部课程</a>
+                </div>
+            </div>
+            <div class="xskc_l wow fadeInUp ">
+                <div data-vdosrc="images/csa.mp4" class="shipin_xs">
+                    <div class="pc">
+                        <img th:src="@{/images/img12.jpg}"></div>
+
+                    <div class="xskc_hover">
+                        <i class="icon"><img th:src="@{/images/icon14.png}"></i>
+                        <h3 class="tit">政府财政补贴和奖励对企业的助力</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xskc_r wow fadeInUp">
+                <div data-vdosrc="images/csa.mp4" class="shipin_xs">
+                    <div class="pc">
+                        <img th:src="@{/images/img13.jpg}"></div>
+
+                    <div class="xskc_hover">
+                        <i class="icon"><img th:src="@{/images/icon14.png}"></i>
+
+                    </div>
+                </div>
+                <div class="xskc_text ">
+                    <a href="">
+                        <h3>
+                            金税三期背景下企业内部控制体系 的构建
+                        </h3>
+                        <p>
+                            针对人群：企业管理者、财务
+                        </p>
+                        <p>
+                            课程时长：45
+                        </p>
+                        <span>学习时长 <i class="icon_time"></i> </span>
+                    </a>
+                </div>
+            </div>
+            <div class="xskc_r wow fadeInUp">
+                <div data-vdosrc="/images/csa.mp4" class="shipin_xs">
+                    <div class="pc">
+                        <img th:src="@{/images/img14.jpg}"></div>
+
+                    <div class="xskc_hover">
+                        <i class="icon"><img th:src="@{/images/icon14.png}"></i>
+
+                    </div>
+                </div>
+
+                <div class="xskc_text">
+                    <a href="">
+                        <h3>
+
+                            从用人单位的角度审视劳动合同的订 立与解除
+
+                        </h3>
+                        <p>
+
+                            针对人群：企业管理人员、人事
+
+                        </p>
+                        <p>
+                            课程时长：45
+                        </p>
+                        <span>学习时长 <i class="icon_time"></i> </span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <div class="vdoBg"></div>
+    <div class="vdoBox">
+        <span class="tanXx">
+            <img th:src="@{/images/gb_ss1.png}">
+        </span>
+
+        <video id="vdoBiao" src="" controls="">
+        </video>
+    </div>
+
+    <!-- 服务机构 -->
+    <section class="fwjg_index">
+        <div class="warp">
+            <div class="index_title ab wow fadeInUp">
+                <div class="index_h3">
+                    <h3>服务机构</h3> <span>/</span> <span>Service Organization</span></div>
+                <div class="qbal">
+                    <a href="">全部机构</a>
+                </div>
+            </div>
+            <div class="fwjg_ul fix wow fadeInUp">
+                <ul>
+                    <li>
+                        <a href="">
+                            <div class="fwjg_index_img">
+                                <img th:src="@{/images/img7.jpg}" alt="">
+                            </div>
+                            <div class="fwjg_imdex_text">
+                                <div class="index)text_fwh">
+                                    <h3>上海市黄浦公证处</h3>
+                                    <p>服务各类金融机构及企事业单位、律事务所等，擅长各类金融公证、保全证据公证、现场监督公证、提存公证、执行证书、招投标公证等...</p>
+                                </div>
+                                <span>了解机构<i class="icon_time"></i> </span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <div class="fwjg_index_img">
+                                <img th:src="@{/images/img8.jpg}" alt="">
+                            </div>
+                            <div class="fwjg_imdex_text">
+                                <div class="index)text_fwh">
+                                    <h3>上海市新黄浦公证处</h3>
+                                    <p>
+                                        依法设立的统一行使证明权、面向全市提供公证服务、办理各类公证业务和公证事务的专门机构。
+                                    </p>
+                                </div>
+                                <span>了解机构<i class="icon_time"></i> </span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <div class="fwjg_index_img">
+                                <img th:src="@{/images/img9.jpg}" alt="">
+                            </div>
+                            <div class="fwjg_imdex_text">
+                                <div class="index)text_fwh">
+                                    <h3>上海市卢湾公证处</h3>
+                                    <p>本市服务质量一流的公证法律服务机构，自组建以来一直坚持“服务为民、奉献社会”的服务宗旨</p>
+                                </div>
+                                <span>了解机构<i class="icon_time"></i> </span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <div class="fwjg_index_img">
+                                <img th:src="@{/images/img10.jpg}" alt="">
+                            </div>
+                            <div class="fwjg_imdex_text">
+                                <div class="index)text_fwh">
+                                    <h3>上海翰鸿律师事务所</h3>
+                                    <p>服务范围包括法律实体的组建设立、劳工制度、改制上市、企业并购、投资融资、知识产权、清产核资、破产清算等</p>
+                                </div><span>了解机构<i class="icon_time"></i> </span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="fwj_ljjr wow fadeIn">
+                <span class="fwj_li_oclik">
+                    立刻申请加入服务平台
+                </span>
+            </div>
+        </div>
+    </section>
+    <!-- 加入弹框 -->
+    <div class="zzc"></div>
+    <div class="ljsq_tk">
+        <div class="colex">
+            <img th:src="@{/images/icon40.png}" alt="">
+        </div>
+        <h3>
+            立刻申请加入服务平台
+        </h3>
+        <div class="Cone_form">
+            <form class="layui-form" action="">
+
+                <div class="form_input">
+                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="公司名称" class="layui-input">
+                </div>
+                <div class="form_input">
+                    <input type="text" name="username" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="联系人" autocomplete="off" class="layui-input">
+                </div>
+                <div class="form_input">
+                    <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input" placeholder="联系电话">
+                </div>
+                <div class="form_input">
+                    <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input" placeholder="您的邮箱">
+                </div>
+                <div class="form_grg">
+                    <div class="layui-upload-drag" id="test10">
+                        <div class="layer_rty">
+                            <i class="layui-icon layui-icon-addition"></i>
+                            <p>上传传营业执照</p>
+                        </div>
+                        <div class="layui-hide" id="uploadDemoView">
+                            <hr>
+                            <img src="" alt="上传成功后渲染" style="max-width: 300px;margin: auto;">
+                        </div>
+                    </div>
+                </div>
+                <div class="form_butt">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即申请</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- 合同模板 -->
+    <section class="htmb_index">
+        <div class="warp">
+            <div class="htmb_title wow fadeInUp">
+                <h3>合同模板</h3>
+                <p>Contract Template</p>
+            </div>
+            <div class="htmb_ul wow fadeInUp">
+                <div class="swiper-container htmb_swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="icon_htmb">
+                                    <img th:src="@{/images/icon21.png}" alt="">
+                                </div>
+                                <div class="htmb_text">
+                                    <h3>抵押担保类</h3>
+                                    <p>Mortgage guarantee
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="icon_htmb">
+                                    <img th:src="@{/images/icon22.png}" alt="">
+                                </div>
+                                <div class="htmb_text">
+                                    <h3>公司治理类</h3>
+                                    <p>Corporate governance
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="icon_htmb">
+                                    <img th:src="@{/images/icon23.png}" alt="">
+                                </div>
+                                <div class="htmb_text">
+                                    <h3>技术服务类</h3>
+                                    <p>Technical services
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="icon_htmb">
+                                    <img th:src="@{/images/icon24.png}" alt="">
+                                </div>
+                                <div class="htmb_text">
+                                    <h3>借贷融资类</h3>
+                                    <p>Loan financing
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="">
+                                <div class="icon_htmb">
+                                    <img th:src="@{/images/icon25.png}" alt="">
+                                </div>
+                                <div class="htmb_text">
+                                    <h3>劳动人事类</h3>
+                                    <p>Labor and personnel
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!-- Add Arrows -->
+                <div class="htmb_ld_swiper">
+                    <div class="htmb_next">
+                        <img th:src="@{/images/icon11.png}" alt="" class="hui">
+                        <img th:src="@{/images/icon13.png}" alt="" class="zheng">
+                    </div>
+
+                    <div class="htmb_prev">
+                        <img th:src="@{/images/icon12.png}" alt="" class="hui">
+                        <img th:src="@{/images/icon10.png}" alt="" class="zheng">
+                    </div>
+                </div>
+
+            </div>
+            <div class="html_more wow fadeInUp">
+                <a href="">全部模板 <i class="icon_time"></i></a>
+            </div>
+    </section>
+
+    <!-- 常见问答 -->
+    <section class="cjwt_index fix">
+        <div class="warp">
+            <div class="index_title ab wow fadeInUp">
+                <div class="index_h3">
+                    <h3>常见问答</h3> <span>/</span> <span>Common Problem</span></div>
+                <div class="qbal">
+                    <a href="">全部问答</a>
+                </div>
+            </div>
+            <div class="wjwt_ul  wow fadeInUp">
+                <div class="wjwt_l">
+                    <ul>
+                        <li>
+                            <a href="">
+                                <h3>注册资本和实缴资本有什么区别？</h3>
+                                <p>
+                                    注册资本，是指在公司登记机关登记的全体股东认缴的出资 是出资人承诺要缴纳的出资额的总和
+                                </p>
+
+                                <div class="wjwt_data">
+                                    <span>2018-12-08</span> <i class="icon_more"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <h3>劳动合同必备条款有哪些？</h3>
+                                <p>
+                                    根据《中华人民共和国劳动合同法》第十七条第一款规定，劳动合同应该具备以下条款：1、 用人单位的名称... </p>
+
+                                <div class="wjwt_data">
+                                    <span>2018-12-08</span> <i class="icon_more"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <h3>企业应何时订立劳动合同？</h3>
+                                <p>
+                                    用人单位自用工之日起满一年未与劳动者订立书面合同的，自用工之日起满一个月的次日至满一年的前一日应当...
+                                </p>
+                                <div class="wjwt_data">
+                                    <span>2018-12-08</span> <i class="icon_more"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <h3>合同中打印和手写部分有冲突的，以哪个为准？</h3>
+                                <p>
+                                    如果打印部分是事先制定好的格式条款，那么手写的部分与打印的格式条款相冲突的...
+                                </p>
+                                <div class="wjwt_data">
+                                    <span>2018-12-08</span> <i class="icon_more"></i>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="wjet_r">
+                    <a href="">
+                        <div class="wjet_img">
+                            <img th:src="@{/images/img16.jpg}" alt="">
+                        </div>
+                        <div class="wjet_text">
+                            <h3>合同中涂改的部分是否有效力？</h3>
+                            <p>如单方对合同进行涂改，改变了原有合同约定的，则改变的部分无效，维持原合同的内容</p>
+                            <div class="wjwt_data">
+                                <span>2018-12-08</span> <i class="icon_more"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 中小企业法律服务 -->
+    <section class="flzx_index fix">
+        <div class="warp">
+            <div class="flfw_index_text">
+                <p>
+                    中小企业法律服务
+                </p>
+                <h4>援助热线：021-63212255 </h4>
+
+
+                <a href=""> <i class="icon_wx"></i> 点击免费咨询</a>
+
+            </div>
+        </div>
+    </section>
+    <!-- 底部start -->
+    <th:block th:replace="footer :: footer"/>
+    <!-- 底部end  -->
+
+    <!-- 右侧悬浮start -->
+    <th:block th:replace="right_float :: right_float"/>
+    <!-- 右侧悬浮end -->
+
+    <div class="tankugn_zzc"></div>
+    <div class="tankuang_cont">
+        <div class="colok">
+            <img th:src="@{/images/gb_ss1.png}" alt="">
+        </div>
+        <div class="img_xian">
+            <img th:src="@{/images/ttk.jpg}" alt="">
+        </div>
+        <div class="img_text">
+            <h3>
+                黄浦区破解民营企业困难专题沙龙活动 <br> 《民营企业如何运用供应链金融》
+            </h3>
+            <P>
+                2019年9月25日（周三）13:30—16:30在黄浦区六合路58号新 一百大厦17楼1704举办《民营企业如何运用供应链金融》活动
+            </P>
+            <a href="">查看详情</a>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/js/jquery-1.10.1.min.js}"></script>
+    <script type="text/javascript" th:src='@{/js/swiper.min.js}'></script>
+    <script type="text/javascript" th:src="@{/js/jquery.mCustomScrollbar.js}"></script>
+    <script type="text/javascript" th:src="@{/js/wow.min.js}"></script>
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/all.js}"></script>
+
+    <script>
+        $(".fwj_li_oclik").click(function() {
+            console.log(11)
+            $(".zzc").show();
+            $(".ljsq_tk").show();
+        })
+        $(".colex").click(function() {
+            $(".zzc").hide();
+            $(".ljsq_tk").hide();
+        })
+        $(".colok").click(function() {
+            $(".tankugn_zzc").hide();
+            $(".tankuang_cont").hide();
+        })
+        layui.use(['form'], function() {
+            var form = layui.form,
+                layer = layui.layer;
+        });
+    </script>
+</div>
+</body>
+
+</html>

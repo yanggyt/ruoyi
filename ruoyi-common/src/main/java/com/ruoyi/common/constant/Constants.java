@@ -91,4 +91,34 @@ public class Constants
      * 资源映射路径 前缀
      */
     public static final String RESOURCE_PREFIX = "/profile";
+
+    /**
+     *  正常.
+     */
+    public static final String NORMAL = "0";
+
+    /**
+     * 停用
+     */
+    public static final String DISABLE = "1";
+
+    /**
+     * 未删除
+     */
+    public static final String NO_DELETE = "0";
+
+    /**
+     * 待审核
+     */
+    public static final String WAIT_AUDIT = "0";
+
+    /**
+     * 审核不通过
+     */
+    public static final String NO_PASS_AUDIT = "1";
+
+    /**
+     * 审核通过
+     */
+    public static final String PASS_AUDIT = "2";
 }

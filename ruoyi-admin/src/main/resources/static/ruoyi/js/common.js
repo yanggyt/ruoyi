@@ -474,3 +474,93 @@ $.ajaxSetup({
         }
     }
 });
+
+
+//上传文件
+function uploadFile(async, filePathId, fileNameId, absolutePAthId) {
+	let res = -1;
+	var formData = new FormData();
+	if ($('#filePath')[0].files[0] == null) {
+		$.modal.alertWarning("请先选择文件路径");
+		return res;
+	}
+	formData.append('fileName', $("#fileName").val());
+	formData.append('file', $('#filePath')[0].files[0]);
+	$.ajax({
+		url: ctx + "/common/upload",
+		type: 'post',
+		cache: false,
+		data: formData,
+		processData: false,
+		contentType: false,
+		dataType: "json",
+		async: async,
+		success: function(result) {
+			if (result.code == web_status.SUCCESS) {
+				if (filePathId) {
+					$('#' + filePathId).val(result.url);
+				}
+				if (fileNameId) {
+					$('#' + fileNameId).val(result.originalFilename);
+				}
+				if (absolutePAthId) {
+					$('#' + absolutePAthId).val(result.fileName);
+				}
+
+			} else {
+				$.modal.alertError(result.msg);
+			}
+
+			res = result.code;
+		},
+		error: function(error) {
+			$.modal.alertWarning("图片上传失败。");
+		}
+	});
+
+	return res;
+}
+//上传文件
+function uploadMoreFile(async, filePathId,formNameId, fileNameId, absolutePAthId) {
+    let res = -1;
+    var formData = new FormData();
+    if ($('#'+formNameId)[0].files[0] == null) {
+        $.modal.alertWarning("请先选择文件路径");
+        return res;
+    }
+    formData.append('fileName', $("#fileName").val());
+    formData.append('file', $('#'+formNameId)[0].files[0]);
+    $.ajax({
+        url: ctx + "/common/upload",
+        type: 'post',
+        cache: false,
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        async: async,
+        success: function(result) {
+            if (result.code == web_status.SUCCESS) {
+                if (filePathId) {
+                    $('#' + filePathId).val(result.url);
+                }
+                if (fileNameId) {
+                    $('#' + fileNameId).val(result.originalFilename);
+                }
+                if (absolutePAthId) {
+                    $('#' + absolutePAthId).val(result.fileName);
+                }
+
+            } else {
+                $.modal.alertError(result.msg);
+            }
+
+            res = result.code;
+        },
+        error: function(error) {
+            $.modal.alertWarning("文件上传失败。");
+        }
+    });
+
+    return res;
+}

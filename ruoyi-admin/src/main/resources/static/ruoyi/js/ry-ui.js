@@ -328,14 +328,32 @@ var table = {
                 if ($.common.isEmpty(height)) {
                     height = 'auto';
                 }
-                // blank or self
-                var _target = $.common.isEmpty(target) ? 'self' : target;
-                if ($.common.isNotEmpty(value)) {
-                    return $.common.sprintf("<img class='img-circle img-xs' data-height='%s' data-width='%s' data-target='%s' src='%s'/>", height, width, _target, value);
-                } else {
-                    return $.common.nullToStr(value);
-                }
+				// blank or self
+				var _target = $.common.isEmpty(target) ? 'self' : target;
+				if ($.common.isNotEmpty(value)) {
+					return $.common.sprintf("<img class='img-circle img-xs' data-height='%s' data-width='%s' data-target='%s' src='%s'/>", height, width, _target, value);
+				} else {
+					return $.common.nullToStr(value);
+				}
+			},
+			// 图片预览
+			videoView: function (value, height, width, target) {
+				if ($.common.isEmpty(width)) {
+					width = 'auto';
+				}
+				if ($.common.isEmpty(height)) {
+					height = 'auto';
+				}
+				// blank or self
+				var _target = $.common.isEmpty(target) ? 'self' : target;
+				if ($.common.isNotEmpty(value)) {
+					return $.common.sprintf("<video controls data-height='%s' data-width='%s' data-target='%s'><source src='%s' type='video/mp4'></video>", height, width, _target, value);
+				} else {
+					return $.common.nullToStr(value);
+				}
+               
             },
+            
             // 搜索-默认第一个form
             search: function(formId, tableId) {
                 table.set(tableId);
@@ -1231,7 +1249,34 @@ var table = {
                     $.modal.alertError(result.msg);
                 }
                 $.modal.closeLoading();
-            }
+            },
+
+			// 审核信息
+			auditAll: function() {
+				table.set();
+				let rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一条记录");
+					return;
+				}
+
+				let url =  table.options.auditUrl.concat("?ids=" + rows.join());
+				$.modal.open("审核" + table.options.modalName, url);
+			},
+
+			//启用or停用
+			updateStatusAll: function(status) {
+				table.set();
+				let rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一条记录");
+					return;
+				}
+
+				var url = table.options.updateStatusUrl;
+				var data = { "ids": rows.join(), "status": status};
+				$.operate.submit(url, "post", "json", data);
+			}
         },
         // 校验封装处理
         validate: {

@@ -81,6 +81,7 @@ public class CommonController
             String url = serverConfig.getUrl() + fileName;
             AjaxResult ajax = AjaxResult.success();
             ajax.put("fileName", fileName);
+            ajax.put("originalFilename", file.getOriginalFilename());
             ajax.put("url", url);
             return ajax;
         }
@@ -108,5 +109,41 @@ public class CommonController
         FileUtils.setAttachmentResponseHeader(response, downloadName);
 
         FileUtils.writeBytes(downloadPath, response.getOutputStream());
+    }
+
+    /**
+     * 通用下载请求
+     *
+     * @param filePath 文件路径
+     * @param realFileName 文件名称
+     * @param delete 是否删除
+     */
+    @GetMapping("common/download2")
+    public void fileDownload(String filePath, String realFileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
+    {
+        try
+        {
+            if (!FileUtils.isValidFilename(realFileName))
+            {
+                throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", realFileName));
+            }
+
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            FileUtils.setAttachmentResponseHeader(response, realFileName);
+
+            // 本地资源路径
+            String localPath = Global.getProfile();
+            // 数据库资源地址
+            String downloadPath = localPath + StringUtils.substringAfter(filePath, Constants.RESOURCE_PREFIX);
+            FileUtils.writeBytes(downloadPath, response.getOutputStream());
+            if (delete)
+            {
+                FileUtils.deleteFile(filePath);
+            }
+        }
+        catch (Exception e)
+        {
+            log.error("下载文件失败", e);
+        }
     }
 }
