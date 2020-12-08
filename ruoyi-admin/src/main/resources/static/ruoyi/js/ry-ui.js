@@ -133,6 +133,7 @@ var table = {
                     fixedNumber: options.fixedNumber,                   // 列冻结的个数（左侧）
                     fixedRightNumber: options.fixedRightNumber,         // 列冻结的个数（右侧）
                     onReorderRow: options.onReorderRow,                 // 当拖拽结束后处理函数
+                    queryParamsType:options.queryParamsType,            // 分页参数类型，值为limit时，分页参数为limit offset;否则分页参数为pageNumber pageSize
                     queryParams: options.queryParams,                   // 传递参数（*）
                     rowStyle: options.rowStyle,                         // 通过自定义函数设置行样式
                     footerStyle: options.footerStyle,                   // 通过自定义函数设置页脚样式
