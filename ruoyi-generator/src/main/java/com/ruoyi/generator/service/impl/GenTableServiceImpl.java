@@ -286,30 +286,10 @@ public class GenTableServiceImpl implements IGenTableService
     public void synchDb(String tableName)
     {
         GenTable table = genTableMapper.selectGenTableByName(tableName);
-        List<GenTableColumn> tableColumns = table.getColumns();
-        List<String> tableColumnNames = tableColumns.stream().map(GenTableColumn::getColumnName).collect(Collectors.toList());
-
-        List<GenTableColumn> dbTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
-        if (StringUtils.isEmpty(dbTableColumns))
-        {
-            throw new BusinessException("同步数据失败，原表结构不存在");
-        }
-        List<String> dbTableColumnNames = dbTableColumns.stream().map(GenTableColumn::getColumnName).collect(Collectors.toList());
-
-        dbTableColumns.forEach(column -> {
-            if (!tableColumnNames.contains(column.getColumnName()))
-            {
-                GenUtils.initColumnField(column, table);
-                genTableColumnMapper.insertGenTableColumn(column);
-            }
-        });
-
-        List<GenTableColumn> delColumns = tableColumns.stream()
-                .filter(column -> !dbTableColumnNames.contains(column.getColumnName())).collect(Collectors.toList());
-        if (StringUtils.isNotEmpty(delColumns))
-        {
-            genTableColumnMapper.deleteGenTableColumns(delColumns);
-        }
+        genTableMapper.deleteGenTableByIds(new Long[]{table.getTableId()});
+        genTableColumnMapper.deleteGenTableColumns(table.getColumns());
+        List<GenTable> tableList = genTableMapper.selectDbTableListByNames(new String[]{tableName});
+        importGenTable(tableList);
     }
 
     /**
