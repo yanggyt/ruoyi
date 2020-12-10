@@ -9,14 +9,14 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 经济类型对象 platf_econ_type
  * 
  * @author dalin
- * @date 2020-12-08
+ * @date 2020-12-09
  */
 public class EconType extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
-    private Integer econId;
+    private Long econId;
 
     /** 名称 */
     @Excel(name = "名称")
@@ -26,19 +26,19 @@ public class EconType extends BaseEntity
     @Excel(name = "单据号")
     private String docNum;
 
-    /** 资料状态 0有效 1无效 */
-    @Excel(name = "资料状态 0有效 1无效")
+    /** 资料状态 */
+    @Excel(name = "资料状态")
     private String status;
 
-    /** 删除标志 删除标志（0代表存在 2代表删除） */
+    /** 删除标志 删除标志 */
     private String delFlag;
 
-    public void setEconId(Integer econId) 
+    public void setEconId(Long econId) 
     {
         this.econId = econId;
     }
 
-    public Integer getEconId() 
+    public Long getEconId() 
     {
         return econId;
     }

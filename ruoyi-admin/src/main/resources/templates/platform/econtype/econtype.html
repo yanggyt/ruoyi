@@ -15,7 +15,7 @@
                                 <input type="text" name="econName"/>
                             </li>
                             <li>
-                                <label>资料状态 0有效 1无效：</label>
+                                <label>资料状态：</label>
                                 <select name="status" th:with="type=${@dict.getType('platf_doc_statu')}">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
@@ -82,7 +82,7 @@
                 },
                 {
                     field: 'status',
-                    title: '资料状态 0有效 1无效',
+                    title: '资料状态',
                     formatter: function(value, row, index) {
                        return $.table.selectDictLabel(statusDatas, value);
                     }
@@ -90,6 +90,22 @@
                 {
                     field: 'remark',
                     title: '备注'
+                },
+                {
+                    field: 'createBy',
+                    title: '制单人'
+                },
+                {
+                    field: 'createTime',
+                    title: '制单时间'
+                },
+                {
+                    field: 'updateBy',
+                    title: '修改人'
+                },
+                {
+                    field: 'updateTime',
+                    title: '修改时间'
                 },
                 {
                     title: '操作',

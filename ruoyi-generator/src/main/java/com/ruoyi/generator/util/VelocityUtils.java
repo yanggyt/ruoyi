@@ -54,7 +54,19 @@ public class VelocityUtils
         velocityContext.put("pkColumn", genTable.getPkColumn());
         velocityContext.put("importList", getImportList(genTable));
         velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
+
+        // 取出页面需要的字段ing
+        List<GenTableColumn> tempcolumns = genTable.getColumns();
+        List<GenTableColumn>  effectivecols = new ArrayList<GenTableColumn> ();//定义一个list对象
+        for(GenTableColumn tcolumn : tempcolumns) {
+            if (tcolumn.isInsert() && !tcolumn.isPk())
+                if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
+                    effectivecols.add(tcolumn) ;
+        } ;
+
+        velocityContext.put("effectivecols", effectivecols);
         velocityContext.put("columns", genTable.getColumns());
+
         velocityContext.put("table", genTable);
         setMenuVelocityContext(velocityContext, genTable);
         if (GenConstants.TPL_TREE.equals(tplCategory))

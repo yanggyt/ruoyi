@@ -13,7 +13,7 @@ import com.ruoyi.common.core.text.Convert;
  * 经济类型Service业务层处理
  * 
  * @author dalin
- * @date 2020-12-08
+ * @date 2020-12-09
  */
 @Service
 public class EconTypeServiceImpl implements IEconTypeService 
@@ -28,7 +28,7 @@ public class EconTypeServiceImpl implements IEconTypeService
      * @return 经济类型
      */
     @Override
-    public EconType selectEconTypeById(Integer econId)
+    public EconType selectEconTypeById(Long econId)
     {
         return econTypeMapper.selectEconTypeById(econId);
     }
@@ -90,7 +90,7 @@ public class EconTypeServiceImpl implements IEconTypeService
      * @return 结果
      */
     @Override
-    public int deleteEconTypeById(Integer econId)
+    public int deleteEconTypeById(Long econId)
     {
         return econTypeMapper.deleteEconTypeById(econId);
     }

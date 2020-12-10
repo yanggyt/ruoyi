@@ -7,7 +7,7 @@ import com.ruoyi.province.platform.domain.EconType;
  * 经济类型Service接口
  * 
  * @author dalin
- * @date 2020-12-08
+ * @date 2020-12-09
  */
 public interface IEconTypeService 
 {
@@ -17,7 +17,7 @@ public interface IEconTypeService
      * @param econId 经济类型ID
      * @return 经济类型
      */
-    public EconType selectEconTypeById(Integer econId);
+    public EconType selectEconTypeById(Long econId);
 
     /**
      * 查询经济类型列表
@@ -57,5 +57,5 @@ public interface IEconTypeService
      * @param econId 经济类型ID
      * @return 结果
      */
-    public int deleteEconTypeById(Integer econId);
+    public int deleteEconTypeById(Long econId);
 }

@@ -131,6 +131,9 @@ public class GenTableServiceImpl implements IGenTableService
         {
             for (GenTableColumn cenTableColumn : genTable.getColumns())
             {
+                if (cenTableColumn.getJavaField().toLowerCase().equals("delflag")) {
+                    cenTableColumn.setHtmlType("");
+                }
                 genTableColumnMapper.updateGenTableColumn(cenTableColumn);
             }
         }

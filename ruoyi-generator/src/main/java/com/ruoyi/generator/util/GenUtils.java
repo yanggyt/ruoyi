@@ -47,6 +47,9 @@ public class GenUtils
             // 字符串长度超过500设置为文本域
             Integer columnLength = getColumnLength(column.getColumnType());
             String htmlType = columnLength >= 500 ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT;
+            if ( column.getColumnName().toLowerCase().equals("del_flag") ) {
+                htmlType = "";
+            }
             column.setHtmlType(htmlType);
         }
         else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType))
