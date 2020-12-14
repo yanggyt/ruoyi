@@ -354,6 +354,15 @@ public class GenTableServiceImpl implements IGenTableService
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
         for (String template : templates)
         {
+            // form 2列
+            if (table.getFormCols().equals("2") ) {
+                if ( template.contains("add.html.vm") ) {
+                    template = "vm/html/col2/add.html.vm";
+                } else if ( template.contains("edit.html.vm") ) {
+                    template = "vm/html/col2/edit.html.vm";
+                }
+            }
+
             // 渲染模板
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, Constants.UTF8);

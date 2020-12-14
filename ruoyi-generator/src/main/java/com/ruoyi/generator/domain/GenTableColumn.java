@@ -50,6 +50,9 @@ public class GenTableColumn extends BaseEntity
     /** 是否编辑字段（1是） */
     private String isEdit;
 
+    /** 是否 只读字段（1是） */
+    private String isReadonly;
+
     /** 是否列表字段（1是） */
     private String isList;
 
@@ -222,6 +225,25 @@ public class GenTableColumn extends BaseEntity
     {
         return isInsert != null && StringUtils.equals("1", isInsert);
     }
+    public void setIsReadonly(String isReadonly)
+    {
+        this.isReadonly = isReadonly;
+    }
+
+    public String getIsReadonly()
+    {
+        return isReadonly;
+    }
+
+    public boolean isReadonly()
+    {
+        return isReadonly(this.isReadonly);
+    }
+
+    public boolean isReadonly(String isReadonly)
+    {
+        return isReadonly != null && StringUtils.equals("1", isReadonly);
+    }
 
     public void setIsEdit(String isEdit)
     {
@@ -332,7 +354,7 @@ public class GenTableColumn extends BaseEntity
     {
         return StringUtils.equalsAnyIgnoreCase(javaField,
                 // BaseEntity
-                 "remark",
+                 "remark","delFlag",
                 // TreeEntity
                 "parentName", "parentId", "orderNum", "ancestors");
     }

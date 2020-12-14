@@ -87,6 +87,15 @@ public class GenUtils
         {
             column.setIsEdit(GenConstants.REQUIRE);
         }
+
+        // 只读字段
+        if ( arraysContains(GenConstants.COLUMNNAME_INI_READONLY, columnName) )
+        {
+            column.setIsReadonly("1");
+        } else {
+            column.setIsReadonly("0");
+        }
+
         // 列表字段
         if (!arraysContains(GenConstants.COLUMNNAME_NOT_LIST, columnName) && !column.isPk())
         {
@@ -97,6 +106,16 @@ public class GenUtils
         {
             column.setIsQuery(GenConstants.REQUIRE);
         }
+
+        // 设置自定义编号 所有的选项都为0
+        if ( columnName.contains("_custom_num") ){
+            column.setIsInsert("0");
+            column.setIsEdit("0");
+            column.setIsQuery("0");
+            column.setIsList("0");
+            column.setIsRequired("0");
+        }
+
 
         // 查询字段类型
         if (StringUtils.endsWithIgnoreCase(columnName, "name"))

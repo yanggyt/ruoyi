@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="isPk"           column="is_pk"          />
         <result property="isIncrement"    column="is_increment"   />
         <result property="isRequired"     column="is_required"    />
+        <result property="isReadonly"     column="is_readonly"    />
         <result property="isInsert"       column="is_insert"      />
         <result property="isEdit"         column="is_edit"        />
         <result property="isList"         column="is_list"        />
@@ -30,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectGenTableColumnVo">
-        select column_id, table_id, column_name, column_comment, column_type, java_type, java_field, is_pk, is_increment, is_required, is_insert, is_edit, is_list, is_query, query_type, html_type, dict_type, sort, create_by, create_time, update_by, update_time from gen_table_column
+        select column_id, table_id, column_name, column_comment, column_type, java_type, java_field, is_pk, is_increment, is_required, is_insert, is_edit,is_readonly, is_list, is_query, query_type, html_type, dict_type, sort, create_by, create_time, update_by, update_time from gen_table_column
     </sql>
 	
     <select id="selectGenTableColumnListByTableId" parameterType="GenTableColumn" resultMap="GenTableColumnResult">
@@ -56,7 +57,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="isPk != null and isPk != ''">is_pk,</if>
 			<if test="isIncrement != null and isIncrement != ''">is_increment,</if>
 			<if test="isRequired != null and isRequired != ''">is_required,</if>
-			<if test="isInsert != null and isInsert != ''">is_insert,</if>
+            <if test="isReadonly != null and isReadonly != ''">is_readonly,</if>
+            <if test="isInsert != null and isInsert != ''">is_insert,</if>
 			<if test="isEdit != null and isEdit != ''">is_edit,</if>
 			<if test="isList != null and isList != ''">is_list,</if>
 			<if test="isQuery != null and isQuery != ''">is_query,</if>
@@ -76,7 +78,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="isPk != null and isPk != ''">#{isPk},</if>
 			<if test="isIncrement != null and isIncrement != ''">#{isIncrement},</if>
 			<if test="isRequired != null and isRequired != ''">#{isRequired},</if>
-			<if test="isInsert != null and isInsert != ''">#{isInsert},</if>
+            <if test="isReadonly != null and isReadonly != ''">#{isReadonly},</if>
+            <if test="isInsert != null and isInsert != ''">#{isInsert},</if>
 			<if test="isEdit != null and isEdit != ''">#{isEdit},</if>
 			<if test="isList != null and isList != ''">#{isList},</if>
 			<if test="isQuery != null and isQuery != ''">#{isQuery},</if>
@@ -100,6 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             is_list = #{isList},
             is_query = #{isQuery},
             is_required = #{isRequired},
+            is_readonly = #{isReadonly},
             query_type = #{queryType},
             html_type = #{htmlType},
             dict_type = #{dictType},

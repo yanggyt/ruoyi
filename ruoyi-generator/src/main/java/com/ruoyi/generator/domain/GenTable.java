@@ -64,6 +64,9 @@ public class GenTable extends BaseEntity
     /** 生成代码方式（0zip压缩包 1自定义路径） */
     private String genType;
 
+    /** 界面上form的列数 1一列，2二列，3三列 4四列 */
+    private String formCols;
+
     /** 生成路径（不填默认项目路径） */
     private String genPath;
 
@@ -223,6 +226,16 @@ public class GenTable extends BaseEntity
     public void setGenType(String genType)
     {
         this.genType = genType;
+    }
+
+    public String getFormCols()
+    {
+        return formCols;
+    }
+
+    public void setFormCols(String formCols)
+    {
+        this.formCols = formCols;
     }
 
     public String getGenPath()
