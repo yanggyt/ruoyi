@@ -1,0 +1,38 @@
+
+2020.12.09
+1、修改生成代码时 ， createBy 、createTime 在页面 不显示  ；
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=============== 相关资料 ========================================================================
+
+ Velocity教程：
+https://www.ctolib.com/docs-Velocity-c-220510.html
+
+
+ Thymeleaf 的基本用法 
+https://www.ctolib.com/topics-137458.html
+
+
+ IntelliJ IDEA 18个常用插件，动图演示，让效率成为习惯
+https://www.ctolib.com/topics-141243.html
+
+
+
+

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+    <title>Bootstrap Form Demo</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <form class="form-horizontal" role="form">
+    <legend>两列</legend>
+
+    <fieldset>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="ds_host">主机名</label>
+        <div class="col-sm-3">
+         <input class="form-control" id="ds_host" type="text" placeholder="192.168.1.161"/>
+       </div>
+       <label class="col-sm-2 control-label" for="ds_name">数据库名</label>
+       <div class="col-sm-3">
+         <input class="form-control" id="ds_name" type="text" placeholder="msh" readonly="true"/>
+       </div>
+     </div>
+
+     <div class="form-group">
+      <label class="col-sm-2 control-label" for="ds_username">用户名</label>
+      <div class="col-sm-3">
+       <input class="form-control" id="ds_username" type="text" placeholder="root"/>
+     </div>
+     <label class="col-sm-2 control-label" for="ds_password">密码</label>
+     <div class="col-sm-3">
+       <input class="form-control" id="ds_password" type="password" placeholder="123456"/>
+     </div>
+   </div>   
+ </fieldset>   
+
+
+ <legend>一列</legend>
+ <fieldset>
+   <div class="form-group">
+     <label for="disabledSelect"  class="col-sm-2 control-label">select</label>
+     <div class="col-sm-8">
+      <select id="disabledSelect" class="form-control">
+       <option>禁止选择</option>
+       <option>禁止选择</option>
+     </select>
+   </div>
+ </div>
+</fieldset>
+
+<fieldset>
+ <div class="form-group">
+   <label for="disabledSelect"  class="col-sm-2 control-label">textarea</label>
+   <div class="col-sm-8">
+     <textarea class="form-control" rows="3" ></textarea>
+   </div>
+ </div>
+</fieldset>
+
+<center>
+  <button type="button" class="btn btn-primary">居中按钮</button>
+</center>
+</form>
+</body>
+</html>

@@ -1,0 +1,1563 @@
+﻿ 
+ 
+https://gitee.com/project_wisdomFoodSafety/Internet-Bright-Kitchen-Server
+
+
+
+Gxsoft#02020
+
+frxClass, frxDBSet
+
+git config --global user.name "lin"
+git config --global user.email "290541200@qq.com"
+ssh-keygen -t rsa -C "290541200@qq.com"
+
+47.115.130.37
+ 
+ gitee 账号密码：
+github.com 及 gitee 账号密码：
+291589674@qq.com/lksfsm198592  北京
+290541200@qq.com/lksfsm198592  Book a province  ;;   关注: 若依 jeecg  
+
+git下载安装： https://git-scm.com/ 
+git的配置： 
+git config --global user.name "lksfsm"
+git config --global user.email "290541200@qq.com"
+#检查信息是否写入成功
+git config --list 
+
+=====================++++++++++++++++++++++++++++=============================================+++++++++++++++++++++++++++===========
+
+安全生产系统_密码： Gxsoft#.2020
+
+
+文件共享路径： \\linkuaisheng\传文件共享
+用户名： file 密码：1qaz2wsx
+
+
+安装MSsql2012 的秘钥： HRV7T-DVTM4-V6XG8-P36T4-MRYT6 
+
+
+**** 深圳服务器 *****************************************************************************************************************************
+192.168.2.250 
+密码： QWE123qwe
+
+
+**** 疫情服务器 *****************************************************************************************************************************
+
+1.登录到跳板机F
+ssh root@112.74.168.178  -p 22
+密码：Gx@soft2019
+2. 通过跳板机登录政务云机器
+ssh root@218.14.110.54 -p 5222
+密码：
+Hzdx@20200206
+
+数据库服务器
+ssh root@218.14.110.54 -p 4222
+用户名: root
+密码: Hzdx@20200309
+
+数据库密码：
+root/Gxsoft@2020^*qaz
+
+mysql -uroot -pGxsoft@2020^*qaz
+
+**** 深圳服务器 *********
+
+192.168.2.250
+
+
+
+
+**** www.gxsofts.com 域名 注册 *****************************************************************************************************************************
+www.dj.cn
+账户：ut_101044 密码重置为： 20220929  
+义乌公司路由器密码，gexun888
+
+************************************************************************************************************************************************************
+
+Can't load package RaizeComponentsVcl.bpl.
+系统找不到指定的文件。
+
+[DCC Fatal Error] acnt2010_R.dpk(131): F2063 Could not compile used unit 'acTinyJPG.pas'
+
+TV：
+1040753701
+46e2ja
+
+===================================================================================================================================
+ 
+  链接：https://pan.baidu.com/s/16LHA-qajOw5h_EfP25LD7g 密码：jsfb 
+ 
+ WS03\SQL2008
+
+ https://39.108.181.197:6888/svn/GxPDARepository/GxpdaPro/trunk
+admin   密码：Gxsoft2019
+
+===================================================================================================================================
+ 
+ 
+ 《学校食品安全与营养健康管理规定》
+ 
+ 
+设备类型、消毒类型、集控器设备绑定、
+
+预警信息设置、假期信息维护、预警时间维护、预警事项维护、预警步骤维护、预警步骤人员维护、
+
+票证
+
+
+api接口  
+(食品分类维护、食品单位维护、食材信息维护、菜品分类维护、菜品信息维护、)
+(食品分类维护、食品单位维护、食材信息维护、菜品分类维护、菜品信息维护、)
+
+
+DL@2019.com
+〖〗【】『』《》〈〉〔〕（）［］｛｝「」
+
+2、文档中的那个显示越权问题：是这样的，同一经营点 只能查看和修改自己的数据；若是监管的账号，可以查看下属的经营点的数据但不能修改经营点的数据。
+
+
+
+安全生产
+http://120.234.208.237:9001/indexInit.gx
+gx  gx.shzl0
+
+===================================================================================================================================
+
+
+ 上报系统 ：
+   http://qy.gxfsms.com:3010/indexInit.gx 
+    用户： cs  密码：0
+ 阳光食堂：
+   http://www.gxfsms.com:8005/indexInit.gx
+    用户： cs  密码：0
+ 惠东市场监督局 大屏 ing
+    账号: ljy   密码: 0
+	
+
+  金控生产环境：121.41.87.34:8081 账号：zjjk, 密码是 1qaz2wsx
+  gexun.tpddns.cn:33890
+  
+  wygl 8883889
+  
+	chs1qaz2wsx*...
+
+
+ 省厅 https://fa.gdedu.gov.cn/loginInit.gx
+1111  密码： Qq123456--   
+管理员： gx      密码：gx2019@soft
+教育局：jyjcs    密码：gx123456..
+学校：gxcs       密码：gx123456..
+食堂：csst1      密码：gx123456..
+大数据界面： stys 密码：asd123..   、 gx101  密码：asd123..
+档案系统：   w11  密码：asd123..
+数据分析：   sjyt 密码：sjyt1234..
+
+ 
+
+
+http://www.gxfsms.com:8005/indexInit.gx
+用户：教育局：jyjcs 密码：0
+
+gx    gx2018soft
+教育局：jyjcs    密码：0
+学校：wyk        密码：0
+食堂：w2         密码：0
+show processlist
+
+*********************************************************************************
+
+新疆系统 
+
+省厅
+http://qt.gxfsms.com:8040/loginInit.gx
+账号：gx
+密码：0
+
+
+食堂用户：cs
+密码：0
+
+http://qt.gxfsms.com:8040/loginInit.gx
+账号：gx
+密码：gx2018soft
+
+食堂账号：10000711
+密码：0
+
+ 1-合格： 监管方 审批后 修改 《巡检记录从表》的“检查结果” 为 ‘合格’ ，并且修改《整改单从表》的"整改状态"为‘合格’，
+ 2、不合格 ，监管方 只把 驳回 不合格的项目， 餐饮方 只在 本整改单的 继续整改 “不合格”的项目
+ 3、整改单所有子项整改状态为“合格”后，修改《巡检记录表》的整改状态为“合格” 及《整改单》的 “上报状态” 为 ‘通过’ 
+
+
+  146632457.94 - 146644281.18
+
+ 
+
+ 恒正服务器： 192.168.1.160   密码：lufeng1108@
+
+ 
+元味数据库地址：
+gexun.tpddns.cn,14340
+
+ 尹建平邮箱： yijianping@gxsofts.com  密码：1qaz2wsx3EDC
+
+ 研发部 gx20190123yf@163.com   密码：gx18129687010
+ 
+
+名传：
+     公司 阿里云服务器
+    yun.mchuan.com 
+	账号是邮箱号: huizhou165@163.com ，密码 cellcww
+
+	 大龄 	
+	http://yun.mchuan.com/
+	用户：571354105@qq.com
+	密码：cellcww
+
+ 
+ ======================================================================================================= 
+
+短信服务平台:（短信模板设置）
+http://ums.zj165.com/main/index.do
+企业编号：224723
+用户名：haz_gxkj 
+密码：6Jwipq8XA321
+登录网址：ums.zj165.com
+
+sms.gxaqsc.cn
+gx/gx123
+
+****************************************************************************************************
+DL@2019.com
+
+这样： 本级没有设置，默认 广东的 做到这三个 判断 就可以
+
+
+1、公司阿里云帐号
+  https://account.aliyun.com/login/qr_login.htm?spm=5176.12825654.amxosvpfn.21.e9392c4aGMMTh6&oauth_callback=https%3A%2F%2Fwww.aliyun.com%2F
+ 用户：626477251@qq.com  密码：Wei2525 
+ 
+ ram 用户登录地址: https://signin.aliyun.com/1817719088228117.onaliyun.com/login.htm 
+ ram登录用户： bj@1817719088228117.onaliyun.com  密码：zaq1xsw2cde3
+ 
+ 
+ 用户：惠州格讯  密码：Wei2525 
+ 71012953
+ https://common-buy.aliyun.com/commodityCode=cas#/buy
+ 
+ 格创账号 ... 
+ 义乌市格创自控科技   gexun888666   
+ 47.112.158.152(公)    Gxsoft..
+ 172.27.130.194(私有)
+ 
+f_dpt_no:部门编号
+f_dpt_dsp:部门名称
+fcus_no:部门识别码
+fparent_no:父级部门编号
+fleaf:是否叶子节点-默认值为 0 
+
+组织、学校、经营点、仓库资料、供应商、员工资料、餐饮许可证、班次维护、排班信息维护、
+
+
+
+ 阿里云服务器 所有密码： 
+  101.37.84.104  司法局官网       			Gx@soft104
+  120.26.10.99   大岭外来人口     			gx2019
+  121.40.110.203  健绿元平台	  			Gx@soft1440
+  121.41.87.34	  深圳专用与物业局 			Gx@soft34
+  121.43.62.82(www.gxfsms.com)	  惠东学校和扬州学校 		Gx@2019.com
+  120.26.106.8:16888    杭二中			 		gexun@2019  120.26.106.8:16888   administrator/gexun@2019
+  121.43.101.138  万惠和健绿元图片服务器 	Gx@soft1100
+  121.41.122.66   administrator 			Gxsoft@2019	
+  47.112.136.66   root   Linux 系统   1Qaz.wsx  
+  8.129.222.72	  root   Gx@soft1100
+  112.74.168.178 root 、 Gx@soft2019 
+  8.129.183.130  root 、 Gx@soft2019 
+ 
+  
+   两台视频服务器(应用、流服务)
+  应用：   120.24.227.186(公) 172.18.84.63(私有)
+  流服务： 112.74.168.178(公) 172.18.84.62(私有)
+  root 、 Gx@soft2019
+  
+  
+  -- 政务云
+  120.234.208.237   administrator h3c-123  海康平台
+  
+  应急预案 用户:  Gx  密码： gx.shzl0
+http://47.112.17.11/indexInit.gx
+
+**************************************************************************************************************
+**************************************************************************************************************
+ 
+电信天翼云   113.108.88.45
+	www.ctyun.cn  用户：85738869@qq.com   密码：Gxsoft@XX2020..
+  
+	http://localhost:8011/ywService.dll/wsdl/IywService
+	
+-XX:PermSize=300m
+-XX:MaxPermSize=600m
+-XX:-UseGCOverheadLimit
+
+-Xms512m -Xmx1024m -XX:PermSize=128M -XX:MaxPermSize=256M
+
+ 家庭目标：
+     每周开一次家庭会议，定在每周五或每周六晚上，内容有：
+	 1、各个人这一周的总结
+	 2、希望家庭成员接下来一周对你要求
+	 3、开展批评和自我批评
+	 4、家庭具体成员朗读一篇文章
+
+
+
+	 43.243.128.181   密码:   Gxsoft1998@Xp2020   Mysql密码： Gx123Soft
+	 43.243.128.142   密码:   Pr@ject94  旭平  域名：gxerp.cc	 2008数据库(端口:1431) , sa密码：Gxsoft2008
+  
+	113.108.8.80:33890   密码： Gx@soft123   域名：hbjgpt.cn 
+	113.108.8.81 密码：Gx@soft123  				域名：gdheds.xyz
+	113.108.8.82:33890 密码：Gxsoft@2018   远程桌面端口： 33890	 域名：dlggfw.cn 		
+
+	113.108.88.45 密码：Gx@soft123     		    
+	113.108.8.28   Ct@2020.com
+	113.108.8.166:33890 密码：administrator / Gx@soft0938   域名：gsunsofts.xyz    
+	59.36.87.231  密码：administrator/Gx@soft0938    域名：gxcfsms.cn   mysql : Gx@soft1998
+
+	101  15:04:00
+
+ 
+
+**************************************************************************************************************
+
+******* 联通 *********** 
+1、122.13.4.42,  administrator/hzgx!QAZ    确信： qx   ， Qx@2017
+
+2、122.13.3.210:33891 端口为33891  帐号为administrator,密码为1qaz2wsxgexun2017(*&^  （windows 系统）
+      广告机  @DataType=7 
+      http://122.13.3.210:8001/ds/
+      远程桌面： 122.13.3.210:33891  ； admin  87655678
+  
+  
+3、海康平台账号   122.13.3.213:33389,   帐号为 administrator, 密码为 gexun!QAZ   
+   122.13.3.213:8001  贵港ing 账号 密码  gxwst   密码 gxwst2019.  
+				      管理员： admin  / 1qaz2wsx0.0.
+	
+	http://122.13.3.213:8001/wcms/web/login/casLoginView.jsp?t=1569742827336&service=http%3A%2F%2F122.13.3.213%3A8001%2Fcms%2Fweb%2Fgateway%2Fhome.action
+ 
+  
+  
+  
+4、122.13.3.214(yy.gxivs.cn)  administrator/gexun!QAZ
+      http://122.13.3.214:8018/gx_web_xinweier/
+      http://202.96.142.38:8011/ywService.dll/wsdl/IywService
+
+
+1、122.13.3.214    
+ 
+3、122.13.3.210:33891    
+4、122.13.4.38
+5、122.13.3.155  
+ 
+  
+7、112.93.116.245 端口为2221   帐号密码为root/ aU5ejF  （centos 系统）
+
+ 海康视频平台服务器 
+ 
+ 
+112 —— 
+
+  Gxsoft#.2020 
+****************************************************************************************************************
+ 沃云
+ https://puac.wocloud.cn/#/login    账号：570ALY001481   密码：Gxlt@2019soft..
+ https://cucc.wocloud.cn/
+ 
+ 
+
+1、122.13.4.42,  administrator/hzgx!QAZ    确信： qx   ， Qx@2017
+
+
+
+120.78.207.196   Gxsoft1998
+120.77.147.124   Gx@soft1440
+120.79.171.109   administrator/Gxsoft1998
+39.108.181.197(qinghai.gxfsms.com)   Gxsoft1998
+120.79.159.206(qt.gxfsms.com)  密码 Gx@soft2019
+47.112.17.11（aq.gxfsms.com）  密码：asd123..
+112.74.181.212 （cs.gxfsms.com）  密码：Gx@soft1100   测试用的
+47.107.236.215  密码：asd123..
+120.78.147.36   密码：Gx@soft36
+
+39.102.200.234  root/Gxyzj@1213    Aa123456 Gxsoft!123   现金支出   
+fa.gxivs.cn:8666  ctest / zaq12wsx..   ;;; admini / 123456
+数据库
+root/Gxsoft@2020^*qaz
+bill/Gexun@2020.*qwe
+http://39.102.200.234:8666/static/help.pdf
+	
+	
+	
+网址：http://fa.gxivs.cn:8666
+超级管理员： admini / zaq12wsx..
+管理用户： hdadmin 密码：qazwsx..
+操作员：  手机号码  默认密码：1qaz2wsx..
+平山账号： 13192452543  密码：1qaz2wsx..
+13802351730 	
+	
+	
+ssh 8.129.183.130
+
+
+100009  708294
+		708294
+ 
+微信开放平台(开发者)：  https://open.weixin.qq.com/   
+   账号：290541200@qq.com ； 密码：fsmlks198592
+ 
+ 
+微信公众：  https://mp.weixin.qq.com/
+食安卫士 登录帐号：
+3341623062@qq.com	密码：a18258986971
+格讯信息：2881337651@qq.com  aA123456
+格讯科技：gxsofts  gxsoft1995
+	开发者ID(AppID)：wx4b6a4455cdf5691b
+	开发者密码(AppSecret)： gexunsoftgx18129687332gexunsofts
+	
+格讯食安卫士：3341623062@qq.com  a18258986971
+
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+深圳SVN：
+http://113.108.8.82:8022/svn/gx/java
+用户 ：lks  密码：lks1998
+
+看板svn http://localhost:4030/svn/gx 
+http://113.108.8.82:8022/svn/gx/java/jsdzkb
+hdgx   hdgx2018
+
+ 
+  CoUninitialize;   //   CoInitialize(nil);
+ 2、义乌服务器 122.226.220.166  用户: administrator	密码： Gxsoft0.0
+   122.226.220.166:2020    10.15.16.192
+	**************** 路由：用户：admin  密码： gexun888或者 gexun8888  ****************
+	TV: 1059199813  密码 123456
+	  alter table ipknowledge add fdesc varchar(500) null;
+
+	
+ 3、自控服务器   -- 旧的 114.215.195.166 登录密码    gx1995@0.0
+	http://113.108.8.166:8868/loginInit.gx
+
+======= 圣天 ===================================================================================================================
+
+阿里云账号：
+https://account.console.aliyun.com/?spm=5176.2020520101.nav-right.dinfo.566c4df5IV7H8T#/basicInfo
+账号/密码： 15913883749 / St@wzh2525
+
+服务器：
+云平台：  123.56.159.21   administrator  /  st123456789.
+电  商：  123.56.45.40    root          /   Gxsoft666 
+
+
+************************************************************************************************************************
+ U4J5-9YTEM9-UX9M96-6YAE
+ < 惠州市惠阳区食品药品监督管理局 >申请的云资源已创建成功，
+	请登录http://www.ctyun.cn，在“控制中心” 切换其他-广州4节点，操作您的云资源。 
+        1、账号信息：登陆账户：< 919248734@qq.com > 初始密码：123456（请尽快登录http://www.ctyun.cn/user/change_password修改） 
+        2、您的云主机登陆名分别为root（Linux）、administrator（Windows），云主机初始密码均为：Ct@18902653881 ，请尽快修改为符合复杂度规则的密码。 
+        3、如使用中遇到问题，请登陆www.ctyun.cn天翼云官方网站，进入帮助中心查看，或拨打天翼云客户服务热线：400-810-9889 进行咨询。 
+ 0004384037
+ < 惠州市惠阳区食品药品监督管理局 >申请的云资源已创建成功，
+			 www.ctyun.cn
+			登陆账户：  919248734@qq.com  
+			登陆密码： Huiyuan@Gx2018Cert..  root/Gxsoft@2020^*qaz
+			 		FSTEIEITBZMXBDG	  
+			数据库服务器：14.152.77.188  用户：root  密码：HYDX@2020.com  ；   旧的\ HYDL@2019.com
+						    MySql数据库密码：Gx@2018.com  , 数据库：gx_messD_huiy  ; 01010106
+			Tomcat服务器：14.152.77.229（192.168.1.134） administrator  密码：Ct@18902653881  ；
+							tomcat位置： F:\Tomcat8006 端口：8006  Ct@2018.com
+			grant all privileges on *.* to root@"%" identified by "gx123" WITH GRANT OPTION;
+			flush privileges;
+************************************************************************************************************************* 
+
+省厅堡垒机
+https://183.62.54.108/user/requireLogin
+账号：gdygst
+密码：Gx&soft1998@2018
+系统：  fa.gdedu.gov.cn
+ Gx 密码： gx2019@soft
+ 
+
+
+VPN帐号及权限已开通， 使用流程：
+ https://210.76.64.244
+1、登陆省云平台（210.76.64.244）
+深信服VPN，账号：kfs_gx_yunwei、默认密码：hvaSpbk#a2.； 
+
+2、登录相应系统
+
+username=gxroot
+password=Gx?soft123
+  
+ 数广VPN：   Ftp 用户和密码： gxadmin / Gx123.. 210.76.76.50
+ 
+################################################################################################################ 
+	
+修复MySql
+
+repair TABLENAME
+要修复所有的表，执行如下命令：
+
+/usr/local/mysql/bin/mysqlcheck --all-databases -uUSERNAME -pPASSWORD -r
+很多时候，我们不会知道MyISAM表已经损坏了，除非查看了日志文件。
+我强烈建议您将此行添加到你的/etc/my.cnf配置文件中， 它会自动修复损坏的MyISAM表。
+
+[mysqld]
+myisam-recover=backup,force
+
+*******************************************************************************************
+-- MySql授权所有用户 ******************************************************************
+-- .grant 权限 on 数据库.数据表 to '用户' @ '主机名';
+-- https://www.cnblogs.com/cyl048/p/7992376.html
+-- *******************************************************************************************
+grant all privileges on *.* to root@"%" identified by "GxSh2016@1998" WITH GRANT OPTION;
+flush privileges;
+
+************************************************************************************
+ 
+重庆婉君__ ing 
+  ls619632572.vicp.cc:44203  61619191
+  应用程序：  账号：admin  密码：13983058558   数据库密码：xx001
+ 
+************************************************************************************
+ 
+ 欣微尔
+http://113.108.8.82:8022/svn/gx/java/gx_web_xinweier
+     账号：linkuaisheng   密码：linkuaisheng
+  
+http://113.108.8.82:8022/svn/gx/app/Android/欣微尔质检
+luofangjing   luofangjing
+
+
+欣微尔 公司 内网地址：
+ 
+服务端 10.1.9.23 administrator 
+数据库 10.1.9.21 sa gpxt@swr0703 
+
+
+ 三鼎   H0902369   H1802082  Q1810003  S1202256   
+http://60.191.215.74:809/eCard
+用户: admini 
+密码: adminz5236
+
+TeamView：  1103504978  密码： 123456789
+
+tkprof ecard_ora_9840_gxrr.trc ecard.sql aggregate=yes sys=no waits=yes sort=fchela
+
+
+ 第五季 远程桌面端口：
+ 144.123.46.82  dwj2017
+
+ 
+ ***** 帝碧 *****************************************************
+ 服务器ip地址为 192.168.0.163 
+ sql账号admin 密码admin123  
+ 数据在hsdb库 toerp_emplwork表
+ 
+ 
+ 农药店： 
+ 后台： http://nyd.gxfsms.com:8002/  用户：admin 密码：123456
+ 前端： http://nyd.gxfsms.com:8002/static/reception/home.html
+ 
+ 
+ hdccl 020326
+ 
+ 
+  PDA 源代码 所在SVN
+  https://39.108.181.197:6888/svn/GxPDARepository/GxpdaPro/trunk
+  账号：admin   密码：Gxsoft2019
+  
+ 元味     
+202.96.142.38:5388  密码：1qaz2wsx*...
+XT : 60895116  1qaz2wsx
+
+
+
+Iws
+ http://202.96.142.38:8012/ywService.dll
+ http://122.226.113.178:5001/ServiceDemo/ywservice.dll
+
+ 顺辉 服务器 teamview
+ teamviewer： 704 017 595  密码： 123465
+ 
+  
+ *******************************************************************************************************
+ 
+ 鹏飞的 TV：
+ UQ服务器的IP地址：192.168.18.8  ; 用户名administrator  密码: Win87969398 ;  
+    远程工具TeamViewer的ID：445557416 ,密码是 pf1234
+
+	ERP服务器(192.168.18.4) 的用户名：administrator , 密码：dell-1234 ; erp数据库sa的密码：pf123!
+ 导出csv文件（压缩文件）你在D盘新建一个文件夹就可以了。
+ 
+ ERP服务器上Teamviewer  ID:260551151 密码：pf1234 
+  Gx 密码： 87969396
+  
+ 称重 用户名administrator 密码：Win87969398
+ 
+远程桌面
+  60.190.158.138:3389 用户：administrator 密码：Win87969398 进入192.168.18.3服务器后，再远程其它服器吧。
+ 
+ 
+ 系统 GX 登录密码： 87969396
+ 
+****************************************************************************************************  
+
+181103000012
+
+0209040007325
+
+http://120.79.171.109:8828/   前端
+http://hdhis.gxivs.cn:8828/logout.gx 后台：用户：admin 密码：123456
+
+
+admin   1qaz2wsx0.0.
+
+
+9ea08c1f5ea5e06d
+
+天派远程桌面
+
+http://122.227.13.18:31419/loginInit.gx
+tpjt  weishunliang
+it117   30462160
+xpfs   weishunliang
+tpjt   weishunliang
+ltfs   weishunliang
+DDFS   weishunliang
+
+
+正式服务器：122.227.13.18:20402 密码：99120trust-tpzz@
+虚拟机：122.227.13.18:30461 密码：Wjw332801@
+服务器：122.227.13.18:20402 密码：99120trust-tpzz@
+测试服务器： 122.227.13.18:30333  99120trust-tpzz!$$
+
+测试：
+http://122.227.13.18:3333/loginInit.gx
+
+
+
+天派重新计算库存
+http://122.227.13.18:31419/ivinfo/suitStockByLgordbal.gx?confirmsuit=true
+
+http://localhost:8081/ivinfo/suitStockByLgordbal.gx?confirmsuit=true
+
+
+
+
+健盛远程桌面
+60.191.102.54:5529
+RD55  / janwang@123
+192.168.8.155：3355       administrator     Jasan@34
+sa 密码： Jasan*Gexun@Server
+系统登录用户及密码： gx  /  国内  jiang@123  越南 1234
+
+192.168.8.121 
+Jasan*Gexun@Server
+
+
+
+系统登录用户及密码：Gx / jiang@123
+
+ 
+
+
+
+上海建桥
+一、	需要部署到他们服务器上 通过VPN链接， 
+ vpn地址：https://vpn.shiep.edu.cn 
+账号：jzg20160001 密码：jzg20160001
+
+VPN链接之后，直接ssh就可以了
+服务器地址：10.166.18.16 （ubuntu sever）  gench/gench@123 
+项目地址：
+http://10.166.18.16:8088/  
+用户： cs 
+密码： 0
+
+gx gx2018soft
+
+
+*********************************************************************************************************
+
+南京师大教育厅系统网址： shitang.njbjs.com   账号：nsfzjnfx   密码：123456
+南京师大附中江宁分校小学食堂
+njsdfz4 / 0
+
+gx2018soft
+njsdfz1 
+jswh /  0
+*********************************************************************************************************
+ 
+
+深圳二外账号：
+18038197730 密码：0
+
+8904aa17795700000000
+
+
+
+公司硬件管控平台
+http://yj.gxfsms.com:8889/login.gx
+用户： admin   密码：gx123456
+信息系统投标技术方案书模板
+=======================================================================================================================================
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ...平安项目... &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+ http://121.12.84.31:83/index.gx
+ https://hardware.gxfsms.com:8093/index.gx#
+
+ 平安
+ https://fs.city.pingan.com/xysa/gx/
+  用户：szAdmin  密码：Asd123..  用户： admini 密码： Gp@soft2019..		一般用户密码： Asd123.. szsqlxx
+
+ 
+ 
+  公司测试 
+ https://hardware.gxfsms.com:8093/index.gx#
+  tasf  / Asd123.. 
+ 
+ 
+
+
+ 平安硬件平台
+ http://hardware.gxfsms.com:8889/
+  admin/123456 
+  
+ 
+ 平安经营点试环境账户: testshow / Xysa1234=
+ 
+平安服务器项目  
+http://121.12.84.33:8080
+
+
+深圳平安项目申请服务器
+
+Micro Service  Docker
+
+平安kafka地址：
+121.12.84.31:9092
+
+ ...... 硬件平台 ........
+113.108.8.166:8889  
+admin/123456
+
+-- 修改redis的 
+http://hardware.gxfsms.com:9095/updateHost?id=196081
+196005  196081
+
+
+平安 服务器 Mysql 密码:  47.112.136.66:3007
+mysql：
+	root	pingan@123
+	ygst	ygst@2019
+	
+
+	http://121.12.84.31:83 196005
+	
+http://47.112.136.66:8093/index.gx#
+管理账号：admini 密码：123456
+学校：test1 密码：123456
+食堂账号：pandong 密码：123456
+
+47.112.136.66   root   Linux 系统  1Qaz.wsx
+/home/pingan/opt/apache-tomcat-8093/webapps/ROOT/static/i18n
+/home/pingan/opt/apache-tomcat-8093/webapps/ROOT/WEB-INF/classes/i18n
+
+
+平安阳光食堂 部署文件 ...
+登录 10.12.9.7
+tomcat 路径 /usr/share/tomcat8
+
+weisp	
+
+http://121.12.84.31:81/xysa/gx/index.gx
+https://fs.city.pingan.com/xysa/gx/index.gx
+	
+一、阳关食堂部署文档
+ 1、修改config.properties文件项
+		sunshine.center.url ,值为硬件管理平台的访问地址
+
+ 2、修改配置文件jdbc.druid.properties，以下为必改项
+	#mysql 数据库配置项
+	url  
+	username
+	password
+	
+  3、kafkaProduct.properties,以下为必改项
+		bootstrap.servers ,kafka的地址
+
+  4、redis.properties 以下为必改项
+		redis.host  地址
+		redis.port  端口
+		redis.pass  密码
+  5、修改配置config.properties 文件
+	uploadBasePath ：上传文件路径
+	uploadFilePath ：文件存放文件夹
+	filePath   ：页面文件映射路径
+  
+	
+  5、Tomcat 配置
+	5.1 运行分配3G内存
+	5.2 配置tomcat相关端口8093为对外访问端口
+	
+	
+http://121.12.84.33/xysa/gx/
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+上海戴总
+上报系统 ：
+   http://qy.gxfsms.com:3010/indexInit.gx 
+    用户： cs  密码：0
+ 阳光食堂：
+   http://www.gxfsms.com:8005/indexInit.gx
+    用户： jyjcs  密码：0
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ...平安项目... &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+=======================================================================================================================================
+
+营业执照(1个)、经营许可证、(1个)、生产许可证(5个)、检验报告(5个) ，单个图片的存储大小约为 500k，按一年两次，存储3年,3000家食堂 来计算，(500+500+500*5+500*5)*2*3*3000
+安全人员许可证：单个照片存储大小为80k，按一年两次，存储3年,3000家食堂，一个食堂15人 来计算， 80*2*3000*15 
+人脸考勤： 单个图片存储大小10k，按一年两次，存储3年,3000家食堂，一个食堂20人 来计算， 10*2*3000*20 
+上传的文件(word、execl、pdf等)，单个文件存储大小10M，按一年两次，存储3年,3000家食堂计算：10*2*3000
+上次的培训视频，按平均值来算，单个200M，按一年两次，存储3年,3000家食堂计算：200*2*3000
+在加上500G的备用容量，总共 申请 2T的
+
+
+还有 就是 ，我们 食品管理那块 有没有 考虑下， 食材信息、菜品信息 是不是 不同的表，若是不同的表时，录入票证单据或者领料时 怎么处理？
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+****************************************************************************************************************************************************
+旭平小程序账号
+00212070038   0
+
+*****************************************************************************************************************************************************
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+芬雪琳看板服务器 
+http://122.255.242.58:6001/
+122.225.242.58:3391
+13454980249
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+浙江广东商会
+http://www.zjsgdsh.com/
+
+http://www.zjsgdsh.com/bocadmin/index.php?login
+账号：bocadmin  密码：56568888
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+ Js框架 
+https://fly.layui.com/user/reg/
+用户：enleco
+密码：enleco78
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+新疆系统 上报系统 
+http://sh.gxfsms.com:8030/loginInit.gx   
+gx/0
+新疆系统 阳光食堂 
+10000711 / 0
+ 
+
+*****************************************************************************************************++++++++++++++++++++++++++++++++++++++++++++++++++
+农残地址
+
+http://www.gxfsms.com:8005/ivinfo/newSaveForAppPesticide.gx
+
+http://120.78.147.36:8855/ivinfo/newSaveForAppPesticide.gx
+
+*****************************************************************************************************++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+    <Connector Connector  URIEncoding="UTF-8" 
+   compressableMimeType="text/html,application/json,text/xml,applicati
+   on/javascript,application/gx,text/css,text/plain"  compression="on"  
+   compressionMinSize="2048"  connectionTimeout="20000" 
+   noCompressionUserAgents="gozilla,traviata"  port="8888" 
+   protocol="HTTP/1.1"  redirectPort="8443"/>
+   
+   
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  阳光食堂溯源平台   
+测试地址：http://120.78.147.36:8855/indexInit.gx
+
+类型		账号	密码
+-------------------------
+超级账号	gx		2017
+后勤账号	syhq	0
+供应商A		sygysa	0
+供应商B		sygysb	0
+食堂账号	sycs	0
+
+-------------------------
+超级账号	 gx		2017
+后勤服务中心	 houqin	        0
+大米A		 damia	        0
+猪肉A		 zhuroua	0
+食堂账号a	 shitanga	0
+食堂账号b	 shitangb	0
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ 风险防控
+  http://120.79.171.109:8107/login.gx
+  Administrator/Gxsoft1998
+  xian/123456
+  
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 王永康:
+http://120.78.147.36:8999/loginInit.gx
+
+gb.gxfsms.com:8999/loginInit.gx
+ 
+ 
+账号：gx
+密码：gx2018soft
+ 
+账号：wh
+密码：0
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 工业互联网 平台申报
+http://syspt.aiigd.cn/index.shtml
+请用电脑登陆平台填写应用产品，
+账户：18665280393
+密码：hkyan0752
+
+ 
+
+**** 广西贵港 港北 ******************************************************************************************************************************
+
+ 向日葵有吗，我这台识别码 52448900
+ 
+系统服务器：111.12.45.140:8991 密码：gxwst_Z1x&Y*sOl1
+数据库服务器：111.12.45.140:8992 密码：gxwst_jyUI@vxTJD
+图片服务器：111.12.45.140:8993             密码：gxwst_ghdV^BB4&l
+备用服务器：111.12.45.14:8994               密码：gxwst_yRH5dv&Pzj
+
+
+公司外网系统
+http://gb.gxfsms.com:8999/loginInit.gx
+
+万食通（中国）食安食美云平台
+http://gb.gxfsms.com:8999
+港北区食品药品监督管理局    账号：spypjdglj    密码：0
+
+万食通（中国）食安食美云平台学校食堂监管系统
+http://gb.gxfsms.com:8999/loginInit_xxst.gx
+账号：xxst     密码：0
+
+万食通（中国）食安食美云平台餐饮企业监管系统
+http://gb.gxfsms.com:8999/loginInit_cyqy.gx
+账号：cyqy     密码：0
+
+万食通（中国）食安食美云平台食品加工企业监管系统
+http://gb.gxfsms.com:8999/loginInit_spjg.gx
+账号：spjgqy   密码：0
+
+
+*******************************************************************************************************************************
+
+socks_jiansheng_yueNa
+
+fsb4sgxqiqizhezhiwx1z315
+gxqiqizhezhiwx1z
+
+lld    8863346lld
+
+ 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+第一个就是老系统进不去
+
+第二个就是002账号门市访问不到主机
+
+第三个 
+大林我查了几个超市的账，发现的规律如下2014年1月1日-2019年7月30日，每年期末金额都是不变的（例如：2018年1月1日-2019年7月30日、2017年1月1日-2019年7月30日，以此类推）
+从2013年1月1日-2019年7月30日，期末余额就发生了变化
+
+2012年、2011年、2010年2009年到7月31日，期末余额金额也是固定不变的
+就是2013年到2014年这个期间的数据发生了问题
+
+
+
+花生壳
+ls619632572.vicp.cc
+administrator  秘密 61619191
+c001  秘密c001
+c002   c001
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2.阳光餐饮溯源管理平台
+
+测试地址：http://120.78.147.36:8855/indexInit.gx
+
+类型  账号 密码
+-------------------------
+超级账号 gx  2017
+后勤账号 syhq 0
+供应商A  sygysa 0
+供应商B  sygysb 0
+食堂账号 sycs 0
+-------------------------
+超级账号  gx  2017
+后勤服务中心  houqin         0
+大米A   damia         0
+猪肉A   zhuroua 0
+食堂账号a  shitanga 0
+食堂账号b  shitangb 0
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+投标文件全套目录
+www.jinchutou.com/p-59487686.html
+
+ 
+ 硬件平台 数据库  113.108.8.166 , 3456  ;;;  gxDesc / Asd123..
+ 
+ 阳光食堂 数据库  121.43.62.82 , 3306  ;;;  gxDesc / Asd123..
+ 
+
+  -- 创建 用户 gxDesc
+CREATE USER 'gxDesc'@'%' IDENTIFIED BY 'Asd123..';
+GRANT USAGE ON *.* TO 'gxDesc'@'%' WITH MAX_QUERIES_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
+GRANT GRANT OPTION ON *.* TO 'gxDesc'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, SHUTDOWN, PROCESS, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, SUPER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, CREATE USER, EVENT, TRIGGER ON *.* TO 'gxDesc'@'%';
+
+  -- 授权 访问
+GRANT ALL PRIVILEGES ON *.* TO 'gxDesc'@'%' IDENTIFIED BY
+'Asd123..' WITH GRANT OPTION;
+FLUSH   PRIVILEGES;
+
+  -- 授权 用户数据库 
+GRANT SELECT, INSERT, UPDATE, REFERENCES, DELETE, CREATE, DROP, ALTER, INDEX, TRIGGER, CREATE VIEW, SHOW VIEW, EXECUTE, ALTER ROUTINE, CREATE ROUTINE, CREATE TEMPORARY TABLES, LOCK TABLES, EVENT ON `gx\_web\_mess`.* TO 'gxDesc'@'%';
+GRANT GRANT OPTION ON `gx\_web\_mess`.* TO 'gxDesc'@'%';
+
+
+**********公众号*****************************************************************************************
+
+https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=1500302525
+3341623062@qq.com 密码：a18258986971
+
+
+********** 光合 *****************************************************************************************
+http://117.148.155.198:8888/indexInit.gx      帐号:gh   密码：456.
+
+
+===++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++====
+https://www.fzyar.com/index/chat/index.html
+enelco78 ,,,  291589674@qq.com   /  enleco147852
+
+
+===+++ 内控账号 +++++++++++++++++++=====++++++++========++++++++======+=====++++++++========++++++++======+========
+lld      8863346lld
+ZJJK     20190101
+
+ 
+
+******+++ 浪莎供应商平台 ************************************************************************************************
+http://122.226.119.20:8001/indexInit.gx
+管理用户： 用户：ls  密码： YANGGE
+http://122.226.119.20:8001/venIndexInit.gx
+供 应 商： 用户：w309   密码： 123
+
+浪莎远程： 
+122.226.119.20:3232 
+账号administrator 密码123 再连接到服务器 (MSTSC) 192.168.3.1 账号administrator 密码lslwf3158425899
+SQL密码31588899
+ls / b19860309
+
+10.130.128.94
+
+******+++ 王洪江  视频 ************************************************************************************************
+172.18.84.63
+Ubuntu / root 、 Gx@soft2019
+ 
+
+***+++++++++ 政府事业单位 用餐App ****++++++++++++++++++++++++++++++++++++******************************************************************
+http://app.gxymt.cn:8877/weixin/goToProject.gx?projectId=13&appType=1
+帐号cs01 密码123456
+后台 wwwfoodmt.com  登录帐号00000 密码gx654321   仅能对单位1 的数据进行操作 
+
+
+***++++++******************************+++++++++++++++++++++++++++++++++++******************************************************************
+ 
+
+   两台视频服务器(应用、流服务)
+  应用：   120.24.227.186(公) 172.18.84.63(私有)
+  流服务： 112.74.168.178(公) 172.18.84.62(私有)
+  root 、 Gx@soft2019
+ 
+======= ************************************************* ================================================================
+
+电信政务云 
+   
+1. 登录到跳板机
+ssh root@112.74.168.178  -p 22
+密码：Gx@soft2019
+2. 通过跳板机登录政务云机器
+ssh root@218.14.110.54 -p 5222
+密码：Hzdx@20200206
+
+ 
+ 惠东疫情系统 __ 惠东数据局项目 .... 
+
+ 已经上线的  112.74.168.178
+http://www.gdheds.xyz:8106/login
+ 
+ 测试的 
+http://42.159.87.75:8106/login
+ 
+ find /home -iname "tomca*.*"
+ 
+超级管理员(账密)
+username:	15811203732
+password:	admin
+ 
+----------------------------------
+数据库 
+ip:			42.159.87.75
+port:		3306
+db:			data_epidemic
+username:	root
+password:	Sksz_123456
+ 
+ 
+ 
+
+291589674@qq.com/lksfsm198592  北京
+290541200@qq.com/lksfsm198592
+
+----------===++++++++++++++++++++++++++++++++++++++++++++++++===------------------------------------------------------------
+
+ 后台代码
+https://gitee.com/sksz_production/SK-Epidemic-Report-Server.git
+ 
+https://gitee.com/sksz_production/Data-Epidemic-Server/invite_link?invite=5f7796eb62fa824a4c91e81f24e4541bca799bdc0379448fb7993663152babc55ad9afd1fb489f9b08c8a2ddd31164e583116cfe1a2ac2ae 
+ 
+ 
+ 前端代码
+web的邀请链接
+https://gitee.com/project_wisdomFoodSafety/Epidemic-Report-Web/invite_link?invite=f898df66c0c1a23131a9b7520b6676f792556be51054af7523a243957e678f79cce350bbf924d373f8fd605ecedce397bbec4db30f4690b5
+
+https://gitee.com/project_wisdomFoodSafety/Epidemic-Report-Web.git
+
+mobile的邀请链接
+https://gitee.com/project_wisdomFoodSafety/Epidemic-Report-Mobile-H5/invite_link?invite=f898df66c0c1a23131a9b7520b6676f761f1da8ccd8b8bd823a243957e678f7967760db8da0d2628f8fd605ecedce397bbec4db30f4690b5
+
+https://gitee.com/project_wisdomFoodSafety/Epidemic-Report-Mobile-H5.git
+
+前端框架主要是react+typescript+antd，这边都不熟悉
+
+********************************************************************************************************
+
+ 部署位置:
+ 
+ 后台部署：
+ /nmt/data/data-epidemic-server 
+ 部署的时候把打好的jar替换lib下的jar，然后执行停止和启动脚本就行
+ 
+ 前端部署:
+  PC、
+    /mnt/data/nginx_web/epidemic-report-web 
+  移动端：
+	/mnt/data/nginx_web/epidemic-report-mobile-h5
+	
+  web服务是用nginx代理的。nginx目录是 /etc/nginx
+  前端用到的配置文件是：/etc/nginx/conf.d/epidemic.conf
+  前端执行 npm run build打包命令之后，把打包出来的static文件夹 覆盖到服务器对应目录中去就可以。
+	
+****++++++++++++++++++++*****************************************************************************
+
+
+步骤：
+1、解压本地仓库文件，放到指定目录下
+2、settings.xml中本地仓库地址配置为上面存放本地仓库文件的目录
+3、从码云上下载代码
+参考文章：https://blog.csdn.net/qq_42305729/article/details/85019389
+项目git地址：https://gitee.com/sksz_production/SK-Epidemic-Report-Server.git
+分支：huidong_1.0
+先导出为普通项目，再把eclipse中该项目删除，重新导入为maven项目
+4、项目打包，maven-maven install
+5、修改步骤：
+表体内容
+
+1、解压本地仓库文件，放到指定目录下
+2、settings.xml中本地仓库地址配置为上面存放本地仓库文件的目录
+3、从码云上下载代码
+参考文章：https://blog.csdn.net/qq_42305729/article/details/85019389
+项目git地址：https://gitee.com/sksz_production/SK-Epidemic-Report-Server.git
+分支：huidong_1.0
+先导出为普通项目，再把eclipse中该项目删除，重新导入为maven项目
+4、项目打包，maven-maven install
+5、修改步骤：
+
+
+1、解压本地仓库文件，放到指定目录下
+2、settings.xml中本地仓库地址配置为上面存放本地仓库文件的目录
+3、从码云上下载代码
+参考文章：https://blog.csdn.net/qq_42305729/article/details/85019389
+项目git地址：https://gitee.com/sksz_production/SK-Epidemic-Report-Server.git
+分支：huidong_1.0
+先导出为普通项目，再把eclipse中该项目删除，重新导入为maven项目
+4、项目打包，maven-maven install
+5、修改子项目shikongshuzhi-platform-data-epidemic-server 中resources下bootstrap.properties文件，将license.licensePath license.publicKeysStorePath修改为本地绝对路径
+6、run springboot主类EpidemicServer
+
+
+
+
+**** 疫情平台 *************************************************************************************************
+svn： http://113.108.8.82:8022/svn/gx/java/gx_web_epidemic  用户：rose 密码：123321
+
+生产网址： http://hdyq.gdheds.xyz:8017/index.gx
+
+系统管理员：admini
+密码：Asd123,,
+
+测试管理员：csgly
+密码：asd123++
+
+入户排查：csrhpc
+密码：asd123++
+
+企业排查：csqypc
+密码：asd123++
+
+测试管理员：csgly
+密码：asd123++
+
+
+http://ty.charmiot.com/shengxian/webCRM/start.html#g=1&p=%E5%AE%A2%E6%88%B7%E7%AE%A1%E7%90%86
+
+
+
+
+
+1、明厨亮灶  用户： 13911111111 密码: Gexun118!
+https://www.kitchenkankan.com/supervise_web/login
+   监管端App
+https://www.kitchenkankan.com/download/android/supervise.apk
+
+
+2、精简版阳光食堂部署地址
+170.0.10.33   administrator / gexun118!
+登陆地址，账号，密码http://170.0.10.33:8005/loginInit.gx
+
+
+3、接口文档地址 http://170.0.10.32:8080/doc.html#/home
+	admini/123456
+
+  
+4、统一用户中心服务器：170.0.10.32 / root/gexun118
+  http://170.0.10.32:8080/login  admini/123456  
+  SVN地址：
+  http://113.108.8.82:8022/!/#gx/view/head/java/unified-user-platform
+ http://170.0.10.32:8080/api/open/org/getChildOrgByCode 
+  
+  
+  
+***** DELPHI 路径 **********************************************
+
+$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;C:\Program Files (x86)\Woll2Woll\1stClass4000vcl6\LIB;C:\Program Files (x86)\Developer Express Inc\ExpressCommon\Delphi 6\Lib;C:\Program Files (x86)\Developer Express Inc\ExpressPrinting System\Delphi 6\Lib;C:\Program Files (x86)\Developer Express Inc\ExpressInplaceEditors\Delphi 6\Lib;C:\Program Files (x86)\Developer Express Inc\ExpressQuantumGrid\Delphi 6\Lib;C:\Program Files (x86)\Developer Express Inc\ExpressEditors Library\Delphi 6\Lib;C:\Program Files (x86)\Developer Express Inc\ExpressPageControl\Delphi 6\Lib;D:\VCL\D6\AcReport 2.61_pub\AcReport报表引擎;D:\VCL\D6\AdvStringGrid\AdvStringGrid;D:\VCL\D6\Asta;D:\VCL\D6\cnupper131;D:\VCL\D6\CoolControls_SRC\Sources\D6;D:\VCL\D6\EhLib3\Delphi6;D:\VCL\D6\EhLib3\Common;D:\VCL\D6\FlatStyle2K\Source;D:\VCL\D6\FlatStyle2K\Packages;D:\VCL\D6\gif\a;D:\VCL\D6\gxvcl;D:\VCL\D6\GXVclDaLin(控件);D:\VCL\D6\GXVclZLS;D:\VCL\D6\gxvcl_pyjm;D:\VCL\D6\indy10\System;D:\VCL\D6\indy10\Core;D:\VCL\D6\indy10\Protocols;D:\VCL\D6\MyVCL_new\SetSQLWhere;D:\VCL\D6\MyVCL_new\progress;D:\VCL\D6\MyVCL_new\PopupPick;D:\VCL\D6\MyVCL_new\PopupDBTreeview;D:\VCL\D6\MyVCL_new\imagebutton;D:\VCL\D6\MyVCL_new\HyperLabel;D:\VCL\D6\MyVCL_new\dxPopupPick;D:\VCL\D6\OutBar;D:\VCL\D6\RC25\SourceD6;D:\VCL\D6\Report Machine2.6\Source;D:\VCL\D6\SoftKeyBoard;D:\VCL\D6\strman;D:\VCL\D6\SuiPack\Source;D:\VCL\D6\SuiPack\Packages;D:\VCL\D6\tscalc;D:\VCL\D6\TNT\TNT\Source;D:\VCL\D6\XPMenu;D:\VCL\D6\二维码\QRmaker;D:\VCL\D6\甘特图控件;D:\VCL\D6\Mscomm;D:\VCL\D6\CoolControls_SRC\Sources;D:\VCL\D6\MyVCL_new;D:\VCL\D6\VclZipv3.10.1\zlib123;D:\VCL\D6\VclZipv3.10.1\SFX;D:\VCL\D6\VclZipv3.10.1;D:\VCL\D6\OspComCtrls;D:\VCL\D6\JsonDataObjects-master\Source;D:\VCL\D6\fastreport42\FastReport 4\Source;D:\VCL\D6\fastreport42\FastReport 4\Source\ADO;D:\VCL\D6\fastreport42\FastReport 4\Source\BDE;D:\VCL\D6\fastreport42\FastReport 4\Source\ExportPack;D:\VCL\D6\fastreport42\FastReport 4\LibD7;D:\VCL\D6\fastreport42\FastReport 4\FastScript;D:\VCL\D6\fastreport42\FastReport 4\FastScript\lib;D:\VCL\D6\fastreport42\FastReport 4\FastQB;D:\VCL\D6\fastreport42\FastReport 4\Extra;D:\VCL\D6\fastreport42\FastReport 4;D:\VCL\D6\fastreport42\FastReport 4\Source\IBX;D:\VCL\D6\fastreport42\FastReport 4\Source\FIB;D:\VCL\D6\fastreport42\FastReport 4\Source\ClientServer;C:\Program Files (x86)\Woll2Woll\1stClass4000vcl6\obj;C:\Program Files (x86)\Woll2Woll\1stClass4000vcl6\include;C:\Program Files (x86)\Woll2Woll\1stClass4000vcl6\source;C:\Program Files (x86)\Woll2Woll\1stClass4000vcl6\package;C:\Program Files (x86)\Woll2Woll\1stClass4000vcl6
+
+D:\Program Files\Embarcadero\RAD Studio\7.0\bin;C:\Users\Public\Documents\RAD Studio\7.0\Bpl;D:\Program Files (x86)\Embarcadero\Studio\17.0\bin;C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl;D:\Program Files (x86)\Embarcadero\Studio\17.0\bin64;C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\Win64;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;%MYSQL_HOME%\bin;%CATALINA_HOME%\bin;C:\Program Files (x86)\Microsoft SQL Server\80\Tools\Binn\;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\VisualSVN\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\;C:\Program Files (x86)\Microsoft SQL Server\100\DTS\Binn\;%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;%maven_home%\bin;C:\Program Files\Microsoft SQL Server\110\DTS\Binn\;D:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;D:\Program Files\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\PrivateAssemblies\;D:\Program Files\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;%CATALINA_HOME%\bin;%CATALINA_HOME%\lib
+
+C:\Program Files (x86)\Borland\Delphi7\Bin;C:\Program Files (x86)\Borland\Delphi7\Projects\Bpl\;
+C:\PROGRA~2\Borland\Delphi6\Bin;C:\PROGRA~2\Borland\Delphi6\Projects\Bpl;C:\Dephi\D6\Borland\Delphi6\Bin;C:\Dephi\D6\Borland\Delphi6\Projects\Bpl;
+
+ 结案标志 is_finish  0未结束 1已结束
+
+**** 腾讯云 **************************************************************************************************************************
+Gx@soft1100      
+https://console.cloud.tencent.com/developer
+账号一：290541200@qq.com  密码：Wei2525@!123
+账号二：626477251@qq.com  密码：Wei2525@!123
+账号三：291589674@qq.com  密码：Wei2525@!123
+账号四：1194745168@qq.com  密码：Wei2525@!123  root / Gxtencent.2020
+
+
+    禁用 外网 9200、9300 端口 216 ， 34 
+ 
+106.52.112.216（公）
+172.16.0.2（内）
+
+子账号：
+网站：https://cloud.tencent.com/login/subAccount/100014441075?type=subAccount&username=tiger
+主账号ID 100014441075 
+用户名 tiger 
+登录密码 GxSmart@2020
+
+子账号： 所属账号 626477251@qq.com
+https://cloud.tencent.com/login/subAccount/100014472108?type=subAccount&username=hzh
+主账号ID 100014472108 
+用户名 hzh 
+登录密码 Gx@soft2020
+
+
+
+
+netstat -tunlp|grep 8001
+
+  11721(一年的服务器配置费用8核、16G、10M) + 6000(硬盘) = 18000 ，
+
+  30490(三年的服务器配置费用8核、16G、10M) + 9000(硬盘) = 40000 ，
+  还有 就是 要 上次的哪个账号（290541200@qq.com） 要在 充上2500 作为 扩容硬盘  
+  
+  48057(三年的服务器配置费用16核、32G、10M) + 9900（一个500G硬盘(3年)） + 2*3960（两个200G硬盘(3年)）= 65877 
+
+ 
+Description	Resource	Path	Location	Type
+Can not find the tag library descriptor for "http://java.sun.com/jsp/jstl/core"	showall.jsp	/ServletJsp/ROOT	line 2	JSP Problem
+
+
+
+
+智慧大岭网格化管理	http://120.234.208.237:9001/loginInit.gx
+井盖智能运维系统	http://119.23.32.115:8111/Home/Index
+应急预案			https://hbjgpt.cn:8195/yjya/index.html
+大数据      		http://113.108.8.82:8228/index.html
+数字城镇			http://121.15.244.198:8236/
+智慧村务			http://47.112.17.11:8093/indexInit.gx
+
+ 
+ 
+
+1、 域名：hlive2.gxfsms.com   内网：10.0.0.11   密码：Gx@soft1440
+2、 域名：hlive.gxfsms.com    内网：10.0.0.6   密码：Gx@soft1440
+
+
+
+***** 华为云 ***********************************************************************
+
+https://console.huaweicloud.com/console/?agencyId=092647953700108a1fb2c0149b745567&region=cn-east-3&locale=zh-cn#/home 
+账号/密码: 18258987010/Stps@2020
+
+下面两个是购买链接:
+https://account.huaweicloud.com/usercenter/?region=cn-north-4#/buyservice/grainCloud?promotionId=P2006171025187731JW6GOX17H90GL&promotionPlanId=PPP2006171156392431UKISSR1PN8IPO&solutionCode=promotion.activity.cn-north-4.20200526-103959-776
+https://account.huaweicloud.com/usercenter/?region=cn-north-4#/buyservice/grainCloud?promotionId=P2006171025187731JW6GOX17H90GL&promotionPlanId=PPP2006171156392401713HNL12A9XPG&solutionCode=promotion.activity.cn-north-4.20200526-103959-776
+
+
+
+智慧大岭网格化管理	http://120.234.208.237:9001/loginInit.gx
+井盖智能运维系统	http://119.23.32.115:8111/Home/Index
+应急预案			https://hbjgpt.cn:8195/yjya/index.html
+大数据      		http://113.108.8.82:8228/index.html
+数字城镇			http://121.15.244.198:8236/
+智慧村务			http://47.112.17.11:8093/indexInit.gx
+
+
+1、社会治理12宫格  用户/密码：gx/Gxsoft#.2020
+	https://gxczwgl.cn:9009/index2.html 
+	
+	
+2、前哨通  系统管理员   admini/123456  大疫网管理员 dywadmin/1qaz2wsx..
+    http://mc.gxfsms.com:8888
+	https://mc.gxfsms.com:8889/login   admini 123456
+
+3、线上巡防  admini/123456
+	https://hdyq.gdheds.xyz:8022/index
+
+
+大疫网 和 人大的 访问地址 
+http://dayw.gxivs.cn:8888/index#
+dywadmin
+1qaz2wsx..
+http://mc.gxfsms.com:8888/login
+renda
+123456
+
+
+npm config set registry http://registry.npm.taobao.org/
+
+ 
+
+
+***** 博罗 消防  ****************************************************************
+
+http://112.74.181.212:9009
+
+http://112.74.181.212:9006/loginInit.gx
+gx/Gxsoft#.2020
+
+
+明厨亮灶——小程序 https://mp.weixin.qq.com/ 
+账号：1194745168@qq.com
+密码：1qaz2wsx@123
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+angular插件_安装
+http://oss.opensagres.fr/angularjs-eclipse/
+6、重启eclipse后，选中你要使用angularjs插件的项目，右键–Configure–Convent to Angularjs project…
+7、在你想要操作angularjs的页面就可以使用了
+
+
+zendstudio的JS插件->jseclipse的安装方法：
+
+1.Help->Installnewsoftware
+2.点击“add”
+3.点击active然后选择此压缩包（不需要解压出来，直接选择）
+4.在name处随便写个名字：JSEclipse
+5.点击finish就OK拉！
+
+设置JSEclipse为默认的方法：
+1.打开Window->Preferences->Editors->FileAssocaitions
+2.找到*.js，单机然后会看到下面出现JSEclipse，点击选为default即可！
+
+激活请给个评价，方便后来人，谢谢！
+
+
+Mysql5.7 修改密码
+use mysql;
+update user set authentication_string=password('Gx123321') where user='root' and Host='localhost';
+flush privileges;
+
+
+**** 28181 视频流调试 ****************************************************************************
+http://hdrszx.tpddns.cn:9001/doc/page/config.asp
+
+hdrszx.tpddns.cn
+http9001
+服务端口  9000
+账号admin密码1qaz2wsx
+
+https://www.csdn.net
+
+ 
+ maven 启动jeccg
+ 
+ tomcat:run
+ -DMAVEN_OPTS=-Xms1024M -Xmx1024M -XX:PermSize=256M -XX:MaxPermSize=512M
+
+ 
+ ******** Linux 查找 JDK 路径 *****************************************************
+  java -showversion -verbose 2>&1 | head -1
+ 
+ 124.70.49.192 9300
+ 
+ 
+  上海中信的 
+ https://chaozhou.kitchenkankan.com:90/supervise_web/brightKitchen/videoAI/aiSnap
+  用户/密码： 13817658092/0
+ https://chaozhou.kitchenkankan.com:90/supervise_api/brightKitchen/realTimeMonitor?userInfo=Y2xldXlrcnZEQ1M4d3JpWkFWeW8xQT09
+
+ 
+ 
+**** 新疆重保 ************************************************************************************************************
+   代码SVN：
+      旧的：       http://113.108.8.82:8022/svn/gx/java/major-events
+	  新的(ruoyi): http://113.108.8.82:8022/svn/gx/java/major
+				      用户/密码： lks / gx123321
+   
+  120.79.171.109:8041   /  major.gxfsms.com:8041   
+    系统用户/密码： sys / 1qaz2wsx..
+	redis：   port: 6379   password: 123456   
+	登录用户和密码： admin  /  admin123
+其他账号的密码全都是123456
+服务器：120.79.171.109    密码：Gx@soft1100 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+**************开源账号：********************************************************************
+
+JECCG 
+http://www.jimureport.com/register
+账号/密码： 18258987010 ， zaq12wsx
+
+
+uniApp 
+https://account.dcloud.net.cn
+账号/密码： 290541200@qq.com ， zaq12wsx
+
+
+ #假设dao
+IP2=10.0.0.16
+netstat -a | grep -i established | grep "${IP2}:8080"
+
+
+
+
+****************************************************************************************************
+
+易企秀 会员账号
+hzpart@163.com / huizhi888999
+
+
+
+========== ======= 村居现金打印项目 ======= =================================================
+
+     http://39.102.200.234:8666/   
+网址：http://fa.gxivs.cn:8666
+	系统用户:    admini / 123456
+	管理用户： hdadmin 密码：qazwsx..
+	操作员：  手机号码  默认密码：1qaz2wsx..
+
+    实例密码：Gxyzj@1213   //  vnc连接密码：Aa1234 
+    
+	数据库 ： 端口  3366
+		root/Gxsoft@2020^*qaz
+		bill/Gexun@2020.*qwe
+    
+	
+ 圣天生鲜
+
+语雀接口平台
+
+https://www.yuque.com/dashboard
+
+ 18129687010 / 1qaz2wsx
+
+ 
+http://www.doclever.cn/controller/login/login.html
+  gxsoft / 1qaz2wsx
+
+
+
+wygl   密码：8883889
+http://www.hdscwy.com/indexInit.gx
+
+
+
+App 后台管理平台: http://app.gxymt.cn:8877/login.gx
+账号:admini
+密码:Gxsoft#.2020
+
+登录进去之后, 首先在项目管理中新增一个项目, 然后再APP版本维护中把App上传上去
+
+发布好之后, 可以进这个网址   http://app.gxymt.cn:8877
+
+
+**++ 内蒙二监 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++**
+lufeng1108@1
+
+
+
+http://122.13.3.214:8001/indexInit.gx
+	gx / 0 
+
+
