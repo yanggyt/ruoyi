@@ -79,12 +79,11 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
-        <!-- 平台配置 -->
+        <!-- 平台基础信息 -->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>province-platform</artifactId>
         </dependency>
-
 
     </dependencies>
 

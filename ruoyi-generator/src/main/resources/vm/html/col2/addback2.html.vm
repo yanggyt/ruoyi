@@ -27,50 +27,43 @@
 #if($table.sub)
             <h4 class="form-header h4">${functionName}信息</h4>
 #end
+
+            <fieldset>
 #set($cumvar=0)
+#set($field=$column.javaField)
 #set($colcount=$effectivecols.size())
 #foreach($column in $effectivecols)
-#if($column.edit && !$column.pk)
-#if(($column.usableColumn) || (!$column.superColumn))
+#set($field=$column.javaField)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
-    #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
 #else
-    #set($comment=$column.columnComment)
+#set($comment=$column.columnComment)
 #end
-#set($field=$column.javaField)
 #set($dictType=$column.dictType)
+
 #set($cumvar=$cumvar+1)
 #if($column.htmlType == "textarea")
 #if($cumvar%2==0)
-            </div>
-        </div>
-#end
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}_${cumvar}：</label>
-                    <div class="col-sm-8">
-                        <textarea name="${field}" class="form-control"#if($column.required) required#end></textarea>
                     </div>
-                </div>
-            </div>
-        </div>
+#end
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label#if($column.required) is-required#end">${comment}：</label>
+                            <div class="col-sm-8">
+                                <textarea name="${field}" class="form-control"#if($column.required) required#end></textarea>
+                            </div>
+                        </div>
 #else
 #if($cumvar%2==1)
-        <div class="row">
-            <div class="col-sm-6">
+                        <div class="form-group">
 #end
-#parse("\vm\html\col2\formedittpl.vm")
+#parse("\vm\html\col2\formtpl.vm")
 #if($cumvar%2==0 || ($cumvar>=$colcount))
-            </div>
-        </div>
+                    </div>
 #end
 #end
 #end
-#end
-#end
-
+                </fieldset>
 #*
         <div class="row"> ## col-md-6
             #foreach($column in $effectivecols)
