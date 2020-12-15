@@ -75,6 +75,7 @@ $(window).bind("load resize", function() {
 function syncMenuTab(dataId) {
 	if(isLinkage) {
         var $dataObj = $('a[href$="' + decodeURI(dataId) + '"]');
+
         if ($dataObj.attr("class") != null && !$dataObj.hasClass("noactive")) {
             $('.nav ul').removeClass("in");
             $dataObj.parents("ul").addClass("in")
@@ -137,6 +138,8 @@ $(function() {
     // 激活指定选项卡
     function setActiveTab(element) {
         if (!$(element).hasClass('active')) {
+            System.log($(element)) ;
+            System.log(" VVVVVVVVVVVVVVVVV ");
             var currentId = $(element).data('id');
             syncMenuTab(currentId);
             // 显示tab对应的内容区

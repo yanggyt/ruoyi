@@ -40,6 +40,9 @@ public class SysMenu extends BaseEntity
     /** 类型:0目录,1菜单,2按钮 */
     private String menuType;
 
+    /** 单据前缀编号*/
+    private String billPrefix;
+
     /** 菜单状态:0显示,1隐藏 */
     private String visible;
 
@@ -137,6 +140,16 @@ public class SysMenu extends BaseEntity
         this.menuType = menuType;
     }
 
+    public String getBillPrefix()
+    {
+        return billPrefix;
+    }
+
+    public void setBillPrefix(String billPrefix)
+    {
+        this.billPrefix = billPrefix;
+    }
+
     public String getVisible()
     {
         return visible;
@@ -188,6 +201,7 @@ public class SysMenu extends BaseEntity
             .append("url", getUrl())
             .append("target", getTarget())
             .append("menuType", getMenuType())
+                .append("billPrefix", getBillPrefix())
             .append("visible", getVisible())
             .append("perms", getPerms())
             .append("icon", getIcon())

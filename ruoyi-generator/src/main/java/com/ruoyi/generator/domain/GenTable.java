@@ -67,6 +67,9 @@ public class GenTable extends BaseEntity
     /** 界面上form的列数 1一列，2二列，3三列 4四列 */
     private String formCols;
 
+    /** 单据前缀 生成 菜单脚本的时候插入 */
+    private String billPrefix;
+
     /** 生成路径（不填默认项目路径） */
     private String genPath;
 
@@ -236,6 +239,16 @@ public class GenTable extends BaseEntity
     public void setFormCols(String formCols)
     {
         this.formCols = formCols;
+    }
+
+    public String getBillPrefix()
+    {
+        return billPrefix;
+    }
+
+    public void setBillPrefix(String billPrefix)
+    {
+        this.billPrefix = billPrefix;
     }
 
     public String getGenPath()
