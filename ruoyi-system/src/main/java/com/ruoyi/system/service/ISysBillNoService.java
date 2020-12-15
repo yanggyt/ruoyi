@@ -58,4 +58,19 @@ public interface ISysBillNoService
      * @return 结果
      */
     public int deleteSysBillNoById(String fperiod);
+    /***
+     * 查询单据前缀是否存在
+     * @param billPrefix
+     * 			单据前缀
+     * @return
+     */
+    public SysBillNo selectSysBillNoByBillPrefix(String billPrefix);
+
+    /***
+     * 查询指定单据的下一个值
+     * @param billName
+     * 			单据标识
+     * @return
+     */
+    public String selectNextBillNoById(String billName);
 }

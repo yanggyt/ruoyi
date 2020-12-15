@@ -91,4 +91,25 @@ public class SysBillNoServiceImpl implements ISysBillNoService
     {
         return sysBillNoMapper.deleteSysBillNoById(fperiod);
     }
+
+
+    @Override
+    public SysBillNo selectSysBillNoByBillPrefix(String billPrefix) {
+        return sysBillNoMapper.selectSysBillNoByBillPrefix(billPrefix);
+    }
+
+    @Override
+    @Transactional
+    public String selectNextBillNoById(String billName) {
+
+        SysBillNo sysBillNo = sysBillNoMapper.selectSysBillNoById(billName);
+        String value = sysBillNo.getNextValue();
+        //	获取到值后累加
+        long nextValue = Long.valueOf(sysBillNo.getIterationValue())+1;
+        sysBillNo.setIterationValue(String.valueOf(nextValue));
+        sysBillNo.setNextValue(sysBillNo.getIterationValue());
+        sysBillNoMapper.updateSysBillNo(sysBillNo);
+        return value;
+    }
+
 }

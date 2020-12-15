@@ -58,4 +58,12 @@ public interface SysBillNoMapper
      * @return 结果
      */
     public int deleteSysBillNoByIds(String[] fperiods);
+
+    /**
+     * 查询单据前缀是否重复
+     * @param billPrefix
+     * 			单据前缀
+     * @return
+     */
+    public SysBillNo selectSysBillNoByBillPrefix(String billPrefix);
 }
