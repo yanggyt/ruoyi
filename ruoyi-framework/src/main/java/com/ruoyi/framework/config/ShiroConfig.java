@@ -150,10 +150,8 @@ public class ShiroConfig
     protected InputStream getCacheManagerConfigFileInputStream()
     {
         String configFile = "classpath:ehcache/ehcache-shiro.xml";
-        InputStream inputStream = null;
-        try
+        try (InputStream inputStream = ResourceUtils.getInputStreamForPath(configFile))
         {
-            inputStream = ResourceUtils.getInputStreamForPath(configFile);
             byte[] b = IOUtils.toByteArray(inputStream);
             InputStream in = new ByteArrayInputStream(b);
             return in;
@@ -162,10 +160,6 @@ public class ShiroConfig
         {
             throw new ConfigurationException(
                     "Unable to obtain input stream for cacheManagerConfigFile [" + configFile + "]", e);
-        }
-        finally
-        {
-            IOUtils.closeQuietly(inputStream);
         }
     }
 
