@@ -30,7 +30,7 @@
 #set($cumvar=0)
 #set($colcount=$effectivecols.size())
 #foreach($column in $effectivecols)
-#if($column.edit && !$column.pk)
+#if($column.insert && !$column.pk)
 #if(($column.usableColumn) || (!$column.superColumn))
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}_${cumvar}：</label>
+                    <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}：</label>
                     <div class="col-sm-8">
                         <textarea name="${field}" class="form-control"#if($column.required) required#end></textarea>
                     </div>

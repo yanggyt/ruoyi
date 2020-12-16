@@ -1,12 +1,13 @@
 package com.ruoyi.generator.util;
 
-import java.util.Arrays;
-import org.apache.commons.lang3.RegExUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.config.GenConfig;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
+import org.apache.commons.lang3.RegExUtils;
+
+import java.util.Arrays;
 
 /**
  * 代码生成器 工具类
@@ -54,8 +55,15 @@ public class GenUtils
         }
         else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType))
         {
-            column.setJavaType(GenConstants.TYPE_DATE);
-            column.setHtmlType(GenConstants.HTML_DATETIME);
+            // 若是 制单时间 和  修改时间 在界面上 用 文本框
+            if (arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk())
+            {
+                column.setJavaType(GenConstants.TYPE_STRING);
+                column.setHtmlType(GenConstants.HTML_INPUT);
+            } else {
+                column.setJavaType(GenConstants.TYPE_DATE);
+                column.setHtmlType(GenConstants.HTML_DATETIME);
+            }
         }
         else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType))
         {

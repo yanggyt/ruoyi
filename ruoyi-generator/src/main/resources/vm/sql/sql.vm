@@ -1,6 +1,6 @@
 -- 菜单 SQL
-insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark,bill_prefix)
-values('${functionName}', '${parentMenuId}', '1', '/${moduleName}/${businessName}', 'C', '0', '${permissionPrefix}:view', '#', 'admin', sysdate(), '', null, '${functionName}菜单', '${billPrefix}');
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark,bill_prefix,entity_id)
+values('${functionName}', '${parentMenuId}', '1', '/${moduleName}/${businessName}', 'C', '0', '${permissionPrefix}:view', '#', 'admin', sysdate(), '', null, '${functionName}菜单', '${billPrefix}', '${className}');
 
 -- 按钮父菜单ID
 SELECT @parentId := LAST_INSERT_ID();

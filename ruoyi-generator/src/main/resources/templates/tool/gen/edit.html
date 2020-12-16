@@ -102,8 +102,8 @@
                             
                             <!-- 字段信息 -->
                             <div class="tab-pane active" id="tab-field">
-                                <div class="select-table table-striped" style="margin-top: 0px;padding-top: 0px;padding-bottom: 0px;">
-								    <table id="bootstrap-table" data-use-row-attr-func="true" data-reorderable-rows="true"></table>
+                                <div class="select-table table-striped" style="overflow:scroll;margin-top: 0px;padding-top: 0px;padding-bottom: 0px;">
+								    <table id="bootstrap-table" style="min-width:1500px;" data-use-row-attr-func="true" data-reorderable-rows="true"></table>
 								</div>
                             </div>
                             
@@ -472,7 +472,19 @@
 		        	cellStyle: function(value, row, index) {
                         return { css: { "cursor": "default" } };
                     }
-		        }]
+		        },
+                    {
+                        field: 'popOut',
+                        title: '弹框',
+                        width: "13%",
+                        formatter: function (value, row, index) {
+                            var html = $.common.sprintf("<input class='form-control' type='text' name='columns[%s].popOut' value='%s' id='columns_popout_%s'>", index, value, row.columnId);
+                            return "<div class='input-group'>" + html + "<span class='input-group-addon input-sm' onclick='selectpopOut(" + row.columnId + ", this)'><i class='fa fa-search'></i></span></div>";
+                        },
+                        cellStyle: function(value, row, index) {
+                            return { css: { "cursor": "default" } };
+                        }
+                    }]
 		    };
 		    $.table.init(options);
 		});
@@ -546,7 +558,20 @@
 				$("#pathinfo").removeClass("hidden");
 			}
 		}
-		
+
+		// 弹框处理函数
+        function selectpopOut(columnId, obj) {
+            var dictType = $.common.nullToStr($(obj).parent().find("input").val());
+            var url = ctx + "system/dict/selectDictTree/" + columnId + "/" + dictType;
+            var options = {
+                title: '选择字典类型',
+                width: "380",
+                url: url,
+                callBack: doDictSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
 		// 选择字典处理函数
 		function selectDictTree(columnId, obj) {
 			var dictType = $.common.nullToStr($(obj).parent().find("input").val());
@@ -635,6 +660,7 @@
     <option value="summernote" {{if htmlType==="summernote"}}selected{{/if}}>富文本</option>
     <option value="datetime" {{if htmlType==="datetime"}}selected{{/if}}>日期控件</option>
     <option value="upload" {{if htmlType==="upload"}}selected{{/if}}>上传控件</option>
+    <option value="btnlay" {{if htmlType==="btnlay"}}selected{{/if}}>弹框</option>
 </select>
 </div>
 </script>

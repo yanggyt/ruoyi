@@ -14,6 +14,7 @@
 		<result property="target"         column="target"         />
 		<result property="menuType"       column="menu_type"      />
 		<result property="billPrefix"     column="bill_prefix"    />
+		<result property="entityId"       column="entity_id"      />
 		<result property="visible"        column="visible"        />
 		<result property="perms"          column="perms"          />
 		<result property="icon"           column="icon"           />
@@ -25,12 +26,12 @@
 	</resultMap>
 
 	<sql id="selectMenuVo">
-        select menu_id, menu_name, parent_id, order_num, url, target, menu_type, bill_prefix,visible, ifnull(perms,'') as perms, icon, create_by, create_time
+        select menu_id, menu_name, parent_id, order_num, url, target, menu_type, bill_prefix,entity_id,visible, ifnull(perms,'') as perms, icon, create_by, create_time
 		from sys_menu
     </sql>
 
 	<select id="selectMenusByUserId" parameterType="Long" resultMap="SysMenuResult">
-		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type,m.bill_prefix, m.icon, m.order_num, m.create_time
+		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type,m.bill_prefix, m.entity_id, m.icon, m.order_num, m.create_time
 		from sys_menu m
 			 left join sys_role_menu rm on m.menu_id = rm.menu_id
 			 left join sys_user_role ur on rm.role_id = ur.role_id
@@ -40,7 +41,7 @@
 	</select>
 
 	<select id="selectMenuNormalAll" resultMap="SysMenuResult">
-		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type,m.bill_prefix, m.icon, m.order_num, m.create_time
+		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type,m.bill_prefix, m.entity_id, m.icon, m.order_num, m.create_time
 		from sys_menu m
 		where m.menu_type in ('M', 'C') and m.visible = 0
 		order by m.parent_id, m.order_num
@@ -52,7 +53,7 @@
 	</select>
 
 	<select id="selectMenuAllByUserId" parameterType="Long" resultMap="SysMenuResult">
-		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type,m.bill_prefix, m.icon, m.order_num, m.create_time
+		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type,m.bill_prefix,m.entity_id, m.icon, m.order_num, m.create_time
 		from sys_menu m
 			 left join sys_role_menu rm on m.menu_id = rm.menu_id
 			 left join sys_user_role ur on rm.role_id = ur.role_id
@@ -92,7 +93,7 @@
 	</select>
 
 	<select id="selectMenuListByUserId" parameterType="SysMenu" resultMap="SysMenuResult">
-		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type,m.bill_prefix, m.icon, m.order_num, m.create_time
+		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,'') as perms, m.target, m.menu_type,m.bill_prefix,m.entity_id, m.icon, m.order_num, m.create_time
 		from sys_menu m
 		left join sys_role_menu rm on m.menu_id = rm.menu_id
 		left join sys_user_role ur on rm.role_id = ur.role_id
@@ -112,7 +113,7 @@
 	</delete>
 
 	<select id="selectMenuById" parameterType="Long" resultMap="SysMenuResult">
-		SELECT t.menu_id, t.parent_id, t.menu_name, t.order_num, t.url, t.target, t.menu_type, t.bill_prefix,t.visible, t.perms, t.icon, t.remark,
+		SELECT t.menu_id, t.parent_id, t.menu_name, t.order_num, t.url, t.target, t.menu_type, t.bill_prefix,t.entity_id,t.visible, t.perms, t.icon, t.remark,
 			(SELECT menu_name FROM sys_menu WHERE menu_id = t.parent_id) parent_name
 		FROM sys_menu t
 		where t.menu_id = #{menuId}
@@ -137,6 +138,7 @@
 			<if test="target != null and target != ''">target = #{target},</if>
 			<if test="menuType != null and menuType != ''">menu_type = #{menuType},</if>
 			<if test="billPrefix != null and billPrefix != ''">bill_prefix = #{billPrefix},</if>
+			<if test="entityId != null and entityId != ''">entity_id = #{entityId},</if>
 			<if test="visible != null">visible = #{visible},</if>
 			<if test="perms !=null">perms = #{perms},</if>
 			<if test="icon !=null and icon != ''">icon = #{icon},</if>
@@ -157,6 +159,7 @@
 		<if test="target != null and target != ''">target,</if>
 		<if test="menuType != null and menuType != ''">menu_type,</if>
 		<if test="billPrefix != null and billPrefix != ''">bill_prefix,</if>
+		<if test="entityId != null and entityId != ''">entity_id,</if>
 		<if test="visible != null">visible,</if>
 		<if test="perms !=null and perms != ''">perms,</if>
 		<if test="icon != null and icon != ''">icon,</if>
@@ -172,6 +175,7 @@
 		<if test="target != null and target != ''">#{target},</if>
 		<if test="menuType != null and menuType != ''">#{menuType},</if>
 		<if test="billPrefix != null and billPrefix != ''">#{billPrefix},</if>
+		<if test="entityId != null and entityId != ''">#{entityId},</if>
 		<if test="visible != null">#{visible},</if>
 		<if test="perms !=null and perms != ''">#{perms},</if>
 		<if test="icon != null and icon != ''">#{icon},</if>

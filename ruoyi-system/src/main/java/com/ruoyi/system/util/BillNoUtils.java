@@ -28,10 +28,10 @@ public class BillNoUtils {
 		}
 		String value = "";
 		synchronized (BillNoUtils.class) {
-			value = billNoService.selectNextBillNoById(billNoType.name());
+			value = billNoService.selectNextBillNoById( billNoType );
 		}
 		if ( StringUtils.isEmpty(value) ){
-			throw new BusinessException(String.format("未查询到%s相关单据信息,请确认！", billNoType.name()));
+			throw new BusinessException(String.format("未查询到%s相关单据信息,请确认！", billNoType ));
 		}
 		return value;
 		

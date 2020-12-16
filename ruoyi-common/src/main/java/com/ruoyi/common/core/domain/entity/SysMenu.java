@@ -43,6 +43,9 @@ public class SysMenu extends BaseEntity
     /** 单据前缀编号*/
     private String billPrefix;
 
+    /** 实体标识 */
+    private  String entityId ;
+
     /** 菜单状态:0显示,1隐藏 */
     private String visible;
 
@@ -148,6 +151,14 @@ public class SysMenu extends BaseEntity
     public void setBillPrefix(String billPrefix)
     {
         this.billPrefix = billPrefix;
+    }
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
     }
 
     public String getVisible()

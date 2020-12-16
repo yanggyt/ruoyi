@@ -30,8 +30,8 @@
             <input name="${pkColumn.javaField}" th:field="*{${pkColumn.javaField}}" type="hidden">
 
 #set($cumvar=0)
-#set($colcount=$effectivecols.size())
-#foreach($column in $effectivecols)
+#set($colcount=$effectiveeditcols.size())
+#foreach($column in $effectiveeditcols)
 #if($column.edit && !$column.pk)
 #if(($column.usableColumn) || (!$column.superColumn))
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
@@ -52,7 +52,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}_${cumvar}：</label>
+                    <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}：</label>
                     <div class="col-sm-8">
                         <textarea name="${field}" class="form-control"#if($column.required) required#end></textarea>
                     </div>

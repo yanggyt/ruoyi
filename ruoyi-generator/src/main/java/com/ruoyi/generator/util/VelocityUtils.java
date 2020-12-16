@@ -65,14 +65,20 @@ public class VelocityUtils {
         // 取出页面需要的字段ing
         List<GenTableColumn> tempcolumns = genTable.getColumns();
         List<GenTableColumn> effectivecols = new ArrayList<GenTableColumn>();//定义一个list对象
+        List<GenTableColumn> effectiveceditols = new ArrayList<GenTableColumn>();//定义一个list对象
         for (GenTableColumn tcolumn : tempcolumns) {
             if (tcolumn.isInsert() && !tcolumn.isPk())
                 if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
                     effectivecols.add(tcolumn);
+
+            if (tcolumn.isEdit() && !tcolumn.isPk())
+                if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
+                    effectiveceditols.add(tcolumn);
         }
         ;
 
         velocityContext.put("effectivecols", effectivecols);
+        velocityContext.put("effectiveeditcols", effectiveceditols);
         velocityContext.put("columns", genTable.getColumns());
 
         velocityContext.put("table", genTable);

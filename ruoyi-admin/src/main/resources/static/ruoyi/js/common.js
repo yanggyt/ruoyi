@@ -270,6 +270,7 @@ function createMenuItem(dataUrl, menuName) {
     flag = true;
     if (dataUrl == undefined || $.trim(dataUrl).length == 0) return false;
     var topWindow = $(window.parent.document);
+
     // 选项卡菜单已存在
     $('.menuTab', topWindow).each(function() {
         if ($(this).data('id') == dataUrl) {

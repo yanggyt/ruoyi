@@ -7,6 +7,7 @@ import com.ruoyi.system.mapper.SysBillNoMapper;
 import com.ruoyi.system.domain.SysBillNo;
 import com.ruoyi.system.service.ISysBillNoService;
 import com.ruoyi.common.core.text.Convert;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 单据号迭代信息Service业务层处理

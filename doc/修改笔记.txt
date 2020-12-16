@@ -5,15 +5,16 @@
 
 
 
-
-
-
-
-
-
-
-
-
+2020.12.16
+	Cron表达式的介绍与使用
+2、https://blog.csdn.net/qq_39135287/article/details/95664533
+3、 BootStrap 日期时间控件 datetimepicker 禁用 及 日期时间格式 （yyyy-MM-dd hh:ii:ss）
+	$("input[name='updateTime']").datetimepicker({
+		format: "yyyy-mm-dd",
+		minView: "month",
+		autoclose: true
+	});
+    $("input[name='updateTime']").prop('disabled', true);
 
 
 
@@ -34,5 +35,7 @@ https://www.ctolib.com/topics-137458.html
 https://www.ctolib.com/topics-141243.html
 
 
-
+j2eefast开源 
+https://gitee.com/zhouhuanOGP/J2EEFAST
+	附件和图片上传我全套扣的j2eefast的，ruoyi的用着太怪了
 
