@@ -172,7 +172,7 @@ var table = {
             	if (typeof table.get(this.id).responseHandler == "function") {
                     table.get(this.id).responseHandler(res);
                 }
-                if (res.code == 0) {
+                if (res.code == web_status.SUCCESS) {
                     if ($.common.isNotEmpty(table.options.sidePagination) && table.options.sidePagination == 'client') {
                     	return res.rows;
                     } else {
