@@ -27,7 +27,10 @@
 #if($table.sub)
             <h4 class="form-header h4">${functionName}信息</h4>
 #end
-#set($cumvar=0)
+        <input type="hidden" name="supplierTypeId" id="supplierTypeId" />
+        <input type="hidden" name="unitId" id="unitId" />
+
+        #set($cumvar=0)
 #set($colcount=$effectivecols.size())
 #foreach($column in $effectivecols)
 #if($column.insert && !$column.pk)

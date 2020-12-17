@@ -1,15 +1,17 @@
 package com.ruoyi.generator.domain;
 
-import javax.validation.constraints.NotBlank;
+import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * 代码生成业务字段表 gen_table_column
  * 
  * @author ruoyi
  */
-public class GenTableColumn extends BaseEntity
+public class GenTableColumn extends BaseEntity implements Cloneable
 {
     private static final long serialVersionUID = 1L;
 
@@ -52,6 +54,39 @@ public class GenTableColumn extends BaseEntity
 
     /** 是否 只读字段（1是） */
     private String isReadonly;
+
+    /** 是否 是否控制名称重复（1是） is_repeat_control */
+    private String isRepeatControl;
+
+    /** 关联字段Id 在页面上要隐藏（1是） */
+    private String isRelevByHidden;
+
+    /** 关联实体 */
+    private String relevEntity;
+
+    /** 关联实体ID */
+    private String relevEntityId;
+
+    /** 关联实体名称 */
+    private String relevEntityName;
+
+    /** 默认值（1是） */
+    private String isDefaultValue;
+
+
+    /** 关联实体名 */
+    private String relevTable ;
+
+    /** 关联表字段ID */
+    private String relevTableId;
+
+    /**  关联表字段名称 */
+    private String relevTableName;
+
+
+    /**  关联实体 别名 */
+    private String relevAlias;
+
 
     /** 是否列表字段（1是） */
     private String isList;
@@ -245,6 +280,106 @@ public class GenTableColumn extends BaseEntity
         return isReadonly != null && StringUtils.equals("1", isReadonly);
     }
 
+    public String getIsRelevByHidden() {
+        return isRelevByHidden;
+    }
+
+    public void setIsRelevByHidden(String isRelevByHidden) {
+        this.isRelevByHidden = isRelevByHidden;
+    }
+
+    public boolean isRelevByHidden()
+    {
+        return isRelevByHidden(this.isRelevByHidden);
+    }
+
+    public boolean isRelevByHidden(String isRelevByHidden)
+    {
+        return isRelevByHidden != null && StringUtils.equals("1", isRelevByHidden);
+    }
+
+    public String getRelevAlias() {
+        return relevAlias;
+    }
+
+    public void setRelevAlias(String relevAlias) {
+        this.relevAlias = relevAlias;
+    }
+
+    public String getIsRepeatControl() {
+        return isRepeatControl;
+    }
+
+    public void setIsRepeatControl(String isRepeatControl) {
+        this.isRepeatControl = isRepeatControl;
+    }
+
+    public boolean isRepeatControl()
+    {
+        return isRepeatControl(this.isRepeatControl);
+    }
+
+    public boolean isRepeatControl(String isRepeatControl)
+    {
+        return isRepeatControl != null && StringUtils.equals("1", isRepeatControl);
+    }
+
+    public String getRelevTable() {
+        return relevTable;
+    }
+
+    public void setRelevTable(String relevTable) {
+        this.relevTable = relevTable;
+    }
+
+    public String getRelevEntity() {
+        return relevEntity;
+    }
+
+    public void setRelevEntity(String relevEntity) {
+        this.relevEntity = relevEntity;
+    }
+
+    public String getRelevEntityId() {
+        return relevEntityId;
+    }
+
+    public void setRelevEntityId(String relevEntityId) {
+        this.relevEntityId = relevEntityId;
+    }
+
+    public String getRelevEntityName() {
+        return relevEntityName;
+    }
+
+    public void setRelevEntityName(String relevEntityName) {
+        this.relevEntityName = relevEntityName;
+    }
+
+    public String getIsDefaultValue() {
+        return isDefaultValue;
+    }
+
+    public void setIsDefaultValue(String isDefaultValue) {
+        this.isDefaultValue = isDefaultValue;
+    }
+
+    public String getRelevTableId() {
+        return relevTableId;
+    }
+
+    public void setRelevTableId(String relevTableId) {
+        this.relevTableId = relevTableId;
+    }
+
+    public String getRelevTableName() {
+        return relevTableName;
+    }
+
+    public void setRelevTableName(String relevTableName) {
+        this.relevTableName = relevTableName;
+    }
+
     public void setIsEdit(String isEdit)
     {
         this.isEdit = isEdit;
@@ -392,4 +527,15 @@ public class GenTableColumn extends BaseEntity
             return this.columnComment;
         }
     }
+
+    @Override
+    public GenTableColumn clone() throws CloneNotSupportedException {
+        return (GenTableColumn)super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return " [javaField=" + javaField + ", ColumnId=" + columnId + "]";
+    }
+
 }

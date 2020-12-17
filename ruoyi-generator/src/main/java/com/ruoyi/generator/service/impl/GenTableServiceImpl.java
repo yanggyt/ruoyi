@@ -363,7 +363,7 @@ public class GenTableServiceImpl implements IGenTableService
                 }
             }
 
-            // 渲染模板
+            // 渲染模板 SysUser
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, Constants.UTF8);
             tpl.merge(context, sw);

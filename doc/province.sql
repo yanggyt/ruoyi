@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2020-12-16 21:23:15
+Date: 2020-12-17 17:41:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,13 +43,13 @@ CREATE TABLE `gen_table` (
   `form_cols` char(1) DEFAULT '2' COMMENT '表单列示 1单列 2两列 3三列 4四列',
   `bill_prefix` char(20) DEFAULT '' COMMENT '表单前缀编号',
   PRIMARY KEY (`table_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='代码生成业务表';
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COMMENT='代码生成业务表';
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
-INSERT INTO `gen_table` VALUES ('20', 'platf_econ_type', '经济类型', null, null, 'EconType', 'crud', 'com.ruoyi.province.platform', 'platform', 'econtype', '经济类型', 'dalin', '0', '/', '{\"parentMenuId\":\"2001\",\"treeName\":\"\",\"treeParentCode\":\"\",\"parentMenuName\":\"基础设置\",\"treeCode\":\"\"}', 'admin', '2020-12-09 08:52:02', '', '2020-12-16 20:36:45', '', '2', '');
-INSERT INTO `gen_table` VALUES ('39', 'platf_nation', '民族资料', null, null, 'Nation', 'crud', 'com.ruoyi.province.platform', 'platform', 'nation', '民族资料', 'dalin', '0', '/', '{\"parentMenuId\":\"\",\"treeName\":\"\",\"treeParentCode\":\"\",\"parentMenuName\":\"\",\"treeCode\":\"\"}', 'admin', '2020-12-16 20:30:08', '', '2020-12-16 20:57:45', '', '2', '');
+INSERT INTO `gen_table` VALUES ('20', 'platf_econ_type', '经济类型', null, null, 'EconType', 'crud', 'com.ruoyi.province.platform', 'platform', 'econtype', '经济类型', 'dalin', '0', '/', '{\"parentMenuId\":\"2001\",\"treeName\":\"\",\"treeParentCode\":\"\",\"parentMenuName\":\"基础设置\",\"treeCode\":\"\"}', 'admin', '2020-12-09 08:52:02', '', '2020-12-17 10:53:38', '', '2', '');
+INSERT INTO `gen_table` VALUES ('40', 'sys_relev_table', '代码生成业务_关联表', null, null, 'RelevTable', 'crud', 'com.ruoyi.system', 'system', 'relevtable', '关联实体维护', 'dalin', '0', '/', '{\"parentMenuId\":\"3\",\"treeName\":\"\",\"treeParentCode\":\"\",\"parentMenuName\":\"系统工具\",\"treeCode\":\"\"}', 'admin', '2020-12-17 10:56:20', '', '2020-12-17 11:12:32', '', '1', '00001A');
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -79,34 +79,37 @@ CREATE TABLE `gen_table_column` (
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `is_readonly` char(1) DEFAULT NULL COMMENT '是否自读字段（0否 1是）',
-  `pop_out` varchar(100) DEFAULT NULL COMMENT '弹框',
+  `is_repeat_control` char(1) DEFAULT NULL COMMENT '控制名称重复',
+  `relev_entity` varchar(100) DEFAULT NULL COMMENT '关联实体',
   PRIMARY KEY (`column_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=278 DEFAULT CHARSET=utf8 COMMENT='代码生成业务表字段';
+) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8 COMMENT='代码生成业务表字段';
 
 -- ----------------------------
 -- Records of gen_table_column
 -- ----------------------------
-INSERT INTO `gen_table_column` VALUES ('92', '20', 'econ_id', '主键', 'int(11)', 'Long', 'econId', '1', '1', null, '1', null, null, null, 'EQ', 'input', '', '1', 'admin', '2020-12-09 08:52:02', null, '2020-12-16 20:36:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('93', '20', 'econ_name', '名称', 'varchar(30)', 'String', 'econName', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', '2', 'admin', '2020-12-09 08:52:02', null, '2020-12-16 20:36:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('94', '20', 'doc_num', '单据号', 'varchar(25)', 'String', 'docNum', '0', '0', '1', '1', '1', '1', null, 'EQ', 'input', '', '3', 'admin', '2020-12-09 08:52:02', null, '2020-12-16 20:36:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('95', '20', 'status', '资料状态', 'char(1)', 'String', 'status', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'radio', 'platf_doc_statu', '4', 'admin', '2020-12-09 08:52:02', null, '2020-12-16 20:36:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('96', '20', 'remark', '备注', 'varchar(512)', 'String', 'remark', '0', '0', null, '1', '1', '1', null, 'EQ', 'textarea', '', '5', 'admin', '2020-12-09 08:52:02', null, '2020-12-16 20:36:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('97', '20', 'del_flag', '删除标志 删除标志', 'char(1)', 'String', 'delFlag', '0', '0', '1', '1', null, null, null, 'EQ', '', '', '6', 'admin', '2020-12-09 08:52:40', null, '2020-12-16 20:36:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('98', '20', 'create_by', '制单人', 'varchar(30)', 'String', 'createBy', '0', '0', '1', '1', '1', '1', null, 'EQ', 'input', '', '7', 'admin', '2020-12-09 08:52:40', null, '2020-12-16 20:36:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('99', '20', 'create_time', '制单时间', 'datetime', 'Date', 'createTime', '0', '0', '1', '1', '1', '1', null, 'EQ', 'datetime', '', '8', 'admin', '2020-12-09 08:52:40', null, '2020-12-16 20:36:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('100', '20', 'update_by', '修改人', 'varchar(30)', 'String', 'updateBy', '0', '0', null, '1', '1', '1', null, 'EQ', 'input', '', '9', 'admin', '2020-12-09 08:52:40', null, '2020-12-16 20:36:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('101', '20', 'update_time', '修改时间', 'datetime', 'Date', 'updateTime', '0', '0', null, '1', '1', '1', null, 'EQ', 'datetime', '', '10', 'admin', '2020-12-09 08:52:40', null, '2020-12-16 20:36:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('267', '39', 'nation_id', '主键', 'bigint(20)', 'Long', 'nationId', '1', '1', null, '1', null, null, null, 'EQ', 'input', '', '1', 'admin', '2020-12-16 20:30:08', null, '2020-12-16 20:57:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('268', '39', 'nation_name', '名称', 'varchar(30)', 'String', 'nationName', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', '2', 'admin', '2020-12-16 20:30:08', null, '2020-12-16 20:57:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('269', '39', 'nation_custom_num', '自定义编号', 'varchar(10)', 'String', 'nationCustomNum', '0', '0', null, null, null, null, null, 'EQ', 'input', '', '3', 'admin', '2020-12-16 20:30:08', null, '2020-12-16 20:57:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('270', '39', 'doc_num', '单据号', 'varchar(25)', 'String', 'docNum', '0', '0', null, '1', '1', '1', '1', 'EQ', 'input', '', '4', 'admin', '2020-12-16 20:30:08', null, '2020-12-16 20:57:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('271', '39', 'status', '资料状态 0有效 1无效', 'char(1)', 'String', 'status', '0', '0', null, '1', '1', '1', '1', 'EQ', 'radio', '', '5', 'admin', '2020-12-16 20:30:08', null, '2020-12-16 20:57:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('272', '39', 'remark', '备注', 'varchar(512)', 'String', 'remark', '0', '0', null, '1', '1', '1', null, 'EQ', 'textarea', '', '6', 'admin', '2020-12-16 20:30:08', null, '2020-12-16 20:57:45', null, null);
-INSERT INTO `gen_table_column` VALUES ('273', '39', 'del_flag', '删除标志 删除标志（0代表存在 2代表删除）', 'char(1)', 'String', 'delFlag', '0', '0', null, '1', null, null, null, 'EQ', '', '', '7', 'admin', '2020-12-16 20:30:08', null, '2020-12-16 20:57:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('274', '39', 'create_by', '制单人', 'varchar(30)', 'String', 'createBy', '0', '0', null, '1', '1', null, null, 'EQ', 'input', '', '8', 'admin', '2020-12-16 20:30:08', null, '2020-12-16 20:57:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('275', '39', 'create_time', '制单时间', 'datetime', 'Date', 'createTime', '0', '0', null, '1', '1', null, null, 'EQ', 'input', '', '9', 'admin', '2020-12-16 20:30:16', null, '2020-12-16 20:57:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('276', '39', 'update_by', '修改人', 'varchar(30)', 'String', 'updateBy', '0', '0', null, '1', '1', null, null, 'EQ', 'input', '', '10', 'admin', '2020-12-16 20:30:16', null, '2020-12-16 20:57:45', '1', null);
-INSERT INTO `gen_table_column` VALUES ('277', '39', 'update_time', '修改时间', 'datetime', 'Date', 'updateTime', '0', '0', null, '1', '1', null, null, 'EQ', 'input', '', '11', 'admin', '2020-12-16 20:30:27', null, '2020-12-16 20:57:45', '1', null);
+INSERT INTO `gen_table_column` VALUES ('92', '20', 'econ_id', '主键', 'int(11)', 'Long', 'econId', '1', '1', null, '1', null, null, null, 'EQ', 'input', '', '1', 'admin', '2020-12-09 08:52:02', null, '2020-12-17 10:53:38', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('93', '20', 'econ_name', '名称', 'varchar(30)', 'String', 'econName', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', '2', 'admin', '2020-12-09 08:52:02', null, '2020-12-17 10:53:38', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('94', '20', 'doc_num', '单据号', 'varchar(25)', 'String', 'docNum', '0', '0', '1', '1', '1', '1', null, 'EQ', 'input', '', '3', 'admin', '2020-12-09 08:52:02', null, '2020-12-17 10:53:38', '1', null, '');
+INSERT INTO `gen_table_column` VALUES ('95', '20', 'status', '资料状态', 'char(1)', 'String', 'status', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'radio', 'platf_doc_statu', '4', 'admin', '2020-12-09 08:52:02', null, '2020-12-17 10:53:38', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('96', '20', 'remark', '备注', 'varchar(512)', 'String', 'remark', '0', '0', null, '1', '1', '1', null, 'EQ', 'textarea', '', '5', 'admin', '2020-12-09 08:52:02', null, '2020-12-17 10:53:38', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('97', '20', 'del_flag', '删除标志 删除标志', 'char(1)', 'String', 'delFlag', '0', '0', '1', '1', null, null, null, 'EQ', '', '', '6', 'admin', '2020-12-09 08:52:40', null, '2020-12-17 10:53:38', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('98', '20', 'create_by', '制单人', 'varchar(30)', 'String', 'createBy', '0', '0', '1', '1', '1', '1', null, 'EQ', 'input', '', '7', 'admin', '2020-12-09 08:52:40', null, '2020-12-17 10:53:38', '1', null, 'SysUser');
+INSERT INTO `gen_table_column` VALUES ('99', '20', 'create_time', '制单时间', 'datetime', 'Date', 'createTime', '0', '0', '1', '1', '1', '1', null, 'EQ', 'input', '', '8', 'admin', '2020-12-09 08:52:40', null, '2020-12-17 10:53:38', '1', null, '');
+INSERT INTO `gen_table_column` VALUES ('100', '20', 'update_by', '修改人', 'varchar(30)', 'String', 'updateBy', '0', '0', null, '1', '1', '1', null, 'EQ', 'input', '', '9', 'admin', '2020-12-09 08:52:40', null, '2020-12-17 10:53:38', '1', null, 'SysUser');
+INSERT INTO `gen_table_column` VALUES ('101', '20', 'update_time', '修改时间', 'datetime', 'Date', 'updateTime', '0', '0', null, '1', '1', '1', null, 'EQ', 'input', '', '10', 'admin', '2020-12-09 08:52:40', null, '2020-12-17 10:53:38', '1', null, '');
+INSERT INTO `gen_table_column` VALUES ('278', '40', 'relev_id', '主键', 'bigint(20)', 'Long', 'relevId', '1', '1', null, '1', null, null, null, 'EQ', 'input', '', '1', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('279', '40', 'relev_name', '表单名称', 'varchar(50)', 'String', 'relevName', '0', '0', null, '1', '1', '1', '1', 'LIKE', 'input', '', '2', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('280', '40', 'relev_entity', '弹框', 'varchar(100)', 'String', 'relevEntity', '0', '0', null, '1', '1', '1', '1', 'EQ', 'input', '', '3', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('281', '40', 'relev_entity_id', '', 'varchar(100)', 'String', 'relevEntityId', '0', '0', null, '1', '1', '1', '1', 'EQ', 'input', '', '4', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('282', '40', 'relev_entity_name', '', 'varchar(100)', 'String', 'relevEntityName', '0', '0', null, '1', '1', '1', '1', 'LIKE', 'input', '', '5', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('283', '40', 'is_default_value', '默认值（1是）', 'char(1)', 'String', 'isDefaultValue', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', '6', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('284', '40', 'relev_table', '弹框', 'varchar(100)', 'String', 'relevTable', '0', '0', null, '1', '1', '1', '1', 'EQ', 'input', '', '7', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('285', '40', 'relev_table_id', '', 'varchar(100)', 'String', 'relevTableId', '0', '0', null, '1', '1', '1', '1', 'EQ', 'input', '', '8', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('286', '40', 'relev_table_name', '', 'varchar(100)', 'String', 'relevTableName', '0', '0', null, '1', '1', '1', '1', 'LIKE', 'input', '', '9', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', null, null, '');
+INSERT INTO `gen_table_column` VALUES ('287', '40', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', null, '1', null, null, null, 'EQ', 'input', '', '10', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', '1', null, 'SysUser');
+INSERT INTO `gen_table_column` VALUES ('288', '40', 'create_time', '创建时间', 'datetime', 'String', 'createTime', '0', '0', null, '1', null, null, null, 'EQ', 'input', '', '11', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', '1', null, '');
+INSERT INTO `gen_table_column` VALUES ('289', '40', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', null, '1', null, null, null, 'EQ', 'input', '', '12', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', '1', null, 'SysUser');
+INSERT INTO `gen_table_column` VALUES ('290', '40', 'update_time', '更新时间', 'datetime', 'String', 'updateTime', '0', '0', null, '1', null, null, null, 'EQ', 'input', '', '13', 'admin', '2020-12-17 10:56:20', null, '2020-12-17 11:12:32', '1', null, '');
 
 -- ----------------------------
 -- Table structure for kid_score
@@ -319,7 +322,7 @@ CREATE TABLE `qrtz_scheduler_state` (
 -- ----------------------------
 -- Records of qrtz_scheduler_state
 -- ----------------------------
-INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'linkuaisheng1608123385679', '1608124993993', '15000');
+INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'linkuaisheng1608197296344', '1608197390489', '15000');
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -396,9 +399,9 @@ CREATE TABLE `qrtz_triggers` (
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', null, '1608123390000', '-1', '5', 'PAUSED', 'CRON', '1608123385000', '0', null, '2', '');
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', null, '1608123390000', '-1', '5', 'PAUSED', 'CRON', '1608123386000', '0', null, '2', '');
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', null, '1608123400000', '-1', '5', 'PAUSED', 'CRON', '1608123386000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', null, '1608197300000', '-1', '5', 'PAUSED', 'CRON', '1608197296000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', null, '1608197310000', '-1', '5', 'PAUSED', 'CRON', '1608197296000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', null, '1608197300000', '-1', '5', 'PAUSED', 'CRON', '1608197296000', '0', null, '2', '');
 
 -- ----------------------------
 -- Table structure for sys_bill_no
@@ -638,7 +641,7 @@ CREATE TABLE `sys_logininfor` (
   `msg` varchar(255) DEFAULT '' COMMENT '提示消息',
   `login_time` datetime DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8 COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8 COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -742,6 +745,8 @@ INSERT INTO `sys_logininfor` VALUES ('195', 'admin', '127.0.0.1', '内网IP', 'C
 INSERT INTO `sys_logininfor` VALUES ('196', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-16 15:12:57');
 INSERT INTO `sys_logininfor` VALUES ('197', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-16 15:40:18');
 INSERT INTO `sys_logininfor` VALUES ('198', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-16 16:16:05');
+INSERT INTO `sys_logininfor` VALUES ('199', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-17 08:35:23');
+INSERT INTO `sys_logininfor` VALUES ('200', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-17 09:23:12');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -766,7 +771,7 @@ CREATE TABLE `sys_menu` (
   `bill_prefix` char(20) DEFAULT '' COMMENT '表单前缀编号',
   `entity_id` char(30) DEFAULT '' COMMENT '实体标识',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2062 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=2068 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -870,6 +875,12 @@ INSERT INTO `sys_menu` VALUES ('2058', '单据号迭代信息新增', '2056', '2
 INSERT INTO `sys_menu` VALUES ('2059', '单据号迭代信息修改', '2056', '3', '#', '', 'F', '0', 'config:no:edit', '#', 'admin', '2020-12-14 20:58:36', '', null, '', '', '');
 INSERT INTO `sys_menu` VALUES ('2060', '单据号迭代信息删除', '2056', '4', '#', '', 'F', '0', 'config:no:remove', '#', 'admin', '2020-12-14 20:58:36', '', null, '', '', '');
 INSERT INTO `sys_menu` VALUES ('2061', '单据号迭代信息导出', '2056', '5', '#', '', 'F', '0', 'config:no:export', '#', 'admin', '2020-12-14 20:58:36', '', null, '', '', '');
+INSERT INTO `sys_menu` VALUES ('2062', '关联实体维护', '3', '1', '/system/relevtable', '', 'C', '0', 'system:relevtable:view', '#', 'admin', '2020-12-17 11:18:41', '', null, '关联实体维护菜单', '${billPrefix}', 'relevTable');
+INSERT INTO `sys_menu` VALUES ('2063', '关联实体维护查询', '2062', '1', '#', '', 'F', '0', 'system:relevtable:list', '#', 'admin', '2020-12-17 11:18:41', '', null, '', '', '');
+INSERT INTO `sys_menu` VALUES ('2064', '关联实体维护新增', '2062', '2', '#', '', 'F', '0', 'system:relevtable:add', '#', 'admin', '2020-12-17 11:18:41', '', null, '', '', '');
+INSERT INTO `sys_menu` VALUES ('2065', '关联实体维护修改', '2062', '3', '#', '', 'F', '0', 'system:relevtable:edit', '#', 'admin', '2020-12-17 11:18:41', '', null, '', '', '');
+INSERT INTO `sys_menu` VALUES ('2066', '关联实体维护删除', '2062', '4', '#', '', 'F', '0', 'system:relevtable:remove', '#', 'admin', '2020-12-17 11:18:41', '', null, '', '', '');
+INSERT INTO `sys_menu` VALUES ('2067', '关联实体维护导出', '2062', '5', '#', '', 'F', '0', 'system:relevtable:export', '#', 'admin', '2020-12-17 11:18:41', '', null, '', '', '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -917,7 +928,7 @@ CREATE TABLE `sys_oper_log` (
   `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=338 DEFAULT CHARSET=utf8 COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=346 DEFAULT CHARSET=utf8 COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1160,6 +1171,14 @@ INSERT INTO `sys_oper_log` VALUES ('334', '代码生成', '2', 'com.ruoyi.genera
 INSERT INTO `sys_oper_log` VALUES ('335', '代码生成', '8', 'com.ruoyi.generator.controller.GenController.download()', 'GET', '1', 'admin', '研发部门', '/tool/gen/download/platf_nation', '127.0.0.1', '内网IP', null, 'null', '0', null, '2020-12-16 20:38:37');
 INSERT INTO `sys_oper_log` VALUES ('336', '代码生成', '2', 'com.ruoyi.generator.controller.GenController.editSave()', 'POST', '1', 'admin', '研发部门', '/tool/gen/edit', '127.0.0.1', '内网IP', '{\"tableId\":[\"39\"],\"tableName\":[\"platf_nation\"],\"tableComment\":[\"民族资料\"],\"className\":[\"Nation\"],\"functionAuthor\":[\"dalin\"],\"remark\":[\"\"],\"formCols\":[\"2\"],\"billPrefix\":[\"\"],\"columns[0].columnId\":[\"267\"],\"columns[0].sort\":[\"1\"],\"columns[0].columnComment\":[\"主键\"],\"columns[0].javaType\":[\"Long\"],\"columns[0].javaField\":[\"nationId\"],\"columns[0].isInsert\":[\"1\"],\"columns[0].queryType\":[\"EQ\"],\"columns[0].htmlType\":[\"input\"],\"columns[0].dictType\":[\"\"],\"columns[1].columnId\":[\"268\"],\"columns[1].sort\":[\"2\"],\"columns[1].columnComment\":[\"名称\"],\"columns[1].javaType\":[\"String\"],\"columns[1].javaField\":[\"nationName\"],\"columns[1].isInsert\":[\"1\"],\"columns[1].isEdit\":[\"1\"],\"columns[1].isList\":[\"1\"],\"columns[1].isQuery\":[\"1\"],\"columns[1].queryType\":[\"LIKE\"],\"columns[1].isRequired\":[\"1\"],\"columns[1].htmlType\":[\"input\"],\"columns[1].dictType\":[\"\"],\"columns[2].columnId\":[\"269\"],\"columns[2].sort\":[\"3\"],\"columns[2].columnComment\":[\"自定义编号\"],\"columns[2].javaType\":[\"String\"],\"columns[2].javaField\":[\"nationCustomNum\"],\"columns[2].queryType\":[\"EQ\"],\"columns[2].htmlType\":[\"input\"],\"columns[2].dictType\":[\"\"],\"columns[3].columnId\":[\"270\"],\"columns[3].sort\":[\"4\"],\"columns[3].columnComment\":[\"单据号\"],\"columns[3].javaType\":[\"String\"],\"columns[3].javaField\":[\"docNum\"],\"columns[3].isInsert\":[\"1\"],\"columns[3].isEdit\":[\"1\"],\"columns[3].isList\":[\"1\"],\"columns[3].isQuery\":[\"1\"],\"columns[3].queryType\":[\"EQ\"],\"columns[3].isReadonly\":[\"1\"],\"columns[3].htmlType\":[\"input\"],\"columns[3].dictType\":[\"\"],\"columns[4].columnId\":[\"271\"],\"columns[4].sort\":[\"5\"],\"columns[4].columnComment\":[\"资料状态 0有效 1无效\"],\"columns[4].javaType\":[\"String\"],\"columns[4].javaField\":[\"status\"],\"columns[4].isInsert\":[\"1\"],\"columns[4].isEdit\":[\"1\"],\"columns[4].isList\":[\"1\"],\"columns[4].isQuery\":[\"1\"],\"columns[4].queryType\":[\"EQ\"],\"columns[4].htmlType\":[\"radio\"],\"columns[4].dictType\":[\"\"],\"columns[5].columnId\":[\"272\"],\"columns[5].sort\":[\"6\"],\"columns[5].columnComment\":[\"备注\"],\"columns[5].javaType\":[\"String\"],\"columns[5].javaField\":[\"remark\"],\"columns[5].isIns', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-16 20:57:45');
 INSERT INTO `sys_oper_log` VALUES ('337', '代码生成', '8', 'com.ruoyi.generator.controller.GenController.download()', 'GET', '1', 'admin', '研发部门', '/tool/gen/download/platf_nation', '127.0.0.1', '内网IP', null, 'null', '0', null, '2020-12-16 20:58:04');
+INSERT INTO `sys_oper_log` VALUES ('338', '代码生成', '2', 'com.ruoyi.generator.controller.GenController.editSave()', 'POST', '1', 'admin', '研发部门', '/tool/gen/edit', '127.0.0.1', '内网IP', '{\"tableId\":[\"20\"],\"tableName\":[\"platf_econ_type\"],\"tableComment\":[\"经济类型\"],\"className\":[\"EconType\"],\"functionAuthor\":[\"dalin\"],\"remark\":[\"\"],\"formCols\":[\"2\"],\"billPrefix\":[\"\"],\"columns[0].columnId\":[\"92\"],\"columns[0].sort\":[\"1\"],\"columns[0].columnComment\":[\"主键\"],\"columns[0].javaType\":[\"Long\"],\"columns[0].javaField\":[\"econId\"],\"columns[0].isInsert\":[\"1\"],\"columns[0].queryType\":[\"EQ\"],\"columns[0].htmlType\":[\"input\"],\"columns[0].dictType\":[\"\"],\"columns[0].relevTable\":[\"\"],\"columns[0].relevTableId\":[\"\"],\"columns[0].relevTableName\":[\"\"],\"columns[1].columnId\":[\"93\"],\"columns[1].sort\":[\"2\"],\"columns[1].columnComment\":[\"名称\"],\"columns[1].javaType\":[\"String\"],\"columns[1].javaField\":[\"econName\"],\"columns[1].isInsert\":[\"1\"],\"columns[1].isEdit\":[\"1\"],\"columns[1].isList\":[\"1\"],\"columns[1].isQuery\":[\"1\"],\"columns[1].queryType\":[\"LIKE\"],\"columns[1].isRequired\":[\"1\"],\"columns[1].htmlType\":[\"input\"],\"columns[1].dictType\":[\"\"],\"columns[1].relevTable\":[\"\"],\"columns[1].relevTableId\":[\"\"],\"columns[1].relevTableName\":[\"\"],\"columns[2].columnId\":[\"94\"],\"columns[2].sort\":[\"3\"],\"columns[2].columnComment\":[\"单据号\"],\"columns[2].javaType\":[\"String\"],\"columns[2].javaField\":[\"docNum\"],\"columns[2].isInsert\":[\"1\"],\"columns[2].isEdit\":[\"1\"],\"columns[2].isList\":[\"1\"],\"columns[2].queryType\":[\"EQ\"],\"columns[2].isRequired\":[\"1\"],\"columns[2].isReadonly\":[\"1\"],\"columns[2].htmlType\":[\"input\"],\"columns[2].dictType\":[\"\"],\"columns[2].relevTable\":[\"\"],\"columns[2].relevTableId\":[\"\"],\"columns[2].relevTableName\":[\"\"],\"columns[3].columnId\":[\"95\"],\"columns[3].sort\":[\"4\"],\"columns[3].columnComment\":[\"资料状态\"],\"columns[3].javaType\":[\"String\"],\"columns[3].javaField\":[\"status\"],\"columns[3].isInsert\":[\"1\"],\"columns[3].isEdit\":[\"1\"],\"columns[3].isList\":[\"1\"],\"columns[3].isQuery\":[\"1\"],\"columns[3].queryType\":[\"EQ\"],\"columns[3].isRequired\":[\"1\"],\"columns[3].htmlType\":[\"radio\"],\"columns[3].dictType\":[\"platf_doc_statu\"],\"columns[3].relevTable\":[\"\"],\"columns[3].relevTableId\":[\"\"],\"columns[3].relevTableName\":[\"\"],\"columns[4].columnI', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-17 09:32:33');
+INSERT INTO `sys_oper_log` VALUES ('339', '代码生成', '2', 'com.ruoyi.generator.controller.GenController.editSave()', 'POST', '1', 'admin', '研发部门', '/tool/gen/edit', '127.0.0.1', '内网IP', '{\"tableId\":[\"20\"],\"tableName\":[\"platf_econ_type\"],\"tableComment\":[\"经济类型\"],\"className\":[\"EconType\"],\"functionAuthor\":[\"dalin\"],\"remark\":[\"\"],\"formCols\":[\"2\"],\"billPrefix\":[\"\"],\"columns[0].columnId\":[\"92\"],\"columns[0].sort\":[\"1\"],\"columns[0].columnComment\":[\"主键\"],\"columns[0].javaType\":[\"Long\"],\"columns[0].javaField\":[\"econId\"],\"columns[0].isInsert\":[\"1\"],\"columns[0].queryType\":[\"EQ\"],\"columns[0].htmlType\":[\"input\"],\"columns[0].dictType\":[\"\"],\"columns[0].relevTable\":[\"\"],\"columns[1].columnId\":[\"93\"],\"columns[1].sort\":[\"2\"],\"columns[1].columnComment\":[\"名称\"],\"columns[1].javaType\":[\"String\"],\"columns[1].javaField\":[\"econName\"],\"columns[1].isInsert\":[\"1\"],\"columns[1].isEdit\":[\"1\"],\"columns[1].isList\":[\"1\"],\"columns[1].isQuery\":[\"1\"],\"columns[1].queryType\":[\"LIKE\"],\"columns[1].isRequired\":[\"1\"],\"columns[1].htmlType\":[\"input\"],\"columns[1].dictType\":[\"\"],\"columns[1].relevTable\":[\"\"],\"columns[2].columnId\":[\"94\"],\"columns[2].sort\":[\"3\"],\"columns[2].columnComment\":[\"单据号\"],\"columns[2].javaType\":[\"String\"],\"columns[2].javaField\":[\"docNum\"],\"columns[2].isInsert\":[\"1\"],\"columns[2].isEdit\":[\"1\"],\"columns[2].isList\":[\"1\"],\"columns[2].queryType\":[\"EQ\"],\"columns[2].isRequired\":[\"1\"],\"columns[2].isReadonly\":[\"1\"],\"columns[2].htmlType\":[\"input\"],\"columns[2].dictType\":[\"\"],\"columns[2].relevTable\":[\"\"],\"columns[3].columnId\":[\"95\"],\"columns[3].sort\":[\"4\"],\"columns[3].columnComment\":[\"资料状态\"],\"columns[3].javaType\":[\"String\"],\"columns[3].javaField\":[\"status\"],\"columns[3].isInsert\":[\"1\"],\"columns[3].isEdit\":[\"1\"],\"columns[3].isList\":[\"1\"],\"columns[3].isQuery\":[\"1\"],\"columns[3].queryType\":[\"EQ\"],\"columns[3].isRequired\":[\"1\"],\"columns[3].htmlType\":[\"radio\"],\"columns[3].dictType\":[\"platf_doc_statu\"],\"columns[3].relevTable\":[\"\"],\"columns[4].columnId\":[\"96\"],\"columns[4].sort\":[\"5\"],\"columns[4].columnComment\":[\"备注\"],\"columns[4].javaType\":[\"String\"],\"columns[4].javaField\":[\"remark\"],\"columns[4].isInsert\":[\"1\"],\"columns[4].isEdit\":[\"1\"],\"columns[4].isList\":[\"1\"],\"columns[4].queryType\":[\"EQ\"],\"columns[4]', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-17 10:53:15');
+INSERT INTO `sys_oper_log` VALUES ('340', '代码生成', '2', 'com.ruoyi.generator.controller.GenController.editSave()', 'POST', '1', 'admin', '研发部门', '/tool/gen/edit', '127.0.0.1', '内网IP', '{\"tableId\":[\"20\"],\"tableName\":[\"platf_econ_type\"],\"tableComment\":[\"经济类型\"],\"className\":[\"EconType\"],\"functionAuthor\":[\"dalin\"],\"remark\":[\"\"],\"formCols\":[\"2\"],\"billPrefix\":[\"\"],\"columns[0].columnId\":[\"92\"],\"columns[0].sort\":[\"1\"],\"columns[0].columnComment\":[\"主键\"],\"columns[0].javaType\":[\"Long\"],\"columns[0].javaField\":[\"econId\"],\"columns[0].isInsert\":[\"1\"],\"columns[0].queryType\":[\"EQ\"],\"columns[0].htmlType\":[\"input\"],\"columns[0].dictType\":[\"\"],\"columns[0].relevTable\":[\"\"],\"columns[1].columnId\":[\"93\"],\"columns[1].sort\":[\"2\"],\"columns[1].columnComment\":[\"名称\"],\"columns[1].javaType\":[\"String\"],\"columns[1].javaField\":[\"econName\"],\"columns[1].isInsert\":[\"1\"],\"columns[1].isEdit\":[\"1\"],\"columns[1].isList\":[\"1\"],\"columns[1].isQuery\":[\"1\"],\"columns[1].queryType\":[\"LIKE\"],\"columns[1].isRequired\":[\"1\"],\"columns[1].htmlType\":[\"input\"],\"columns[1].dictType\":[\"\"],\"columns[1].relevTable\":[\"\"],\"columns[2].columnId\":[\"94\"],\"columns[2].sort\":[\"3\"],\"columns[2].columnComment\":[\"单据号\"],\"columns[2].javaType\":[\"String\"],\"columns[2].javaField\":[\"docNum\"],\"columns[2].isInsert\":[\"1\"],\"columns[2].isEdit\":[\"1\"],\"columns[2].isList\":[\"1\"],\"columns[2].queryType\":[\"EQ\"],\"columns[2].isRequired\":[\"1\"],\"columns[2].isReadonly\":[\"1\"],\"columns[2].htmlType\":[\"input\"],\"columns[2].dictType\":[\"\"],\"columns[2].relevTable\":[\"\"],\"columns[3].columnId\":[\"95\"],\"columns[3].sort\":[\"4\"],\"columns[3].columnComment\":[\"资料状态\"],\"columns[3].javaType\":[\"String\"],\"columns[3].javaField\":[\"status\"],\"columns[3].isInsert\":[\"1\"],\"columns[3].isEdit\":[\"1\"],\"columns[3].isList\":[\"1\"],\"columns[3].isQuery\":[\"1\"],\"columns[3].queryType\":[\"EQ\"],\"columns[3].isRequired\":[\"1\"],\"columns[3].htmlType\":[\"radio\"],\"columns[3].dictType\":[\"platf_doc_statu\"],\"columns[3].relevTable\":[\"\"],\"columns[4].columnId\":[\"96\"],\"columns[4].sort\":[\"5\"],\"columns[4].columnComment\":[\"备注\"],\"columns[4].javaType\":[\"String\"],\"columns[4].javaField\":[\"remark\"],\"columns[4].isInsert\":[\"1\"],\"columns[4].isEdit\":[\"1\"],\"columns[4].isList\":[\"1\"],\"columns[4].queryType\":[\"EQ\"],\"columns[4]', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-17 10:53:38');
+INSERT INTO `sys_oper_log` VALUES ('341', '代码生成', '3', 'com.ruoyi.generator.controller.GenController.remove()', 'POST', '1', 'admin', '研发部门', '/tool/gen/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"39\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-17 10:53:53');
+INSERT INTO `sys_oper_log` VALUES ('342', '代码生成', '6', 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', '1', 'admin', '研发部门', '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":[\"sys_relev_table\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-17 10:56:20');
+INSERT INTO `sys_oper_log` VALUES ('343', '代码生成', '2', 'com.ruoyi.generator.controller.GenController.editSave()', 'POST', '1', 'admin', '研发部门', '/tool/gen/edit', '127.0.0.1', '内网IP', '{\"tableId\":[\"40\"],\"tableName\":[\"sys_relev_table\"],\"tableComment\":[\"代码生成业务_关联表\"],\"className\":[\"RelevTable\"],\"functionAuthor\":[\"dalin\"],\"remark\":[\"\"],\"formCols\":[\"1\"],\"billPrefix\":[\"00001A\"],\"columns[0].columnId\":[\"278\"],\"columns[0].sort\":[\"1\"],\"columns[0].columnComment\":[\"主键\"],\"columns[0].javaType\":[\"Long\"],\"columns[0].javaField\":[\"relevId\"],\"columns[0].isInsert\":[\"1\"],\"columns[0].queryType\":[\"EQ\"],\"columns[0].htmlType\":[\"input\"],\"columns[0].dictType\":[\"\"],\"columns[0].relevTable\":[\"\"],\"columns[1].columnId\":[\"279\"],\"columns[1].sort\":[\"2\"],\"columns[1].columnComment\":[\"表单名称\"],\"columns[1].javaType\":[\"String\"],\"columns[1].javaField\":[\"relevName\"],\"columns[1].isInsert\":[\"1\"],\"columns[1].isEdit\":[\"1\"],\"columns[1].isList\":[\"1\"],\"columns[1].isQuery\":[\"1\"],\"columns[1].queryType\":[\"LIKE\"],\"columns[1].htmlType\":[\"input\"],\"columns[1].dictType\":[\"\"],\"columns[1].relevTable\":[\"\"],\"columns[2].columnId\":[\"280\"],\"columns[2].sort\":[\"3\"],\"columns[2].columnComment\":[\"弹框\"],\"columns[2].javaType\":[\"String\"],\"columns[2].javaField\":[\"relevEntity\"],\"columns[2].isInsert\":[\"1\"],\"columns[2].isEdit\":[\"1\"],\"columns[2].isList\":[\"1\"],\"columns[2].isQuery\":[\"1\"],\"columns[2].queryType\":[\"EQ\"],\"columns[2].htmlType\":[\"input\"],\"columns[2].dictType\":[\"\"],\"columns[2].relevTable\":[\"\"],\"columns[3].columnId\":[\"281\"],\"columns[3].sort\":[\"4\"],\"columns[3].columnComment\":[\"\"],\"columns[3].javaType\":[\"String\"],\"columns[3].javaField\":[\"relevEntityId\"],\"columns[3].isInsert\":[\"1\"],\"columns[3].isEdit\":[\"1\"],\"columns[3].isList\":[\"1\"],\"columns[3].isQuery\":[\"1\"],\"columns[3].queryType\":[\"EQ\"],\"columns[3].htmlType\":[\"input\"],\"columns[3].dictType\":[\"\"],\"columns[3].relevTable\":[\"\"],\"columns[4].columnId\":[\"282\"],\"columns[4].sort\":[\"5\"],\"columns[4].columnComment\":[\"\"],\"columns[4].javaType\":[\"String\"],\"columns[4].javaField\":[\"relevEntityName\"],\"columns[4].isInsert\":[\"1\"],\"columns[4].isEdit\":[\"1\"],\"columns[4].isList\":[\"1\"],\"columns[4].isQuery\":[\"1\"],\"columns[4].queryType\":[\"LIKE\"],\"columns[4].htmlType\":[\"input\"],\"columns[4].dictType\"', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-17 11:11:41');
+INSERT INTO `sys_oper_log` VALUES ('344', '代码生成', '2', 'com.ruoyi.generator.controller.GenController.editSave()', 'POST', '1', 'admin', '研发部门', '/tool/gen/edit', '127.0.0.1', '内网IP', '{\"tableId\":[\"40\"],\"tableName\":[\"sys_relev_table\"],\"tableComment\":[\"代码生成业务_关联表\"],\"className\":[\"RelevTable\"],\"functionAuthor\":[\"dalin\"],\"remark\":[\"\"],\"formCols\":[\"1\"],\"billPrefix\":[\"00001A\"],\"columns[0].columnId\":[\"278\"],\"columns[0].sort\":[\"1\"],\"columns[0].columnComment\":[\"主键\"],\"columns[0].javaType\":[\"Long\"],\"columns[0].javaField\":[\"relevId\"],\"columns[0].isInsert\":[\"1\"],\"columns[0].queryType\":[\"EQ\"],\"columns[0].htmlType\":[\"input\"],\"columns[0].dictType\":[\"\"],\"columns[0].relevTable\":[\"\"],\"columns[1].columnId\":[\"279\"],\"columns[1].sort\":[\"2\"],\"columns[1].columnComment\":[\"表单名称\"],\"columns[1].javaType\":[\"String\"],\"columns[1].javaField\":[\"relevName\"],\"columns[1].isInsert\":[\"1\"],\"columns[1].isEdit\":[\"1\"],\"columns[1].isList\":[\"1\"],\"columns[1].isQuery\":[\"1\"],\"columns[1].queryType\":[\"LIKE\"],\"columns[1].htmlType\":[\"input\"],\"columns[1].dictType\":[\"\"],\"columns[1].relevTable\":[\"\"],\"columns[2].columnId\":[\"280\"],\"columns[2].sort\":[\"3\"],\"columns[2].columnComment\":[\"弹框\"],\"columns[2].javaType\":[\"String\"],\"columns[2].javaField\":[\"relevEntity\"],\"columns[2].isInsert\":[\"1\"],\"columns[2].isEdit\":[\"1\"],\"columns[2].isList\":[\"1\"],\"columns[2].isQuery\":[\"1\"],\"columns[2].queryType\":[\"EQ\"],\"columns[2].htmlType\":[\"input\"],\"columns[2].dictType\":[\"\"],\"columns[2].relevTable\":[\"\"],\"columns[3].columnId\":[\"281\"],\"columns[3].sort\":[\"4\"],\"columns[3].columnComment\":[\"\"],\"columns[3].javaType\":[\"String\"],\"columns[3].javaField\":[\"relevEntityId\"],\"columns[3].isInsert\":[\"1\"],\"columns[3].isEdit\":[\"1\"],\"columns[3].isList\":[\"1\"],\"columns[3].isQuery\":[\"1\"],\"columns[3].queryType\":[\"EQ\"],\"columns[3].htmlType\":[\"input\"],\"columns[3].dictType\":[\"\"],\"columns[3].relevTable\":[\"\"],\"columns[4].columnId\":[\"282\"],\"columns[4].sort\":[\"5\"],\"columns[4].columnComment\":[\"\"],\"columns[4].javaType\":[\"String\"],\"columns[4].javaField\":[\"relevEntityName\"],\"columns[4].isInsert\":[\"1\"],\"columns[4].isEdit\":[\"1\"],\"columns[4].isList\":[\"1\"],\"columns[4].isQuery\":[\"1\"],\"columns[4].queryType\":[\"LIKE\"],\"columns[4].htmlType\":[\"input\"],\"columns[4].dictType\"', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-17 11:12:32');
+INSERT INTO `sys_oper_log` VALUES ('345', '代码生成', '8', 'com.ruoyi.generator.controller.GenController.download()', 'GET', '1', 'admin', '研发部门', '/tool/gen/download/sys_relev_table', '127.0.0.1', '内网IP', null, 'null', '0', null, '2020-12-17 11:13:51');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1186,6 +1205,32 @@ INSERT INTO `sys_post` VALUES ('1', 'ceo', '董事长', '1', '0', 'admin', '2020
 INSERT INTO `sys_post` VALUES ('2', 'se', '项目经理', '2', '0', 'admin', '2020-12-08 07:51:59', '', null, '');
 INSERT INTO `sys_post` VALUES ('3', 'hr', '人力资源', '3', '0', 'admin', '2020-12-08 07:51:59', '', null, '');
 INSERT INTO `sys_post` VALUES ('4', 'user', '普通员工', '4', '0', 'admin', '2020-12-08 07:51:59', '', null, '');
+
+-- ----------------------------
+-- Table structure for sys_relev_table
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_relev_table`;
+CREATE TABLE `sys_relev_table` (
+  `relev_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `relev_name` varchar(50) DEFAULT NULL COMMENT '表单名称',
+  `relev_entity` varchar(100) DEFAULT NULL COMMENT '弹框',
+  `relev_entity_id` varchar(100) DEFAULT NULL,
+  `relev_entity_name` varchar(100) DEFAULT NULL,
+  `is_default_value` char(1) NOT NULL DEFAULT '0' COMMENT '默认值（1是）',
+  `relev_table` varchar(100) DEFAULT NULL COMMENT '弹框',
+  `relev_table_id` varchar(100) DEFAULT NULL,
+  `relev_table_name` varchar(100) DEFAULT NULL,
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`relev_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='代码生成业务_关联表';
+
+-- ----------------------------
+-- Records of sys_relev_table
+-- ----------------------------
+INSERT INTO `sys_relev_table` VALUES ('1', '用户管理', 'SysUser', 'loginName', 'userName', '1', 'sys_user', 'login_name', 'user_name', '', null, '', null);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -1361,7 +1406,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '103', 'admin', '平台管理员', '00', '290541200@qq.com', '18258987010', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2020-12-16 16:16:06', '2020-12-08 07:51:59', 'admin', '2020-12-08 07:51:59', '', '2020-12-16 16:16:06', '管理员');
+INSERT INTO `sys_user` VALUES ('1', '103', 'admin', '平台管理员', '00', '290541200@qq.com', '18258987010', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2020-12-17 09:23:12', '2020-12-08 07:51:59', 'admin', '2020-12-08 07:51:59', '', '2020-12-17 09:23:12', '管理员');
 INSERT INTO `sys_user` VALUES ('2', '105', 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', '2020-12-08 07:51:59', '2020-12-08 07:51:59', 'admin', '2020-12-08 07:51:59', '', null, '测试员');
 
 -- ----------------------------
@@ -1386,7 +1431,7 @@ CREATE TABLE `sys_user_online` (
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
-INSERT INTO `sys_user_online` VALUES ('2a22253a-0124-474f-9951-554ab5e927e5', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', 'on_line', '2020-12-16 20:24:50', '2020-12-16 21:10:17', '1800000');
+INSERT INTO `sys_user_online` VALUES ('fb7fc50a-fb80-4757-8769-13ace23239d1', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', 'on_line', '2020-12-17 10:52:59', '2020-12-17 11:19:06', '1800000');
 
 -- ----------------------------
 -- Table structure for sys_user_post

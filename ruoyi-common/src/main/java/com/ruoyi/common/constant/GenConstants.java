@@ -42,6 +42,9 @@ public class GenConstants
     public static final String[] COLUMNTYPE_NUMBER = { "tinyint", "smallint", "mediumint", "int", "number", "integer",
             "bit", "bigint", "float", "double", "decimal" };
 
+    /** 制单人、修改人 关联字段 */
+    public static final String[] COLUMNNAME_RELEV_FIELDS = { "create_by","update_by" };
+
     /** 页面上 默认只读的字段 */
     public static final String[] COLUMNNAME_INI_READONLY = { "doc_num", "create_by", "create_time", "update_by", "update_time", "del_flag" };
 

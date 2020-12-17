@@ -16,6 +16,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="isIncrement"    column="is_increment"   />
         <result property="isRequired"     column="is_required"    />
         <result property="isReadonly"     column="is_readonly"    />
+        <result property="relevEntity"     column="relev_entity"    />
+        <result property="isRepeatControl"     column="is_repeat_control"    />
         <result property="isInsert"       column="is_insert"      />
         <result property="isEdit"         column="is_edit"        />
         <result property="isList"         column="is_list"        />
@@ -31,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectGenTableColumnVo">
-        select column_id, table_id, column_name, column_comment, column_type, java_type, java_field, is_pk, is_increment, is_required, is_insert, is_edit,is_readonly, is_list, is_query, query_type, html_type, dict_type, sort, create_by, create_time, update_by, update_time from gen_table_column
+        select column_id, table_id, column_name, column_comment, column_type, java_type, java_field, is_pk, is_increment, is_required, is_insert, is_edit,is_repeat_control,is_readonly,relev_entity,is_list, is_query, query_type, html_type, dict_type, sort, create_by, create_time, update_by, update_time from gen_table_column
     </sql>
 	
     <select id="selectGenTableColumnListByTableId" parameterType="GenTableColumn" resultMap="GenTableColumnResult">
@@ -58,6 +60,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="isIncrement != null and isIncrement != ''">is_increment,</if>
 			<if test="isRequired != null and isRequired != ''">is_required,</if>
             <if test="isReadonly != null and isReadonly != ''">is_readonly,</if>
+        <if test="isRepeatControl != null and isRepeatControl != ''">is_repeat_control,</if>
+
+        <if test="relevEntity != null and relevEntity != ''">relev_entity,</if>
+
             <if test="isInsert != null and isInsert != ''">is_insert,</if>
 			<if test="isEdit != null and isEdit != ''">is_edit,</if>
 			<if test="isList != null and isList != ''">is_list,</if>
@@ -79,6 +85,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="isIncrement != null and isIncrement != ''">#{isIncrement},</if>
 			<if test="isRequired != null and isRequired != ''">#{isRequired},</if>
             <if test="isReadonly != null and isReadonly != ''">#{isReadonly},</if>
+        <if test="isRepeatControl != null and isRepeatControl != ''">#{isRepeatControl},</if>
+
+            <if test="relevEntity != null and relevEntity != ''">#{relevEntity},</if>
+
             <if test="isInsert != null and isInsert != ''">#{isInsert},</if>
 			<if test="isEdit != null and isEdit != ''">#{isEdit},</if>
 			<if test="isList != null and isList != ''">#{isList},</if>
@@ -104,6 +114,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             is_query = #{isQuery},
             is_required = #{isRequired},
             is_readonly = #{isReadonly},
+            is_repeat_control = #{isRepeatControl},
+
+            relev_entity = #{relevEntity},
+
             query_type = #{queryType},
             html_type = #{htmlType},
             dict_type = #{dictType},

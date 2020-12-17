@@ -452,6 +452,16 @@
 						return html;
 					}
 				},
+                    {
+                        field: 'isRepeatControl',
+                        title: '重复',
+                        width: "6%",
+                        formatter: function (value, row, index) {
+                            var isCheck = value == 1 ? 'checked' : '';
+                            var html = $.common.sprintf("<label class='check-box'><input type='checkbox' name='columns[%s].isRepeatControl' value='1' %s></label>", index, isCheck);
+                            return html;
+                        }
+                    },
 		        {
 		            field: 'htmlType',
 		            title: '显示类型',
@@ -473,18 +483,36 @@
                         return { css: { "cursor": "default" } };
                     }
 		        },
-                    {
-                        field: 'popOut',
-                        title: '弹框',
-                        width: "13%",
+				{
+					field: 'relevEntity',
+					title: '关联实体',
+					width: "12%",
+					formatter: function (value, row, index) {
+						var html = $.common.sprintf("<input class='form-control' type='text' name='columns[%s].relevEntity' value='%s' >", index, value);
+						return html;
+					}
+				}
+                  /*  , {
+                        field: 'relevTableId',
+                        title: '关联字段ID',
+                        width: "12%",
                         formatter: function (value, row, index) {
-                            var html = $.common.sprintf("<input class='form-control' type='text' name='columns[%s].popOut' value='%s' id='columns_popout_%s'>", index, value, row.columnId);
-                            return "<div class='input-group'>" + html + "<span class='input-group-addon input-sm' onclick='selectpopOut(" + row.columnId + ", this)'><i class='fa fa-search'></i></span></div>";
-                        },
-                        cellStyle: function(value, row, index) {
-                            return { css: { "cursor": "default" } };
+                            var html = $.common.sprintf("<input class='form-control' type='text' name='columns[%s].relevTableId' value='%s' >", index, value);
+                            return html;
                         }
-                    }]
+                    },
+                    {
+                        field: 'relevTableName',
+                        title: '关联字段名称',
+                        width: "12%",
+                        formatter: function (value, row, index) {
+                            var html = $.common.sprintf("<input class='form-control' type='text' name='columns[%s].relevTableName' value='%s' >", index, value);
+                            return html;
+                        }
+                    } */
+
+
+                    ]
 		    };
 		    $.table.init(options);
 		});
@@ -559,18 +587,7 @@
 			}
 		}
 
-		// 弹框处理函数
-        function selectpopOut(columnId, obj) {
-            var dictType = $.common.nullToStr($(obj).parent().find("input").val());
-            var url = ctx + "system/dict/selectDictTree/" + columnId + "/" + dictType;
-            var options = {
-                title: '选择字典类型',
-                width: "380",
-                url: url,
-                callBack: doDictSubmit
-            };
-            $.modal.openOptions(options);
-        }
+
 
 		// 选择字典处理函数
 		function selectDictTree(columnId, obj) {

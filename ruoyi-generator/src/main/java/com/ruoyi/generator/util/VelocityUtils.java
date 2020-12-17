@@ -1,19 +1,27 @@
 package com.ruoyi.generator.util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import org.apache.velocity.VelocityContext;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.util.StringUtil;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.config.GenConfig;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
+import com.ruoyi.system.domain.RelevTable;
+import com.ruoyi.system.service.IRelevTableService;
+import org.apache.velocity.VelocityContext;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class VelocityUtils {
+
+    @Autowired
+    private IRelevTableService relevTableService;
+
     /**
      * 项目空间路径
      */
@@ -66,6 +74,9 @@ public class VelocityUtils {
         List<GenTableColumn> tempcolumns = genTable.getColumns();
         List<GenTableColumn> effectivecols = new ArrayList<GenTableColumn>();//定义一个list对象
         List<GenTableColumn> effectiveceditols = new ArrayList<GenTableColumn>();//定义一个list对象
+        List<GenTableColumn> fieldcols = new ArrayList<GenTableColumn>();// 模板的变量   colums
+        List<GenTableColumn> hiddenfiledcols = new ArrayList<GenTableColumn>();// 模板隐藏变量 hiddenfiledcols
+
         for (GenTableColumn tcolumn : tempcolumns) {
             if (tcolumn.isInsert() && !tcolumn.isPk())
                 if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
@@ -74,8 +85,34 @@ public class VelocityUtils {
             if (tcolumn.isEdit() && !tcolumn.isPk())
                 if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
                     effectiveceditols.add(tcolumn);
-        }
-        ;
+
+            if ( !StringUtil.isEmpty( tcolumn.getRelevEntity() ) && !tcolumn.isPk() ) {
+                // 添加 关联字段 信息
+                try {
+                    // 取得 关联实体信息
+                    GenTableColumn relevColumn = (GenTableColumn) tcolumn.clone();
+
+                    RelevTable relevTb =
+                    relevTableService.selectRelevTableByRelevEntity( tcolumn.getRelevEntity() ) ;
+
+                    relevColumn.setRelevEntityId( relevTb.getRelevEntityId() );
+                    relevColumn.setRelevEntityName( relevTb.getRelevEntityName() );
+                    relevColumn.setRelevTable(relevTb.getRelevTable());
+                    relevColumn.setRelevTableName(relevTb.getRelevTableName());
+                    relevColumn.setRelevTableId(relevTb.getRelevTableId());
+
+                    fieldcols.add(relevColumn) ;
+
+                }catch (Exception e){
+
+                }
+                        
+                tcolumn.setIsRelevByHidden("1");
+                fieldcols.add(tcolumn) ;
+
+            } else
+                fieldcols.add(tcolumn) ;
+        };
 
         velocityContext.put("effectivecols", effectivecols);
         velocityContext.put("effectiveeditcols", effectiveceditols);

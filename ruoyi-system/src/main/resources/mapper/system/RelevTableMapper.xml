@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RelevTableMapper">
+    
+    <resultMap type="RelevTable" id="RelevTableResult">
+        <result property="relevId"    column="relev_id"    />
+        <result property="relevName"    column="relev_name"    />
+        <result property="relevEntity"    column="relev_entity"    />
+        <result property="relevEntityId"    column="relev_entity_id"    />
+        <result property="relevEntityName"    column="relev_entity_name"    />
+        <result property="isDefaultValue"    column="is_default_value"    />
+        <result property="relevTable"    column="relev_table"    />
+        <result property="relevTableId"    column="relev_table_id"    />
+        <result property="relevTableName"    column="relev_table_name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRelevTableVo">
+        select relev_id, relev_name, relev_entity, relev_entity_id, relev_entity_name, is_default_value, relev_table, relev_table_id, relev_table_name, create_by, create_time, update_by, update_time from sys_relev_table
+    </sql>
+
+    <select id="selectRelevTableList" parameterType="RelevTable" resultMap="RelevTableResult">
+        <include refid="selectRelevTableVo"/>
+        <where>  
+            <if test="relevName != null  and relevName != ''"> and relev_name like concat('%', #{relevName}, '%')</if>
+            <if test="relevEntity != null  and relevEntity != ''"> and relev_entity = #{relevEntity}</if>
+            <if test="relevEntityId != null  and relevEntityId != ''"> and relev_entity_id = #{relevEntityId}</if>
+            <if test="relevEntityName != null  and relevEntityName != ''"> and relev_entity_name like concat('%', #{relevEntityName}, '%')</if>
+            <if test="isDefaultValue != null  and isDefaultValue != ''"> and is_default_value = #{isDefaultValue}</if>
+            <if test="relevTable != null  and relevTable != ''"> and relev_table = #{relevTable}</if>
+            <if test="relevTableId != null  and relevTableId != ''"> and relev_table_id = #{relevTableId}</if>
+            <if test="relevTableName != null  and relevTableName != ''"> and relev_table_name like concat('%', #{relevTableName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRelevTableById" parameterType="Long" resultMap="RelevTableResult">
+        <include refid="selectRelevTableVo"/>
+        where relev_id = #{relevId}
+    </select>
+
+    <select id="selectRelevTableByRelevEntity" parameterType="String" resultMap="RelevTableResult">
+        <include refid="selectRelevTableVo"/>
+        where relev_entity = #{relevEntity}
+    </select>
+
+    <insert id="insertRelevTable" parameterType="RelevTable" useGeneratedKeys="true" keyProperty="relevId">
+        insert into sys_relev_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="relevName != null">relev_name,</if>
+            <if test="relevEntity != null">relev_entity,</if>
+            <if test="relevEntityId != null">relev_entity_id,</if>
+            <if test="relevEntityName != null">relev_entity_name,</if>
+            <if test="isDefaultValue != null and isDefaultValue != ''">is_default_value,</if>
+            <if test="relevTable != null">relev_table,</if>
+            <if test="relevTableId != null">relev_table_id,</if>
+            <if test="relevTableName != null">relev_table_name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="relevName != null">#{relevName},</if>
+            <if test="relevEntity != null">#{relevEntity},</if>
+            <if test="relevEntityId != null">#{relevEntityId},</if>
+            <if test="relevEntityName != null">#{relevEntityName},</if>
+            <if test="isDefaultValue != null and isDefaultValue != ''">#{isDefaultValue},</if>
+            <if test="relevTable != null">#{relevTable},</if>
+            <if test="relevTableId != null">#{relevTableId},</if>
+            <if test="relevTableName != null">#{relevTableName},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRelevTable" parameterType="RelevTable">
+        update sys_relev_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="relevName != null">relev_name = #{relevName},</if>
+            <if test="relevEntity != null">relev_entity = #{relevEntity},</if>
+            <if test="relevEntityId != null">relev_entity_id = #{relevEntityId},</if>
+            <if test="relevEntityName != null">relev_entity_name = #{relevEntityName},</if>
+            <if test="isDefaultValue != null and isDefaultValue != ''">is_default_value = #{isDefaultValue},</if>
+            <if test="relevTable != null">relev_table = #{relevTable},</if>
+            <if test="relevTableId != null">relev_table_id = #{relevTableId},</if>
+            <if test="relevTableName != null">relev_table_name = #{relevTableName},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where relev_id = #{relevId}
+    </update>
+
+    <delete id="deleteRelevTableById" parameterType="Long">
+        delete from sys_relev_table where relev_id = #{relevId}
+    </delete>
+
+    <delete id="deleteRelevTableByIds" parameterType="String">
+        delete from sys_relev_table where relev_id in 
+        <foreach item="relevId" collection="array" open="(" separator="," close=")">
+            #{relevId}
+        </foreach>
+    </delete>
+
+</mapper>

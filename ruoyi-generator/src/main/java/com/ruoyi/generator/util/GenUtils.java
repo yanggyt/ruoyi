@@ -87,6 +87,14 @@ public class GenUtils
             }
         }
 
+        //  制单人、修改人 关联《用户操作员》Id
+        if (arraysContains(GenConstants.COLUMNNAME_RELEV_FIELDS, columnName) && !column.isPk())
+        {
+            column.setRelevTable("SysUser");  // sys_user
+           // column.setRelevTableId("login_name");
+           // column.setRelevTableName("user_name");
+        }
+
         // 插入字段（默认所有字段都需要插入）
         column.setIsInsert(GenConstants.REQUIRE);
 
