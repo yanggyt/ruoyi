@@ -76,6 +76,9 @@ public class GenTable extends BaseEntity
     /** 主键信息 */
     private GenTableColumn pkColumn;
 
+    /** 名称列信息 */
+    private GenTableColumn dspColumn;
+
     /** 子表信息 */
     private GenTable subTable;
 
@@ -269,6 +272,14 @@ public class GenTable extends BaseEntity
     public void setPkColumn(GenTableColumn pkColumn)
     {
         this.pkColumn = pkColumn;
+    }
+
+    public GenTableColumn getDspColumn() {
+        return dspColumn;
+    }
+
+    public void setDspColumn(GenTableColumn dspColumn) {
+        this.dspColumn = dspColumn;
     }
 
     public GenTable getSubTable()

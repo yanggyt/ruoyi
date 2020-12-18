@@ -2,19 +2,19 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="include :: header('修改${functionName}')" />
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.edit && !$column.superColumn && !$column.pk && $column.htmlType == "datetime")
     <th:block th:include="include :: datetimepicker-css" />
 #break
 #end
 #end
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.insert && !$column.superColumn && !$column.pk && $column.htmlType == "upload")
     <th:block th:include="include :: bootstrap-fileinput-css"/>
 #break
 #end
 #end
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.insert && !$column.superColumn && !$column.pk && $column.htmlType == "summernote")
     <th:block th:include="include :: summernote-css" />
 #break
@@ -24,6 +24,12 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-${businessName}-edit" th:object="${${className}}">
+#if( $hiddenleftjoinfiledcols.size() > 0 )
+#foreach($column in $hiddenleftjoinfiledcols)
+            <input type="hidden" name="${column.javaField}" id="${column.javaField}" />
+#end
+#end
+
 #if($table.sub)
             <h4 class="form-header h4">${functionName}信息</h4>
 #end
@@ -89,19 +95,19 @@
         </form>
     </div>
     <th:block th:include="include :: footer" />
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.edit && !$column.superColumn && !$column.pk && $column.htmlType == "datetime")
     <th:block th:include="include :: datetimepicker-js" />
 #break
 #end
 #end
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.insert && !$column.superColumn && !$column.pk && $column.htmlType == "upload")
     <th:block th:include="include :: bootstrap-fileinput-js"/>
 #break
 #end
 #end
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.insert && !$column.superColumn && !$column.pk && $column.htmlType == "summernote")
     <th:block th:include="include :: summernote-js" />
 #break
@@ -125,7 +131,7 @@
                 $.operate.save(prefix + "/edit", $('#form-${businessName}-edit').serialize());
             }
         }
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.edit && !$column.superColumn && !$column.pk && $column.htmlType == "datetime")
 
         $("input[name='$column.javaField']").datetimepicker({
@@ -135,7 +141,7 @@
         });
 #end
 #end
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.edit && !$column.superColumn && !$column.pk && $column.htmlType == "upload")
 
         $(".file-upload").each(function (i) {
@@ -156,7 +162,7 @@
 #break
 #end
 #end
-#foreach($column in $columns)
+#foreach($column in $effectiveeditcols)
 #if($column.edit && !$column.superColumn && !$column.pk && $column.htmlType == "summernote")
 
         $(function() {

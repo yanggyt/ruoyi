@@ -73,7 +73,6 @@ public class GenTableColumn extends BaseEntity implements Cloneable
     /** 默认值（1是） */
     private String isDefaultValue;
 
-
     /** 关联实体名 */
     private String relevTable ;
 
@@ -83,6 +82,11 @@ public class GenTableColumn extends BaseEntity implements Cloneable
     /**  关联表字段名称 */
     private String relevTableName;
 
+    /**  关联实体 字段名称 */
+    private String relevjavafiledname;
+
+    /**  关联实体 Column 别名 */
+    private String relevcolumnalias;
 
     /**  关联实体 别名 */
     private String relevAlias;
@@ -298,6 +302,22 @@ public class GenTableColumn extends BaseEntity implements Cloneable
         return isRelevByHidden != null && StringUtils.equals("1", isRelevByHidden);
     }
 
+    public String getRelevjavafiledname() {
+        return relevjavafiledname;
+    }
+
+    public void setRelevjavafiledname(String relevjavafiledname) {
+        this.relevjavafiledname = relevjavafiledname;
+    }
+
+    public String getRelevcolumnalias() {
+        return relevcolumnalias;
+    }
+
+    public void setRelevcolumnalias(String relevcolumnalias) {
+        this.relevcolumnalias = relevcolumnalias;
+    }
+
     public String getRelevAlias() {
         return relevAlias;
     }
@@ -305,6 +325,7 @@ public class GenTableColumn extends BaseEntity implements Cloneable
     public void setRelevAlias(String relevAlias) {
         this.relevAlias = relevAlias;
     }
+
 
     public String getIsRepeatControl() {
         return isRepeatControl;

@@ -9,18 +9,14 @@ import com.ruoyi.generator.config.GenConfig;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.system.domain.RelevTable;
-import com.ruoyi.system.service.IRelevTableService;
 import org.apache.velocity.VelocityContext;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class VelocityUtils {
-
-    @Autowired
-    private IRelevTableService relevTableService;
 
     /**
      * 项目空间路径
@@ -47,7 +43,7 @@ public class VelocityUtils {
      *
      * @return 模板列表
      */
-    public static VelocityContext prepareContext(GenTable genTable) {
+    public static VelocityContext prepareContext(GenTable genTable,List<RelevTable> lstRelevTb) {
         String moduleName = genTable.getModuleName();
         String businessName = genTable.getBusinessName();
         String packageName = genTable.getPackageName();
@@ -67,6 +63,7 @@ public class VelocityUtils {
         velocityContext.put("author", genTable.getFunctionAuthor());
         velocityContext.put("datetime", DateUtils.getDate());
         velocityContext.put("pkColumn", genTable.getPkColumn());
+        velocityContext.put("dspRepeatColumn", genTable.getDspColumn());
         velocityContext.put("importList", getImportList(genTable));
         velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
 
@@ -75,48 +72,75 @@ public class VelocityUtils {
         List<GenTableColumn> effectivecols = new ArrayList<GenTableColumn>();//定义一个list对象
         List<GenTableColumn> effectiveceditols = new ArrayList<GenTableColumn>();//定义一个list对象
         List<GenTableColumn> fieldcols = new ArrayList<GenTableColumn>();// 模板的变量   colums
-        List<GenTableColumn> hiddenfiledcols = new ArrayList<GenTableColumn>();// 模板隐藏变量 hiddenfiledcols
+        List<GenTableColumn> hiddenleftjoinfiledcols = new ArrayList<GenTableColumn>();// 模板隐藏变量 hiddenfiledcols
+
+        Integer icount = 0 ;
 
         for (GenTableColumn tcolumn : tempcolumns) {
-            if (tcolumn.isInsert() && !tcolumn.isPk())
-                if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
-                    effectivecols.add(tcolumn);
-
-            if (tcolumn.isEdit() && !tcolumn.isPk())
-                if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
-                    effectiveceditols.add(tcolumn);
 
             if ( !StringUtil.isEmpty( tcolumn.getRelevEntity() ) && !tcolumn.isPk() ) {
                 // 添加 关联字段 信息
                 try {
+                    // 根据关联字段 查找 ....
+                    // RelevTable relevTb = null ; // lstRelevTb
+                    List<RelevTable> lstcurRelevTb = lstRelevTb.stream().filter( s->s.getRelevEntity().equals(tcolumn.getRelevEntity()) ).collect(Collectors.toList());
+                    //输出查找结果
+
+                    tcolumn.setRelevEntityId( lstcurRelevTb.get(0).getRelevEntityId() );
+                    tcolumn.setRelevEntityName( lstcurRelevTb.get(0).getRelevEntityName() );
+                    tcolumn.setRelevTable(lstcurRelevTb.get(0).getRelevTable());
+                    tcolumn.setRelevTableName(lstcurRelevTb.get(0).getRelevTableName());
+                    tcolumn.setRelevTableId(lstcurRelevTb.get(0).getRelevTableId());
+
                     // 取得 关联实体信息
                     GenTableColumn relevColumn = (GenTableColumn) tcolumn.clone();
-
-                    RelevTable relevTb =
-                    relevTableService.selectRelevTableByRelevEntity( tcolumn.getRelevEntity() ) ;
-
-                    relevColumn.setRelevEntityId( relevTb.getRelevEntityId() );
-                    relevColumn.setRelevEntityName( relevTb.getRelevEntityName() );
-                    relevColumn.setRelevTable(relevTb.getRelevTable());
-                    relevColumn.setRelevTableName(relevTb.getRelevTableName());
-                    relevColumn.setRelevTableId(relevTb.getRelevTableId());
-
+                    relevColumn.setJavaField( tcolumn.getJavaField().concat( relevColumn.getRelevEntityName() ));
                     fieldcols.add(relevColumn) ;
+
+                    tcolumn.setIsRelevByHidden("1");
+                    tcolumn.setColumnComment(tcolumn.getColumnComment().concat("ID"));
+                    tcolumn.setRelevjavafiledname( tcolumn.getJavaField().concat( relevColumn.getRelevEntityName() ) );
+
+                    icount ++ ;
+                    tcolumn.setRelevAlias("a".concat(icount.toString()));
+                    tcolumn.setRelevcolumnalias(tcolumn.getRelevAlias().concat(tcolumn.getRelevEntity().toLowerCase()));
+
+                    hiddenleftjoinfiledcols.add(tcolumn) ;
+                    fieldcols.add(tcolumn) ;
+
+                    if (relevColumn.isInsert() && !relevColumn.isPk())
+                        if (relevColumn.isUsableColumn() || !relevColumn.isSuperColumn())
+                            effectivecols.add(relevColumn);
+
+                    if (relevColumn.isEdit() && !relevColumn.isPk())
+                        if (relevColumn.isUsableColumn() || !relevColumn.isSuperColumn())
+                            effectiveceditols.add(relevColumn);
 
                 }catch (Exception e){
 
                 }
-                        
-                tcolumn.setIsRelevByHidden("1");
+
+            } else {
+
                 fieldcols.add(tcolumn) ;
 
-            } else
-                fieldcols.add(tcolumn) ;
+                if (tcolumn.isInsert() && !tcolumn.isPk())
+                    if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
+                        effectivecols.add(tcolumn);
+
+                if (tcolumn.isEdit() && !tcolumn.isPk())
+                    if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
+                        effectiveceditols.add(tcolumn);
+            }
         };
 
+          //
         velocityContext.put("effectivecols", effectivecols);
         velocityContext.put("effectiveeditcols", effectiveceditols);
-        velocityContext.put("columns", genTable.getColumns());
+          // 在界面上 要隐藏的ID
+        velocityContext.put("hiddenleftjoinfiledcols", hiddenleftjoinfiledcols);
+        velocityContext.put("mappercols", genTable.getColumns() ); //
+        velocityContext.put("columns", fieldcols ); // genTable.getColumns()
 
         velocityContext.put("table", genTable);
         setMenuVelocityContext(velocityContext, genTable);

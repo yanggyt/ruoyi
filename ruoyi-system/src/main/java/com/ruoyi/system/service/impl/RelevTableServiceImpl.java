@@ -44,6 +44,15 @@ public class RelevTableServiceImpl implements IRelevTableService
     {
         return relevTableMapper.selectRelevTableByRelevEntity(relevEntity);
     }
+    /**
+     * 查询关联实体维护列表
+     *
+     * @return 关联实体维护
+     */
+    public List<RelevTable> selectRelevTableAll()
+    {
+        return relevTableMapper.selectRelevTableAll();
+    }
 
     /**
      * 查询关联实体维护列表

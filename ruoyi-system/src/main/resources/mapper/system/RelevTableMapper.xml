@@ -24,6 +24,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select relev_id, relev_name, relev_entity, relev_entity_id, relev_entity_name, is_default_value, relev_table, relev_table_id, relev_table_name, create_by, create_time, update_by, update_time from sys_relev_table
     </sql>
 
+    <select id="selectRelevTableAll" parameterType="String" resultMap="RelevTableResult">
+        <include refid="selectRelevTableVo"/>
+    </select>
+
     <select id="selectRelevTableList" parameterType="RelevTable" resultMap="RelevTableResult">
         <include refid="selectRelevTableVo"/>
         <where>  

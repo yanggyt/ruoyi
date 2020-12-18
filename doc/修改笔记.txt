@@ -17,7 +17,20 @@
     $("input[name='updateTime']").prop('disabled', true);
 
 
+4、 Java8 使用 stream().filter()过滤List对象（查找符合条件的对象集合）
+		//查找身高在1.8米及以上的男生
+	List<StudentInfo> boys = studentList.stream().filter(s->s.getGender() && s.getHeight() >= 1.8).collect(Collectors.toList());
+		//输出查找结果
+	StudentInfo.printStudents(boys);
 
+
+
+        // 取身份信息
+        SysUser user = ShiroUtils.getSysUser();
+        // 根据用户id取出菜单
+        List<SysMenu> menus = menuService.selectMenusByUser(user);
+        mmap.put("menus", menus);
+        mmap.put("user", user);
 
 
 
@@ -39,3 +52,11 @@ j2eefast开源
 https://gitee.com/zhouhuanOGP/J2EEFAST
 	附件和图片上传我全套扣的j2eefast的，ruoyi的用着太怪了
 
+
+阿里云开发者成长计划 
+https://developer.aliyun.com/plan/grow-up?spm=5176.19720258.J_8058803260.1292.1d722c4ae1PLsq
+
+
+VueOA
+https://blog.csdn.net/aria_miazzy/article/details/104960221
+https://gitee.com/yunwisdoms/oa-front-service

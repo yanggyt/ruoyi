@@ -29,6 +29,13 @@ public interface RelevTableMapper
     public RelevTable selectRelevTableByRelevEntity(String relevEntity);
 
     /**
+     * 查询关联实体维护列表 所有数据
+     *
+     * @return 关联实体维护集合
+     */
+    public List<RelevTable> selectRelevTableAll();
+
+    /**
      * 查询关联实体维护列表
      * 
      * @param relevTable 关联实体维护

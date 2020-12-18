@@ -1,28 +1,10 @@
 package com.ruoyi.generator.service.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-import org.apache.commons.io.IOUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.GenConstants;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.text.CharsetKit;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
@@ -36,22 +18,59 @@ import com.ruoyi.generator.service.IGenTableService;
 import com.ruoyi.generator.util.GenUtils;
 import com.ruoyi.generator.util.VelocityInitializer;
 import com.ruoyi.generator.util.VelocityUtils;
+import com.ruoyi.system.domain.RelevTable;
+import com.ruoyi.system.mapper.RelevTableMapper;
+import org.apache.commons.io.IOUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 业务 服务层实现
  * 
  * @author ruoyi
  */
+@Component
 @Service
 public class GenTableServiceImpl implements IGenTableService
 {
     private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
     @Autowired
+    private RelevTableMapper relevTableMapper;
+
+    private  static  GenTableServiceImpl gnTableServiceImpl ;
+
+    @Autowired
     private GenTableMapper genTableMapper;
 
     @Autowired
     private GenTableColumnMapper genTableColumnMapper;
+
+
+    @PostConstruct //通过@PostConstruct实现初始化bean之前进行的操作
+    public void init() {
+        gnTableServiceImpl = this;
+        gnTableServiceImpl.relevTableMapper = this.relevTableMapper;
+    }
 
     /**
      * 查询业务信息
@@ -202,11 +221,18 @@ public class GenTableServiceImpl implements IGenTableService
         GenTable table = genTableMapper.selectGenTableById(tableId);
         // 设置主子表信息
         setSubTable(table);
+
         // 设置主键列信息
         setPkColumn(table);
+        // 设置名称重复列信息
+        setRepeatDspColumn(table);
+
         VelocityInitializer.initVelocity();
 
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        List<RelevTable> lstRelev =
+               relevTableMapper.selectRelevTableAll() ; // "SysUser"
+
+        VelocityContext context = VelocityUtils.prepareContext(table,lstRelev);
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
@@ -251,10 +277,15 @@ public class GenTableServiceImpl implements IGenTableService
         setSubTable(table);
         // 设置主键列信息
         setPkColumn(table);
+        // 设置名称重复列信息
+        setRepeatDspColumn(table);
 
         VelocityInitializer.initVelocity();
 
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        List<RelevTable> lstRelev =
+                relevTableMapper.selectRelevTableAll() ; // "SysUser"
+
+        VelocityContext context = VelocityUtils.prepareContext(table,lstRelev);
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
@@ -345,10 +376,15 @@ public class GenTableServiceImpl implements IGenTableService
         setSubTable(table);
         // 设置主键列信息
         setPkColumn(table);
+        // 设置名称重复列信息
+        setRepeatDspColumn(table);
 
         VelocityInitializer.initVelocity();
 
-        VelocityContext context = VelocityUtils.prepareContext(table);
+        List<RelevTable> lstRelev =
+                relevTableMapper.selectRelevTableAll() ; // "SysUser"
+
+        VelocityContext context = VelocityUtils.prepareContext(table,lstRelev);
 
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
@@ -455,6 +491,28 @@ public class GenTableServiceImpl implements IGenTableService
                 table.getSubTable().setPkColumn(table.getSubTable().getColumns().get(0));
             }
         }
+    }
+
+    /**
+     * 设置 名称列信息
+     *
+     * @param table 业务表信息
+     */
+    public void setRepeatDspColumn(GenTable table)
+    {
+        for (GenTableColumn column : table.getColumns())
+        {
+            if (column.isRepeatControl())
+            {
+                table.setDspColumn(column);
+                break;
+            }
+        }
+        if (StringUtils.isNull(table.getDspColumn()))
+        {
+            table.setDspColumn(table.getColumns().get(0));
+        }
+
     }
 
     /**

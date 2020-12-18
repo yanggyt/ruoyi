@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import com.ruoyi.common.core.domain.Ztree;
 #end
-#foreach ($column in $columns)
+#foreach ($column in $mappercols)
 #if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
 import com.ruoyi.common.utils.DateUtils;
 #break
@@ -48,6 +48,20 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
         return ${className}Mapper.select${ClassName}ById(${pkColumn.javaField});
     }
 
+    #if($dspRepeatColumn.size() > 0)
+        /**
+         * 查询${functionName}
+         *
+         * @param ${pkColumn.javaField} ${functionName}ID
+         * @return ${functionName}
+         */
+        @Override
+        public ${ClassName} select${ClassName}ByName(${pkColumn.javaType} ${pkColumn.javaField},${dspRepeatColumn.javaType} ${dspRepeatColumn.javaField})
+        {
+            return ${className}Mapper.select${ClassName}ByName(${pkColumn.javaField},${dspRepeatColumn.javaField});
+        }
+
+    #end
     /**
      * 查询${functionName}列表
      * 
@@ -72,7 +86,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     @Override
     public int insert${ClassName}(${ClassName} ${className})
     {
-#foreach ($column in $columns)
+#foreach ($column in $mappercols)
 #if($column.javaField == 'createTime')
         ${className}.setCreateTime(DateUtils.getNowDate());
 #end
@@ -98,7 +112,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     @Override
     public int update${ClassName}(${ClassName} ${className})
     {
-#foreach ($column in $columns)
+#foreach ($column in $mappercols)
 #if($column.javaField == 'updateTime')
         ${className}.setUpdateTime(DateUtils.getNowDate());
 #end

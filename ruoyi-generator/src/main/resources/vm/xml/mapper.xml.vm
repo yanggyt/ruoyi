@@ -5,8 +5,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="${packageName}.mapper.${ClassName}Mapper">
     
     <resultMap type="${ClassName}" id="${ClassName}Result">
-#foreach ($column in $columns)
+#foreach ($column in $mappercols)
         <result property="${column.javaField}"    column="${column.columnName}"    />
+#end
+#if($hiddenleftjoinfiledcols.size()>0)
+#foreach ($column in $hiddenleftjoinfiledcols)
+        <result property="${column.relevjavafiledname}"    column="${column.relevcolumnalias}"    />
+#end
 #end
 #if($table.tree)
         <result property="parentName" column="parent_name" />
@@ -26,13 +31,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
 
     <sql id="select${ClassName}Vo">
-        select#foreach($column in $columns) $column.columnName#if($velocityCount != $columns.size()),#end#end from ${tableName}
+          select#foreach($column in $mappercols) t.$column.columnName#if($velocityCount != $mappercols.size()),#end#end
+#if($hiddenleftjoinfiledcols.size()>0),
+#foreach($column in $hiddenleftjoinfiledcols)
+            $column.relevAlias.$column.relevTableName as $column.relevcolumnalias#if($velocityCount != $hiddenleftjoinfiledcols.size()),#end#end
+#end
+            from ${tableName} t
+#if($hiddenleftjoinfiledcols.size()>0)
+#foreach($column in $hiddenleftjoinfiledcols)
+            left join $column.relevTable $column.relevAlias on t.$column.columnName=$column.relevAlias.$column.relevTableId
+#end
+#end
     </sql>
 
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
         <include refid="select${ClassName}Vo"/>
         <where>  
-#foreach($column in $columns)
+#foreach($column in $mappercols)
 #set($queryType=$column.queryType)
 #set($javaField=$column.javaField)
 #set($javaType=$column.javaType)
@@ -40,21 +55,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 #if($column.query)
 #if($column.queryType == "EQ")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName = #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and t.$columnName = #{$javaField}</if>
 #elseif($queryType == "NE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName != #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and t.$columnName != #{$javaField}</if>
 #elseif($queryType == "GT")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt; #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and t.$columnName &gt; #{$javaField}</if>
 #elseif($queryType == "GTE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &gt;= #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and t.$columnName &gt;= #{$javaField}</if>
 #elseif($queryType == "LT")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt; #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and t.$columnName &lt; #{$javaField}</if>
 #elseif($queryType == "LTE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName &lt;= #{$javaField}</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and t.$columnName &lt;= #{$javaField}</if>
 #elseif($queryType == "LIKE")
-            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and $columnName like concat('%', #{$javaField}, '%')</if>
+            <if test="$javaField != null #if($javaType == 'String' ) and $javaField.trim() != ''#end"> and t.$columnName like concat('%', #{$javaField}, '%')</if>
 #elseif($queryType == "BETWEEN")
-            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and $columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
+            <if test="params.begin$AttrName != null and params.begin$AttrName != '' and params.end$AttrName != null and params.end$AttrName != ''"> and t.$columnName between #{params.begin$AttrName} and #{params.end$AttrName}</if>
 #end
 #end
 #end
@@ -67,14 +82,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="select${ClassName}ById" parameterType="${pkColumn.javaType}" resultMap="#if($table.sub)${ClassName}${subClassName}Result#else${ClassName}Result#end">
 #if($table.crud)
         <include refid="select${ClassName}Vo"/>
-        where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+        where t.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #elseif($table.tree)
-        select#foreach($column in $columns) t.$column.columnName,#end p.${tree_name} as parent_name
+        select#foreach($column in $mappercols) t.$column.columnName,#end p.${tree_name} as parent_name
         from ${tableName} t
         left join ${tableName} p on p.${pkColumn.columnName} = t.${tree_parent_code}
         where t.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #elseif($table.sub)
-        select#foreach($column in $columns) a.$column.columnName#if($velocityCount != $columns.size()),#end#end,
+        select#foreach($column in $mappercols) a.$column.columnName#if($velocityCount != $mappercols.size()),#end#end,
            #foreach($column in $subTable.columns) b.$column.columnName#if($velocityCount != $subTable.columns.size()),#end#end
 
         from ${tableName} a
@@ -82,18 +97,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where a.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #end
     </select>
-        
+
+#if($dspRepeatColumn.size() > 0)
+    <select id="select${ClassName}ByName" parameterType="String" resultMap="${ClassName}Result">
+        #if($table.crud)
+            <include refid="select t.${pkColumn.columnName} from ${tableName} t"/>
+            where t.${pkColumn.columnName} <> #{${pkColumn.javaField}}
+             and t.${dspRepeatColumn.columnName} = #{${dspRepeatColumn.javaField}}
+        #end
+    </select>
+#end
+
     <insert id="insert${ClassName}" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$pkColumn.javaField"#end>
         insert into ${tableName}
         <trim prefix="(" suffix=")" suffixOverrides=",">
-#foreach($column in $columns)
+#foreach($column in $mappercols)
 #if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
             <if test="$column.javaField != null#if($column.javaType == 'String' && $column.required) and $column.javaField != ''#end">$column.columnName,</if>
 #end
 #end
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-#foreach($column in $columns)
+#foreach($column in $mappercols)
 #if($column.columnName != $pkColumn.columnName || !$pkColumn.increment)
             <if test="$column.javaField != null#if($column.javaType == 'String' && $column.required) and $column.javaField != ''#end">#{$column.javaField},</if>
 #end
@@ -104,7 +129,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="update${ClassName}" parameterType="${ClassName}">
         update ${tableName}
         <trim prefix="SET" suffixOverrides=",">
-#foreach($column in $columns)
+#foreach($column in $mappercols)
 #if($column.columnName != $pkColumn.columnName)
             <if test="$column.javaField != null#if($column.javaType == 'String' && $column.required) and $column.javaField != ''#end">$column.columnName = #{$column.javaField},</if>
 #end

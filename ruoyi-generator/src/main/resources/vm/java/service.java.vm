@@ -22,6 +22,16 @@ public interface I${ClassName}Service
      */
     public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
 
+    #if($dspRepeatColumn.size() > 0)
+        /**
+         * 查询${functionName}
+         *
+         * @param ${pkColumn.javaField} ${functionName}ID
+         * @return ${functionName}
+         */
+        public ${ClassName} select${ClassName}ByName(${pkColumn.javaType} ${pkColumn.javaField},${dspRepeatColumn.javaType} ${dspRepeatColumn.javaField});
+    #end
+
     /**
      * 查询${functionName}列表
      * 
