@@ -2,6 +2,7 @@ package com.ruoyi.province.platform.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.province.platform.utils.BussUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.province.platform.mapper.EconTypeMapper;
@@ -13,7 +14,7 @@ import com.ruoyi.common.core.text.Convert;
  * 经济类型Service业务层处理
  * 
  * @author dalin
- * @date 2020-12-09
+ * @date 2020-12-19
  */
 @Service
 public class EconTypeServiceImpl implements IEconTypeService 
@@ -33,7 +34,7 @@ public class EconTypeServiceImpl implements IEconTypeService
         return econTypeMapper.selectEconTypeById(econId);
     }
 
-    /**
+        /**
      * 查询经济类型列表
      * 
      * @param econType 经济类型
@@ -54,6 +55,10 @@ public class EconTypeServiceImpl implements IEconTypeService
     @Override
     public int insertEconType(EconType econType)
     {
+        // 判断重复
+
+        // 单据号生成
+        econType.setDocNum("00001".concat( BussUtils.nextValue("econType") ) );
         econType.setCreateTime(DateUtils.getNowDate());
         return econTypeMapper.insertEconType(econType);
     }

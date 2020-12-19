@@ -1,15 +1,15 @@
 package com.ruoyi.province.platform.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 经济类型对象 platf_econ_type
  * 
  * @author dalin
- * @date 2020-12-09
+ * @date 2020-12-19
  */
 public class EconType extends BaseEntity
 {
@@ -32,6 +32,14 @@ public class EconType extends BaseEntity
 
     /** 删除标志 删除标志 */
     private String delFlag;
+
+    /** 制单人 */
+    @Excel(name = "制单人")
+    private String createByuserName;
+
+    /** 修改人 */
+    @Excel(name = "修改人")
+    private String updateByuserName;
 
     public void setEconId(Long econId) 
     {
@@ -78,6 +86,24 @@ public class EconType extends BaseEntity
     {
         return delFlag;
     }
+    public void setCreateByuserName(String createByuserName) 
+    {
+        this.createByuserName = createByuserName;
+    }
+
+    public String getCreateByuserName() 
+    {
+        return createByuserName;
+    }
+    public void setUpdateByuserName(String updateByuserName) 
+    {
+        this.updateByuserName = updateByuserName;
+    }
+
+    public String getUpdateByuserName() 
+    {
+        return updateByuserName;
+    }
 
     @Override
     public String toString() {
@@ -88,8 +114,10 @@ public class EconType extends BaseEntity
             .append("status", getStatus())
             .append("remark", getRemark())
             .append("delFlag", getDelFlag())
+            .append("createByuserName", getCreateByuserName())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
+            .append("updateByuserName", getUpdateByuserName())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .toString();

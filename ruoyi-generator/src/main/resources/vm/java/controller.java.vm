@@ -92,8 +92,17 @@ public class ${ClassName}Controller extends BaseController
      * 新增${functionName}
      */
     @GetMapping("/add")
-    public String add()
+    public String add(ModelMap mmap)
     {
+#foreach($item in $conctrolmodelsmap.entrySet())
+       // <li>$member.key - $member.value.id$member.value.name</li>
+      // 取身份信息
+#if($item.key == "SysUser")
+        SysUser user = ShiroUtils.getSysUser();
+        mmap.put("user", user);
+#end
+#end
+
         return prefix + "/add";
     }
 #elseif($table.tree)

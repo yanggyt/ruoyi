@@ -22,7 +22,7 @@ import java.util.List;
  * 经济类型Controller
  * 
  * @author dalin
- * @date 2020-12-09
+ * @date 2020-12-19
  */
 @Controller
 @RequestMapping("/platform/econtype")
@@ -73,7 +73,8 @@ public class EconTypeController extends BaseController
     @GetMapping("/add")
     public String add(ModelMap mmap)
     {
-        // 取身份信息
+       // <li>$member.key - $member.value.id$member.value.name</li>
+      // 取身份信息
         SysUser user = ShiroUtils.getSysUser();
         mmap.put("user", user);
 
@@ -89,7 +90,8 @@ public class EconTypeController extends BaseController
     @ResponseBody
     public AjaxResult addSave(EconType econType)
     {
-        return toAjax(econTypeService.insertEconType(econType));
+        return toAjax(econTypeService.insertEconType(econType)
+    );
     }
 
     /**
@@ -100,7 +102,6 @@ public class EconTypeController extends BaseController
     {
         EconType econType = econTypeService.selectEconTypeById(econId);
         mmap.put("econType", econType);
-
         return prefix + "/edit";
     }
 

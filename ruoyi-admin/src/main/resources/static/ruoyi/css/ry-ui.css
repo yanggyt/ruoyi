@@ -321,10 +321,16 @@
 	padding-right: 10px
 }
 
-/** 表单验证 样式布局 **/
-.control-label.is-required:before {
+/** 表单验证 样式布局 before **/
+.control-label.is-required:after {
   content: '* ';
   color: red;
+}
+
+/** 表单验证 样式布局  **/
+.form-control.is-required:after {
+	content: '* ';
+	color: red;
 }
 
 label.error {

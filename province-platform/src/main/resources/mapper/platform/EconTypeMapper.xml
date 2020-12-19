@@ -15,25 +15,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="createByuserName"    column="a1sysuser"    />
+        <result property="updateByuserName"    column="a2sysuser"    />
     </resultMap>
 
     <sql id="selectEconTypeVo">
-        select econ_id, econ_name, doc_num, status, remark, del_flag, create_by, create_time, update_by, update_time from platf_econ_type
+          select t.econ_id, t.econ_name, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,
+            a1.user_name as a1sysuser,            a2.user_name as a2sysuser            from platf_econ_type t
+            left join sys_user a1 on t.create_by=a1.login_name
+            left join sys_user a2 on t.update_by=a2.login_name
     </sql>
 
     <select id="selectEconTypeList" parameterType="EconType" resultMap="EconTypeResult">
         <include refid="selectEconTypeVo"/>
         <where>  
-            <if test="econName != null  and econName != ''"> and econ_name like concat('%', #{econName}, '%')</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="econName != null  and econName != ''"> and t.econ_name like concat('%', #{econName}, '%')</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
         </where>
     </select>
     
     <select id="selectEconTypeById" parameterType="Long" resultMap="EconTypeResult">
         <include refid="selectEconTypeVo"/>
-        where econ_id = #{econId}
+        where t.econ_id = #{econId}
     </select>
-        
+
+
     <insert id="insertEconType" parameterType="EconType" useGeneratedKeys="true" keyProperty="econId">
         insert into platf_econ_type
         <trim prefix="(" suffix=")" suffixOverrides=",">

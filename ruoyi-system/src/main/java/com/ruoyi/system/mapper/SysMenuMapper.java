@@ -1,8 +1,9 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 import com.ruoyi.common.core.domain.entity.SysMenu;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 菜单表 数据层
@@ -40,6 +41,8 @@ public interface SysMenuMapper
      * @return 菜单列表
      */
     public List<SysMenu> selectMenusByUserId(Long userId);
+
+    public SysMenu selectMenusByEntityId(String entityId);
 
     /**
      * 根据用户ID查询权限

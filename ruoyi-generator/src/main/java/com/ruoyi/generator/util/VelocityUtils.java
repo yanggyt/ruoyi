@@ -11,9 +11,7 @@ import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.system.domain.RelevTable;
 import org.apache.velocity.VelocityContext;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class VelocityUtils {
@@ -67,6 +65,9 @@ public class VelocityUtils {
         velocityContext.put("importList", getImportList(genTable));
         velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
 
+        velocityContext.put("billPrefix", genTable.getBillPrefix());  // 单据前缀
+
+
         // 取出页面需要的字段ing
         List<GenTableColumn> tempcolumns = genTable.getColumns();
         List<GenTableColumn> effectivecols = new ArrayList<GenTableColumn>();//定义一个list对象
@@ -76,7 +77,7 @@ public class VelocityUtils {
 
         Integer icount = 0 ;
 
-        for (GenTableColumn tcolumn : tempcolumns) {
+            for (GenTableColumn tcolumn : tempcolumns) {
 
             if ( !StringUtil.isEmpty( tcolumn.getRelevEntity() ) && !tcolumn.isPk() ) {
                 // 添加 关联字段 信息
@@ -134,7 +135,16 @@ public class VelocityUtils {
             }
         };
 
+            // 关联字段的 实体类
+        Map<String,GenTableColumn> conctrolmodelsmap = new HashMap<>();
+        for (GenTableColumn hcolumn : hiddenleftjoinfiledcols) {
+            if (!conctrolmodelsmap.containsKey(hcolumn.getRelevEntity())) {
+                conctrolmodelsmap.put(hcolumn.getRelevEntity(),hcolumn) ;
+            }
+        }
+
           //
+        velocityContext.put("conctrolmodelsmap", conctrolmodelsmap);
         velocityContext.put("effectivecols", effectivecols);
         velocityContext.put("effectiveeditcols", effectiveceditols);
           // 在界面上 要隐藏的ID

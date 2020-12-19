@@ -1,10 +1,11 @@
 package com.ruoyi.common.utils;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * 时间工具类
@@ -36,6 +37,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static Date getNowDate()
     {
         return new Date();
+    }
+
+    /**
+     * 获取当前期间, 默认格式为yyyyMM
+     *
+     * @return String
+     */
+    public static String getPeriod()
+    {
+        return dateTimeNow("YYYYMM");
     }
 
     /**

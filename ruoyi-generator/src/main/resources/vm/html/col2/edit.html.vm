@@ -52,15 +52,14 @@
 #set($cumvar=$cumvar+1)
 #if($column.htmlType == "textarea")
 #if($cumvar%2==0)
-            </div>
         </div>
 #end
-        <div class="row">
-            <div class="col-sm-6">
+        <div class="row mt10">
+            <div class="col-sm-12">
                 <div class="form-group">
                     <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}：</label>
                     <div class="col-sm-8">
-                        <textarea name="${field}" class="form-control"#if($column.required) required#end></textarea>
+                        <textarea name="${field}" maxlength="500" class="form-control" rows="3" #if($column.required) required#end></textarea>
                     </div>
                 </div>
             </div>
@@ -68,11 +67,9 @@
 #else
 #if($cumvar%2==1)
         <div class="row">
-            <div class="col-sm-6">
 #end
 #parse("\vm\html\col2\formedittpl.vm")
 #if($cumvar%2==0 || ($cumvar>=$colcount))
-            </div>
         </div>
 #end
 #end
@@ -114,6 +111,12 @@
 #end
 #end
     <script th:inline="javascript">
+
+        $("#updateBy").val([[${user.loginName}]]);
+        $("#updateByuserName").val([[${user.userName}]]);
+        $("#updateTime").val
+        ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
+
         var prefix = ctx + "${moduleName}/${businessName}";
 #if($table.sub)
 #foreach($column in $subTable.columns)

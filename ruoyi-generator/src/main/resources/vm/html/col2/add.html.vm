@@ -50,27 +50,24 @@
 #set($cumvar=$cumvar+1)
 #if($column.htmlType == "textarea")
 #if($cumvar%2==0)
-            </div>
         </div>
 #end
-        <div class="row">
-            <div class="col-sm-6">
+        <div class="row mt10">
+            <div class="col-sm-12">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}：</label>
-                    <div class="col-sm-8">
-                        <textarea name="${field}" class="form-control"#if($column.required) required#end></textarea>
+                    <label class="col-sm-2 control-label#if($column.required) is-required#end">${comment}：</label>
+                    <div class="col-sm-10">
+                        <textarea id="${field}" name="${field}" maxlength="500" class="form-control" rows="3" #if($column.required) required#end></textarea>
                     </div>
                 </div>
             </div>
         </div>
 #else
 #if($cumvar%2==1)
-        <div class="row">
-            <div class="col-sm-6">
+        <div class="row mt10">
 #end
 #parse("\vm\html\col2\formedittpl.vm")
 #if($cumvar%2==0 || ($cumvar>=$colcount))
-            </div>
         </div>
 #end
 #end
@@ -101,7 +98,6 @@
                 ##end
             #end
 *#
-
 
         #if($table.sub)
             <h4 class="form-header h4">${subTable.functionName}信息</h4>
@@ -137,6 +133,11 @@
         #end
     #end
 <script th:inline="javascript">
+
+    $("#createBy").val([[${user.loginName}]]);
+    $("#createByuserName").val([[${user.userName}]]);
+    $("#createTime").val
+        ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
 
     var prefix = ctx + "${moduleName}/${businessName}"
         #if($table.sub)

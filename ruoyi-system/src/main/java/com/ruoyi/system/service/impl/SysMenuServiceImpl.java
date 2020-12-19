@@ -60,6 +60,20 @@ public class SysMenuServiceImpl implements ISysMenuService
     }
 
     /**
+     * 根据用户查询菜单
+     *
+     * @param entityId  菜单的实体信息
+     * @return 菜单
+     */
+    @Override
+    public SysMenu selectMenusByEntityId(String entityId)
+    {
+        SysMenu menus = menuMapper.selectMenusByEntityId( entityId );
+
+        return menus ;
+    }
+
+    /**
      * 查询菜单集合
      * 
      * @return 所有菜单信息

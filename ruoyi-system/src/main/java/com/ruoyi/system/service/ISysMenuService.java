@@ -1,12 +1,13 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.domain.entity.SysMenu;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 菜单 业务层
@@ -32,6 +33,13 @@ public interface ISysMenuService
      */
     public List<SysMenu> selectMenuList(SysMenu menu, Long userId);
 
+    /**
+     * 根据用户查询菜单
+     *
+     * @param entityId  菜单的实体信息
+     * @return 菜单
+     */
+    public SysMenu selectMenusByEntityId(String entityId);
     /**
      * 查询菜单集合
      * 

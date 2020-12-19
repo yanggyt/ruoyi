@@ -1,13 +1,14 @@
 package com.ruoyi.province.platform.mapper;
 
-import java.util.List;
 import com.ruoyi.province.platform.domain.EconType;
+
+import java.util.List;
 
 /**
  * 经济类型Mapper接口
  * 
  * @author dalin
- * @date 2020-12-09
+ * @date 2020-12-19
  */
 public interface EconTypeMapper 
 {
@@ -19,7 +20,7 @@ public interface EconTypeMapper
      */
     public EconType selectEconTypeById(Long econId);
 
-    /**
+        /**
      * 查询经济类型列表
      * 
      * @param econType 经济类型
