@@ -1046,7 +1046,7 @@ var table = {
             // 添加信息 全屏
             addFull: function(id) {
             	table.set();
-            	var url = $.common.isEmpty(id) ? table.options.createUrl : table.options.createUrl.replace("{id}", id);
+            	var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);
                 $.modal.openFull("添加" + table.options.modalName, url);
             },
             // 添加访问地址
