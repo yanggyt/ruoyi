@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
 #if($hiddenleftjoinfiledcols.size()>0)
 #foreach ($column in $hiddenleftjoinfiledcols)
-        <result property="${column.relevjavafiledname}"    column="${column.relevcolumnalias}"    />
+        <result property="${column.relevjavafiledname}"    column="${column.relevjavafiledname}"    />
 #end
 #end
 #if($table.tree)
@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
           select#foreach($column in $mappercols) t.$column.columnName#if($velocityCount != $mappercols.size()),#end#end
 #if($hiddenleftjoinfiledcols.size()>0),
 #foreach($column in $hiddenleftjoinfiledcols)
-            $column.relevAlias.$column.relevTableName as $column.relevcolumnalias#if($velocityCount != $hiddenleftjoinfiledcols.size()),#end#end
+            $column.relevAlias.$column.relevTableName as $column.relevjavafiledname#if($velocityCount != $hiddenleftjoinfiledcols.size()),#end#end
 #end
             from ${tableName} t
 #if($hiddenleftjoinfiledcols.size()>0)
@@ -99,12 +99,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 #if($dspRepeatColumn.size() > 0)
-    <select id="select${ClassName}ByName" parameterType="String" resultMap="${ClassName}Result">
-        #if($table.crud)
-            <include refid="select t.${pkColumn.columnName} from ${tableName} t"/>
-            where t.${pkColumn.columnName} <> #{${pkColumn.javaField}}
-             and t.${dspRepeatColumn.columnName} = #{${dspRepeatColumn.javaField}}
-        #end
+    <select id="check${ClassName}NameUnique" parameterType="String" resultMap="${ClassName}Result">
+        <include refid="select${ClassName}Vo"/>
+        where t.${dspRepeatColumn.columnName}=#{${dspRepeatColumn.javaField}} limit 1
     </select>
 #end
 

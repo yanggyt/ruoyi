@@ -20,7 +20,14 @@ public interface IEconTypeService
      */
     public EconType selectEconTypeById(Long econId);
 
-    
+    /**
+     * 校验经济类型名称是否重复
+     *
+     * @param econName 经济类型ID
+     * @return 1 \ 0
+     */
+    public String checkEconNameUnique(EconType econType);
+
     /**
      * 查询经济类型列表
      * 

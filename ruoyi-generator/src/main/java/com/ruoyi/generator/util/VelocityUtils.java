@@ -67,6 +67,8 @@ public class VelocityUtils {
 
         velocityContext.put("billPrefix", genTable.getBillPrefix());  // 单据前缀
 
+        // 制单人
+        velocityContext.put("createByColumn",genTable.getCreateByColumn());
 
         // 取出页面需要的字段ing
         List<GenTableColumn> tempcolumns = genTable.getColumns();

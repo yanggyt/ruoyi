@@ -29,7 +29,7 @@ public interface I${ClassName}Service
          * @param ${pkColumn.javaField} ${functionName}ID
          * @return ${functionName}
          */
-        public ${ClassName} select${ClassName}ByName(${pkColumn.javaType} ${pkColumn.javaField},${dspRepeatColumn.javaType} ${dspRepeatColumn.javaField});
+        public String check${ClassName}Unique(${ClassName} ${className});
     #end
 
     /**

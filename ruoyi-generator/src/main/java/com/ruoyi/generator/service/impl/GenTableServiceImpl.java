@@ -225,6 +225,9 @@ public class GenTableServiceImpl implements IGenTableService
         setPkColumn(table);
         // 设置名称重复列信息
         setRepeatDspColumn(table);
+        //  是否 存在制单人
+        setCreatUpdateByColumn(table);
+
 
         VelocityInitializer.initVelocity();
 
@@ -377,6 +380,8 @@ public class GenTableServiceImpl implements IGenTableService
         setPkColumn(table);
         // 设置名称重复列信息
         setRepeatDspColumn(table);
+        // 取得制单人
+
 
         VelocityInitializer.initVelocity();
 
@@ -510,6 +515,23 @@ public class GenTableServiceImpl implements IGenTableService
         if (StringUtils.isNull(table.getDspColumn()))
         {
             table.setDspColumn(table.getColumns().get(0));
+        }
+
+    }
+
+    /***
+     * 取的制单人 修改人
+     * @param table
+     */
+    public void setCreatUpdateByColumn(GenTable table)
+    {
+        for (GenTableColumn column : table.getColumns())
+        {
+           if ( GenUtils.arraysContains(GenConstants.COLUMNNAME_RELEV_FIELDS, column.getColumnName() ) )
+            {
+                table.setCreateByColumn(column);
+                break;
+            }
         }
 
     }

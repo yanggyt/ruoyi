@@ -20,6 +20,14 @@ public interface EconTypeMapper
      */
     public EconType selectEconTypeById(Long econId);
 
+    /**
+     * 校验 经济类型中 名称是否重复
+     *
+     * @param econName 经济类型ID
+     * @return 经济类型
+     */
+    public EconType checkEconNameUnique(String econName);
+
         /**
      * 查询经济类型列表
      * 
@@ -59,4 +67,6 @@ public interface EconTypeMapper
      * @return 结果
      */
     public int deleteEconTypeByIds(String[] econIds);
+
+
 }

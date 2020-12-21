@@ -133,11 +133,12 @@
         #end
     #end
 <script th:inline="javascript">
-
+#if($createByColumn.size()>0)
     $("#createBy").val([[${user.loginName}]]);
     $("#createByuserName").val([[${user.userName}]]);
     $("#createTime").val
         ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
+#end
 
     var prefix = ctx + "${moduleName}/${businessName}"
         #if($table.sub)

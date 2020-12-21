@@ -24,13 +24,14 @@ public interface ${ClassName}Mapper
 
     #if($dspRepeatColumn.size() > 0)
         /**
-         * 查询${functionName}
+         * 校验 ${functionName} 名称是否重复
          *
-         * @param ${pkColumn.javaField} ${functionName}ID
+         * @param ${dspRepeatColumn.javaField}
          * @return ${functionName}
          */
-        public ${ClassName} select${ClassName}ByName(${pkColumn.javaType} ${pkColumn.javaField},${dspRepeatColumn.javaType} ${dspRepeatColumn.javaField});
+        public ${ClassName} check${ClassName}Unique(String ${dspRepeatColumn.javaField});
     #end
+
     /**
      * 查询${functionName}列表
      * 

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2020-12-19 19:18:41
+Date: 2020-12-21 17:21:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -134,11 +134,13 @@ CREATE TABLE `platf_econ_type` (
   `update_by` varchar(30) DEFAULT NULL COMMENT '修改人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`econ_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='经济类型 ';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='经济类型 ';
 
 -- ----------------------------
 -- Records of platf_econ_type
 -- ----------------------------
+INSERT INTO `platf_econ_type` VALUES ('1', '测试拉料收到', '0000100008', '0', 'SSSS多个的高度放vbncvn', '0', 'admin', '2020-12-21 15:17:34', 'admin', '2020-12-21 15:17:34');
+INSERT INTO `platf_econ_type` VALUES ('4', '测试拉料', '0000100011', '0', '测试拉料测试拉料测试拉料', '0', 'admin', '2020-12-21 15:17:44', '', null);
 
 -- ----------------------------
 -- Table structure for platf_nation
@@ -311,7 +313,7 @@ CREATE TABLE `qrtz_scheduler_state` (
 -- ----------------------------
 -- Records of qrtz_scheduler_state
 -- ----------------------------
-INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'linkuaisheng1608373242252', '1608373643751', '15000');
+INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'linkuaisheng1608542441232', '1608542460746', '15000');
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -388,9 +390,9 @@ CREATE TABLE `qrtz_triggers` (
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', null, '1608373250000', '-1', '5', 'PAUSED', 'CRON', '1608373242000', '0', null, '2', '');
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', null, '1608373245000', '-1', '5', 'PAUSED', 'CRON', '1608373242000', '0', null, '2', '');
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', null, '1608373260000', '-1', '5', 'PAUSED', 'CRON', '1608373242000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', null, '1608542450000', '-1', '5', 'PAUSED', 'CRON', '1608542441000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', null, '1608542445000', '-1', '5', 'PAUSED', 'CRON', '1608542441000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', null, '1608542460000', '-1', '5', 'PAUSED', 'CRON', '1608542441000', '0', null, '2', '');
 
 -- ----------------------------
 -- Table structure for sys_bill_no
@@ -405,12 +407,12 @@ CREATE TABLE `sys_bill_no` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_fperiod_billName` (`fperiod`,`bill_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='单据号迭代信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='单据号迭代信息表';
 
 -- ----------------------------
 -- Records of sys_bill_no
 -- ----------------------------
-INSERT INTO `sys_bill_no` VALUES ('18', '202012', 'econType', '1', '1', null);
+INSERT INTO `sys_bill_no` VALUES ('18', '202012', 'econType', '11', '1', null);
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -633,7 +635,7 @@ CREATE TABLE `sys_logininfor` (
   `msg` varchar(255) DEFAULT '' COMMENT '提示消息',
   `login_time` datetime DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8 COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=260 DEFAULT CHARSET=utf8 COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -766,6 +768,38 @@ INSERT INTO `sys_logininfor` VALUES ('224', 'admin', '127.0.0.1', '内网IP', 'C
 INSERT INTO `sys_logininfor` VALUES ('225', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '1', '验证码错误', '2020-12-19 18:18:55');
 INSERT INTO `sys_logininfor` VALUES ('226', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-19 18:18:58');
 INSERT INTO `sys_logininfor` VALUES ('227', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-19 18:20:55');
+INSERT INTO `sys_logininfor` VALUES ('228', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 07:58:37');
+INSERT INTO `sys_logininfor` VALUES ('229', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '1', '验证码错误', '2020-12-21 08:02:20');
+INSERT INTO `sys_logininfor` VALUES ('230', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 08:02:24');
+INSERT INTO `sys_logininfor` VALUES ('231', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 08:25:54');
+INSERT INTO `sys_logininfor` VALUES ('232', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 08:27:14');
+INSERT INTO `sys_logininfor` VALUES ('233', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 08:48:16');
+INSERT INTO `sys_logininfor` VALUES ('234', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 09:01:26');
+INSERT INTO `sys_logininfor` VALUES ('235', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 09:05:55');
+INSERT INTO `sys_logininfor` VALUES ('236', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 09:10:51');
+INSERT INTO `sys_logininfor` VALUES ('237', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 09:18:53');
+INSERT INTO `sys_logininfor` VALUES ('238', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 09:22:54');
+INSERT INTO `sys_logininfor` VALUES ('239', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 09:55:58');
+INSERT INTO `sys_logininfor` VALUES ('240', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 09:59:44');
+INSERT INTO `sys_logininfor` VALUES ('241', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 10:03:36');
+INSERT INTO `sys_logininfor` VALUES ('242', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '1', '验证码错误', '2020-12-21 10:08:38');
+INSERT INTO `sys_logininfor` VALUES ('243', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 10:08:41');
+INSERT INTO `sys_logininfor` VALUES ('244', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 10:33:26');
+INSERT INTO `sys_logininfor` VALUES ('245', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '1', '验证码错误', '2020-12-21 10:37:10');
+INSERT INTO `sys_logininfor` VALUES ('246', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 10:37:13');
+INSERT INTO `sys_logininfor` VALUES ('247', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 10:44:30');
+INSERT INTO `sys_logininfor` VALUES ('248', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 10:49:28');
+INSERT INTO `sys_logininfor` VALUES ('249', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 10:57:42');
+INSERT INTO `sys_logininfor` VALUES ('250', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 10:59:33');
+INSERT INTO `sys_logininfor` VALUES ('251', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 11:14:17');
+INSERT INTO `sys_logininfor` VALUES ('252', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 11:53:08');
+INSERT INTO `sys_logininfor` VALUES ('253', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 14:05:44');
+INSERT INTO `sys_logininfor` VALUES ('254', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 14:15:47');
+INSERT INTO `sys_logininfor` VALUES ('255', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 14:18:56');
+INSERT INTO `sys_logininfor` VALUES ('256', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 14:24:44');
+INSERT INTO `sys_logininfor` VALUES ('257', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 14:29:52');
+INSERT INTO `sys_logininfor` VALUES ('258', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '1', '验证码错误', '2020-12-21 15:16:53');
+INSERT INTO `sys_logininfor` VALUES ('259', 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', '0', '登录成功', '2020-12-21 15:16:57');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -882,7 +916,7 @@ INSERT INTO `sys_menu` VALUES ('1060', '预览代码', '115', '4', '#', '', 'F',
 INSERT INTO `sys_menu` VALUES ('1061', '生成代码', '115', '5', '#', '', 'F', '0', 'tool:gen:code', '#', 'admin', '2020-12-08 07:52:00', '', null, '', '', '');
 INSERT INTO `sys_menu` VALUES ('2000', '平台信息', '0', '1', '#', 'menuItem', 'M', '0', null, 'fa fa-university', 'admin', '2020-12-08 10:24:50', '', null, '', '', '');
 INSERT INTO `sys_menu` VALUES ('2001', '基础设置', '2000', '2', '#', 'menuItem', 'M', '0', null, 'fa fa-cogs', 'admin', '2020-12-08 10:26:31', '', null, '', '', '');
-INSERT INTO `sys_menu` VALUES ('2050', '经济类型', '2001', '1', '/platform/econtype', 'menuItem', 'C', '0', 'platform:econtype:view', '#', 'admin', '2020-12-09 09:27:53', 'admin', '2020-12-15 16:03:49', '经济类型菜单', 'BA02', '');
+INSERT INTO `sys_menu` VALUES ('2050', '经济类型', '2001', '1', '/platform/econtype', 'menuItem', 'C', '0', 'platform:econtype:view', '#', 'admin', '2020-12-09 09:27:53', 'admin', '2020-12-21 09:00:14', '经济类型菜单', 'econType', '');
 INSERT INTO `sys_menu` VALUES ('2051', '经济类型查询', '2050', '1', '#', '', 'F', '0', 'platform:econtype:list', '#', 'admin', '2020-12-09 09:27:53', '', null, '', '', '');
 INSERT INTO `sys_menu` VALUES ('2052', '经济类型新增', '2050', '2', '#', '', 'F', '0', 'platform:econtype:add', '#', 'admin', '2020-12-09 09:27:53', '', null, '', '', '');
 INSERT INTO `sys_menu` VALUES ('2053', '经济类型修改', '2050', '3', '#', '', 'F', '0', 'platform:econtype:edit', '#', 'admin', '2020-12-09 09:27:53', '', null, '', '', '');
@@ -953,7 +987,7 @@ CREATE TABLE `sys_oper_log` (
   `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=390 DEFAULT CHARSET=utf8 COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=421 DEFAULT CHARSET=utf8 COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1248,6 +1282,37 @@ INSERT INTO `sys_oper_log` VALUES ('386', '经济类型', '1', 'com.ruoyi.web.co
 INSERT INTO `sys_oper_log` VALUES ('387', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"sdf\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"sdfdf\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-19 18:19:04\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', 'nested exception is org.apache.ibatis.executor.ExecutorException: Error getting generated key or setting result to parameter object. Cause: org.apache.ibatis.executor.ExecutorException: No setter found for the keyProperty \'idd\' in \'com.ruoyi.province.platform.domain.SysBillNo\'.', '2020-12-19 18:19:21');
 INSERT INTO `sys_oper_log` VALUES ('388', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"wer\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"wer\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-19 18:21:00\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'del_flag\' doesn\'t have a default value\r\n### The error may exist in file [E:\\IdeaSpaceWork\\RuoYi\\province-platform\\target\\classes\\mapper\\platform\\EconTypeMapper.xml]\r\n### The error may involve com.ruoyi.province.platform.mapper.EconTypeMapper.insertEconType-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platf_econ_type          ( econ_name,             doc_num,             status,             remark,                          create_by,             create_time,             update_by )           values ( ?,             ?,             ?,             ?,                          ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'del_flag\' doesn\'t have a default value\n; Field \'del_flag\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'del_flag\' doesn\'t have a default value', '2020-12-19 18:21:25');
 INSERT INTO `sys_oper_log` VALUES ('389', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"wer\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"werdsfd\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-19 18:21:00\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'del_flag\' doesn\'t have a default value\r\n### The error may exist in file [E:\\IdeaSpaceWork\\RuoYi\\province-platform\\target\\classes\\mapper\\platform\\EconTypeMapper.xml]\r\n### The error may involve com.ruoyi.province.platform.mapper.EconTypeMapper.insertEconType-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into platf_econ_type          ( econ_name,             doc_num,             status,             remark,                          create_by,             create_time,             update_by )           values ( ?,             ?,             ?,             ?,                          ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'del_flag\' doesn\'t have a default value\n; Field \'del_flag\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'del_flag\' doesn\'t have a default value', '2020-12-19 18:22:53');
+INSERT INTO `sys_oper_log` VALUES ('390', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"水电费\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"水电费\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 07:58:42\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', '\r\n### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column \'ur.entity_id\' in \'where clause\'\r\n### The error may exist in file [E:\\IdeaSpaceWork\\RuoYi\\ruoyi-system\\target\\classes\\mapper\\system\\SysMenuMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMenuMapper.selectMenusByEntityId-Inline\r\n### The error occurred while setting parameters\r\n### SQL: select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,\'\') as perms, m.target, m.menu_type,m.bill_prefix, m.entity_id, m.icon, m.order_num, m.create_time   from sys_menu m     left join sys_role_menu rm on m.menu_id = rm.menu_id     left join sys_user_role ur on rm.role_id = ur.role_id     LEFT JOIN sys_role ro on ur.role_id = ro.role_id   where ur.entity_id = ? and m.menu_type in (\'M\', \'C\') and m.visible = 0  AND ro.status = 0   order by m.parent_id, m.order_num limit 1\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column \'ur.entity_id\' in \'where clause\'\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column \'ur.entity_id\' in \'where clause\'', '2020-12-21 07:58:48');
+INSERT INTO `sys_oper_log` VALUES ('391', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"水电费\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"水电费\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 07:58:42\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', '\r\n### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column \'ur.entity_id\' in \'where clause\'\r\n### The error may exist in file [E:\\IdeaSpaceWork\\RuoYi\\ruoyi-system\\target\\classes\\mapper\\system\\SysMenuMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysMenuMapper.selectMenusByEntityId-Inline\r\n### The error occurred while setting parameters\r\n### SQL: select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.visible, ifnull(m.perms,\'\') as perms, m.target, m.menu_type,m.bill_prefix, m.entity_id, m.icon, m.order_num, m.create_time   from sys_menu m     left join sys_role_menu rm on m.menu_id = rm.menu_id     left join sys_user_role ur on rm.role_id = ur.role_id     LEFT JOIN sys_role ro on ur.role_id = ro.role_id   where ur.entity_id = ? and m.menu_type in (\'M\', \'C\') and m.visible = 0  AND ro.status = 0   order by m.parent_id, m.order_num limit 1\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column \'ur.entity_id\' in \'where clause\'\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column \'ur.entity_id\' in \'where clause\'', '2020-12-21 08:01:20');
+INSERT INTO `sys_oper_log` VALUES ('392', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"电饭锅地方\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"水电费的非官方的\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 08:09:08\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', 'd != java.lang.String', '2020-12-21 08:09:15');
+INSERT INTO `sys_oper_log` VALUES ('393', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"电饭锅\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"电饭锅电饭锅多个单地方\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 08:25:58\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', 'd != java.lang.String', '2020-12-21 08:26:38');
+INSERT INTO `sys_oper_log` VALUES ('394', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"的非官方个\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"发过火发过火返回的\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 08:27:19\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', 'd != java.lang.String', '2020-12-21 08:27:35');
+INSERT INTO `sys_oper_log` VALUES ('395', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"水电费\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"收到f\'gfg\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 08:48:28\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', '', '2020-12-21 08:48:58');
+INSERT INTO `sys_oper_log` VALUES ('396', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"收到电费水电费\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"收到f\'gfgs\'d\'f\'s\'d\'fsdfsdf\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 08:48:28\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', '', '2020-12-21 08:55:17');
+INSERT INTO `sys_oper_log` VALUES ('397', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"收到电费水电费\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"收到f\'gfgs\'d\'f\'s\'d\'fsdfsdf\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 08:48:28\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', 'null', '1', '', '2020-12-21 08:58:06');
+INSERT INTO `sys_oper_log` VALUES ('398', '菜单管理', '2', 'com.ruoyi.web.controller.system.SysMenuController.editSave()', 'POST', '1', 'admin', '研发部门', '/system/menu/edit', '127.0.0.1', '内网IP', '{\"menuId\":[\"2050\"],\"parentId\":[\"2001\"],\"menuType\":[\"C\"],\"billPrefix\":[\"econType\"],\"menuName\":[\"经济类型\"],\"url\":[\"/platform/econtype\"],\"target\":[\"menuItem\"],\"perms\":[\"platform:econtype:view\"],\"orderNum\":[\"1\"],\"icon\":[\"#\"],\"visible\":[\"0\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 09:00:14');
+INSERT INTO `sys_oper_log` VALUES ('399', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"发过火\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"大幅度 的发\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 09:05:59\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 09:06:25');
+INSERT INTO `sys_oper_log` VALUES ('400', '代码生成', '8', 'com.ruoyi.generator.controller.GenController.download()', 'GET', '1', 'admin', '研发部门', '/tool/gen/download/platf_econ_type', '127.0.0.1', '内网IP', null, 'null', '0', null, '2020-12-21 10:33:45');
+INSERT INTO `sys_oper_log` VALUES ('401', '代码生成', '8', 'com.ruoyi.generator.controller.GenController.download()', 'GET', '1', 'admin', '研发部门', '/tool/gen/download/platf_econ_type', '127.0.0.1', '内网IP', null, 'null', '0', null, '2020-12-21 10:37:27');
+INSERT INTO `sys_oper_log` VALUES ('402', '代码生成', '8', 'com.ruoyi.generator.controller.GenController.download()', 'GET', '1', 'admin', '研发部门', '/tool/gen/download/platf_econ_type', '127.0.0.1', '内网IP', null, 'null', '0', null, '2020-12-21 10:38:37');
+INSERT INTO `sys_oper_log` VALUES ('403', '代码生成', '8', 'com.ruoyi.generator.controller.GenController.download()', 'GET', '1', 'admin', '研发部门', '/tool/gen/download/platf_econ_type', '127.0.0.1', '内网IP', null, 'null', '0', null, '2020-12-21 10:44:37');
+INSERT INTO `sys_oper_log` VALUES ('404', '经济类型', '2', 'com.ruoyi.web.controller.platform.EconTypeController.editSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/edit', '127.0.0.1', '内网IP', '{\"createBy\":[\"\"],\"updateBy\":[\"admin\"],\"econId\":[\"1\"],\"econName\":[\"zfff\"],\"docNum\":[\"0000100008\"],\"status\":[\"0\"],\"remark\":[\"SSSS多个的高度放\"],\"createByuserName\":[\"\"],\"createTime\":[\"Mon Dec 21 09:06:25 CST 2020\"],\"updateByuserName\":[\"平台管理员\"],\"updateTime\":[\"2020-12-21 10:45:23\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 10:45:34');
+INSERT INTO `sys_oper_log` VALUES ('405', '代码生成', '8', 'com.ruoyi.generator.controller.GenController.download()', 'GET', '1', 'admin', '研发部门', '/tool/gen/download/platf_econ_type', '127.0.0.1', '内网IP', null, 'null', '0', null, '2020-12-21 10:57:51');
+INSERT INTO `sys_oper_log` VALUES ('406', '经济类型', '2', 'com.ruoyi.web.controller.platform.EconTypeController.editSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/edit', '127.0.0.1', '内网IP', '{\"createBy\":[\"\"],\"updateBy\":[\"admin\"],\"econId\":[\"1\"],\"econName\":[\"zfff\"],\"docNum\":[\"0000100008\"],\"status\":[\"0\"],\"remark\":[\"SSSS多个的高度放vbncvn\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"Mon Dec 21 09:06:25 CST 2020\"],\"updateByuserName\":[\"平台管理员\"],\"updateTime\":[\"2020-12-21 10:59:40\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 10:59:45');
+INSERT INTO `sys_oper_log` VALUES ('407', '经济类型', '2', 'com.ruoyi.web.controller.platform.EconTypeController.editSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/edit', '127.0.0.1', '内网IP', '{\"createBy\":[\"\"],\"updateBy\":[\"admin\"],\"econId\":[\"1\"],\"econName\":[\"测试拉料\"],\"docNum\":[\"0000100008\"],\"status\":[\"0\"],\"remark\":[\"SSSS多个的高度放vbncvn\"],\"createByuserName\":[\"\"],\"createTime\":[\"Mon Dec 21 09:06:25 CST 2020\"],\"updateByuserName\":[\"平台管理员\"],\"updateTime\":[\"2020-12-21 14:06:02\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 14:06:14');
+INSERT INTO `sys_oper_log` VALUES ('408', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"测试拉料\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"测试拉料递四方速递\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 14:06:16\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 14:06:37');
+INSERT INTO `sys_oper_log` VALUES ('409', '经济类型', '3', 'com.ruoyi.web.controller.platform.EconTypeController.remove()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"2\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 14:08:07');
+INSERT INTO `sys_oper_log` VALUES ('410', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"测试拉料\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"测试拉料测试拉料测试拉料\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 14:08:15\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 14:08:42');
+INSERT INTO `sys_oper_log` VALUES ('411', '经济类型', '3', 'com.ruoyi.web.controller.platform.EconTypeController.remove()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"3\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 14:08:53');
+INSERT INTO `sys_oper_log` VALUES ('412', '岗位管理', '1', 'com.ruoyi.web.controller.system.SysPostController.addSave()', 'POST', '1', 'admin', '研发部门', '/system/post/add', '127.0.0.1', '内网IP', '{\"postName\":[\"ceo\"],\"postCode\":[\"水电费\"],\"postSort\":[\"1\"],\"status\":[\"0\"],\"remark\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 14:20:36');
+INSERT INTO `sys_oper_log` VALUES ('413', '岗位管理', '1', 'com.ruoyi.web.controller.system.SysPostController.addSave()', 'POST', '1', 'admin', '研发部门', '/system/post/add', '127.0.0.1', '内网IP', '{\"postName\":[\"董事长22\"],\"postCode\":[\"订单\"],\"postSort\":[\"2\"],\"status\":[\"0\"],\"remark\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 14:21:00');
+INSERT INTO `sys_oper_log` VALUES ('414', '经济类型', '2', 'com.ruoyi.web.controller.platform.EconTypeController.editSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/edit', '127.0.0.1', '内网IP', '{\"createBy\":[\"\"],\"updateBy\":[\"admin\"],\"econId\":[\"1\"],\"econName\":[\"测试拉料收到\"],\"docNum\":[\"0000100008\"],\"status\":[\"0\"],\"remark\":[\"SSSS多个的高度放vbncvn\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"Mon Dec 21 14:06:14 CST 2020\"],\"updateByuserName\":[\"平台管理员\"],\"updateTime\":[\"2020-12-21 15:17:30\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 15:17:34');
+INSERT INTO `sys_oper_log` VALUES ('415', '经济类型', '1', 'com.ruoyi.web.controller.platform.EconTypeController.addSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/add', '127.0.0.1', '内网IP', '{\"createBy\":[\"admin\"],\"updateBy\":[\"\"],\"econName\":[\"测试拉料\"],\"docNum\":[\"\"],\"status\":[\"0\"],\"remark\":[\"测试拉料测试拉料测试拉料\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"2020-12-21 15:17:35\"],\"updateByuserName\":[\"\"],\"updateTime\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 15:17:44');
+INSERT INTO `sys_oper_log` VALUES ('416', '经济类型', '2', 'com.ruoyi.web.controller.platform.EconTypeController.editSave()', 'POST', '1', 'admin', '研发部门', '/platform/econtype/edit', '127.0.0.1', '内网IP', '{\"createBy\":[\"\"],\"updateBy\":[\"admin\"],\"econId\":[\"1\"],\"econName\":[\"测试拉料\"],\"docNum\":[\"0000100008\"],\"status\":[\"0\"],\"remark\":[\"SSSS多个的高度放vbncvn\"],\"createByuserName\":[\"平台管理员\"],\"createTime\":[\"Mon Dec 21 15:17:34 CST 2020\"],\"updateByuserName\":[\"平台管理员\"],\"updateTime\":[\"2020-12-21 15:17:58\"]}', '{\r\n  \"msg\" : \"修改单据\'测试拉料\'失败，名称已存在\",\r\n  \"code\" : 500\r\n}', '0', null, '2020-12-21 15:18:02');
+INSERT INTO `sys_oper_log` VALUES ('417', '角色管理', '1', 'com.ruoyi.web.controller.system.SysRoleController.addSave()', 'POST', '1', 'admin', '研发部门', '/system/role/add', '127.0.0.1', '内网IP', '{\"roleName\":[\"平台角色\"],\"roleKey\":[\"platFormRole\"],\"roleSort\":[\"3\"],\"status\":[\"0\"],\"remark\":[\"\"],\"menuIds\":[\"1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,1042,501,1043,1044,1045,1046,2000,2001,2050,2051,2052,2053,2054,2055,2068,2069,2070,2071,2072,2073,2,109,1047,1048,1049,110,1050,1051,1052,1053,1054,1055,1056,111,112,113,3,2056,2057,2058,2059,2060,2061,2062,2063,2064,2065,2066,2067,114,115,1057,1058,1059,1060,1061,116\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 15:20:24');
+INSERT INTO `sys_oper_log` VALUES ('418', '角色管理', '1', 'com.ruoyi.web.controller.system.SysRoleController.addSave()', 'POST', '1', 'admin', '研发部门', '/system/role/add', '127.0.0.1', '内网IP', '{\"roleName\":[\"供货角色\"],\"roleKey\":[\"supplierRole\"],\"roleSort\":[\"4\"],\"status\":[\"0\"],\"remark\":[\"\"],\"menuIds\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 15:22:13');
+INSERT INTO `sys_oper_log` VALUES ('419', '角色管理', '1', 'com.ruoyi.web.controller.system.SysRoleController.addSave()', 'POST', '1', 'admin', '研发部门', '/system/role/add', '127.0.0.1', '内网IP', '{\"roleName\":[\"购货角色\"],\"roleKey\":[\"purchase\"],\"roleSort\":[\"6\"],\"status\":[\"0\"],\"remark\":[\"\"],\"menuIds\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 15:22:59');
+INSERT INTO `sys_oper_log` VALUES ('420', '角色管理', '1', 'com.ruoyi.web.controller.system.SysRoleController.addSave()', 'POST', '1', 'admin', '研发部门', '/system/role/add', '127.0.0.1', '内网IP', '{\"roleName\":[\"其它角色\"],\"roleKey\":[\"otherRole\"],\"roleSort\":[\"7\"],\"status\":[\"0\"],\"remark\":[\"\"],\"menuIds\":[\"\"]}', '{\r\n  \"msg\" : \"操作成功\",\r\n  \"code\" : 0\r\n}', '0', null, '2020-12-21 15:23:24');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1265,7 +1330,7 @@ CREATE TABLE `sys_post` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='岗位信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='岗位信息表';
 
 -- ----------------------------
 -- Records of sys_post
@@ -1274,6 +1339,8 @@ INSERT INTO `sys_post` VALUES ('1', 'ceo', '董事长', '1', '0', 'admin', '2020
 INSERT INTO `sys_post` VALUES ('2', 'se', '项目经理', '2', '0', 'admin', '2020-12-08 07:51:59', '', null, '');
 INSERT INTO `sys_post` VALUES ('3', 'hr', '人力资源', '3', '0', 'admin', '2020-12-08 07:51:59', '', null, '');
 INSERT INTO `sys_post` VALUES ('4', 'user', '普通员工', '4', '0', 'admin', '2020-12-08 07:51:59', '', null, '');
+INSERT INTO `sys_post` VALUES ('5', '水电费', 'ceo', '1', '0', 'admin', '2020-12-21 14:20:35', '', null, null);
+INSERT INTO `sys_post` VALUES ('6', '订单', '董事长22', '2', '0', 'admin', '2020-12-21 14:21:00', '', null, null);
 
 -- ----------------------------
 -- Table structure for sys_relev_table
@@ -1319,13 +1386,17 @@ CREATE TABLE `sys_role` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='角色信息表';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', '超级管理员', 'admin', '1', '1', '0', '0', 'admin', '2020-12-08 07:51:59', '', null, '超级管理员');
 INSERT INTO `sys_role` VALUES ('2', '普通角色', 'common', '2', '2', '0', '0', 'admin', '2020-12-08 07:51:59', '', null, '普通角色');
+INSERT INTO `sys_role` VALUES ('3', '平台角色', 'platFormRole', '3', '1', '0', '0', 'admin', '2020-12-21 15:20:24', '', null, null);
+INSERT INTO `sys_role` VALUES ('4', '供货角色', 'supplierRole', '4', '1', '0', '0', 'admin', '2020-12-21 15:22:13', '', null, null);
+INSERT INTO `sys_role` VALUES ('5', '购货角色', 'purchase', '6', '1', '0', '0', 'admin', '2020-12-21 15:22:58', '', null, null);
+INSERT INTO `sys_role` VALUES ('6', '其它角色', 'otherRole', '7', '1', '0', '0', 'admin', '2020-12-21 15:23:24', '', null, null);
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -1442,6 +1513,116 @@ INSERT INTO `sys_role_menu` VALUES ('2', '1058');
 INSERT INTO `sys_role_menu` VALUES ('2', '1059');
 INSERT INTO `sys_role_menu` VALUES ('2', '1060');
 INSERT INTO `sys_role_menu` VALUES ('2', '1061');
+INSERT INTO `sys_role_menu` VALUES ('3', '1');
+INSERT INTO `sys_role_menu` VALUES ('3', '2');
+INSERT INTO `sys_role_menu` VALUES ('3', '3');
+INSERT INTO `sys_role_menu` VALUES ('3', '100');
+INSERT INTO `sys_role_menu` VALUES ('3', '101');
+INSERT INTO `sys_role_menu` VALUES ('3', '102');
+INSERT INTO `sys_role_menu` VALUES ('3', '103');
+INSERT INTO `sys_role_menu` VALUES ('3', '104');
+INSERT INTO `sys_role_menu` VALUES ('3', '105');
+INSERT INTO `sys_role_menu` VALUES ('3', '106');
+INSERT INTO `sys_role_menu` VALUES ('3', '107');
+INSERT INTO `sys_role_menu` VALUES ('3', '108');
+INSERT INTO `sys_role_menu` VALUES ('3', '109');
+INSERT INTO `sys_role_menu` VALUES ('3', '110');
+INSERT INTO `sys_role_menu` VALUES ('3', '111');
+INSERT INTO `sys_role_menu` VALUES ('3', '112');
+INSERT INTO `sys_role_menu` VALUES ('3', '113');
+INSERT INTO `sys_role_menu` VALUES ('3', '114');
+INSERT INTO `sys_role_menu` VALUES ('3', '115');
+INSERT INTO `sys_role_menu` VALUES ('3', '116');
+INSERT INTO `sys_role_menu` VALUES ('3', '500');
+INSERT INTO `sys_role_menu` VALUES ('3', '501');
+INSERT INTO `sys_role_menu` VALUES ('3', '1000');
+INSERT INTO `sys_role_menu` VALUES ('3', '1001');
+INSERT INTO `sys_role_menu` VALUES ('3', '1002');
+INSERT INTO `sys_role_menu` VALUES ('3', '1003');
+INSERT INTO `sys_role_menu` VALUES ('3', '1004');
+INSERT INTO `sys_role_menu` VALUES ('3', '1005');
+INSERT INTO `sys_role_menu` VALUES ('3', '1006');
+INSERT INTO `sys_role_menu` VALUES ('3', '1007');
+INSERT INTO `sys_role_menu` VALUES ('3', '1008');
+INSERT INTO `sys_role_menu` VALUES ('3', '1009');
+INSERT INTO `sys_role_menu` VALUES ('3', '1010');
+INSERT INTO `sys_role_menu` VALUES ('3', '1011');
+INSERT INTO `sys_role_menu` VALUES ('3', '1012');
+INSERT INTO `sys_role_menu` VALUES ('3', '1013');
+INSERT INTO `sys_role_menu` VALUES ('3', '1014');
+INSERT INTO `sys_role_menu` VALUES ('3', '1015');
+INSERT INTO `sys_role_menu` VALUES ('3', '1016');
+INSERT INTO `sys_role_menu` VALUES ('3', '1017');
+INSERT INTO `sys_role_menu` VALUES ('3', '1018');
+INSERT INTO `sys_role_menu` VALUES ('3', '1019');
+INSERT INTO `sys_role_menu` VALUES ('3', '1020');
+INSERT INTO `sys_role_menu` VALUES ('3', '1021');
+INSERT INTO `sys_role_menu` VALUES ('3', '1022');
+INSERT INTO `sys_role_menu` VALUES ('3', '1023');
+INSERT INTO `sys_role_menu` VALUES ('3', '1024');
+INSERT INTO `sys_role_menu` VALUES ('3', '1025');
+INSERT INTO `sys_role_menu` VALUES ('3', '1026');
+INSERT INTO `sys_role_menu` VALUES ('3', '1027');
+INSERT INTO `sys_role_menu` VALUES ('3', '1028');
+INSERT INTO `sys_role_menu` VALUES ('3', '1029');
+INSERT INTO `sys_role_menu` VALUES ('3', '1030');
+INSERT INTO `sys_role_menu` VALUES ('3', '1031');
+INSERT INTO `sys_role_menu` VALUES ('3', '1032');
+INSERT INTO `sys_role_menu` VALUES ('3', '1033');
+INSERT INTO `sys_role_menu` VALUES ('3', '1034');
+INSERT INTO `sys_role_menu` VALUES ('3', '1035');
+INSERT INTO `sys_role_menu` VALUES ('3', '1036');
+INSERT INTO `sys_role_menu` VALUES ('3', '1037');
+INSERT INTO `sys_role_menu` VALUES ('3', '1038');
+INSERT INTO `sys_role_menu` VALUES ('3', '1039');
+INSERT INTO `sys_role_menu` VALUES ('3', '1040');
+INSERT INTO `sys_role_menu` VALUES ('3', '1041');
+INSERT INTO `sys_role_menu` VALUES ('3', '1042');
+INSERT INTO `sys_role_menu` VALUES ('3', '1043');
+INSERT INTO `sys_role_menu` VALUES ('3', '1044');
+INSERT INTO `sys_role_menu` VALUES ('3', '1045');
+INSERT INTO `sys_role_menu` VALUES ('3', '1046');
+INSERT INTO `sys_role_menu` VALUES ('3', '1047');
+INSERT INTO `sys_role_menu` VALUES ('3', '1048');
+INSERT INTO `sys_role_menu` VALUES ('3', '1049');
+INSERT INTO `sys_role_menu` VALUES ('3', '1050');
+INSERT INTO `sys_role_menu` VALUES ('3', '1051');
+INSERT INTO `sys_role_menu` VALUES ('3', '1052');
+INSERT INTO `sys_role_menu` VALUES ('3', '1053');
+INSERT INTO `sys_role_menu` VALUES ('3', '1054');
+INSERT INTO `sys_role_menu` VALUES ('3', '1055');
+INSERT INTO `sys_role_menu` VALUES ('3', '1056');
+INSERT INTO `sys_role_menu` VALUES ('3', '1057');
+INSERT INTO `sys_role_menu` VALUES ('3', '1058');
+INSERT INTO `sys_role_menu` VALUES ('3', '1059');
+INSERT INTO `sys_role_menu` VALUES ('3', '1060');
+INSERT INTO `sys_role_menu` VALUES ('3', '1061');
+INSERT INTO `sys_role_menu` VALUES ('3', '2000');
+INSERT INTO `sys_role_menu` VALUES ('3', '2001');
+INSERT INTO `sys_role_menu` VALUES ('3', '2050');
+INSERT INTO `sys_role_menu` VALUES ('3', '2051');
+INSERT INTO `sys_role_menu` VALUES ('3', '2052');
+INSERT INTO `sys_role_menu` VALUES ('3', '2053');
+INSERT INTO `sys_role_menu` VALUES ('3', '2054');
+INSERT INTO `sys_role_menu` VALUES ('3', '2055');
+INSERT INTO `sys_role_menu` VALUES ('3', '2056');
+INSERT INTO `sys_role_menu` VALUES ('3', '2057');
+INSERT INTO `sys_role_menu` VALUES ('3', '2058');
+INSERT INTO `sys_role_menu` VALUES ('3', '2059');
+INSERT INTO `sys_role_menu` VALUES ('3', '2060');
+INSERT INTO `sys_role_menu` VALUES ('3', '2061');
+INSERT INTO `sys_role_menu` VALUES ('3', '2062');
+INSERT INTO `sys_role_menu` VALUES ('3', '2063');
+INSERT INTO `sys_role_menu` VALUES ('3', '2064');
+INSERT INTO `sys_role_menu` VALUES ('3', '2065');
+INSERT INTO `sys_role_menu` VALUES ('3', '2066');
+INSERT INTO `sys_role_menu` VALUES ('3', '2067');
+INSERT INTO `sys_role_menu` VALUES ('3', '2068');
+INSERT INTO `sys_role_menu` VALUES ('3', '2069');
+INSERT INTO `sys_role_menu` VALUES ('3', '2070');
+INSERT INTO `sys_role_menu` VALUES ('3', '2071');
+INSERT INTO `sys_role_menu` VALUES ('3', '2072');
+INSERT INTO `sys_role_menu` VALUES ('3', '2073');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1475,7 +1656,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '103', 'admin', '平台管理员', '00', '290541200@qq.com', '18258987010', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2020-12-19 18:20:56', '2020-12-08 07:51:59', 'admin', '2020-12-08 07:51:59', '', '2020-12-19 18:20:55', '管理员');
+INSERT INTO `sys_user` VALUES ('1', '103', 'admin', '平台管理员', '00', '290541200@qq.com', '18258987010', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2020-12-21 15:16:58', '2020-12-08 07:51:59', 'admin', '2020-12-08 07:51:59', '', '2020-12-21 15:16:57', '管理员');
 INSERT INTO `sys_user` VALUES ('2', '105', 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', '2020-12-08 07:51:59', '2020-12-08 07:51:59', 'admin', '2020-12-08 07:51:59', '', null, '测试员');
 
 -- ----------------------------
@@ -1500,7 +1681,7 @@ CREATE TABLE `sys_user_online` (
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
-INSERT INTO `sys_user_online` VALUES ('5e58bad9-97f4-49a5-b893-562d9c234f2b', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', 'on_line', '2020-12-19 18:18:47', '2020-12-19 18:22:47', '1800000');
+INSERT INTO `sys_user_online` VALUES ('30cc33e7-adb0-4d76-ad49-a3e3672c03df', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome', 'Windows 7', 'on_line', '2020-12-21 15:16:49', '2020-12-21 15:46:40', '1800000');
 
 -- ----------------------------
 -- Table structure for sys_user_post

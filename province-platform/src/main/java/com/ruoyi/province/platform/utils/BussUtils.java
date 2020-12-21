@@ -1,5 +1,6 @@
 package com.ruoyi.province.platform.utils;
 
+import com.github.pagehelper.util.StringUtil;
 import com.ruoyi.common.core.domain.entity.SysMenu;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.DateUtils;
@@ -63,13 +64,19 @@ public class BussUtils {
 			newbillNo = bussUtils.sysBillNoMapper.selectSysBillNoByPeriod( newbillNo );
 
 			value = newbillNo.getIterationValue() ;
-			value = value.format("%05d", value);
+			if (StringUtil.isEmpty(value) || value.equals(""))
+				value = "0" ;
+			value = addZeroForNum(value,5);
+				//value = String.format("%05d", value);
 
 			//00001+表单编号BA02+六位数的日期编号+四位数的单据序号
 			//String.format("%05d", 77);  -->结果为00077
-			value = menu.getBillPrefix()
+			if ( menu != null ) {
+				value = menu.getBillPrefix()
 					.concat(newbillNo.getFperiod())
 					.concat(value) ;
+			}
+
 		}
 //		if ( StringUtils.isEmpty(value) ){
 //			throw new BusinessException(String.format("未查询到%s相关单据信息,请确认！", billNoType ));
@@ -78,5 +85,19 @@ public class BussUtils {
 		
 	}
 
+	public static String addZeroForNum(String str, int strLength) {
+		int strLen = str.length();
+		if (strLen < strLength) {
+			while (strLen < strLength) {
+				StringBuffer sb = new StringBuffer();
+				sb.append("0").append(str);// 左补0
+				// sb.append(str).append("0");//右补0
+				str = sb.toString();
+				strLen = str.length();
+			}
+		}
+
+		return str;
+	}
 
 }

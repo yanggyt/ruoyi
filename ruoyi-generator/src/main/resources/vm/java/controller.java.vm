@@ -95,11 +95,9 @@ public class ${ClassName}Controller extends BaseController
     public String add(ModelMap mmap)
     {
 #foreach($item in $conctrolmodelsmap.entrySet())
-       // <li>$member.key - $member.value.id$member.value.name</li>
       // 取身份信息
 #if($item.key == "SysUser")
-        SysUser user = ShiroUtils.getSysUser();
-        mmap.put("user", user);
+        mmap.put("user", ShiroUtils.getSysUser() );
 #end
 #end
 
@@ -112,6 +110,13 @@ public class ${ClassName}Controller extends BaseController
     @GetMapping(value = { "/add/{${pkColumn.javaField}}", "/add/" })
     public String add(@PathVariable(value = "${pkColumn.javaField}", required = false) Long ${pkColumn.javaField}, ModelMap mmap)
     {
+#foreach($item in $conctrolmodelsmap.entrySet())
+    // 取身份信息
+#if($item.key == "SysUser")
+        mmap.put("user", ShiroUtils.getSysUser() );
+#end
+#end
+
         if (StringUtils.isNotNull(${pkColumn.javaField}))
         {
             mmap.put("${className}", ${className}Service.select${ClassName}ById(${pkColumn.javaField}));
@@ -129,6 +134,19 @@ public class ${ClassName}Controller extends BaseController
     @ResponseBody
     public AjaxResult addSave(${ClassName} ${className})
     {
+#if($dspRepeatColumn.size()>0)
+        // 控制名称重复!
+        if (BussiConstants.DOC_NAME_NOT_UNIQUE.equals(${ClassName}Service.check${ClassName}Unique(${className})))
+        {
+            return error("修改单据'" + ${className}.get${dspRepeatColumn.javaField}() + "'失败，名称已存在");
+        }
+#end
+        // 取身份信息
+#if($createByColumn.size()>0)
+        ${className}.setCreateBy( ShiroUtils.getLoginName() );
+        ${className}.setCreateTime(DateUtils.getNowDate() );
+#end
+
         return toAjax(${className}Service.insert${ClassName}(${className}));
     }
 
@@ -140,6 +158,14 @@ public class ${ClassName}Controller extends BaseController
     {
         ${ClassName} ${className} = ${className}Service.select${ClassName}ById(${pkColumn.javaField});
         mmap.put("${className}", ${className});
+
+        #foreach($item in $conctrolmodelsmap.entrySet())
+            // 取身份信息
+            #if($item.key == "SysUser")
+                mmap.put("user", ShiroUtils.getSysUser() );
+            #end
+        #end
+
         return prefix + "/edit";
     }
 
@@ -152,6 +178,18 @@ public class ${ClassName}Controller extends BaseController
     @ResponseBody
     public AjaxResult editSave(${ClassName} ${className})
     {
+#if($dspRepeatColumn.size()>0)
+        // 控制名称重复!
+        if (BussiConstants.DOC_NAME_NOT_UNIQUE.equals(${ClassName}Service.check${ClassName}Unique(${className})))
+        {
+            return error("修改单据'" + ${className}.get${dspRepeatColumn.javaField}() + "'失败，名称已存在");
+        }
+#end
+
+#if($createByColumn.size()>0)
+        ${className}.setUpdateBy( ShiroUtils.getLoginName() );
+        ${className}.setUpdateTime( DateUtils.getNowDate() );
+#end
         return toAjax(${className}Service.update${ClassName}(${className}));
     }
 

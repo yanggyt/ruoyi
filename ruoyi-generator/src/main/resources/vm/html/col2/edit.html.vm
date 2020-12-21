@@ -57,18 +57,18 @@
         <div class="row mt10">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}：</label>
-                    <div class="col-sm-8">
-                        <textarea name="${field}" maxlength="500" class="form-control" rows="3" #if($column.required) required#end></textarea>
+                    <label class="col-sm-2 control-label#if($column.required) is-required#end">${comment}：</label>
+                    <div class="col-sm-10">
+                        <textarea name="${field}" maxlength="500" class="form-control" rows="3" #if($column.required) required#end>[[*{${field}}]]</textarea>
                     </div>
                 </div>
             </div>
         </div>
 #else
 #if($cumvar%2==1)
-        <div class="row">
+        <div class="row mt10">
 #end
-#parse("\vm\html\col2\formedittpl.vm")
+#parse("\vm\html\col2\editfiledtpl.vm")
 #if($cumvar%2==0 || ($cumvar>=$colcount))
         </div>
 #end
@@ -79,7 +79,7 @@
 #end
 #if($table.sub)
             <h4 class="form-header h4">${subTable.functionName}信息</h4>
-            <div class="row">
+            <div class="row mt10">
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
                     <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
@@ -111,12 +111,12 @@
 #end
 #end
     <script th:inline="javascript">
-
+#if($createByColumn.size()>0)
         $("#updateBy").val([[${user.loginName}]]);
         $("#updateByuserName").val([[${user.userName}]]);
         $("#updateTime").val
         ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
-
+#end
         var prefix = ctx + "${moduleName}/${businessName}";
 #if($table.sub)
 #foreach($column in $subTable.columns)

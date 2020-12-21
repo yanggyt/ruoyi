@@ -54,11 +54,17 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
          *
          * @param ${pkColumn.javaField} ${functionName}ID
          * @return ${functionName}
-         */
+         */ checkEconNameUnique
         @Override
-        public ${ClassName} select${ClassName}ByName(${pkColumn.javaType} ${pkColumn.javaField},${dspRepeatColumn.javaType} ${dspRepeatColumn.javaField})
+        public String check${ClassName}Unique(${ClassName} ${className})
         {
-            return ${className}Mapper.select${ClassName}ByName(${pkColumn.javaField},${dspRepeatColumn.javaField});
+            Long docId = StringUtils.isNull( ${className}.get${pkColumn.javaField}() ) ? -1L : econType.getEconId();
+            ${ClassName} info = ${className}Mapper.check${ClassName}Unique( ${ClassName}.get${dspRepeatColumn.javaField}() );
+            if (StringUtils.isNotNull(info) && info.get${pkColumn.javaField}().longValue() != docId.longValue())
+            {
+                return BussiConstants.DOC_NAME_NOT_UNIQUE;
+            }
+            return BussiConstants.DOC_NAME_UNIQUE;
         }
 
     #end

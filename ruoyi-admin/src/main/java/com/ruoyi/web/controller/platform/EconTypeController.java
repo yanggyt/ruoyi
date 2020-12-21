@@ -3,11 +3,12 @@ package com.ruoyi.web.controller.platform;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.province.platform.Constants.BussiConstants;
 import com.ruoyi.province.platform.domain.EconType;
 import com.ruoyi.province.platform.service.IEconTypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -75,8 +76,7 @@ public class EconTypeController extends BaseController
     {
        // <li>$member.key - $member.value.id$member.value.name</li>
       // 取身份信息
-        SysUser user = ShiroUtils.getSysUser();
-        mmap.put("user", user);
+        mmap.put("user", ShiroUtils.getSysUser());
 
         return prefix + "/add";
     }
@@ -90,8 +90,28 @@ public class EconTypeController extends BaseController
     @ResponseBody
     public AjaxResult addSave(EconType econType)
     {
+        // 控制名称重复!
+        if (BussiConstants.DOC_NAME_NOT_UNIQUE.equals(econTypeService.checkEconNameUnique(econType)))
+        {
+            return error("新增单据'" + econType.getEconName() + "'失败，名称已存在");
+        }
+
+        // 取身份信息
+        econType.setCreateBy( ShiroUtils.getLoginName() );
+        econType.setCreateTime(DateUtils.getNowDate() );
+
         return toAjax(econTypeService.insertEconType(econType)
     );
+    }
+
+    /**
+     * 校验名称 是否重复
+     */
+    @PostMapping("/checkEconNameUnique")
+    @ResponseBody
+    public String checkEconNameUnique(EconType econType)
+    {
+        return econTypeService.checkEconNameUnique(econType);
     }
 
     /**
@@ -102,6 +122,10 @@ public class EconTypeController extends BaseController
     {
         EconType econType = econTypeService.selectEconTypeById(econId);
         mmap.put("econType", econType);
+
+        // 取身份信息
+        mmap.put("user", ShiroUtils.getSysUser());
+
         return prefix + "/edit";
     }
 
@@ -114,6 +138,15 @@ public class EconTypeController extends BaseController
     @ResponseBody
     public AjaxResult editSave(EconType econType)
     {
+        // 控制名称重复!
+        if (BussiConstants.DOC_NAME_NOT_UNIQUE.equals(econTypeService.checkEconNameUnique(econType)))
+        {
+            return error("修改单据'" + econType.getEconName() + "'失败，名称已存在");
+        }
+
+        econType.setCreateBy( ShiroUtils.getLoginName() );
+        econType.setCreateTime(DateUtils.getNowDate() );
+
         return toAjax(econTypeService.updateEconType(econType));
     }
 

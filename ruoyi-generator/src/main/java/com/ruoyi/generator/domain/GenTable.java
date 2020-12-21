@@ -1,12 +1,13 @@
 package com.ruoyi.generator.domain;
 
-import java.util.List;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import org.apache.commons.lang3.ArrayUtils;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * 业务表 gen_table
@@ -78,6 +79,9 @@ public class GenTable extends BaseEntity
 
     /** 名称列信息 */
     private GenTableColumn dspColumn;
+
+    /** 制单人 列信息 */
+    private GenTableColumn createByColumn;
 
     /** 子表信息 */
     private GenTable subTable;
@@ -280,6 +284,14 @@ public class GenTable extends BaseEntity
 
     public void setDspColumn(GenTableColumn dspColumn) {
         this.dspColumn = dspColumn;
+    }
+
+    public GenTableColumn getCreateByColumn() {
+        return createByColumn;
+    }
+
+    public void setCreateByColumn(GenTableColumn createByColumn) {
+        this.createByColumn = createByColumn;
     }
 
     public GenTable getSubTable()

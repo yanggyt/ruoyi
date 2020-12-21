@@ -12,7 +12,7 @@
 
                 <div class="row mt10">
             <div class="col-sm-6">
-                <label class="col-sm-4 control-label is-required">名称：</label>
+                <label for="econName" class="col-sm-4 control-label is-required">名称：</label>
                 <div class="col-sm-8">
                     <input id="econName" name="econName" class="form-control"  type="text" required>
                 </div>
@@ -87,9 +87,33 @@
         ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
 
     var prefix = ctx + "platform/econtype"
-            $("#form-econtype-add").validate({
-        focusCleanup: true
-    });
+
+     $("#form-econtype-add").validate({
+         onkeyup: false,
+         rules:{
+             econName:{
+                 remote: {
+                     url: ctx + "platform/econtype/checkEconNameUnique",
+                     type: "post",
+                     dataType: "json",
+                     data: {
+                         "econName" : function() {
+                             return $.common.trim($("#econName").val());
+                         }
+                     },
+                     dataFilter: function(data, type) {
+                         return $.validate.unique(data);
+                     }
+                 }
+             },
+         },
+         messages: {
+             "econName": {
+                 remote: "名称已经存在"
+             }
+         },
+         focusCleanup: true
+      });
 
     function submitHandler() {
         if ($.validate.form()) {
