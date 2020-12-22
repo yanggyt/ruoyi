@@ -61,14 +61,8 @@ public class VelocityUtils {
         velocityContext.put("author", genTable.getFunctionAuthor());
         velocityContext.put("datetime", DateUtils.getDate());
         velocityContext.put("pkColumn", genTable.getPkColumn());
-        velocityContext.put("dspRepeatColumn", genTable.getDspColumn());
         velocityContext.put("importList", getImportList(genTable));
         velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
-
-        velocityContext.put("billPrefix", genTable.getBillPrefix());  // 单据前缀
-
-        // 制单人
-        velocityContext.put("createByColumn",genTable.getCreateByColumn());
 
         // 取出页面需要的字段ing
         List<GenTableColumn> tempcolumns = genTable.getColumns();
@@ -154,7 +148,15 @@ public class VelocityUtils {
         velocityContext.put("mappercols", genTable.getColumns() ); //
         velocityContext.put("columns", fieldcols ); // genTable.getColumns()
 
+        //前缀
+        velocityContext.put("billPrefix", genTable.getBillPrefix());  // 单据前缀
+        // 名称 重复
+        velocityContext.put("dspRepeatColumn", genTable.getDspColumn());
+        // 制单人
+        velocityContext.put("createByColumn",genTable.getCreateByColumn());
+
         velocityContext.put("table", genTable);
+
         setMenuVelocityContext(velocityContext, genTable);
         if (GenConstants.TPL_TREE.equals(tplCategory)) {
             setTreeVelocityContext(velocityContext, genTable);

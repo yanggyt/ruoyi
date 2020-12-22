@@ -22,7 +22,7 @@ public interface I${ClassName}Service
      */
     public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
 
-    #if($dspRepeatColumn.size() > 0)
+    #if($dspRepeatColumn)
         /**
          * 查询${functionName}
          *

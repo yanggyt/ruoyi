@@ -2,6 +2,7 @@ package com.ruoyi.generator.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.util.StringUtil;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.text.CharsetKit;
@@ -228,7 +229,6 @@ public class GenTableServiceImpl implements IGenTableService
         //  是否 存在制单人
         setCreatUpdateByColumn(table);
 
-
         VelocityInitializer.initVelocity();
 
         List<RelevTable> lstRelev =
@@ -381,6 +381,7 @@ public class GenTableServiceImpl implements IGenTableService
         // 设置名称重复列信息
         setRepeatDspColumn(table);
         // 取得制单人
+        setCreatUpdateByColumn(table);
 
 
         VelocityInitializer.initVelocity();
@@ -508,7 +509,17 @@ public class GenTableServiceImpl implements IGenTableService
         {
             if (column.isRepeatControl())
             {
-                table.setDspColumn(column);
+                GenTableColumn tempcolumn = null  ; // new GenTableColumn()
+                try{
+                    tempcolumn = (GenTableColumn) column.clone();
+                 }catch (Exception e){
+
+                 }
+
+            tempcolumn.setRelevjavafiledname(com.ruoyi.common.utils.StringUtils.captureName( table.getPkColumn().getJavaField() ));
+            tempcolumn.setJavaField( com.ruoyi.common.utils.StringUtils.captureName( tempcolumn.getJavaField() ) ); // 首字母大写
+            table.setDspColumn(tempcolumn);
+
                 break;
             }
         }

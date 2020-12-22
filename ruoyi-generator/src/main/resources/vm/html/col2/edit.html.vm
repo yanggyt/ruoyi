@@ -111,7 +111,7 @@
 #end
 #end
     <script th:inline="javascript">
-#if($createByColumn.size()>0)
+#if($createByColumn)
         $("#updateBy").val([[${user.loginName}]]);
         $("#updateByuserName").val([[${user.userName}]]);
         $("#updateTime").val
@@ -126,6 +126,31 @@
 #end
 #end
         $("#form-${businessName}-edit").validate({
+#if($dspRepeatColumn)
+            onkeyup: false,
+            rules:{
+                econName:{
+                    remote: {
+                        url: prefix + "/check${ClassName}Unique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "${dspRepeatColumn.javaField}" : function() {
+                                return $.common.trim($("#${dspRepeatColumn.javaField}").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+            },
+            messages: {
+                "${dspRepeatColumn.javaField}": {
+                    remote: "${functionName} 名称已经存在"
+                }
+            },
+#end
             focusCleanup: true
         });
 

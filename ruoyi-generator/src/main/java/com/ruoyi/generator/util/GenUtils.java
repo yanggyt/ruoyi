@@ -58,7 +58,15 @@ public class GenUtils
             // 若是 制单时间 和  修改时间 在界面上 用 文本框
             if (arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk())
             {
-                column.setJavaType(GenConstants.TYPE_STRING);
+
+                if (arraysContains(GenConstants.COLUMNNAME_QRYLIST, columnName) && !column.isPk()) {
+                    column.setIsEdit("1");
+                    column.setIsInsert("1");
+                    column.setIsQuery("0");
+                    column.setIsList("1");
+                }
+
+                column.setJavaType(GenConstants.TYPE_DATE);
                 column.setHtmlType(GenConstants.HTML_INPUT);
             } else {
                 column.setJavaType(GenConstants.TYPE_DATE);
@@ -90,11 +98,20 @@ public class GenUtils
         //  制单人、修改人 关联《用户操作员》Id
         if (arraysContains(GenConstants.COLUMNNAME_RELEV_FIELDS, columnName) && !column.isPk())
         {
-            column.setRelevTable("SysUser");  // sys_user
+            column.setIsList("1");
+            column.setIsEdit("1");
+            column.setIsInsert("1");
+            column.setIsQuery("0");
+
+            column.setRelevEntity("SysUser");  // sys_user
            // column.setRelevTableId("login_name");
            // column.setRelevTableName("user_name");
         }
 
+         // 资料状态
+        if (column.getColumnName().toLowerCase().equals("status")){
+            column.setDictType("platf_doc_statu");
+        }
         // 插入字段（默认所有字段都需要插入）
         column.setIsInsert(GenConstants.REQUIRE);
 
@@ -132,6 +149,20 @@ public class GenUtils
             column.setIsRequired("0");
         }
 
+        // 设置单据号
+        if ( columnName.contains("doc_num") ){
+            column.setIsQuery("0");
+            column.setIsList("1");
+            column.setIsRequired("0");
+        }
+
+        // 名称
+        if ( columnName.contains("_name") ){
+            column.setIsRepeatControl("1");
+            column.setIsQuery("1");
+            column.setIsList("1");
+            column.setIsRequired("1");
+        }
 
         // 查询字段类型
         if (StringUtils.endsWithIgnoreCase(columnName, "name"))

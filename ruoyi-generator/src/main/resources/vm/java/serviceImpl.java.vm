@@ -48,19 +48,19 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
         return ${className}Mapper.select${ClassName}ById(${pkColumn.javaField});
     }
 
-    #if($dspRepeatColumn.size() > 0)
+    #if($dspRepeatColumn)
         /**
          * 查询${functionName}
          *
          * @param ${pkColumn.javaField} ${functionName}ID
          * @return ${functionName}
-         */ checkEconNameUnique
+         */
         @Override
         public String check${ClassName}Unique(${ClassName} ${className})
         {
-            Long docId = StringUtils.isNull( ${className}.get${pkColumn.javaField}() ) ? -1L : econType.getEconId();
-            ${ClassName} info = ${className}Mapper.check${ClassName}Unique( ${ClassName}.get${dspRepeatColumn.javaField}() );
-            if (StringUtils.isNotNull(info) && info.get${pkColumn.javaField}().longValue() != docId.longValue())
+            Long docId = StringUtils.isNull( ${className}.get${dspRepeatColumn.relevjavafiledname}() ) ? -1L : ${className}.get${dspRepeatColumn.relevjavafiledname}();
+            ${ClassName} info = ${className}Mapper.check${ClassName}Unique( ${className}.get${dspRepeatColumn.javaField}() );
+            if (StringUtils.isNotNull(info) && info.get${dspRepeatColumn.relevjavafiledname}().longValue() != docId.longValue())
             {
                 return BussiConstants.DOC_NAME_NOT_UNIQUE;
             }

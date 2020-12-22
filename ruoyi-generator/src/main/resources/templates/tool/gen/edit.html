@@ -3,9 +3,12 @@
 <head>
 	<th:block th:include="include :: header('修改生成信息')" />
 	<th:block th:include="include :: select2-css" />
+	<link rel="stylesheet" href="css/bootstrap-table-fixed-columns.css">
+
 	<style type="text/css">
 	    .select-table table{table-layout:fixed;}.table>thead>tr>th{text-align:center;}.select-table .table td{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.form-control{padding:3px 6px 4px;height:30px;}.icheckbox-blue{top:0px;left:6px;}.form-control.select2-hidden-accessible{position:static!important;}.select-table table label.error{position: inherit;}select + label.error{z-index:1;right:40px;}
 	</style>
+
 </head>
 <body class="gray-bg" style="font: 14px Helvetica Neue, Helvetica, PingFang SC, 微软雅黑, Tahoma, Arial, sans-serif !important;">
     <section class="section-content">
@@ -100,9 +103,9 @@
 
                             </div>
                             
-                            <!-- 字段信息 -->
+                            <!-- 字段信息 overflow:scroll; -->
                             <div class="tab-pane active" id="tab-field">
-                                <div class="select-table table-striped" style="overflow:scroll;margin-top: 0px;padding-top: 0px;padding-bottom: 0px;">
+                                <div class="select-table table-striped" style="margin-top: 0px;padding-top: 0px;padding-bottom: 0px;">
 								    <table id="bootstrap-table" style="min-width:1500px;" data-use-row-attr-func="true" data-reorderable-rows="true"></table>
 								</div>
                             </div>
@@ -285,6 +288,7 @@
     <th:block th:include="include :: bootstrap-table-reorder-js" />
     <script th:src="@{/js/jquery.tmpl.js}"></script>
     <th:block th:include="include :: jquery-cxselect-js" />
+	<th:block th:include="include :: bootstrap-table-fixed-columns-js" />
     <script th:inline="javascript">
 	    /* 用户信息-修改 */
 	    $("#form-table-edit").validate({
@@ -306,6 +310,9 @@
 	    
 	    function submitHandler() {
 	        if ($.validate.form()) {
+                console.log( " AAAAAAAAAAA ") ;
+                console.log( $("#form-gen-edit").serializeArray() ) ;
+
 	        	$.operate.saveTab(prefix + "/edit", $("#form-gen-edit").serializeArray());
 	        }
 	    }
@@ -318,10 +325,13 @@
 		        sortOrder: "desc",
 		        height: $(window).height() - 166,
 		        pagination: false,
-		        showSearch: false,
-		        showRefresh: false,
-		        showToggle: false,
-		        showColumns: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                /*
+                fixedColumns: true,
+                fixedNumber: 3,  */
 		        onLoadSuccess: onLoadSuccess,
 		        onReorderRow: onReorderRow,
 		        columns: [{

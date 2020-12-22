@@ -1,8 +1,9 @@
 package com.ruoyi.common.utils;
 
+import com.ruoyi.common.core.text.StrFormatter;
+
 import java.util.Collection;
 import java.util.Map;
-import com.ruoyi.common.core.text.StrFormatter;
 
 /**
  * 字符串工具类
@@ -360,6 +361,16 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
             result.append(camel.substring(1).toLowerCase());
         }
         return result.toString();
+    }
+
+    /**
+     * 首字母大写
+     * 例如：user_name->userName
+     */
+    public static String captureName(String name) {
+        char[] cs=name.toCharArray();
+        cs[0]-=32;
+        return String.valueOf(cs);
     }
 
     /**

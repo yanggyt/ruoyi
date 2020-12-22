@@ -22,7 +22,7 @@ public interface ${ClassName}Mapper
      */
     public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
 
-    #if($dspRepeatColumn.size() > 0)
+    #if($dspRepeatColumn)
         /**
          * 校验 ${functionName} 名称是否重复
          *
