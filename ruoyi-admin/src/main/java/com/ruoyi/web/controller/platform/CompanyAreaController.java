@@ -23,7 +23,7 @@ import java.util.List;
  * 营业面积Controller
  * 
  * @author dalin
- * @date 2020-12-22
+ * @date 2020-12-23
  */
 @Controller
 @RequestMapping("/platform/companyarea")
@@ -113,7 +113,7 @@ public class CompanyAreaController extends BaseController
     }
 
     /**
-     * 修改营业面积
+     * 修改营业面积 th:value="*{createTime}"
      */
     @GetMapping("/edit/{companyAreaId}")
     public String edit(@PathVariable("companyAreaId") Long companyAreaId, ModelMap mmap)

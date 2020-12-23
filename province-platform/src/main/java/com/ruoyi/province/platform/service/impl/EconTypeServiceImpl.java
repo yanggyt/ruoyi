@@ -81,7 +81,7 @@ public class EconTypeServiceImpl implements IEconTypeService
         // 判断重复
 
         // 单据号生成
-        econType.setDocNum("00001".concat( BussUtils.nextValue("econType") ) );
+        econType.setDocNum( "00001".concat(BussUtils.nextValue("econType")  ) );
         econType.setCreateTime(DateUtils.getNowDate());
         return econTypeMapper.insertEconType(econType);
     }

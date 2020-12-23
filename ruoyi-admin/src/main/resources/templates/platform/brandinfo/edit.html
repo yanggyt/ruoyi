@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('修改营业面积')" />
+    <th:block th:include="include :: header('修改品牌资料')" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-companyarea-edit" th:object="${companyArea}">
+        <form class="form-horizontal m" id="form-brandinfo-edit" th:object="${brandInfo}">
             <input type="hidden" name="createBy" id="createBy" />
             <input type="hidden" name="updateBy" id="updateBy" />
 
-            <input name="companyAreaId" th:field="*{companyAreaId}" type="hidden">
+            <input name="brandId" th:field="*{brandId}" type="hidden">
 
 
         <div class="row mt10">
         <div class="col-sm-6">
             <label class="col-sm-4 control-label is-required">名称：</label>
             <div class="col-sm-8">
-                <input name="CompanyAreaName" th:field="*{CompanyAreaName}" class="form-control" type="text" required>
+                <input name="brandName" th:field="*{brandName}" class="form-control" type="text" required>
             </div>
         </div>
 
@@ -59,7 +59,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label is-required">制单人：</label>
             <div class="col-sm-8">
-                <input name="createByuserName"  readonly="readonly" th:field="*{createByuserName}" class="form-control" type="text" required>
+                <input name="createByuserName" disabled th:field="*{createByuserName}" class="form-control" type="text" required>
             </div>
         </div>
 
@@ -67,9 +67,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label is-required">制单时间：</label>
             <div class="col-sm-8">
-                <input name="createTime" readonly="readonly"
-                       th:value="${#dates.format(companyArea.createTime, 'yyyy-MM-dd HH:mm:ss')}"
-                       class="form-control" type="text" required>
+                <input name="createTime" disabled th:value="${#dates.format(brandInfo.createTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
             </div>
         </div>
         </div>
@@ -87,9 +85,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label">修改时间：</label>
             <div class="col-sm-8">
-                <input name="updateTime" readonly="readonly"
-                       th:value="${#dates.format(companyArea.updateTime, 'yyyy-MM-dd HH:mm:ss')}"
-                       class="form-control" type="text">
+                <input name="updateTime" disabled th:value="${#dates.format(brandInfo.updateTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
             </div>
         </div>
         </div>
@@ -98,18 +94,18 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var prefix = ctx + "platform/companyarea";
-        $("#form-companyarea-edit").validate({
+        var prefix = ctx + "platform/brandinfo";
+        $("#form-brandinfo-edit").validate({
             onkeyup: false,
             rules:{
                 econName:{
                     remote: {
-                        url: prefix + "/checkCompanyAreaUnique",
+                        url: prefix + "/checkBrandInfoUnique",
                         type: "post",
                         dataType: "json",
                         data: {
-                            "CompanyAreaName" : function() {
-                                return $.common.trim($("#CompanyAreaName").val());
+                            "BrandName" : function() {
+                                return $.common.trim($("#BrandName").val());
                             }
                         },
                         dataFilter: function(data, type) {
@@ -119,8 +115,8 @@
                 },
             },
             messages: {
-                "CompanyAreaName": {
-                    remote: "营业面积 名称已经存在"
+                "BrandName": {
+                    remote: "品牌资料 名称已经存在"
                 }
             },
             focusCleanup: true
@@ -128,9 +124,11 @@
 
         function submitHandler() {
             if ($.validate.form()) {
-                $.operate.save(prefix + "/edit", $('#form-companyarea-edit').serialize());
+                $.operate.save(prefix + "/edit", $('#form-brandinfo-edit').serialize());
             }
         }
+
+
     </script>
 </body>
 </html>

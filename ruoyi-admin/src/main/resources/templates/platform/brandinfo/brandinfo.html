@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('经济类型列表')" />
+    <th:block th:include="include :: header('品牌资料列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -12,7 +12,7 @@
                         <ul>
                             <li>
                                 <label>名称：</label>
-                                <input type="text" name="econName"/>
+                                <input type="text" name="brandName"/>
                             </li>
                             <li>
                                 <label>资料状态：</label>
@@ -31,16 +31,16 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="platform:econtype:add">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="platform:brandinfo:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="operateEdit()" shiro:hasPermission="platform:econtype:edit">
+                <a class="btn btn-primary single disabled" onclick="operateEdit()" shiro:hasPermission="platform:brandinfo:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="platform:econtype:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="platform:brandinfo:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="platform:econtype:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="platform:brandinfo:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
@@ -51,10 +51,10 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('platform:econtype:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('platform:econtype:remove')}]];
+        var editFlag = [[${@permission.hasPermi('platform:brandinfo:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('platform:brandinfo:remove')}]];
         var statusDatas = [[${@dict.getType('platf_doc_statu')}]];
-        var prefix = ctx + "platform/econtype";
+        var prefix = ctx + "platform/brandinfo";
 
         $(function() {
             var options = {
@@ -63,12 +63,12 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "经济类型",
+                modalName: "品牌资料",
                 columns: [{
                     checkbox: true
                 },
                 {
-                    field: 'econName',
+                    field: 'brandName',
                     title: '名称'
                 },
                 {
@@ -107,8 +107,8 @@
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.econId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.econId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.brandId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.brandId + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
                 }]
@@ -117,7 +117,7 @@
         });
 
         function operateEdit(){
-            $.operate.edit(''+ $.table.selectColumns("econId") +'')
+            $.operate.edit(''+ $.table.selectColumns("brandId") +'')
       }
 
     </script>

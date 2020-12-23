@@ -99,7 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 #if($dspRepeatColumn)
-    <select id="check${ClassName}Unique" parameterType="String" resultMap="${ClassName}Result">
+    <select id="check${ClassName}NameUnique" parameterType="String" resultMap="${ClassName}Result">
         <include refid="select${ClassName}Vo"/>
         where t.${dspRepeatColumn.columnName}=#{${dspRepeatColumn.javaField}} limit 1
     </select>

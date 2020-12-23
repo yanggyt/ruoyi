@@ -92,6 +92,12 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     @Override
     public int insert${ClassName}(${ClassName} ${className})
     {
+#foreach ($column in $columns)
+    #if($column.javaField == 'docNum')
+        ${className}.setDocNum("00001".concat( BussUtils.nextValue("${className}") ) );
+    #end
+#end
+
 #foreach ($column in $mappercols)
 #if($column.javaField == 'createTime')
         ${className}.setCreateTime(DateUtils.getNowDate());

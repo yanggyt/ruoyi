@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.province.platform.mapper.CompanyAreaMapper">
+<mapper namespace="com.ruoyi.province.platform.mapper.BrandInfoMapper">
     
-    <resultMap type="CompanyArea" id="CompanyAreaResult">
-        <result property="companyAreaId"    column="company_area_id"    />
-        <result property="companyAreaName"    column="company_area_name"    />
+    <resultMap type="BrandInfo" id="BrandInfoResult">
+        <result property="brandId"    column="brand_id"    />
+        <result property="brandName"    column="brand_name"    />
         <result property="docNum"    column="doc_num"    />
         <result property="status"    column="status"    />
         <result property="remark"    column="remark"    />
@@ -19,35 +19,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateByuserName"    column="updateByuserName"    />
     </resultMap>
 
-    <sql id="selectCompanyAreaVo">
-          select t.company_area_id, t.company_area_name, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,
-            a1.user_name as createByuserName,            a2.user_name as updateByuserName            from platf_company_area t
+    <sql id="selectBrandInfoVo">
+          select t.brand_id, t.brand_name, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,
+            a1.user_name as createByuserName,            a2.user_name as updateByuserName            from platf_brand_info t
             left join sys_user a1 on t.create_by=a1.login_name
             left join sys_user a2 on t.update_by=a2.login_name
     </sql>
 
-    <select id="selectCompanyAreaList" parameterType="CompanyArea" resultMap="CompanyAreaResult">
-        <include refid="selectCompanyAreaVo"/>
+    <select id="selectBrandInfoList" parameterType="BrandInfo" resultMap="BrandInfoResult">
+        <include refid="selectBrandInfoVo"/>
         <where>  
-            <if test="companyAreaName != null  and companyAreaName != ''"> and t.company_area_name like concat('%', #{companyAreaName}, '%')</if>
+            <if test="brandName != null  and brandName != ''"> and t.brand_name like concat('%', #{brandName}, '%')</if>
             <if test="status != null  and status != ''"> and t.status = #{status}</if>
         </where>
     </select>
     
-    <select id="selectCompanyAreaById" parameterType="Long" resultMap="CompanyAreaResult">
-        <include refid="selectCompanyAreaVo"/>
-        where t.company_area_id = #{companyAreaId}
+    <select id="selectBrandInfoById" parameterType="Long" resultMap="BrandInfoResult">
+        <include refid="selectBrandInfoVo"/>
+        where t.brand_id = #{brandId}
     </select>
 
-    <select id="checkCompanyAreaUnique" parameterType="String" resultMap="CompanyAreaResult">
-        <include refid="selectCompanyAreaVo"/>
-        where t.company_area_name=#{companyAreaName} limit 1
+    <select id="checkBrandInfoNameUnique" parameterType="String" resultMap="BrandInfoResult">
+        <include refid="selectBrandInfoVo"/>
+        where t.brand_name=#{BrandName} limit 1
     </select>
 
-    <insert id="insertCompanyArea" parameterType="CompanyArea" useGeneratedKeys="true" keyProperty="companyAreaId">
-        insert into platf_company_area
+    <insert id="insertBrandInfo" parameterType="BrandInfo" useGeneratedKeys="true" keyProperty="brandId">
+        insert into platf_brand_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="companyAreaName != null and companyAreaName != ''">company_area_name,</if>
+            <if test="brandName != null and brandName != ''">brand_name,</if>
             <if test="docNum != null">doc_num,</if>
             <if test="status != null and status != ''">status,</if>
             <if test="remark != null">remark,</if>
@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="companyAreaName != null and companyAreaName != ''">#{companyAreaName},</if>
+            <if test="brandName != null and brandName != ''">#{brandName},</if>
             <if test="docNum != null">#{docNum},</if>
             <if test="status != null and status != ''">#{status},</if>
             <if test="remark != null">#{remark},</if>
@@ -70,10 +70,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateCompanyArea" parameterType="CompanyArea">
-        update platf_company_area
+    <update id="updateBrandInfo" parameterType="BrandInfo">
+        update platf_brand_info
         <trim prefix="SET" suffixOverrides=",">
-            <if test="companyAreaName != null and companyAreaName != ''">company_area_name = #{companyAreaName},</if>
+            <if test="brandName != null and brandName != ''">brand_name = #{brandName},</if>
             <if test="docNum != null">doc_num = #{docNum},</if>
             <if test="status != null and status != ''">status = #{status},</if>
             <if test="remark != null">remark = #{remark},</if>
@@ -83,17 +83,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where company_area_id = #{companyAreaId}
+        where brand_id = #{brandId}
     </update>
 
-    <delete id="deleteCompanyAreaById" parameterType="Long">
-        delete from platf_company_area where company_area_id = #{companyAreaId}
+    <delete id="deleteBrandInfoById" parameterType="Long">
+        delete from platf_brand_info where brand_id = #{brandId}
     </delete>
 
-    <delete id="deleteCompanyAreaByIds" parameterType="String">
-        delete from platf_company_area where company_area_id in 
-        <foreach item="companyAreaId" collection="array" open="(" separator="," close=")">
-            #{companyAreaId}
+    <delete id="deleteBrandInfoByIds" parameterType="String">
+        delete from platf_brand_info where brand_id in 
+        <foreach item="brandId" collection="array" open="(" separator="," close=")">
+            #{brandId}
         </foreach>
     </delete>
 

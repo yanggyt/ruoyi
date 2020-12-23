@@ -54,8 +54,8 @@ public class CompanyAreaServiceImpl implements ICompanyAreaService
             return BussiConstants.DOC_NAME_UNIQUE;
         }
 
-        /**
-     * 查询营业 面积列表
+        /**  
+     * 查询营业面积列表
      * 
      * @param companyArea 营业面积
      * @return 营业面积

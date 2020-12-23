@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-<th:block th:include="include :: header('新增经济类型')" />
+<th:block th:include="include :: header('新增品牌资料')" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-econtype-add">
+        <form class="form-horizontal m" id="form-brandinfo-add">
             <input type="hidden" name="createBy" id="createBy" />
             <input type="hidden" name="updateBy" id="updateBy" />
 
 
                 <div class="row mt10">
             <div class="col-sm-6">
-                <label for="econName" class="col-sm-4 control-label is-required">名称：</label>
+                <label class="col-sm-4 control-label is-required">名称：</label>
                 <div class="col-sm-8">
-                    <input id="econName" name="econName" class="form-control"  type="text" required>
+                    <input id="brandName" name="brandName" class="form-control"  type="text" required>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -47,15 +47,15 @@
         </div>
         <div class="row mt10">
             <div class="col-sm-6">
-                <label class="col-sm-4 control-label">制单人：</label>
+                <label class="col-sm-4 control-label is-required">制单人：</label>
                 <div class="col-sm-8">
-                    <input id="createByuserName" name="createByuserName" class="form-control"  readonly="readonly"  type="text">
+                    <input id="createByuserName" name="createByuserName" class="form-control"  readonly="readonly"  type="text" required>
                 </div>
             </div>
             <div class="col-sm-6">
-                <label class="col-sm-4 control-label">制单时间：</label>
+                <label class="col-sm-4 control-label is-required">制单时间：</label>
                 <div class="col-sm-8">
-                    <input id="createTime" name="createTime" class="form-control"  readonly="readonly"  type="text">
+                    <input id="createTime" name="createTime" class="form-control"  readonly="readonly"  type="text" required>
                 </div>
             </div>
         </div>
@@ -80,46 +80,46 @@
 </div>
 <th:block th:include="include :: footer" />
                                                                                                                                                                                                                                                                                                                                                             <script th:inline="javascript">
-
-    $("#createBy").val([[${user.loginName}]]);
-    $("#createByuserName").val([[${user.userName}]]);
-    $("#createTime").val
-        ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
-
-    var prefix = ctx + "platform/econtype"
-
-     $("#form-econtype-add").validate({
-         onkeyup: false,
-         rules:{
-             econName:{
-                 remote: {
-                     url: ctx + "platform/econtype/checkEconNameUnique",
-                     type: "post",
-                     dataType: "json",
-                     data: {
-                         "econName" : function() {
-                             return $.common.trim($("#econName").val());
-                         }
-                     },
-                     dataFilter: function(data, type) {
-                         return $.validate.unique(data);
-                     }
-                 }
-             },
-         },
-         messages: {
-             "econName": {
-                 remote: "名称已经存在"
-             }
-         },
-         focusCleanup: true
-      });
+    var prefix = ctx + "platform/brandinfo"
+        
+    $("#form-brandinfo-add").validate({
+        onkeyup: false,
+        rules:{
+            econName:{
+                remote: {
+                    url: prefix + "/checkBrandInfoUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "BrandName" : function() {
+                            return $.common.trim($("#BrandName").val());
+                        }
+                    },
+                    dataFilter: function(data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+        },
+        messages: {
+            "BrandName": {
+                remote: "品牌资料 名称已经存在"
+            }
+        },
+        focusCleanup: true
+    });
 
     function submitHandler() {
         if ($.validate.form()) {
-            $.operate.save(prefix + "/add", $('#form-econtype-add').serialize());
+            $.operate.save(prefix + "/add", $('#form-brandinfo-add').serialize());
         }
     }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                $("#createBy").val([[${user.loginName}]]);
+        $("#createByuserName").val([[${user.userName}]]);
+        $("#createTime").val
+        ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
+        
+</script>
 </body>
 </html>

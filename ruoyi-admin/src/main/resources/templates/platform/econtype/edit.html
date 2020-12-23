@@ -16,7 +16,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label is-required">名称：</label>
             <div class="col-sm-8">
-                <input name="econName" th:field="*{econName}" class="form-control" type="text" required>
+                <input name="econName"  th:field="*{econName}" class="form-control" type="text" required>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label">单据号：</label>
             <div class="col-sm-8">
-                <input name="docNum" th:field="*{docNum}" class="form-control" type="text">
+                <input name="docNum"  disabled  th:field="*{docNum}" class="form-control" type="text">
             </div>
         </div>
         </div>
@@ -35,7 +35,7 @@
                 <label class="col-sm-4 control-label is-required">资料状态：</label>
                 <div class="col-sm-8">
                     <div class="radio-box" th:each="dict : ${@dict.getType('platf_doc_statu')}">
-                        <input type="radio" th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:field="*{status}" required>
+                        <input type="radio"  th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:field="*{status}" required>
                         <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label">制单人：</label>
             <div class="col-sm-8">
-                <input name="createByuserName" th:field="*{createByuserName}" class="form-control" type="text">
+                <input name="createByuserName"  disabled  th:field="*{createByuserName}" class="form-control" type="text">
             </div>
         </div>
 
@@ -67,7 +67,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label">制单时间：</label>
             <div class="col-sm-8">
-                <input name="createTime" th:field="*{createTime}" class="form-control" type="text">
+                <input name="createTime"  disabled  th:value="${#dates.format(econType.createTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
             </div>
         </div>
         </div>
@@ -77,7 +77,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label">修改人：</label>
             <div class="col-sm-8">
-                <input name="updateByuserName" th:field="*{updateByuserName}" class="form-control" type="text">
+                <input name="updateByuserName"  disabled  th:field="*{updateByuserName}" class="form-control" type="text">
             </div>
         </div>
 
@@ -85,7 +85,7 @@
         <div class="col-sm-6">
             <label class="col-sm-4 control-label">修改时间：</label>
             <div class="col-sm-8">
-                <input name="updateTime" th:field="*{updateTime}" class="form-control" type="text">
+                <input name="updateTime"  disabled  th:value="${#dates.format(econType.updateTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
             </div>
         </div>
         </div>
@@ -94,14 +94,31 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-
-        $("#updateBy").val([[${user.loginName}]]);
-        $("#updateByuserName").val([[${user.userName}]]);
-        $("#updateTime").val
-        ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
-
         var prefix = ctx + "platform/econtype";
         $("#form-econtype-edit").validate({
+            onkeyup: false,
+            rules:{
+                econName:{
+                    remote: {
+                        url: prefix + "/checkEconTypeUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "EconName" : function() {
+                                return $.common.trim($("#EconName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+            },
+            messages: {
+                "EconName": {
+                    remote: "经济类型 名称已经存在"
+                }
+            },
             focusCleanup: true
         });
 
@@ -110,6 +127,8 @@
                 $.operate.save(prefix + "/edit", $('#form-econtype-edit').serialize());
             }
         }
+
+
     </script>
 </body>
 </html>

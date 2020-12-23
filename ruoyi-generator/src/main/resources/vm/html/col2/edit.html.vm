@@ -111,12 +111,6 @@
 #end
 #end
     <script th:inline="javascript">
-#if($createByColumn)
-        $("#updateBy").val([[${user.loginName}]]);
-        $("#updateByuserName").val([[${user.userName}]]);
-        $("#updateTime").val
-        ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
-#end
         var prefix = ctx + "${moduleName}/${businessName}";
 #if($table.sub)
 #foreach($column in $subTable.columns)
@@ -336,6 +330,15 @@
             });
         }
 #end
+
+#*
+#if($createByColumn)
+$("#updateBy").val([[${user.loginName}]]);
+$("#updateByuserName").val([[${user.userName}]]);
+$("#updateTime").val
+( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
+#end
+*#
     </script>
 </body>
 </html>
