@@ -5,7 +5,7 @@ package com.ruoyi.common.constant;
  * 
  * @author ruoyi
  */
-public interface ShiroConstants
+public class ShiroConstants
 {
     /**
      * 当前登录的用户
@@ -13,29 +13,34 @@ public interface ShiroConstants
     public static final String CURRENT_USER = "currentUser";
 
     /**
-     * 用户名
+     * 用户名字段
      */
     public static final String CURRENT_USERNAME = "username";
 
     /**
+     * 锁定屏幕字段
+     */
+    public static final String LOCK_SCREEN = "lockscreen";
+
+    /**
      * 消息key
      */
-    public static String MESSAGE = "message";
+    public static final String MESSAGE = "message";
 
     /**
      * 错误key
      */
-    public static String ERROR = "errorMsg";
+    public static final String ERROR = "errorMsg";
 
     /**
      * 编码格式
      */
-    public static String ENCODING = "UTF-8";
+    public static final String ENCODING = "UTF-8";
 
     /**
      * 当前在线会话
      */
-    public String ONLINE_SESSION = "online_session";
+    public static final String ONLINE_SESSION = "online_session";
 
     /**
      * 验证码key

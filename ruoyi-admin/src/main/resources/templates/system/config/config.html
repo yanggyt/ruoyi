@@ -50,9 +50,12 @@
 		        <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:config:export">
 		            <i class="fa fa-download"></i> 导出
 		        </a>
+		        <a class="btn btn-danger" onclick="clearCache()" shiro:hasPermission="system:config:remove">
+		            <i class="fa fa-refresh"></i> 清理缓存
+		        </a>
 	        </div>
 	        <div class="col-sm-12 select-table table-striped">
-	            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+	            <table id="bootstrap-table"></table>
 	        </div>
 	    </div>
 	</div>
@@ -70,8 +73,8 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                sortName: "createTime",
-		        sortOrder: "desc",
+                sortName: "configId",
+		        sortOrder: "asc",
                 modalName: "参数",
                 columns: [{
                     checkbox: true
@@ -82,11 +85,17 @@
                 },
                 {
                     field: 'configName',
-                    title: '参数名称'
+                    title: '参数名称',
+                    formatter: function(value, row, index) {
+                    	return $.table.tooltip(value);
+                    }
                 },
                 {
                     field: 'configKey',
-                    title: '参数键名'
+                    title: '参数键名',
+                    formatter: function(value, row, index) {
+                    	return $.table.tooltip(value);
+                    }
                 },
                 {
                     field: 'configValue',
@@ -105,7 +114,7 @@
                     title: '备注',
                     align: 'center',
                     formatter: function(value, row, index) {
-                    	return $.table.tooltip(value);
+                    	return $.table.tooltip(value, 10, "open");
                     }
                 },
                 {
@@ -125,6 +134,11 @@
             };
             $.table.init(options);
         });
+        
+        /** 清理参数缓存 */
+        function clearCache() {
+            $.operate.get(prefix + "/clearCache");
+        }
     </script>
 </body>
 </html>

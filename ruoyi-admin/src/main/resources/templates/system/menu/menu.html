@@ -72,7 +72,8 @@
                  {
 		            title: '菜单名称',
 		            field: 'menuName',
-		            width: '20%',
+		            width: '20',
+		            widthUnit: '%',
 		            formatter: function(value, row, index) {
 		                if ($.common.isEmpty(row.icon)) {
 		                    return row.menuName;
@@ -84,19 +85,25 @@
 		        {
 		            field: 'orderNum',
 		            title: '排序',
-		            width: '10%',
+		            width: '10',
+		            widthUnit: '%',
 		            align: "left"
 		        },
 		        {
 		            field: 'url',
 		            title: '请求地址',
-		            width: '15%',
-		            align: "left"
+		            width: '15',
+		            widthUnit: '%',
+		            align: "left",
+		            formatter: function(value, row, index) {
+                    	return $.table.tooltip(value);
+                    }
 		        },
 		        {
 		            title: '类型',
 		            field: 'menuType',
-		            width: '10%',
+		            width: '10',
+		            widthUnit: '%',
 		            align: "left",
 		            formatter: function(value, item, index) {
 		                if (item.menuType == 'M') {
@@ -113,21 +120,30 @@
 		        {
 		            field: 'visible',
 		            title: '可见',
-		            width: '10%',
+		            width: '10',
+		            widthUnit: '%',
 		            align: "left",
 		            formatter: function(value, row, index) {
+		            	if (row.menuType == 'F') {
+		                    return '-';
+		                }
 		            	return $.table.selectDictLabel(datas, row.visible);
 		            }
 		        },
 		        {
 		            field: 'perms',
 		            title: '权限标识',
-		            width: '15%',
+		            width: '15',
+		            widthUnit: '%',
 		            align: "left",
+		            formatter: function(value, row, index) {
+                    	return $.table.tooltip(value);
+                    }
 		        },
 		        {
 		            title: '操作',
-		            width: '20%',
+		            width: '20',
+		            widthUnit: '%',
 		            align: "left",
 		            formatter: function(value, row, index) {
 		                var actions = [];

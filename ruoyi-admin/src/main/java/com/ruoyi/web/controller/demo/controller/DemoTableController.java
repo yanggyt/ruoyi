@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -141,6 +142,16 @@ public class DemoTableController extends BaseController
     }
 
     /**
+     * 直接加载表格数据
+     */
+    @GetMapping("/data")
+    public String data(ModelMap mmap)
+    {
+        mmap.put("users", users);
+        return prefix + "/data";
+    }
+
+    /**
      * 表格冻结列
      */
     @GetMapping("/fixedColumns")
@@ -168,6 +179,15 @@ public class DemoTableController extends BaseController
     }
 
     /**
+     * 表格父子视图
+     */
+    @GetMapping("/child")
+    public String child()
+    {
+        return prefix + "/child";
+    }
+
+    /**
      * 表格图片预览
      */
     @GetMapping("/image")
@@ -192,6 +212,60 @@ public class DemoTableController extends BaseController
     public String reorder()
     {
         return prefix + "/reorder";
+    }
+
+    /**
+     * 表格列宽拖动
+     */
+    @GetMapping("/resizable")
+    public String resizable()
+    {
+        return prefix + "/resizable";
+    }
+
+    /**
+     * 表格行内编辑操作
+     */
+    @GetMapping("/editable")
+    public String editable()
+    {
+        return prefix + "/editable";
+    }
+
+    /**
+     * 主子表提交
+     */
+    @GetMapping("/subdata")
+    public String subdata()
+    {
+        return prefix + "/subdata";
+    }
+
+    /**
+     * 表格自动刷新
+     */
+    @GetMapping("/refresh")
+    public String refresh()
+    {
+        return prefix + "/refresh";
+    }
+
+    /**
+     * 表格打印配置
+     */
+    @GetMapping("/print")
+    public String print()
+    {
+        return prefix + "/print";
+    }
+
+    /**
+     * 表格标题格式化
+     */
+    @GetMapping("/headerStyle")
+    public String headerStyle()
+    {
+        return prefix + "/headerStyle";
     }
 
     /**

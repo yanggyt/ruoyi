@@ -21,6 +21,7 @@ import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.web.controller.demo.domain.CustomerModel;
 import com.ruoyi.web.controller.demo.domain.UserOperateModel;
 
 /**
@@ -103,6 +104,17 @@ public class DemoOperateController extends BaseController
                 }
             }
         }
+        else if (StringUtils.isNotEmpty(userModel.getUserName()))
+        {
+            userList.clear();
+            for (Map.Entry<Integer, UserOperateModel> entry : users.entrySet())
+            {
+                if (entry.getValue().getUserName().equals(userModel.getUserName()))
+                {
+                    userList.add(entry.getValue());
+                }
+            }
+        }
         PageDomain pageDomain = TableSupport.buildPageRequest();
         if (null == pageDomain.getPageNum() || null == pageDomain.getPageSize())
         {
@@ -140,6 +152,17 @@ public class DemoOperateController extends BaseController
         Integer userId = users.size() + 1;
         user.setUserId(userId);
         return AjaxResult.success(users.put(userId, user));
+    }
+
+    /**
+     * 新增保存主子表信息
+     */
+    @PostMapping("/customer/add")
+    @ResponseBody
+    public AjaxResult addSave(CustomerModel customerModel)
+    {
+        System.out.println(customerModel.toString());
+        return AjaxResult.success();
     }
 
     /**

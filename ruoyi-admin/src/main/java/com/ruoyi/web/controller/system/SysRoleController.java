@@ -15,12 +15,13 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.framework.util.ShiroUtils;
-import com.ruoyi.system.domain.SysRole;
-import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.framework.shiro.util.AuthorizationUtils;
 import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
@@ -97,7 +98,7 @@ public class SysRoleController extends BaseController
             return error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setCreateBy(ShiroUtils.getLoginName());
-        ShiroUtils.clearCachedAuthorizationInfo();
+        AuthorizationUtils.clearAllCachedAuthorizationInfo();
         return toAjax(roleService.insertRole(role));
 
     }
@@ -121,6 +122,7 @@ public class SysRoleController extends BaseController
     @ResponseBody
     public AjaxResult editSave(@Validated SysRole role)
     {
+        roleService.checkRoleAllowed(role);
         if (UserConstants.ROLE_NAME_NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
         {
             return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
@@ -130,7 +132,7 @@ public class SysRoleController extends BaseController
             return error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setUpdateBy(ShiroUtils.getLoginName());
-        ShiroUtils.clearCachedAuthorizationInfo();
+        AuthorizationUtils.clearAllCachedAuthorizationInfo();
         return toAjax(roleService.updateRole(role));
     }
 
@@ -153,6 +155,7 @@ public class SysRoleController extends BaseController
     @ResponseBody
     public AjaxResult authDataScopeSave(SysRole role)
     {
+        roleService.checkRoleAllowed(role);
         role.setUpdateBy(ShiroUtils.getLoginName());
         if (roleService.authDataScope(role) > 0)
         {
@@ -168,14 +171,7 @@ public class SysRoleController extends BaseController
     @ResponseBody
     public AjaxResult remove(String ids)
     {
-        try
-        {
-            return toAjax(roleService.deleteRoleByIds(ids));
-        }
-        catch (Exception e)
-        {
-            return error(e.getMessage());
-        }
+        return toAjax(roleService.deleteRoleByIds(ids));
     }
 
     /**
@@ -216,6 +212,7 @@ public class SysRoleController extends BaseController
     @ResponseBody
     public AjaxResult changeStatus(SysRole role)
     {
+        roleService.checkRoleAllowed(role);
         return toAjax(roleService.changeStatus(role));
     }
 

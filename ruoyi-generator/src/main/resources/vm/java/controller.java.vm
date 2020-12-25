@@ -1,4 +1,4 @@
-package ${basePackage}.web.controller.${moduleName};
+package ${packageName}.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,7 +17,7 @@ import ${packageName}.service.I${ClassName}Service;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-#if($table.crud)
+#if($table.crud || $table.sub)
 import com.ruoyi.common.core.page.TableDataInfo;
 #elseif($table.tree)
 import com.ruoyi.common.utils.StringUtils;
@@ -46,19 +46,7 @@ public class ${ClassName}Controller extends BaseController
         return prefix + "/${businessName}";
     }
 
-#if($table.tree)
-    /**
-     * 查询${functionName}树列表
-     */
-    @RequiresPermissions("${permissionPrefix}:list")
-    @PostMapping("/list")
-    @ResponseBody
-    public List<${ClassName}> list(${ClassName} ${className})
-    {
-        List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
-        return list;
-    }
-#elseif($table.crud)
+#if($table.crud || $table.sub)
     /**
      * 查询${functionName}列表
      */
@@ -71,12 +59,25 @@ public class ${ClassName}Controller extends BaseController
         List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
         return getDataTable(list);
     }
+#elseif($table.tree)
+    /**
+     * 查询${functionName}树列表
+     */
+    @RequiresPermissions("${permissionPrefix}:list")
+    @PostMapping("/list")
+    @ResponseBody
+    public List<${ClassName}> list(${ClassName} ${className})
+    {
+        List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
+        return list;
+    }
 #end
 
     /**
      * 导出${functionName}列表
      */
     @RequiresPermissions("${permissionPrefix}:export")
+    @Log(title = "${functionName}", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(${ClassName} ${className})
@@ -86,7 +87,7 @@ public class ${ClassName}Controller extends BaseController
         return util.exportExcel(list, "${businessName}");
     }
 
-#if($table.crud)
+#if($table.crud || $table.sub)
     /**
      * 新增${functionName}
      */
@@ -145,7 +146,7 @@ public class ${ClassName}Controller extends BaseController
         return toAjax(${className}Service.update${ClassName}(${className}));
     }
 
-#if($table.crud)
+#if($table.crud || $table.sub)
     /**
      * 删除${functionName}
      */

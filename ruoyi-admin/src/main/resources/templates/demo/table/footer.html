@@ -7,7 +7,7 @@
      <div class="container-div">
 		<div class="row">
 			<div class="col-sm-12 select-table table-striped">
-				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+				<table id="bootstrap-table"></table>
 			</div>
 		</div>
 	</div>
@@ -24,6 +24,7 @@
 		        showRefresh: false,
 		        showToggle: false,
 		        showColumns: false,
+		        footerStyle: footerStyle,
                 columns: [{
 		            checkbox: true
 		        },
@@ -78,6 +79,17 @@
             };
             $.table.init(options);
         });
+        
+        function footerStyle(column) {
+        	return {
+//         	    userBalance: {
+//         	        classes: 'class'
+//         	    },
+        	    userBalance: {
+        	        css: { color: 'red', 'font-weight': 'normal' }
+        	    }
+        	}[column.field]
+          }
     </script>
 </body>
 </html>
