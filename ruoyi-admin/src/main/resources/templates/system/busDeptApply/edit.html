@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改企业入驻申请')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-busDeptApply-edit" th:object="${busDeptApply}">
+            <input id="applyId" name="applyId" th:field="*{applyId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请类型（企业注册/企业迁址）：</label>
+				<div class="col-sm-8">
+					<input id="applyType" name="applyType" th:field="*{applyType}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">企业名称：</label>
+				<div class="col-sm-8">
+					<input id="deptName" name="deptName" th:field="*{deptName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">行业：</label>
+				<div class="col-sm-8">
+					<input id="business" name="business" th:field="*{business}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">企业经营范围：</label>
+				<div class="col-sm-8">
+					<input id="deptScope" name="deptScope" th:field="*{deptScope}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">企业类型：</label>
+				<div class="col-sm-8">
+					<input id="deptType" name="deptType" th:field="*{deptType}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">企业链接：</label>
+				<div class="col-sm-8">
+					<input id="deptAddress" name="deptAddress" th:field="*{deptAddress}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">企业联系电话：</label>
+				<div class="col-sm-8">
+					<input id="deptPhone" name="deptPhone" th:field="*{deptPhone}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">法人信息(姓名、性别、政治面貌、固定电话、手机号码等)：</label>
+				<div class="col-sm-8">
+					<input id="legalConfig" name="legalConfig" th:field="*{legalConfig}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">企业工作人员信息列表（姓名、性别、手机号码、车牌号等）：</label>
+				<div class="col-sm-8">
+					<input id="deptUsers" name="deptUsers" th:field="*{deptUsers}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">工商注册号：</label>
+				<div class="col-sm-8">
+					<input id="regCode" name="regCode" th:field="*{regCode}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">统一社会信用代码：</label>
+				<div class="col-sm-8">
+					<input id="creditCode" name="creditCode" th:field="*{creditCode}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">组织机构代码：</label>
+				<div class="col-sm-8">
+					<input id="orgCode" name="orgCode" th:field="*{orgCode}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">纳税人识别号：</label>
+				<div class="col-sm-8">
+					<input id="taxpayerCode" name="taxpayerCode" th:field="*{taxpayerCode}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">纳税人资质：</label>
+				<div class="col-sm-8">
+					<input id="taxpayerQua" name="taxpayerQua" th:field="*{taxpayerQua}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="createTime" name="createTime" th:field="*{createTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核状态（00待审核/01已通过/99未通过）：</label>
+				<div class="col-sm-8">
+					<input id="status" name="status" th:field="*{status}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核人id：</label>
+				<div class="col-sm-8">
+					<input id="auditUserId" name="auditUserId" th:field="*{auditUserId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核人名称：</label>
+				<div class="col-sm-8">
+					<input id="auditUserName" name="auditUserName" th:field="*{auditUserName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核时间：</label>
+				<div class="col-sm-8">
+					<input id="auditTime" name="auditTime" th:field="*{auditTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核意见：</label>
+				<div class="col-sm-8">
+					<input id="auditRemark" name="auditRemark" th:field="*{auditRemark}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/busDeptApply";
+		$("#form-busDeptApply-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-busDeptApply-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

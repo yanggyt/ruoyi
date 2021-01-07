@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusUserMessageMapper">
+    
+    <resultMap type="BusUserMessage" id="BusUserMessageResult">
+        <result property="messageId"    column="message_id"    />
+        <result property="messageType"    column="message_type"    />
+        <result property="content"    column="content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="receiveUserId"    column="receive_user_id"    />
+        <result property="receiveUserName"    column="receive_user_name"    />
+        <result property="publishUserId"    column="publish_user_id"    />
+        <result property="publishUserName"    column="publish_user_name"    />
+    </resultMap>
+	
+	<sql id="selectBusUserMessageVo">
+        select message_id, message_type, content, create_time, receive_user_id, receive_user_name, publish_user_id, publish_user_name from bus_user_message
+    </sql>
+	
+    <select id="selectBusUserMessageList" parameterType="BusUserMessage" resultMap="BusUserMessageResult">
+        <include refid="selectBusUserMessageVo"/>
+        <where>  
+            <if test="messageId != null "> and message_id = #{messageId}</if>
+             <if test="messageType != null  and messageType != '' "> and message_type = #{messageType}</if>
+             <if test="content != null  and content != '' "> and content = #{content}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="receiveUserId != null "> and receive_user_id = #{receiveUserId}</if>
+             <if test="receiveUserName != null  and receiveUserName != '' "> and receive_user_name = #{receiveUserName}</if>
+             <if test="publishUserId != null "> and publish_user_id = #{publishUserId}</if>
+             <if test="publishUserName != null  and publishUserName != '' "> and publish_user_name = #{publishUserName}</if>
+         </where>
+    </select>
+    
+    <select id="selectBusUserMessageById" parameterType="Long" resultMap="BusUserMessageResult">
+        <include refid="selectBusUserMessageVo"/>
+        where message_id = #{messageId}
+    </select>
+        
+    <insert id="insertBusUserMessage" parameterType="BusUserMessage" useGeneratedKeys="true" keyProperty="messageId">
+        insert into bus_user_message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="messageType != null  and messageType != ''  ">message_type,</if>
+			<if test="content != null  and content != ''  ">content,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="receiveUserId != null  ">receive_user_id,</if>
+			<if test="receiveUserName != null  and receiveUserName != ''  ">receive_user_name,</if>
+			<if test="publishUserId != null  ">publish_user_id,</if>
+			<if test="publishUserName != null  and publishUserName != ''  ">publish_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="messageType != null  and messageType != ''  ">#{messageType},</if>
+			<if test="content != null  and content != ''  ">#{content},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="receiveUserId != null  ">#{receiveUserId},</if>
+			<if test="receiveUserName != null  and receiveUserName != ''  ">#{receiveUserName},</if>
+			<if test="publishUserId != null  ">#{publishUserId},</if>
+			<if test="publishUserName != null  and publishUserName != ''  ">#{publishUserName},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateBusUserMessage" parameterType="BusUserMessage">
+        update bus_user_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="messageType != null  and messageType != ''  ">message_type = #{messageType},</if>
+            <if test="content != null  and content != ''  ">content = #{content},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="receiveUserId != null  ">receive_user_id = #{receiveUserId},</if>
+            <if test="receiveUserName != null  and receiveUserName != ''  ">receive_user_name = #{receiveUserName},</if>
+            <if test="publishUserId != null  ">publish_user_id = #{publishUserId},</if>
+            <if test="publishUserName != null  and publishUserName != ''  ">publish_user_name = #{publishUserName},</if>
+        </trim>
+        where message_id = #{messageId}
+    </update>
+
+	<delete id="deleteBusUserMessageById" parameterType="Long">
+        delete from bus_user_message where message_id = #{messageId}
+    </delete>
+	
+    <delete id="deleteBusUserMessageByIds" parameterType="String">
+        delete from bus_user_message where message_id in 
+        <foreach item="messageId" collection="array" open="(" separator="," close=")">
+            #{messageId}
+        </foreach>
+    </delete>
+    
+</mapper>

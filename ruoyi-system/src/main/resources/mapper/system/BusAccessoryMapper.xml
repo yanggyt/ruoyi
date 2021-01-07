@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusAccessoryMapper">
+    
+    <resultMap type="BusAccessory" id="BusAccessoryResult">
+        <result property="accessoryId"    column="accessory_id"    />
+        <result property="accessoryType"    column="accessory_type"    />
+        <result property="accessoryName"    column="accessory_name"    />
+        <result property="address"    column="address"    />
+        <result property="size"    column="size"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="relevancyId"    column="relevancy_id"    />
+        <result property="relevancyType"    column="relevancy_type"    />
+    </resultMap>
+	
+	<sql id="selectBusAccessoryVo">
+        select accessory_id, accessory_type, accessory_name, address, size, create_time, relevancy_id, relevancy_type from bus_accessory
+    </sql>
+	
+    <select id="selectBusAccessoryList" parameterType="BusAccessory" resultMap="BusAccessoryResult">
+        <include refid="selectBusAccessoryVo"/>
+        <where>  
+            <if test="accessoryId != null "> and accessory_id = #{accessoryId}</if>
+             <if test="accessoryType != null  and accessoryType != '' "> and accessory_type = #{accessoryType}</if>
+             <if test="accessoryName != null  and accessoryName != '' "> and accessory_name = #{accessoryName}</if>
+             <if test="address != null  and address != '' "> and address = #{address}</if>
+             <if test="size != null "> and size = #{size}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="relevancyId != null "> and relevancy_id = #{relevancyId}</if>
+             <if test="relevancyType != null  and relevancyType != '' "> and relevancy_type = #{relevancyType}</if>
+         </where>
+    </select>
+    
+    <select id="selectBusAccessoryById" parameterType="Long" resultMap="BusAccessoryResult">
+        <include refid="selectBusAccessoryVo"/>
+        where accessory_id = #{accessoryId}
+    </select>
+        
+    <insert id="insertBusAccessory" parameterType="BusAccessory" useGeneratedKeys="true" keyProperty="accessoryId">
+        insert into bus_accessory
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="accessoryType != null  and accessoryType != ''  ">accessory_type,</if>
+			<if test="accessoryName != null  and accessoryName != ''  ">accessory_name,</if>
+			<if test="address != null  and address != ''  ">address,</if>
+			<if test="size != null  ">size,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="relevancyId != null  ">relevancy_id,</if>
+			<if test="relevancyType != null  and relevancyType != ''  ">relevancy_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="accessoryType != null  and accessoryType != ''  ">#{accessoryType},</if>
+			<if test="accessoryName != null  and accessoryName != ''  ">#{accessoryName},</if>
+			<if test="address != null  and address != ''  ">#{address},</if>
+			<if test="size != null  ">#{size},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="relevancyId != null  ">#{relevancyId},</if>
+			<if test="relevancyType != null  and relevancyType != ''  ">#{relevancyType},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateBusAccessory" parameterType="BusAccessory">
+        update bus_accessory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="accessoryType != null  and accessoryType != ''  ">accessory_type = #{accessoryType},</if>
+            <if test="accessoryName != null  and accessoryName != ''  ">accessory_name = #{accessoryName},</if>
+            <if test="address != null  and address != ''  ">address = #{address},</if>
+            <if test="size != null  ">size = #{size},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="relevancyId != null  ">relevancy_id = #{relevancyId},</if>
+            <if test="relevancyType != null  and relevancyType != ''  ">relevancy_type = #{relevancyType},</if>
+        </trim>
+        where accessory_id = #{accessoryId}
+    </update>
+
+	<delete id="deleteBusAccessoryById" parameterType="Long">
+        delete from bus_accessory where accessory_id = #{accessoryId}
+    </delete>
+	
+    <delete id="deleteBusAccessoryByIds" parameterType="String">
+        delete from bus_accessory where accessory_id in 
+        <foreach item="accessoryId" collection="array" open="(" separator="," close=")">
+            #{accessoryId}
+        </foreach>
+    </delete>
+    
+</mapper>

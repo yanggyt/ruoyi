@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusReqCommentMapper">
+    
+    <resultMap type="BusReqComment" id="BusReqCommentResult">
+        <result property="commentId"    column="comment_id"    />
+        <result property="reqId"    column="req_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="content"    column="content"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+	
+	<sql id="selectBusReqCommentVo">
+        select comment_id, req_id, user_id, user_name, content, create_time from bus_req_comment
+    </sql>
+	
+    <select id="selectBusReqCommentList" parameterType="BusReqComment" resultMap="BusReqCommentResult">
+        <include refid="selectBusReqCommentVo"/>
+        <where>  
+            <if test="commentId != null "> and comment_id = #{commentId}</if>
+             <if test="reqId != null "> and req_id = #{reqId}</if>
+             <if test="userId != null "> and user_id = #{userId}</if>
+             <if test="userName != null  and userName != '' "> and user_name = #{userName}</if>
+             <if test="content != null  and content != '' "> and content = #{content}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectBusReqCommentById" parameterType="Long" resultMap="BusReqCommentResult">
+        <include refid="selectBusReqCommentVo"/>
+        where comment_id = #{commentId}
+    </select>
+        
+    <insert id="insertBusReqComment" parameterType="BusReqComment" useGeneratedKeys="true" keyProperty="commentId">
+        insert into bus_req_comment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="reqId != null  ">req_id,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="userName != null  and userName != ''  ">user_name,</if>
+			<if test="content != null  and content != ''  ">content,</if>
+			<if test="createTime != null  ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="reqId != null  ">#{reqId},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="userName != null  and userName != ''  ">#{userName},</if>
+			<if test="content != null  and content != ''  ">#{content},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateBusReqComment" parameterType="BusReqComment">
+        update bus_req_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reqId != null  ">req_id = #{reqId},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="userName != null  and userName != ''  ">user_name = #{userName},</if>
+            <if test="content != null  and content != ''  ">content = #{content},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+        </trim>
+        where comment_id = #{commentId}
+    </update>
+
+	<delete id="deleteBusReqCommentById" parameterType="Long">
+        delete from bus_req_comment where comment_id = #{commentId}
+    </delete>
+	
+    <delete id="deleteBusReqCommentByIds" parameterType="String">
+        delete from bus_req_comment where comment_id in 
+        <foreach item="commentId" collection="array" open="(" separator="," close=")">
+            #{commentId}
+        </foreach>
+    </delete>
+    
+</mapper>

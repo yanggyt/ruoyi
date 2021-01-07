@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改资源需求')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-busReq-edit" th:object="${busReq}">
+            <input id="reqId" name="reqId" th:field="*{reqId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">需求类型：</label>
+				<div class="col-sm-8">
+					<input id="reqType" name="reqType" th:field="*{reqType}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">需求名称：</label>
+				<div class="col-sm-8">
+					<input id="reqName" name="reqName" th:field="*{reqName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">需求级别：</label>
+				<div class="col-sm-8">
+					<input id="classes" name="classes" th:field="*{classes}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">需求标签：</label>
+				<div class="col-sm-8">
+					<input id="label" name="label" th:field="*{label}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">需求描述：</label>
+				<div class="col-sm-8">
+					<input id="content" name="content" th:field="*{content}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">需求状态（00待发布/01已发布/02处理中/03验收中/04已完成/00已屏蔽）：</label>
+				<div class="col-sm-8">
+					<input id="status" name="status" th:field="*{status}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发布企业：</label>
+				<div class="col-sm-8">
+					<input id="publishDeptId" name="publishDeptId" th:field="*{publishDeptId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发布人id：</label>
+				<div class="col-sm-8">
+					<input id="publishUserId" name="publishUserId" th:field="*{publishUserId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发布人名称：</label>
+				<div class="col-sm-8">
+					<input id="publishUserName" name="publishUserName" th:field="*{publishUserName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="createTime" name="createTime" th:field="*{createTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">接收企业：</label>
+				<div class="col-sm-8">
+					<input id="receiveDeptId" name="receiveDeptId" th:field="*{receiveDeptId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">接收人id：</label>
+				<div class="col-sm-8">
+					<input id="receiveUserId" name="receiveUserId" th:field="*{receiveUserId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">接收人名称：</label>
+				<div class="col-sm-8">
+					<input id="receiveUserName" name="receiveUserName" th:field="*{receiveUserName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">接收时间：</label>
+				<div class="col-sm-8">
+					<input id="receiveTime" name="receiveTime" th:field="*{receiveTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改时间：</label>
+				<div class="col-sm-8">
+					<input id="updateTime" name="updateTime" th:field="*{updateTime}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/busReq";
+		$("#form-busReq-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-busReq-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

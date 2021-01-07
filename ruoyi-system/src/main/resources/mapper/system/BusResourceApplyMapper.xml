@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusResourceApplyMapper">
+    
+    <resultMap type="BusResourceApply" id="BusResourceApplyResult">
+        <result property="applyId"    column="apply_id"    />
+        <result property="resourceId"    column="resource_id"    />
+        <result property="status"    column="status"    />
+        <result property="applyUserId"    column="apply_user_id"    />
+        <result property="applyUserName"    column="apply_user_name"    />
+        <result property="applyTime"    column="apply_time"    />
+        <result property="applyRemark"    column="apply_remark"    />
+        <result property="auditUserId"    column="audit_user_id"    />
+        <result property="auditUserName"    column="audit_user_name"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditRemark"    column="audit_remark"    />
+    </resultMap>
+	
+	<sql id="selectBusResourceApplyVo">
+        select apply_id, resource_id, status, apply_user_id, apply_user_name, apply_time, apply_remark, audit_user_id, audit_user_name, audit_time, audit_remark from bus_resource_apply
+    </sql>
+	
+    <select id="selectBusResourceApplyList" parameterType="BusResourceApply" resultMap="BusResourceApplyResult">
+        <include refid="selectBusResourceApplyVo"/>
+        <where>  
+            <if test="applyId != null "> and apply_id = #{applyId}</if>
+             <if test="resourceId != null "> and resource_id = #{resourceId}</if>
+             <if test="status != null  and status != '' "> and status = #{status}</if>
+             <if test="applyUserId != null "> and apply_user_id = #{applyUserId}</if>
+             <if test="applyUserName != null  and applyUserName != '' "> and apply_user_name = #{applyUserName}</if>
+             <if test="applyTime != null "> and apply_time = #{applyTime}</if>
+             <if test="applyRemark != null  and applyRemark != '' "> and apply_remark = #{applyRemark}</if>
+             <if test="auditUserId != null "> and audit_user_id = #{auditUserId}</if>
+             <if test="auditUserName != null  and auditUserName != '' "> and audit_user_name = #{auditUserName}</if>
+             <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+             <if test="auditRemark != null  and auditRemark != '' "> and audit_remark = #{auditRemark}</if>
+         </where>
+    </select>
+    
+    <select id="selectBusResourceApplyById" parameterType="Long" resultMap="BusResourceApplyResult">
+        <include refid="selectBusResourceApplyVo"/>
+        where apply_id = #{applyId}
+    </select>
+        
+    <insert id="insertBusResourceApply" parameterType="BusResourceApply" useGeneratedKeys="true" keyProperty="applyId">
+        insert into bus_resource_apply
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="resourceId != null  ">resource_id,</if>
+			<if test="status != null  and status != ''  ">status,</if>
+			<if test="applyUserId != null  ">apply_user_id,</if>
+			<if test="applyUserName != null  and applyUserName != ''  ">apply_user_name,</if>
+			<if test="applyTime != null  ">apply_time,</if>
+			<if test="applyRemark != null  and applyRemark != ''  ">apply_remark,</if>
+			<if test="auditUserId != null  ">audit_user_id,</if>
+			<if test="auditUserName != null  and auditUserName != ''  ">audit_user_name,</if>
+			<if test="auditTime != null  ">audit_time,</if>
+			<if test="auditRemark != null  and auditRemark != ''  ">audit_remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="resourceId != null  ">#{resourceId},</if>
+			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="applyUserId != null  ">#{applyUserId},</if>
+			<if test="applyUserName != null  and applyUserName != ''  ">#{applyUserName},</if>
+			<if test="applyTime != null  ">#{applyTime},</if>
+			<if test="applyRemark != null  and applyRemark != ''  ">#{applyRemark},</if>
+			<if test="auditUserId != null  ">#{auditUserId},</if>
+			<if test="auditUserName != null  and auditUserName != ''  ">#{auditUserName},</if>
+			<if test="auditTime != null  ">#{auditTime},</if>
+			<if test="auditRemark != null  and auditRemark != ''  ">#{auditRemark},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateBusResourceApply" parameterType="BusResourceApply">
+        update bus_resource_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="resourceId != null  ">resource_id = #{resourceId},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="applyUserId != null  ">apply_user_id = #{applyUserId},</if>
+            <if test="applyUserName != null  and applyUserName != ''  ">apply_user_name = #{applyUserName},</if>
+            <if test="applyTime != null  ">apply_time = #{applyTime},</if>
+            <if test="applyRemark != null  and applyRemark != ''  ">apply_remark = #{applyRemark},</if>
+            <if test="auditUserId != null  ">audit_user_id = #{auditUserId},</if>
+            <if test="auditUserName != null  and auditUserName != ''  ">audit_user_name = #{auditUserName},</if>
+            <if test="auditTime != null  ">audit_time = #{auditTime},</if>
+            <if test="auditRemark != null  and auditRemark != ''  ">audit_remark = #{auditRemark},</if>
+        </trim>
+        where apply_id = #{applyId}
+    </update>
+
+	<delete id="deleteBusResourceApplyById" parameterType="Long">
+        delete from bus_resource_apply where apply_id = #{applyId}
+    </delete>
+	
+    <delete id="deleteBusResourceApplyByIds" parameterType="String">
+        delete from bus_resource_apply where apply_id in 
+        <foreach item="applyId" collection="array" open="(" separator="," close=")">
+            #{applyId}
+        </foreach>
+    </delete>
+    
+</mapper>
