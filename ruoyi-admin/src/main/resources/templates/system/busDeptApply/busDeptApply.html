@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('企业入驻申请列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								申请类型（企业注册/企业迁址）：<input type="text" name="applyType"/>
+							</li>
+
+							<li>
+								企业名称：<input type="text" name="deptName"/>
+							</li>
+
+							<li>
+								行业：<input type="text" name="business"/>
+							</li>
+
+							<li>
+								企业经营范围：<input type="text" name="deptScope"/>
+							</li>
+
+							<li>
+								企业类型：<input type="text" name="deptType"/>
+							</li>
+
+							<li>
+								企业链接：<input type="text" name="deptAddress"/>
+							</li>
+
+							<li>
+								企业联系电话：<input type="text" name="deptPhone"/>
+							</li>
+
+							<li>
+								法人信息(姓名、性别、政治面貌、固定电话、手机号码等)：<input type="text" name="legalConfig"/>
+							</li>
+
+							<li>
+								企业工作人员信息列表（姓名、性别、手机号码、车牌号等）：<input type="text" name="deptUsers"/>
+							</li>
+
+							<li>
+								工商注册号：<input type="text" name="regCode"/>
+							</li>
+
+							<li>
+								统一社会信用代码：<input type="text" name="creditCode"/>
+							</li>
+
+							<li>
+								组织机构代码：<input type="text" name="orgCode"/>
+							</li>
+
+							<li>
+								纳税人识别号：<input type="text" name="taxpayerCode"/>
+							</li>
+
+							<li>
+								纳税人资质：<input type="text" name="taxpayerQua"/>
+							</li>
+
+							<li>
+								创建时间：<input type="text" name="createTime"/>
+							</li>
+
+							<li>
+								审核状态（00待审核/01已通过/99未通过）：<input type="text" name="status"/>
+							</li>
+
+							<li>
+								审核人id：<input type="text" name="auditUserId"/>
+							</li>
+
+							<li>
+								审核人名称：<input type="text" name="auditUserName"/>
+							</li>
+
+							<li>
+								审核时间：<input type="text" name="auditTime"/>
+							</li>
+
+							<li>
+								审核意见：<input type="text" name="auditRemark"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:busDeptApply:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:busDeptApply:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:busDeptApply:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:busDeptApply:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:busDeptApply:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:busDeptApply:remove')}]];
+        var prefix = ctx + "system/busDeptApply";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "企业入驻申请",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'applyId', 
+					title : '入驻申请id',
+					visible: false
+				},
+				{
+					field : 'applyType', 
+					title : '申请类型（企业注册/企业迁址）',
+					sortable: true
+				},
+				{
+					field : 'deptName', 
+					title : '企业名称',
+					sortable: true
+				},
+				{
+					field : 'business', 
+					title : '行业',
+					sortable: true
+				},
+				{
+					field : 'deptScope', 
+					title : '企业经营范围',
+					sortable: true
+				},
+				{
+					field : 'deptType', 
+					title : '企业类型',
+					sortable: true
+				},
+				{
+					field : 'deptAddress', 
+					title : '企业链接',
+					sortable: true
+				},
+				{
+					field : 'deptPhone', 
+					title : '企业联系电话',
+					sortable: true
+				},
+				{
+					field : 'legalConfig', 
+					title : '法人信息(姓名、性别、政治面貌、固定电话、手机号码等)',
+					sortable: true
+				},
+				{
+					field : 'deptUsers', 
+					title : '企业工作人员信息列表（姓名、性别、手机号码、车牌号等）',
+					sortable: true
+				},
+				{
+					field : 'regCode', 
+					title : '工商注册号',
+					sortable: true
+				},
+				{
+					field : 'creditCode', 
+					title : '统一社会信用代码',
+					sortable: true
+				},
+				{
+					field : 'orgCode', 
+					title : '组织机构代码',
+					sortable: true
+				},
+				{
+					field : 'taxpayerCode', 
+					title : '纳税人识别号',
+					sortable: true
+				},
+				{
+					field : 'taxpayerQua', 
+					title : '纳税人资质',
+					sortable: true
+				},
+				{
+					field : 'createTime', 
+					title : '创建时间',
+					sortable: true
+				},
+				{
+					field : 'status', 
+					title : '审核状态（00待审核/01已通过/99未通过）',
+					sortable: true
+				},
+				{
+					field : 'auditUserId', 
+					title : '审核人id',
+					sortable: true
+				},
+				{
+					field : 'auditUserName', 
+					title : '审核人名称',
+					sortable: true
+				},
+				{
+					field : 'auditTime', 
+					title : '审核时间',
+					sortable: true
+				},
+				{
+					field : 'auditRemark', 
+					title : '审核意见',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.applyId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.applyId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

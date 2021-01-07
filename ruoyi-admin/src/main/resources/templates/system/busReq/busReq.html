@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('资源需求列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								需求类型：<input type="text" name="reqType"/>
+							</li>
+
+							<li>
+								需求名称：<input type="text" name="reqName"/>
+							</li>
+
+							<li>
+								需求级别：<input type="text" name="classes"/>
+							</li>
+
+							<li>
+								需求标签：<input type="text" name="label"/>
+							</li>
+
+							<li>
+								需求描述：<input type="text" name="content"/>
+							</li>
+
+							<li>
+								需求状态（00待发布/01已发布/02处理中/03验收中/04已完成/00已屏蔽）：<input type="text" name="status"/>
+							</li>
+
+							<li>
+								发布企业：<input type="text" name="publishDeptId"/>
+							</li>
+
+							<li>
+								发布人id：<input type="text" name="publishUserId"/>
+							</li>
+
+							<li>
+								发布人名称：<input type="text" name="publishUserName"/>
+							</li>
+
+							<li>
+								创建时间：<input type="text" name="createTime"/>
+							</li>
+
+							<li>
+								接收企业：<input type="text" name="receiveDeptId"/>
+							</li>
+
+							<li>
+								接收人id：<input type="text" name="receiveUserId"/>
+							</li>
+
+							<li>
+								接收人名称：<input type="text" name="receiveUserName"/>
+							</li>
+
+							<li>
+								接收时间：<input type="text" name="receiveTime"/>
+							</li>
+
+							<li>
+								修改时间：<input type="text" name="updateTime"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:busReq:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:busReq:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:busReq:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:busReq:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:busReq:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:busReq:remove')}]];
+        var prefix = ctx + "system/busReq";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "资源需求",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'reqId', 
+					title : '需求id',
+					visible: false
+				},
+				{
+					field : 'reqType', 
+					title : '需求类型',
+					sortable: true
+				},
+				{
+					field : 'reqName', 
+					title : '需求名称',
+					sortable: true
+				},
+				{
+					field : 'classes', 
+					title : '需求级别',
+					sortable: true
+				},
+				{
+					field : 'label', 
+					title : '需求标签',
+					sortable: true
+				},
+				{
+					field : 'content', 
+					title : '需求描述',
+					sortable: true
+				},
+				{
+					field : 'status', 
+					title : '需求状态（00待发布/01已发布/02处理中/03验收中/04已完成/00已屏蔽）',
+					sortable: true
+				},
+				{
+					field : 'publishDeptId', 
+					title : '发布企业',
+					sortable: true
+				},
+				{
+					field : 'publishUserId', 
+					title : '发布人id',
+					sortable: true
+				},
+				{
+					field : 'publishUserName', 
+					title : '发布人名称',
+					sortable: true
+				},
+				{
+					field : 'createTime', 
+					title : '创建时间',
+					sortable: true
+				},
+				{
+					field : 'receiveDeptId', 
+					title : '接收企业',
+					sortable: true
+				},
+				{
+					field : 'receiveUserId', 
+					title : '接收人id',
+					sortable: true
+				},
+				{
+					field : 'receiveUserName', 
+					title : '接收人名称',
+					sortable: true
+				},
+				{
+					field : 'receiveTime', 
+					title : '接收时间',
+					sortable: true
+				},
+				{
+					field : 'updateTime', 
+					title : '修改时间',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.reqId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.reqId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

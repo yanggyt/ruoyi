@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusResourceTypeMapper">
+    
+    <resultMap type="BusResourceType" id="BusResourceTypeResult">
+        <result property="typeId"    column="type_id"    />
+        <result property="typeName"    column="type_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="parentIds"    column="parent_ids"    />
+        <result property="parentNames"    column="parent_names"    />
+        <result property="classes"    column="classes"    />
+        <result property="sort"    column="sort"    />
+    </resultMap>
+	
+	<sql id="selectBusResourceTypeVo">
+        select type_id, type_name, parent_id, parent_ids, parent_names, classes, sort from bus_resource_type
+    </sql>
+	
+    <select id="selectBusResourceTypeList" parameterType="BusResourceType" resultMap="BusResourceTypeResult">
+        <include refid="selectBusResourceTypeVo"/>
+        <where>  
+            <if test="typeId != null "> and type_id = #{typeId}</if>
+             <if test="typeName != null  and typeName != '' "> and type_name = #{typeName}</if>
+             <if test="parentId != null "> and parent_id = #{parentId}</if>
+             <if test="parentIds != null  and parentIds != '' "> and parent_ids = #{parentIds}</if>
+             <if test="parentNames != null  and parentNames != '' "> and parent_names = #{parentNames}</if>
+             <if test="classes != null  and classes != '' "> and classes = #{classes}</if>
+             <if test="sort != null "> and sort = #{sort}</if>
+         </where>
+    </select>
+    
+    <select id="selectBusResourceTypeById" parameterType="Long" resultMap="BusResourceTypeResult">
+        <include refid="selectBusResourceTypeVo"/>
+        where type_id = #{typeId}
+    </select>
+        
+    <insert id="insertBusResourceType" parameterType="BusResourceType">
+        insert into bus_resource_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="typeId != null  ">type_id,</if>
+			<if test="typeName != null  and typeName != ''  ">type_name,</if>
+			<if test="parentId != null  ">parent_id,</if>
+			<if test="parentIds != null  and parentIds != ''  ">parent_ids,</if>
+			<if test="parentNames != null  and parentNames != ''  ">parent_names,</if>
+			<if test="classes != null  and classes != ''  ">classes,</if>
+			<if test="sort != null  ">sort,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="typeId != null  ">#{typeId},</if>
+			<if test="typeName != null  and typeName != ''  ">#{typeName},</if>
+			<if test="parentId != null  ">#{parentId},</if>
+			<if test="parentIds != null  and parentIds != ''  ">#{parentIds},</if>
+			<if test="parentNames != null  and parentNames != ''  ">#{parentNames},</if>
+			<if test="classes != null  and classes != ''  ">#{classes},</if>
+			<if test="sort != null  ">#{sort},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateBusResourceType" parameterType="BusResourceType">
+        update bus_resource_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typeName != null  and typeName != ''  ">type_name = #{typeName},</if>
+            <if test="parentId != null  ">parent_id = #{parentId},</if>
+            <if test="parentIds != null  and parentIds != ''  ">parent_ids = #{parentIds},</if>
+            <if test="parentNames != null  and parentNames != ''  ">parent_names = #{parentNames},</if>
+            <if test="classes != null  and classes != ''  ">classes = #{classes},</if>
+            <if test="sort != null  ">sort = #{sort},</if>
+        </trim>
+        where type_id = #{typeId}
+    </update>
+
+	<delete id="deleteBusResourceTypeById" parameterType="Long">
+        delete from bus_resource_type where type_id = #{typeId}
+    </delete>
+	
+    <delete id="deleteBusResourceTypeByIds" parameterType="String">
+        delete from bus_resource_type where type_id in 
+        <foreach item="typeId" collection="array" open="(" separator="," close=")">
+            #{typeId}
+        </foreach>
+    </delete>
+    
+</mapper>

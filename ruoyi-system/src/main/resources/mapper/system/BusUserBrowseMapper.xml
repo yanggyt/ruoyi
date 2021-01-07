@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusUserBrowseMapper">
+    
+    <resultMap type="BusUserBrowse" id="BusUserBrowseResult">
+        <result property="browseId"    column="browse_id"    />
+        <result property="browseType"    column="browse_type"    />
+        <result property="browseUserId"    column="browse_user_id"    />
+        <result property="browseUserName"    column="browse_user_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+	
+	<sql id="selectBusUserBrowseVo">
+        select browse_id, browse_type, browse_user_id, browse_user_name, create_time from bus_user_browse
+    </sql>
+	
+    <select id="selectBusUserBrowseList" parameterType="BusUserBrowse" resultMap="BusUserBrowseResult">
+        <include refid="selectBusUserBrowseVo"/>
+        <where>  
+            <if test="browseId != null "> and browse_id = #{browseId}</if>
+             <if test="browseType != null  and browseType != '' "> and browse_type = #{browseType}</if>
+             <if test="browseUserId != null "> and browse_user_id = #{browseUserId}</if>
+             <if test="browseUserName != null  and browseUserName != '' "> and browse_user_name = #{browseUserName}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectBusUserBrowseById" parameterType="Long" resultMap="BusUserBrowseResult">
+        <include refid="selectBusUserBrowseVo"/>
+        where browse_id = #{browseId}
+    </select>
+        
+    <insert id="insertBusUserBrowse" parameterType="BusUserBrowse">
+        insert into bus_user_browse
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="browseId != null  ">browse_id,</if>
+			<if test="browseType != null  and browseType != ''  ">browse_type,</if>
+			<if test="browseUserId != null  ">browse_user_id,</if>
+			<if test="browseUserName != null  and browseUserName != ''  ">browse_user_name,</if>
+			<if test="createTime != null  ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="browseId != null  ">#{browseId},</if>
+			<if test="browseType != null  and browseType != ''  ">#{browseType},</if>
+			<if test="browseUserId != null  ">#{browseUserId},</if>
+			<if test="browseUserName != null  and browseUserName != ''  ">#{browseUserName},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateBusUserBrowse" parameterType="BusUserBrowse">
+        update bus_user_browse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="browseType != null  and browseType != ''  ">browse_type = #{browseType},</if>
+            <if test="browseUserId != null  ">browse_user_id = #{browseUserId},</if>
+            <if test="browseUserName != null  and browseUserName != ''  ">browse_user_name = #{browseUserName},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+        </trim>
+        where browse_id = #{browseId}
+    </update>
+
+	<delete id="deleteBusUserBrowseById" parameterType="Long">
+        delete from bus_user_browse where browse_id = #{browseId}
+    </delete>
+	
+    <delete id="deleteBusUserBrowseByIds" parameterType="String">
+        delete from bus_user_browse where browse_id in 
+        <foreach item="browseId" collection="array" open="(" separator="," close=")">
+            #{browseId}
+        </foreach>
+    </delete>
+    
+</mapper>

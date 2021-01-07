@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改用户消息')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-busUserMessage-edit" th:object="${busUserMessage}">
+            <input id="messageId" name="messageId" th:field="*{messageId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">消息类型：</label>
+				<div class="col-sm-8">
+					<input id="messageType" name="messageType" th:field="*{messageType}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">消息内容：</label>
+				<div class="col-sm-8">
+					<input id="content" name="content" th:field="*{content}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">消息时间：</label>
+				<div class="col-sm-8">
+					<input id="createTime" name="createTime" th:field="*{createTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">接收人id：</label>
+				<div class="col-sm-8">
+					<input id="receiveUserId" name="receiveUserId" th:field="*{receiveUserId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">接收人名称：</label>
+				<div class="col-sm-8">
+					<input id="receiveUserName" name="receiveUserName" th:field="*{receiveUserName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发布人id：</label>
+				<div class="col-sm-8">
+					<input id="publishUserId" name="publishUserId" th:field="*{publishUserId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发布人名称：</label>
+				<div class="col-sm-8">
+					<input id="publishUserName" name="publishUserName" th:field="*{publishUserName}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "system/busUserMessage";
+		$("#form-busUserMessage-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-busUserMessage-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusDeptApplyMapper">
+    
+    <resultMap type="BusDeptApply" id="BusDeptApplyResult">
+        <result property="applyId"    column="apply_id"    />
+        <result property="applyType"    column="apply_type"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="business"    column="business"    />
+        <result property="deptScope"    column="dept_scope"    />
+        <result property="deptType"    column="dept_type"    />
+        <result property="deptAddress"    column="dept_address"    />
+        <result property="deptPhone"    column="dept_phone"    />
+        <result property="legalConfig"    column="legal_config"    />
+        <result property="deptUsers"    column="dept_users"    />
+        <result property="regCode"    column="reg_code"    />
+        <result property="creditCode"    column="credit_code"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="taxpayerCode"    column="taxpayer_code"    />
+        <result property="taxpayerQua"    column="taxpayer_qua"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="status"    column="status"    />
+        <result property="auditUserId"    column="audit_user_id"    />
+        <result property="auditUserName"    column="audit_user_name"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditRemark"    column="audit_remark"    />
+    </resultMap>
+	
+	<sql id="selectBusDeptApplyVo">
+        select apply_id, apply_type, dept_name, business, dept_scope, dept_type, dept_address, dept_phone, legal_config, dept_users, reg_code, credit_code, org_code, taxpayer_code, taxpayer_qua, create_time, status, audit_user_id, audit_user_name, audit_time, audit_remark from bus_dept_apply
+    </sql>
+	
+    <select id="selectBusDeptApplyList" parameterType="BusDeptApply" resultMap="BusDeptApplyResult">
+        <include refid="selectBusDeptApplyVo"/>
+        <where>  
+            <if test="applyId != null "> and apply_id = #{applyId}</if>
+             <if test="applyType != null  and applyType != '' "> and apply_type = #{applyType}</if>
+             <if test="deptName != null  and deptName != '' "> and dept_name = #{deptName}</if>
+             <if test="business != null  and business != '' "> and business = #{business}</if>
+             <if test="deptScope != null  and deptScope != '' "> and dept_scope = #{deptScope}</if>
+             <if test="deptType != null  and deptType != '' "> and dept_type = #{deptType}</if>
+             <if test="deptAddress != null  and deptAddress != '' "> and dept_address = #{deptAddress}</if>
+             <if test="deptPhone != null  and deptPhone != '' "> and dept_phone = #{deptPhone}</if>
+             <if test="legalConfig != null  and legalConfig != '' "> and legal_config = #{legalConfig}</if>
+             <if test="deptUsers != null  and deptUsers != '' "> and dept_users = #{deptUsers}</if>
+             <if test="regCode != null  and regCode != '' "> and reg_code = #{regCode}</if>
+             <if test="creditCode != null  and creditCode != '' "> and credit_code = #{creditCode}</if>
+             <if test="orgCode != null  and orgCode != '' "> and org_code = #{orgCode}</if>
+             <if test="taxpayerCode != null  and taxpayerCode != '' "> and taxpayer_code = #{taxpayerCode}</if>
+             <if test="taxpayerQua != null  and taxpayerQua != '' "> and taxpayer_qua = #{taxpayerQua}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="status != null  and status != '' "> and status = #{status}</if>
+             <if test="auditUserId != null "> and audit_user_id = #{auditUserId}</if>
+             <if test="auditUserName != null  and auditUserName != '' "> and audit_user_name = #{auditUserName}</if>
+             <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+             <if test="auditRemark != null  and auditRemark != '' "> and audit_remark = #{auditRemark}</if>
+         </where>
+    </select>
+    
+    <select id="selectBusDeptApplyById" parameterType="Long" resultMap="BusDeptApplyResult">
+        <include refid="selectBusDeptApplyVo"/>
+        where apply_id = #{applyId}
+    </select>
+        
+    <insert id="insertBusDeptApply" parameterType="BusDeptApply" useGeneratedKeys="true" keyProperty="applyId">
+        insert into bus_dept_apply
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="applyType != null  and applyType != ''  ">apply_type,</if>
+			<if test="deptName != null  and deptName != ''  ">dept_name,</if>
+			<if test="business != null  and business != ''  ">business,</if>
+			<if test="deptScope != null  and deptScope != ''  ">dept_scope,</if>
+			<if test="deptType != null  and deptType != ''  ">dept_type,</if>
+			<if test="deptAddress != null  and deptAddress != ''  ">dept_address,</if>
+			<if test="deptPhone != null  and deptPhone != ''  ">dept_phone,</if>
+			<if test="legalConfig != null  and legalConfig != ''  ">legal_config,</if>
+			<if test="deptUsers != null  and deptUsers != ''  ">dept_users,</if>
+			<if test="regCode != null  and regCode != ''  ">reg_code,</if>
+			<if test="creditCode != null  and creditCode != ''  ">credit_code,</if>
+			<if test="orgCode != null  and orgCode != ''  ">org_code,</if>
+			<if test="taxpayerCode != null  and taxpayerCode != ''  ">taxpayer_code,</if>
+			<if test="taxpayerQua != null  and taxpayerQua != ''  ">taxpayer_qua,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="status != null  and status != ''  ">status,</if>
+			<if test="auditUserId != null  ">audit_user_id,</if>
+			<if test="auditUserName != null  and auditUserName != ''  ">audit_user_name,</if>
+			<if test="auditTime != null  ">audit_time,</if>
+			<if test="auditRemark != null  and auditRemark != ''  ">audit_remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="applyType != null  and applyType != ''  ">#{applyType},</if>
+			<if test="deptName != null  and deptName != ''  ">#{deptName},</if>
+			<if test="business != null  and business != ''  ">#{business},</if>
+			<if test="deptScope != null  and deptScope != ''  ">#{deptScope},</if>
+			<if test="deptType != null  and deptType != ''  ">#{deptType},</if>
+			<if test="deptAddress != null  and deptAddress != ''  ">#{deptAddress},</if>
+			<if test="deptPhone != null  and deptPhone != ''  ">#{deptPhone},</if>
+			<if test="legalConfig != null  and legalConfig != ''  ">#{legalConfig},</if>
+			<if test="deptUsers != null  and deptUsers != ''  ">#{deptUsers},</if>
+			<if test="regCode != null  and regCode != ''  ">#{regCode},</if>
+			<if test="creditCode != null  and creditCode != ''  ">#{creditCode},</if>
+			<if test="orgCode != null  and orgCode != ''  ">#{orgCode},</if>
+			<if test="taxpayerCode != null  and taxpayerCode != ''  ">#{taxpayerCode},</if>
+			<if test="taxpayerQua != null  and taxpayerQua != ''  ">#{taxpayerQua},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="status != null  and status != ''  ">#{status},</if>
+			<if test="auditUserId != null  ">#{auditUserId},</if>
+			<if test="auditUserName != null  and auditUserName != ''  ">#{auditUserName},</if>
+			<if test="auditTime != null  ">#{auditTime},</if>
+			<if test="auditRemark != null  and auditRemark != ''  ">#{auditRemark},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateBusDeptApply" parameterType="BusDeptApply">
+        update bus_dept_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applyType != null  and applyType != ''  ">apply_type = #{applyType},</if>
+            <if test="deptName != null  and deptName != ''  ">dept_name = #{deptName},</if>
+            <if test="business != null  and business != ''  ">business = #{business},</if>
+            <if test="deptScope != null  and deptScope != ''  ">dept_scope = #{deptScope},</if>
+            <if test="deptType != null  and deptType != ''  ">dept_type = #{deptType},</if>
+            <if test="deptAddress != null  and deptAddress != ''  ">dept_address = #{deptAddress},</if>
+            <if test="deptPhone != null  and deptPhone != ''  ">dept_phone = #{deptPhone},</if>
+            <if test="legalConfig != null  and legalConfig != ''  ">legal_config = #{legalConfig},</if>
+            <if test="deptUsers != null  and deptUsers != ''  ">dept_users = #{deptUsers},</if>
+            <if test="regCode != null  and regCode != ''  ">reg_code = #{regCode},</if>
+            <if test="creditCode != null  and creditCode != ''  ">credit_code = #{creditCode},</if>
+            <if test="orgCode != null  and orgCode != ''  ">org_code = #{orgCode},</if>
+            <if test="taxpayerCode != null  and taxpayerCode != ''  ">taxpayer_code = #{taxpayerCode},</if>
+            <if test="taxpayerQua != null  and taxpayerQua != ''  ">taxpayer_qua = #{taxpayerQua},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="auditUserId != null  ">audit_user_id = #{auditUserId},</if>
+            <if test="auditUserName != null  and auditUserName != ''  ">audit_user_name = #{auditUserName},</if>
+            <if test="auditTime != null  ">audit_time = #{auditTime},</if>
+            <if test="auditRemark != null  and auditRemark != ''  ">audit_remark = #{auditRemark},</if>
+        </trim>
+        where apply_id = #{applyId}
+    </update>
+
+	<delete id="deleteBusDeptApplyById" parameterType="Long">
+        delete from bus_dept_apply where apply_id = #{applyId}
+    </delete>
+	
+    <delete id="deleteBusDeptApplyByIds" parameterType="String">
+        delete from bus_dept_apply where apply_id in 
+        <foreach item="applyId" collection="array" open="(" separator="," close=")">
+            #{applyId}
+        </foreach>
+    </delete>
+    
+</mapper>
