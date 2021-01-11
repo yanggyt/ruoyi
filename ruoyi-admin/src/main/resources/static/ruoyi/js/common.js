@@ -464,11 +464,17 @@ var sub = {
 };
 
 // 动态加载css文件
-function loadCss(file, headElem) {
+function loadCss(file, headElem,id) {
     var link = document.createElement('link');
     link.href = file;
     link.rel = 'stylesheet';
     link.type = 'text/css';
+    if(id){
+        if($("#"+id)&&$("#"+id).attr("href")&&$("#"+id).attr("href")==file){
+            return;
+        }
+        link.id = id;
+    }
     if (headElem) headElem.appendChild(link);
     else document.getElementsByTagName('head')[0].appendChild(link);
 }
