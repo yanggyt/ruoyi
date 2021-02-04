@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<th:block th:include="include :: header('新增商品参数')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-itemparamters-add">
+            <input type="hidden" name="createBy" id="createBy" />
+            <input type="hidden" name="updateBy" id="updateBy" />
+
+        <div class="row mt10">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label is-required">名称：</label>
+                <div class="col-sm-8">
+                    <input id="itemParamtersName" name="itemParamtersName" class="form-control"  type="text" required>
+                </div>
+            </div>
+
+
+        
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label">单据号：</label>
+                <div class="col-sm-8">
+                    <input id="docNum" name="docNum" class="form-control"  readonly="readonly"  type="text">
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="row mt10">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label is-required">资料状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('platf_doc_statu')}">
+                        <input type="radio" th:id="${'status_' + dict.dictCode}" id="status" name="status" th:value="${dict.dictValue}" th:checked="${dict.default}" required>
+                        <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+
+
+        
+        <div class="row mt10">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注：</label>
+                    <div class="col-sm-10">
+                        <textarea id="remark" name="remark" maxlength="500" class="form-control" rows="3" ></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label is-required">制单人：</label>
+                <div class="col-sm-8">
+                    <input id="createByuserName" name="createByuserName" class="form-control"  readonly="readonly"  type="text" required>
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="row mt10">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label is-required">制单时间：</label>
+                <div class="col-sm-8">
+                    <input id="createTime" name="createTime" class="form-control"  readonly="readonly"  type="text" required>
+                </div>
+            </div>
+
+
+        
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label">修改人：</label>
+                <div class="col-sm-8">
+                    <input id="updateByuserName" name="updateByuserName" class="form-control"  readonly="readonly"  type="text">
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="row mt10">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label">修改时间：</label>
+                <div class="col-sm-8">
+                    <input id="updateTime" name="updateTime" class="form-control"  readonly="readonly"  type="text">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>
+            </form>
+</div>
+<th:block th:include="include :: footer" />
+                                                                                                                                                                                                                                                                                                                                                            <script th:inline="javascript">
+    var prefix = ctx + "platform/itemparamters"
+                                                                                                                                                                        
+    $("#form-itemparamters-add").validate({
+        onkeyup: false,
+        rules:{
+            econName:{
+                remote: {
+                    url: prefix + "/checkItemParamtersUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "ItemParamtersName" : function() {
+                            return $.common.trim($("#ItemParamtersName").val());
+                        }
+                    },
+                    dataFilter: function(data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+        },
+        messages: {
+            "ItemParamtersName": {
+                remote: "商品参数 名称已经存在"
+            }
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-itemparamters-add').serialize());
+        }
+    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        $(function() {
+            var options = {
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+            columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                        var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                        return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                                                                                                                                                                                                                                                                                                {
+                        field: 'unit',
+                        align: 'center',
+                        title: '计量单位',
+                        formatter: function(value, row, index) {
+                            var html = $.common.sprintf("<input class='form-control' type='text' name='itemParamtersUnitList[%s].unit' value='%s'>", index, value);
+                            return html;
+                        }
+                        },
+                                                                                                                    {
+                        field: 'unitStatus',
+                        align: 'center',
+                        title: '计量单位状态',
+                        formatter: function(value, row, index) {
+                            var html = $.common.sprintf("<input class='form-control' type='text' name='itemParamtersUnitList[%s].unitStatus' value='%s'>", index, value);
+                            return html;
+                        }
+                        },
+                                                                                                                    {
+                        field: 'fmemo',
+                        align: 'center',
+                        title: '计量单位描述',
+                        formatter: function(value, row, index) {
+                            var html = $.common.sprintf("<input class='form-control' type='text' name='itemParamtersUnitList[%s].fmemo' value='%s'>", index, value);
+                            return html;
+                        }
+                        
+                                                }]
+        };
+        $.table.init(options);
+        });
+
+        function addColumn() {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                                                                                                                                        unit: "",
+                                                                unitStatus: "",
+                                                                fmemo: ""
+                                    }
+        });
+        }
+        
+                $("#createBy").val([[${user.loginName}]]);
+        $("#createByuserName").val([[${user.userName}]]);
+        $("#createTime").val
+        ( $.common.dateFormat(new Date(),'yyyy-MM-dd HH:mm:ss') ) ; //获取日期与时间
+        
+</script>
+</body>
+</html>

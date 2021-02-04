@@ -23,6 +23,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.core.domain.Ztree;
 #end
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.ShiroUtils;
+import com.ruoyi.province.platform.Constants.BussiConstants;
 
 /**
  * ${functionName}Controller
@@ -89,11 +92,12 @@ public class ${ClassName}Controller extends BaseController
 
 #if($dspRepeatColumn)
     /**
+     * ${className}
       * 校验${functionName}名称 是否重复
       */
-    @PostMapping("/check${className}Unique")
+    @PostMapping("/check${ClassName}Unique")
     @ResponseBody
-    public String check${className}Unique(${ClassName} ${className})
+    public String check${ClassName}Unique(${ClassName} ${className})
     {
         return ${className}Service.check${ClassName}Unique(${className});
     }
@@ -172,12 +176,12 @@ public class ${ClassName}Controller extends BaseController
         ${ClassName} ${className} = ${className}Service.select${ClassName}ById(${pkColumn.javaField});
         mmap.put("${className}", ${className});
 
-        #foreach($item in $conctrolmodelsmap.entrySet())
-            // 取身份信息
-            #if($item.key == "SysUser")
-                mmap.put("user", ShiroUtils.getSysUser() );
-            #end
-        #end
+#foreach($item in $conctrolmodelsmap.entrySet())
+        // 取身份信息
+#if($item.key == "SysUser")
+        mmap.put("user", ShiroUtils.getSysUser() );
+#end
+#end
 
         return prefix + "/edit";
     }
@@ -199,12 +203,40 @@ public class ${ClassName}Controller extends BaseController
         }
 #end
 
+#if($table.tree)
+        if (${className}.getParentId().equals(${className}.get${TreeCode}()))
+        {
+            return error("修改${functionName} '" + ${className}.get${TreeName}() + "'失败，上级${className}.get${dspRepeatColumn.javaField}()不能是自己");
+        }
+        else if (StringUtils.equals(UserConstants.DEPT_DISABLE, ${className}.getStatus())
+                && ${className}Service.selectNormalChildren${ClassName}ById(${className}.get${TreeCode}()) > 0)
+        {
+            return AjaxResult.error("该${functionName}包含未停用的子${functionName}！");
+        }
+#end
+
 #if($createByColumn)
         ${className}.setUpdateBy( ShiroUtils.getLoginName() );
         ${className}.setUpdateTime( DateUtils.getNowDate() );
 #end
         return toAjax(${className}Service.update${ClassName}(${className}));
     }
+
+#if($table.tree)
+    /**
+     * 加载${functionName}列表树（排除下级）
+     */
+    @GetMapping("/treeData/{excludeId}")
+    @ResponseBody
+    public List<Ztree> treeDataExcludeChild(@PathVariable(value = "excludeId", required = false) Long excludeId)
+    {
+        ${ClassName} ${className} = new ${ClassName}();
+        ${className}.set${TreeCode}(excludeId);
+        List<Ztree> ztrees = ${className}Service.select${ClassName}TreeExcludeChild(${className});
+        return ztrees;
+    }
+#end
+
 
 #if($table.crud || $table.sub)
     /**
@@ -232,7 +264,6 @@ public class ${ClassName}Controller extends BaseController
     }
 #end
 #if($table.tree)
-
     /**
      * 选择${functionName}树
      */

@@ -39,11 +39,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where t.econ_id = #{econId}
     </select>
 
-     <select id="checkEconNameUnique" parameterType="String" resultMap="EconTypeResult">
+    <select id="checkEconTypeUnique" parameterType="String" resultMap="EconTypeResult">
         <include refid="selectEconTypeVo"/>
-        where t.econ_name=#{econName} limit 1
+        where t.econ_name=#{EconName} limit 1
     </select>
-
 
     <insert id="insertEconType" parameterType="EconType" useGeneratedKeys="true" keyProperty="econId">
         insert into platf_econ_type

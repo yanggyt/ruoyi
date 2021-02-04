@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.province.platform.mapper.PurchUserTypeMapper">
+    
+    <resultMap type="PurchUserType" id="PurchUserTypeResult">
+        <result property="purchTypeId"    column="purch_type_id"    />
+        <result property="purchTypeName"    column="purch_type_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="docNum"    column="doc_num"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createByuserName"    column="createByuserName"    />
+        <result property="updateByuserName"    column="updateByuserName"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectPurchUserTypeVo">
+          select t.purch_type_id, t.purch_type_name, t.parent_id, t.ancestors, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,
+            a1.user_name as createByuserName,            a2.user_name as updateByuserName            from platf_purch_user_type t
+            left join sys_user a1 on t.create_by=a1.login_name
+            left join sys_user a2 on t.update_by=a2.login_name
+    </sql>
+
+    <sql id="selectPurchUserTypeTreeVo">
+          select t.purch_type_id, t.purch_type_name, t.parent_id, t.ancestors, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,p.purch_type_name as parent_name
+,
+        a1.user_name as createByuserName,        a2.user_name as updateByuserName            from platf_purch_user_type t
+            left join platf_purch_user_type p on p.purch_type_id = t.parent_id
+            left join sys_user a1 on t.create_by=a1.login_name
+            left join sys_user a2 on t.update_by=a2.login_name
+    </sql>
+
+    <select id="selectPurchUserTypeList" parameterType="PurchUserType" resultMap="PurchUserTypeResult">
+        <include refid="selectPurchUserTypeVo"/>
+        <where>  
+            <if test="purchTypeName != null  and purchTypeName != ''"> and t.purch_type_name like concat('%', #{purchTypeName}, '%')</if>
+            <if test="parentId != null "> and t.parent_id = #{parentId}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+        </where>
+        order by parent_id
+    </select>
+    
+    <select id="selectPurchUserTypeById" parameterType="Long" resultMap="PurchUserTypeResult">
+        <include refid="selectPurchUserTypeTreeVo"/>
+        where t.purch_type_id = #{purchTypeId}
+    </select>
+
+    <select id="checkPurchUserTypeUnique" parameterType="String" resultMap="PurchUserTypeResult">
+        <include refid="selectPurchUserTypeVo"/>
+        where t.purch_type_name=#{PurchTypeName} limit 1
+    </select>
+
+    <insert id="insertPurchUserType" parameterType="PurchUserType" useGeneratedKeys="true" keyProperty="purchTypeId">
+        insert into platf_purch_user_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="purchTypeName != null and purchTypeName != ''">purch_type_name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="docNum != null">doc_num,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="purchTypeName != null and purchTypeName != ''">#{purchTypeName},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="docNum != null">#{docNum},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePurchUserType" parameterType="PurchUserType">
+        update platf_purch_user_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="purchTypeName != null and purchTypeName != ''">purch_type_name = #{purchTypeName},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="docNum != null">doc_num = #{docNum},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where purch_type_id = #{purchTypeId}
+    </update>
+
+    <delete id="deletePurchUserTypeById" parameterType="Long">
+        delete from platf_purch_user_type where purch_type_id = #{purchTypeId}
+    </delete>
+
+    <delete id="deletePurchUserTypeByIds" parameterType="String">
+        delete from platf_purch_user_type where purch_type_id in 
+        <foreach item="purchTypeId" collection="array" open="(" separator="," close=")">
+            #{purchTypeId}
+        </foreach>
+    </delete>
+
+
+    <select id="selectChildrenPurchUserTypeById" parameterType="Long" resultMap="PurchUserTypeResult">
+		select * from platf_purch_user_type where find_in_set(#{purchTypeId}, ancestors)
+	</select>
+
+    <select id="selectNormalChildrenPurchUserTypeById" parameterType="Long" resultType="int">
+		select count( purch_type_id ) from platf_purch_user_type where status = 0 and del_flag = '0' and find_in_set(#{purchTypeId}, ancestors)
+	</select>
+
+    <update id="updatePurchUserTypeChildren" parameterType="java.util.List">
+        update platf_purch_user_type set ancestors =
+        <foreach collection="purchUserTypes" item="item" index="index"
+                 separator=" " open="case purch_type_id" close="end">
+            when #{item.purchTypeId} then #{item.ancestors}
+        </foreach>
+        where purch_type_id in
+        <foreach collection="purchUserTypes" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.purchTypeId}
+        </foreach>
+    </update>
+
+    <update id="updatePurchUserTypeStatus" parameterType="PurchUserType">
+        update platf_purch_user_type
+        <set>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where purch_type_id in (${ancestors})
+    </update>
+
+
+</mapper>

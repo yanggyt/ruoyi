@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.province.platform.mapper.BusinessScopeMapper">
+    
+    <resultMap type="BusinessScope" id="BusinessScopeResult">
+        <result property="businessScaleId"    column="business_scale_id"    />
+        <result property="businessScaleName"    column="business_scale_name"    />
+        <result property="docNum"    column="doc_num"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createByuserName"    column="createByuserName"    />
+        <result property="updateByuserName"    column="updateByuserName"    />
+    </resultMap>
+
+    <sql id="selectBusinessScopeVo">
+          select t.business_scale_id, t.business_scale_name, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,
+            a1.user_name as createByuserName,            a2.user_name as updateByuserName            from platf_business_scope t
+            left join sys_user a1 on t.create_by=a1.login_name
+            left join sys_user a2 on t.update_by=a2.login_name
+    </sql>
+
+    <select id="selectBusinessScopeList" parameterType="BusinessScope" resultMap="BusinessScopeResult">
+        <include refid="selectBusinessScopeVo"/>
+        <where>  
+            <if test="businessScaleName != null  and businessScaleName != ''"> and t.business_scale_name like concat('%', #{businessScaleName}, '%')</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusinessScopeById" parameterType="Long" resultMap="BusinessScopeResult">
+        <include refid="selectBusinessScopeVo"/>
+        where t.business_scale_id = #{businessScaleId}
+    </select>
+
+    <select id="checkBusinessScopeUnique" parameterType="String" resultMap="BusinessScopeResult">
+        <include refid="selectBusinessScopeVo"/>
+        where t.business_scale_name=#{BusinessScaleName} limit 1
+    </select>
+
+    <insert id="insertBusinessScope" parameterType="BusinessScope" useGeneratedKeys="true" keyProperty="businessScaleId">
+        insert into platf_business_scope
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="businessScaleName != null and businessScaleName != ''">business_scale_name,</if>
+            <if test="docNum != null">doc_num,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="businessScaleName != null and businessScaleName != ''">#{businessScaleName},</if>
+            <if test="docNum != null">#{docNum},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusinessScope" parameterType="BusinessScope">
+        update platf_business_scope
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="businessScaleName != null and businessScaleName != ''">business_scale_name = #{businessScaleName},</if>
+            <if test="docNum != null">doc_num = #{docNum},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where business_scale_id = #{businessScaleId}
+    </update>
+
+    <delete id="deleteBusinessScopeById" parameterType="Long">
+        delete from platf_business_scope where business_scale_id = #{businessScaleId}
+    </delete>
+
+    <delete id="deleteBusinessScopeByIds" parameterType="String">
+        delete from platf_business_scope where business_scale_id in 
+        <foreach item="businessScaleId" collection="array" open="(" separator="," close=")">
+            #{businessScaleId}
+        </foreach>
+    </delete>
+
+</mapper>

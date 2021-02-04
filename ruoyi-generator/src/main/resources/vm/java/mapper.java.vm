@@ -98,4 +98,41 @@ public interface ${ClassName}Mapper
      */
     public int delete${subClassName}By${subTableFkClassName}(${pkColumn.javaType} ${pkColumn.javaField});
 #end
+
+#if($table.tree)
+
+    /**
+     * 修改子元素关系
+     *
+     * @param ${className}s 子元素
+     * @return 结果
+     */
+    public int update${ClassName}Children(@Param("${className}s") List<${ClassName}> ${className});
+
+
+    /**
+     * 根据ID查询所有子部门
+     *
+     * @param ${className}Id 部门ID
+     * @return 部门列表
+     */
+    public List<${ClassName}> selectChildren${ClassName}ById(Long ${pkColumn.javaField});
+
+    /**
+     * 根据ID查询所有子部门（正常状态）
+     *
+     * @param ${pkColumn.javaField} 部门ID
+     * @return 子部门数
+     */
+    public int selectNormalChildren${ClassName}ById(Long ${pkColumn.javaField});
+
+    /**
+     * 修改所在部门的父级部门状态
+     *
+     * @param ${className} 部门
+     */
+    public void update${ClassName}Status(${ClassName} ${className});
+
+#end
+
 }

@@ -8,7 +8,7 @@ import java.util.List;
  * 经济类型Service接口
  * 
  * @author dalin
- * @date 2020-12-19
+ * @date 2020-12-24
  */
 public interface IEconTypeService 
 {
@@ -20,14 +20,14 @@ public interface IEconTypeService
      */
     public EconType selectEconTypeById(Long econId);
 
-    /**
-     * 校验经济类型名称是否重复
-     *
-     * @param econName 经济类型ID
-     * @return 1 \ 0
-     */
-    public String checkEconNameUnique(EconType econType);
-
+            /**
+         * 查询经济类型
+         *
+         * @param econType 经济类型ID
+         * @return 经济类型
+         */
+        public String checkEconTypeUnique(EconType econType);
+    
     /**
      * 查询经济类型列表
      * 

@@ -23,7 +23,7 @@ import java.util.List;
  * 经济类型Controller
  * 
  * @author dalin
- * @date 2020-12-19
+ * @date 2020-12-24
  */
 @Controller
 @RequestMapping("/platform/econtype")
@@ -69,14 +69,23 @@ public class EconTypeController extends BaseController
     }
 
     /**
+      * 校验经济类型名称 是否重复
+      */
+    @PostMapping("/checkEconTypeUnique")
+    @ResponseBody
+    public String checkEconTypeUnique(EconType econType)
+    {
+        return econTypeService.checkEconTypeUnique(econType);
+    }
+
+    /**
      * 新增经济类型
      */
     @GetMapping("/add")
     public String add(ModelMap mmap)
     {
-       // <li>$member.key - $member.value.id$member.value.name</li>
       // 取身份信息
-        mmap.put("user", ShiroUtils.getSysUser());
+        mmap.put("user", ShiroUtils.getSysUser() );
 
         return prefix + "/add";
     }
@@ -91,27 +100,16 @@ public class EconTypeController extends BaseController
     public AjaxResult addSave(EconType econType)
     {
         // 控制名称重复!
-        if (BussiConstants.DOC_NAME_NOT_UNIQUE.equals(econTypeService.checkEconNameUnique(econType)))
+        if (BussiConstants.DOC_NAME_NOT_UNIQUE.equals(econTypeService.checkEconTypeUnique(econType)))
         {
-            return error("新增单据'" + econType.getEconName() + "'失败，名称已存在");
+            return error("修改单据'" + econType.getEconName() + "'失败，名称已存在");
         }
 
-        // 取身份信息
+    // 取身份信息
         econType.setCreateBy( ShiroUtils.getLoginName() );
         econType.setCreateTime(DateUtils.getNowDate() );
 
-        return toAjax(econTypeService.insertEconType(econType)
-    );
-    }
-
-    /**
-     * 校验名称 是否重复
-     */
-    @PostMapping("/checkEconNameUnique")
-    @ResponseBody
-    public String checkEconNameUnique(EconType econType)
-    {
-        return econTypeService.checkEconNameUnique(econType);
+        return toAjax(econTypeService.insertEconType(econType));
     }
 
     /**
@@ -124,7 +122,7 @@ public class EconTypeController extends BaseController
         mmap.put("econType", econType);
 
         // 取身份信息
-        mmap.put("user", ShiroUtils.getSysUser());
+        mmap.put("user", ShiroUtils.getSysUser() );
 
         return prefix + "/edit";
     }
@@ -139,14 +137,13 @@ public class EconTypeController extends BaseController
     public AjaxResult editSave(EconType econType)
     {
         // 控制名称重复!
-        if (BussiConstants.DOC_NAME_NOT_UNIQUE.equals(econTypeService.checkEconNameUnique(econType)))
+        if (BussiConstants.DOC_NAME_NOT_UNIQUE.equals(econTypeService.checkEconTypeUnique(econType)))
         {
             return error("修改单据'" + econType.getEconName() + "'失败，名称已存在");
         }
 
-        econType.setCreateBy( ShiroUtils.getLoginName() );
-        econType.setCreateTime(DateUtils.getNowDate() );
-
+        econType.setUpdateBy( ShiroUtils.getLoginName() );
+        econType.setUpdateTime( DateUtils.getNowDate() );
         return toAjax(econTypeService.updateEconType(econType));
     }
 

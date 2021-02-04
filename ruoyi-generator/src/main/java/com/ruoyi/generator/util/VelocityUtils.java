@@ -66,6 +66,7 @@ public class VelocityUtils {
 
         // 取出页面需要的字段ing
         List<GenTableColumn> tempcolumns = genTable.getColumns();
+        List<GenTableColumn> tableLists = new ArrayList<GenTableColumn>();//定义一个list对象
         List<GenTableColumn> effectivecols = new ArrayList<GenTableColumn>();//定义一个list对象
         List<GenTableColumn> effectiveceditols = new ArrayList<GenTableColumn>();//定义一个list对象
         List<GenTableColumn> fieldcols = new ArrayList<GenTableColumn>();// 模板的变量   colums
@@ -106,8 +107,10 @@ public class VelocityUtils {
                     fieldcols.add(tcolumn) ;
 
                     if (relevColumn.isInsert() && !relevColumn.isPk())
-                        if (relevColumn.isUsableColumn() || !relevColumn.isSuperColumn())
+                        if (relevColumn.isUsableColumn() || !relevColumn.isSuperColumn()) {
+                            tableLists.add(relevColumn);
                             effectivecols.add(relevColumn);
+                        }
 
                     if (relevColumn.isEdit() && !relevColumn.isPk())
                         if (relevColumn.isUsableColumn() || !relevColumn.isSuperColumn())
@@ -117,13 +120,18 @@ public class VelocityUtils {
 
                 }
 
+            } else if (tcolumn.isPk() ) {
+                tableLists.add(tcolumn);
+                fieldcols.add(tcolumn);
             } else {
 
-                fieldcols.add(tcolumn) ;
+                fieldcols.add(tcolumn);
 
                 if (tcolumn.isInsert() && !tcolumn.isPk())
-                    if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
+                    if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn()) {
+                        tableLists.add(tcolumn);
                         effectivecols.add(tcolumn);
+                    }
 
                 if (tcolumn.isEdit() && !tcolumn.isPk())
                     if (tcolumn.isUsableColumn() || !tcolumn.isSuperColumn())
@@ -141,6 +149,7 @@ public class VelocityUtils {
 
           //
         velocityContext.put("conctrolmodelsmap", conctrolmodelsmap);
+        velocityContext.put("tableLists", tableLists);
         velocityContext.put("effectivecols", effectivecols);
         velocityContext.put("effectiveeditcols", effectiveceditols);
           // 在界面上 要隐藏的ID
@@ -174,6 +183,16 @@ public class VelocityUtils {
         context.put("parentMenuId", parentMenuId);
     }
 
+    /**
+     * 首字母大写
+     * 例如：user_name->userName
+     */
+    public static String captureName(String name) {
+        char[] cs=name.toCharArray();
+        cs[0]-=32;
+        return String.valueOf(cs);
+    }
+
     public static void setTreeVelocityContext(VelocityContext context, GenTable genTable) {
         String options = genTable.getOptions();
         JSONObject paramsObj = JSONObject.parseObject(options);
@@ -184,6 +203,12 @@ public class VelocityUtils {
         context.put("treeCode", treeCode);
         context.put("treeParentCode", treeParentCode);
         context.put("treeName", treeName);
+
+        // 首字母大写 为 velocity 模板中的 getter setter 准备
+        context.put("captTreeCode", captureName(treeCode) );
+        context.put("captTreeParentCode", captureName(treeParentCode) );
+        context.put("captTreeName", captureName(treeName) );
+
         context.put("expandColumn", getExpandColumn(genTable));
         if (paramsObj.containsKey(GenConstants.TREE_PARENT_CODE)) {
             context.put("tree_parent_code", paramsObj.getString(GenConstants.TREE_PARENT_CODE));

@@ -71,9 +71,9 @@ public class BrandInfoController extends BaseController
     /**
       * 校验品牌资料名称 是否重复
       */
-    @PostMapping("/checkbrandInfoUnique")
+    @PostMapping("/checkBrandInfoUnique")
     @ResponseBody
-    public String checkbrandInfoUnique(BrandInfo brandInfo)
+    public String checkBrandInfoUnique(BrandInfo brandInfo)
     {
         return brandInfoService.checkBrandInfoUnique(brandInfo);
     }

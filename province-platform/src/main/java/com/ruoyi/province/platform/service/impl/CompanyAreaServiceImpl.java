@@ -2,11 +2,13 @@ package com.ruoyi.province.platform.service.impl;
 
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.province.platform.Constants.BussiConstants;
 import com.ruoyi.province.platform.domain.CompanyArea;
 import com.ruoyi.province.platform.mapper.CompanyAreaMapper;
 import com.ruoyi.province.platform.service.ICompanyAreaService;
+import com.ruoyi.province.platform.utils.BussUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +77,8 @@ public class CompanyAreaServiceImpl implements ICompanyAreaService
     @Override
     public int insertCompanyArea(CompanyArea companyArea)
     {
+        companyArea.setDocNum("00001".concat( BussUtils.nextValue("companyArea") ) );
+        companyArea.setCreateBy( ShiroUtils.getLoginName() );
         companyArea.setCreateTime(DateUtils.getNowDate());
         return companyAreaMapper.insertCompanyArea(companyArea);
     }

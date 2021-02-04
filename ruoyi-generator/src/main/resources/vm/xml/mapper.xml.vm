@@ -44,6 +44,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
     </sql>
 
+#if($table.tree)
+    <sql id="select${ClassName}TreeVo">
+          select#foreach($column in $mappercols) t.$column.columnName#if($velocityCount != $mappercols.size()),#end#end,p.${tree_name} as parent_name
+#if($hiddenleftjoinfiledcols.size()>0),
+#foreach($column in $hiddenleftjoinfiledcols)
+        $column.relevAlias.$column.relevTableName as $column.relevjavafiledname#if($velocityCount != $hiddenleftjoinfiledcols.size()),#end
+#end
+#end
+            from ${tableName} t
+            left join ${tableName} p on p.${pkColumn.columnName} = t.${tree_parent_code}
+#if($hiddenleftjoinfiledcols.size()>0)
+#foreach($column in $hiddenleftjoinfiledcols)
+            left join $column.relevTable $column.relevAlias on t.$column.columnName=$column.relevAlias.$column.relevTableId
+#end
+#end
+    </sql>
+#end
+
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
         <include refid="select${ClassName}Vo"/>
         <where>  
@@ -84,9 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="select${ClassName}Vo"/>
         where t.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #elseif($table.tree)
-        select#foreach($column in $mappercols) t.$column.columnName,#end p.${tree_name} as parent_name
-        from ${tableName} t
-        left join ${tableName} p on p.${pkColumn.columnName} = t.${tree_parent_code}
+        <include refid="select${ClassName}TreeVo"/>
         where t.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #elseif($table.sub)
         select#foreach($column in $mappercols) a.$column.columnName#if($velocityCount != $mappercols.size()),#end#end,
@@ -99,7 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 #if($dspRepeatColumn)
-    <select id="check${ClassName}NameUnique" parameterType="String" resultMap="${ClassName}Result">
+    <select id="check${ClassName}Unique" parameterType="String" resultMap="${ClassName}Result">
         <include refid="select${ClassName}Vo"/>
         where t.${dspRepeatColumn.columnName}=#{${dspRepeatColumn.javaField}} limit 1
     </select>
@@ -164,6 +180,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             (#foreach($column in $subTable.columns) #{item.$column.javaField}#if($velocityCount != $subTable.columns.size()),#end#end)
         </foreach>
     </insert>
+#end
+
+#if($table.tree)
+
+    <select id="selectChildren${ClassName}ById" parameterType="Long" resultMap="${ClassName}Result">
+		select * from ${tableName} where find_in_set(#{${pkColumn.javaField}}, ancestors)
+	</select>
+
+    <select id="selectNormalChildren${ClassName}ById" parameterType="Long" resultType="int">
+		select count( ${pkColumn.columnName} ) from ${tableName} where status = 0 and del_flag = '0' and find_in_set(#{${pkColumn.javaField}}, ancestors)
+	</select>
+
+    <update id="update${ClassName}Children" parameterType="java.util.List">
+        update ${tableName} set ancestors =
+        <foreach collection="${className}s" item="item" index="index"
+                 separator=" " open="case ${pkColumn.columnName}" close="end">
+            when #{item.${pkColumn.javaField}} then #{item.ancestors}
+        </foreach>
+        where ${pkColumn.columnName} in
+        <foreach collection="${className}s" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.${pkColumn.javaField}}
+        </foreach>
+    </update>
+
+    <update id="update${ClassName}Status" parameterType="${ClassName}">
+        update ${tableName}
+        <set>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where ${pkColumn.columnName} in (${ancestors})
+    </update>
+
 #end
 
 </mapper>

@@ -68,6 +68,10 @@
                     checkbox: true
                 },
                 {
+                    field: 'brandId',
+                    title: '编码ID'
+                },
+                {
                     field: 'brandName',
                     title: '名称'
                 },
@@ -114,6 +118,7 @@
                 }]
             };
             $.table.init(options);
+            $.table.hideColumn("brandId");
         });
 
         function operateEdit(){

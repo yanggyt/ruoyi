@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.province.platform.mapper.SupplyChainHierMapper">
+    
+    <resultMap type="SupplyChainHier" id="SupplyChainHierResult">
+        <result property="supplyChainId"    column="supply_chain_id"    />
+        <result property="supplyChainName"    column="supply_chain_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="docNum"    column="doc_num"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createByuserName"    column="createByuserName"    />
+        <result property="updateByuserName"    column="updateByuserName"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectSupplyChainHierVo">
+          select t.supply_chain_id, t.supply_chain_name, t.parent_id, t.ancestors, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,
+            a1.user_name as createByuserName,            a2.user_name as updateByuserName            from platf_supply_chain_hier t
+            left join sys_user a1 on t.create_by=a1.login_name
+            left join sys_user a2 on t.update_by=a2.login_name
+    </sql>
+
+    <sql id="selectSupplyChainHierTreeVo">
+          select t.supply_chain_id, t.supply_chain_name, t.parent_id, t.ancestors, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,p.supply_chain_name as parent_name
+,
+        a1.user_name as createByuserName,        a2.user_name as updateByuserName            from platf_supply_chain_hier t
+            left join platf_supply_chain_hier p on p.supply_chain_id = t.parent_id
+            left join sys_user a1 on t.create_by=a1.login_name
+            left join sys_user a2 on t.update_by=a2.login_name
+    </sql>
+
+    <select id="selectSupplyChainHierList" parameterType="SupplyChainHier" resultMap="SupplyChainHierResult">
+        <include refid="selectSupplyChainHierVo"/>
+        <where>  
+            <if test="supplyChainName != null  and supplyChainName != ''"> and t.supply_chain_name like concat('%', #{supplyChainName}, '%')</if>
+            <if test="parentId != null "> and t.parent_id = #{parentId}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+        </where>
+        order by parent_id
+    </select>
+    
+    <select id="selectSupplyChainHierById" parameterType="Long" resultMap="SupplyChainHierResult">
+        <include refid="selectSupplyChainHierTreeVo"/>
+        where t.supply_chain_id = #{supplyChainId}
+    </select>
+
+    <select id="checkSupplyChainHierUnique" parameterType="String" resultMap="SupplyChainHierResult">
+        <include refid="selectSupplyChainHierVo"/>
+        where t.supply_chain_name=#{SupplyChainName} limit 1
+    </select>
+
+    <insert id="insertSupplyChainHier" parameterType="SupplyChainHier" useGeneratedKeys="true" keyProperty="supplyChainId">
+        insert into platf_supply_chain_hier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="supplyChainName != null and supplyChainName != ''">supply_chain_name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="docNum != null">doc_num,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="supplyChainName != null and supplyChainName != ''">#{supplyChainName},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="docNum != null">#{docNum},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSupplyChainHier" parameterType="SupplyChainHier">
+        update platf_supply_chain_hier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="supplyChainName != null and supplyChainName != ''">supply_chain_name = #{supplyChainName},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="docNum != null">doc_num = #{docNum},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where supply_chain_id = #{supplyChainId}
+    </update>
+
+    <delete id="deleteSupplyChainHierById" parameterType="Long">
+        delete from platf_supply_chain_hier where supply_chain_id = #{supplyChainId}
+    </delete>
+
+    <delete id="deleteSupplyChainHierByIds" parameterType="String">
+        delete from platf_supply_chain_hier where supply_chain_id in 
+        <foreach item="supplyChainId" collection="array" open="(" separator="," close=")">
+            #{supplyChainId}
+        </foreach>
+    </delete>
+
+
+    <select id="selectChildrenSupplyChainHierById" parameterType="Long" resultMap="SupplyChainHierResult">
+		select * from platf_supply_chain_hier where find_in_set(#{supplyChainId}, ancestors)
+	</select>
+
+    <select id="selectNormalChildrenSupplyChainHierById" parameterType="Long" resultType="int">
+		select count( supply_chain_id ) from platf_supply_chain_hier where status = 0 and del_flag = '0' and find_in_set(#{supplyChainId}, ancestors)
+	</select>
+
+    <update id="updateSupplyChainHierChildren" parameterType="java.util.List">
+        update platf_supply_chain_hier set ancestors =
+        <foreach collection="supplyChainHiers" item="item" index="index"
+                 separator=" " open="case supply_chain_id" close="end">
+            when #{item.supplyChainId} then #{item.ancestors}
+        </foreach>
+        where supply_chain_id in
+        <foreach collection="supplyChainHiers" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.supplyChainId}
+        </foreach>
+    </update>
+
+    <update id="updateSupplyChainHierStatus" parameterType="SupplyChainHier">
+        update platf_supply_chain_hier
+        <set>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where supply_chain_id in (${ancestors})
+    </update>
+
+
+</mapper>

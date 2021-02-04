@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改业务规模')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-businessscope-edit" th:object="${businessScope}">
+            <input type="hidden" name="createBy" id="createBy" th:field="*{createBy}"/>
+            <input type="hidden" name="updateBy" id="updateBy" th:field="*{updateBy}"/>
+
+            <input name="businessScaleId" th:field="*{businessScaleId}" type="hidden">
+
+
+        <div class="row mt10">
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label is-required">名称：</label>
+            <div class="col-sm-8">
+                <input name="businessScaleName"  th:field="*{businessScaleName}" class="form-control" type="text" required>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label">单据号：</label>
+            <div class="col-sm-8">
+                <input name="docNum"  disabled  th:field="*{docNum}" class="form-control" type="text">
+            </div>
+        </div>
+        </div>
+
+
+        <div class="row mt10">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label is-required">资料状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('platf_doc_statu')}">
+                        <input type="radio"  th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:field="*{status}" required>
+                        <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row mt10">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注：</label>
+                    <div class="col-sm-10">
+                        <textarea name="remark" maxlength="500" class="form-control" rows="3" >[[*{remark}]]</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt10">
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label is-required">制单人：</label>
+            <div class="col-sm-8">
+                <input name="createByuserName"  disabled  th:field="*{createByuserName}" class="form-control" type="text" required>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label is-required">制单时间：</label>
+            <div class="col-sm-8">
+                <input name="createTime"  disabled  th:value="${#dates.format(businessScope.createTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
+            </div>
+        </div>
+        </div>
+
+
+        <div class="row mt10">
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label">修改人：</label>
+            <div class="col-sm-8">
+                <input name="updateByuserName"  disabled  th:field="*{updateByuserName}" class="form-control" type="text">
+            </div>
+        </div>
+
+
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label">修改时间：</label>
+            <div class="col-sm-8">
+                <input name="updateTime"  disabled  th:value="${#dates.format(businessScope.updateTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+            </div>
+        </div>
+        </div>
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "platform/businessscope";
+        $("#form-businessscope-edit").validate({
+            onkeyup: false,
+            rules:{
+                econName:{
+                    remote: {
+                        url: prefix + "/checkBusinessScopeUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "BusinessScaleName" : function() {
+                                return $.common.trim($("#BusinessScaleName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+            },
+            messages: {
+                "BusinessScaleName": {
+                    remote: "业务规模 名称已经存在"
+                }
+            },
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-businessscope-edit').serialize());
+            }
+        }
+
+
+    </script>
+</body>
+</html>

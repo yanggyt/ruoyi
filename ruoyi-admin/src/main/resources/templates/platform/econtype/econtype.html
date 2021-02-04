@@ -67,6 +67,10 @@
                 columns: [{
                     checkbox: true
                 },
+                    {
+                        field: 'econId',
+                        title: '编号ID'
+                    },
                 {
                     field: 'econName',
                     title: '名称'
@@ -114,11 +118,15 @@
                 }]
             };
             $.table.init(options);
+            $.table.hideColumn("econId");
         });
 
         function operateEdit(){
+
             $.operate.edit(''+ $.table.selectColumns("econId") +'')
       }
+
+
 
     </script>
 </body>

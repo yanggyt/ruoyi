@@ -6,8 +6,8 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-econtype-edit" th:object="${econType}">
-            <input type="hidden" name="createBy" id="createBy" />
-            <input type="hidden" name="updateBy" id="updateBy" />
+            <input type="hidden" name="createBy" th:field="*{createBy}" id="createBy" />
+            <input type="hidden" name="updateBy" th:field="*{updateBy}" id="updateBy" />
 
             <input name="econId" th:field="*{econId}" type="hidden">
 

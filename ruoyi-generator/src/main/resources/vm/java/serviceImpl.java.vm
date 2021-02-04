@@ -23,6 +23,10 @@ import ${packageName}.mapper.${ClassName}Mapper;
 import ${packageName}.domain.${ClassName};
 import ${packageName}.service.I${ClassName}Service;
 import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.province.platform.Constants.BussiConstants;
+import com.ruoyi.province.platform.utils.BussUtils;
+import com.ruoyi.common.utils.ShiroUtils;
 
 /**
  * ${functionName}Service业务层处理
@@ -93,16 +97,23 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     public int insert${ClassName}(${ClassName} ${className})
     {
 #foreach ($column in $columns)
-    #if($column.javaField == 'docNum')
+#if($column.javaField == 'docNum')
         ${className}.setDocNum("00001".concat( BussUtils.nextValue("${className}") ) );
-    #end
+#end
 #end
 
 #foreach ($column in $mappercols)
 #if($column.javaField == 'createTime')
-        ${className}.setCreateTime(DateUtils.getNowDate());
+        ${className}.setCreateBy( ShiroUtils.getLoginName() );
+        ${className}.setCreateTime( DateUtils.getNowDate() );
 #end
 #end
+
+#if($table.tree)
+    ${ClassName} info = ${className}Mapper.select${ClassName}ById(${className}.get${captTreeParentCode}());
+    ${className}.setAncestors(info.getAncestors() + "," + ${className}.get${captTreeParentCode}());
+#end
+
 #if($table.sub)
         int rows = ${className}Mapper.insert${ClassName}(${className});
         insert${subClassName}(${className});
@@ -110,6 +121,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
 #else
         return ${className}Mapper.insert${ClassName}(${className});
 #end
+
     }
 
     /**
@@ -124,6 +136,18 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
     @Override
     public int update${ClassName}(${ClassName} ${className})
     {
+#if($table.tree)
+        ${ClassName} newParent${ClassName} = ${className}Mapper.select${ClassName}ById(${className}.get${captTreeParentCode}());
+        ${ClassName} old${ClassName} = select${ClassName}ById(${className}.get${captTreeCode}());
+        if (StringUtils.isNotNull(newParent${ClassName}) && StringUtils.isNotNull(old${ClassName}))
+        {
+            String newAncestors = newParent${ClassName}.getAncestors() + "," + newParent${ClassName}.get${captTreeCode}();
+            String oldAncestors = old${ClassName}.getAncestors();
+            ${className}.setAncestors(newAncestors);
+            update${ClassName}Children(${className}.get${captTreeCode}(), newAncestors, oldAncestors);
+        }
+#end
+
 #foreach ($column in $mappercols)
 #if($column.javaField == 'updateTime')
         ${className}.setUpdateTime(DateUtils.getNowDate());
@@ -133,7 +157,16 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
         ${className}Mapper.delete${subClassName}By${subTableFkClassName}(${className}.get${pkColumn.capJavaField}());
         insert${subClassName}(${className});
 #end
-        return ${className}Mapper.update${ClassName}(${className});
+        int result = ${className}Mapper.update${ClassName}(${className});
+
+#if($table.tree)
+        if (UserConstants.DEPT_NORMAL.equals(${className}.getStatus()))
+        {
+            // 如果该${functionName}是启用状态，则启用该${functionName}的所有上级${functionName}
+            updateParent${ClassName}Status(${className});
+        }
+#end
+        return result ;
     }
 
     /**
@@ -221,4 +254,122 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service
         }
     }
 #end
+
+#if($table.tree)
+
+    /**
+  * 修改该${functionName}的父级${functionName}状态
+  *
+  * @param ${className} 当前部门
+  */
+    private void updateParent${ClassName}Status(${ClassName} ${className})
+    {
+        String updateBy = ${className}.getUpdateBy();
+        ${className} = ${className}Mapper.select${ClassName}ById(${className}.get${captTreeCode}());
+        ${className}.setUpdateBy(updateBy);
+            ${className}Mapper.update${ClassName}Status(${className});
+    }
+
+    /**
+     * 查询${functionName}管理树（排除下级）
+     *
+     * @param ${pkColumn.javaField} 部门ID
+     * @return 所有部门信息
+     */
+    @Override
+    @DataScope(deptAlias = "d")
+    public List<Ztree> select${ClassName}TreeExcludeChild(${ClassName} ${className})
+    {
+        Long ${pkColumn.javaField} = ${className}.get${captTreeCode}();
+        List<${ClassName}> ${className}List = ${className}Mapper.select${ClassName}List(${className});
+        Iterator<${ClassName}> it = ${className}List.iterator();
+        while (it.hasNext())
+        {
+            ${ClassName} d = (${ClassName}) it.next();
+            if (d.get${captTreeCode}().intValue() == ${pkColumn.javaField}
+                    || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), ${pkColumn.javaField} + ""))
+            {
+                it.remove();
+            }
+        }
+        List<Ztree> ztrees = initZtree(${className}List);
+        return ztrees;
+    }
+
+    /**
+     * 对象转${functionName}树
+     *
+     * @param ${className}List ${functionName}列表
+     * @return 树结构列表
+     */
+    public List<Ztree> initZtree(List<${ClassName}> ${className}List)
+    {
+        return initZtree(${className}List, null);
+    }
+
+    /**
+        * 修改子元素关系
+        *
+        * @param ${pkColumn.javaField} 被修改的${functionName}ID
+        * @param newAncestors 新的父ID集合
+        * @param oldAncestors 旧的父ID集合
+        */
+    public void update${ClassName}Children(Long ${pkColumn.javaField}, String newAncestors, String oldAncestors)
+    {
+        List<${ClassName}> children = ${className}Mapper.selectChildren${ClassName}ById(${pkColumn.javaField});
+        for (${ClassName} child : children)
+        {
+            child.setAncestors(child.getAncestors().replace(oldAncestors, newAncestors));
+        }
+        if (children.size() > 0)
+        {
+            ${className}Mapper.update${ClassName}Children(children);
+        }
+    }
+
+    /**
+     * 对象转${functionName}树
+     *
+     * @param ${className}List ${functionName}列表
+     * @param roleList 角色已存在菜单列表
+     * @return 树结构列表
+     */
+    public List<Ztree> initZtree(List<${ClassName}> ${className}List, List<String> role${ClassName}List)
+    {
+
+        List<Ztree> ztrees = new ArrayList<Ztree>();
+        boolean isCheck = StringUtils.isNotNull(role${ClassName}List);
+        for (${ClassName} ${className} : ${className}List)
+        {
+            if (UserConstants.DEPT_NORMAL.equals(${className}.getStatus()))
+            {
+                Ztree ztree = new Ztree();
+                ztree.setId(${className}.get${TreeCode}());
+                ztree.setpId(${className}.get${TreeParentCode}());
+                ztree.setName(${className}.get${TreeName}());
+                ztree.setTitle(${className}.get${TreeName}());
+                if (isCheck)
+                {
+                    ztree.setChecked(role${ClassName}List.contains(${className}.get${TreeCode}() + ${className}.get${TreeName}()));
+                }
+                ztrees.add(ztree);
+            }
+        }
+        return ztrees;
+    }
+
+    /**
+     * 根据ID查询所有子部门（正常状态）
+     *
+     * @param ${pkColumn.javaField} 部门ID
+     * @return 子部门数
+     */
+    @Override
+    public int selectNormalChildren${ClassName}ById(Long ${pkColumn.javaField})
+    {
+        return ${className}Mapper.selectNormalChildren${ClassName}ById(${pkColumn.javaField});
+    }
+
+#end
+
 }

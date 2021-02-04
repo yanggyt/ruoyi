@@ -1,15 +1,17 @@
 #if("" != $treeParentCode && $column.javaField == $treeParentCode)
 
-<label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}：</label>
-<div class="col-sm-8">
-    <div class="input-group">
-        #set($BusinessName=$businessName.substring(0,1).toUpperCase() + ${businessName.substring(1)})
-        #set($treeId = "${className}?.${treeCode}")
-        <input id="treeId" name="${treeParentCode}" type="hidden" th:value="${${treeId}}"/>
-        <input class="form-control" type="text" onclick="select${BusinessName}Tree()" id="treeName"  th:value="${${treeName}}"#if($column.required) required#end>
-        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-    </div>
-</div>
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}：</label>
+                <div class="col-sm-8">
+                    #set($BusinessName=$businessName.substring(0,1).toUpperCase() + ${businessName.substring(1)})
+                    #set($treeId = "${className}?.${treeCode}")
+                    <input id="treeId" name="${treeParentCode}" type="hidden" th:value="${${treeId}}"/>
+                    <div class="input-group">
+                        <input class="form-control" type="text" onclick="select${BusinessName}Tree()" id="treeName" readonly="true" th:value="${${treeName}}"#if($column.required) required#end>
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
 #elseif($column.htmlType == "input")
             <div class="col-sm-6">
                 <label class="col-sm-4 control-label#if($column.required) is-required#end">${comment}：</label>

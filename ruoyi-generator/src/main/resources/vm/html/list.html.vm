@@ -101,7 +101,7 @@
                 columns: [{
                     checkbox: true
                 },
-#foreach($column in $effectivecols)
+#foreach($column in $tableLists)
 #set($dictType=$column.dictType)
 #set($javaField=$column.javaField)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))

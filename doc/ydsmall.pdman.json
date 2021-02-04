@@ -5,11 +5,147 @@
       "chnname": "平台基础模块",
       "entities": [
         {
+          "title": "platf_regional",
+          "fields": [
+            {
+              "name": "regional_id",
+              "type": "autoid",
+              "remark": "",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "regional_name",
+              "type": "baseName",
+              "remark": "",
+              "chnname": "名称",
+              "notNull": true
+            },
+            {
+              "name": "parent_id",
+              "type": "autoid",
+              "remark": "",
+              "chnname": "上级区域",
+              "notNull": true
+            },
+            {
+              "name": "ancestors",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "祖级列表"
+            },
+            {
+              "name": "doc_num",
+              "type": "djno",
+              "remark": "",
+              "chnname": "单据号"
+            },
+            {
+              "name": "status",
+              "type": "lable",
+              "remark": "",
+              "chnname": "资料状态",
+              "defaultValue": "0",
+              "notNull": true
+            },
+            {
+              "name": "remark",
+              "type": "Intro",
+              "remark": "",
+              "chnname": "备注"
+            },
+            {
+              "name": "del_flag",
+              "type": "lable",
+              "remark": "",
+              "chnname": "删除标志",
+              "defaultValue": "0",
+              "notNull": true
+            },
+            {
+              "name": "create_by",
+              "type": "createby",
+              "remark": "",
+              "chnname": "制单人",
+              "notNull": true
+            },
+            {
+              "name": "create_time",
+              "type": "createtime",
+              "remark": "",
+              "chnname": "制单时间",
+              "notNull": true
+            },
+            {
+              "name": "update_by",
+              "type": "createby",
+              "remark": "",
+              "chnname": "修改人"
+            },
+            {
+              "name": "update_time",
+              "type": "createtime",
+              "remark": "",
+              "chnname": "修改时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "地区资料"
+        },
+        {
           "title": "platf_econ_type",
           "fields": [
             {
               "name": "econ_id",
-              "type": "autoid",
+              "type": "Autoinc",
               "remark": "",
               "chnname": "主键",
               "pk": true,
@@ -46,15 +182,9 @@
             {
               "name": "del_flag",
               "type": "lable",
-              "remark": "删除标志（0代表存在 2代表删除）",
+              "remark": "0代表存在 2代表删除",
               "chnname": "删除标志",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -152,26 +282,20 @@
               "notNull": true
             },
             {
-              "name": "nation_custom_num",
-              "type": "num",
-              "remark": "",
-              "chnname": "自定义编号"
-            },
-            {
               "name": "doc_num",
               "type": "djno",
               "remark": "",
               "chnname": "单据号",
-              "pk": true,
-              "notNull": true
+              "pk": false,
+              "notNull": false
             },
             {
               "name": "status",
               "type": "lable",
               "remark": "0有效 1无效",
               "chnname": "资料状态",
-              "notNull": true,
-              "pk": true
+              "notNull": false,
+              "pk": false
             },
             {
               "name": "remark",
@@ -184,30 +308,24 @@
               "type": "lable",
               "remark": "删除标志（0代表存在 2代表删除）",
               "chnname": "删除标志",
-              "pk": true,
-              "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
+              "pk": false,
+              "notNull": false
             },
             {
               "name": "create_by",
               "type": "createby",
               "remark": "",
               "chnname": "制单人",
-              "pk": true,
-              "notNull": true
+              "pk": false,
+              "notNull": false
             },
             {
               "name": "create_time",
               "type": "createtime",
               "remark": "",
               "chnname": "制单时间",
-              "pk": true,
-              "notNull": true
+              "pk": false,
+              "notNull": false
             },
             {
               "name": "update_by",
@@ -332,12 +450,6 @@
               "notNull": true
             },
             {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
-            },
-            {
               "name": "create_by",
               "type": "createby",
               "remark": "",
@@ -426,18 +538,24 @@
               "autoIncrement": true
             },
             {
-              "name": "purch_type_parent_id",
+              "name": "purch_type_name",
+              "type": "baseName",
+              "remark": "",
+              "chnname": "名称",
+              "notNull": true
+            },
+            {
+              "name": "parent_id",
               "type": "autoid",
               "remark": "",
               "chnname": "上级类型",
               "notNull": true
             },
             {
-              "name": "purch_type_name",
-              "type": "baseName",
+              "name": "ancestors",
+              "type": "ShortString",
               "remark": "",
-              "chnname": "名称",
-              "notNull": true
+              "chnname": "祖级列表"
             },
             {
               "name": "doc_num",
@@ -462,16 +580,10 @@
             {
               "name": "del_flag",
               "type": "lable",
-              "remark": "删除标志（0代表存在 2代表删除）",
+              "remark": "0代表存在 2代表删除",
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -569,13 +681,6 @@
               "notNull": true
             },
             {
-              "name": "user_qual_customid",
-              "type": "baseName",
-              "remark": "",
-              "chnname": "单据自定义编码",
-              "notNull": false
-            },
-            {
               "name": "doc_num",
               "type": "djno",
               "remark": "",
@@ -608,12 +713,6 @@
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -692,7 +791,7 @@
           "chnname": "用户资质"
         },
         {
-          "title": "platf_business_scale",
+          "title": "platf_business_scope",
           "fields": [
             {
               "name": "business_scale_id",
@@ -709,13 +808,6 @@
               "remark": "",
               "chnname": "名称",
               "notNull": true
-            },
-            {
-              "name": "business_scale_customid",
-              "type": "baseName",
-              "remark": "",
-              "chnname": "单据自定义编码",
-              "notNull": false
             },
             {
               "name": "doc_num",
@@ -740,16 +832,10 @@
             {
               "name": "del_flag",
               "type": "lable",
-              "remark": "删除标志（0代表存在 2代表删除）",
+              "remark": "0代表存在 2代表删除",
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -869,16 +955,10 @@
             {
               "name": "del_flag",
               "type": "lable",
-              "remark": "删除标志（0代表存在 2代表删除）",
+              "remark": "0存在 2删除",
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -999,16 +1079,10 @@
             {
               "name": "del_flag",
               "type": "lable",
-              "remark": "删除标志（0代表存在 2代表删除）",
+              "remark": "0存在 2删除",
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -1099,18 +1173,24 @@
               "autoIncrement": true
             },
             {
-              "name": "supply_chain_parent_id",
+              "name": "supply_chain_name",
+              "type": "baseName",
+              "remark": "",
+              "chnname": "名称",
+              "notNull": true
+            },
+            {
+              "name": "parent_id",
               "type": "autoid",
               "remark": "",
               "chnname": "上级类型",
               "notNull": true
             },
             {
-              "name": "supply_chain_name",
-              "type": "baseName",
+              "name": "ancestors",
+              "type": "DefaultString",
               "remark": "",
-              "chnname": "名称",
-              "notNull": true
+              "chnname": "祖级列表"
             },
             {
               "name": "doc_num",
@@ -1139,12 +1219,6 @@
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -1271,12 +1345,6 @@
               "notNull": true
             },
             {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
-            },
-            {
               "name": "create_by",
               "type": "createby",
               "remark": "",
@@ -1361,16 +1429,17 @@
               "remark": "",
               "chnname": "主键",
               "notNull": true,
-              "autoIncrement": true
+              "autoIncrement": true,
+              "pk": true
             },
             {
               "name": "item_paramters_id",
               "type": "autoid",
               "remark": "",
               "chnname": "主表单据号",
-              "pk": true,
+              "pk": false,
               "notNull": true,
-              "autoIncrement": true
+              "autoIncrement": false
             },
             {
               "name": "unit",
@@ -1488,12 +1557,6 @@
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -1714,12 +1777,6 @@
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -1986,13 +2043,6 @@
               "notNull": true
             },
             {
-              "name": "item_qual_customid",
-              "type": "baseName",
-              "remark": "",
-              "chnname": "单据自定义编码",
-              "notNull": false
-            },
-            {
               "name": "doc_num",
               "type": "djno",
               "remark": "",
@@ -2025,12 +2075,6 @@
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -2129,10 +2173,10 @@
               "notNull": true
             },
             {
-              "name": "price_band_lower",
-              "type": "pirceband",
+              "name": "doc_num",
+              "type": "djno",
               "remark": "",
-              "chnname": "下限"
+              "chnname": "单据号"
             },
             {
               "name": "price_band_upper",
@@ -2141,17 +2185,10 @@
               "chnname": "上限"
             },
             {
-              "name": "price_band_customid",
-              "type": "baseName",
+              "name": "price_band_lower",
+              "type": "pirceband",
               "remark": "",
-              "chnname": "单据自定义编码",
-              "notNull": false
-            },
-            {
-              "name": "price_band_num",
-              "type": "djno",
-              "remark": "",
-              "chnname": "单据号"
+              "chnname": "下限"
             },
             {
               "name": "status",
@@ -2174,12 +2211,6 @@
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -2350,12 +2381,6 @@
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -2761,12 +2786,6 @@
               "notNull": true
             },
             {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
-            },
-            {
               "name": "create_by",
               "type": "createby",
               "remark": "",
@@ -3035,12 +3054,6 @@
               "chnname": "删除标志",
               "defaultValue": "0",
               "notNull": true
-            },
-            {
-              "name": "revision",
-              "type": "Integer",
-              "remark": "",
-              "chnname": "乐观锁"
             },
             {
               "name": "create_by",
@@ -3512,6 +3525,15 @@
   "dataTypeDomains": {
     "datatype": [
       {
+        "name": "小表自增",
+        "code": "Autoinc",
+        "apply": {
+          "MYSQL": {
+            "type": "integer(11)"
+          }
+        }
+      },
+      {
         "name": "默认字串",
         "code": "DefaultString",
         "apply": {
@@ -3969,7 +3991,7 @@
         "code": "createby",
         "apply": {
           "MYSQL": {
-            "type": "varchar(20)"
+            "type": "varchar(30)"
           }
         }
       },
@@ -4104,7 +4126,7 @@
       {
         "name": "status",
         "type": "lable",
-        "remark": "0有效 1无效",
+        "remark": "",
         "chnname": "资料状态",
         "defaultValue": "0",
         "notNull": true
@@ -4118,16 +4140,10 @@
       {
         "name": "del_flag",
         "type": "lable",
-        "remark": "删除标志（0代表存在 2代表删除）",
+        "remark": "",
         "chnname": "删除标志",
         "defaultValue": "0",
         "notNull": true
-      },
-      {
-        "name": "revision",
-        "type": "Integer",
-        "remark": "",
-        "chnname": "乐观锁"
       },
       {
         "name": "create_by",

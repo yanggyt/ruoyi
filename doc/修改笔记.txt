@@ -54,6 +54,7 @@ https://www.ctolib.com/topics-141243.html
 j2eefast开源 
 https://gitee.com/zhouhuanOGP/J2EEFAST
 	附件和图片上传我全套扣的j2eefast的，ruoyi的用着太怪了
+	登录 验证是用滑块
 
 
 阿里云开发者成长计划 

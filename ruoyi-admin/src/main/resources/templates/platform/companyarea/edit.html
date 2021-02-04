@@ -6,11 +6,9 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-companyarea-edit" th:object="${companyArea}">
-            <input type="hidden" name="createBy" id="createBy" />
-            <input type="hidden" name="updateBy" id="updateBy" />
-
+            <input type="hidden" name="createBy" th:field="*{createBy}" id="createBy" />
+            <input type="hidden" name="updateBy" th:field="*{updateBy}" id="updateBy" />
             <input name="companyAreaId" th:field="*{companyAreaId}" type="hidden">
-
 
         <div class="row mt10">
         <div class="col-sm-6">

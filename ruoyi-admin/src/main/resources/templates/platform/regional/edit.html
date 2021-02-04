@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改地区资料')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-regional-edit" th:object="${regional}">
+            <input type="hidden" name="createBy" id="createBy" th:field="*{createBy}"/>
+            <input type="hidden" name="updateBy" id="updateBy" th:field="*{updateBy}"/>
+
+            <input name="regionalId" th:field="*{regionalId}" type="hidden">
+
+
+        <div class="row mt10">
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label is-required">名称：</label>
+            <div class="col-sm-8">
+                <input id="regionalName" name="regionalName"  th:value="*{regionalName}" class="form-control" type="text" required>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label is-required">上级区域：</label>
+            <div class="col-sm-8">
+                <div class="input-group">
+                                        <input id="treeId" name="parentId" type="hidden" th:field="*{parentId}" />
+                    <input class="form-control" type="text" onclick="selectRegionalTree()" id="treeName" readonly="true" th:field="*{parentName}" required>
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+        <div class="row mt10">
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label">单据号：</label>
+            <div class="col-sm-8">
+                <input id="docNum" name="docNum"  disabled  th:value="*{docNum}" class="form-control" type="text">
+            </div>
+        </div>
+
+
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label is-required">资料状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('platf_doc_statu')}">
+                        <input type="radio"  th:id="${'status_' + dict.dictCode}" id="status" name="status" th:value="${dict.dictValue}" th:field="*{status}" required>
+                        <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt10">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注：</label>
+                    <div class="col-sm-10">
+                        <textarea name="remark" maxlength="500" class="form-control" rows="3" >[[*{remark}]]</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label is-required">制单人：</label>
+            <div class="col-sm-8">
+                <input id="createByuserName" name="createByuserName"  disabled  th:value="*{createByuserName}" class="form-control" type="text" required>
+            </div>
+        </div>
+        </div>
+
+
+        <div class="row mt10">
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label is-required">制单时间：</label>
+            <div class="col-sm-8">
+                <input id="createTime" name="createTime"  disabled  th:value="${#dates.format(regional.createTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label">修改人：</label>
+            <div class="col-sm-8">
+                <input id="updateByuserName" name="updateByuserName"  disabled  th:value="*{updateByuserName}" class="form-control" type="text">
+            </div>
+        </div>
+        </div>
+
+
+        <div class="row mt10">
+        <div class="col-sm-6">
+            <label class="col-sm-4 control-label">修改时间：</label>
+            <div class="col-sm-8">
+                <input id="updateTime" name="updateTime"  disabled  th:value="${#dates.format(regional.updateTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+            </div>
+        </div>
+        </div>
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "platform/regional";
+        $("#form-regional-edit").validate({
+            onkeyup: false,
+            rules:{
+                econName:{
+                    remote: {
+                        url: prefix + "/checkRegionalUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "RegionalName" : function() {
+                                return $.common.trim($("#RegionalName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+            },
+            messages: {
+                "RegionalName": {
+                    remote: "地区资料 名称已经存在"
+                }
+            },
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-regional-edit').serialize());
+            }
+        }
+
+        /*地区资料-新增-选择父部门树*/
+        function selectRegionalTree() {
+            var options = {
+                title: '地区资料选择',
+                width: "380",
+                url: prefix + "/selectRegionalTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = layer.getChildFrame('body', index);
+               $("#treeId").val(body.find('#treeId').val());
+               $("#treeName").val(body.find('#treeName').val());
+               layer.close(index);
+        }
+
+
+    </script>
+</body>
+</html>

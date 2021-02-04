@@ -4,12 +4,11 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
  * 经济类型对象 platf_econ_type
- * 
+ *
  * @author dalin
- * @date 2020-12-19
+ * @date 2020-12-24
  */
 public class EconType extends BaseEntity
 {
@@ -41,66 +40,66 @@ public class EconType extends BaseEntity
     @Excel(name = "修改人")
     private String updateByuserName;
 
-    public void setEconId(Long econId) 
+    public void setEconId(Long econId)
     {
         this.econId = econId;
     }
 
-    public Long getEconId() 
+    public Long getEconId()
     {
         return econId;
     }
-    public void setEconName(String econName) 
+    public void setEconName(String econName)
     {
         this.econName = econName;
     }
 
-    public String getEconName() 
+    public String getEconName()
     {
         return econName;
     }
-    public void setDocNum(String docNum) 
+    public void setDocNum(String docNum)
     {
         this.docNum = docNum;
     }
 
-    public String getDocNum() 
+    public String getDocNum()
     {
         return docNum;
     }
-    public void setStatus(String status) 
+    public void setStatus(String status)
     {
         this.status = status;
     }
 
-    public String getStatus() 
+    public String getStatus()
     {
         return status;
     }
-    public void setDelFlag(String delFlag) 
+    public void setDelFlag(String delFlag)
     {
         this.delFlag = delFlag;
     }
 
-    public String getDelFlag() 
+    public String getDelFlag()
     {
         return delFlag;
     }
-    public void setCreateByuserName(String createByuserName) 
+    public void setCreateByuserName(String createByuserName)
     {
         this.createByuserName = createByuserName;
     }
 
-    public String getCreateByuserName() 
+    public String getCreateByuserName()
     {
         return createByuserName;
     }
-    public void setUpdateByuserName(String updateByuserName) 
+    public void setUpdateByuserName(String updateByuserName)
     {
         this.updateByuserName = updateByuserName;
     }
 
-    public String getUpdateByuserName() 
+    public String getUpdateByuserName()
     {
         return updateByuserName;
     }
@@ -108,18 +107,18 @@ public class EconType extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("econId", getEconId())
-            .append("econName", getEconName())
-            .append("docNum", getDocNum())
-            .append("status", getStatus())
-            .append("remark", getRemark())
-            .append("delFlag", getDelFlag())
-            .append("createByuserName", getCreateByuserName())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateByuserName", getUpdateByuserName())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("econId", getEconId())
+                .append("econName", getEconName())
+                .append("docNum", getDocNum())
+                .append("status", getStatus())
+                .append("remark", getRemark())
+                .append("delFlag", getDelFlag())
+                .append("createByuserName", getCreateByuserName())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateByuserName", getUpdateByuserName())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .toString();
     }
 }

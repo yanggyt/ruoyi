@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.province.platform.mapper.ItemPriceBandMapper">
+    
+    <resultMap type="ItemPriceBand" id="ItemPriceBandResult">
+        <result property="priceBandId"    column="price_band_id"    />
+        <result property="priceBandName"    column="price_band_name"    />
+        <result property="docNum"    column="doc_num"    />
+        <result property="priceBandUpper"    column="price_band_upper"    />
+        <result property="priceBandLower"    column="price_band_lower"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createByuserName"    column="createByuserName"    />
+        <result property="updateByuserName"    column="updateByuserName"    />
+    </resultMap>
+
+    <sql id="selectItemPriceBandVo">
+          select t.price_band_id, t.price_band_name, t.doc_num, t.price_band_upper, t.price_band_lower, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,
+            a1.user_name as createByuserName,            a2.user_name as updateByuserName            from platf_item_price_band t
+            left join sys_user a1 on t.create_by=a1.login_name
+            left join sys_user a2 on t.update_by=a2.login_name
+    </sql>
+
+    <select id="selectItemPriceBandList" parameterType="ItemPriceBand" resultMap="ItemPriceBandResult">
+        <include refid="selectItemPriceBandVo"/>
+        <where>  
+            <if test="priceBandName != null  and priceBandName != ''"> and t.price_band_name like concat('%', #{priceBandName}, '%')</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectItemPriceBandById" parameterType="Long" resultMap="ItemPriceBandResult">
+        <include refid="selectItemPriceBandVo"/>
+        where t.price_band_id = #{priceBandId}
+    </select>
+
+    <select id="checkItemPriceBandUnique" parameterType="String" resultMap="ItemPriceBandResult">
+        <include refid="selectItemPriceBandVo"/>
+        where t.price_band_name=#{PriceBandName} limit 1
+    </select>
+
+    <insert id="insertItemPriceBand" parameterType="ItemPriceBand" useGeneratedKeys="true" keyProperty="priceBandId">
+        insert into platf_item_price_band
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="priceBandName != null and priceBandName != ''">price_band_name,</if>
+            <if test="docNum != null">doc_num,</if>
+            <if test="priceBandUpper != null">price_band_upper,</if>
+            <if test="priceBandLower != null">price_band_lower,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="priceBandName != null and priceBandName != ''">#{priceBandName},</if>
+            <if test="docNum != null">#{docNum},</if>
+            <if test="priceBandUpper != null">#{priceBandUpper},</if>
+            <if test="priceBandLower != null">#{priceBandLower},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateItemPriceBand" parameterType="ItemPriceBand">
+        update platf_item_price_band
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="priceBandName != null and priceBandName != ''">price_band_name = #{priceBandName},</if>
+            <if test="docNum != null">doc_num = #{docNum},</if>
+            <if test="priceBandUpper != null">price_band_upper = #{priceBandUpper},</if>
+            <if test="priceBandLower != null">price_band_lower = #{priceBandLower},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where price_band_id = #{priceBandId}
+    </update>
+
+    <delete id="deleteItemPriceBandById" parameterType="Long">
+        delete from platf_item_price_band where price_band_id = #{priceBandId}
+    </delete>
+
+    <delete id="deleteItemPriceBandByIds" parameterType="String">
+        delete from platf_item_price_band where price_band_id in 
+        <foreach item="priceBandId" collection="array" open="(" separator="," close=")">
+            #{priceBandId}
+        </foreach>
+    </delete>
+
+</mapper>

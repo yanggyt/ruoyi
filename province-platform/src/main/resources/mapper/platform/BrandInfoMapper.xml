@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where t.brand_id = #{brandId}
     </select>
 
-    <select id="checkBrandInfoNameUnique" parameterType="String" resultMap="BrandInfoResult">
+    <select id="checkBrandInfoUnique" parameterType="String" resultMap="BrandInfoResult">
         <include refid="selectBrandInfoVo"/>
         where t.brand_name=#{BrandName} limit 1
     </select>

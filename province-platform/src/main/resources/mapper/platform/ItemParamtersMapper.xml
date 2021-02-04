@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.province.platform.mapper.ItemParamtersMapper">
+    
+    <resultMap type="ItemParamters" id="ItemParamtersResult">
+        <result property="itemParamtersId"    column="item_paramters_id"    />
+        <result property="itemParamtersName"    column="item_paramters_name"    />
+        <result property="docNum"    column="doc_num"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createByuserName"    column="createByuserName"    />
+        <result property="updateByuserName"    column="updateByuserName"    />
+    </resultMap>
+
+    <resultMap id="ItemParamtersItemParamtersUnitResult" type="ItemParamters" extends="ItemParamtersResult">
+        <collection property="itemParamtersUnitList" notNullColumn="item_paramters_unit_id" javaType="java.util.List" resultMap="ItemParamtersUnitResult" />
+    </resultMap>
+
+    <resultMap type="ItemParamtersUnit" id="ItemParamtersUnitResult">
+        <result property="itemParamtersUnitId"    column="item_paramters_unit_id"    />
+        <result property="itemParamtersId"    column="item_paramters_id"    />
+        <result property="unit"    column="unit"    />
+        <result property="unitStatus"    column="unit_status"    />
+        <result property="fmemo"    column="fmemo"    />
+    </resultMap>
+
+    <sql id="selectItemParamtersVo">
+          select t.item_paramters_id, t.item_paramters_name, t.doc_num, t.status, t.remark, t.del_flag, t.create_by, t.create_time, t.update_by, t.update_time,
+            a1.user_name as createByuserName,            a2.user_name as updateByuserName            from platf_item_paramters t
+            left join sys_user a1 on t.create_by=a1.login_name
+            left join sys_user a2 on t.update_by=a2.login_name
+    </sql>
+
+
+    <select id="selectItemParamtersList" parameterType="ItemParamters" resultMap="ItemParamtersResult">
+        <include refid="selectItemParamtersVo"/>
+        <where>  
+            <if test="itemParamtersName != null  and itemParamtersName != ''"> and t.item_paramters_name like concat('%', #{itemParamtersName}, '%')</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectItemParamtersById" parameterType="Long" resultMap="ItemParamtersItemParamtersUnitResult">
+        select a.item_paramters_id, a.item_paramters_name, a.doc_num, a.status, a.remark, a.del_flag, a.create_by, a.create_time, a.update_by, a.update_time,
+            b.item_paramters_unit_id, b.item_paramters_id, b.unit, b.unit_status, b.fmemo
+        from platf_item_paramters a
+        left join platf_item_paramters_unit b on b.item_paramters_id = a.item_paramters_id
+        where a.item_paramters_id = #{itemParamtersId}
+    </select>
+
+    <select id="checkItemParamtersUnique" parameterType="String" resultMap="ItemParamtersResult">
+        <include refid="selectItemParamtersVo"/>
+        where t.item_paramters_name=#{ItemParamtersName} limit 1
+    </select>
+
+    <insert id="insertItemParamters" parameterType="ItemParamters" useGeneratedKeys="true" keyProperty="itemParamtersId">
+        insert into platf_item_paramters
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemParamtersName != null and itemParamtersName != ''">item_paramters_name,</if>
+            <if test="docNum != null">doc_num,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemParamtersName != null and itemParamtersName != ''">#{itemParamtersName},</if>
+            <if test="docNum != null">#{docNum},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateItemParamters" parameterType="ItemParamters">
+        update platf_item_paramters
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemParamtersName != null and itemParamtersName != ''">item_paramters_name = #{itemParamtersName},</if>
+            <if test="docNum != null">doc_num = #{docNum},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where item_paramters_id = #{itemParamtersId}
+    </update>
+
+    <delete id="deleteItemParamtersById" parameterType="Long">
+        delete from platf_item_paramters where item_paramters_id = #{itemParamtersId}
+    </delete>
+
+    <delete id="deleteItemParamtersByIds" parameterType="String">
+        delete from platf_item_paramters where item_paramters_id in 
+        <foreach item="itemParamtersId" collection="array" open="(" separator="," close=")">
+            #{itemParamtersId}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteItemParamtersUnitByItemParamtersIds" parameterType="String">
+        delete from platf_item_paramters_unit where item_paramters_id in 
+        <foreach item="itemParamtersId" collection="array" open="(" separator="," close=")">
+            #{itemParamtersId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteItemParamtersUnitByItemParamtersId" parameterType="Long">
+        delete from platf_item_paramters_unit where item_paramters_id = #{itemParamtersId}
+    </delete>
+
+    <insert id="batchItemParamtersUnit">
+        insert into platf_item_paramters_unit( item_paramters_unit_id, item_paramters_id, unit, unit_status, fmemo) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.itemParamtersUnitId}, #{item.itemParamtersId}, #{item.unit}, #{item.unitStatus}, #{item.fmemo})
+        </foreach>
+    </insert>
+
+
+</mapper>

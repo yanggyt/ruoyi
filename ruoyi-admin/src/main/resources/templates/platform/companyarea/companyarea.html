@@ -85,6 +85,10 @@
                     checkbox: true
                 },
                 {
+                    field: 'companyAreaId',
+                    title: '编号ID'
+                },
+                {
                     field: 'companyAreaName',
                     title: '名称'
                 },
@@ -131,6 +135,7 @@
                 }]
             };
             $.table.init(options);
+            $.table.hideColumn("companyAreaId");
         });
 
     </script>

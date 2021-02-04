@@ -26,7 +26,7 @@ public interface I${ClassName}Service
         /**
          * 查询${functionName}
          *
-         * @param ${pkColumn.javaField} ${functionName}ID
+         * @param ${className} ${functionName}ID
          * @return ${functionName}
          */
         public String check${ClassName}Unique(${ClassName} ${className});
@@ -72,6 +72,23 @@ public interface I${ClassName}Service
      */
     public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
 #if($table.tree)
+
+    /**
+     * 查询部门管理树（排除下级）
+     *
+     * @param dept 部门信息
+     * @return 所有部门信息
+     */
+    public List<Ztree> select${ClassName}TreeExcludeChild(${ClassName} ${className});
+
+    /**
+     * 根据ID查询所有子${functionName}（正常状态）
+     *
+     * @param ${pkColumn.javaField} ID
+     * @return 子${functionName}数
+     */
+    public int selectNormalChildren${ClassName}ById(Long ${pkColumn.javaField});
+
 
     /**
      * 查询${functionName}树列表
