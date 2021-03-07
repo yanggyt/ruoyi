@@ -64,6 +64,24 @@ public class BaseController
     }
 
     /**
+     * 如果后台查询是多表关联，且存在相同字段的时候，前台排序列传到这里需要注明table或者简写（简写与sql中一致）
+     */
+    protected  void startPage(String tableName) {
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize)) {
+            String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
+            if(StringUtils.isNotEmpty(orderBy) && StringUtils.isNotEmpty(tableName)){
+                orderBy = tableName.concat(".").concat(orderBy);
+            }
+            PageHelper.startPage(pageNum, pageSize, orderBy);
+        }
+
+    }
+
+
+    /*
      * 设置请求排序数据
      */
     protected void startOrderBy()
