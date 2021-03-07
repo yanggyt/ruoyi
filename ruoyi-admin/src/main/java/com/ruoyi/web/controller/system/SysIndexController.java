@@ -45,7 +45,7 @@ public class SysIndexController extends BaseController
     private SysPasswordService passwordService;
 
     // 系统首页
-    @GetMapping("/index")
+    @GetMapping({"/index","/"})
     public String index(ModelMap mmap)
     {
         // 取身份信息
