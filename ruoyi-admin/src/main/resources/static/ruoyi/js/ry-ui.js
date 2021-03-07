@@ -1680,3 +1680,15 @@ modal_status = {
     FAIL: "error",
     WARNING: "warning"
 };
+
+document.onkeydown = function (event) {
+  var e = e || window.event;
+  if (e.keyCode === 13) {
+    var hasTable = document.getElementById("bootstrap-table");
+    if (hasTable == null) {
+      return true;
+    }
+    $.table.search();
+    return false;
+  }
+};
