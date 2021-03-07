@@ -10,6 +10,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.cert.X509Certificate;
+import java.util.Objects;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -204,7 +205,7 @@ public class HttpUtils
             String ret = "";
             while ((ret = br.readLine()) != null)
             {
-                if (ret != null && !ret.trim().equals(""))
+                if (!Objects.equals(ret.trim(), ""))
                 {
                     result.append(new String(ret.getBytes("ISO-8859-1"), "utf-8"));
                 }
