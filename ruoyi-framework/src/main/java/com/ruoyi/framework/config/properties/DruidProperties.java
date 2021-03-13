@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import com.alibaba.druid.pool.DruidDataSource;
 
+import java.util.Properties;
+
 /**
  * druid 配置属性
  * 
@@ -45,6 +47,15 @@ public class DruidProperties
     @Value("${spring.datasource.druid.testOnReturn}")
     private boolean testOnReturn;
 
+    @Value("${spring.datasource.druid.filters.config.enabled}")
+    private boolean configFilterEnabled;
+
+    @Value("${spring.datasource.druid.connect-properties.config.decrypt}")
+    private String decryptEnabled;
+
+    @Value("${spring.datasource.druid.connect-properties.config.decrypt.key}")
+    private String decryptKey;
+
     public DruidDataSource dataSource(DruidDataSource datasource)
     {
         /** 配置初始化大小、最小、最大 */
@@ -72,6 +83,20 @@ public class DruidProperties
         datasource.setTestOnBorrow(testOnBorrow);
         /** 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 */
         datasource.setTestOnReturn(testOnReturn);
+
+        if (configFilterEnabled) {
+            try {
+                /* 启用数据库密码解密 */
+                datasource.setFilters("config");
+                Properties properties = new Properties();
+                properties.put("config.decrypt", decryptEnabled);
+                properties.put("config.decrypt.key", decryptKey);
+                datasource.setConnectProperties(properties);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+
         return datasource;
     }
 }
