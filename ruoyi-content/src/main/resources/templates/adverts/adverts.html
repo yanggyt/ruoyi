@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('文章广告列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>公司id：</label>
+                                <input type="text" name="companyId"/>
+                            </li>
+                            <li>
+                                <label>广告类型：</label>
+                                <select name="adType">
+                                    <option value="">所有</option>
+                                    <option value="-1">代码生成请选择字典属性</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>广告类型名：</label>
+                                <input type="text" name="adTypeName"/>
+                            </li>
+                            <li>
+                                <label>广告跳转地址：</label>
+                                <input type="text" name="adLinkUrl"/>
+                            </li>
+                            <li>
+                                <label>广告标题：</label>
+                                <input type="text" name="adTitle"/>
+                            </li>
+                            <li>
+                                <label>广告名称：</label>
+                                <input type="text" name="adName"/>
+                            </li>
+                            <li>
+                                <label>广告简介：</label>
+                                <input type="text" name="adSummary"/>
+                            </li>
+                            <li>
+                                <label>广告背景颜色：</label>
+                                <select name="adColorType">
+                                    <option value="">所有</option>
+                                    <option value="-1">代码生成请选择字典属性</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>广告图片地址：</label>
+                                <input type="text" name="adImageUrl"/>
+                            </li>
+                            <li>
+                                <label>广告状态  0：展示  1：不可用：</label>
+                                <input type="text" name="adState"/>
+                            </li>
+                            <li>
+                                <label>：</label>
+                                <input type="text" name="createDate"/>
+                            </li>
+                            <li>
+                                <label>：</label>
+                                <input type="text" name="createTime"/>
+                            </li>
+                            <li>
+                                <label>广告创建者：</label>
+                                <input type="text" name="createUser"/>
+                            </li>
+                            <li>
+                                <label>：</label>
+                                <input type="text" name="updateUser"/>
+                            </li>
+                            <li>
+                                <label>：</label>
+                                <input type="text" name="updateDate"/>
+                            </li>
+                            <li>
+                                <label>：</label>
+                                <input type="text" name="updateTime"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="content:adverts:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="content:adverts:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="content:adverts:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="content:adverts:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('content:adverts:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('content:adverts:remove')}]];
+        var prefix = ctx + "content/adverts";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "文章广告",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'adId',
+                    title: '',
+                    visible: false
+                },
+                {
+                    field: 'companyId',
+                    title: '公司id'
+                },
+                {
+                    field: 'adType',
+                    title: '广告类型'
+                },
+                {
+                    field: 'adTypeName',
+                    title: '广告类型名'
+                },
+                {
+                    field: 'adLinkUrl',
+                    title: '广告跳转地址'
+                },
+                {
+                    field: 'adTitle',
+                    title: '广告标题'
+                },
+                {
+                    field: 'adName',
+                    title: '广告名称'
+                },
+                {
+                    field: 'adSummary',
+                    title: '广告简介'
+                },
+                {
+                    field: 'adColorType',
+                    title: '广告背景颜色'
+                },
+                {
+                    field: 'adImageUrl',
+                    title: '广告图片地址'
+                },
+                {
+                    field: 'adState',
+                    title: '广告状态  0：展示  1：不可用'
+                },
+                {
+                    field: 'createDate',
+                    title: ''
+                },
+                {
+                    field: 'createTime',
+                    title: ''
+                },
+                {
+                    field: 'createUser',
+                    title: '广告创建者'
+                },
+                {
+                    field: 'updateUser',
+                    title: ''
+                },
+                {
+                    field: 'updateDate',
+                    title: ''
+                },
+                {
+                    field: 'updateTime',
+                    title: ''
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.adId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.adId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

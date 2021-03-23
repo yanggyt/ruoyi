@@ -221,6 +221,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 内容中心-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-content</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
