@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @create: 2021-03-23 16:26
  **/
 @Controller
-@RequestMapping("advert")
+@RequestMapping("adverts")
 public class AdvertisementController extends BaseController {
 }
