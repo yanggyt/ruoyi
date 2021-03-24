@@ -2,20 +2,21 @@ package com.ruoyi.content.mapper;
 
 
 import com.ruoyi.content.domain.CmsArticleAdInfo;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * 文章广告Mapper接口
- * 
+ *
  * @author ruoyi
  * @date 2021-03-23
  */
-public interface CmsArticleAdInfoMapper 
-{
+@Repository
+public interface CmsArticleAdInfoMapper {
     /**
      * 查询文章广告
-     * 
+     *
      * @param adId 文章广告ID
      * @return 文章广告
      */
@@ -23,7 +24,7 @@ public interface CmsArticleAdInfoMapper
 
     /**
      * 查询文章广告列表
-     * 
+     *
      * @param cmsArticleAdInfo 文章广告
      * @return 文章广告集合
      */
@@ -31,7 +32,7 @@ public interface CmsArticleAdInfoMapper
 
     /**
      * 新增文章广告
-     * 
+     *
      * @param cmsArticleAdInfo 文章广告
      * @return 结果
      */
@@ -39,7 +40,7 @@ public interface CmsArticleAdInfoMapper
 
     /**
      * 修改文章广告
-     * 
+     *
      * @param cmsArticleAdInfo 文章广告
      * @return 结果
      */
@@ -47,7 +48,7 @@ public interface CmsArticleAdInfoMapper
 
     /**
      * 删除文章广告
-     * 
+     *
      * @param adId 文章广告ID
      * @return 结果
      */
@@ -55,7 +56,7 @@ public interface CmsArticleAdInfoMapper
 
     /**
      * 批量删除文章广告
-     * 
+     *
      * @param adIds 需要删除的数据ID
      * @return 结果
      */
