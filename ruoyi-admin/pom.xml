@@ -78,6 +78,7 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
+        <!--活动管理-->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>sino-activity</artifactId>
