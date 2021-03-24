@@ -13,4 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("adverts")
 public class AdvertisementController extends BaseController {
+
+    private String prefix = "adverts";
+
+
+
 }
