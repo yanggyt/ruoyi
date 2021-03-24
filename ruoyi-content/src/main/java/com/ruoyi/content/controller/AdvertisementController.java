@@ -72,7 +72,7 @@ public class AdvertisementController extends BaseController {
      * 新增保存文章广告
      */
     @Log(title = "文章广告", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
+    @RequestMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@RequestParam("addImg") MultipartFile[] files, CmsArticleAdInfo cmsArticleAdInfo) {
         MultipartFile file = files[0];
@@ -82,6 +82,7 @@ public class AdvertisementController extends BaseController {
     /**
      * 修改文章广告
      */
+    @RequestMapping("/edit/{adId}")
     public String edit(@PathVariable("adId") Long adId, ModelMap mmap) {
         CmsArticleAdInfo cmsArticleAdInfo = cmsArticleAdInfoService.selectCmsArticleAdInfoById(adId);
         mmap.put("cmsArticleAdInfo", cmsArticleAdInfo);

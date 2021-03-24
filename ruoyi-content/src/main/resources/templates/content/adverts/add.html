@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
 <head>
     <th:block th:include="include :: header('新增文章广告')" />
 </head>
@@ -19,17 +20,17 @@
 </style>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-adverts-add">
+        <form class="form-horizontal m" id="form-adverts-add" action="" enctype="multipart/form-data" method="post">
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">广告标题：</label>
                 <div class="col-sm-8">
-                    <input name="adTitle" class="form-control" type="text" required>
+                    <input name="adTitle" th:id="adTitle" class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">广告名称：</label>
                 <div class="col-sm-8">
-                    <input name="adName" class="form-control" type="text" required>
+                    <input name="adName" th:id="adName" class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">
@@ -49,23 +50,23 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">跳转地址：</label>
                 <div class="col-sm-8">
-                    <input name="adLinkUrl" class="form-control" type="text" required>
+                    <input name="adLinkUrl" th:id="adLinkUrl" class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">简介：</label>
                 <div class="col-sm-8">
-                    <input name="adSummary" class="form-control" type="text" required>
+                    <input name="adSummary" th:id="adSummary" class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">背景颜色：</label>
                 <div class="col-sm-8">
-                    <input type="radio" class="addColor" id="addColor_a" name="adColorType" value="1" checked="checked">
+                    <input type="radio" class="addColor" id="addColor_a" th:name="adColorType" value="1" checked="checked">
                     <label class="lab" style="background-color: #67c5ab"></label>
-                    <input type="radio" class="addColor" id="addColor_b" name="adColorType" value="2">
+                    <input type="radio" class="addColor" id="addColor_b" th:name="adColorType" value="2">
                     <label class="lab" style="background-color: #b6d882"></label>
-                    <input type="radio" class="addColor" id="addColor_c" name="adColorType" value="3">
+                    <input type="radio" class="addColor" id="addColor_c" th:name="adColorType" value="3">
                     <label class="lab" style="background-color: #f88f81"></label>
                 </div>
             </div>
@@ -78,25 +79,19 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label"></label>
                 <div class="col-sm-7">
-                    <input type="file" class="file projectfile" id="addImg" name="addImg" required>
+                    <input type="file" class="file projectfile" multiple th:id="addImg" name="addImg" required>
                 </div>
             </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
     <script th:src="@{/js/fileinput.min.js}"></script>
     <script th:src="@{/js/fileinput_locale_zh.js}"></script>
-    <link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
     <script th:inline="javascript">
         var prefix = ctx + "content/adverts"
 
         chooseAdType();
-
-        function submitHandler() {
-            if ($.validate.form()) {
-                $.operate.save(prefix + "/add", $('#form-adverts-add').serialize());
-            }
-        }
 
         function chooseAdType() {
             $('#adTypeName').val($("#addType option:selected").text());
@@ -127,6 +122,35 @@
         }).on("filecleared",function (event){
             $("#addImgContent").removeAttr("src");
         });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                var data = new FormData();
+                data.append('adTitle', $("#adTitle").val());
+                data.append('adName', $("#adName").val());
+                data.append('adType', $("#addType").val());
+                data.append('adTypeName', $("#adTypeName").val());
+                data.append('adLinkUrl', $("#adLinkUrl").val());
+                data.append('adSummary', $("#adSummary").val());
+                data.append('adColorType',$("input[name='adColorType']:checked").val());
+                data.append('addImg', $("#addImg")[0].files[0]);
+                $.ajax({
+                    url : prefix + "/add",
+                    data : data,
+                    dataType : "json",
+                    type : "post",
+                    processData: false,//不需要对数据进行处理
+                    contentType:false,
+                    cache : false,
+                    success : function(result) {
+                        $.operate.successCallback(result);
+                    },
+                    error : function(textStatus, e) {
+
+                    }
+                });
+            }
+        }
 
     </script>
 </body>
