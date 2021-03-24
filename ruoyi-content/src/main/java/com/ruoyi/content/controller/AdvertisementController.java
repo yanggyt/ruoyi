@@ -6,11 +6,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.content.domain.CmsArticleAdInfo;
@@ -19,6 +15,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 文章广告Controller
@@ -35,7 +32,6 @@ public class AdvertisementController extends BaseController {
     @Autowired
     private ICmsArticleAdInfoService cmsArticleAdInfoService;
 
-    @RequiresPermissions("content:adverts:view")
     @GetMapping()
     public String adverts() {
         return prefix + "/adverts";
@@ -78,8 +74,9 @@ public class AdvertisementController extends BaseController {
     @Log(title = "文章广告", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(CmsArticleAdInfo cmsArticleAdInfo) {
-        return toAjax(cmsArticleAdInfoService.insertCmsArticleAdInfo(cmsArticleAdInfo));
+    public AjaxResult addSave(@RequestParam("addImg") MultipartFile[] files, CmsArticleAdInfo cmsArticleAdInfo) {
+        MultipartFile file = files[0];
+        return toAjax(cmsArticleAdInfoService.insertCmsArticleAdInfo(file, cmsArticleAdInfo));
     }
 
     /**

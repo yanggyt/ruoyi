@@ -3,6 +3,20 @@
 <head>
     <th:block th:include="include :: header('文章广告列表')" />
 </head>
+<style>
+    .article-table-img {
+        width: 120%;
+        border-radius: 4px;
+        display: block;
+        border-style: none;
+    }
+    .article-color {
+        width: 40px;
+        height: 40px;
+        border-radius: 2px;
+        margin: auto;
+    }
+</style>
 <body class="gray-bg">
      <div class="container-div">
         <div class="row">
@@ -11,74 +25,8 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>公司id：</label>
-                                <input type="text" name="companyId"/>
-                            </li>
-                            <li>
-                                <label>广告类型：</label>
-                                <select name="adType">
-                                    <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
-                                </select>
-                            </li>
-                            <li>
-                                <label>广告类型名：</label>
-                                <input type="text" name="adTypeName"/>
-                            </li>
-                            <li>
-                                <label>广告跳转地址：</label>
-                                <input type="text" name="adLinkUrl"/>
-                            </li>
-                            <li>
                                 <label>广告标题：</label>
                                 <input type="text" name="adTitle"/>
-                            </li>
-                            <li>
-                                <label>广告名称：</label>
-                                <input type="text" name="adName"/>
-                            </li>
-                            <li>
-                                <label>广告简介：</label>
-                                <input type="text" name="adSummary"/>
-                            </li>
-                            <li>
-                                <label>广告背景颜色：</label>
-                                <select name="adColorType">
-                                    <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
-                                </select>
-                            </li>
-                            <li>
-                                <label>广告图片地址：</label>
-                                <input type="text" name="adImageUrl"/>
-                            </li>
-                            <li>
-                                <label>广告状态  0：展示  1：不可用：</label>
-                                <input type="text" name="adState"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="createDate"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="createTime"/>
-                            </li>
-                            <li>
-                                <label>广告创建者：</label>
-                                <input type="text" name="createUser"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="updateUser"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="updateDate"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="updateTime"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -93,14 +41,8 @@
                 <a class="btn btn-success" onclick="$.operate.add()">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()">
-                    <i class="fa fa-edit"></i> 修改
-                </a>
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
                     <i class="fa fa-remove"></i> 删除
-                </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()">
-                    <i class="fa fa-download"></i> 导出
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped">
@@ -129,22 +71,6 @@
                     visible: false
                 },
                 {
-                    field: 'companyId',
-                    title: '公司id'
-                },
-                {
-                    field: 'adType',
-                    title: '广告类型'
-                },
-                {
-                    field: 'adTypeName',
-                    title: '广告类型名'
-                },
-                {
-                    field: 'adLinkUrl',
-                    title: '广告跳转地址'
-                },
-                {
                     field: 'adTitle',
                     title: '广告标题'
                 },
@@ -153,52 +79,59 @@
                     title: '广告名称'
                 },
                 {
+                    field: 'adTypeName',
+                    title: '广告类型名'
+                },
+                {
+                    field: 'adLinkUrl',
+                    title: '跳转地址',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-xs" href="javascript:void(0)" onclick="$.modal.msg(\''+row.adLinkUrl+'\');" ><i class="fa"></i>展示</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
                     field: 'adSummary',
-                    title: '广告简介'
+                    title: '简介',
+                    width: '20',
+                    widthUnit: '%'
                 },
                 {
                     field: 'adColorType',
-                    title: '广告背景颜色'
+                    title: '背景颜色',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        if (row.adColorType === '1') {
+                            actions.push('<div class="article-color" style="background-color: #67c5ab"></div>');
+                        }
+                        if (row.adColorType === '2') {
+                            actions.push('<div class="article-color" style="background-color: #b6d882"></div>');
+                        }
+                        if (row.adColorType === '3') {
+                            actions.push('<div class="article-color" style="background-color: #f88f81"></div>');
+                        }
+                        return actions.join('');
+                    }
                 },
                 {
                     field: 'adImageUrl',
-                    title: '广告图片地址'
-                },
-                {
-                    field: 'adState',
-                    title: '广告状态  0：展示  1：不可用'
-                },
-                {
-                    field: 'createDate',
-                    title: ''
-                },
-                {
-                    field: 'createTime',
-                    title: ''
-                },
-                {
-                    field: 'createUser',
-                    title: '广告创建者'
-                },
-                {
-                    field: 'updateUser',
-                    title: ''
-                },
-                {
-                    field: 'updateDate',
-                    title: ''
-                },
-                {
-                    field: 'updateTime',
-                    title: ''
+                    title: '广告图片',
+                    width: '10',
+                    widthUnit: 'px',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<img class="article-table-img" src="'+row.adImageUrl+'" ></img> ');
+                        return actions.join('');
+                    }
                 },
                 {
                     title: '操作',
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.adId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.adId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-success btn-xs " href="javascript:void(0)" onclick="$.operate.edit(\'' + row.adId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs " href="javascript:void(0)" onclick="$.operate.remove(\'' + row.adId + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
                 }]

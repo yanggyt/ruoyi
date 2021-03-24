@@ -1,14 +1,20 @@
 package com.ruoyi.content.service.impl;
 
-import java.util.List;
-
+import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.content.constants.PropertiesConstants;
+import com.ruoyi.content.domain.CmsArticleAdInfo;
+import com.ruoyi.content.mapper.CmsArticleAdInfoMapper;
+import com.ruoyi.content.service.ICmsArticleAdInfoService;
+import com.ruoyi.content.utils.OSSUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.content.mapper.CmsArticleAdInfoMapper;
-import com.ruoyi.content.domain.CmsArticleAdInfo;
-import com.ruoyi.content.service.ICmsArticleAdInfoService;
-import com.ruoyi.common.core.text.Convert;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 文章广告Service业务层处理
@@ -18,6 +24,8 @@ import com.ruoyi.common.core.text.Convert;
  */
 @Service
 public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CmsArticleAdInfoServiceImpl.class);
 
     @Autowired
     private CmsArticleAdInfoMapper cmsArticleAdInfoMapper;
@@ -41,18 +49,50 @@ public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
      */
     @Override
     public List<CmsArticleAdInfo> selectCmsArticleAdInfoList(CmsArticleAdInfo cmsArticleAdInfo) {
+        cmsArticleAdInfo.setAdState("0");
+        cmsArticleAdInfo.setCompanyId("1");
         return cmsArticleAdInfoMapper.selectCmsArticleAdInfoList(cmsArticleAdInfo);
     }
 
     /**
      * 新增文章广告
      *
+     * @param file             广告图片
      * @param cmsArticleAdInfo 文章广告
-     * @return 结果
+     * @return
      */
     @Override
-    public int insertCmsArticleAdInfo(CmsArticleAdInfo cmsArticleAdInfo) {
-        cmsArticleAdInfo.setCreateTime(DateUtils.getNowDate());
+    public int insertCmsArticleAdInfo(MultipartFile file, CmsArticleAdInfo cmsArticleAdInfo) {
+        if (!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();// 文件名
+            String ext = fileName.substring(fileName.lastIndexOf("."), fileName.length());// 文件后缀
+            String fileTime = DateUtils.getMillisecond();
+            fileName = PropertiesConstants.AD_IMG_PATH + fileTime + ext;// OSS保存路径
+            String flag = null;
+            try {
+                flag = OSSUtil.uploadFileByInputStream(PropertiesConstants.OSSENDPOINT, PropertiesConstants.OSSID, PropertiesConstants.OSSKEY,
+                        PropertiesConstants.BUCKETNAME, file.getInputStream(), PropertiesConstants.OSSPATH + fileName);
+            } catch (IOException e) {
+                LOGGER.error("上传阿里云失败！", e);
+            }
+            if (null == flag || flag.equals("false")) {
+                LOGGER.info("广告图片上传oss失败");
+                return 0;
+            } else {
+                cmsArticleAdInfo.setAdImageUrl(PropertiesConstants.OSS_URL + PropertiesConstants.OSSPATH + fileName);
+            }
+        }
+        String date = DateUtils.getDate();
+        String time = DateUtils.getTimeNow();
+        cmsArticleAdInfo.setAdLinkUrl(cmsArticleAdInfo.getAdLinkUrl() + "(");
+        cmsArticleAdInfo.setCompanyId("1");
+        cmsArticleAdInfo.setAdState("0");
+        cmsArticleAdInfo.setCreateDate(date);
+        cmsArticleAdInfo.setCreateTime(time);
+        cmsArticleAdInfo.setCreateUser("company");
+        cmsArticleAdInfo.setUpdateDate(date);
+        cmsArticleAdInfo.setUpdateTime(time);
+        cmsArticleAdInfo.setUpdateUser("company");
         return cmsArticleAdInfoMapper.insertCmsArticleAdInfo(cmsArticleAdInfo);
     }
 
@@ -64,7 +104,7 @@ public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
      */
     @Override
     public int updateCmsArticleAdInfo(CmsArticleAdInfo cmsArticleAdInfo) {
-        cmsArticleAdInfo.setUpdateTime(DateUtils.getNowDate());
+        cmsArticleAdInfo.setUpdateTime(DateUtils.getDate());
         return cmsArticleAdInfoMapper.updateCmsArticleAdInfo(cmsArticleAdInfo);
     }
 

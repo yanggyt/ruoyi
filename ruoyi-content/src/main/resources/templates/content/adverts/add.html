@@ -3,113 +3,131 @@
 <head>
     <th:block th:include="include :: header('新增文章广告')" />
 </head>
+<style>
+    .lab {
+        height: 20px;
+        width: 20px;
+        display: inline-block;
+        border-radius: 20%;
+        margin-bottom: 0px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .addColor {
+
+    }
+</style>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-adverts-add">
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">公司id：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">广告标题：</label>
                 <div class="col-sm-8">
-                    <input name="companyId" class="form-control" type="text">
+                    <input name="adTitle" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告类型：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">广告名称：</label>
                 <div class="col-sm-8">
-                    <select name="adType" class="form-control m-b">
-                        <option value="">所有</option>
+                    <input name="adName" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">广告类型：</label>
+                <div class="col-sm-8">
+                    <select name="adType" class="form-control" th:id="addType" th:onchange="chooseAdType()">
+                        <option selected value="1">名片</option>
+                        <option value="2">招募</option>
+                        <option value="3">增员</option>
+                        <option value="4">产品</option>
                     </select>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告类型名：</label>
+            <div class="form-group" th:hidden="true">
+                <input name="adTypeName" th:id="adTypeName" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">跳转地址：</label>
                 <div class="col-sm-8">
-                    <input name="adTypeName" class="form-control" type="text">
+                    <input name="adLinkUrl" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告跳转地址：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">简介：</label>
                 <div class="col-sm-8">
-                    <input name="adLinkUrl" class="form-control" type="text">
+                    <input name="adSummary" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告标题：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">背景颜色：</label>
                 <div class="col-sm-8">
-                    <input name="adTitle" class="form-control" type="text">
+                    <input type="radio" class="addColor" id="addColor_a" name="adColorType" value="1" checked="checked">
+                    <label class="lab" style="background-color: #67c5ab"></label>
+                    <input type="radio" class="addColor" id="addColor_b" name="adColorType" value="2">
+                    <label class="lab" style="background-color: #b6d882"></label>
+                    <input type="radio" class="addColor" id="addColor_c" name="adColorType" value="3">
+                    <label class="lab" style="background-color: #f88f81"></label>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告名称：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">广告图片：</label>
                 <div class="col-sm-8">
-                    <input name="adName" class="form-control" type="text">
+                    <img id="addImgContent" class="form-control" style="width: 50px;height: 50px;">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告简介：</label>
-                <div class="col-sm-8">
-                    <input name="adSummary" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告背景颜色：</label>
-                <div class="col-sm-8">
-                    <select name="adColorType" class="form-control m-b">
-                        <option value="">所有</option>
-                    </select>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告图片地址：</label>
-                <div class="col-sm-8">
-                    <input name="adImageUrl" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告状态  0：展示  1：不可用：</label>
-                <div class="col-sm-8">
-                    <input name="adState" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">：</label>
-                <div class="col-sm-8">
-                    <input name="createDate" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">广告创建者：</label>
-                <div class="col-sm-8">
-                    <input name="createUser" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">：</label>
-                <div class="col-sm-8">
-                    <input name="updateUser" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">：</label>
-                <div class="col-sm-8">
-                    <input name="updateDate" class="form-control" type="text">
+            <div class="form-group">
+                <label class="col-sm-3 control-label"></label>
+                <div class="col-sm-7">
+                    <input type="file" class="file projectfile" id="addImg" name="addImg" required>
                 </div>
             </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <script th:src="@{/js/fileinput.min.js}"></script>
+    <script th:src="@{/js/fileinput_locale_zh.js}"></script>
+    <link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
     <script th:inline="javascript">
         var prefix = ctx + "content/adverts"
-        $("#form-adverts-add").validate({
-            focusCleanup: true
-        });
+
+        chooseAdType();
 
         function submitHandler() {
             if ($.validate.form()) {
                 $.operate.save(prefix + "/add", $('#form-adverts-add').serialize());
             }
         }
+
+        function chooseAdType() {
+            $('#adTypeName').val($("#addType option:selected").text());
+        }
+
+        var fileoptions = {
+            showUpload : false,
+            showRemove : true,
+            language : 'zh',
+            allowedPreviewTypes : [ 'image' ],
+            allowedFileExtensions : [ 'jpg', 'png', 'gif' ],
+            maxFileSize : 0,
+            autoReplace : true,// 是否自动替换图片
+            uploadAsync : false,// 异步上传
+            maxFileCount : 1,
+            maxFilesNum : 1,
+            dropZoneEnabled : false,
+            showPreview : true,
+            msgUploadThreshold : '上传中',
+            msgUploadEnd : '完成'
+        }
+
+        //点击创建后
+        $("#addImg").fileinput(fileoptions).on("change" , function(event){
+            $(".file-preview").css("display", "none");
+        }).on("filebatchselected",function(event, files) {
+            $("#addImgContent").attr("src",$(".file-preview-image.kv-preview-data").attr('src'));
+        }).on("filecleared",function (event){
+            $("#addImgContent").removeAttr("src");
+        });
+
     </script>
 </body>
 </html>

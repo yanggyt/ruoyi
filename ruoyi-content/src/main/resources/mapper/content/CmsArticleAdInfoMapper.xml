@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="adType != null  and adType != ''"> and AD_TYPE = #{adType}</if>
             <if test="adTypeName != null  and adTypeName != ''"> and AD_TYPE_NAME like concat('%', #{adTypeName}, '%')</if>
             <if test="adLinkUrl != null  and adLinkUrl != ''"> and AD_LINK_URL = #{adLinkUrl}</if>
-            <if test="adTitle != null  and adTitle != ''"> and AD_TITLE = #{adTitle}</if>
+            <if test="adTitle != null  and adTitle != ''"> and AD_TITLE like concat('%', #{adTitle}, '%')</if>
             <if test="adName != null  and adName != ''"> and AD_NAME like concat('%', #{adName}, '%')</if>
             <if test="adSummary != null  and adSummary != ''"> and AD_SUMMARY = #{adSummary}</if>
             <if test="adColorType != null  and adColorType != ''"> and AD_COLOR_TYPE = #{adColorType}</if>
@@ -48,6 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateDate != null  and updateDate != ''"> and UPDATE_DATE = #{updateDate}</if>
             <if test="updateTime != null  and updateTime != ''"> and UPDATE_TIME = #{updateTime}</if>
         </where>
+        order by CREATE_DATE DESC,CREATE_TIME DESC, UPDATE_DATE DESC,UPDATE_TIME DESC
     </select>
     
     <select id="selectCmsArticleAdInfoById" parameterType="Long" resultMap="CmsArticleAdInfoResult">
