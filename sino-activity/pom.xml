@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ruoyi-activity</artifactId>
+    <artifactId>sino-activity</artifactId>
 
     <description>
         活动管理
