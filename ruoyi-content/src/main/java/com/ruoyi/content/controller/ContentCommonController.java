@@ -22,8 +22,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/common")
-public class CommonController {
-    private static Logger logger = LoggerFactory.getLogger(CommonController.class);
+public class ContentCommonController {
+    private static Logger logger = LoggerFactory.getLogger(ContentCommonController.class);
     @Autowired
     private CmsRoleAuthorityService authorityService;
 
