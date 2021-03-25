@@ -5,6 +5,7 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.content.constants.PropertiesConstants;
 import com.ruoyi.content.domain.CmsArticleAdInfo;
 import com.ruoyi.content.mapper.CmsArticleAdInfoMapper;
+import com.ruoyi.content.redis.RedisManager;
 import com.ruoyi.content.service.ICmsArticleAdInfoService;
 import com.ruoyi.content.utils.OSSUtil;
 import org.slf4j.Logger;
@@ -29,6 +30,8 @@ public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
 
     @Autowired
     private CmsArticleAdInfoMapper cmsArticleAdInfoMapper;
+    @Autowired
+    private RedisManager redisManager;
 
     /**
      * 查询文章广告
@@ -99,13 +102,44 @@ public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
     /**
      * 修改文章广告
      *
+     * @param file             广告图片
      * @param cmsArticleAdInfo 文章广告
      * @return 结果
      */
     @Override
-    public int updateCmsArticleAdInfo(CmsArticleAdInfo cmsArticleAdInfo) {
-        cmsArticleAdInfo.setUpdateTime(DateUtils.getDate());
-        return cmsArticleAdInfoMapper.updateCmsArticleAdInfo(cmsArticleAdInfo);
+    public int updateCmsArticleAdInfo(MultipartFile file, CmsArticleAdInfo cmsArticleAdInfo) {
+        if (!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();// 文件名
+            String ext = fileName.substring(fileName.lastIndexOf("."), fileName.length());// 文件后缀
+            String fileTime = DateUtils.getMillisecond();
+            fileName = PropertiesConstants.AD_IMG_PATH + fileTime + ext;// OSS保存路径
+            String flag = null;
+            try {
+                flag = OSSUtil.uploadFileByInputStream(PropertiesConstants.OSSENDPOINT, PropertiesConstants.OSSID, PropertiesConstants.OSSKEY,
+                        PropertiesConstants.BUCKETNAME, file.getInputStream(), PropertiesConstants.OSSPATH + fileName);
+            } catch (IOException e) {
+                LOGGER.error("上传阿里云失败！", e);
+            }
+            if (null == flag || flag.equals("false")) {
+                LOGGER.info("广告图片上传oss失败");
+                return 0;
+            } else {
+                cmsArticleAdInfo.setAdImageUrl(PropertiesConstants.OSS_URL + PropertiesConstants.OSSPATH + fileName);
+            }
+        }
+        String date = DateUtils.getDate();
+        String time = DateUtils.getTimeNow();
+        cmsArticleAdInfo.setAdLinkUrl(cmsArticleAdInfo.getAdLinkUrl() + "(");
+        cmsArticleAdInfo.setUpdateDate(date);
+        cmsArticleAdInfo.setUpdateTime(time);
+        cmsArticleAdInfo.setUpdateUser("company");
+        if (cmsArticleAdInfoMapper.updateCmsArticleAdInfo(cmsArticleAdInfo) > 0) {
+            redisManager.delete("articleAdInfo_id" + cmsArticleAdInfo.getAdId());
+        } else {
+            LOGGER.info("编辑广告失败");
+            return 0;
+        }
+        return 1;
     }
 
     /**
@@ -116,7 +150,16 @@ public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
      */
     @Override
     public int deleteCmsArticleAdInfoByIds(String ids) {
-        return cmsArticleAdInfoMapper.deleteCmsArticleAdInfoByIds(Convert.toStrArray(ids));
+        String[] arrId = ids.split(",");
+        for (String id : arrId) {
+            CmsArticleAdInfo delType = cmsArticleAdInfoMapper.selectByPrimaryKey(Integer.valueOf(id));
+            if (delType != null) {
+                redisManager.delete("articleAdInfo_id" + id);
+                redisManager.delete("article_ad_typeList_" + delType.getAdType());
+                cmsArticleAdInfoMapper.deleteCmsArticleAdInfoById(Long.valueOf(id));
+            }
+        }
+        return 1;
     }
 
     /**

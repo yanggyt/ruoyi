@@ -40,10 +40,11 @@ public interface ICmsArticleAdInfoService {
     /**
      * 修改文章广告
      *
+     * @param file 广告图片
      * @param cmsArticleAdInfo 文章广告
      * @return 结果
      */
-    public int updateCmsArticleAdInfo(CmsArticleAdInfo cmsArticleAdInfo);
+    public int updateCmsArticleAdInfo(MultipartFile file, CmsArticleAdInfo cmsArticleAdInfo);
 
     /**
      * 批量删除文章广告

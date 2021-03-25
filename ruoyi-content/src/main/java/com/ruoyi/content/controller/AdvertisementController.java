@@ -1,21 +1,20 @@
 package com.ruoyi.content.controller;
 
-import java.util.List;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.content.domain.CmsArticleAdInfo;
+import com.ruoyi.content.service.ICmsArticleAdInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.content.domain.CmsArticleAdInfo;
-import com.ruoyi.content.service.ICmsArticleAdInfoService;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 文章广告Controller
@@ -72,7 +71,7 @@ public class AdvertisementController extends BaseController {
      * 新增保存文章广告
      */
     @Log(title = "文章广告", businessType = BusinessType.INSERT)
-    @RequestMapping("/add")
+    @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@RequestParam("addImg") MultipartFile[] files, CmsArticleAdInfo cmsArticleAdInfo) {
         MultipartFile file = files[0];
@@ -95,8 +94,12 @@ public class AdvertisementController extends BaseController {
     @Log(title = "文章广告", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(CmsArticleAdInfo cmsArticleAdInfo) {
-        return toAjax(cmsArticleAdInfoService.updateCmsArticleAdInfo(cmsArticleAdInfo));
+    public AjaxResult editSave(@RequestParam("addImg") MultipartFile[] files, CmsArticleAdInfo cmsArticleAdInfo) {
+        MultipartFile file = null;
+        if (files != null && files.length > 0) {
+            file = files[0];
+        }
+        return toAjax(cmsArticleAdInfoService.updateCmsArticleAdInfo(file, cmsArticleAdInfo));
     }
 
     /**
