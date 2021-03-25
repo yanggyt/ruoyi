@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawRecordMapper">
+    
+    <resultMap type="DrawRecord" id="DrawRecordResult">
+        <result property="DRAWRECORDID"    column="DRAWRECORDID"    />
+        <result property="DRAWTRANSEQNO"    column="DRAWTRANSEQNO"    />
+        <result property="DRAWCODE"    column="DRAWCODE"    />
+        <result property="USERID"    column="USERID"    />
+        <result property="DRAWTIME"    column="DRAWTIME"    />
+        <result property="DRAWRESULT"    column="DRAWRESULT"    />
+        <result property="PRIZECODE"    column="PRIZECODE"    />
+        <result property="PRIZETYPE"    column="PRIZETYPE"    />
+        <result property="CHECKINGDATE"    column="CHECKINGDATE"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+        <result property="CHANNEL"    column="CHANNEL"    />
+        <result property="USERNAME"    column="USERNAME"    />
+        <result property="PRIZELEVEL"    column="PRIZELEVEL"    />
+        <result property="PROJECTCODE"    column="PROJECTCODE"    />
+        <result property="SOURCE"    column="SOURCE"    />
+        <result property="PHONE"    column="PHONE"    />
+        <result property="EXTAREA"    column="EXTAREA"    />
+    </resultMap>
+
+    <sql id="selectDrawRecordVo">
+        select DRAWRECORDID, DRAWTRANSEQNO, DRAWCODE, USERID, DRAWTIME, DRAWRESULT, PRIZECODE, PRIZETYPE, CHECKINGDATE, CREATETIMESTAMP, LASTUPDATETIMESTAMP, CHANNEL, USERNAME, PRIZELEVEL, PROJECTCODE, SOURCE, PHONE, EXTAREA from draw_record
+    </sql>
+
+    <select id="selectDrawRecordList" parameterType="DrawRecord" resultMap="DrawRecordResult">
+        <include refid="selectDrawRecordVo"/>
+        <where>  
+            <if test="DRAWTRANSEQNO != null  and DRAWTRANSEQNO != ''"> and DRAWTRANSEQNO = #{DRAWTRANSEQNO}</if>
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="USERID != null  and USERID != ''"> and USERID = #{USERID}</if>
+            <if test="DRAWTIME != null "> and DRAWTIME = #{DRAWTIME}</if>
+            <if test="DRAWRESULT != null  and DRAWRESULT != ''"> and DRAWRESULT = #{DRAWRESULT}</if>
+            <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
+            <if test="PRIZETYPE != null  and PRIZETYPE != ''"> and PRIZETYPE = #{PRIZETYPE}</if>
+            <if test="CHECKINGDATE != null "> and CHECKINGDATE = #{CHECKINGDATE}</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+            <if test="CHANNEL != null  and CHANNEL != ''"> and CHANNEL = #{CHANNEL}</if>
+            <if test="USERNAME != null  and USERNAME != ''"> and USERNAME like concat('%', #{USERNAME}, '%')</if>
+            <if test="PRIZELEVEL != null  and PRIZELEVEL != ''"> and PRIZELEVEL = #{PRIZELEVEL}</if>
+            <if test="PROJECTCODE != null  and PROJECTCODE != ''"> and PROJECTCODE = #{PROJECTCODE}</if>
+            <if test="SOURCE != null  and SOURCE != ''"> and SOURCE = #{SOURCE}</if>
+            <if test="PHONE != null  and PHONE != ''"> and PHONE = #{PHONE}</if>
+            <if test="EXTAREA != null  and EXTAREA != ''"> and EXTAREA = #{EXTAREA}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawRecordById" parameterType="String" resultMap="DrawRecordResult">
+        <include refid="selectDrawRecordVo"/>
+        where DRAWRECORDID = #{DRAWRECORDID}
+    </select>
+        
+    <insert id="insertDrawRecord" parameterType="DrawRecord">
+        insert into draw_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="DRAWRECORDID != null">DRAWRECORDID,</if>
+            <if test="DRAWTRANSEQNO != null">DRAWTRANSEQNO,</if>
+            <if test="DRAWCODE != null">DRAWCODE,</if>
+            <if test="USERID != null">USERID,</if>
+            <if test="DRAWTIME != null">DRAWTIME,</if>
+            <if test="DRAWRESULT != null">DRAWRESULT,</if>
+            <if test="PRIZECODE != null">PRIZECODE,</if>
+            <if test="PRIZETYPE != null">PRIZETYPE,</if>
+            <if test="CHECKINGDATE != null">CHECKINGDATE,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+            <if test="CHANNEL != null">CHANNEL,</if>
+            <if test="USERNAME != null">USERNAME,</if>
+            <if test="PRIZELEVEL != null">PRIZELEVEL,</if>
+            <if test="PROJECTCODE != null">PROJECTCODE,</if>
+            <if test="SOURCE != null">SOURCE,</if>
+            <if test="PHONE != null">PHONE,</if>
+            <if test="EXTAREA != null">EXTAREA,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="DRAWRECORDID != null">#{DRAWRECORDID},</if>
+            <if test="DRAWTRANSEQNO != null">#{DRAWTRANSEQNO},</if>
+            <if test="DRAWCODE != null">#{DRAWCODE},</if>
+            <if test="USERID != null">#{USERID},</if>
+            <if test="DRAWTIME != null">#{DRAWTIME},</if>
+            <if test="DRAWRESULT != null">#{DRAWRESULT},</if>
+            <if test="PRIZECODE != null">#{PRIZECODE},</if>
+            <if test="PRIZETYPE != null">#{PRIZETYPE},</if>
+            <if test="CHECKINGDATE != null">#{CHECKINGDATE},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+            <if test="CHANNEL != null">#{CHANNEL},</if>
+            <if test="USERNAME != null">#{USERNAME},</if>
+            <if test="PRIZELEVEL != null">#{PRIZELEVEL},</if>
+            <if test="PROJECTCODE != null">#{PROJECTCODE},</if>
+            <if test="SOURCE != null">#{SOURCE},</if>
+            <if test="PHONE != null">#{PHONE},</if>
+            <if test="EXTAREA != null">#{EXTAREA},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawRecord" parameterType="DrawRecord">
+        update draw_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="DRAWTRANSEQNO != null">DRAWTRANSEQNO = #{DRAWTRANSEQNO},</if>
+            <if test="DRAWCODE != null">DRAWCODE = #{DRAWCODE},</if>
+            <if test="USERID != null">USERID = #{USERID},</if>
+            <if test="DRAWTIME != null">DRAWTIME = #{DRAWTIME},</if>
+            <if test="DRAWRESULT != null">DRAWRESULT = #{DRAWRESULT},</if>
+            <if test="PRIZECODE != null">PRIZECODE = #{PRIZECODE},</if>
+            <if test="PRIZETYPE != null">PRIZETYPE = #{PRIZETYPE},</if>
+            <if test="CHECKINGDATE != null">CHECKINGDATE = #{CHECKINGDATE},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+            <if test="CHANNEL != null">CHANNEL = #{CHANNEL},</if>
+            <if test="USERNAME != null">USERNAME = #{USERNAME},</if>
+            <if test="PRIZELEVEL != null">PRIZELEVEL = #{PRIZELEVEL},</if>
+            <if test="PROJECTCODE != null">PROJECTCODE = #{PROJECTCODE},</if>
+            <if test="SOURCE != null">SOURCE = #{SOURCE},</if>
+            <if test="PHONE != null">PHONE = #{PHONE},</if>
+            <if test="EXTAREA != null">EXTAREA = #{EXTAREA},</if>
+        </trim>
+        where DRAWRECORDID = #{DRAWRECORDID}
+    </update>
+
+    <delete id="deleteDrawRecordById" parameterType="String">
+        delete from draw_record where DRAWRECORDID = #{DRAWRECORDID}
+    </delete>
+
+    <delete id="deleteDrawRecordByIds" parameterType="String">
+        delete from draw_record where DRAWRECORDID in 
+        <foreach item="DRAWRECORDID" collection="array" open="(" separator="," close=")">
+            #{DRAWRECORDID}
+        </foreach>
+    </delete>
+
+</mapper>
