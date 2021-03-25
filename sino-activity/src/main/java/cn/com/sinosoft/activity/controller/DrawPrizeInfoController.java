@@ -29,7 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 @RequestMapping("/activity/info")
 public class DrawPrizeInfoController extends BaseController
 {
-    private String prefix = "activity/info";
+    private String prefix = "activity/prizeInfo";
 
     @Autowired
     private IDrawPrizeInfoService drawPrizeInfoService;

@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.sinosoft.activity.mapper.DrawPrizeInfoMapper">
     
-    <resultMap type="DrawPrizeInfo" id="DrawPrizeInfoResult">
+    <resultMap type="cn.com.sinosoft.activity.domain.DrawPrizeInfo" id="DrawPrizeInfoResult">
         <result property="PRIZEID"    column="PRIZEID"    />
         <result property="PRIZECODE"    column="PRIZECODE"    />
         <result property="PRIZENAME"    column="PRIZENAME"    />
@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select PRIZEID, PRIZECODE, PRIZENAME, PRIZETYPE, PRIZEVALUE, COMMENTS, CREATETIMESTAMP, LASTUPDATETIMESTAMP, STATUS, INTEGRALPROJECTCODE from draw_prize_info
     </sql>
 
-    <select id="selectDrawPrizeInfoList" parameterType="DrawPrizeInfo" resultMap="DrawPrizeInfoResult">
+    <select id="selectDrawPrizeInfoList" parameterType="cn.com.sinosoft.activity.domain.DrawPrizeInfo" resultMap="DrawPrizeInfoResult">
         <include refid="selectDrawPrizeInfoVo"/>
         <where>  
             <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
@@ -36,12 +36,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectDrawPrizeInfoById" parameterType="String" resultMap="DrawPrizeInfoResult">
+    <select id="selectDrawPrizeInfoById" parameterType="java.lang.String" resultMap="DrawPrizeInfoResult">
         <include refid="selectDrawPrizeInfoVo"/>
         where PRIZEID = #{PRIZEID}
     </select>
         
-    <insert id="insertDrawPrizeInfo" parameterType="DrawPrizeInfo">
+    <insert id="insertDrawPrizeInfo" parameterType="cn.com.sinosoft.activity.domain.DrawPrizeInfo">
         insert into draw_prize_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="PRIZEID != null">PRIZEID,</if>
@@ -69,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateDrawPrizeInfo" parameterType="DrawPrizeInfo">
+    <update id="updateDrawPrizeInfo" parameterType="cn.com.sinosoft.activity.domain.DrawPrizeInfo">
         update draw_prize_info
         <trim prefix="SET" suffixOverrides=",">
             <if test="PRIZECODE != null">PRIZECODE = #{PRIZECODE},</if>
@@ -85,11 +85,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where PRIZEID = #{PRIZEID}
     </update>
 
-    <delete id="deleteDrawPrizeInfoById" parameterType="String">
+    <delete id="deleteDrawPrizeInfoById" parameterType="java.lang.String">
         delete from draw_prize_info where PRIZEID = #{PRIZEID}
     </delete>
 
-    <delete id="deleteDrawPrizeInfoByIds" parameterType="String">
+    <delete id="deleteDrawPrizeInfoByIds" parameterType="java.lang.String">
         delete from draw_prize_info where PRIZEID in 
         <foreach item="PRIZEID" collection="array" open="(" separator="," close=")">
             #{PRIZEID}
