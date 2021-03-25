@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.content.mapper.CmsPicAdInfoMapper">
+    
+    <resultMap type="CmsPicAdInfo" id="CmsPicAdInfoResult">
+        <result property="picAdId"    column="PIC_AD_ID"    />
+        <result property="picAdType"    column="PIC_AD_TYPE"    />
+        <result property="picAdTitle"    column="PIC_AD_TITLE"    />
+        <result property="picAdName"    column="PIC_AD_NAME"    />
+        <result property="picAdUrl"    column="PIC_AD_URL"    />
+        <result property="picAdState"    column="PIC_AD_STATE"    />
+        <result property="companyId"    column="COMPANY_ID"    />
+        <result property="createDate"    column="CREATE_DATE"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="createUser"    column="CREATE_USER"    />
+        <result property="updateUser"    column="UPDATE_USER"    />
+        <result property="updateDate"    column="UPDATE_DATE"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+    </resultMap>
+
+    <sql id="selectCmsPicAdInfoVo">
+        select PIC_AD_ID, PIC_AD_TYPE, PIC_AD_TITLE, PIC_AD_NAME, PIC_AD_URL, PIC_AD_STATE, COMPANY_ID, CREATE_DATE, CREATE_TIME, CREATE_USER, UPDATE_USER, UPDATE_DATE, UPDATE_TIME from cms_pic_ad_info
+    </sql>
+
+    <select id="selectCmsPicAdInfoList" parameterType="CmsPicAdInfo" resultMap="CmsPicAdInfoResult">
+        <include refid="selectCmsPicAdInfoVo"/>
+        <where>
+            PIC_AD_STATE = '0'
+            <if test="picAdType != null  and picAdType != ''"> and PIC_AD_TYPE = #{picAdType}</if>
+            <if test="picAdTitle != null  and picAdTitle != ''"> and PIC_AD_TITLE like concat('%', #{picAdTitle}, '%')</if>
+            <if test="picAdName != null  and picAdName != ''"> and PIC_AD_NAME like concat('%', #{picAdName}, '%')</if>
+            <if test="picAdUrl != null  and picAdUrl != ''"> and PIC_AD_URL = #{picAdUrl}</if>
+            <if test="companyId != null  and companyId != ''"> and COMPANY_ID = #{companyId}</if>
+            <if test="createDate != null  and createDate != ''"> and CREATE_DATE = #{createDate}</if>
+            <if test="createTime != null  and createTime != ''"> and CREATE_TIME = #{createTime}</if>
+            and CREATE_USER = 'company'
+            <if test="updateUser != null  and updateUser != ''"> and UPDATE_USER = #{updateUser}</if>
+            <if test="updateDate != null  and updateDate != ''"> and UPDATE_DATE = #{updateDate}</if>
+            <if test="updateTime != null  and updateTime != ''"> and UPDATE_TIME = #{updateTime}</if>
+        </where>
+        order by CREATE_DATE DESC,CREATE_TIME DESC, UPDATE_DATE DESC,UPDATE_TIME DESC
+    </select>
+    
+    <select id="selectCmsPicAdInfoById" parameterType="Long" resultMap="CmsPicAdInfoResult">
+        <include refid="selectCmsPicAdInfoVo"/>
+        where PIC_AD_ID = #{picAdId}
+    </select>
+        
+    <insert id="insertCmsPicAdInfo" parameterType="CmsPicAdInfo" useGeneratedKeys="true" keyProperty="picAdId">
+        insert into cms_pic_ad_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="picAdType != null">PIC_AD_TYPE,</if>
+            <if test="picAdTitle != null">PIC_AD_TITLE,</if>
+            <if test="picAdName != null">PIC_AD_NAME,</if>
+            <if test="picAdUrl != null">PIC_AD_URL,</if>
+            <if test="picAdState != null">PIC_AD_STATE,</if>
+            <if test="companyId != null">COMPANY_ID,</if>
+            <if test="createDate != null">CREATE_DATE,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="createUser != null">CREATE_USER,</if>
+            <if test="updateUser != null">UPDATE_USER,</if>
+            <if test="updateDate != null">UPDATE_DATE,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="picAdType != null">#{picAdType},</if>
+            <if test="picAdTitle != null">#{picAdTitle},</if>
+            <if test="picAdName != null">#{picAdName},</if>
+            <if test="picAdUrl != null">#{picAdUrl},</if>
+            <if test="picAdState != null">#{picAdState},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCmsPicAdInfo" parameterType="CmsPicAdInfo">
+        update cms_pic_ad_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="picAdType != null">PIC_AD_TYPE = #{picAdType},</if>
+            <if test="picAdTitle != null">PIC_AD_TITLE = #{picAdTitle},</if>
+            <if test="picAdName != null">PIC_AD_NAME = #{picAdName},</if>
+            <if test="picAdUrl != null">PIC_AD_URL = #{picAdUrl},</if>
+            <if test="picAdState != null">PIC_AD_STATE = #{picAdState},</if>
+            <if test="companyId != null">COMPANY_ID = #{companyId},</if>
+            <if test="createDate != null">CREATE_DATE = #{createDate},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="createUser != null">CREATE_USER = #{createUser},</if>
+            <if test="updateUser != null">UPDATE_USER = #{updateUser},</if>
+            <if test="updateDate != null">UPDATE_DATE = #{updateDate},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+        </trim>
+        where PIC_AD_ID = #{picAdId}
+    </update>
+
+    <delete id="deleteCmsPicAdInfoById" parameterType="Long">
+        delete from cms_pic_ad_info where PIC_AD_ID = #{picAdId}
+    </delete>
+
+    <delete id="deleteCmsPicAdInfoByIds" parameterType="String">
+        delete from cms_pic_ad_info where PIC_AD_ID in 
+        <foreach item="picAdId" collection="array" open="(" separator="," close=")">
+            #{picAdId}
+        </foreach>
+    </delete>
+
+</mapper>
