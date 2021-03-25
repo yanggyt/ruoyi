@@ -160,7 +160,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
-        from article_ad_info
+        from cms_article_ad_info
         where AD_ID = #{adId,jdbcType=INTEGER}
     </select>
 

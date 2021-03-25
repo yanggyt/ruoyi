@@ -139,6 +139,8 @@
 
     function submitHandler() {
         if ($.validate.form()) {
+            // 打开遮罩层
+            $.modal.loading("请稍后...");
             var data = new FormData();
             data.append('adId', $("#adId").val());
             data.append('adTitle', $("#adTitle").val());

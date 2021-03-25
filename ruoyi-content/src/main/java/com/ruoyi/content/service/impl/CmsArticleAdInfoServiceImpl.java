@@ -108,7 +108,7 @@ public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
      */
     @Override
     public int updateCmsArticleAdInfo(MultipartFile file, CmsArticleAdInfo cmsArticleAdInfo) {
-        if (!file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             String fileName = file.getOriginalFilename();// 文件名
             String ext = fileName.substring(fileName.lastIndexOf("."), fileName.length());// 文件后缀
             String fileTime = DateUtils.getMillisecond();
