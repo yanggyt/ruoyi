@@ -38,6 +38,16 @@ public class CmsPicAdInfoController extends BaseController {
     /**
      * 查询图片广告列表
      */
+    @PostMapping("/cardInfo")
+    @ResponseBody
+    public List<CmsPicAdInfo> queryCardInfo(CmsPicAdInfo cmsPicAdInfo) {
+        List<CmsPicAdInfo> list = cmsPicAdInfoService.selectCmsPicAdInfoList(cmsPicAdInfo);
+        return list;
+    }
+
+    /**
+     * 查询图片广告列表
+     */
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(CmsPicAdInfo cmsPicAdInfo) {

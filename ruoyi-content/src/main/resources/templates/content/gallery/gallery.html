@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('图片上传')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form enctype="multipart/form-data" method="post"
+          onsubmit="return iframeCallback(this, pageAjaxDone)" id="formData"
+          class="form-horizontal">
+        <div class="panel panel-primary  panel-width">
+            <div class="panel-heading">
+                <h3 class="panel-title">图片信息</h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">分享名片图片：</label>
+                    <div class="col-sm-5">
+                        <input name="imgUrl" id="shareImgs" class="file projectfile" type="file" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">添加广告：</label>
+                    <div class="col-sm-3">
+                        <select class="form-control" id="picAdId" name="picAdId">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table align="center">
+            <br/>
+            <tr>
+                <td></td>
+                <td class="control-label">
+                    <div class="vspace-30"></div>
+                </td>
+                <td align="center" colspan="2"><a
+                        class="btn btn-lg btn-primary" href="#" id="send">保存 <i
+                        class="icon-plus-sign"></i></a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="modal fade" id="up_showDialog" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="gridSystemModalLabel">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"
+                              style="margin-right: 5px; top: 2px;"></span>数据保存
+                </h5>
+            </div>
+            <div class="modal-body">正在上传数据,请耐心等待......</div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--创建成功提示-->
+<div class="modal fade" id="successBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fa fa-info-circle" id="myModalLabel">操作提示</h5>
+            </div>
+            <div class="modal-body">恭喜，创建成功！</div>
+            <div class="modal-footer">
+                <a type="button" id="continueAdd" th:href="@{/content/gallery}" class="btn btn-sm btn-primary">继续创建</a>
+                <a type="button" id="goList" th:href="@{/content/gallery}" class="btn btn-sm btn-primary">去查看</a>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<link th:href="@{/css/bootstrapValidator.min.css}" rel="stylesheet"/>
+<link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
+<script th:src="@{/js/bootstrapValidator.min.js}"></script>
+<script th:src="@{/js/fileinput.min.js}"></script>
+<script th:src="@{/js/fileinput_locale_zh.js}"></script>
+<script th:inline="javascript">
+    var prefix = ctx + "content/picAdverts"
+    var prefix1 = ctx + "content/gallery"
+
+    $(function () {
+        //初始化bootstrap校验设置
+        $('#formData').bootstrapValidator({
+            message: '内容不能为空！',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {}
+        });
+
+        galleryTypeInit("picAdId");
+    });
+
+    function galleryTypeInit(id) {
+        $.ajax({
+            type: "post",
+            url: prefix + '/cardInfo',
+            success: function (data) {
+                if (data) {
+                    $("#" + id + " option").remove();
+                    var obj = data;
+                    $("#" + id).append("<option value=''>请选择</option>");
+                    for (var i = 0; i < obj.length; i++) {
+                        $("#" + id).append(
+                            "<option value='" + obj[i].picAdId + "'>"
+                            + obj[i].picAdName + "</option>");
+                    }
+                } else {
+                    $.modal.alertWarning("网络异常，请稍后再试！");
+                }
+            }
+        });
+    }
+
+    var fileoptions = {
+        showUpload: false,
+        showRemove: false,
+        language: 'zh',
+        allowedPreviewTypes: ['image'],
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        maxFileSize: 0,
+        autoReplace: true,// 是否自动替换图片
+        uploadAsync: false,// 异步上传
+        maxFileCount: 1,
+        maxFilesNum: 1,
+        dropZoneEnabled: false,
+        showPreview: true,
+        msgUploadThreshold: '上传中',
+        msgUploadEnd: '完成'
+    }
+
+    /* 分享图 */
+    var delShareId;
+    $("#shareImgs").fileinput(fileoptions).on("filesuccessremove", function (event, data, msg) {
+        $("#shareImg").val('');
+    }).on("filecleared", function (event, data, msg) {
+        $("#shareImg").val('');
+    }).on("fileclear", function (event, data, msg) {
+        $("#shareImg").val('');
+    }).on('change', function (event) {
+        if (delShareId != null && delShareId != '') {
+            $(this).parents('.col-sm-5').find('.file-preview-thumbnails').empty();
+        }
+    });
+
+    var clickOn = false;
+    //触发提交 先上传附件
+    $("#send").click(function () {
+        if (clickOn) {
+            return false;
+        }
+        var shareImg = $("#shareImgs").val();
+        console.log(shareImg)
+        if (shareImg == "") {
+            $.modal.alertWarning("请先上传图片！");
+            return false;
+        }
+        // 获取表单对象
+        var formData1 = new FormData();
+        formData1.append('imgUrl', $('#shareImgs')[0].files[0]);
+        formData1.append('picAdId', $('#picAdId').val());
+        add(formData1);
+    });
+
+    //提交表单数据
+    function add(formData) {
+        // 显示提示弹框
+        $('#up_showDialog').find('.modal-dialog').css("padding-top", "150px");
+        $('#up_showDialog').modal({
+            keyboard: true,
+            backdrop: 'static'
+        });
+        $.ajax({
+            type: "post",
+            url: prefix1 + '/addGalleryImg',
+            data: formData,
+            processData: false,//不需要对数据进行处理
+            contentType: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                // 隐藏
+                $('#up_showDialog').modal('hide');
+                if (data.result) {// 跳转到列表页面
+                    $('#successBox').find('.modal-dialog').css({
+                        "padding-top": "150px",
+                        "width": "300px"
+                    });
+                    $('#successBox').modal({
+                        keyboard: true,
+                        backdrop: 'static'
+                    });
+                } else {
+                    clickOn = false;// 置为可点击
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
