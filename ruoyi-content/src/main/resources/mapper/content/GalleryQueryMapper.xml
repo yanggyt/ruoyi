@@ -21,7 +21,7 @@
   
    <sql id="adTitleSQL">
    	 SELECT ad.PIC_AD_NAME
-   	 FROM cms_pic_ad_info ad
+   	 FROM pic_ad_info ad
    	 WHERE ad.PIC_AD_ID = pi.PIC_AD_ID	 
    </sql>
 	<select id="selectAllWithLimit"
@@ -39,7 +39,7 @@
 		pi.CREATE_USER,
 		pi.UPDATE_DATE,
 		pi.UPDATE_TIME
-		FROM cms_gallery_pic_info pi
+		FROM gallery_pic_info pi
 		WHERE
 		1=1
 		<if test="companyId != null and companyId !=''">
@@ -90,7 +90,7 @@
 		pi.CREATE_USER,
 		pi.UPDATE_DATE,
 		pi.UPDATE_TIME
-		FROM cms_gallery_pic_info pi
+		FROM gallery_pic_info pi
 		WHERE
 		1=1
 		<if test="companyId != null and companyId !=''">

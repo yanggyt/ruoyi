@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectCmsPicAdInfoVo">
-        select PIC_AD_ID, PIC_AD_TYPE, PIC_AD_TITLE, PIC_AD_NAME, PIC_AD_URL, PIC_AD_STATE, COMPANY_ID, CREATE_DATE, CREATE_TIME, CREATE_USER, UPDATE_USER, UPDATE_DATE, UPDATE_TIME from cms_pic_ad_info
+        select PIC_AD_ID, PIC_AD_TYPE, PIC_AD_TITLE, PIC_AD_NAME, PIC_AD_URL, PIC_AD_STATE, COMPANY_ID, CREATE_DATE, CREATE_TIME, CREATE_USER, UPDATE_USER, UPDATE_DATE, UPDATE_TIME from pic_ad_info
     </sql>
 
     <select id="selectCmsPicAdInfoList" parameterType="CmsPicAdInfo" resultMap="CmsPicAdInfoResult">
@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertCmsPicAdInfo" parameterType="CmsPicAdInfo" useGeneratedKeys="true" keyProperty="picAdId">
-        insert into cms_pic_ad_info
+        insert into pic_ad_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="picAdType != null">PIC_AD_TYPE,</if>
             <if test="picAdTitle != null">PIC_AD_TITLE,</if>
@@ -81,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateCmsPicAdInfo" parameterType="CmsPicAdInfo">
-        update cms_pic_ad_info
+        update pic_ad_info
         <trim prefix="SET" suffixOverrides=",">
             <if test="picAdType != null">PIC_AD_TYPE = #{picAdType},</if>
             <if test="picAdTitle != null">PIC_AD_TITLE = #{picAdTitle},</if>
@@ -100,11 +100,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteCmsPicAdInfoById" parameterType="Long">
-        delete from cms_pic_ad_info where PIC_AD_ID = #{picAdId}
+        delete from pic_ad_info where PIC_AD_ID = #{picAdId}
     </delete>
 
     <delete id="deleteCmsPicAdInfoByIds" parameterType="String">
-        delete from cms_pic_ad_info where PIC_AD_ID in 
+        delete from pic_ad_info where PIC_AD_ID in 
         <foreach item="picAdId" collection="array" open="(" separator="," close=")">
             #{picAdId}
         </foreach>

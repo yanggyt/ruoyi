@@ -28,8 +28,13 @@ public class GalleryController extends BaseController {
     private GalleryService galleryService;
 
     @GetMapping()
-    public String adverts() {
+    public String gallery() {
         return prefix + "/gallery";
+    }
+
+    @GetMapping("page")
+    public String galleryPage() {
+        return prefix + "/list";
     }
 
     /**

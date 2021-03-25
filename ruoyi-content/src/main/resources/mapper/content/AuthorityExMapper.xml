@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.content.mapper.AuthorityFindfExMapper">
+
+	<resultMap id="AuthorityResultMap"
+		type="com.ruoyi.content.domain.AuthorityExDto">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="LEVEL" property="level" jdbcType="VARCHAR" />
+		<result column="OPERATOR_ROLE_NAME" property="operatorRoleName"
+			jdbcType="VARCHAR" />
+		<result column="OPERATOR_ROLE_PATH" property="operatorRolePath"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="findAuthorityEx" resultMap="AuthorityResultMap">
+		SELECT
+		DISTINCT(r.ID),r.LEVEL,r.TYPE,r.OPERATOR_ROLE_NAME,r.OPERATOR_ROLE_PATH
+		from cms_sys_authority r,cms_role_authority p
+		WHERE r.ID=p.PARENT_CHILD
+		and
+		p.SELF_CHILD in(
+		SELECT wo.AUTHORITY_NAME
+		FROM cms_user_role wo
+		WHERE wo.AUTHORITY_EMAIL=#{userLog}
+		) ORDER BY r.NUM ASC
+	</select>
+
+<!-- 	<insert id="insertOPeratorAuthorityRole" parameterType="java.lang.String">
+		insert into cms_role_authority
+		(SELF_CHILD,PARENT_CHILD,CREATE_USER,CREATE_DATE,CREATE_TIME)
+		values
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			SELF_CHILD=#{email},CREATE_USER=#{createUser},CREATE_DATE=#{createDate},CREATE_TIME=#{createTime},PARENT_CHILD=#{item}
+		</foreach>
+	</insert> -->
+</mapper>

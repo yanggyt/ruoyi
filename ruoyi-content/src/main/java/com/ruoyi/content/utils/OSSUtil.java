@@ -3,6 +3,7 @@ package com.ruoyi.content.utils;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.*;
 import com.ruoyi.content.constants.PropertiesConstants;
+import com.ruoyi.content.message.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -281,9 +282,9 @@ public class OSSUtil {
 //		 "我的照片/460.jpg");
     }
 
-    public static Map<String, Object> uploadFileByInputStreamReturnUrl(String ossEndPoint, String ossId, String ossKey,
-                                                                       String bucketName, InputStream input, String ossPath) {
-        Map<String, Object> map = new HashMap<String, Object>();
+    public static Message uploadFileByInputStreamReturnUrl(String ossEndPoint, String ossId, String ossKey,
+                                                           String bucketName, InputStream input, String ossPath) {
+        Message msg = new Message();
         try {
             ObjectMetadata objectMeta = new ObjectMetadata();
             // objectMeta.setContentLength(file.length());
@@ -293,29 +294,35 @@ public class OSSUtil {
             PutObjectResult result = client.putObject(bucketName, ossPath, input, objectMeta);
             client.shutdown();
             logger.info("上传阿里云OSS结果【{}】", result.getETag());
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("ossFIleId", result.getETag());
             // 设置URL过期时间为10年 3600l* 1000*24*365*10
 //			Date expiration = new Date(new Date().getTime() + 3600l * 1000 * 24 * 365 * 10);
             // 生成URL
 //			URL url = client.generatePresignedUrl(bucketName, ossPath, expiration);
 //			if (url != null) {
-            map.put("result", true);
+            msg.setResult(true);
             map.put("url", PropertiesConstants.OSS_URL + ossPath);
+            msg.setObject(map);
+            msg.setInfo("成功！");
 //			} else {
 //				msg.setResult(false);
 //				msg.setInfo("上传阿里云获取访问地址失败！");
 //			}
-            return map;
+            return msg;
         } catch (Exception e) {
-            logger.error("上传阿里云OSS出错!!", e);
-            map.put("result", false);
-            return map;
+            e.printStackTrace();
+            logger.info("上传阿里云OSS出错!!");
+            msg.setResult(false);
+            msg.setInfo("上传阿里云OSS出错");
+            return msg;
         } finally {
             if (null != input) {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    logger.error("上传阿里云OSS出错!", e);
+                    e.printStackTrace();
+                    logger.info("上传阿里云OSS出错!");
                 }
             }
         }

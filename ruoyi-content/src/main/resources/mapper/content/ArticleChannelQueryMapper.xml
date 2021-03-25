@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.content.mapper.ArticleChannelQueryMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.content.domain.ArticleChannel">
+   
+  	<id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="ARTICLE_ID" jdbcType="INTEGER" property="articleId" />
+    <result column="ARTICLE_NAME" jdbcType="VARCHAR" property="articleName" />
+    <result column="ARTICLE_VERSION" jdbcType="VARCHAR" property="articleVersion" />
+    <result column="SPECIAL" jdbcType="VARCHAR" property="special" />
+    <result column="CHANNEL" jdbcType="VARCHAR" property="channel" />
+    <result column="ARTICLE_STATE" jdbcType="VARCHAR" property="articleState" />
+    <result column="PUBLISH_DATE" jdbcType="VARCHAR" property="publishDate" />
+    <result column="PUBLISH_TIME" jdbcType="VARCHAR" property="publishTime" />
+    <result column="UPDATE_DATE" jdbcType="VARCHAR" property="updateDate" />
+    <result column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+    <result column="COMPANY_ID" jdbcType="VARCHAR" property="companyId" />
+    <result column="BRANCH_ID" jdbcType="VARCHAR" property="branchId" />
+    <result column="PUBLISH_ID" jdbcType="VARCHAR" property="publishId" />
+    <result column="ORDER_NO" property="orderNo" jdbcType="INTEGER" />
+    <result column="TOP_TIME" property="topTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="selectAllWithLimit"
+		parameterType="com.ruoyi.content.domain.ArticleChannel"
+		resultMap="BaseResultMap">
+		SELECT
+		ID,
+		ARTICLE_ID,
+		ARTICLE_VERSION,
+		ARTICLE_NAME,
+		SPECIAL,
+		CHANNEL,
+		ARTICLE_STATE,
+		PUBLISH_DATE,
+		PUBLISH_TIME,
+		UPDATE_DATE,
+		UPDATE_TIME,
+		COMPANY_ID,
+		BRANCH_ID,
+		PUBLISH_ID,
+		ORDER_NO,
+		TOP_TIME
+		FROM
+		article_channel
+		
+		WHERE
+		1=1
+		<if test="articelName != null and articelName!=''">
+			and ARTICLE_NAME like CONCAT(CONCAT('%', #{articelName,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="special != null and special!=''">
+			and SPECIAL = #{special,jdbcType=VARCHAR}
+		</if>
+		<if test="channel != null and channel !=''">
+			and CHANNEL = #{channel,jdbcType=VARCHAR}
+		</if>
+		<if test="companyId != null and companyId !=''">
+			and COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+		</if>
+		<if test="branchId != null and branchId !=''">
+			and BRANCH_ID like CONCAT(CONCAT('%', #{branchId,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="articleState != null">
+			and ARTICLE_STATE in
+			<foreach collection="articleState" item="articleState" index="index"
+				open="(" close=")" separator=",">
+				#{articleState}
+			</foreach>
+		</if>
+		order by UPDATE_DATE DESC,UPDATE_TIME DESC
+		limit
+		#{startRow,jdbcType=DECIMAL},#{rows,jdbcType=DECIMAL}
+	</select>
+	
+	
+	<select id="queryModifiedEditUrlByArticleId" parameterType="java.lang.String" resultType="java.lang.String">
+  		 SELECT MODIFIED_EDIT_URL FROM article_info WHERE ARTICLE_ID =#{articleId,jdbcType=VARCHAR}
+  	</select>
+  	<select id="queryArticleIdByChannel" parameterType="java.lang.String" resultType="java.lang.Integer">
+  		 SELECT ARTICLE_ID FROM article_channel 
+  		 WHERE CHANNEL =#{channel,jdbcType=VARCHAR} 
+  		 and ARTICLE_STATE="0"
+  	</select>
+  	
+  	<select id="queryByPublishId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  		 SELECT
+		ID,
+		ARTICLE_ID,
+		ARTICLE_NAME,
+		SPECIAL,
+		CHANNEL,
+		ARTICLE_STATE,
+		PUBLISH_DATE,
+		PUBLISH_TIME,
+		UPDATE_DATE,
+		UPDATE_TIME,
+		COMPANY_ID,
+		BRANCH_ID,
+		PUBLISH_ID,
+		ORDER_NO,
+		TOP_TIME
+		FROM
+		article_channel WHERE PUBLISH_ID =#{publishId,jdbcType=VARCHAR}
+  	</select>
+  <!-- 	
+  	 <select id="selectByLimit"
+		parameterType="map"
+		resultType="map">
+		SELECT
+		ARTICLE_ID articleId,
+		ARTICLE_NAME articleName,
+		group_concat(channel,"-",special separator ',') channelSpecial,
+		max(UPDATE_DATE) updateDate,
+		max(UPDATE_TIME) updateTime,
+		PUBLISH_ID publishId
+		FROM
+		article_channel
+		WHERE
+		1=1
+		<if test="articelName != null and articelName!=''">
+			and ARTICLE_NAME like CONCAT(CONCAT('%', #{articelName,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="channel != null and channel !=''">
+			and (CHANNEL = #{channel,jdbcType=VARCHAR} or SPECIAL = #{special,jdbcType=VARCHAR})
+		</if>
+		<if test="companyId != null and companyId !=''">
+			and COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+		</if>
+		<if test="branchId != null and branchId !=''">
+			and BRANCH_ID like CONCAT(CONCAT('%', #{branchId,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="list != null">
+			and ARTICLE_STATE in
+			<foreach collection="list" item="articleState" index="index"
+				open="(" close=")" separator=",">
+				#{articleState}
+			</foreach>
+		</if>
+		group by ARTICLE_ID,ARTICLE_NAME,publishId
+		order by max(UPDATE_DATE) DESC,max(UPDATE_TIME) DESC
+		limit
+		#{startRow,jdbcType=DECIMAL},#{rows,jdbcType=DECIMAL}
+	</select>
+	 -->
+
+	 <select id="selectByLimit"
+		parameterType="map"
+		resultType="map">
+		SELECT
+			max(t.USER_ID) "userId",
+			t.ARTICLE_ID "articleId",
+			max(t.CREATE_USER) "createUser",
+			IFNULL(l.ARTICLE_NAME,info.ARTICLE_NAME) "articleName",
+			group_concat(l.channel,"-",l.special separator ',') channelSpecial,
+			MAX(t.ARTICLE_VERSION),
+			max(concat(t.CREATE_DATE, ' ', T.CREATE_TIME)) publishDate,
+			max(concat(l.UPDATE_DATE, ' ', l.UPDATE_TIME)) updateDate,
+			t.PUBLISH_ID publishId,
+			(select min(f.PUBLISH_DATE) from article_publish_send f where f.PUBLISH_ID = t.PUBLISH_ID and f.SEND_STATE='2') oPbulishTime
+		FROM
+			article_publish_track t
+		LEFT JOIN article_channel l ON t.ARTICLE_ID = l.ARTICLE_ID
+		left JOIN article_info info on t.ARTICLE_ID = info.ARTICLE_ID
+		WHERE
+		1=1
+		<if test="userlist != null">
+			and t.USER_ID in
+			<foreach collection="userlist" item="ulist" index="index"
+				open="(" close=")" separator=",">
+				#{ulist}
+			</foreach>
+		</if>
+		and (l.ARTICLE_STATE = "0" or l.ARTICLE_STATE is null)
+		<if test="articelName != null and articelName!=''">
+			and info.ARTICLE_NAME like CONCAT(CONCAT('%', #{articelName,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="channel != null and channel !=''">
+			and ( l.CHANNEL = #{channel,jdbcType=VARCHAR} 
+			<if test="special != null and special !=''">
+				or l.SPECIAL = #{special,jdbcType=VARCHAR}
+			</if>	
+			)
+		</if>	
+		group by t.PUBLISH_ID
+		order by max(concat(t.UPDATE_DATE, ' ', t.UPDATE_TIME)) DESC
+		limit
+		#{startRow,jdbcType=DECIMAL},#{rows,jdbcType=DECIMAL}	
+	</select>
+	<!--  
+  	<select id="selectCountByParam"
+		parameterType="map"
+		resultType="map">
+		SELECT
+		ARTICLE_ID articleId,
+		ARTICLE_NAME articleName,
+		group_concat(channel,"-",special separator ',') channelSpecial,
+		max(UPDATE_DATE) updateDate,
+		max(UPDATE_TIME) updateTime,
+		PUBLISH_ID publishId
+		FROM
+		article_channel
+		WHERE
+		1=1
+		<if test="articelName != null and articelName!=''">
+			and ARTICLE_NAME like CONCAT(CONCAT('%', #{articelName,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="channel != null and channel !=''">
+			and (CHANNEL = #{channel,jdbcType=VARCHAR} or SPECIAL = #{special,jdbcType=VARCHAR})
+		</if>
+		<if test="companyId != null and companyId !=''">
+			and COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+		</if>
+		<if test="branchId != null and branchId !=''">
+			and BRANCH_ID like CONCAT(CONCAT('%', #{branchId,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="list != null">
+			and ARTICLE_STATE in
+			<foreach collection="list" item="articleState" index="index"
+				open="(" close=")" separator=",">
+				#{articleState}
+			</foreach>
+		</if>
+		group by ARTICLE_ID,ARTICLE_NAME,PUBLISH_ID
+	</select>
+	-->
+	<select id="selectCountByParam"
+		parameterType="map"
+		resultType="map">
+		SELECT
+			t.PUBLISH_ID publishId
+		FROM
+			article_publish_track t
+		LEFT JOIN article_channel l ON t.ARTICLE_ID = l.ARTICLE_ID
+		left JOIN article_info info on t.ARTICLE_ID = info.ARTICLE_ID
+		WHERE
+		1=1	
+		<if test="userlist != null">
+			and t.USER_ID in
+			<foreach collection="userlist" item="ulist" index="index"
+				open="(" close=")" separator=",">
+				#{ulist}
+			</foreach>
+		</if>
+		and (l.ARTICLE_STATE = "0" or l.ARTICLE_STATE is null)
+		<if test="articelName != null and articelName!=''">
+			and info.ARTICLE_NAME like CONCAT(CONCAT('%', #{articelName,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="channel != null and channel !=''">
+			and (l.CHANNEL = #{channel,jdbcType=VARCHAR}
+			<if test="special != null and special !=''">
+				or l.SPECIAL = #{special,jdbcType=VARCHAR}
+			</if>		
+			)
+		</if>	
+		group by t.PUBLISH_ID
+	</select>
+	
+	<!-- 批量收录文章 -->
+	
+	<insert id="batchInsertArticeChannel" parameterType="java.util.List">
+		INSERT INTO article_channel (
+						ARTICLE_ID,
+						ARTICLE_NAME,
+						ARTICLE_VERSION,
+						SPECIAL,
+						CHANNEL,
+						ARTICLE_STATE,
+						PUBLISH_DATE,
+						PUBLISH_TIME,
+						UPDATE_DATE,
+						UPDATE_TIME,
+						COMPANY_ID,
+						BRANCH_ID,
+						PUBLISH_ID
+					) values
+					<foreach collection="batchInsertArticle" item="item" index="index" separator=",">
+						(
+							#{item.articleId},
+							#{item.articleName},
+							#{item.articleVersion},
+							#{item.special},
+							#{item.channel},
+							#{item.articleState},
+							#{item.publishDate},
+							#{item.publishTime},
+							#{item.updateDate},
+							#{item.updateTime},
+							#{item.companyId},
+							#{item.branchId},
+							#{item.publishId}
+						)
+				     </foreach>		
+	</insert>
+	
+	<select id="selectByPublishList" parameterType="java.util.List" resultType="map">
+	SELECT
+			max(t.USER_ID) "userId",
+			t.ARTICLE_ID "articleId",
+			max(t.CREATE_USER) "createUser",
+			IFNULL(l.ARTICLE_NAME,info.ARTICLE_NAME) "articleName",
+			group_concat(l.channel,"-",l.special separator ',') channelSpecial,
+			MAX(t.ARTICLE_VERSION),
+			max(concat(t.CREATE_DATE, ' ', T.CREATE_TIME)) publishDate,
+			max(concat(l.UPDATE_DATE, ' ', l.UPDATE_TIME)) updateDate,
+			t.PUBLISH_ID publishId
+		FROM
+			article_publish_track t
+		LEFT JOIN article_channel l ON t.ARTICLE_ID = l.ARTICLE_ID
+		left JOIN article_info info on t.ARTICLE_ID = info.ARTICLE_ID
+		WHERE
+		1=1	
+		and (l.ARTICLE_STATE = "0" or l.ARTICLE_STATE is null)
+		<if test="null != publishList and publishList.size > 0">
+		 and	t.PUBLISH_ID in 
+			<foreach collection="publishList" item="item" index="index" separator="," open="(" close=")">
+					#{item,jdbcType=VARCHAR}
+			</foreach>	
+		</if>
+		group by t.PUBLISH_ID
+		order by max(concat(t.UPDATE_DATE, ' ', t.UPDATE_TIME)) DESC
+	</select>
+	
+</mapper>

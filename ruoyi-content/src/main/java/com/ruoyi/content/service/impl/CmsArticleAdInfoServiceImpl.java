@@ -1,6 +1,5 @@
 package com.ruoyi.content.service.impl;
 
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.content.constants.PropertiesConstants;
 import com.ruoyi.content.domain.CmsArticleAdInfo;

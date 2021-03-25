@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.content.mapper.BaseCodeExMapper">
+	<sql id="baseSelectField">
+		select ID, CODE_CODE, CODE_TYPE, ORDER_NO, CODE_CNAME, CODE_ENAME,
+		CODE_TNAME, STATE, CREATE_USER,
+		CREATE_TIME, UPDATE_USER, UPDATE_TIME,
+		UPDATE_REMARK, BUSINESS_AREA,COMPANY_ID,BRANCH_ID 
+	</sql>
+	<resultMap id="BaseResultMap" type="com.ruoyi.content.domain.BaseCode">
+		 <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="CODE_CODE" property="codeCode" jdbcType="VARCHAR" />
+    <result column="CODE_TYPE" property="codeType" jdbcType="VARCHAR" />
+    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+    <result column="CODE_CNAME" property="codeCname" jdbcType="VARCHAR" />
+    <result column="CODE_ENAME" property="codeEname" jdbcType="VARCHAR" />
+    <result column="CODE_TNAME" property="codeTname" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="VARCHAR" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_REMARK" property="updateRemark" jdbcType="VARCHAR" />
+    <result column="BUSINESS_AREA" property="businessArea" jdbcType="VARCHAR" />
+    <result column="COMPANY_ID" property="companyId" jdbcType="VARCHAR" />
+	 <result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectAllWithLimit"
+		parameterType="com.ruoyi.content.domain.ArticleInfoExample"
+		resultMap="BaseResultMap">
+		select ID, CODE_CODE, CODE_TYPE, ORDER_NO, CODE_CNAME, CODE_ENAME,
+		CODE_TNAME, STATE, CREATE_USER,
+		CREATE_TIME, UPDATE_USER, UPDATE_TIME,
+		UPDATE_REMARK, BUSINESS_AREA,COMPANY_ID,BRANCH_ID from
+		base_code
+		where
+		STATE in (0,1)
+		<if test="companyId != null and companyId !=''"> 
+			and COMPANY_ID = #{companyId,jdbcType=VARCHAR} 
+		</if> 
+			<if test="branchId != null and branchId !=''"> 
+			and BRANCH_ID like CONCAT(CONCAT('%', #{branchId,jdbcType=VARCHAR}), '%')   
+		</if> 
+		
+		<if test="codeCname != null and codeCname!=''">
+			and CODE_CNAME like CONCAT(CONCAT('%', #{codeCname,
+			jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="codeType != null and codeType!=''">
+			and CODE_TYPE = #{codeType,jdbcType=VARCHAR}
+		</if>
+		<if test="orderNo != null and orderNo!=''">
+			and ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+		</if>
+		order by CODE_TYPE DESC,ORDER_NO*1 ASC, CREATE_TIME ASC, UPDATE_TIME ASC 
+		limit #{startRow,jdbcType=DECIMAL},#{rows,jdbcType=DECIMAL}
+	</select>
+	
+	
+    <resultMap id="BaseTreeResultMap" type="com.ruoyi.content.domain.BaseCodeTree">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+	    <result column="CODE_CODE" property="codeCode" jdbcType="VARCHAR" />
+	    <result column="CODE_TYPE" property="codeType" jdbcType="VARCHAR" />
+	    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+	    <result column="CODE_CNAME" property="codeCname" jdbcType="VARCHAR" />
+	    <result column="CODE_ENAME" property="codeEname" jdbcType="VARCHAR" />
+	    <result column="CODE_TNAME" property="codeTname" jdbcType="VARCHAR" />
+	    <result column="STATE" property="state" jdbcType="VARCHAR" />
+	    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+	    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+	    <result column="UPDATE_REMARK" property="updateRemark" jdbcType="VARCHAR" />
+	    <result column="BUSINESS_AREA" property="businessArea" jdbcType="VARCHAR" />
+	    <result column="COMPANY_ID" property="companyId" jdbcType="VARCHAR" />
+		<result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+      	<collection column="CODE_CODE=CODE_CODE,parentCompanyId=parentCompanyId,parentState=parentState,parentBranchId=parentBranchId" property="child" javaType="java.util.ArrayList"
+                   ofType="com.ruoyi.content.domain.BaseCodeTree" select="getNextNodeTree"/>
+   	</resultMap>
+ 
+    <select id="getNextNodeTree" resultMap="BaseTreeResultMap">
+       	<include refid="baseSelectField" />
+       	,#{parentCompanyId} as parentCompanyId
+		,#{parentState} as parentState
+		,#{parentBranchId} as parentBranchId
+       	from base_code
+        WHERE CODE_TYPE = #{CODE_CODE}
+        <if test="parentCompanyId != null and parentCompanyId !=''">
+			and COMPANY_ID = #{parentCompanyId}
+		</if>
+		<if test="parentState != null and parentState !=''">
+			and STATE = #{parentState}
+		</if>
+		<if test="parentBranchId != null and parentBranchId !=''">
+			and BRANCH_ID like concat("%",concat(#{parentBranchId},"%"))
+		</if>
+		order by ORDER_NO*1,CREATE_TIME
+    </select>
+ 
+    <select id="columnTree" resultMap="BaseTreeResultMap" parameterType="map">
+        <include refid="baseSelectField" />
+		,#{companyId} as parentCompanyId
+		,#{state} as parentState
+		,#{branchId} as parentBranchId
+        from base_code
+        WHERE 1 = 1
+        <if test="codeCode != null and codeCode !=''">
+			and CODE_CODE = #{codeCode,jdbcType=VARCHAR}
+		</if>
+		<if test="companyId != null and companyId !=''">
+			and COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+		</if>
+		<if test="state != null and state !=''">
+			and STATE = #{state,jdbcType=VARCHAR}
+		</if>
+		<if test="branchId != null and branchId !=''">
+			and BRANCH_ID like concat("%",concat(#{branchId,jdbcType=VARCHAR},"%"))
+		</if>
+		order by ORDER_NO*1,CREATE_TIME
+	</select>
+	
+</mapper>

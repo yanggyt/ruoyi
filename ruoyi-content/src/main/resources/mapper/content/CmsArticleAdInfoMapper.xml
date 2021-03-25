@@ -25,7 +25,7 @@
     </resultMap>
 
     <sql id="selectCmsArticleAdInfoVo">
-        select AD_ID, COMPANY_ID, AD_TYPE, AD_TYPE_NAME, AD_LINK_URL, AD_TITLE, AD_NAME, AD_SUMMARY, AD_COLOR_TYPE, AD_IMAGE_URL, AD_STATE, CREATE_DATE, CREATE_TIME, CREATE_USER, UPDATE_USER, UPDATE_DATE, UPDATE_TIME from cms_article_ad_info
+        select AD_ID, COMPANY_ID, AD_TYPE, AD_TYPE_NAME, AD_LINK_URL, AD_TITLE, AD_NAME, AD_SUMMARY, AD_COLOR_TYPE, AD_IMAGE_URL, AD_STATE, CREATE_DATE, CREATE_TIME, CREATE_USER, UPDATE_USER, UPDATE_DATE, UPDATE_TIME from article_ad_info
     </sql>
 
     <select id="selectCmsArticleAdInfoList" parameterType="CmsArticleAdInfo" resultMap="CmsArticleAdInfoResult">
@@ -58,7 +58,7 @@
     </select>
 
     <insert id="insertCmsArticleAdInfo" parameterType="CmsArticleAdInfo" useGeneratedKeys="true" keyProperty="adId">
-        insert into cms_article_ad_info
+        insert into article_ad_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="companyId != null">COMPANY_ID,</if>
             <if test="adType != null">AD_TYPE,</if>
@@ -98,7 +98,7 @@
     </insert>
 
     <update id="updateCmsArticleAdInfo" parameterType="CmsArticleAdInfo">
-        update cms_article_ad_info
+        update article_ad_info
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyId != null">COMPANY_ID = #{companyId},</if>
             <if test="adType != null">AD_TYPE = #{adType},</if>
@@ -121,11 +121,11 @@
     </update>
 
     <delete id="deleteCmsArticleAdInfoById" parameterType="Long">
-        delete from cms_article_ad_info where AD_ID = #{adId}
+        delete from article_ad_info where AD_ID = #{adId}
     </delete>
 
     <delete id="deleteCmsArticleAdInfoByIds" parameterType="String">
-        delete from cms_article_ad_info where AD_ID in
+        delete from article_ad_info where AD_ID in
         <foreach item="adId" collection="array" open="(" separator="," close=")">
             #{adId}
         </foreach>
@@ -160,7 +160,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
-        from cms_article_ad_info
+        from article_ad_info
         where AD_ID = #{adId,jdbcType=INTEGER}
     </select>
 
