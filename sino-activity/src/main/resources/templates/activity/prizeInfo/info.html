@@ -20,9 +20,9 @@
                             </li>
                             <li>
                                 <label>奖品类型：</label>
-                                <select name="PRIZETYPE">
+                                <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
                             <li>
@@ -39,9 +39,9 @@
 <!--                            </li>-->
                             <li>
                                 <label>状态：</label>
-                                <select name="STATUS">
+                                <select name="STATUS" th:with="type=${@dict.getType('status')}">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
                             <li>
@@ -81,7 +81,8 @@
         var editFlag = [[${@permission.hasPermi('activity:info:edit')}]];
         var removeFlag = [[${@permission.hasPermi('activity:info:remove')}]];
         var prefix = ctx + "activity/prize";
-
+        var datas = [[${@dict.getType('prizeType')}]];
+        var statusList = [[${@dict.getType('status')}]];
         $(function() {
             var options = {
                 url: prefix + "/list",
@@ -108,7 +109,10 @@
                 },
                 {
                     field: 'prizetype',
-                    title: '奖品类型'
+                    title: '奖品类型',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
                 },
                 {
                     field: 'prizevalue',
@@ -128,8 +132,11 @@
                 // },
                 {
                     field: 'status',
-                    title: '状态'
+                    title: '状态',
                     // 0 未启用，1 启用
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(statusList, value);
+                    }
                 },
                 {
                     field: 'integralprojectcode',
