@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.sinosoft.activity.mapper.DrawPrizeInfoMapper">
+    
+    <resultMap type="DrawPrizeInfo" id="DrawPrizeInfoResult">
+        <result property="PRIZEID"    column="PRIZEID"    />
+        <result property="PRIZECODE"    column="PRIZECODE"    />
+        <result property="PRIZENAME"    column="PRIZENAME"    />
+        <result property="PRIZETYPE"    column="PRIZETYPE"    />
+        <result property="PRIZEVALUE"    column="PRIZEVALUE"    />
+        <result property="COMMENTS"    column="COMMENTS"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+        <result property="STATUS"    column="STATUS"    />
+        <result property="INTEGRALPROJECTCODE"    column="INTEGRALPROJECTCODE"    />
+    </resultMap>
+
+    <sql id="selectDrawPrizeInfoVo">
+        select PRIZEID, PRIZECODE, PRIZENAME, PRIZETYPE, PRIZEVALUE, COMMENTS, CREATETIMESTAMP, LASTUPDATETIMESTAMP, STATUS, INTEGRALPROJECTCODE from draw_prize_info
+    </sql>
+
+    <select id="selectDrawPrizeInfoList" parameterType="DrawPrizeInfo" resultMap="DrawPrizeInfoResult">
+        <include refid="selectDrawPrizeInfoVo"/>
+        <where>  
+            <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
+            <if test="PRIZENAME != null  and PRIZENAME != ''"> and PRIZENAME like concat('%', #{PRIZENAME}, '%')</if>
+            <if test="PRIZETYPE != null  and PRIZETYPE != ''"> and PRIZETYPE = #{PRIZETYPE}</if>
+            <if test="PRIZEVALUE != null "> and PRIZEVALUE = #{PRIZEVALUE}</if>
+            <if test="COMMENTS != null  and COMMENTS != ''"> and COMMENTS = #{COMMENTS}</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+            <if test="STATUS != null  and STATUS != ''"> and STATUS = #{STATUS}</if>
+            <if test="INTEGRALPROJECTCODE != null  and INTEGRALPROJECTCODE != ''"> and INTEGRALPROJECTCODE = #{INTEGRALPROJECTCODE}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawPrizeInfoById" parameterType="String" resultMap="DrawPrizeInfoResult">
+        <include refid="selectDrawPrizeInfoVo"/>
+        where PRIZEID = #{PRIZEID}
+    </select>
+        
+    <insert id="insertDrawPrizeInfo" parameterType="DrawPrizeInfo">
+        insert into draw_prize_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="PRIZEID != null">PRIZEID,</if>
+            <if test="PRIZECODE != null">PRIZECODE,</if>
+            <if test="PRIZENAME != null">PRIZENAME,</if>
+            <if test="PRIZETYPE != null">PRIZETYPE,</if>
+            <if test="PRIZEVALUE != null">PRIZEVALUE,</if>
+            <if test="COMMENTS != null">COMMENTS,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+            <if test="STATUS != null">STATUS,</if>
+            <if test="INTEGRALPROJECTCODE != null">INTEGRALPROJECTCODE,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="PRIZEID != null">#{PRIZEID},</if>
+            <if test="PRIZECODE != null">#{PRIZECODE},</if>
+            <if test="PRIZENAME != null">#{PRIZENAME},</if>
+            <if test="PRIZETYPE != null">#{PRIZETYPE},</if>
+            <if test="PRIZEVALUE != null">#{PRIZEVALUE},</if>
+            <if test="COMMENTS != null">#{COMMENTS},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+            <if test="STATUS != null">#{STATUS},</if>
+            <if test="INTEGRALPROJECTCODE != null">#{INTEGRALPROJECTCODE},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawPrizeInfo" parameterType="DrawPrizeInfo">
+        update draw_prize_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="PRIZECODE != null">PRIZECODE = #{PRIZECODE},</if>
+            <if test="PRIZENAME != null">PRIZENAME = #{PRIZENAME},</if>
+            <if test="PRIZETYPE != null">PRIZETYPE = #{PRIZETYPE},</if>
+            <if test="PRIZEVALUE != null">PRIZEVALUE = #{PRIZEVALUE},</if>
+            <if test="COMMENTS != null">COMMENTS = #{COMMENTS},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+            <if test="STATUS != null">STATUS = #{STATUS},</if>
+            <if test="INTEGRALPROJECTCODE != null">INTEGRALPROJECTCODE = #{INTEGRALPROJECTCODE},</if>
+        </trim>
+        where PRIZEID = #{PRIZEID}
+    </update>
+
+    <delete id="deleteDrawPrizeInfoById" parameterType="String">
+        delete from draw_prize_info where PRIZEID = #{PRIZEID}
+    </delete>
+
+    <delete id="deleteDrawPrizeInfoByIds" parameterType="String">
+        delete from draw_prize_info where PRIZEID in 
+        <foreach item="PRIZEID" collection="array" open="(" separator="," close=")">
+            #{PRIZEID}
+        </foreach>
+    </delete>
+
+</mapper>
