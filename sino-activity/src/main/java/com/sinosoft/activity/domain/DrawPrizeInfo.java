@@ -1,4 +1,4 @@
-package cn.com.sinosoft.activity.domain;
+package com.sinosoft.activity.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;

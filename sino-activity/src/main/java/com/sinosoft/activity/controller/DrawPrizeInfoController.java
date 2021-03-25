@@ -1,4 +1,4 @@
-package cn.com.sinosoft.activity.controller;
+package com.sinosoft.activity.controller;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
-import cn.com.sinosoft.activity.domain.DrawPrizeInfo;
-import cn.com.sinosoft.activity.service.IDrawPrizeInfoService;
+import com.sinosoft.activity.domain.DrawPrizeInfo;
+import com.sinosoft.activity.service.IDrawPrizeInfoService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -26,7 +26,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2021-03-25
  */
 @Controller
-@RequestMapping("/activity/info")
+@RequestMapping("/activity/prize")
 public class DrawPrizeInfoController extends BaseController
 {
     private String prefix = "activity/prizeInfo";

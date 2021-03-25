@@ -1,11 +1,11 @@
-package cn.com.sinosoft.activity.service.impl;
+package com.sinosoft.activity.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import cn.com.sinosoft.activity.mapper.DrawPrizeInfoMapper;
-import cn.com.sinosoft.activity.domain.DrawPrizeInfo;
-import cn.com.sinosoft.activity.service.IDrawPrizeInfoService;
+import com.sinosoft.activity.mapper.DrawPrizeInfoMapper;
+import com.sinosoft.activity.domain.DrawPrizeInfo;
+import com.sinosoft.activity.service.IDrawPrizeInfoService;
 import com.ruoyi.common.core.text.Convert;
 
 /**

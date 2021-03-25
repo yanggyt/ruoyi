@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.com.sinosoft.activity.mapper.DrawPrizeInfoMapper">
+<mapper namespace="com.sinosoft.activity.mapper.DrawPrizeInfoMapper">
     
-    <resultMap type="cn.com.sinosoft.activity.domain.DrawPrizeInfo" id="DrawPrizeInfoResult">
+    <resultMap type="com.sinosoft.activity.domain.DrawPrizeInfo" id="DrawPrizeInfoResult">
         <result property="PRIZEID"    column="PRIZEID"    />
         <result property="PRIZECODE"    column="PRIZECODE"    />
         <result property="PRIZENAME"    column="PRIZENAME"    />
@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select PRIZEID, PRIZECODE, PRIZENAME, PRIZETYPE, PRIZEVALUE, COMMENTS, CREATETIMESTAMP, LASTUPDATETIMESTAMP, STATUS, INTEGRALPROJECTCODE from draw_prize_info
     </sql>
 
-    <select id="selectDrawPrizeInfoList" parameterType="cn.com.sinosoft.activity.domain.DrawPrizeInfo" resultMap="DrawPrizeInfoResult">
+    <select id="selectDrawPrizeInfoList" parameterType="com.sinosoft.activity.domain.DrawPrizeInfo" resultMap="DrawPrizeInfoResult">
         <include refid="selectDrawPrizeInfoVo"/>
         <where>  
             <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where PRIZEID = #{PRIZEID}
     </select>
         
-    <insert id="insertDrawPrizeInfo" parameterType="cn.com.sinosoft.activity.domain.DrawPrizeInfo">
+    <insert id="insertDrawPrizeInfo" parameterType="com.sinosoft.activity.domain.DrawPrizeInfo">
         insert into draw_prize_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="PRIZEID != null">PRIZEID,</if>
@@ -69,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateDrawPrizeInfo" parameterType="cn.com.sinosoft.activity.domain.DrawPrizeInfo">
+    <update id="updateDrawPrizeInfo" parameterType="com.sinosoft.activity.domain.DrawPrizeInfo">
         update draw_prize_info
         <trim prefix="SET" suffixOverrides=",">
             <if test="PRIZECODE != null">PRIZECODE = #{PRIZECODE},</if>
