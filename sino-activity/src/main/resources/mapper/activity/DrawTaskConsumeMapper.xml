@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawTaskConsumeMapper">
+    
+    <resultMap type="DrawTaskConsume" id="DrawTaskConsumeResult">
+        <result property="TASKCONSUMEID"    column="TASKCONSUMEID"    />
+        <result property="TASKNOTIFYID"    column="TASKNOTIFYID"    />
+        <result property="DRAWCODE"    column="DRAWCODE"    />
+        <result property="TASKID"    column="TASKID"    />
+        <result property="USERID"    column="USERID"    />
+        <result property="TYPE"    column="TYPE"    />
+        <result property="CONSUMENUMBER"    column="CONSUMENUMBER"    />
+        <result property="TRANSEQNO"    column="TRANSEQNO"    />
+        <result property="TRADEORDERID"    column="TRADEORDERID"    />
+        <result property="STATE"    column="STATE"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+    </resultMap>
+
+    <sql id="selectDrawTaskConsumeVo">
+        select TASKCONSUMEID, TASKNOTIFYID, DRAWCODE, TASKID, USERID, TYPE, CONSUMENUMBER, TRANSEQNO, TRADEORDERID, STATE, CREATETIMESTAMP, LASTUPDATETIMESTAMP from draw_task_consume
+    </sql>
+
+    <select id="selectDrawTaskConsumeList" parameterType="DrawTaskConsume" resultMap="DrawTaskConsumeResult">
+        <include refid="selectDrawTaskConsumeVo"/>
+        <where>  
+            <if test="TASKNOTIFYID != null  and TASKNOTIFYID != ''"> and TASKNOTIFYID = #{TASKNOTIFYID}</if>
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="TASKID != null  and TASKID != ''"> and TASKID = #{TASKID}</if>
+            <if test="USERID != null  and USERID != ''"> and USERID = #{USERID}</if>
+            <if test="TYPE != null  and TYPE != ''"> and TYPE = #{TYPE}</if>
+            <if test="CONSUMENUMBER != null "> and CONSUMENUMBER = #{CONSUMENUMBER}</if>
+            <if test="TRANSEQNO != null  and TRANSEQNO != ''"> and TRANSEQNO = #{TRANSEQNO}</if>
+            <if test="TRADEORDERID != null  and TRADEORDERID != ''"> and TRADEORDERID = #{TRADEORDERID}</if>
+            <if test="STATE != null  and STATE != ''"> and STATE = #{STATE}</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawTaskConsumeById" parameterType="String" resultMap="DrawTaskConsumeResult">
+        <include refid="selectDrawTaskConsumeVo"/>
+        where TASKCONSUMEID = #{TASKCONSUMEID}
+    </select>
+        
+    <insert id="insertDrawTaskConsume" parameterType="DrawTaskConsume">
+        insert into draw_task_consume
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="TASKCONSUMEID != null">TASKCONSUMEID,</if>
+            <if test="TASKNOTIFYID != null">TASKNOTIFYID,</if>
+            <if test="DRAWCODE != null">DRAWCODE,</if>
+            <if test="TASKID != null">TASKID,</if>
+            <if test="USERID != null">USERID,</if>
+            <if test="TYPE != null">TYPE,</if>
+            <if test="CONSUMENUMBER != null">CONSUMENUMBER,</if>
+            <if test="TRANSEQNO != null">TRANSEQNO,</if>
+            <if test="TRADEORDERID != null">TRADEORDERID,</if>
+            <if test="STATE != null">STATE,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="TASKCONSUMEID != null">#{TASKCONSUMEID},</if>
+            <if test="TASKNOTIFYID != null">#{TASKNOTIFYID},</if>
+            <if test="DRAWCODE != null">#{DRAWCODE},</if>
+            <if test="TASKID != null">#{TASKID},</if>
+            <if test="USERID != null">#{USERID},</if>
+            <if test="TYPE != null">#{TYPE},</if>
+            <if test="CONSUMENUMBER != null">#{CONSUMENUMBER},</if>
+            <if test="TRANSEQNO != null">#{TRANSEQNO},</if>
+            <if test="TRADEORDERID != null">#{TRADEORDERID},</if>
+            <if test="STATE != null">#{STATE},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawTaskConsume" parameterType="DrawTaskConsume">
+        update draw_task_consume
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="TASKNOTIFYID != null">TASKNOTIFYID = #{TASKNOTIFYID},</if>
+            <if test="DRAWCODE != null">DRAWCODE = #{DRAWCODE},</if>
+            <if test="TASKID != null">TASKID = #{TASKID},</if>
+            <if test="USERID != null">USERID = #{USERID},</if>
+            <if test="TYPE != null">TYPE = #{TYPE},</if>
+            <if test="CONSUMENUMBER != null">CONSUMENUMBER = #{CONSUMENUMBER},</if>
+            <if test="TRANSEQNO != null">TRANSEQNO = #{TRANSEQNO},</if>
+            <if test="TRADEORDERID != null">TRADEORDERID = #{TRADEORDERID},</if>
+            <if test="STATE != null">STATE = #{STATE},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+        </trim>
+        where TASKCONSUMEID = #{TASKCONSUMEID}
+    </update>
+
+    <delete id="deleteDrawTaskConsumeById" parameterType="String">
+        delete from draw_task_consume where TASKCONSUMEID = #{TASKCONSUMEID}
+    </delete>
+
+    <delete id="deleteDrawTaskConsumeByIds" parameterType="String">
+        delete from draw_task_consume where TASKCONSUMEID in 
+        <foreach item="TASKCONSUMEID" collection="array" open="(" separator="," close=")">
+            #{TASKCONSUMEID}
+        </foreach>
+    </delete>
+
+</mapper>

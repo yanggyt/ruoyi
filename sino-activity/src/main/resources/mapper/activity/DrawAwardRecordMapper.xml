@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawAwardRecordMapper">
+    
+    <resultMap type="DrawAwardRecord" id="DrawAwardRecordResult">
+        <result property="AWARDRECORDID"    column="AWARDRECORDID"    />
+        <result property="DRAWCODE"    column="DRAWCODE"    />
+        <result property="PRIZECODE"    column="PRIZECODE"    />
+        <result property="USERID"    column="USERID"    />
+        <result property="DRAWRECORDID"    column="DRAWRECORDID"    />
+        <result property="AWARDTIME"    column="AWARDTIME"    />
+        <result property="AWARDRESULT"    column="AWARDRESULT"    />
+        <result property="RETURNCODE"    column="RETURNCODE"    />
+        <result property="RETURNMESSAGE"    column="RETURNMESSAGE"    />
+        <result property="PHONE"    column="PHONE"    />
+        <result property="ADDRESS"    column="ADDRESS"    />
+        <result property="USERNAME"    column="USERNAME"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+        <result property="DRAWTRANSEQNO"    column="DRAWTRANSEQNO"    />
+        <result property="AWARDTRANSEQNO"    column="AWARDTRANSEQNO"    />
+        <result property="PRIZELEVEL"    column="PRIZELEVEL"    />
+        <result property="PRIZETYPE"    column="PRIZETYPE"    />
+        <result property="MERCHANTCODE"    column="MERCHANTCODE"    />
+        <result property="MERCHANTSYSCODE"    column="MERCHANTSYSCODE"    />
+        <result property="CHANNEL"    column="CHANNEL"    />
+        <result property="BUSINESSAREA"    column="BUSINESSAREA"    />
+        <result property="CITY"    column="CITY"    />
+        <result property="EXTID"    column="EXTID"    />
+    </resultMap>
+
+    <sql id="selectDrawAwardRecordVo">
+        select AWARDRECORDID, DRAWCODE, PRIZECODE, USERID, DRAWRECORDID, AWARDTIME, AWARDRESULT, RETURNCODE, RETURNMESSAGE, PHONE, ADDRESS, USERNAME, CREATETIMESTAMP, LASTUPDATETIMESTAMP, DRAWTRANSEQNO, AWARDTRANSEQNO, PRIZELEVEL, PRIZETYPE, MERCHANTCODE, MERCHANTSYSCODE, CHANNEL, BUSINESSAREA, CITY, EXTID from draw_award_record
+    </sql>
+
+    <select id="selectDrawAwardRecordList" parameterType="DrawAwardRecord" resultMap="DrawAwardRecordResult">
+        <include refid="selectDrawAwardRecordVo"/>
+        <where>  
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
+            <if test="USERID != null  and USERID != ''"> and USERID = #{USERID}</if>
+            <if test="DRAWRECORDID != null  and DRAWRECORDID != ''"> and DRAWRECORDID = #{DRAWRECORDID}</if>
+            <if test="AWARDTIME != null "> and AWARDTIME = #{AWARDTIME}</if>
+            <if test="AWARDRESULT != null  and AWARDRESULT != ''"> and AWARDRESULT = #{AWARDRESULT}</if>
+            <if test="RETURNCODE != null  and RETURNCODE != ''"> and RETURNCODE = #{RETURNCODE}</if>
+            <if test="RETURNMESSAGE != null  and RETURNMESSAGE != ''"> and RETURNMESSAGE = #{RETURNMESSAGE}</if>
+            <if test="PHONE != null  and PHONE != ''"> and PHONE = #{PHONE}</if>
+            <if test="ADDRESS != null  and ADDRESS != ''"> and ADDRESS = #{ADDRESS}</if>
+            <if test="USERNAME != null  and USERNAME != ''"> and USERNAME like concat('%', #{USERNAME}, '%')</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+            <if test="DRAWTRANSEQNO != null  and DRAWTRANSEQNO != ''"> and DRAWTRANSEQNO = #{DRAWTRANSEQNO}</if>
+            <if test="AWARDTRANSEQNO != null  and AWARDTRANSEQNO != ''"> and AWARDTRANSEQNO = #{AWARDTRANSEQNO}</if>
+            <if test="PRIZELEVEL != null  and PRIZELEVEL != ''"> and PRIZELEVEL = #{PRIZELEVEL}</if>
+            <if test="PRIZETYPE != null  and PRIZETYPE != ''"> and PRIZETYPE = #{PRIZETYPE}</if>
+            <if test="MERCHANTCODE != null  and MERCHANTCODE != ''"> and MERCHANTCODE = #{MERCHANTCODE}</if>
+            <if test="MERCHANTSYSCODE != null  and MERCHANTSYSCODE != ''"> and MERCHANTSYSCODE = #{MERCHANTSYSCODE}</if>
+            <if test="CHANNEL != null  and CHANNEL != ''"> and CHANNEL = #{CHANNEL}</if>
+            <if test="BUSINESSAREA != null  and BUSINESSAREA != ''"> and BUSINESSAREA = #{BUSINESSAREA}</if>
+            <if test="CITY != null  and CITY != ''"> and CITY = #{CITY}</if>
+            <if test="EXTID != null  and EXTID != ''"> and EXTID = #{EXTID}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawAwardRecordById" parameterType="String" resultMap="DrawAwardRecordResult">
+        <include refid="selectDrawAwardRecordVo"/>
+        where AWARDRECORDID = #{AWARDRECORDID}
+    </select>
+        
+    <insert id="insertDrawAwardRecord" parameterType="DrawAwardRecord">
+        insert into draw_award_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="AWARDRECORDID != null">AWARDRECORDID,</if>
+            <if test="DRAWCODE != null">DRAWCODE,</if>
+            <if test="PRIZECODE != null">PRIZECODE,</if>
+            <if test="USERID != null">USERID,</if>
+            <if test="DRAWRECORDID != null">DRAWRECORDID,</if>
+            <if test="AWARDTIME != null">AWARDTIME,</if>
+            <if test="AWARDRESULT != null">AWARDRESULT,</if>
+            <if test="RETURNCODE != null">RETURNCODE,</if>
+            <if test="RETURNMESSAGE != null">RETURNMESSAGE,</if>
+            <if test="PHONE != null">PHONE,</if>
+            <if test="ADDRESS != null">ADDRESS,</if>
+            <if test="USERNAME != null">USERNAME,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+            <if test="DRAWTRANSEQNO != null">DRAWTRANSEQNO,</if>
+            <if test="AWARDTRANSEQNO != null">AWARDTRANSEQNO,</if>
+            <if test="PRIZELEVEL != null">PRIZELEVEL,</if>
+            <if test="PRIZETYPE != null">PRIZETYPE,</if>
+            <if test="MERCHANTCODE != null">MERCHANTCODE,</if>
+            <if test="MERCHANTSYSCODE != null">MERCHANTSYSCODE,</if>
+            <if test="CHANNEL != null">CHANNEL,</if>
+            <if test="BUSINESSAREA != null">BUSINESSAREA,</if>
+            <if test="CITY != null">CITY,</if>
+            <if test="EXTID != null">EXTID,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="AWARDRECORDID != null">#{AWARDRECORDID},</if>
+            <if test="DRAWCODE != null">#{DRAWCODE},</if>
+            <if test="PRIZECODE != null">#{PRIZECODE},</if>
+            <if test="USERID != null">#{USERID},</if>
+            <if test="DRAWRECORDID != null">#{DRAWRECORDID},</if>
+            <if test="AWARDTIME != null">#{AWARDTIME},</if>
+            <if test="AWARDRESULT != null">#{AWARDRESULT},</if>
+            <if test="RETURNCODE != null">#{RETURNCODE},</if>
+            <if test="RETURNMESSAGE != null">#{RETURNMESSAGE},</if>
+            <if test="PHONE != null">#{PHONE},</if>
+            <if test="ADDRESS != null">#{ADDRESS},</if>
+            <if test="USERNAME != null">#{USERNAME},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+            <if test="DRAWTRANSEQNO != null">#{DRAWTRANSEQNO},</if>
+            <if test="AWARDTRANSEQNO != null">#{AWARDTRANSEQNO},</if>
+            <if test="PRIZELEVEL != null">#{PRIZELEVEL},</if>
+            <if test="PRIZETYPE != null">#{PRIZETYPE},</if>
+            <if test="MERCHANTCODE != null">#{MERCHANTCODE},</if>
+            <if test="MERCHANTSYSCODE != null">#{MERCHANTSYSCODE},</if>
+            <if test="CHANNEL != null">#{CHANNEL},</if>
+            <if test="BUSINESSAREA != null">#{BUSINESSAREA},</if>
+            <if test="CITY != null">#{CITY},</if>
+            <if test="EXTID != null">#{EXTID},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawAwardRecord" parameterType="DrawAwardRecord">
+        update draw_award_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="DRAWCODE != null">DRAWCODE = #{DRAWCODE},</if>
+            <if test="PRIZECODE != null">PRIZECODE = #{PRIZECODE},</if>
+            <if test="USERID != null">USERID = #{USERID},</if>
+            <if test="DRAWRECORDID != null">DRAWRECORDID = #{DRAWRECORDID},</if>
+            <if test="AWARDTIME != null">AWARDTIME = #{AWARDTIME},</if>
+            <if test="AWARDRESULT != null">AWARDRESULT = #{AWARDRESULT},</if>
+            <if test="RETURNCODE != null">RETURNCODE = #{RETURNCODE},</if>
+            <if test="RETURNMESSAGE != null">RETURNMESSAGE = #{RETURNMESSAGE},</if>
+            <if test="PHONE != null">PHONE = #{PHONE},</if>
+            <if test="ADDRESS != null">ADDRESS = #{ADDRESS},</if>
+            <if test="USERNAME != null">USERNAME = #{USERNAME},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+            <if test="DRAWTRANSEQNO != null">DRAWTRANSEQNO = #{DRAWTRANSEQNO},</if>
+            <if test="AWARDTRANSEQNO != null">AWARDTRANSEQNO = #{AWARDTRANSEQNO},</if>
+            <if test="PRIZELEVEL != null">PRIZELEVEL = #{PRIZELEVEL},</if>
+            <if test="PRIZETYPE != null">PRIZETYPE = #{PRIZETYPE},</if>
+            <if test="MERCHANTCODE != null">MERCHANTCODE = #{MERCHANTCODE},</if>
+            <if test="MERCHANTSYSCODE != null">MERCHANTSYSCODE = #{MERCHANTSYSCODE},</if>
+            <if test="CHANNEL != null">CHANNEL = #{CHANNEL},</if>
+            <if test="BUSINESSAREA != null">BUSINESSAREA = #{BUSINESSAREA},</if>
+            <if test="CITY != null">CITY = #{CITY},</if>
+            <if test="EXTID != null">EXTID = #{EXTID},</if>
+        </trim>
+        where AWARDRECORDID = #{AWARDRECORDID}
+    </update>
+
+    <delete id="deleteDrawAwardRecordById" parameterType="String">
+        delete from draw_award_record where AWARDRECORDID = #{AWARDRECORDID}
+    </delete>
+
+    <delete id="deleteDrawAwardRecordByIds" parameterType="String">
+        delete from draw_award_record where AWARDRECORDID in 
+        <foreach item="AWARDRECORDID" collection="array" open="(" separator="," close=")">
+            #{AWARDRECORDID}
+        </foreach>
+    </delete>
+
+</mapper>

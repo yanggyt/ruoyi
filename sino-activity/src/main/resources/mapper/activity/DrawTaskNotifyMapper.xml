@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawTaskNotifyMapper">
+    
+    <resultMap type="DrawTaskNotify" id="DrawTaskNotifyResult">
+        <result property="TASKNOTIFYID"    column="TASKNOTIFYID"    />
+        <result property="DRAWCODE"    column="DRAWCODE"    />
+        <result property="TASKID"    column="TASKID"    />
+        <result property="USERID"    column="USERID"    />
+        <result property="TYPE"    column="TYPE"    />
+        <result property="ADDNUMBER"    column="ADDNUMBER"    />
+        <result property="STATE"    column="STATE"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+        <result property="AVAILABLENUMBER"    column="AVAILABLENUMBER"    />
+        <result property="CHECKINGDATE"    column="CHECKINGDATE"    />
+        <result property="PHONE"    column="PHONE"    />
+        <result property="TASKTYPE"    column="TASKTYPE"    />
+        <result property="VSTATE"    column="VSTATE"    />
+        <result property="ULEVEL"    column="ULEVEL"    />
+        <result property="SOURCE"    column="SOURCE"    />
+        <result property="ISSPECIALFLAG"    column="ISSPECIALFLAG"    />
+        <result property="REQUESTFLAG"    column="REQUESTFLAG"    />
+    </resultMap>
+
+    <sql id="selectDrawTaskNotifyVo">
+        select TASKNOTIFYID, DRAWCODE, TASKID, USERID, TYPE, ADDNUMBER, STATE, CREATETIMESTAMP, LASTUPDATETIMESTAMP, AVAILABLENUMBER, CHECKINGDATE, PHONE, TASKTYPE, VSTATE, ULEVEL, SOURCE, ISSPECIALFLAG, REQUESTFLAG from draw_task_notify
+    </sql>
+
+    <select id="selectDrawTaskNotifyList" parameterType="DrawTaskNotify" resultMap="DrawTaskNotifyResult">
+        <include refid="selectDrawTaskNotifyVo"/>
+        <where>  
+            <if test="TASKNOTIFYID != null  and TASKNOTIFYID != ''"> and TASKNOTIFYID = #{TASKNOTIFYID}</if>
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="TASKID != null  and TASKID != ''"> and TASKID = #{TASKID}</if>
+            <if test="TYPE != null  and TYPE != ''"> and TYPE = #{TYPE}</if>
+            <if test="ADDNUMBER != null "> and ADDNUMBER = #{ADDNUMBER}</if>
+            <if test="STATE != null  and STATE != ''"> and STATE = #{STATE}</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+            <if test="AVAILABLENUMBER != null "> and AVAILABLENUMBER = #{AVAILABLENUMBER}</if>
+            <if test="PHONE != null  and PHONE != ''"> and PHONE = #{PHONE}</if>
+            <if test="VSTATE != null  and VSTATE != ''"> and VSTATE = #{VSTATE}</if>
+            <if test="ULEVEL != null  and ULEVEL != ''"> and ULEVEL = #{ULEVEL}</if>
+            <if test="SOURCE != null  and SOURCE != ''"> and SOURCE = #{SOURCE}</if>
+            <if test="ISSPECIALFLAG != null  and ISSPECIALFLAG != ''"> and ISSPECIALFLAG = #{ISSPECIALFLAG}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawTaskNotifyById" parameterType="String" resultMap="DrawTaskNotifyResult">
+        <include refid="selectDrawTaskNotifyVo"/>
+        where USERID = #{USERID}
+    </select>
+        
+    <insert id="insertDrawTaskNotify" parameterType="DrawTaskNotify">
+        insert into draw_task_notify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="TASKNOTIFYID != null and TASKNOTIFYID != ''">TASKNOTIFYID,</if>
+            <if test="DRAWCODE != null">DRAWCODE,</if>
+            <if test="TASKID != null">TASKID,</if>
+            <if test="USERID != null">USERID,</if>
+            <if test="TYPE != null">TYPE,</if>
+            <if test="ADDNUMBER != null">ADDNUMBER,</if>
+            <if test="STATE != null">STATE,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+            <if test="AVAILABLENUMBER != null">AVAILABLENUMBER,</if>
+            <if test="CHECKINGDATE != null">CHECKINGDATE,</if>
+            <if test="PHONE != null">PHONE,</if>
+            <if test="TASKTYPE != null">TASKTYPE,</if>
+            <if test="VSTATE != null">VSTATE,</if>
+            <if test="ULEVEL != null">ULEVEL,</if>
+            <if test="SOURCE != null">SOURCE,</if>
+            <if test="ISSPECIALFLAG != null">ISSPECIALFLAG,</if>
+            <if test="REQUESTFLAG != null">REQUESTFLAG,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="TASKNOTIFYID != null and TASKNOTIFYID != ''">#{TASKNOTIFYID},</if>
+            <if test="DRAWCODE != null">#{DRAWCODE},</if>
+            <if test="TASKID != null">#{TASKID},</if>
+            <if test="USERID != null">#{USERID},</if>
+            <if test="TYPE != null">#{TYPE},</if>
+            <if test="ADDNUMBER != null">#{ADDNUMBER},</if>
+            <if test="STATE != null">#{STATE},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+            <if test="AVAILABLENUMBER != null">#{AVAILABLENUMBER},</if>
+            <if test="CHECKINGDATE != null">#{CHECKINGDATE},</if>
+            <if test="PHONE != null">#{PHONE},</if>
+            <if test="TASKTYPE != null">#{TASKTYPE},</if>
+            <if test="VSTATE != null">#{VSTATE},</if>
+            <if test="ULEVEL != null">#{ULEVEL},</if>
+            <if test="SOURCE != null">#{SOURCE},</if>
+            <if test="ISSPECIALFLAG != null">#{ISSPECIALFLAG},</if>
+            <if test="REQUESTFLAG != null">#{REQUESTFLAG},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawTaskNotify" parameterType="DrawTaskNotify">
+        update draw_task_notify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="TASKNOTIFYID != null and TASKNOTIFYID != ''">TASKNOTIFYID = #{TASKNOTIFYID},</if>
+            <if test="DRAWCODE != null">DRAWCODE = #{DRAWCODE},</if>
+            <if test="TASKID != null">TASKID = #{TASKID},</if>
+            <if test="TYPE != null">TYPE = #{TYPE},</if>
+            <if test="ADDNUMBER != null">ADDNUMBER = #{ADDNUMBER},</if>
+            <if test="STATE != null">STATE = #{STATE},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+            <if test="AVAILABLENUMBER != null">AVAILABLENUMBER = #{AVAILABLENUMBER},</if>
+            <if test="CHECKINGDATE != null">CHECKINGDATE = #{CHECKINGDATE},</if>
+            <if test="PHONE != null">PHONE = #{PHONE},</if>
+            <if test="TASKTYPE != null">TASKTYPE = #{TASKTYPE},</if>
+            <if test="VSTATE != null">VSTATE = #{VSTATE},</if>
+            <if test="ULEVEL != null">ULEVEL = #{ULEVEL},</if>
+            <if test="SOURCE != null">SOURCE = #{SOURCE},</if>
+            <if test="ISSPECIALFLAG != null">ISSPECIALFLAG = #{ISSPECIALFLAG},</if>
+            <if test="REQUESTFLAG != null">REQUESTFLAG = #{REQUESTFLAG},</if>
+        </trim>
+        where USERID = #{USERID}
+    </update>
+
+    <delete id="deleteDrawTaskNotifyById" parameterType="String">
+        delete from draw_task_notify where USERID = #{USERID}
+    </delete>
+
+    <delete id="deleteDrawTaskNotifyByIds" parameterType="String">
+        delete from draw_task_notify where USERID in 
+        <foreach item="USERID" collection="array" open="(" separator="," close=")">
+            #{USERID}
+        </foreach>
+    </delete>
+
+</mapper>
