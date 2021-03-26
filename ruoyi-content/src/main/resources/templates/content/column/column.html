@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">选择栏目所在公司：</label>
                             <div class="col-sm-8">
-                                <select class="form-control" id="branchId" name="branchId"></select>
+                                <select class="form-control" th:id="branchId" name="branchId"></select>
                             </div>
                         </div>
                         <div id="articleRadio">
@@ -77,19 +77,19 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">一级栏目名称：</label>
                                 <div class="col-sm-8">
-                                    <select id="codeTypes" name="codeTypes" class="form-control"></select>
+                                    <select th:id="codeTypes" name="codeTypes" class="form-control"></select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">二级栏目名称：</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="codeCnames" name="codeCnames">
+                                    <input type="text" class="form-control" th:id="codeCnames" name="codeCnames">
                                 </div>
                             </div>
                             <div class="form-group" style="display:none">
                                 <label class="col-sm-4 control-label">展示序号:</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="orderNos" name="orderNos" value="1"/>
+                                    <input type="text" class="form-control" th:id="orderNos" name="orderNos" value="1"/>
                                     <label class="red">序号越小，展示越靠前。</label>
                                 </div>
                             </div>
@@ -112,13 +112,13 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">三级栏目名称：</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="thirdCodeCnames" name="thirdCodeCnames">
+                                    <input type="text" class="form-control" th:id="thirdCodeCnames" name="thirdCodeCnames">
                                 </div>
                                 <br/><br/><br/>
                                 <div class="form-group" style="display:none">
                                     <label class="col-sm-4 control-label">三级展示序号:</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="thirdOrderNos" name="thirdOrderNos"
+                                        <input type="text" class="form-control" th:id="thirdOrderNos" name="thirdOrderNos"
                                                value="1" style="width:210px"/>
                                         <label class="red">序号越小，展示越靠前。</label>
                                     </div>
@@ -131,6 +131,55 @@
             <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" th:onclick="addColumn()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal3" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated flipInY">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left;">修改栏目</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <form class="form-horizontal m" id="form-picAdverts-edit">
+                    <input th:hidden="true" name="asdid" th:id="asdid">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">栏目所在公司：</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" th:id="branchIdEdit" name="branchIdEdit"></select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none" id="secSelect">
+                            <label class="col-sm-4 control-label">所属栏目:</label>
+                            <div class="col-sm-6">
+                                <select class="selectpicker form-control" th:id="cType" name="cType"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">栏目名称:</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" th:id="cName" name="cName"/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-sm-4 control-label">展示序号:</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" th:id="cOrderNo" name="cOrderNo"/>
+                                <label class="red">序号越小，展示越靠前。</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" th:onclick="editColum()">确定</button>
             </div>
         </div>
     </div>
@@ -154,6 +203,7 @@
             updateUrl: prefix + "/edit/{id}",
             removeUrl: prefix + "/delColumn",
             exportUrl: prefix + "/export",
+            uniqueId: "id",
             modalName: "栏目",
             columns: [{
                 checkbox: true
@@ -258,7 +308,7 @@
                     align: 'center',
                     formatter: function (value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal3" onclick="updateColumn(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
@@ -388,7 +438,6 @@
     }
 
     function addColumn() {
-        var consoleDlg = $("#addColumn");
         var branchId = $("#branchId").val();
         var radioValue = $("#sencondType option:selected").val();
         var codeType = $("#codeTypes").val();
@@ -448,6 +497,120 @@
             }
         });
     };
+
+    function updateColumn(id) {
+        $('#asdid').val(id);
+        var rowData = $("#" + table.options.id).bootstrapTable('getRowByUniqueId', id);
+        $("#cName").val(rowData.codeCname);
+        $("#cOrderNo").val(rowData.orderNo);
+        // 处理公司下拉框
+        $("#branchIdEdit option").remove();
+        $.ajax({
+            type: "post",
+            url: prefix1,
+            data: {},
+            async: false,
+            success: function (data) {
+                var obj = data.object.ldcomList;
+
+                for (var i = 0; i < obj.length; i++) {
+                    if (obj[i].comcode == rowData.branchId) {
+                        $("#branchIdEdit").append(
+                            "<option selected=\"true\" value='"
+                            + obj[i].comcode + "'>" + obj[i].shortname
+                            + "</option>");
+                    } else {
+                        $("#branchIdEdit").append(
+                            "<option value='" + obj[i].comcode + "'>"
+                            + obj[i].shortname + "</option>")
+                    }
+                }
+            }
+
+        })
+
+        // 处理一级栏目下拉
+        $("#cType option").remove();
+        var objc = [];
+        if (rowData.codeType.indexOf("文库-") == -1) {
+            $("#secSelect").hide();
+            objc = baseDataList;
+            for (var i = 0; i < objc.length; i++) {
+                var codeType = rowData.codeType;
+                if (objc[i].codeCname == codeType) {
+                    $("#cType").append(
+                        "<option selected=\"true\" value='" + objc[i].codeCode
+                        + "'>" + objc[i].codeCname + "</option>");
+                } else {
+                    $("#cType").append(
+                        "<option value='" + objc[i].codeCode + "'>"
+                        + objc[i].codeCname + "</option>");
+                }
+            }
+        } else {
+            objc = articleSecList;
+            $("#secSelect").show();
+            for (var i = 0; i < objc.length; i++) {
+                var codeType = rowData.codeType.split("-")[1];
+                if (objc[i].codeCname == codeType) {
+                    $("#cType").append(
+                        "<option selected=\"true\" value='" + objc[i].codeCode
+                        + "'>" + objc[i].codeCname + "</option>");
+                } else {
+                    $("#cType").append(
+                        "<option value='" + objc[i].codeCode + "'>"
+                        + objc[i].codeCname + "</option>");
+                }
+            }
+        }
+    };
+
+    // 编辑后保存操作
+    function editColum() {
+        debugger
+        let id = $('#asdid').val();
+        let rowData = $("#" + table.options.id).bootstrapTable('getRowByUniqueId', id);
+        let cName = $("#cName").val();
+        let cType = $("#cType").val();
+        let branchIdEdit = $("#branchIdEdit").val();
+        if (cName == null || cName == '') {
+            $.modal.alertSuccess("请输入二级栏目名称");
+            return;
+        }
+
+        $.ajax({
+            url: prefix + "/updateColumn",
+            data: {
+                "id": rowData.id,
+                "codeType": cType,
+                "branchId": branchIdEdit,
+                "codeCname": cName,
+                "codeCode": rowData.codeCode,
+                "codeEname": rowData.codeEname,
+                "codeTname": rowData.codeTname,
+                "createTime": rowData.createTime,
+                "createUser": rowData.createUser,
+                "companyId": rowData.companyId,
+                "state": rowData.state
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    const code = {
+                        'code': 0
+                    };
+                    $.operate.successCallback(code);
+                } else {
+                    $.modal.alertSuccess(data.info);
+                }
+            },
+            error: function (textStatus, e) {
+                $.modal.alertSuccess('系统异常,请稍后重试!');
+            }
+        });
+    }
 
 </script>
 </body>
