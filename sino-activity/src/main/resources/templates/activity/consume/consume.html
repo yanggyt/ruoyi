@@ -18,32 +18,35 @@
                                 <label>任务流水：</label>
                                 <input type="text" name="TASKID"/>
                             </li>
+<!--                            <li>-->
+<!--                                <label>用户标识：</label>-->
+<!--                                <input type="text" name="USERID"/>-->
+<!--                            </li>-->
                             <li>
-                                <label>用户标识：</label>
-                                <input type="text" name="USERID"/>
-                            </li>
-                            <li>
-                                <label>赠送次数类型：</label>
-                                <select name="TYPE">
+                                <label>次数类型：</label>
+                                <select name="TYPE" th:with="type=${@dict.getType('drawType')}">
                                     <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
-                            <li>
-                                <label>使用次数：</label>
-                                <input type="text" name="CONSUMENUMBER"/>
-                            </li>
-                            <li>
-                                <label>使用流水：</label>
-                                <input type="text" name="TRANSEQNO"/>
-                            </li>
-                            <li>
-                                <label>使用主键：</label>
-                                <input type="text" name="TRADEORDERID"/>
-                            </li>
+<!--                            <li>-->
+<!--                                <label>使用次数：</label>-->
+<!--                                <input type="text" name="CONSUMENUMBER"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>使用流水：</label>-->
+<!--                                <input type="text" name="TRANSEQNO"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>使用主键：</label>-->
+<!--                                <input type="text" name="TRADEORDERID"/>-->
+<!--                            </li>-->
                             <li>
                                 <label>状态：</label>
-                                <input type="text" name="STATE"/>
+                                <select name="STATE" th:with="type=${@dict.getType('status')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -78,6 +81,8 @@
         var editFlag = [[${@permission.hasPermi('activity:consume:edit')}]];
         var removeFlag = [[${@permission.hasPermi('activity:consume:remove')}]];
         var prefix = ctx + "activity/consume";
+        var drawTypes = [[${@dict.getType('drawType')}]];
+        var STATEDatas = [[${@dict.getType('status')}]];
 
         $(function() {
             var options = {
@@ -113,7 +118,10 @@
                 },
                 {
                     field: 'type',
-                    title: '赠送次数类型'
+                    title: '赠送次数类型',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(drawTypes, value);
+                    }
                 },
                 {
                     field: 'consumenumber',
@@ -129,7 +137,10 @@
                 },
                 {
                     field: 'state',
-                    title: '状态'
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(STATEDatas, value);
+                    }
                 },
                 // {
                 //     field: 'createtimestamp',
