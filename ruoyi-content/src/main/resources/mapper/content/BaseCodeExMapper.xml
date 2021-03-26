@@ -53,7 +53,7 @@
 		<if test="orderNo != null and orderNo!=''">
 			and ORDER_NO = #{orderNo,jdbcType=VARCHAR}
 		</if>
-		order by CODE_TYPE DESC,ORDER_NO*1 ASC, CREATE_TIME ASC, UPDATE_TIME ASC 
+		order by CODE_TYPE DESC,ORDER_NO*1 ASC, CREATE_TIME DESC, UPDATE_TIME DESC
 	</select>
 
     <resultMap id="BaseTreeResultMap" type="com.ruoyi.content.domain.BaseCodeTree">

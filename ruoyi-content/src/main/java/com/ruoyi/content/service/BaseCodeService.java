@@ -78,7 +78,7 @@ public interface BaseCodeService {
      * @param ids
      * @return
      */
-    Message delBaseCode(String ids);
+    Integer delBaseCode(String ids);
 
     /**
      * 查询栏目树

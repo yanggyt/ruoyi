@@ -1,6 +1,7 @@
 package com.ruoyi.content.controller;
 
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.content.domain.BaseCode;
 import com.ruoyi.content.domain.BaseCodeTree;
@@ -187,25 +188,19 @@ public class BaseCodeController extends BaseController {
     /**
      * 删除栏目
      *
-     * @param request
-     * @param response
      * @return
      */
     @RequestMapping("/delColumn")
     @ResponseBody
-    public Message delColumn(HttpServletRequest request, HttpServletResponse response) {
+    public AjaxResult delColumn(String ids) {
         logger.info("进入删除栏目状态栏目控制层方法");
-        Message msg = new Message();
-        Thread.currentThread().setName(UUID.randomUUID().toString());
-        String ids = request.getParameter("ids");
         try {
-            msg = baseCodeService.delBaseCode(ids);
+            return toAjax(baseCodeService.delBaseCode(ids));
         } catch (Exception e) {
             logger.info("修改栏目失败【{}】", e.getMessage());
-            e.printStackTrace();
         }
         logger.info("跳出删除栏目控制层方法");
-        return msg;
+        return toAjax(0);
     }
 
     /**

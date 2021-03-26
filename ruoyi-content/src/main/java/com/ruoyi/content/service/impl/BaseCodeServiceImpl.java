@@ -311,14 +311,13 @@ public class BaseCodeServiceImpl implements BaseCodeService {
      * 删除栏目信息
      */
     @Override
-    public Message delBaseCode(String ids) {
+    public Integer delBaseCode(String ids) {
         String companyId = "1";
         logger.info("进入删除栏目信息的业务方法。");
         if (StringUtils.isBlank(ids)) {
             logger.info("删除栏目失败，参数不足 ids【{}】", ids);
             throw new ParameterException("栏目删除失败，参数不足！");
         }
-        Message msg = new Message();
         try {
             String[] arr = ids.split(",");
             for (String id : arr) {
@@ -350,32 +349,25 @@ public class BaseCodeServiceImpl implements BaseCodeService {
                             }
                             logger.info("删除的redis的key是：" + "baseCode_companyId" + companyId + "_branchId" + baseCode.getBranchId() + "_" + delCodeType);
                             redisManager.delete("baseCode_companyId" + companyId + "_branchId" + baseCode.getBranchId() + "_" + delCodeType);
-                            //redisManager.delete("baseCode_companyId"+companyId+"_branchId"+baseCode.getBranchId()+"_"+baseCode.getCodeType());
                         }
-                        msg.setInfo("成功删除栏目状态。");
-                        msg.setResult(true);
                         logger.info("成功删除栏目状态！");
                     } else {
-                        msg.setInfo("删除栏目状态失败。");
-                        msg.setResult(false);
                         logger.info("删除栏目状态失败！");
+                        return 0;
                     }
 
                 } else {
-                    msg.setInfo("删除栏目状态失败。");
-                    msg.setResult(false);
                     logger.info("删除栏目状态失败！");
+                    return 0;
                 }
             }
 
         } catch (Exception e) {
             logger.info("删除栏目状态异常【{}】", e.getMessage());
-            e.printStackTrace();
-            msg.setInfo("删除栏目状态失败！");
-            msg.setResult(false);
+            return 0;
         }
         logger.info("删除栏目状态的业务方法结束。");
-        return msg;
+        return 1;
     }
 
     /**
