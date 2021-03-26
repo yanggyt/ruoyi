@@ -54,10 +54,8 @@
 			and ORDER_NO = #{orderNo,jdbcType=VARCHAR}
 		</if>
 		order by CODE_TYPE DESC,ORDER_NO*1 ASC, CREATE_TIME ASC, UPDATE_TIME ASC 
-		limit #{startRow,jdbcType=DECIMAL},#{rows,jdbcType=DECIMAL}
 	</select>
-	
-	
+
     <resultMap id="BaseTreeResultMap" type="com.ruoyi.content.domain.BaseCodeTree">
         <id column="ID" property="id" jdbcType="INTEGER" />
 	    <result column="CODE_CODE" property="codeCode" jdbcType="VARCHAR" />

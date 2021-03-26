@@ -382,21 +382,20 @@ public class BaseCodeServiceImpl implements BaseCodeService {
      * 分页查询栏目信息
      */
     @Override
-    public List<BaseCode> queryBaseCode(int startRow, int rows, String codeType, String codeCname, String orderNo) {
+    public List<BaseCode> queryBaseCode(String codeType, String codeCname, String orderNo) {
         logger.info("进入查询栏目信息的业务方法。");
-        logger.info("查询栏目信息的参数startRow【{}】,rows【{}】,codeType【{}】,codeCname【{}】,orderNo【{}】", startRow, rows, codeType, codeCname, orderNo);
+        logger.info("查询栏目信息的参数,codeType【{}】,codeCname【{}】,orderNo【{}】", codeType, codeCname, orderNo);
         List<BaseCode> codeList = null;
         String companyId = "1";//渠道id
         String branchId = "86";//分支公司
         try {
-            codeList = baseCodeExMapper.selectAllWithLimit(companyId, branchId, codeType, codeCname, orderNo, startRow, rows);
+            codeList = baseCodeExMapper.selectAllWithLimit(companyId, branchId, codeType, codeCname, orderNo);
             if (codeList == null || codeList.size() < 1) {
                 logger.info("未查询到基础数据信息【{}】", JsonUtil.objectToJackson(codeList));
                 return codeList;
             }
         } catch (Exception e) {
-            logger.info("查询栏目信息的业务方法异常【{}】", e.getMessage());
-            e.printStackTrace();
+            logger.error("查询栏目信息的业务方法异常【{}】", e);
         }
         logger.info("查询栏目信息的业务方法结束。");
         return codeList;

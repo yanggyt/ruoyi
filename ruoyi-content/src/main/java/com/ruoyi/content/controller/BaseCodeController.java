@@ -1,8 +1,9 @@
 package com.ruoyi.content.controller;
 
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.content.domain.BaseCode;
 import com.ruoyi.content.domain.BaseCodeTree;
-import com.ruoyi.content.domain.PageDTO;
 import com.ruoyi.content.message.Message;
 import com.ruoyi.content.service.BaseCodeService;
 import com.ruoyi.content.utils.DateUtil;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,10 +29,18 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/column")
-public class BaseCodeController {
+public class BaseCodeController extends BaseController {
+
     private final static Logger logger = LoggerFactory.getLogger(BaseCodeController.class);
+    private String prefix = "content/column";
+
     @Autowired
     private BaseCodeService baseCodeService;
+
+    @GetMapping()
+    public String baseCode() {
+        return prefix + "/column";
+    }
 
     /**
      * 分页查询栏目信息
@@ -41,32 +51,15 @@ public class BaseCodeController {
      */
     @RequestMapping("/columnArry")
     @ResponseBody
-    public PageDTO columnArry(HttpServletRequest request, HttpServletResponse response) {
+    public TableDataInfo columnArry(HttpServletRequest request, HttpServletResponse response) {
         logger.info("进入查询当前用户发布的栏目的控制层方法");
-        Thread.currentThread().setName(UUID.randomUUID().toString());
-        PageDTO pageDTO = new PageDTO();
-        try {
-            String rowsVal = request.getParameter("rows");
-            String page = request.getParameter("page");
-            String codeType = request.getParameter("codeType");
-            String codeCname = request.getParameter("codeCname");
-            String orderNo = request.getParameter("orderNo");
-            int rows = Integer.parseInt(rowsVal);
-            int startRow = rows * (Integer.parseInt(page) - 1);
-            List<BaseCode> list = baseCodeService.queryBaseCode(startRow, rows, codeType, codeCname, orderNo);
-            pageDTO.setPage(Integer.parseInt(page));
-            pageDTO.setStartRow(startRow);
-            pageDTO.setDataRows(list);
-            int count = baseCodeService.countBaseCode(codeType, codeCname, orderNo);
-            pageDTO.setTotal(count % rows == 0 ? count / rows : (count / rows + 1));
-            pageDTO.setRecords(count);
-            pageDTO.setPage(Integer.parseInt(page));
-        } catch (Exception e) {
-            logger.info("查询当前用户发布的栏目失败【{}】", e.getMessage());
-            e.printStackTrace();
-        }
+        String codeType = request.getParameter("codeType");
+        String codeCname = request.getParameter("codeCname");
+        String orderNo = request.getParameter("orderNo");
+        startPage();
+        List<BaseCode> list = baseCodeService.queryBaseCode(codeType, codeCname, orderNo);
         logger.info("跳出查询当前用户发布的栏目的控制层方法");
-        return pageDTO;
+        return getDataTable(list);
     }
 
     /**

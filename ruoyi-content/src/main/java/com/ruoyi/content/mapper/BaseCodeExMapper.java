@@ -11,8 +11,7 @@ import java.util.List;
 @Repository
 public interface BaseCodeExMapper {
     public List<BaseCode> selectAllWithLimit(@Param(value = "companyId") String companyId, @Param(value = "branchId") String branchId, @Param(value = "codeType") String codeType,
-                                             @Param(value = "codeCname") String codeCname, @Param(value = "orderNo") String orderNo, @Param(value = "startRow") int startRow,
-                                             @Param(value = "rows") int rows);
+                                             @Param(value = "codeCname") String codeCname, @Param(value = "orderNo") String orderNo);
 
     /**
      * 查询栏目树

@@ -47,14 +47,12 @@ public interface BaseCodeService {
     /**
      * 条件查询基础数据
      *
-     * @param startRow
-     * @param rows
      * @param codeType
      * @param codeCname
      * @param codeCode
      * @return
      */
-    public List<BaseCode> queryBaseCode(int startRow, int rows, String codeType, String codeCname, String codeCode);
+    public List<BaseCode> queryBaseCode(String codeType, String codeCname, String codeCode);
 
     /**
      * 统计条件下有多少数据
