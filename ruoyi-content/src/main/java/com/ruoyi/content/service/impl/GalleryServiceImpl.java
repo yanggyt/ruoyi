@@ -130,8 +130,8 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     @Override
-    public List<GalleryDTO> galleryImgList(int startRow, int rows, String channelId, String picState, String special) {
-        LOGGER.info("拿到的参数startRow【{}】，rows【{}】，所属栏目【{}】，图片状态【{}】", startRow, rows, channelId, picState);
+    public List<GalleryPicInfoEx> galleryImgList(String channelId, String picState, String special) {
+        LOGGER.info("拿到的参数，所属栏目【{}】，图片状态【{}】", channelId, picState);
         String companyId = "1";// 公司id
         String branchId = "86";
         List<String> list = new ArrayList<String>();
@@ -161,32 +161,15 @@ public class GalleryServiceImpl implements GalleryService {
             }
         }
 
-        List<GalleryPicInfo> galleryList = galleryQueryMapper.selectAllWithLimit(companyId, branchId, list, picIds, startRow, rows);
+        List<GalleryPicInfoEx> galleryList = galleryQueryMapper.selectAllWithLimit(companyId, branchId, list, picIds);
         if (galleryList == null || galleryList.size() < 1) {
             LOGGER.info("未查询到数据");
             throw new BusinessException("图库暂没有海报！");
         }
 
         //所属二级栏目
-        List<GalleryDTO> galleryDTOs = new ArrayList<>();
-        for (GalleryPicInfo galleryPicInfo : galleryList) {
-            GalleryDTO galleryDTO = new GalleryDTO();
-            galleryDTO.setPicId(galleryPicInfo.getPicId());
-            galleryDTO.setImgUrl(galleryPicInfo.getImgUrl());
-            galleryDTO.setPicAdId(galleryPicInfo.getPicAdId());
-            galleryDTO.setPicState(galleryPicInfo.getPicState());
-            galleryDTO.setCompanyId(galleryPicInfo.getCompanyId());
-            galleryDTO.setCreateDate(galleryPicInfo.getCreateDate());
-            galleryDTO.setCreateTime(galleryPicInfo.getCreateTime());
-            LOGGER.info("图库数据【{}】", JsonUtil.objectToJackson(galleryDTO));
-            List<String> codeName = new ArrayList<>();
-//			List<String> channelIds = galleryQueryMapper.selectChannelId(galleryPicInfo.getPicId());
-//			for (String string : channelIds) {
-//				LOGGER.info("栏目id【{}】", string);
-//				BaseCodeExample example = new BaseCodeExample();
-//				BaseCodeExample.Criteria criteria = example.createCriteria();
-//				criteria.andCodeCodeEqualTo(string).andStateEqualTo("0").andCodeTypeEqualTo("GALLERY");
-
+        for (GalleryPicInfoEx galleryPicInfo : galleryList) {
+            String codeName = "";
             GalleryChannelExample channelexample = new GalleryChannelExample();
             channelexample.createCriteria().andPicIdEqualTo(galleryPicInfo.getPicId()).andStateEqualTo("0");
             List<GalleryChannel> galleryChannels = this.galleryChannelMapper.selectByExample(channelexample);
@@ -199,14 +182,13 @@ public class GalleryServiceImpl implements GalleryService {
                 List<BaseCode> baseCodes = this.baseCodeMapper.selectByExample(example);
                 LOGGER.info("栏目数据【{}】", JsonUtil.objectToJackson(baseCodes));
                 if ((baseCodes != null) && (baseCodes.size() > 0)) {
-                    codeName.add(((BaseCode) baseCodes.get(0)).getCodeCname());
+                    codeName = codeName + baseCodes.get(0).getCodeCname() + ",";
                 }
             }
-            galleryDTO.setCodeName(codeName);
-            galleryDTOs.add(galleryDTO);
+            galleryPicInfo.setCodeName(StringUtils.isNotBlank(codeName) ? codeName.substring(0, codeName.length() - 1) : "");
         }
 
-        return galleryDTOs;
+        return galleryList;
     }
 
     @Override
@@ -348,16 +330,13 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     @Override
-    public Message delGalleryPic(String ids) {
+    public Integer delGalleryPic(String ids) {
         LOGGER.info("删除图片信息的业务层方法开始！");
         LOGGER.info("删除图片信息的业务层方法中拿到的图片的id【{}】", ids);
-        Message msg = new Message();
         if (StringUtils.isBlank(ids)) {
             LOGGER.info("删除图片信息失败，缺少参数");
             throw new ParameterException("未查询到图片信息");
         }
-        msg.setInfo("删除失败！");
-        msg.setResult(false);
         try {
             String[] arrId = ids.split(",");
             for (String picId : arrId) {
@@ -369,8 +348,6 @@ public class GalleryServiceImpl implements GalleryService {
                     for (GalleryChannel galleryChannel : galleryChannels) {
                         galleryChannel.setState("1");
                         if (galleryChannelMapper.updateByPrimaryKey(galleryChannel) > 0) {
-                            msg.setInfo("删除成功！");
-                            msg.setResult(true);
                             LOGGER.info("删除此图片图库栏目关系成功！");
                             //redisManager.deleteZSet("gallery_channel_"+galleryChannel.getChannelId(),picId);
 //							redisManager.delete("gallery_channel_"+galleryChannel.getChannelId());
@@ -381,8 +358,6 @@ public class GalleryServiceImpl implements GalleryService {
                     if (galleryPicInfo != null) {
                         galleryPicInfo.setPicState("1");
                         if (galleryInfoMapper.updateByPrimaryKey(galleryPicInfo) > 0) {
-                            msg.setInfo("删除成功！");
-                            msg.setResult(true);
                             LOGGER.info("删除图片信息成功！");
                             redisManager.delete("gallery_pic_Id" + galleryPicInfo.getPicId());
                         }
@@ -391,13 +366,10 @@ public class GalleryServiceImpl implements GalleryService {
             }
 
         } catch (Exception e) {
-            LOGGER.info("删除图片信息失败【{}】", e.getMessage());
-            e.printStackTrace();
-            msg.setInfo("删除失败，请稍候再试！");
-            msg.setResult(true);
+            LOGGER.error("删除图片信息失败【{}】", e);
         }
         LOGGER.info("删除图片信息的业务层方法结束！");
-        return msg;
+        return 1;
     }
 
 }

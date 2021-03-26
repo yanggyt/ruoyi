@@ -1,6 +1,6 @@
 package com.ruoyi.content.service;
 
-import com.ruoyi.content.domain.GalleryDTO;
+import com.ruoyi.content.domain.GalleryPicInfoEx;
 import com.ruoyi.content.message.Message;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +25,7 @@ public interface GalleryService {
      * @param picState
      * @return
      */
-    public List<GalleryDTO> galleryImgList(int startRow, int rows, String channelId, String picState, String special);
+    public List<GalleryPicInfoEx> galleryImgList(String channelId, String picState, String special);
 
     /**
      * 图片个数
@@ -60,5 +60,5 @@ public interface GalleryService {
      * @param ids
      * @return
      */
-    public Message delGalleryPic(String ids);
+    public Integer delGalleryPic(String ids);
 }
