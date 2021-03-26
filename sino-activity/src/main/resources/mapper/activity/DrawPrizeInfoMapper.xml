@@ -40,6 +40,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDrawPrizeInfoVo"/>
         where PRIZEID = #{PRIZEID}
     </select>
+    <select id="findMaxPrizeCode"  resultType="java.lang.String">
+        SELECT PRIZECODE FROM draw_prize_info order By PRIZECODE desc LIMIT 1
+    </select>
         
     <insert id="insertDrawPrizeInfo" parameterType="com.sinosoft.activity.domain.DrawPrizeInfo">
         insert into draw_prize_info

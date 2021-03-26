@@ -20,6 +20,12 @@ public interface DrawPrizeInfoMapper
     public DrawPrizeInfo selectDrawPrizeInfoById(String PRIZEID);
 
     /**
+     * 获取最大的奖品代码
+     * @return
+     */
+    String findMaxPrizeCode();
+
+    /**
      * 查询存储奖品的基础信息列表
      * 
      * @param drawPrizeInfo 存储奖品的基础信息

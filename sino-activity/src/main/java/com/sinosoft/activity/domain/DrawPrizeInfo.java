@@ -18,7 +18,7 @@ public class DrawPrizeInfo extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 业务主键 */
-    private String PRIZEID;
+    private int PRIZEID;
 
     /** 奖品代码 */
     @Excel(name = "奖品代码")
@@ -58,12 +58,12 @@ public class DrawPrizeInfo extends BaseEntity
     @Excel(name = "积分项目编码")
     private String INTEGRALPROJECTCODE;
 
-    public void setPRIZEID(String PRIZEID) 
+    public void setPRIZEID(int PRIZEID)
     {
         this.PRIZEID = PRIZEID;
     }
 
-    public String getPRIZEID() 
+    public int getPRIZEID()
     {
         return PRIZEID;
     }

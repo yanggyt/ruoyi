@@ -1,5 +1,6 @@
 package com.sinosoft.activity.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,12 @@ public class DrawPrizeInfoServiceImpl implements IDrawPrizeInfoService
     @Override
     public int insertDrawPrizeInfo(DrawPrizeInfo drawPrizeInfo)
     {
+        //填充时间字段
+        drawPrizeInfo.setCREATETIMESTAMP(new Date());
+        drawPrizeInfo.setLASTUPDATETIMESTAMP(new Date());
+        //code设置
+        String maxPrizeCode = drawPrizeInfoMapper.findMaxPrizeCode();
+        drawPrizeInfo.setPRIZECODE(String.format("%0"+maxPrizeCode.length()+"d",Integer.parseInt(maxPrizeCode)+1));
         return drawPrizeInfoMapper.insertDrawPrizeInfo(drawPrizeInfo);
     }
 
@@ -65,6 +72,7 @@ public class DrawPrizeInfoServiceImpl implements IDrawPrizeInfoService
     @Override
     public int updateDrawPrizeInfo(DrawPrizeInfo drawPrizeInfo)
     {
+        drawPrizeInfo.setLASTUPDATETIMESTAMP(new Date());
         return drawPrizeInfoMapper.updateDrawPrizeInfo(drawPrizeInfo);
     }
 
