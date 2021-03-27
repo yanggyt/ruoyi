@@ -21,4 +21,6 @@ public interface BaseCodeExMapper {
      */
     public List<BaseCodeTree> columnTree(HashMap<String, String> parMap);
 
+    public List<BaseCodeTree> getNextNodeTree(HashMap<String, String> parMap);
+
 }

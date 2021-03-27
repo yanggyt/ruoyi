@@ -84,9 +84,10 @@ public interface BaseCodeService {
      * 查询栏目树
      *
      * @param codeCode
+     * @param codeType
      * @return
      */
-    public List<BaseCodeTree> columnTree(String codeCode);
+    public List<BaseCodeTree> columnTree(String codeCode, String codeType);
 
     /**
      * 操作栏目排序

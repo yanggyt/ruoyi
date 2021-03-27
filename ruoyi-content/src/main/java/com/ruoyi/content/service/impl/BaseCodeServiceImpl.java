@@ -454,9 +454,9 @@ public class BaseCodeServiceImpl implements BaseCodeService {
     }
 
     @Override
-    public List<BaseCodeTree> columnTree(String codeCode) {
+    public List<BaseCodeTree> columnTree(String codeCode, String codeType) {
         logger.info("进入查询栏目树的方法");
-        if (StringUtils.isBlank(codeCode)) {
+        if (StringUtils.isAllBlank(codeCode, codeType)) {
             logger.info("查询栏目树请求参数不正确codeCode【{}】", codeCode);
             throw new ParameterException("创建失败，参数不足！");
         }
@@ -468,13 +468,33 @@ public class BaseCodeServiceImpl implements BaseCodeService {
         parMap.put("codeCode", codeCode);
         parMap.put("companyId", companyId);
         parMap.put("state", state);
+        parMap.put("codeType", codeType);
         if (!"86".equals(branchId)) {
             parMap.put("branchId", branchId);
         }
         list = baseCodeExMapper.columnTree(parMap);
+        List<BaseCodeTree> baseCodeList = new ArrayList<>();
+        if (list != null && list.size() > 0) {
+            recursion(list, baseCodeList);
+        }
         logger.info("查询栏目树结束，查询到的结果为【{}】" + JsonUtil.objectToJackson(list));
         logger.info("查询栏目信息的方法结束！");
-        return list;
+        return baseCodeList;
+    }
+
+    private void recursion(List<BaseCodeTree> baseCodeList, List<BaseCodeTree> list1) {
+        for (BaseCodeTree baseCode : baseCodeList) {
+            HashMap map = new HashMap();
+            map.put("CODE_CODE", baseCode.getCodeCode());
+            map.put("parentCompanyId", baseCode.getCompanyId());
+            map.put("parentState", baseCode.getState());
+            map.put("parentBranchId", baseCode.getBranchId());
+            List<BaseCodeTree> list = baseCodeExMapper.getNextNodeTree(map);
+            list1.add(baseCode);
+            if (list != null && list.size() > 0) {
+                recursion(list, list1);
+            }
+        }
     }
 
     @Override

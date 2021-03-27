@@ -35,7 +35,7 @@
 		UPDATE_REMARK, BUSINESS_AREA,COMPANY_ID,BRANCH_ID from
 		base_code
 		where
-		STATE in (0,1)
+		STATE = '0'
 		<if test="companyId != null and companyId !=''"> 
 			and COMPANY_ID = #{companyId,jdbcType=VARCHAR} 
 		</if> 
@@ -73,8 +73,8 @@
 	    <result column="BUSINESS_AREA" property="businessArea" jdbcType="VARCHAR" />
 	    <result column="COMPANY_ID" property="companyId" jdbcType="VARCHAR" />
 		<result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
-      	<collection column="CODE_CODE=CODE_CODE,parentCompanyId=parentCompanyId,parentState=parentState,parentBranchId=parentBranchId" property="child" javaType="java.util.ArrayList"
-                   ofType="com.ruoyi.content.domain.BaseCodeTree" select="getNextNodeTree"/>
+<!--      	<collection column="CODE_CODE=CODE_CODE,parentCompanyId=parentCompanyId,parentState=parentState,parentBranchId=parentBranchId" property="child" javaType="java.util.ArrayList"-->
+<!--                   ofType="com.ruoyi.content.domain.BaseCodeTree" select="getNextNodeTree"/>-->
    	</resultMap>
  
     <select id="getNextNodeTree" resultMap="BaseTreeResultMap">
@@ -105,6 +105,9 @@
         WHERE 1 = 1
         <if test="codeCode != null and codeCode !=''">
 			and CODE_CODE = #{codeCode,jdbcType=VARCHAR}
+		</if>
+		<if test="codeType != null and codeType !=''">
+			and CODE_TYPE = #{codeType,jdbcType=VARCHAR}
 		</if>
 		<if test="companyId != null and companyId !=''">
 			and COMPANY_ID = #{companyId,jdbcType=VARCHAR}

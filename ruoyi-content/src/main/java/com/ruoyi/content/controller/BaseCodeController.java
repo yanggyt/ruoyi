@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -261,18 +262,138 @@ public class BaseCodeController extends BaseController {
      */
     @RequestMapping(value = "/columnTree")
     @ResponseBody
-    public Message columnTree(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public List<Ztree> columnTree(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setHeader("Access-Control-Allow-Origin", "*");
         Message msg = new Message();
         Map<String, Object> policyMap = new HashMap<String, Object>();
         String codeCode = request.getParameter("codeCode");
+        String codeType = request.getParameter("codeType");
         // 查询栏目树
-        List<BaseCodeTree> columnList = baseCodeService.columnTree(codeCode);
-        policyMap.put("columnList", columnList);
-        msg.setInfo("成功");
-        msg.setObject(policyMap);
-        msg.setResult(true);
-        return msg;
+        List<BaseCodeTree> columnList = baseCodeService.columnTree(codeCode, codeType);
+//        policyMap.put("columnList", columnList);
+//        msg.setInfo("成功");
+//        msg.setObject(policyMap);
+//        msg.setResult(true);
+
+        return initZtree(columnList);
+    }
+
+    public List<Ztree> initZtree(List<BaseCodeTree> deptList) {
+
+        List<Ztree> ztreeList = new ArrayList<>();
+        if (deptList != null && deptList.size() > 0) {
+            Ztree z = new Ztree();
+            z.setId("FIRST_COLUMN");
+            z.setpId("");
+            z.setName("栏目");
+            z.setTitle("栏目");
+            ztreeList.add(z);
+            for (BaseCodeTree dept : deptList) {
+                Ztree ztree = new Ztree();
+                ztree.setId(dept.getCodeCode());
+                ztree.setpId(dept.getCodeType());
+                ztree.setName(dept.getCodeCname());
+                ztree.setTitle(dept.getCodeCname());
+                ztreeList.add(ztree);
+            }
+        }
+        return ztreeList;
+    }
+
+    static class Ztree implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * 节点ID
+         */
+        private String id;
+
+        /**
+         * 节点父ID
+         */
+        private String pId;
+
+        /**
+         * 节点名称
+         */
+        private String name;
+
+        /**
+         * 节点标题
+         */
+        private String title;
+
+        /**
+         * 是否勾选
+         */
+        private boolean checked = false;
+
+        /**
+         * 是否展开
+         */
+        private boolean open = false;
+
+        /**
+         * 是否能勾选
+         */
+        private boolean nocheck = false;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getpId() {
+            return pId;
+        }
+
+        public void setpId(String pId) {
+            this.pId = pId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public boolean isChecked() {
+            return checked;
+        }
+
+        public void setChecked(boolean checked) {
+            this.checked = checked;
+        }
+
+        public boolean isOpen() {
+            return open;
+        }
+
+        public void setOpen(boolean open) {
+            this.open = open;
+        }
+
+        public boolean isNocheck() {
+            return nocheck;
+        }
+
+        public void setNocheck(boolean nocheck) {
+            this.nocheck = nocheck;
+        }
     }
 
     /**
