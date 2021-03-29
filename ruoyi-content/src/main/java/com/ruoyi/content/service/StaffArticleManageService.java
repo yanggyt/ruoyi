@@ -1,5 +1,6 @@
 package com.ruoyi.content.service;
 
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.content.domain.ArticleInfo;
 import com.ruoyi.content.domain.ClickTrackInfo;
 import com.ruoyi.content.domain.PageDTO;
@@ -34,7 +35,7 @@ public interface StaffArticleManageService {
      * @param rows
      * @return
      */
-    public PageDTO querySalesmanByArticleId(String articleId, int startRow, int rows);
+    public TableDataInfo querySalesmanByArticleId(String articleId, int startRow, int rows);
 
     /**
      * 根据用户id查询浏览表
@@ -44,6 +45,6 @@ public interface StaffArticleManageService {
      * @param rows
      * @return
      */
-    public PageDTO queryClickInfoByUserId(String userId, String articleId, int startRow, int rows);
+    public TableDataInfo queryClickInfoByUserId(String userId, String articleId, int startRow, int rows);
 
 }

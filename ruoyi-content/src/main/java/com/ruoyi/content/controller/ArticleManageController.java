@@ -1,5 +1,7 @@
 package com.ruoyi.content.controller;
 
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.content.domain.ArticleInfo;
 import com.ruoyi.content.domain.PageDTO;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,50 +33,39 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("/article")
-public class ArticleManageController {
+public class ArticleManageController extends BaseController {
+
     private final static Logger logger = LoggerFactory.getLogger(ArticleManageController.class);
+    private String prefix = "content/article";
+
     @Autowired
     private ArticleService articleService;
+
+    @GetMapping("list")
+    public String articleList() {
+        return prefix + "/articleList";
+    }
 
     /**
      * 查询所有公司发布的文章信息
      *
      * @param request
-     * @param response
      * @return
      */
     @RequestMapping("/articleArry")
     @ResponseBody
-    public PageDTO articleArry(HttpServletRequest request, HttpServletResponse response) {
+    public TableDataInfo articleArry(HttpServletRequest request) throws Exception {
         logger.info("查询文章列表的控制层方法开始！");
-        Thread.currentThread().setName(UUID.randomUUID().toString());
-        PageDTO pageDTO = new PageDTO();
-        try {
-            String rowsVal = request.getParameter("rows");
-            String page = request.getParameter("page");
-            String articelName = request.getParameter("articelName");
-            String articelAuthor = request.getParameter("articelAuthor");
-            String channelId = request.getParameter("channelId");
-            String special = request.getParameter("special");
-            String articleState = request.getParameter("articleState");
-            int rows = Integer.parseInt(rowsVal);
-            int startRow = rows * (Integer.parseInt(page) - 1);
-            List<PublishedArticleInfo> list = articleService.queryArticle(startRow, rows, articelName, articelAuthor,
-                    special, channelId, articleState);
-            pageDTO.setPage(Integer.parseInt(page));
-            pageDTO.setStartRow(startRow);
-            pageDTO.setDataRows(list);
-            int count = articleService.countArticleInfoByState(articelName, articelAuthor, special, channelId,
-                    articleState);
-            pageDTO.setTotal(count % rows == 0 ? count / rows : (count / rows + 1));
-            pageDTO.setRecords(count);
-            pageDTO.setPage(Integer.parseInt(page));
-        } catch (Exception e) {
-            logger.info("查询当前用户发布的文章失败【{}】", e.getMessage());
-            e.printStackTrace();
-        }
+        String articelName = request.getParameter("articleName");
+        String articelAuthor = request.getParameter("articelAuthor");
+        String channelId = request.getParameter("channelId");
+        String special = request.getParameter("special");
+        String articleState = request.getParameter("articleState");
+        startPage();
+        List<PublishedArticleInfo> list = articleService.queryArticle(articelName, articelAuthor,
+                special, channelId, articleState);
         logger.info("查询文章列表的控制层方法结束！");
-        return pageDTO;
+        return getDataTable(list);
     }
 
     /**

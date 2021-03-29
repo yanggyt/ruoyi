@@ -1,5 +1,8 @@
 package com.ruoyi.content.controller;
 
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.content.domain.ClickTrackInfo;
 import com.ruoyi.content.domain.ClickUserInfo;
 import com.ruoyi.content.domain.PageDTO;
@@ -42,24 +45,27 @@ public class StaffArticleManageController {
      */
     @RequestMapping("/articleSharingTrackList")
     @ResponseBody
-    public PageDTO articleSharingTrack(HttpServletRequest request) {
+    public TableDataInfo articleSharingTrack(HttpServletRequest request) {
 
         logger.info("查询文章分享阅读轨迹的控制层方法开始！");
         Thread.currentThread().setName(UUID.randomUUID().toString());
-        PageDTO pageDTO = new PageDTO();
+        TableDataInfo pageDTO = new TableDataInfo();
         try {
-            String rowsVal = request.getParameter("rows");
-            String page = request.getParameter("page");
-            int rows = Integer.parseInt(rowsVal);
-            int startRow = rows * (Integer.parseInt(page) - 1);
+            PageDomain pageDomain = TableSupport.buildPageRequest();
+            Integer pageNum = pageDomain.getPageNum() - 1;
+            Integer pageSize = pageDomain.getPageSize();
             String articleId = request.getParameter("articleId");
+            if (StringUtils.isBlank(articleId)) {
+                return pageDTO;
+            }
             // 1.根据文章id去查publish表，找出该文章对应所有业务员
-            pageDTO = staffArticleManageService.querySalesmanByArticleId(articleId, startRow, rows);
-            pageDTO.setPage(Integer.parseInt(page));
-
+            pageDTO = staffArticleManageService.querySalesmanByArticleId(articleId, pageNum, pageSize);
             return pageDTO;
         } catch (Exception e) {
             logger.info("系统异常！", e);
+            pageDTO.setCode(0);
+            pageDTO.setRows(new ArrayList<>());
+            pageDTO.setTotal(0);
             return pageDTO;
         }
 
@@ -73,29 +79,31 @@ public class StaffArticleManageController {
      */
     @RequestMapping("/publishInfoList")
     @ResponseBody
-    public PageDTO publishInfoList(HttpServletRequest request) {
-
-
+    public TableDataInfo publishInfoList(HttpServletRequest request) {
         Thread.currentThread().setName(UUID.randomUUID().toString());
-        PageDTO pageDTO = new PageDTO();
+        TableDataInfo pageDTO = new TableDataInfo();
         try {
-            String rowsVal = request.getParameter("rows");
-            String page = request.getParameter("page");
-            int rows = Integer.parseInt(rowsVal);
-            int startRow = rows * (Integer.parseInt(page) - 1);
+            PageDomain pageDomain = TableSupport.buildPageRequest();
+            Integer pageNum = pageDomain.getPageNum() - 1;
+            Integer pageSize = pageDomain.getPageSize();
             String userId = request.getParameter("userId");
             String articleId = request.getParameter("articleId");
 
+            if (StringUtils.isAnyBlank(articleId, userId)) {
+                return pageDTO;
+            }
+
             logger.info("查询该业务员userId[{}]的文章articleId[{}]发布情况开始！", userId, articleId);
 
-
             // 1.根据文章id去查publish表，找出该文章对应所有业务员
-            pageDTO = staffArticleManageService.queryClickInfoByUserId(userId, articleId, startRow, rows);
-            pageDTO.setPage(Integer.parseInt(page));
+            pageDTO = staffArticleManageService.queryClickInfoByUserId(userId, articleId, pageNum, pageSize);
 
             return pageDTO;
         } catch (Exception e) {
             logger.info("系统异常！", e);
+            pageDTO.setCode(0);
+            pageDTO.setRows(new ArrayList<>());
+            pageDTO.setTotal(0);
             return pageDTO;
         }
 
@@ -109,16 +117,18 @@ public class StaffArticleManageController {
      */
     @RequestMapping("/articleSharingTrackInfo")
     @ResponseBody
-    public Message articleSharingTrackInfo(HttpServletRequest request) {
+    public TableDataInfo articleSharingTrackInfo(HttpServletRequest request) {
         Thread.currentThread().setName(UUID.randomUUID().toString());
         Message msg = new Message();
-        Map<String, Object> returnMap = new HashMap<String, Object>();
         List<ClickUserInfo> clickUserInfos = new ArrayList<ClickUserInfo>();
         ClickTrackInfo clickTrackInfo = new ClickTrackInfo();
         logger.info("查询用户查看分享文章轨迹信息的控制层方法开始！");
         String clickId = request.getParameter("clickId");
+        TableDataInfo pageDTO = new TableDataInfo();
         if (StringUtils.isBlank(clickId)) {
-            returnMap.put("ClickTrackInfo", clickTrackInfo);
+            pageDTO.setCode(0);
+            pageDTO.setRows(new ArrayList<>());
+            pageDTO.setTotal(0);
         } else {
             clickTrackInfo = staffArticleManageService.articleSharingTrackInfo(clickId);
             //发布人id
@@ -135,41 +145,51 @@ public class StaffArticleManageController {
                 logger.info("转换后的用户昵称为:" + userInfo.getNickName());
             } else {
                 userInfo.setNickName("后台管理员");
-                userInfo.setHeadImgUrl("/static/common/image/logo.png");
+                userInfo.setHeadImgUrl("/img/admin.png");
                 userInfo.setOpenid("");
             }
-            returnMap.put("userInfo", userInfo);
+            ClickUserInfo clickUserInfo1 = new ClickUserInfo();
+            clickUserInfo1.setNickName(userInfo.getNickName());
+            clickUserInfo1.setHeadImgUrl(userInfo.getHeadImgUrl());
+            clickUserInfo1.setOpenId(userInfo.getOpenid());
+            clickUserInfos.add(clickUserInfo1);
             String clickUserInfo = clickTrackInfo.getClickUserInfo();
+            List<ClickUserInfo> c = new ArrayList<ClickUserInfo>();
             if (StringUtils.isNotBlank(clickUserInfo)) {
-                clickUserInfos = JsonUtil.JsonToCollectionType(clickUserInfo, List.class, ClickUserInfo.class);
+                c = JsonUtil.JsonToCollectionType(clickUserInfo, List.class, ClickUserInfo.class);
 
-                for (ClickUserInfo clickUserInfo2 : clickUserInfos) {
+                for (ClickUserInfo clickUserInfo2 : c) {
                     try {
                         clickUserInfo2.setNickName(
                                 new String(Base64.getDecoder().decode(clickUserInfo2.getNickName()), "UTF-8"));
+                        clickUserInfos.add(clickUserInfo2);
                     } catch (UnsupportedEncodingException e) {
                         throw new BusinessException("用户昵称解码异常[{" + e.getMessage() + "}]");
                     }
                 }
             }
-            returnMap.put("ClickUserInfoList", clickUserInfos);
 
             String clickUserNickname = clickTrackInfo.getClickUserNickname();
             if (StringUtils.isNotBlank(clickUserNickname)) {
                 try {
                     clickTrackInfo.setClickUserNickname(
                             new String(Base64.getDecoder().decode(clickUserNickname), "UTF-8"));
+                    ClickUserInfo clickUserInfo4 = new ClickUserInfo();
+                    clickUserInfo4.setNickName(clickTrackInfo.getClickUserNickname());
+                    clickUserInfo4.setHeadImgUrl(clickTrackInfo.getClickUserHeadimgurl());
+                    clickUserInfo4.setOpenId(clickTrackInfo.getClickOpenId());
+                    clickUserInfo4.setToShareState(clickTrackInfo.getFromShareState());
+                    clickUserInfos.add(clickUserInfo4);
                 } catch (UnsupportedEncodingException e) {
                     throw new BusinessException("用户昵称解码异常[{" + e.getMessage() + "}]");
                 }
             }
-            returnMap.put("ClickTrackInfo", clickTrackInfo);
-            msg.setInfo("获取浏览详情查询成功");
-            msg.setResult(true);
-            msg.setObject(returnMap);
+            pageDTO.setCode(0);
+            pageDTO.setRows(clickUserInfos);
+            pageDTO.setTotal(clickUserInfos.size());
         }
         logger.info("查询用户查看分享文章轨迹信息的控制层方法结束！");
-        return msg;
+        return pageDTO;
     }
 
 //    // 复制链路

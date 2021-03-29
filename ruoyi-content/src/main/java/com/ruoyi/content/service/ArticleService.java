@@ -85,7 +85,7 @@ public interface ArticleService {
      *
      * @return
      */
-    public List<PublishedArticleInfo> queryArticle(int startRow, int rows, String articelName, String articelAuthor,
+    public List<PublishedArticleInfo> queryArticle(String articelName, String articelAuthor,
                                                    String special, String articelType, String articleState) throws Exception;
 
     /**

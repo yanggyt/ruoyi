@@ -23,8 +23,7 @@ public interface ArticleQueryMapper {
     int updatePublishedArticle(Map<String, String> articleMap);
 
     public List<PublishedArticleInfo> selectAllWithLimit(@Param(value = "companyId") String companyId,
-                                                         @Param(value = "articleState") List<String> articleState, @Param(value = "startRow") int startRow,
-                                                         @Param(value = "rows") int rows, @Param(value = "articelName") String articelName,
+                                                         @Param(value = "articleState") List<String> articleState, @Param(value = "articelName") String articelName,
                                                          @Param(value = "articelAuthor") String articelAuthor, @Param(value = "special") String special, @Param(value = "channelId") String channelId);
 
     ArticleInfo queryArticleInfoByCompanyId(@Param("companyId") String companyId, @Param("originalUrl") String originalUrl);

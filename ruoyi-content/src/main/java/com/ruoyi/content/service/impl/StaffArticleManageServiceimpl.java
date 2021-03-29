@@ -1,5 +1,6 @@
 package com.ruoyi.content.service.impl;
 
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.content.domain.*;
 import com.ruoyi.content.exception.BusinessException;
 import com.ruoyi.content.mapper.*;
@@ -51,7 +52,7 @@ public class StaffArticleManageServiceimpl implements StaffArticleManageService 
     }
 
     @Override
-    public PageDTO querySalesmanByArticleId(String articleId, int startRow, int rows) {
+    public TableDataInfo querySalesmanByArticleId(String articleId, int startRow, int rows) {
         List<ArticlePublishTrack> list = articlePublishTrackQueryMapper.queryPublishUserInfo(articleId, startRow, rows);
         List<YwyForwardUserInfo> ywyList = new ArrayList<>();
 
@@ -87,7 +88,7 @@ public class StaffArticleManageServiceimpl implements StaffArticleManageService 
                     ywyForwardUserInfo.setNickName("后台管理员");
                     ywyForwardUserInfo.setArticleId(articleId);
                     ywyForwardUserInfo.setCreateDate(apt.getCreateDate());
-                    ywyForwardUserInfo.setHeadImgUrl("/static/common/image/logo.png");
+                    ywyForwardUserInfo.setHeadImgUrl("/img/admin.png");
                     ywyForwardUserInfo.setUserId(publishUserId);
                 }
                 ywyList.add(ywyForwardUserInfo);
@@ -99,16 +100,15 @@ public class StaffArticleManageServiceimpl implements StaffArticleManageService 
         ArticlePublishTrackExample.Criteria criteria = example.createCriteria();
         criteria.andArticleIdEqualTo(articleId);
         int count = articlePublishTrackMapper.countByExample(example);
-        PageDTO pageDTO = new PageDTO();
-        pageDTO.setStartRow(startRow);
-        pageDTO.setDataRows(ywyList);
-        pageDTO.setTotal(count % rows == 0 ? count / rows : (count / rows + 1));
-        pageDTO.setRecords(count);
-        return pageDTO;
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(0);
+        rspData.setRows(ywyList);
+        rspData.setTotal(count);
+        return rspData;
     }
 
     @Override
-    public PageDTO queryClickInfoByUserId(String userId, String articleId, int startRow, int rows) {
+    public TableDataInfo queryClickInfoByUserId(String userId, String articleId, int startRow, int rows) {
 
         List<ClickTrackInfo> list = clickTrackInfoQueryMapper.queryClickInfoByUserId(userId, articleId, startRow, rows);
         List<YwyPublishInfo> YwyPublishInfolList = new ArrayList<>();
@@ -139,11 +139,10 @@ public class StaffArticleManageServiceimpl implements StaffArticleManageService 
         criteria.andPublishUserIdEqualTo(userId);
         criteria.andArticleIdEqualTo(articleId);
         int count = clickTrackInfoMapper.countByExample(example);
-        PageDTO pageDTO = new PageDTO();
-        pageDTO.setStartRow(startRow);
-        pageDTO.setDataRows(YwyPublishInfolList);
-        pageDTO.setTotal(count % rows == 0 ? count / rows : (count / rows + 1));
-        pageDTO.setRecords(count);
+        TableDataInfo pageDTO = new TableDataInfo();
+        pageDTO.setCode(0);
+        pageDTO.setRows(YwyPublishInfolList);
+        pageDTO.setTotal(count);
         return pageDTO;
     }
 }

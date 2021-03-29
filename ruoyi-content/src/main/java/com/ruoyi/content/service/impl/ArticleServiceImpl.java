@@ -471,13 +471,12 @@ public class ArticleServiceImpl implements ArticleService {
      * 查询用户当前发布的文章，分页展示
      */
     @Override
-    public List<PublishedArticleInfo> queryArticle(int startRow, int rows, String articelName, String articelAuthor,
+    public List<PublishedArticleInfo> queryArticle(String articelName, String articelAuthor,
                                                    String special, String channelId, String articleState) {
         LOGGER.info("查询文章列表的业务层方法开始！");
-        LOGGER.info("拿到的参数 startRow【{}】，rows【{}】，文章名称【{}】，文章作者【{}】，一级分类【{}】，二级分类【{}】，文章状态【{}】", startRow, rows,
+        LOGGER.info("拿到的参数 ，文章名称【{}】，文章作者【{}】，一级分类【{}】，二级分类【{}】，文章状态【{}】",
                 articelName, articelAuthor, special, channelId, articleState);
-        CmsSysUser userInfoDTO = (CmsSysUser) SecurityUtils.getSubject().getPrincipal();
-        String companyId = userInfoDTO.getCompanyId();// 公司id
+        String companyId = "1";// 公司id
 
         List<String> list = new ArrayList<String>();
         if (StringUtils.isBlank(articleState)) {
@@ -498,10 +497,10 @@ public class ArticleServiceImpl implements ArticleService {
         if (StringUtils.isBlank(channelId)) {
             channelId = "";
         }
-        List<PublishedArticleInfo> articleList = articleQueryMapper.selectAllWithLimit(companyId, list, startRow, rows,
+        List<PublishedArticleInfo> articleList = articleQueryMapper.selectAllWithLimit(companyId, list,
                 articelName, articelAuthor, special, channelId);
         if (articleList == null || articleList.size() < 1) {
-            LOGGER.info("根据用户查询已发布的文章，未查询到数据【{}】", JsonUtil.objectToJackson(userInfoDTO));
+            LOGGER.info("根据用户查询已发布的文章，未查询到数据");
             throw new BusinessException("您还没有发布过文章！");
         }
         for (PublishedArticleInfo publishedArticleInfo : articleList) {
@@ -916,8 +915,7 @@ public class ArticleServiceImpl implements ArticleService {
         LOGGER.info("文章列表的删除功能的业务层方法开始！");
         String updateDate = DateUtil.currentDate();
         String updateTime = DateUtil.currentTime();
-        CmsSysUser userInfoDTO = (CmsSysUser) SecurityUtils.getSubject().getPrincipal();
-        String updateUser = userInfoDTO.getUserId();
+        String updateUser = "1";
         LOGGER.info("管理员updateUser【{}】文章列表的删除功能的业务层方法中拿到的文章的id【{}】", updateUser, id);
         Message msg = new Message();
         if (StringUtils.isBlank(id)) {
