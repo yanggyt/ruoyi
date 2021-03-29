@@ -409,20 +409,14 @@
                     } else if (_ipt.attr("type") == "checkbox") {
                     	if (_ipt.prop('checked')) {
                     		_ipt.prop('checked', true);
-                    		target.find("tbody").find("tr").removeClass("treetable-selected");
                     		$(this).addClass("treetable-selected");
                     	} else {
                     		_ipt.prop('checked', false);
-                    		target.find("tbody").find("tr").removeClass("treetable-selected");
+                    		$(this).removeClass("treetable-selected");
                     	}
                     } else {
-                        if (_ipt.prop('checked')) {
-                            _ipt.prop('checked', false);
-                            $(this).removeClass("treetable-selected");
-                        } else {
-                            _ipt.prop('checked', true);
-                            $(this).addClass("treetable-selected");
-                        }
+                        target.find("tbody").find("tr").removeClass("treetable-selected");
+                    	$(this).addClass("treetable-selected");
                     }
                 }
             });
