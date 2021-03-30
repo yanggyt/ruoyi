@@ -1,8 +1,13 @@
 package com.ruoyi.content.controller;
 
 
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.page.TableSupport;
+import com.ruoyi.content.domain.BaseCodeTree;
 import com.ruoyi.content.domain.PageDTO;
 import com.ruoyi.content.message.Message;
+import com.ruoyi.content.service.BaseCodeService;
 import com.ruoyi.content.service.LibraryService;
 import com.ruoyi.content.utils.CheckUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -10,14 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 说明：文章管理
@@ -28,11 +32,47 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/article")
 public class LibraryManageController {
+
+    private String prefix = "content/article";
+
     private final static Logger logger = LoggerFactory.getLogger(LibraryManageController.class);
+
     @Autowired
     private LibraryService libraryService;
     @Autowired
     private CheckUtil checkUtil;
+    @Autowired
+    private BaseCodeService baseCodeService;
+
+    @GetMapping("manage")
+    public String articleList() {
+        return prefix + "/articleManage";
+    }
+
+    /**
+     * 获取栏目树
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/columnTree")
+    @ResponseBody
+    public Message columnTree(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        Message msg = new Message();
+        Map<String, Object> policyMap = new HashMap<String, Object>();
+        String codeCode = request.getParameter("codeCode");
+        // 查询栏目树
+        List<BaseCodeTree> columnList = new ArrayList<BaseCodeTree>();
+        columnList = baseCodeService.baseColumnTree(codeCode);
+        policyMap.put("columnList", columnList);
+        msg.setInfo("成功");
+        msg.setObject(policyMap);
+        msg.setResult(true);
+        return msg;
+    }
 
     /**
      * 查询文库信息
@@ -43,35 +83,31 @@ public class LibraryManageController {
      */
     @RequestMapping("/libraryArry")
     @ResponseBody
-    public PageDTO libraryArry(HttpServletRequest request, HttpServletResponse response) {
+    public TableDataInfo libraryArry(HttpServletRequest request, HttpServletResponse response) {
         logger.info("查询文库列表的控制层方法开始！");
         Thread.currentThread().setName(UUID.randomUUID().toString());
-        PageDTO pageDTO = new PageDTO();
+        TableDataInfo pageDTO = new TableDataInfo();
         try {
-            String rowsVal = request.getParameter("rows");
-            String page = request.getParameter("page");
+            PageDomain pageDomain = TableSupport.buildPageRequest();
+            Integer pageSize = pageDomain.getPageSize();
+            Integer pageNum = (pageDomain.getPageNum() - 1) * pageSize;
             String articelName = request.getParameter("articelName");
             String articleThirdTypeInit = request.getParameter("articleThirdTypeInit");
             String channel = request.getParameter("channel");
             String special = request.getParameter("special");
             String articleState = request.getParameter("articleState");
-            if (articleThirdTypeInit != null && !"".equals(articleThirdTypeInit.trim())) {
+            if(articleThirdTypeInit != null && !"".equals(articleThirdTypeInit.trim())) {
                 channel = articleThirdTypeInit;
-            } else {
+            }else {
                 special = channel;
             }
-            int rows = Integer.parseInt(rowsVal);
-            int startRow = rows * (Integer.parseInt(page) - 1);
-            List<HashMap<String, Object>> list = libraryService.queryLibrary(startRow, rows, articelName,
+            List<HashMap<String, Object>> list = libraryService.queryLibrary(pageNum, pageSize, articelName,
                     special, channel, articleState);
-            pageDTO.setPage(Integer.parseInt(page));
-            pageDTO.setStartRow(startRow);
-            pageDTO.setDataRows(list);
             //int count = libraryService.countArticleInfoByState(articelName,special, channel, articleState);
             int count = libraryService.countArticleByParam(articelName, special, channel, articleState);
-            pageDTO.setTotal(count % rows == 0 ? count / rows : (count / rows + 1));
-            pageDTO.setRecords(count);
-            pageDTO.setPage(Integer.parseInt(page));
+            pageDTO.setCode(0);
+            pageDTO.setRows(list);
+            pageDTO.setTotal(count);
         } catch (Exception e) {
             logger.info("查询当前用户发布的文章失败【{}】", e.getMessage());
             e.printStackTrace();

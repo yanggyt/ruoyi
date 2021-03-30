@@ -98,5 +98,12 @@ public interface BaseCodeService {
      */
     public Message operateColumn(String columnId, String operateType);
 
+    /**
+     * 查询栏目树
+     *
+     * @param codeCode
+     * @return
+     */
+    List<BaseCodeTree> baseColumnTree(String codeCode);
 
 }

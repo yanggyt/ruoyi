@@ -586,4 +586,46 @@ public class BaseCodeServiceImpl implements BaseCodeService {
         logger.info("操作栏目排序业务层方法结束");
         return msg;
     }
+
+    @Override
+    public List<BaseCodeTree> baseColumnTree(String codeCode) {
+        logger.info("进入查询栏目树的方法");
+        if (StringUtils.isBlank(codeCode)) {
+            logger.info("查询栏目树请求参数不正确codeCode【{}】", codeCode);
+            throw new ParameterException("创建失败，参数不足！");
+        }
+        String companyId = "1";
+        String branchId = "86";
+        String state = "0";
+        HashMap<String, String> parMap = new HashMap<>();
+        parMap.put("codeCode", codeCode);
+        parMap.put("companyId", companyId);
+        parMap.put("state", state);
+        if (!"86".equals(branchId)) {
+            parMap.put("branchId", branchId);
+        }
+        List<BaseCodeTree> list = baseCodeExMapper.columnTree(parMap);
+        recursionList(list);
+        logger.info("查询栏目树结束，查询到的结果为【{}】" + JsonUtil.objectToJackson(list));
+        logger.info("查询栏目信息的方法结束！");
+        return list;
+    }
+
+    private void recursionList(List<BaseCodeTree> baseCodeList) {
+        for (BaseCodeTree baseCode : baseCodeList) {
+            HashMap map = new HashMap();
+            map.put("CODE_CODE", baseCode.getCodeCode());
+            map.put("parentCompanyId", baseCode.getCompanyId());
+            map.put("parentState", baseCode.getState());
+            map.put("parentBranchId", baseCode.getBranchId());
+            List<BaseCodeTree> list = baseCodeExMapper.getNextNodeTree(map);
+            if (list != null && list.size() > 0) {
+                recursionList(list);
+                baseCode.setChild(list);
+            } else {
+                baseCode.setChild(new ArrayList<>());
+            }
+        }
+    }
+
 }

@@ -5,12 +5,10 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.content.domain.ClickTrackInfo;
 import com.ruoyi.content.domain.ClickUserInfo;
-import com.ruoyi.content.domain.PageDTO;
 import com.ruoyi.content.domain.UserInfo;
 import com.ruoyi.content.exception.BusinessException;
 import com.ruoyi.content.mapper.ArticlePublishTrackMapper;
 import com.ruoyi.content.mapper.CmsSysUserExMapper;
-import com.ruoyi.content.message.Message;
 import com.ruoyi.content.service.StaffArticleManageService;
 import com.ruoyi.content.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/article")
@@ -119,7 +120,6 @@ public class StaffArticleManageController {
     @ResponseBody
     public TableDataInfo articleSharingTrackInfo(HttpServletRequest request) {
         Thread.currentThread().setName(UUID.randomUUID().toString());
-        Message msg = new Message();
         List<ClickUserInfo> clickUserInfos = new ArrayList<ClickUserInfo>();
         ClickTrackInfo clickTrackInfo = new ClickTrackInfo();
         logger.info("查询用户查看分享文章轨迹信息的控制层方法开始！");

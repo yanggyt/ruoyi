@@ -154,7 +154,7 @@
 			IFNULL(l.ARTICLE_NAME,info.ARTICLE_NAME) "articleName",
 			group_concat(l.channel,"-",l.special separator ',') channelSpecial,
 			MAX(t.ARTICLE_VERSION),
-			max(concat(t.CREATE_DATE, ' ', T.CREATE_TIME)) publishDate,
+			max(concat(t.CREATE_DATE, ' ', t.CREATE_TIME)) publishDate,
 			max(concat(l.UPDATE_DATE, ' ', l.UPDATE_TIME)) updateDate,
 			t.PUBLISH_ID publishId,
 			(select min(f.PUBLISH_DATE) from article_publish_send f where f.PUBLISH_ID = t.PUBLISH_ID and f.SEND_STATE='2') oPbulishTime
@@ -301,7 +301,7 @@
 			IFNULL(l.ARTICLE_NAME,info.ARTICLE_NAME) "articleName",
 			group_concat(l.channel,"-",l.special separator ',') channelSpecial,
 			MAX(t.ARTICLE_VERSION),
-			max(concat(t.CREATE_DATE, ' ', T.CREATE_TIME)) publishDate,
+			max(concat(t.CREATE_DATE, ' ', t.CREATE_TIME)) publishDate,
 			max(concat(l.UPDATE_DATE, ' ', l.UPDATE_TIME)) updateDate,
 			t.PUBLISH_ID publishId
 		FROM

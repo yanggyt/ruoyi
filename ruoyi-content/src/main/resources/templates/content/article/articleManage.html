@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('文库管理')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>文章名称：</label>
+                            <input type="text" name="articelName"/>
+                        </li>
+                        <li>
+                            <label style="width: 95px;">二级栏目名称：</label>
+                            <select name="channel" th:id="channel" onchange="autoChangeInitThirdType(value)">
+
+                            </select>
+                        </li>
+                        <li>
+                            <label style="width: 95px;">三级栏目名称：</label>
+                            <select name="articleThirdTypeInit" th:id="articleThirdTypeInit">
+
+                            </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-primary" onclick="">
+                <i class="fa fa-plus"></i> 批量收录
+            </a>
+            <a class="btn btn-danger single disabled" style="margin-left: 15px;" onclick="$.operate.edit()">
+                <i class="fa fa-remove"></i> 批量移除
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped" style="overflow-x: scroll;">
+            <table id="bootstrap-table" style="border-collapse: collapse;"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+
+    var path = ctx;
+    var prefix = ctx + "article";
+
+    var baseDataList = [];
+    var baseDataListSecond = [];
+    var cloumnTree = [];
+
+    $(function () {
+        setFirstQuery();
+        autoChangeInitType("ARTICLE");
+
+        var options = {
+            url: prefix + "/libraryArry",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            fixedColumns: true,
+            modalName: "文章",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'articleId',
+                    title: '文章ID',
+                    visible: false
+                },
+                {
+                    field: 'articleName',
+                    title: '文章名称'
+                },
+                {
+                    field: 'orderNo',
+                    title: '置顶状态',
+                    visible: false,
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if (row.orderNo === '1') {
+                            actions.push('已置顶');
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'channelSpecial',
+                    title: '二级分类',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var data = queryCnameBySpecialChannel(row.channelSpecial, "ARTICLE", "2");
+                        if (data == null) {
+                            actions.push('未收录');
+                        } else {
+                            actions.push(data);
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'channelSpecial',
+                    title: '三级分类',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var data = queryCnameBySecAndThird(row.channelSpecial, "ARTICLE", "2");
+                        if (data === '') {
+                            actions.push('未收录');
+                        } else {
+                            actions.push(data);
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'articleVersion',
+                    title: '文章版本',
+                    visible: false
+                },
+                {
+                    field: 'articleState',
+                    title: '状态',
+                    visible: false,
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if (row.articleState === '0') {
+                            actions.push('展示（已发布）');
+                        } else if (row.articleState === '2') {
+                            actions.push('未发布');
+                        } else {
+                            actions.push('');
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'createUser',
+                    title: '创建人',
+                    visible: false
+                },
+                {
+                    field: 'publishDate',
+                    title: '发布时间',
+                    width: '8',
+                    widthUnit: '%'
+                },
+                {
+                    field: 'updateDate',
+                    title: '更新时间',
+                    width: '8',
+                    widthUnit: '%'
+                },
+                {
+                    field: 'companyId',
+                    title: '公司id',
+                    visible: false
+                },
+                {
+                    field: 'publishId',
+                    title: '发布id',
+                    visible: false
+                },
+                {
+                    title: '推送个人（验证）',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.articleId + '\')">推送个人（验证）</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '推送企业号',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.articleId + '\')">推送企业号</a>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '定时推送',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.articleId + '\')">定时推送</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '展示链路',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs" href="javascript:void(0)" onclick="articleLinkUrl(\'1\',\'' + row.articleId + '\',\'' + row.publishId + '\');"><i class="fa fa-clone"></i> 展示链路</a>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '预览文章',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="articleLinkUrl(\'' + row.articleId + '\',\'' + row.publishId + '\');"><i class="fa fa-eye"></i> 预览文章</a>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '删除',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="deleteArticle(\'' + row.publishId + '\');"><i class="fa fa-remove"></i> 删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+
+        cloumnTreeInit();
+    });
+
+    function queryCnameBySpecialChannel(id, type, num) {
+        if (baseDataListSecond == null) {
+            articleTypeInit(type, num);
+        }
+        if (id == null || id == "undefined") {
+            return "未收录"
+        }
+        var arr = id.split(",");
+        var returnValue = "";
+        var list = baseDataListSecond.length;
+        for (var j = 0; j < arr.length; j++) {
+            var arrVal = arr[j].split("-");
+            for (var i = 0; i < list; i++) {
+                if (arrVal[1] == "ARTICLE") {
+                    if (arrVal[0] == baseDataListSecond[i].codeCode) {
+                        if (returnValue.indexOf(baseDataListSecond[i].codeCname) == -1) {
+                            returnValue = returnValue + baseDataListSecond[i].codeCname + "  ";
+                        }
+                    }
+                } else {
+                    if (arrVal[1] == baseDataListSecond[i].codeCode) {
+                        if (returnValue.indexOf(baseDataListSecond[i].codeCname) == -1) {
+                            returnValue = returnValue + baseDataListSecond[i].codeCname + "  ";
+                        }
+                    }
+                }
+
+            }
+        }
+        return returnValue;
+    }
+
+    /** **查询公共数据** */
+    function articleTypeInit(type, num) {
+        $.ajax({
+            type: "post",
+            url: path + 'column/queryBasicData',
+            data: {
+                "bType": type
+            },
+            async: false,
+            success: function (data) {
+                if (data.result) {// 跳转到列表页面
+                    if (num == "1") {
+                        baseDataList = data.object.baseList;
+                    } else {
+                        baseDataListSecond = data.object.baseList;
+                    }
+                } else {
+
+                }
+            }
+        });
+    }
+
+    //二三级菜单名称显示
+    function queryCnameBySecAndThird(id) {
+        if (cloumnTree == null || cloumnTree.length == 0) {
+            cloumnTreeInit();
+        }
+        var child = [];
+        if (id == null || id == "undefined") {
+            return "未收录"
+        }
+        var arr = id.split(",");
+        var list = cloumnTree.length;
+        var returnValue = "";
+        for (var k = 0; k < arr.length; k++) {
+            var arrVal = arr[k];
+            if (arrVal.indexOf("ARTICLE") == -1) {
+                var split = arrVal.split("-");
+                for (var i = 0; i < list; i++) {
+                    child = cloumnTree[i].child;
+                    for (var j = 0; j < child.length; j++) {
+                        if (child[j].codeCode == split[0]) {
+                            if (returnValue.indexOf(cloumnTree[i].codeCname + "-" + child[j].codeCname) == -1) {
+                                returnValue = returnValue + cloumnTree[i].codeCname + "-" + child[j].codeCname + "  ";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return returnValue;
+    }
+
+    function cloumnTreeInit() {
+        $.ajax({
+            url: prefix + "/columnTree",
+            data: {
+                codeCode: "ARTICLE"
+            },
+            dataType: "json",
+            async: false,
+            type: "get",
+            cache: false,
+            success: function (data) {
+                cloumnTree = data.object.columnList[0].child
+            }
+        });
+    }
+
+    //给一级搜索框赋值
+    function setFirstQuery() {
+        articleTypeInit("FIRST_COLUMN", "1")
+        // $("#special option").remove();
+        // var obj = baseDataList;
+        // var secondObj;
+        // $("#special").append("<option value=''>请选择</option>");
+        // for (var i = 0; i < obj.length; i++) {
+        //     if (obj[i].codeCode == "ARTICLE") {
+        //         $("#special").append("<option value='" + obj[i].codeCode + "'>" + obj[i].codeCname + "</option>");
+        //     }
+        // }
+    }
+
+    //搜索时根据选择的一级分类加载二级分类
+    function autoChangeInitType(value) {
+        articleTypeInit(value, "2");
+        $("#channel option").remove();
+        var obj = baseDataListSecond;
+        $("#channel").append("<option value=''>请选择</option>");
+        for (var i = 0; i < obj.length; i++) {
+            $("#channel").append("<option value='" + obj[i].codeCode + "'>" + obj[i].codeCname + "</option>");
+        }
+    }
+
+    //选择二级加载三级
+    function autoChangeInitThirdType(value) {
+        $("#articleThirdTypeInit option").remove();
+        var obj = cloumnTree;
+        $("#articleThirdTypeInit").append("<option value=''>请选择</option>");
+        for (var i = 0; i < obj.length; i++) {
+            if (obj[i].codeCode == value) {
+                var children = obj[i].child;
+                for (var j = 0; j < children.length; j++) {
+                    $("#articleThirdTypeInit").append("<option value='" + children[j].codeCode + "'>" + obj[i].codeCname + "-" + children[j].codeCname + "</option>");
+                }
+                return;
+            }
+        }
+    }
+
+    /** **获取文章推送链接** */
+    function articleLinkUrl(sendType, articleId, publishId, agentCode, partyId) {
+        $.ajax({
+            url: path + "article/articleSend",
+            data: {
+                "articleId": articleId,
+                "publishId": publishId,
+                "agentCode": agentCode,
+                "sendType": sendType,
+                "partyId": partyId
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    if (sendType == "0") {
+                        $.modal.alertSuccess("文章推送成功");
+                    }
+                    if (sendType == "1") {
+                        $.modal.alertSuccess(data.object);
+                    }
+                } else {
+                    $.modal.alertWarning(data.info);
+                }
+
+            },
+            error: function (textStatus, e) {
+
+            }
+        });
+
+    }
+
+    function deleteArticle(id) {
+        $.ajax({
+            url: prefix + "/delLibrary",
+            data: {
+                ids: id
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    $.modal.alertSuccess("删除成功！");
+                    $.table.search();
+                } else {
+                    $.modal.alertSuccess("删除失败！");
+                }
+            },
+            error: function (textStatus, e) {
+                $.modal.alertSuccess('系统异常,请稍后重试!');
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -99,8 +99,6 @@ public class LibraryServiceImpl implements LibraryService {
         if (StringUtils.isBlank(channel)) {
             channel = "";
         }
-        //List<ArticleChannel> libraryList = articleChannelQueryMapper.selectAllWithLimit(companyId, branchId,list, startRow, rows,
-        //articelName, special, channel);
         HashMap<String, Object> parMap = new HashMap<String, Object>();
         parMap.put("list", list);
         parMap.put("startRow", startRow);
@@ -115,12 +113,14 @@ public class LibraryServiceImpl implements LibraryService {
             for (HashMap<String, Object> hashMap : resultMap) {
                 publishList.add((String) hashMap.get("publishId"));
             }
-            LOGGER.info("所有的publishId：++++++++++++" + publishList);
-            resultMap = articleChannelQueryMapper.selectByPublishList(publishList);
+            if (publishList.size() > 0) {
+                LOGGER.info("所有的publishId：++++++++++++" + publishList);
+                resultMap = articleChannelQueryMapper.selectByPublishList(publishList);
+            }
         }
         if (resultMap == null || resultMap.size() < 1) {
-            LOGGER.info("未查询到数据");
-            throw new BusinessException("文库暂没有文章！");
+            LOGGER.info("文库暂没有文章！");
+            return resultMap;
         }
         LOGGER.info("查询文库列表的业务层方法结束！");
         return resultMap;
@@ -639,22 +639,22 @@ public class LibraryServiceImpl implements LibraryService {
         LOGGER.info("推送文章的业务层方法开始！");
         LOGGER.info("推送文章的业务层方法中拿到的文章的articleId【{}】,publishId[{}],agentCode[{}],sendType[{}],partyId[{}]", new Object[]{articleId, publishId, agentCode, sendType, partyId});
         Message msg = new Message(true, "推送文章成功");
-        CmsSysUser userInfoDTO = null;
+//        CmsSysUser userInfoDTO = null;
         String companyId = null;
         String email = null;
         ArticlePublishSend aps = null;
         if (sendId != null) {
             aps = articlePublishSendMapper.selectByPrimaryKey(sendId);
-            String userId = aps.getOperateId();
-            CmsSysUserExample user = new CmsSysUserExample();
-            user.createCriteria().andUserIdEqualTo(userId);
-            userInfoDTO = cmsSysUserMapper.selectByExample(user).get(0);
+//            String userId = aps.getOperateId();
+//            CmsSysUserExample user = new CmsSysUserExample();
+//            user.createCriteria().andUserIdEqualTo(userId);
+//            userInfoDTO = cmsSysUserMapper.selectByExample(user).get(0);
 
         } else {
-            userInfoDTO = (CmsSysUser) SecurityUtils.getSubject().getPrincipal();
+//            userInfoDTO = (CmsSysUser) SecurityUtils.getSubject().getPrincipal();
         }
-        companyId = userInfoDTO.getCompanyId();
-        email = userInfoDTO.getEmail();
+        companyId = "1";
+        email = "13152783264";
         CmsSysUser cmsSysUser = this.cmsSysUserExMapper.queryLoginInfoByEmail(email);
         String userId = cmsSysUser.getUserId();
         String sysUserName = cmsSysUser.getName();
@@ -859,9 +859,8 @@ public class LibraryServiceImpl implements LibraryService {
         LOGGER.info("查询文章列表总数的业务层方法开始！");
         LOGGER.info("拿到的参数 文章名称【{}】，一级分类【{}】，二级分类【{}】，文章状态【{}】", articelName,
                 special, channel, articleState);
-        CmsSysUser userInfoDTO = (CmsSysUser) SecurityUtils.getSubject().getPrincipal();
-        String companyId = userInfoDTO.getCompanyId();// 公司id
-        String branchId = userInfoDTO.getBranchId();
+        String companyId = "1";// 公司id
+        String branchId = "86";
         CmsSysUserExample example = new CmsSysUserExample();
         CmsSysUserExample.Criteria criteria = example.createCriteria();
         criteria.andCompanyIdEqualTo(companyId);
@@ -896,8 +895,8 @@ public class LibraryServiceImpl implements LibraryService {
         parMap.put("userlist", userlist);
         List<HashMap<String, Object>> resultMap = articleChannelQueryMapper.selectCountByParam(parMap);
         if (resultMap == null || resultMap.size() < 1) {
-            LOGGER.info("未查询到数据【{}】", JsonUtil.objectToJackson(userInfoDTO));
-            throw new BusinessException("文库暂没有文章！");
+            LOGGER.info("文库暂没有文章！");
+            return 0;
         }
         LOGGER.info("查询文库列表的业务层方法结束！");
         return resultMap.size();
