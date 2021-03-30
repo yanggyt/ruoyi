@@ -183,14 +183,19 @@
 
         /**获取奖品及信息列表*/
         $(document).ready(function() {
-            var job= "<option value=''>所有</option>";
+            var job= "";
             $.ajax({
 
                     url:prefix + "/prizeInfo",
                     success: function (data) {
 
                         for(var i in data){
-                            job += "<option value='"+data[i].prizecode+"'>"+data[i].prizename+"</option>"
+                            if (job.length==0){
+                                job = "<option value='"+data[i].prizecode+"'>"+data[i].prizename+"</option>"
+                            }
+                            else{
+                                job += "<option value='"+data[i].prizecode+"'>"+data[i].prizename+"</option>"
+                            }
                         }
                         $("#firstawardprize").html(job);
                         $("#willdrawawardprize").html(job);

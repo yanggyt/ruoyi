@@ -196,27 +196,43 @@
             var WILLDRAWAWARDPRIZE = [[${drawInfo.WILLDRAWAWARDPRIZE}]];
             var FIRSTAWARDPRIZE = [[${drawInfo.FIRSTAWARDPRIZE}]];
 
-            var job= "<option value=''>所有</option>";
-            var jobj= "<option value=''>所有</option>";
+            var job= "";
+            var jobj= "";
             $.ajax({
 
                     url:prefix + "/prizeInfo",
                     success: function (data) {
 
                         for(var i in data){
-                            if(data[i].prizecode==WILLDRAWAWARDPRIZE){
-                            job += "<option value='"+data[i].prizecode+"' selected=\"selected\">"+data[i].prizename+"</option>"
-                            }
-                            job += "<option value='"+data[i].prizecode+"' >"+data[i].prizename+"</option>"
+                            if (job.length==0){
+                                if(data[i].prizecode==WILLDRAWAWARDPRIZE){
+                                    job = "<option value='"+data[i].prizecode+"' selected=\"selected\">"+data[i].prizename+"</option>"
+                                }
+                                job = "<option value='"+data[i].prizecode+"' >"+data[i].prizename+"</option>"
 
+                            }
+                            else{
+                                if(data[i].prizecode==WILLDRAWAWARDPRIZE){
+                                    job += "<option value='"+data[i].prizecode+"' selected=\"selected\">"+data[i].prizename+"</option>"
+                                }
+                                job += "<option value='"+data[i].prizecode+"' >"+data[i].prizename+"</option>"
+                        }
                         }
                         $("#willdrawawardprize").html(job);
                         for(var i in data){
-                            if(data[i].prizecode==FIRSTAWARDPRIZE){
-                                jobj += "<option value='"+data[i].prizecode+"' selected=\"selected\">"+data[i].prizename+"</option>"
-                            }
-                            jobj += "<option value='"+data[i].prizecode+"' >"+data[i].prizename+"</option>"
+                            if(jobj.length==0){
+                                if(data[i].prizecode==FIRSTAWARDPRIZE){
+                                    jobj = "<option value='"+data[i].prizecode+"' selected=\"selected\">"+data[i].prizename+"</option>"
+                                }
+                                jobj = "<option value='"+data[i].prizecode+"' >"+data[i].prizename+"</option>"
 
+                            }else{
+
+                                if(data[i].prizecode==FIRSTAWARDPRIZE){
+                                    jobj += "<option value='"+data[i].prizecode+"' selected=\"selected\">"+data[i].prizename+"</option>"
+                                }
+                                jobj += "<option value='"+data[i].prizecode+"' >"+data[i].prizename+"</option>"
+                            }
                         }
                         $("#firstawardprize").html(jobj);
 
