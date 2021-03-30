@@ -1,10 +1,12 @@
 package com.ruoyi.content.service.impl;
 
 
+import com.github.pagehelper.PageInfo;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.content.constants.PropertiesConstants;
 import com.ruoyi.content.domain.*;
 import com.ruoyi.content.exception.BusinessException;
@@ -962,9 +964,7 @@ public class LibraryServiceImpl implements LibraryService {
         LOGGER.info("接收到的参数：articleId【{}】,publishId[{}],agentCode[{}],sendType[{}],partyId[{}],sendTime[{}]",
                 new Object[]{articleId, publishId, agentCode, sendType, partyId, sendTime});
         Message msg = new Message(true, "推送文章成功");
-        CmsSysUser userInfoDTO = (CmsSysUser) SecurityUtils.getSubject().getPrincipal();
-        String companyId = userInfoDTO.getCompanyId();
-        String email = userInfoDTO.getEmail();
+        String email = "13152783264";
         CmsSysUser cmsSysUser = this.cmsSysUserExMapper.queryLoginInfoByEmail(email);
         String userId = cmsSysUser.getUserId();
         String sysUserName = cmsSysUser.getName();
@@ -1019,7 +1019,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public PageDTO noSendPublishArticle(String articleId, int startRow, int rows, String publishId) {
+    public TableDataInfo noSendPublishArticle(String articleId, int startRow, int rows, String publishId) {
         LOGGER.info("查询未定时推送的文章列表，入参   articleId：【{}】，startRow：【{}】，rows：【{}】，publishId【{}】"
                 , articleId, startRow, rows, publishId);
         HashMap<String, Object> paramMap = new HashMap<>();
@@ -1066,11 +1066,10 @@ public class LibraryServiceImpl implements LibraryService {
         ArticlePublishSendExample ex = new ArticlePublishSendExample();
         ex.createCriteria().andArticleIdEqualTo(Integer.parseInt(articleId)).andPublishIdEqualTo(publishId);
         int count = articlePublishSendMapper.countByExample(ex);
-        PageDTO pageDTO = new PageDTO();
-        pageDTO.setStartRow(startRow);
-        pageDTO.setDataRows(resultDTO);
-        pageDTO.setTotal(count % rows == 0 ? count / rows : (count / rows + 1));
-        pageDTO.setRecords(count);
+        TableDataInfo pageDTO = new TableDataInfo();
+        pageDTO.setCode(0);
+        pageDTO.setRows(resultDTO);
+        pageDTO.setTotal(count);
         return pageDTO;
     }
 

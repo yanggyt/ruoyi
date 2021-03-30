@@ -1,6 +1,7 @@
 package com.ruoyi.content.service;
 
 
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.content.domain.BaseCode;
 import com.ruoyi.content.domain.PageDTO;
 import com.ruoyi.content.message.Message;
@@ -127,7 +128,7 @@ public interface LibraryService {
 
     public Message onkeyExChange(String from, String to, String companyId, String branchId);
 
-    public PageDTO noSendPublishArticle(String articleId, int startRow, int rows, String publishId);
+    public TableDataInfo noSendPublishArticle(String articleId, int startRow, int rows, String publishId);
 
     public Message delOnTimeTask(String delId);
 

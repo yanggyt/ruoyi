@@ -66,7 +66,7 @@ public class ArticleServiceImpl implements ArticleService {
                 originalUrl, createUser, author, ids, isAuthorization, isReserve, automaticName, introduction,
                 isJoinActive);
         String companyId = "1";// 渠道id
-        String email = "";
+        String email = "13152783264";
         // 根据登录人查询登录信息（shiro里有缓存数据不是最新）
         CmsSysUser cmsSysUser = cmsSysUserExMapper.queryLoginInfoByEmail(email);
         // 此时后台管理员

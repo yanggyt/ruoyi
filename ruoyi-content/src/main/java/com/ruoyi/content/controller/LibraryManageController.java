@@ -1,6 +1,7 @@
 package com.ruoyi.content.controller;
 
 
+import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
@@ -31,7 +32,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/article")
-public class LibraryManageController {
+public class LibraryManageController extends BaseController {
 
     private String prefix = "content/article";
 
@@ -462,10 +463,10 @@ public class LibraryManageController {
      */
     @RequestMapping("/noSendPublishArticle")
     @ResponseBody
-    public PageDTO noSendPublishArticle(HttpServletRequest request, HttpServletResponse response) {
+    public TableDataInfo noSendPublishArticle(HttpServletRequest request, HttpServletResponse response) {
         logger.info("查询未推送出去的文章列表！");
         Thread.currentThread().setName(UUID.randomUUID().toString());
-        PageDTO pageDTO = new PageDTO();
+        TableDataInfo pageDTO = new TableDataInfo();
         try {
             String rowsVal = request.getParameter("rows");
             String page = request.getParameter("page");
@@ -475,7 +476,6 @@ public class LibraryManageController {
             String publishId = request.getParameter("publishId");
             // 1.根据文章id去查publish表，找出该文章对应所有业务员
             pageDTO = libraryService.noSendPublishArticle(articleId, startRow, rows, publishId);
-            pageDTO.setPage(Integer.parseInt(page));
 
             return pageDTO;
         } catch (Exception e) {

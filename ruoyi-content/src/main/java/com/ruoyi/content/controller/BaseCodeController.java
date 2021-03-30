@@ -268,6 +268,7 @@ public class BaseCodeController extends BaseController {
         Map<String, Object> policyMap = new HashMap<String, Object>();
         String codeCode = request.getParameter("codeCode");
         String codeType = request.getParameter("codeType");
+        String flag = request.getParameter("flag");
         // 查询栏目树
         List<BaseCodeTree> columnList = baseCodeService.columnTree(codeCode, codeType);
 //        policyMap.put("columnList", columnList);
@@ -275,19 +276,28 @@ public class BaseCodeController extends BaseController {
 //        msg.setObject(policyMap);
 //        msg.setResult(true);
 
-        return initZtree(columnList);
+        return initZtree(columnList, flag);
     }
 
-    public List<Ztree> initZtree(List<BaseCodeTree> deptList) {
+    public List<Ztree> initZtree(List<BaseCodeTree> deptList, String flag) {
 
         List<Ztree> ztreeList = new ArrayList<>();
         if (deptList != null && deptList.size() > 0) {
-            Ztree z = new Ztree();
-            z.setId("FIRST_COLUMN");
-            z.setpId("");
-            z.setName("栏目");
-            z.setTitle("栏目");
-            ztreeList.add(z);
+            if (StringUtils.isBlank(flag)) {
+                Ztree z = new Ztree();
+                z.setId("FIRST_COLUMN");
+                z.setpId("");
+                z.setName("栏目");
+                z.setTitle("栏目");
+                ztreeList.add(z);
+            } else if (StringUtils.equals(flag, "1")) {
+                Ztree z = new Ztree();
+                z.setId("ARTICLE");
+                z.setpId("");
+                z.setName("文库");
+                z.setTitle("文库");
+                ztreeList.add(z);
+            }
             for (BaseCodeTree dept : deptList) {
                 Ztree ztree = new Ztree();
                 ztree.setId(dept.getCodeCode());
