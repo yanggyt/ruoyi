@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('存储奖项配置信息列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+	<div class="row">
+		<div class="col-sm-12 search-collapse">
+			<form id="formId">
+				<div class="select-list">
+				<ul>
+						<li >
+							<label>奖品代码：</label>
+							<input type="text" name="DRAWCODE"   th:value="${DRAWCODE}"  readonly/>
+						</li>
+						<li >
+							<label>奖品名称：</label>
+							<input type="text" name="DRAWNAME"   th:value="${DRAWNAME}" readonly/>
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+
+		<div class="btn-group-sm" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.add(DRAWCODE)" shiro:hasPermission="config:info:add">
+				<i class="fa fa-plus"></i> 添加
+			</a>
+			<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="config:info:edit">
+				<i class="fa fa-edit"></i> 修改
+			</a>
+			<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="config:info:remove">
+				<i class="fa fa-remove"></i> 删除
+			</a>
+			<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="config:info:export">
+				<i class="fa fa-download"></i> 导出
+			</a>
+		</div>
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table"></table>
+		</div>
+	</div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+	var editFlag = [[${@permission.hasPermi('config:info:edit')}]];
+	var removeFlag = [[${@permission.hasPermi('config:info:remove')}]];
+	var prizeLevel = [[${@dict.getType('prizeLevel')}]];
+	var AWARDTYPE = [[${@dict.getType('AWARDTYPE')}]];
+	var AWARDMETHOD = [[${@dict.getType('AWARDMETHOD')}]];
+	var statustype = [[${@dict.getType('start_stop')}]];
+	var prefix = ctx + "activity/config";
+	var DRAWCODE = [[${DRAWCODE}]];
+	$(function() {
+		var options = {
+			url: prefix + "/" + DRAWCODE + "/list",
+			createUrl: prefix + "/add/{id}",
+			updateUrl: prefix + "/edit/{id}",
+			removeUrl: prefix + "/remove",
+			exportUrl: prefix + "/export",
+			modalName: "存储奖项配置信息",
+			columns: [{
+				checkbox: true
+			},
+				{
+					field: 'drawconfigid',
+					title: '业务主键',
+					visible: false
+				},
+				{
+					field: 'prizelevel',
+					title: '奖项名称',
+					formatter: function (value, row, index) {
+						return $.table.selectDictLabel(prizeLevel, value);
+					}
+				},
+				{
+					field: 'prizename',
+					title: '奖品名称'
+				},
+				{
+					field: 'prizecode',
+					title: '奖品名称',
+					visible: false
+
+				},
+				{
+					field: 'probability',
+					title: '中奖概率',
+					formatter: function (value, row, index) {
+						return  value+'%';
+					}
+
+				},
+				{
+					field: 'totalnumber',
+					title: '奖品总量'
+				},
+				{
+					field: 'availablenumber',
+					title: '剩余数量'
+				},
+				{
+					field: 'displayorder',
+					title: '展示顺序'
+				},
+				{
+					field: 'awardtype',
+					title: '奖品发放限制',
+					formatter: function (value, row, index) {
+						return $.table.selectDictLabel(AWARDTYPE, value);
+					}
+
+				},
+				{
+					field: 'awardtypevalue',
+					title: '发放限制次数'
+				},
+				{
+					field: 'awardmethod',
+					title: '领取方式',
+					formatter: function (value, row, index) {
+						return $.table.selectDictLabel(AWARDMETHOD, value);
+					}
+
+				},
+				{
+					field: 'status',
+					title: '状态',
+					formatter: function (value, row, index) {
+						return $.table.selectDictLabel(statustype, value);
+					}
+				},
+				{
+					field: 'cue',
+					title: '提示信息'
+				},
+
+			]
+		};
+		$.table.init(options);
+	});
+</script>
+</body>
+</html>

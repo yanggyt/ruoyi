@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawRuleMapper">
+    
+    <resultMap type="DrawRule" id="DrawRuleResult">
+        <result property="DRAWRULEID"    column="DRAWRULEID"    />
+        <result property="DRAWCODE"    column="DRAWCODE"    />
+        <result property="FIRSTFLAG"    column="FIRSTFLAG"    />
+        <result property="FIRSTAWARDPRIZE"    column="FIRSTAWARDPRIZE"    />
+        <result property="DAILYFLAG"    column="DAILYFLAG"    />
+        <result property="DAILYSTARTTIME"    column="DAILYSTARTTIME"    />
+        <result property="DAILYENDTIME"    column="DAILYENDTIME"    />
+        <result property="DAILYNUMBER"    column="DAILYNUMBER"    />
+        <result property="WILLDRAWFLAG"    column="WILLDRAWFLAG"    />
+        <result property="WILLDRAWAWARDPRIZE"    column="WILLDRAWAWARDPRIZE"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+        <result property="WILLDRAWAWARDNUMBER"    column="WILLDRAWAWARDNUMBER"    />
+    </resultMap>
+
+    <sql id="selectDrawRuleVo">
+        select DRAWRULEID, DRAWCODE, FIRSTFLAG, FIRSTAWARDPRIZE, DAILYFLAG, DAILYSTARTTIME, DAILYENDTIME, DAILYNUMBER, WILLDRAWFLAG, WILLDRAWAWARDPRIZE, CREATETIMESTAMP, LASTUPDATETIMESTAMP, WILLDRAWAWARDNUMBER from draw_rule
+    </sql>
+
+    <select id="selectDrawRuleList" parameterType="DrawRule" resultMap="DrawRuleResult">
+        <include refid="selectDrawRuleVo"/>
+        <where>  
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="FIRSTFLAG != null  and FIRSTFLAG != ''"> and FIRSTFLAG = #{FIRSTFLAG}</if>
+            <if test="FIRSTAWARDPRIZE != null  and FIRSTAWARDPRIZE != ''"> and FIRSTAWARDPRIZE = #{FIRSTAWARDPRIZE}</if>
+            <if test="DAILYFLAG != null  and DAILYFLAG != ''"> and DAILYFLAG = #{DAILYFLAG}</if>
+            <if test="DAILYSTARTTIME != null  and DAILYSTARTTIME != ''"> and DAILYSTARTTIME = #{DAILYSTARTTIME}</if>
+            <if test="DAILYENDTIME != null  and DAILYENDTIME != ''"> and DAILYENDTIME = #{DAILYENDTIME}</if>
+            <if test="DAILYNUMBER != null "> and DAILYNUMBER = #{DAILYNUMBER}</if>
+            <if test="WILLDRAWFLAG != null  and WILLDRAWFLAG != ''"> and WILLDRAWFLAG = #{WILLDRAWFLAG}</if>
+            <if test="WILLDRAWAWARDPRIZE != null  and WILLDRAWAWARDPRIZE != ''"> and WILLDRAWAWARDPRIZE = #{WILLDRAWAWARDPRIZE}</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+            <if test="WILLDRAWAWARDNUMBER != null "> and WILLDRAWAWARDNUMBER = #{WILLDRAWAWARDNUMBER}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawRuleById" parameterType="String" resultMap="DrawRuleResult">
+        <include refid="selectDrawRuleVo"/>
+        where DRAWRULEID = #{DRAWRULEID}
+    </select>
+        
+    <insert id="insertDrawRule" parameterType="DrawRule">
+        insert into draw_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="DRAWRULEID != null">DRAWRULEID,</if>
+            <if test="DRAWCODE != null and DRAWCODE != ''">DRAWCODE,</if>
+            <if test="FIRSTFLAG != null">FIRSTFLAG,</if>
+            <if test="FIRSTAWARDPRIZE != null">FIRSTAWARDPRIZE,</if>
+            <if test="DAILYFLAG != null">DAILYFLAG,</if>
+            <if test="DAILYSTARTTIME != null">DAILYSTARTTIME,</if>
+            <if test="DAILYENDTIME != null">DAILYENDTIME,</if>
+            <if test="DAILYNUMBER != null">DAILYNUMBER,</if>
+            <if test="WILLDRAWFLAG != null">WILLDRAWFLAG,</if>
+            <if test="WILLDRAWAWARDPRIZE != null">WILLDRAWAWARDPRIZE,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+            <if test="WILLDRAWAWARDNUMBER != null">WILLDRAWAWARDNUMBER,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="DRAWRULEID != null">#{DRAWRULEID},</if>
+            <if test="DRAWCODE != null and DRAWCODE != ''">#{DRAWCODE},</if>
+            <if test="FIRSTFLAG != null">#{FIRSTFLAG},</if>
+            <if test="FIRSTAWARDPRIZE != null">#{FIRSTAWARDPRIZE},</if>
+            <if test="DAILYFLAG != null">#{DAILYFLAG},</if>
+            <if test="DAILYSTARTTIME != null">#{DAILYSTARTTIME},</if>
+            <if test="DAILYENDTIME != null">#{DAILYENDTIME},</if>
+            <if test="DAILYNUMBER != null">#{DAILYNUMBER},</if>
+            <if test="WILLDRAWFLAG != null">#{WILLDRAWFLAG},</if>
+            <if test="WILLDRAWAWARDPRIZE != null">#{WILLDRAWAWARDPRIZE},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+            <if test="WILLDRAWAWARDNUMBER != null">#{WILLDRAWAWARDNUMBER},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawRule" parameterType="DrawRule">
+        update draw_rule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="DRAWCODE != null and DRAWCODE != ''">DRAWCODE = #{DRAWCODE},</if>
+            <if test="FIRSTFLAG != null">FIRSTFLAG = #{FIRSTFLAG},</if>
+            <if test="FIRSTAWARDPRIZE != null">FIRSTAWARDPRIZE = #{FIRSTAWARDPRIZE},</if>
+            <if test="DAILYFLAG != null">DAILYFLAG = #{DAILYFLAG},</if>
+            <if test="DAILYSTARTTIME != null">DAILYSTARTTIME = #{DAILYSTARTTIME},</if>
+            <if test="DAILYENDTIME != null">DAILYENDTIME = #{DAILYENDTIME},</if>
+            <if test="DAILYNUMBER != null">DAILYNUMBER = #{DAILYNUMBER},</if>
+            <if test="WILLDRAWFLAG != null">WILLDRAWFLAG = #{WILLDRAWFLAG},</if>
+            <if test="WILLDRAWAWARDPRIZE != null">WILLDRAWAWARDPRIZE = #{WILLDRAWAWARDPRIZE},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+            <if test="WILLDRAWAWARDNUMBER != null">WILLDRAWAWARDNUMBER = #{WILLDRAWAWARDNUMBER},</if>
+        </trim>
+        where DRAWRULEID = #{DRAWRULEID}
+    </update>
+
+    <delete id="deleteDrawRuleById" parameterType="String">
+        delete from draw_rule where DRAWRULEID = #{DRAWRULEID}
+    </delete>
+
+    <delete id="deleteDrawRuleByIds" parameterType="String">
+        delete from draw_rule where DRAWRULEID in 
+        <foreach item="DRAWRULEID" collection="array" open="(" separator="," close=")">
+            #{DRAWRULEID}
+        </foreach>
+    </delete>
+
+</mapper>

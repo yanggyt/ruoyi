@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawInfoMapper">
+    
+    <resultMap type="DrawInfo" id="DrawInfoResult">
+        <result property="DRAWID"    column="DRAWID"    />
+        <result property="DRAWCODE"    column="DRAWCODE"    />
+        <result property="DRAWTYPE"    column="DRAWTYPE"    />
+        <result property="DRAWNAME"    column="DRAWNAME"    />
+        <result property="STARTTIME"    column="STARTTIME"    />
+        <result property="ENDTIME"    column="ENDTIME"    />
+        <result property="EXPENO"    column="EXPENO"    />
+        <result property="EXPENOVALUE"    column="EXPENOVALUE"    />
+        <result property="COMMENTS"    column="COMMENTS"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+        <result property="STATUS"    column="STATUS"    />
+        <result property="UPDATEFLAG"    column="UPDATEFLAG"    />
+        <result property="RULEDESCRIPTION"    column="RULEDESCRIPTION"    />
+        <result property="VALIDATETYPE"    column="VALIDATETYPE"    />
+
+        <result property="DRAWRULEID"    column="DRAWRULEID"    />
+        <result property="FIRSTFLAG"    column="FIRSTFLAG"    />
+        <result property="FIRSTAWARDPRIZE"    column="FIRSTAWARDPRIZE"    />
+        <result property="DAILYFLAG"    column="DAILYFLAG"    />
+        <result property="DAILYSTARTTIME"    column="DAILYSTARTTIME"    />
+        <result property="DAILYENDTIME"    column="DAILYENDTIME"    />
+        <result property="DAILYNUMBER"    column="DAILYNUMBER"    />
+        <result property="WILLDRAWFLAG"    column="WILLDRAWFLAG"    />
+        <result property="WILLDRAWAWARDPRIZE"    column="WILLDRAWAWARDPRIZE"    />
+        <result property="WILLDRAWAWARDNUMBER"    column="WILLDRAWAWARDNUMBER"    />
+    </resultMap>
+
+    <sql id="selectDrawInfoVo">
+        select DRAWID, DRAWCODE, DRAWTYPE, DRAWNAME, STARTTIME, ENDTIME, EXPENO, EXPENOVALUE, COMMENTS, CREATETIMESTAMP, LASTUPDATETIMESTAMP, STATUS, UPDATEFLAG, RULEDESCRIPTION, VALIDATETYPE from draw_info
+    </sql>
+
+    <select id="selectDrawInfoList" parameterType="DrawInfo" resultMap="DrawInfoResult">
+        <include refid="selectDrawInfoVo"/>
+        <where>  
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="DRAWTYPE != null  and DRAWTYPE != ''"> and DRAWTYPE = #{DRAWTYPE}</if>
+            <if test="DRAWNAME != null  and DRAWNAME != ''"> and DRAWNAME like concat('%', #{DRAWNAME}, '%')</if>
+            <if test="STARTTIME != null "> and STARTTIME = #{STARTTIME}</if>
+            <if test="ENDTIME != null "> and ENDTIME = #{ENDTIME}</if>
+            <if test="EXPENO != null  and EXPENO != ''"> and EXPENO = #{EXPENO}</if>
+            <if test="EXPENOVALUE != null "> and EXPENOVALUE = #{EXPENOVALUE}</if>
+            <if test="COMMENTS != null  and COMMENTS != ''"> and COMMENTS = #{COMMENTS}</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+            <if test="STATUS != null  and STATUS != ''"> and STATUS = #{STATUS}</if>
+            <if test="UPDATEFLAG != null  and UPDATEFLAG != ''"> and UPDATEFLAG = #{UPDATEFLAG}</if>
+            <if test="RULEDESCRIPTION != null  and RULEDESCRIPTION != ''"> and RULEDESCRIPTION = #{RULEDESCRIPTION}</if>
+            <if test="VALIDATETYPE != null  and VALIDATETYPE != ''"> and VALIDATETYPE = #{VALIDATETYPE}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawInfoById" parameterType="String" resultMap="DrawInfoResult">
+SELECT
+	i.DRAWID,
+	i.DRAWNAME,
+	i. STATUS,
+	i.EXPENO,
+	i.EXPENOVALUE,
+	i.STARTTIME,
+	i.ENDTIME,
+	r.FIRSTFLAG,
+	r.FIRSTAWARDPRIZE,
+	r.DAILYFLAG,
+	r.DAILYNUMBER,
+	r.DAILYSTARTTIME,
+	r.DAILYENDTIME,
+	r.WILLDRAWFLAG,
+	r.WILLDRAWAWARDNUMBER,
+	r.WILLDRAWAWARDPRIZE,
+	r.DRAWRULEID
+    FROM
+	draw_info i
+    LEFT JOIN draw_rule r ON i.DRAWCODE = r.DRAWCODE
+    WHERE
+    DRAWID = #{DRAWID}
+    </select>
+        
+    <insert id="insertDrawInfo" parameterType="DrawInfo">
+        insert into draw_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="DRAWID != null">DRAWID,</if>
+            <if test="DRAWCODE != null">DRAWCODE,</if>
+            <if test="DRAWTYPE != null">DRAWTYPE,</if>
+            <if test="DRAWNAME != null">DRAWNAME,</if>
+            <if test="STARTTIME != null">STARTTIME,</if>
+            <if test="ENDTIME != null">ENDTIME,</if>
+            <if test="EXPENO != null">EXPENO,</if>
+            <if test="EXPENOVALUE != null">EXPENOVALUE,</if>
+            <if test="COMMENTS != null">COMMENTS,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+            <if test="STATUS != null">STATUS,</if>
+            <if test="UPDATEFLAG != null">UPDATEFLAG,</if>
+            <if test="RULEDESCRIPTION != null">RULEDESCRIPTION,</if>
+            <if test="VALIDATETYPE != null">VALIDATETYPE,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="DRAWID != null">#{DRAWID},</if>
+            <if test="DRAWCODE != null">#{DRAWCODE},</if>
+            <if test="DRAWTYPE != null">#{DRAWTYPE},</if>
+            <if test="DRAWNAME != null">#{DRAWNAME},</if>
+            <if test="STARTTIME != null">#{STARTTIME},</if>
+            <if test="ENDTIME != null">#{ENDTIME},</if>
+            <if test="EXPENO != null">#{EXPENO},</if>
+            <if test="EXPENOVALUE != null">#{EXPENOVALUE},</if>
+            <if test="COMMENTS != null">#{COMMENTS},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+            <if test="STATUS != null">#{STATUS},</if>
+            <if test="UPDATEFLAG != null">#{UPDATEFLAG},</if>
+            <if test="RULEDESCRIPTION != null">#{RULEDESCRIPTION},</if>
+            <if test="VALIDATETYPE != null">#{VALIDATETYPE},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawInfo" parameterType="DrawInfo">
+        update draw_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="DRAWCODE != null">DRAWCODE = #{DRAWCODE},</if>
+            <if test="DRAWTYPE != null">DRAWTYPE = #{DRAWTYPE},</if>
+            <if test="DRAWNAME != null">DRAWNAME = #{DRAWNAME},</if>
+            <if test="STARTTIME != null">STARTTIME = #{STARTTIME},</if>
+            <if test="ENDTIME != null">ENDTIME = #{ENDTIME},</if>
+            <if test="EXPENO != null">EXPENO = #{EXPENO},</if>
+            <if test="EXPENOVALUE != null">EXPENOVALUE = #{EXPENOVALUE},</if>
+            <if test="COMMENTS != null">COMMENTS = #{COMMENTS},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+            <if test="STATUS != null">STATUS = #{STATUS},</if>
+            <if test="UPDATEFLAG != null">UPDATEFLAG = #{UPDATEFLAG},</if>
+            <if test="RULEDESCRIPTION != null">RULEDESCRIPTION = #{RULEDESCRIPTION},</if>
+            <if test="VALIDATETYPE != null">VALIDATETYPE = #{VALIDATETYPE},</if>
+        </trim>
+        where DRAWID = #{DRAWID}
+    </update>
+
+    <delete id="deleteDrawInfoById" parameterType="String">
+        delete from draw_info where DRAWID = #{DRAWID}
+    </delete>
+
+    <delete id="deleteDrawInfoByIds" parameterType="String">
+        delete from draw_info where DRAWID in 
+        <foreach item="DRAWID" collection="array" open="(" separator="," close=")">
+            #{DRAWID}
+        </foreach>
+    </delete>
+
+</mapper>

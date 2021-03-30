@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawConfigMapper">
+    
+    <resultMap type="DrawConfig" id="DrawConfigResult">
+        <result property="DRAWCONFIGID"    column="DRAWCONFIGID"    />
+        <result property="PRIZECODE"    column="PRIZECODE"    />
+        <result property="DRAWCODE"    column="DRAWCODE"    />
+        <result property="PROBABILITY"    column="PROBABILITY"    />
+        <result property="DISPLAYORDER"    column="DISPLAYORDER"    />
+        <result property="PRIZELEVEL"    column="PRIZELEVEL"    />
+        <result property="CUE"    column="CUE"    />
+        <result property="TOTALNUMBER"    column="TOTALNUMBER"    />
+        <result property="AVAILABLENUMBER"    column="AVAILABLENUMBER"    />
+        <result property="STATUS"    column="STATUS"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+        <result property="AWARDTYPE"    column="AWARDTYPE"    />
+        <result property="AWARDTYPEVALUE"    column="AWARDTYPEVALUE"    />
+        <result property="AWARDMETHOD"    column="AWARDMETHOD"    />
+        <result property="SENDMSGFLAG"    column="SENDMSGFLAG"    />
+        <result property="MSGTEMPLETEID"    column="MSGTEMPLETEID"    />
+        <result property="PRIZENAME"    column="PRIZENAME"    />
+    </resultMap>
+
+    <sql id="selectDrawConfigVo">
+        select DRAWCONFIGID, PRIZECODE, DRAWCODE, PROBABILITY, DISPLAYORDER, PRIZELEVEL, CUE, TOTALNUMBER, AVAILABLENUMBER, STATUS, CREATETIMESTAMP, LASTUPDATETIMESTAMP, AWARDTYPE, AWARDTYPEVALUE, AWARDMETHOD, SENDMSGFLAG, MSGTEMPLETEID from draw_config
+    </sql>
+
+    <select id="selectDrawConfigList" parameterType="DrawConfig" resultMap="DrawConfigResult">
+        SELECT
+        c.DRAWCONFIGID,
+        c.PRIZECODE,
+        c.DRAWCODE,
+        c.PROBABILITY,
+        c.DISPLAYORDER,
+        c.PRIZELEVEL,
+        c.CUE,
+        c.TOTALNUMBER,
+        c.AVAILABLENUMBER,
+        c.STATUS,
+        c.CREATETIMESTAMP,
+        c.LASTUPDATETIMESTAMP,
+        c.AWARDTYPE,
+        c.AWARDTYPEVALUE,
+        c.AWARDMETHOD,
+        c.SENDMSGFLAG,
+        c.MSGTEMPLETEID,
+        p.PRIZENAME
+        FROM
+        draw_config c
+        LEFT JOIN draw_prize_info p on  c.PRIZECODE=p.PRIZECODE
+        <where>
+            <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="PROBABILITY != null  and PROBABILITY != ''"> and PROBABILITY = #{PROBABILITY}</if>
+            <if test="DISPLAYORDER != null  and DISPLAYORDER != ''"> and DISPLAYORDER = #{DISPLAYORDER}</if>
+            <if test="PRIZELEVEL != null  and PRIZELEVEL != ''"> and PRIZELEVEL = #{PRIZELEVEL}</if>
+            <if test="CUE != null  and CUE != ''"> and CUE = #{CUE}</if>
+            <if test="TOTALNUMBER != null "> and TOTALNUMBER = #{TOTALNUMBER}</if>
+            <if test="AVAILABLENUMBER != null "> and AVAILABLENUMBER = #{AVAILABLENUMBER}</if>
+            <if test="STATUS != null  and STATUS != ''"> and STATUS = #{STATUS}</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+            <if test="AWARDTYPE != null  and AWARDTYPE != ''"> and AWARDTYPE = #{AWARDTYPE}</if>
+            <if test="AWARDTYPEVALUE != null "> and AWARDTYPEVALUE = #{AWARDTYPEVALUE}</if>
+            <if test="AWARDMETHOD != null  and AWARDMETHOD != ''"> and AWARDMETHOD = #{AWARDMETHOD}</if>
+            <if test="SENDMSGFLAG != null  and SENDMSGFLAG != ''"> and SENDMSGFLAG = #{SENDMSGFLAG}</if>
+            <if test="MSGTEMPLETEID != null  and MSGTEMPLETEID != ''"> and MSGTEMPLETEID = #{MSGTEMPLETEID}</if>
+        </where>
+        ORDER BY     c.DISPLAYORDER
+    </select>
+    
+    <select id="selectDrawConfigById" parameterType="String" resultMap="DrawConfigResult">
+        <include refid="selectDrawConfigVo"/>
+        where DRAWCONFIGID = #{DRAWCONFIGID}
+    </select>
+        
+    <insert id="insertDrawConfig" parameterType="DrawConfig">
+        insert into draw_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="DRAWCONFIGID != null">DRAWCONFIGID,</if>
+            <if test="PRIZECODE != null">PRIZECODE,</if>
+            <if test="DRAWCODE != null">DRAWCODE,</if>
+            <if test="PROBABILITY != null">PROBABILITY,</if>
+            <if test="DISPLAYORDER != null">DISPLAYORDER,</if>
+            <if test="PRIZELEVEL != null">PRIZELEVEL,</if>
+            <if test="CUE != null">CUE,</if>
+            <if test="TOTALNUMBER != null">TOTALNUMBER,</if>
+            <if test="AVAILABLENUMBER != null">AVAILABLENUMBER,</if>
+            <if test="STATUS != null">STATUS,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+            <if test="AWARDTYPE != null">AWARDTYPE,</if>
+            <if test="AWARDTYPEVALUE != null">AWARDTYPEVALUE,</if>
+            <if test="AWARDMETHOD != null">AWARDMETHOD,</if>
+            <if test="SENDMSGFLAG != null">SENDMSGFLAG,</if>
+            <if test="MSGTEMPLETEID != null">MSGTEMPLETEID,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="DRAWCONFIGID != null">#{DRAWCONFIGID},</if>
+            <if test="PRIZECODE != null">#{PRIZECODE},</if>
+            <if test="DRAWCODE != null">#{DRAWCODE},</if>
+            <if test="PROBABILITY != null">#{PROBABILITY},</if>
+            <if test="DISPLAYORDER != null">#{DISPLAYORDER},</if>
+            <if test="PRIZELEVEL != null">#{PRIZELEVEL},</if>
+            <if test="CUE != null">#{CUE},</if>
+            <if test="TOTALNUMBER != null">#{TOTALNUMBER},</if>
+            <if test="AVAILABLENUMBER != null">#{AVAILABLENUMBER},</if>
+            <if test="STATUS != null">#{STATUS},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+            <if test="AWARDTYPE != null">#{AWARDTYPE},</if>
+            <if test="AWARDTYPEVALUE != null">#{AWARDTYPEVALUE},</if>
+            <if test="AWARDMETHOD != null">#{AWARDMETHOD},</if>
+            <if test="SENDMSGFLAG != null">#{SENDMSGFLAG},</if>
+            <if test="MSGTEMPLETEID != null">#{MSGTEMPLETEID},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawConfig" parameterType="DrawConfig">
+        update draw_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="PRIZECODE != null">PRIZECODE = #{PRIZECODE},</if>
+            <if test="DRAWCODE != null">DRAWCODE = #{DRAWCODE},</if>
+            <if test="PROBABILITY != null">PROBABILITY = #{PROBABILITY},</if>
+            <if test="DISPLAYORDER != null">DISPLAYORDER = #{DISPLAYORDER},</if>
+            <if test="PRIZELEVEL != null">PRIZELEVEL = #{PRIZELEVEL},</if>
+            <if test="CUE != null">CUE = #{CUE},</if>
+            <if test="TOTALNUMBER != null">TOTALNUMBER = #{TOTALNUMBER},</if>
+            <if test="AVAILABLENUMBER != null">AVAILABLENUMBER = #{AVAILABLENUMBER},</if>
+            <if test="STATUS != null">STATUS = #{STATUS},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+            <if test="AWARDTYPE != null">AWARDTYPE = #{AWARDTYPE},</if>
+            <if test="AWARDTYPEVALUE != null">AWARDTYPEVALUE = #{AWARDTYPEVALUE},</if>
+            <if test="AWARDMETHOD != null">AWARDMETHOD = #{AWARDMETHOD},</if>
+            <if test="SENDMSGFLAG != null">SENDMSGFLAG = #{SENDMSGFLAG},</if>
+            <if test="MSGTEMPLETEID != null">MSGTEMPLETEID = #{MSGTEMPLETEID},</if>
+        </trim>
+        where DRAWCONFIGID = #{DRAWCONFIGID}
+    </update>
+
+    <delete id="deleteDrawConfigById" parameterType="String">
+        delete from draw_config where DRAWCONFIGID = #{DRAWCONFIGID}
+    </delete>
+
+    <delete id="deleteDrawConfigByIds" parameterType="String">
+        delete from draw_config where DRAWCONFIGID in 
+        <foreach item="DRAWCONFIGID" collection="array" open="(" separator="," close=")">
+            #{DRAWCONFIGID}
+        </foreach>
+    </delete>
+
+</mapper>
