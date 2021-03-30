@@ -62,7 +62,7 @@ public class DrawInfo extends DrawRule
     private Date LASTUPDATETIMESTAMP;
 
     /** 状态 */
-    @Excel(name = "状态" ,readConverterExp="1=启用,2=禁用")
+    @Excel(name = "状态" ,readConverterExp="1=启用,2=停用")
     private String STATUS;
 
     /** 是否需要更新缓存 */
