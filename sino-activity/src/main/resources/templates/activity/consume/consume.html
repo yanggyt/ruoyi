@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('抽奖次数消费信息列表')"/>
+    <th:block th:include="include :: header('抽奖次数使用明细')"/>
 </head>
 <body class="gray-bg">
 <div class="container-div">
@@ -47,14 +47,14 @@
                         <!--                                <label>使用主键：</label>-->
                         <!--                                <input type="text" name="TRADEORDERID"/>-->
                         <!--                            </li>-->
-                        <li>
-                            <label>状态：</label>
-                            <select name="STATE" th:with="type=${@dict.getType('status')}" style="width: 80px">
-                                <option value="">所有</option>
-                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                        th:value="${dict.dictValue}"></option>
-                            </select>
-                        </li>
+<!--                        <li>-->
+<!--                            <label>状态：</label>-->
+<!--                            <select name="STATE" th:with="type=${@dict.getType('status')}" style="width: 80px">-->
+<!--                                <option value="">所有</option>-->
+<!--                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"-->
+<!--                                        th:value="${dict.dictValue}"></option>-->
+<!--                            </select>-->
+<!--                        </li>-->
                         <li>
                             <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
                                     class="fa fa-search"></i>&nbsp;搜索</a>
@@ -155,13 +155,13 @@
                     title: '使用主键',
                     visible: false
                 },
-                {
-                    field: 'state',
-                    title: '状态',
-                    formatter: function (value, row, index) {
-                        return $.table.selectDictLabel(STATEDatas, value);
-                    }
-                },
+                // {
+                //     field: 'state',
+                //     title: '状态',
+                //     formatter: function (value, row, index) {
+                //         return $.table.selectDictLabel(STATEDatas, value);
+                //     }
+                // },
                 // {
                 //     field: 'lastupdatetimestamp',
                 //     title: '最后修改时间'

@@ -11,7 +11,7 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>奖品名称：</label>
+                                <label>奖品代码：</label>
                                 <input type="text" name="PRIZECODE"/>
                             </li>
                             <li>
@@ -24,7 +24,7 @@
                             </li>
                             <li>
                                 <label>奖品类型：</label>
-                                <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}" style="width: 100px">
+                                <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}" style="width: 120px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
