@@ -35,7 +35,7 @@
                             <input type="text" name="DRAWRESULT"/>
                         </li>
                         <li>
-                            <label>奖品代码：</label>
+                            <label>奖品名称：</label>
                             <select name="PRIZECODE" th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}">
                                 <option value="">所有</option>
                                 <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
@@ -160,7 +160,7 @@
                 },
                 {
                     field: 'drawcode',
-                    title: '抽奖活动代码',
+                    title: '活动名称',
                     formatter: function (value, row, index) {
                         return $.table.selectDrawname(drawInfoList, value);
                     }
