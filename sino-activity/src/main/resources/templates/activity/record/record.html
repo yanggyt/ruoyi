@@ -32,7 +32,11 @@
                         <!--                            </li>-->
                         <li>
                             <label>抽奖结果：</label>
-                            <input type="text" name="DRAWRESULT"/>
+                            <select name="DRAWRESULT" th:with="type=${@dict.getType('drawResult')}" style="width: 80px">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
                         </li>
                         <li>
                             <label>奖品名称：</label>
@@ -127,6 +131,7 @@
     var prefix = ctx + "activity/record";
     var datas = [[${@dict.getType('prizeLevel')}]];
     var prizetypes = [[${@dict.getType('prizeType')}]];
+    var drawResults = [[${@dict.getType('drawResult')}]];
     var drawInfoList = [[${@drawInfo.findDrawInfoList()}]];
     var drawPrizeList = [[${@drawPrize.findDrawPrizeInfoList()}]];
 
@@ -167,7 +172,10 @@
                 },
                 {
                     field: 'drawresult',
-                    title: '抽奖结果'
+                    title: '抽奖结果',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(drawResults, value);
+                    }
                 },
                 {
                     field: 'prizecode',
