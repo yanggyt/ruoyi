@@ -40,7 +40,7 @@
                         <!--                            </li>-->
                         <li>
                             <label>发奖结果：</label>
-                            <select name="AWARDRESULT" th:with="type=${@dict.getType('drawResult')}" style="width: 80px">
+                            <select name="AWARDRESULT" th:with="type=${@dict.getType('drawResult')}" style="width: 100px">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                         th:value="${dict.dictValue}"></option>
@@ -80,7 +80,7 @@
                         </li>
                         <li>
                             <label>奖品类型：</label>
-                            <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}" style="width: 80px">
+                            <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}" style="width: 120px">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                         th:value="${dict.dictValue}"></option>
