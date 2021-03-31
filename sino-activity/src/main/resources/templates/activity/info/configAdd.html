@@ -68,7 +68,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label is-required">奖品发放制度：</label>
+                    <label class="col-sm-4 control-label is-required">奖品发放限制：</label>
                     <div class="col-sm-8">
                         <select name="AWARDTYPE" class="form-control" th:with="type=${@dict.getType('AWARDTYPE')}">
                             <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>

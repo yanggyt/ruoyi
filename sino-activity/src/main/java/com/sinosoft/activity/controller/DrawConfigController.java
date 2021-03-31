@@ -28,7 +28,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 /**
  * 存储奖项配置信息Controller
  *
- * @author ruoyi
+ * @author xlh
  * @date 2021-03-26
  */
 @Controller
