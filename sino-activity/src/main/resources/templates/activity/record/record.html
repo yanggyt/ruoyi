@@ -32,7 +32,7 @@
                         <!--                            </li>-->
                         <li>
                             <label>抽奖结果：</label>
-                            <select name="DRAWRESULT" th:with="type=${@dict.getType('drawResult')}" style="width: 80px">
+                            <select name="DRAWRESULT" th:with="type=${@dict.getType('drawResult')}" style="width: 100px">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                         th:value="${dict.dictValue}"></option>
