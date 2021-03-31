@@ -29,6 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="BUSINESSAREA"    column="BUSINESSAREA"    />
         <result property="CITY"    column="CITY"    />
         <result property="EXTID"    column="EXTID"    />
+        <result property="count"    column="count"    />
     </resultMap>
 
     <sql id="selectDrawAwardRecordVo">
@@ -166,4 +167,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="selectDrawAwardRecordCount"  parameterType="DrawAwardRecord" resultMap="DrawAwardRecordResult">
+        SELECT
+            COUNT(1) AS count
+        FROM
+            draw_award_record a
+        WHERE
+            a.DRAWCODE = #{DRAWCODE}
+        AND a.PRIZECODE = #{PRIZECODE}
+        AND AWARDRESULT = '1'
+    </select>
 </mapper>

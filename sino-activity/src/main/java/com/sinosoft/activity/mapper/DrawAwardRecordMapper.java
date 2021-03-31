@@ -58,4 +58,12 @@ public interface DrawAwardRecordMapper
      * @return 结果
      */
     public int deleteDrawAwardRecordByIds(String[] AWARDRECORDIDs);
+
+    /**
+     * 获取已发放奖品数量
+     * @param drawAwardRecord
+     * @return
+     */
+    public DrawAwardRecord selectDrawAwardRecordCount(DrawAwardRecord drawAwardRecord);
+
 }

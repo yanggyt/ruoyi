@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.sinosoft.activity.domain.DrawAwardRecord;
 import com.sinosoft.activity.domain.DrawConfig;
 import com.sinosoft.activity.domain.DrawPrizeInfo;
+import com.sinosoft.activity.service.IDrawAwardRecordService;
 import com.sinosoft.activity.service.IDrawConfigService;
 import com.sinosoft.activity.service.IDrawPrizeInfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -42,6 +44,8 @@ public class DrawConfigController extends BaseController
 
     @Autowired
     private IDrawPrizeInfoService iDrawPrizeInfoService;
+    @Autowired
+    private IDrawAwardRecordService iDrawAwardRecordService;
     @RequiresPermissions("activity:config:view")
     @GetMapping()
     public String config()
@@ -102,11 +106,13 @@ public class DrawConfigController extends BaseController
     /**
      * 修改存储奖项配置信息
      */
-    @GetMapping("/edit/{DRAWCONFIGID}")
-    public String edit(@PathVariable("DRAWCONFIGID") String DRAWCONFIGID, ModelMap mmap)
+    @GetMapping("/edit/{DRAWCONFIGID}/{PRIZECODE}/{DRAWCODE}")
+    public String edit(@PathVariable("DRAWCONFIGID") String DRAWCONFIGID,@PathVariable("PRIZECODE") String PRIZECODE ,@PathVariable("DRAWCODE") String DRAWCODE ,ModelMap mmap)
     {
         DrawConfig drawConfig = drawConfigService.selectDrawConfigById(DRAWCONFIGID);
+        DrawAwardRecord drawAwardRecord = iDrawAwardRecordService.selectDrawAwardRecordCount(DRAWCODE, PRIZECODE);
         mmap.put("drawConfig", drawConfig);
+        mmap.put("count", drawAwardRecord.getCount());
         return prefix + "/configEdit";
     }
 

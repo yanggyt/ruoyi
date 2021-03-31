@@ -115,7 +115,17 @@ public class DrawAwardRecord extends BaseEntity
     @Excel(name = "扩展")
     private String EXTID;
 
-    public void setAWARDRECORDID(String AWARDRECORDID) 
+    private Integer count;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public void setAWARDRECORDID(String AWARDRECORDID)
     {
         this.AWARDRECORDID = AWARDRECORDID;
     }

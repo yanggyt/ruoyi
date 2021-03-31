@@ -91,4 +91,17 @@ public class DrawAwardRecordServiceImpl implements IDrawAwardRecordService
     {
         return drawAwardRecordMapper.deleteDrawAwardRecordById(AWARDRECORDID);
     }
+
+    /**
+     * 获取已发放奖品数量
+     * @param DRAWCODE
+     * @param prizecode
+     */
+    @Override
+    public DrawAwardRecord selectDrawAwardRecordCount(String DRAWCODE, String prizecode) {
+        DrawAwardRecord drawAwardRecord = new DrawAwardRecord();
+        drawAwardRecord.setDRAWCODE(DRAWCODE);
+        drawAwardRecord.setPRIZECODE(prizecode);
+        return   drawAwardRecordMapper.selectDrawAwardRecordCount(drawAwardRecord);
+    }
 }

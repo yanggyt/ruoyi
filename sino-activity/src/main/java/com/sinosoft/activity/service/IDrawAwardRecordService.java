@@ -58,4 +58,11 @@ public interface IDrawAwardRecordService
      * @return 结果
      */
     public int deleteDrawAwardRecordById(String AWARDRECORDID);
+
+    /**
+     * 获取已发放奖品数量
+     * @param DRAWCODE
+     * @param prizecode
+     */
+    public DrawAwardRecord selectDrawAwardRecordCount(String DRAWCODE, String prizecode);
 }

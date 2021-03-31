@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 存储抽奖特殊规则对象Service接口
  * 
- * @author ruoyi
+ * @author xlh
  * @date 2021-03-25
  */
 public interface IDrawRuleService 
