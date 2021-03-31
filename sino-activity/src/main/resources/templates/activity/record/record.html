@@ -35,8 +35,12 @@
                                 <input type="text" name="PRIZECODE"/>
                             </li>
                             <li>
+                                <label>用户名：</label>
+                                <input type="text" name="USERNAME"/>
+                            </li>
+                            <li>
                                 <label>奖品类型：</label>
-                                <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}">
+                                <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}" style="width: 100px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -58,12 +62,8 @@
 <!--                                <input type="text" name="CHANNEL"/>-->
 <!--                            </li>-->
                             <li>
-                                <label>用户名：</label>
-                                <input type="text" name="USERNAME"/>
-                            </li>
-                            <li>
                                 <label>奖品等级：</label>
-                                <select name="PRIZELEVEL" th:with="type=${@dict.getType('prizeLevel')}">
+                                <select name="PRIZELEVEL" th:with="type=${@dict.getType('prizeLevel')}" style="width: 80px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>

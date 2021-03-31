@@ -20,7 +20,7 @@
                             </li>
                             <li>
                                 <label>次数类型：</label>
-                                <select name="TYPE" th:with="type=${@dict.getType('drawType')}">
+                                <select name="TYPE" th:with="type=${@dict.getType('drawType')}" style="width: 80px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -31,7 +31,7 @@
 <!--                            </li>-->
                             <li>
                                 <label>状态：</label>
-                                <select name="STATE" th:with="type=${@dict.getType('status')}">
+                                <select name="STATE" th:with="type=${@dict.getType('status')}" style="width: 80px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
