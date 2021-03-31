@@ -56,6 +56,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="VALIDATETYPE != null  and VALIDATETYPE != ''"> and VALIDATETYPE = #{VALIDATETYPE}</if>
         </where>
     </select>
+
+    <select id="findDrawInfoList"  resultMap="DrawInfoResult">
+        select DRAWID, DRAWCODE, DRAWTYPE, DRAWNAME from draw_info
+    </select>
     
     <select id="selectDrawInfoById" parameterType="String" resultMap="DrawInfoResult">
 SELECT
