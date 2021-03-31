@@ -33,7 +33,7 @@ public class DrawRecord extends BaseEntity
     private String USERID;
 
     /** 抽奖时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "抽奖时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date DRAWTIME;
 
@@ -50,17 +50,17 @@ public class DrawRecord extends BaseEntity
     private String PRIZETYPE;
 
     /** 账务日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "账务日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date CHECKINGDATE;
 
     /** 创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date CREATETIMESTAMP;
 
     /** 最后修改时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "最后修改时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date LASTUPDATETIMESTAMP;
 
