@@ -15,7 +15,7 @@
                         <!--                                <input type="text" name="DRAWTRANSEQNO"/>-->
                         <!--                            </li>-->
                         <li>
-                            <label>活动代码：</label>
+                            <label>活动名称：</label>
                             <select name="DRAWCODE" th:with="drawinfo=${@drawInfo.findDrawInfoList()}">
                                 <option value="">所有</option>
                                 <option th:each="drawInfo : ${drawinfo}" th:text="${drawInfo.DRAWNAME}"
