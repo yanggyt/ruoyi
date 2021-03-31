@@ -56,7 +56,7 @@
                             <label class="col-sm-4 control-label is-required">开始时间：</label>
                             <div class="col-sm-8">
                                 <div class="input-group date">
-                                    <input name="STARTTIME" th:value="${#dates.format(drawInfo.STARTTIME, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                                    <input name="STARTTIME" th:value="${#dates.format(drawInfo.STARTTIME, 'yyyy-MM-dd HH:mm:ss HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                             <label class="col-sm-4 control-label is-required">结束时间：</label>
                             <div class="col-sm-8">
                                 <div class="input-group date">
-                                    <input name="ENDTIME" th:value="${#dates.format(drawInfo.ENDTIME, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                                    <input name="ENDTIME" th:value="${#dates.format(drawInfo.ENDTIME, 'yyyy-MM-dd HH:mm:ss HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                             <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
                             <div class="col-sm-8">
                                 <div class="input-group date">
-                                    <input name="DAILYSTARTTIME"   th:value="${#dates.format(drawInfo.DAILYSTARTTIME, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                                    <input name="DAILYSTARTTIME"   th:value="${#dates.format(drawInfo.DAILYSTARTTIME, 'yyyy-MM-dd HH:mm:ss HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                             <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
                             <div class="col-sm-8">
                                 <div class="input-group date">
-                                    <input name="DAILYENDTIME"   th:value="${#dates.format(drawInfo.DAILYENDTIME, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                                    <input name="DAILYENDTIME"   th:value="${#dates.format(drawInfo.DAILYENDTIME, 'yyyy-MM-dd HH:mm:ss HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 </div>
                             </div>
@@ -247,27 +247,47 @@
         });
 
         $("input[name='STARTTIME']").datetimepicker({
-            format: "yyyy-mm-dd",
-            minView: "month",
-            autoclose: true
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format:  'yyyy-mm-dd hh:ii:ss'
         });
 
         $("input[name='ENDTIME']").datetimepicker({
-            format: "yyyy-mm-dd",
-            minView: "month",
-            autoclose: true
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format:  'yyyy-mm-dd hh:ii:ss'
         });
 
         $("input[name='DAILYSTARTTIME']").datetimepicker({
-            format: "yyyy-mm-dd",
-            minView: "month",
-            autoclose: true
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format:  'yyyy-mm-dd hh:ii:ss'
         });
 
         $("input[name='DAILYENDTIME']").datetimepicker({
-            format: "yyyy-mm-dd",
-            minView: "month",
-            autoclose: true
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format:  'yyyy-mm-dd hh:ii:ss'
         });
     </script>
 </body>

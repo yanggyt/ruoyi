@@ -8,6 +8,7 @@
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-info-edit" th:object="${drawConfig}">
         <input type="hidden" name="DRAWCONFIGID" th:value="${DRAWCONFIGID}"  />
+        <input  name="count" type="hidden" id="count" th:value="${count}" />
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
@@ -52,7 +53,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label is-required">奖品总量：</label>
                     <div class="col-sm-8">
-                        <input name="TOTALNUMBER"th:field="*{TOTALNUMBER}"  placeholder="奖品总量" class="form-control" type="text" maxlength="30">
+                        <input name="TOTALNUMBER"th:field="*{TOTALNUMBER}"  onkeyup="total()"  id="totalnumber" placeholder="奖品总量" class="form-control" type="text" maxlength="30">
                     </div>
                 </div>
             </div>
@@ -60,7 +61,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label is-required">剩余数量：</label>
                     <div class="col-sm-8">
-                        <input name="AVAILABLENUMBER" th:field="*{AVAILABLENUMBER}" placeholder="剩余数量" class="form-control" type="text" maxlength="30">
+                        <input name="AVAILABLENUMBER" id="availablenumber" placeholder="剩余数量" class="form-control" type="text" maxlength="30" readonly>
                     </div>
                 </div>
             </div>
@@ -68,7 +69,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label is-required">奖品发放制度：</label>
+                    <label class="col-sm-4 control-label is-required">奖品发放限制：</label>
                     <div class="col-sm-8">
                         <select name="AWARDTYPE" class="form-control" th:with="type=${@dict.getType('AWARDTYPE')}">
                             <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{AWARDTYPE}"></option>
@@ -127,11 +128,15 @@
     $("#form-info-edit").validate({
         focusCleanup: true
     });
-
+    function total(){
+        var totalnumber = $("#totalnumber").val() - $("#count").val();
+        $("#availablenumber").val(totalnumber)
+    }
     /**获取奖品及信息列表*/
     $(document).ready(function() {
         var PRIZECODE = [[${drawConfig.PRIZECODE}]];
-
+        var totalnumber = $("#totalnumber").val() - $("#count").val();
+        $("#availablenumber").val(totalnumber)
         var job= "";
         $.ajax({
 

@@ -52,7 +52,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label is-required">奖品总量：</label>
                     <div class="col-sm-8">
-                        <input name="TOTALNUMBER" placeholder="奖品总量" class="form-control" type="text" maxlength="30">
+                        <input name="TOTALNUMBER"  id="totalnumber" placeholder="奖品总量" onkeyup="total()" class="form-control" type="text" maxlength="30">
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label is-required">剩余数量：</label>
                     <div class="col-sm-8">
-                        <input name="AVAILABLENUMBER" placeholder="剩余数量" class="form-control" type="text" maxlength="30">
+                        <input name="AVAILABLENUMBER" id="availablenumber" placeholder="剩余数量" class="form-control" type="text" maxlength="30" readonly>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,10 @@
     $("#form-info-add").validate({
         focusCleanup: true
     });
-
+    function total(){
+         var totalnumber = $("#totalnumber").val();
+        $("#availablenumber").val(totalnumber)
+    }
     /**获取奖品及信息列表*/
     $(document).ready(function() {
         var job= "";
