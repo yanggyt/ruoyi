@@ -18,13 +18,13 @@
                                 <label>任务流水：</label>
                                 <input type="text" name="TASKID"/>
                             </li>
-<!--                            <li>-->
-<!--                                <label>用户标识：</label>-->
-<!--                                <input type="text" name="USERID"/>-->
-<!--                            </li>-->
+                            <li>
+                                <label>用户标识：</label>
+                                <input type="text" name="USERID"/>
+                            </li>
                             <li>
                                 <label>次数类型：</label>
-                                <select name="TYPE" th:with="type=${@dict.getType('drawType')}">
+                                <select name="TYPE" th:with="type=${@dict.getType('drawType')}" style="width: 80px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -43,7 +43,7 @@
 <!--                            </li>-->
                             <li>
                                 <label>状态：</label>
-                                <select name="STATE" th:with="type=${@dict.getType('status')}">
+                                <select name="STATE" th:with="type=${@dict.getType('status')}" style="width: 80px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -102,7 +102,8 @@
                 },
                 {
                     field: 'tasknotifyid',
-                    title: '活动次数记录主键'
+                    title: '活动次数记录主键',
+                    visible: false
                 },
                 {
                     field: 'drawcode',
