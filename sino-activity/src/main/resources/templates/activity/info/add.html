@@ -78,7 +78,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">首次中奖配置：</label>
                         <div class="col-sm-8">
-                            <select name="FIRSTFLAG" class="form-control" th:with="type=${@dict.getType('is_boolean')}">
+                            <select name="FIRSTFLAG" id="FIRSTFLAG" onchange="firstflag()"  class="form-control" th:with="type=${@dict.getType('is_boolean')}">
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                             </select>
                         </div>
@@ -88,7 +88,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
                         <div class="col-sm-8">
-                            <select name="FIRSTAWARDPRIZE" class="form-control" id="firstawardprize">
+                            <select name="FIRSTAWARDPRIZE"  class="form-control" id="firstawardprize" disabled >
                             </select>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
                         <div class="col-sm-8">
-                            <select name="DAILYFLAG" class="form-control" th:with="type=${@dict.getType('is_boolean')}">
+                            <select name="DAILYFLAG" id="DAILYFLAG"  onchange="dailyflag()" class="form-control" th:with="type=${@dict.getType('is_boolean')}">
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                             </select>
                         </div>
@@ -110,7 +110,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
                         <div class="col-sm-8">
-                            <input name="DAILYNUMBER" placeholder="时间段限制次数" class="form-control" type="text" maxlength="30">
+                            <input name="DAILYNUMBER" id="dailynumber" placeholder="时间段限制次数" class="form-control" type="text" maxlength="30" readonly>
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                         <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
-                                <input name="DAILYSTARTTIME" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                <input name="DAILYSTARTTIME" class="form-control" placeholder="HH:mm:ss" type="text">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
                         <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
-                                <input name="DAILYENDTIME" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                <input name="DAILYENDTIME" id="DAILYENDTIME" class="form-control" placeholder="HH:mm:ss" type="text">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                         </div>
@@ -147,7 +147,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
                         <div class="col-sm-8">
-                            <select name="WILLDRAWFLAG" class="form-control" th:with="type=${@dict.getType('is_boolean')}">
+                            <select name="WILLDRAWFLAG" id="WILLDRAWFLAG" onchange="willdrawflag()"  class="form-control" th:with="type=${@dict.getType('is_boolean')}">
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                             </select>
                         </div>
@@ -157,7 +157,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
                         <div class="col-sm-8">
-                            <input name="WILLDRAWAWARDNUMBER" placeholder="抽奖必中计数" class="form-control" type="text" maxlength="30">
+                            <input name="WILLDRAWAWARDNUMBER" id="willdrawawardnumber" placeholder="抽奖必中计数" class="form-control" type="text" maxlength="30" readonly>
                         </div>
                     </div>
                 </div>
@@ -219,6 +219,35 @@
             $.operate.saveModal(prefix+"/add", data);
         }
 
+         //时间段抽奖配置
+        function dailyflag(){
+            var DAILYFLAG = $("#DAILYFLAG").val();
+            if (DAILYFLAG==1){
+                $('#dailynumber').removeAttr('readonly');
+            }else if(DAILYFLAG==0){
+                $("#dailynumber").attr('readonly','true');
+            }
+        }
+        //抽奖必中配置
+        function willdrawflag(){
+            var WILLDRAWFLAG = $("#WILLDRAWFLAG").val();
+            if (WILLDRAWFLAG==1){
+                $('#willdrawawardnumber').removeAttr('readonly');
+            }else if(WILLDRAWFLAG==0){
+                $("#willdrawawardnumber").attr('readonly','true');
+            }
+        }
+
+        //首次中奖配置
+        function firstflag(){
+            var FIRSTFLAG = $("#FIRSTFLAG").val();
+            if (FIRSTFLAG==1){
+                $('#firstawardprize').removeAttr('disabled');
+            }else if(FIRSTFLAG==0){
+                $("#firstawardprize").attr('disabled','true');
+            }
+
+        }
 
         $("input[name='STARTTIME']").datetimepicker({
             weekStart: 1,
@@ -250,7 +279,7 @@
             startView: 2,
             forceParse: 0,
             showMeridian: 1,
-            format:  'yyyy-mm-dd hh:ii:ss'
+            format:  'hh:ii:ss'
         });
 
         $("input[name='DAILYENDTIME']").datetimepicker({
@@ -261,7 +290,7 @@
             startView: 2,
             forceParse: 0,
             showMeridian: 1,
-            format:  'yyyy-mm-dd hh:ii:ss'
+            format:  'hh:ii:ss'
         });
     </script>
 </body>
