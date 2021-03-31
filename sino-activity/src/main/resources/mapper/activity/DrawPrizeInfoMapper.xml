@@ -35,6 +35,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="INTEGRALPROJECTCODE != null  and INTEGRALPROJECTCODE != ''"> and INTEGRALPROJECTCODE = #{INTEGRALPROJECTCODE}</if>
         </where>
     </select>
+
+    <select id="findDrawPrizeInfoList"  resultMap="DrawPrizeInfoResult">
+        <include refid="selectDrawPrizeInfoVo"/>
+    </select>
     
     <select id="selectDrawPrizeInfoById" parameterType="java.lang.String" resultMap="DrawPrizeInfoResult">
         <include refid="selectDrawPrizeInfoVo"/>

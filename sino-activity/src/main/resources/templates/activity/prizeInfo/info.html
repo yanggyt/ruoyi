@@ -11,7 +11,7 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>奖品代码：</label>
+                                <label>奖品名称：</label>
                                 <input type="text" name="PRIZECODE"/>
                             </li>
                             <li>
@@ -19,15 +19,15 @@
                                 <input type="text" name="PRIZENAME"/>
                             </li>
                             <li>
+                                <label>奖品面额：</label>
+                                <input type="text" name="PRIZEVALUE"/>
+                            </li>
+                            <li>
                                 <label>奖品类型：</label>
-                                <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}">
+                                <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}" style="width: 100px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
-                            </li>
-                            <li>
-                                <label>奖品面额：</label>
-                                <input type="text" name="PRIZEVALUE"/>
                             </li>
 <!--                            <li>-->
 <!--                                <label>创建时间：</label>-->
@@ -39,7 +39,7 @@
 <!--                            </li>-->
                             <li>
                                 <label>状态：</label>
-                                <select name="STATUS" th:with="type=${@dict.getType('status')}">
+                                <select name="STATUS" th:with="type=${@dict.getType('status')}" style="width: 80px">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -142,16 +142,17 @@
                     field: 'integralprojectcode',
                     title: '积分项目编码'
                 },
-                {
-                    title: '操作',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.prizeid + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.prizeid + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        return actions.join('');
-                    }
-                }]
+                // {
+                //     title: '操作',
+                //     align: 'center',
+                //     formatter: function(value, row, index) {
+                //         var actions = [];
+                //         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.prizeid + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                //         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.prizeid + '\')"><i class="fa fa-remove"></i>删除</a>');
+                //         return actions.join('');
+                //     }
+                // }
+                ]
             };
             $.table.init(options);
         });

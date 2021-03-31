@@ -29,6 +29,8 @@ public interface DrawInfoMapper
      */
     public List<DrawInfo> selectDrawInfoList(DrawInfo drawInfo);
 
+    List<DrawInfo> findDrawInfoList();
+
     /**
      * 新增抽奖活动管理对象
      * 

@@ -33,6 +33,8 @@ public interface DrawPrizeInfoMapper
      */
     public List<DrawPrizeInfo> selectDrawPrizeInfoList(DrawPrizeInfo drawPrizeInfo);
 
+    List<DrawPrizeInfo> findDrawPrizeInfoList();
+
     /**
      * 新增存储奖品的基础信息
      * 

@@ -16,7 +16,7 @@ import com.ruoyi.common.core.text.Convert;
  * @author xlh
  * @date 2021-03-25
  */
-@Service
+@Service("drawInfo")
 public class DrawInfoServiceImpl implements IDrawInfoService
 {
     @Autowired
@@ -44,6 +44,11 @@ public class DrawInfoServiceImpl implements IDrawInfoService
     public List<DrawInfo> selectDrawInfoList(DrawInfo drawInfo)
     {
         return drawInfoMapper.selectDrawInfoList(drawInfo);
+    }
+
+    @Override
+    public List<DrawInfo> findDrawInfoList() {
+        return drawInfoMapper.findDrawInfoList();
     }
 
     /**

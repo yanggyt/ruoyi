@@ -1,100 +1,111 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('抽奖次数消费信息列表')" />
+    <th:block th:include="include :: header('抽奖次数消费信息列表')"/>
 </head>
 <body class="gray-bg">
-     <div class="container-div">
-        <div class="row">
-            <div class="col-sm-12 search-collapse">
-                <form id="formId">
-                    <div class="select-list">
-                        <ul>
-                            <li>
-                                <label>活动代码：</label>
-                                <input type="text" name="DRAWCODE"/>
-                            </li>
-                            <li>
-                                <label>任务流水：</label>
-                                <input type="text" name="TASKID"/>
-                            </li>
-<!--                            <li>-->
-<!--                                <label>用户标识：</label>-->
-<!--                                <input type="text" name="USERID"/>-->
-<!--                            </li>-->
-                            <li>
-                                <label>次数类型：</label>
-                                <select name="TYPE" th:with="type=${@dict.getType('drawType')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-<!--                            <li>-->
-<!--                                <label>使用次数：</label>-->
-<!--                                <input type="text" name="CONSUMENUMBER"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>使用流水：</label>-->
-<!--                                <input type="text" name="TRANSEQNO"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>使用主键：</label>-->
-<!--                                <input type="text" name="TRADEORDERID"/>-->
-<!--                            </li>-->
-                            <li>
-                                <label>状态：</label>
-                                <select name="STATE" th:with="type=${@dict.getType('status')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-                            <li>
-                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-            </div>
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>活动名称：</label>
+                            <!--                                <input type="text" name="DRAWCODE"/>-->
+                            <select name="DRAWCODE" th:with="drawinfo=${@drawInfo.findDrawInfoList()}">
+                                <option value="">所有</option>
+                                <option th:each="drawInfo : ${drawinfo}" th:text="${drawInfo.DRAWNAME}"
+                                        th:value="${drawInfo.DRAWCODE}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>任务流水：</label>
+                            <input type="text" name="TASKID"/>
+                        </li>
+                        <li>
+                            <label>用户标识：</label>
+                            <input type="text" name="USERID"/>
+                        </li>
+                        <li>
+                            <label>次数类型：</label>
+                            <select name="TYPE" th:with="type=${@dict.getType('drawType')}" style="width: 80px">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <!--                            <li>-->
+                        <!--                                <label>使用次数：</label>-->
+                        <!--                                <input type="text" name="CONSUMENUMBER"/>-->
+                        <!--                            </li>-->
+                        <!--                            <li>-->
+                        <!--                                <label>使用流水：</label>-->
+                        <!--                                <input type="text" name="TRANSEQNO"/>-->
+                        <!--                            </li>-->
+                        <!--                            <li>-->
+                        <!--                                <label>使用主键：</label>-->
+                        <!--                                <input type="text" name="TRADEORDERID"/>-->
+                        <!--                            </li>-->
+                        <li>
+                            <label>状态：</label>
+                            <select name="STATE" th:with="type=${@dict.getType('status')}" style="width: 80px">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
 
-            <div class="btn-group-sm" id="toolbar" role="group">
-<!--                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="activity:consume:add">-->
-<!--                    <i class="fa fa-plus"></i> 添加-->
-<!--                </a>-->
-<!--                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="activity:consume:edit">-->
-<!--                    <i class="fa fa-edit"></i> 修改-->
-<!--                </a>-->
-<!--                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="activity:consume:remove">-->
-<!--                    <i class="fa fa-remove"></i> 删除-->
-<!--                </a>-->
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="activity:consume:export">
-                    <i class="fa fa-download"></i> 导出
-                </a>
-            </div>
-            <div class="col-sm-12 select-table table-striped">
-                <table id="bootstrap-table"></table>
-            </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <!--                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="activity:consume:add">-->
+            <!--                    <i class="fa fa-plus"></i> 添加-->
+            <!--                </a>-->
+            <!--                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="activity:consume:edit">-->
+            <!--                    <i class="fa fa-edit"></i> 修改-->
+            <!--                </a>-->
+            <!--                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="activity:consume:remove">-->
+            <!--                    <i class="fa fa-remove"></i> 删除-->
+            <!--                </a>-->
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="activity:consume:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
         </div>
     </div>
-    <th:block th:include="include :: footer" />
-    <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('activity:consume:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('activity:consume:remove')}]];
-        var prefix = ctx + "activity/consume";
-        var drawTypes = [[${@dict.getType('drawType')}]];
-        var STATEDatas = [[${@dict.getType('status')}]];
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('activity:consume:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('activity:consume:remove')}]];
+    var prefix = ctx + "activity/consume";
+    var drawTypes = [[${@dict.getType('drawType')}]];
+    var STATEDatas = [[${@dict.getType('status')}]];
+    var drawInfoList = [[${@drawInfo.findDrawInfoList()}]];
 
-        $(function() {
-            var options = {
-                url: prefix + "/list",
-                createUrl: prefix + "/add",
-                updateUrl: prefix + "/edit/{id}",
-                removeUrl: prefix + "/remove",
-                exportUrl: prefix + "/export",
-                modalName: "抽奖次数消费信息",
-                columns: [{
-                    checkbox: true
-                },
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "抽奖次数消费信息",
+            columns: [{
+                checkbox: true
+            },
+
                 {
                     field: 'taskconsumeid',
                     title: '业务主键',
@@ -102,30 +113,38 @@
                 },
                 {
                     field: 'tasknotifyid',
-                    title: '活动次数记录主键'
-                },
-                {
-                    field: 'drawcode',
-                    title: '活动代码'
-                },
-                {
-                    field: 'taskid',
-                    title: '任务流水'
+                    title: '活动次数记录主键',
+                    visible: false
                 },
                 {
                     field: 'userid',
                     title: '用户标识'
                 },
                 {
+                    field: 'drawcode',
+                    title: '活动名称',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDrawname(drawInfoList, value);
+                    }
+                },
+                {
                     field: 'type',
                     title: '赠送次数类型',
-                    formatter: function(value, row, index) {
+                    formatter: function (value, row, index) {
                         return $.table.selectDictLabel(drawTypes, value);
                     }
                 },
                 {
+                    field: 'createtimestamp',
+                    title: '创建时间'
+                },
+                {
                     field: 'consumenumber',
                     title: '使用次数'
+                },
+                {
+                    field: 'taskid',
+                    title: '任务流水'
                 },
                 {
                     field: 'transeqno',
@@ -133,19 +152,16 @@
                 },
                 {
                     field: 'tradeorderid',
-                    title: '使用主键'
+                    title: '使用主键',
+                    visible: false
                 },
                 {
                     field: 'state',
                     title: '状态',
-                    formatter: function(value, row, index) {
+                    formatter: function (value, row, index) {
                         return $.table.selectDictLabel(STATEDatas, value);
                     }
                 },
-                // {
-                //     field: 'createtimestamp',
-                //     title: '创建时间'
-                // },
                 // {
                 //     field: 'lastupdatetimestamp',
                 //     title: '最后修改时间'
@@ -160,10 +176,10 @@
                 //         return actions.join('');
                 //     }
                 // }
-                ]
-            };
-            $.table.init(options);
-        });
-    </script>
+            ]
+        };
+        $.table.init(options);
+    });
+</script>
 </body>
 </html>

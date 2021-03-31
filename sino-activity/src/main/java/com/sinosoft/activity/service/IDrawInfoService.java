@@ -30,6 +30,12 @@ public interface IDrawInfoService
     public List<DrawInfo> selectDrawInfoList(DrawInfo drawInfo);
 
     /**
+     * 查询活动列表-下拉用
+     * @return
+     */
+    public List<DrawInfo> findDrawInfoList();
+
+    /**
      * 新增抽奖活动管理对象
      * 
      * @param drawInfo 抽奖活动管理对象
