@@ -14,7 +14,7 @@
                     <label class="col-sm-4 control-label is-required">奖项名称：</label>
                     <div class="col-sm-8">
                         <select name="PRIZELEVEL" class="form-control" th:with="type=${@dict.getType('prizeLevel')}">
-                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{PRIZELEVEL}"></option>
                         </select>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                     <label class="col-sm-4 control-label is-required">奖品发放制度：</label>
                     <div class="col-sm-8">
                         <select name="AWARDTYPE" class="form-control" th:with="type=${@dict.getType('AWARDTYPE')}">
-                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{AWARDTYPE}"></option>
                         </select>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                     <label class="col-sm-4 control-label is-required">领取方式：</label>
                     <div class="col-sm-8">
                         <select name="AWARDMETHOD" class="form-control" th:with="type=${@dict.getType('AWARDMETHOD')}">
-                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{AWARDMETHOD}"></option>
                         </select>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                     <label class="col-sm-4 control-label is-required">状态：</label>
                     <div class="col-sm-8">
                         <select name="STATUS" class="form-control" th:with="type=${@dict.getType('start_stop')}">
-                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{STATUS}"></option>
                         </select>
                     </div>
                 </div>
@@ -132,17 +132,27 @@
     $(document).ready(function() {
         var PRIZECODE = [[${drawConfig.PRIZECODE}]];
 
-        var job= "<option value=''>所有</option>";
+        var job= "";
         $.ajax({
 
                 url:prefix + "/prizeInfo",
                 success: function (data) {
 
                     for(var i in data){
-                        if(data[i].prizecode==PRIZECODE){
+                        if (job.length==0){
+
+                            if(data[i].prizecode==PRIZECODE){
+                                job = "<option value='"+data[i].prizecode+"' selected=\"selected\">"+data[i].prizename+"</option>"
+                            }
+                            job = "<option value='"+data[i].prizecode+"' >"+data[i].prizename+"</option>"
+
+                        }else{
+                            if(data[i].prizecode==PRIZECODE){
                             job += "<option value='"+data[i].prizecode+"' selected=\"selected\">"+data[i].prizename+"</option>"
                         }
                         job += "<option value='"+data[i].prizecode+"' >"+data[i].prizename+"</option>"
+                        }
+
 
                     }
                     $("#PRIZECODE").html(job);

@@ -60,7 +60,7 @@ public class DrawConfig extends BaseEntity
     private Long AVAILABLENUMBER;
 
     /** 状态 */
-    @Excel(name = "状态" ,readConverterExp="1=启用,2=禁用")
+    @Excel(name = "状态" ,readConverterExp="1=启用,2=停用")
     private String STATUS;
 
     /** 创建时间 */
