@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 抽奖活动管理对象Service接口
  * 
- * @author ruoyi
+ * @author xlh
  * @date 2021-03-25
  */
 public interface IDrawInfoService 

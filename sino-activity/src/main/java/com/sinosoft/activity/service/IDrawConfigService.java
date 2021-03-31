@@ -7,7 +7,7 @@ import com.sinosoft.activity.domain.DrawConfig;
 /**
  * 存储奖项配置信息列表Service接口
  * 
- * @author ruoyi
+ * @author xlh
  * @date 2021-03-25
  */
 public interface IDrawConfigService 

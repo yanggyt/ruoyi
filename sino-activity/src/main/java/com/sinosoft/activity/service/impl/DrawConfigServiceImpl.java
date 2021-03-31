@@ -13,7 +13,7 @@ import com.ruoyi.common.core.text.Convert;
 /**
  * 存储奖项配置信息列表Service业务层处理
  * 
- * @author ruoyi
+ * @author xlh
  * @date 2021-03-25
  */
 @Service
