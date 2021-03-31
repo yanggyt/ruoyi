@@ -1,152 +1,169 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('抽奖记录信息列表')" />
+    <th:block th:include="include :: header('抽奖记录信息列表')"/>
 </head>
 <body class="gray-bg">
-     <div class="container-div">
-        <div class="row">
-            <div class="col-sm-12 search-collapse">
-                <form id="formId">
-                    <div class="select-list">
-                        <ul>
-                            <li>
-                                <label>抽奖流水：</label>
-                                <input type="text" name="DRAWTRANSEQNO"/>
-                            </li>
-                            <li>
-                                <label>活动代码：</label>
-                                <input type="text" name="DRAWCODE"/>
-                            </li>
-<!--                            <li>-->
-<!--                                <label>用户标识：</label>-->
-<!--                                <input type="text" name="USERID"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>抽奖时间：</label>-->
-<!--                                <input type="text" class="time-input" placeholder="请选择抽奖时间" name="DRAWTIME"/>-->
-<!--                            </li>-->
-                            <li>
-                                <label>抽奖结果：</label>
-                                <input type="text" name="DRAWRESULT"/>
-                            </li>
-                            <li>
-                                <label>奖品代码：</label>
-                                <input type="text" name="PRIZECODE"/>
-                            </li>
-                            <li>
-                                <label>用户名：</label>
-                                <input type="text" name="USERNAME"/>
-                            </li>
-                            <li>
-                                <label>奖品类型：</label>
-                                <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}" style="width: 100px">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-<!--                            <li>-->
-<!--                                <label>账务日期：</label>-->
-<!--                                <input type="text" class="time-input" placeholder="请选择账务日期" name="CHECKINGDATE"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>创建时间：</label>-->
-<!--                                <input type="text" class="time-input" placeholder="请选择创建时间" name="CREATETIMESTAMP"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>最后修改时间：</label>-->
-<!--                                <input type="text" class="time-input" placeholder="请选择最后修改时间" name="LASTUPDATETIMESTAMP"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>渠道：</label>-->
-<!--                                <input type="text" name="CHANNEL"/>-->
-<!--                            </li>-->
-                            <li>
-                                <label>奖品等级：</label>
-                                <select name="PRIZELEVEL" th:with="type=${@dict.getType('prizeLevel')}" style="width: 80px">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-<!--                            <li>-->
-<!--                                <label>奖品项目编码：</label>-->
-<!--                                <input type="text" name="PROJECTCODE"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>请求来源：</label>-->
-<!--                                <input type="text" name="SOURCE"/>-->
-<!--                            </li>-->
-                            <li>
-                                <label>手机号：</label>
-                                <input type="text" name="PHONE"/>
-                            </li>
-                            <li>
-                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-            </div>
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <!--                            <li>-->
+                        <!--                                <label>抽奖流水：</label>-->
+                        <!--                                <input type="text" name="DRAWTRANSEQNO"/>-->
+                        <!--                            </li>-->
+                        <li>
+                            <label>活动代码：</label>
+                            <select name="DRAWCODE" th:with="drawinfo=${@drawInfo.findDrawInfoList()}">
+                                <option value="">所有</option>
+                                <option th:each="drawInfo : ${drawinfo}" th:text="${drawInfo.DRAWNAME}"
+                                        th:value="${drawInfo.DRAWCODE}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>用户标识：</label>
+                            <input type="text" name="USERID"/>
+                        </li>
+                        <!--                            <li>-->
+                        <!--                                <label>抽奖时间：</label>-->
+                        <!--                                <input type="text" class="time-input" placeholder="请选择抽奖时间" name="DRAWTIME"/>-->
+                        <!--                            </li>-->
+                        <li>
+                            <label>抽奖结果：</label>
+                            <input type="text" name="DRAWRESULT"/>
+                        </li>
+                        <li>
+                            <label>奖品代码：</label>
+                            <select name="PRIZECODE" th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}">
+                                <option value="">所有</option>
+                                <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
+                                        th:value="${drawPrize.PRIZECODE}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>用户名：</label>
+                            <input type="text" name="USERNAME"/>
+                        </li>
+<!--                        <li>-->
+<!--                            <label>奖品类型：</label>-->
+<!--                            <select name="PRIZETYPE" th:with="type=${@dict.getType('prizeType')}" style="width: 100px">-->
+<!--                                <option value="">所有</option>-->
+<!--                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"-->
+<!--                                        th:value="${dict.dictValue}"></option>-->
+<!--                            </select>-->
+<!--                        </li>-->
+                        <!--                            <li>-->
+                        <!--                                <label>账务日期：</label>-->
+                        <!--                                <input type="text" class="time-input" placeholder="请选择账务日期" name="CHECKINGDATE"/>-->
+                        <!--                            </li>-->
+                        <!--                            <li>-->
+                        <!--                                <label>创建时间：</label>-->
+                        <!--                                <input type="text" class="time-input" placeholder="请选择创建时间" name="CREATETIMESTAMP"/>-->
+                        <!--                            </li>-->
+                        <!--                            <li>-->
+                        <!--                                <label>最后修改时间：</label>-->
+                        <!--                                <input type="text" class="time-input" placeholder="请选择最后修改时间" name="LASTUPDATETIMESTAMP"/>-->
+                        <!--                            </li>-->
+                        <!--                            <li>-->
+                        <!--                                <label>渠道：</label>-->
+                        <!--                                <input type="text" name="CHANNEL"/>-->
+                        <!--                            </li>-->
+<!--                        <li>-->
+<!--                            <label>奖品等级：</label>-->
+<!--                            <select name="PRIZELEVEL" th:with="type=${@dict.getType('prizeLevel')}" style="width: 80px">-->
+<!--                                <option value="">所有</option>-->
+<!--                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"-->
+<!--                                        th:value="${dict.dictValue}"></option>-->
+<!--                            </select>-->
+<!--                        </li>-->
+                        <!--                            <li>-->
+                        <!--                                <label>奖品项目编码：</label>-->
+                        <!--                                <input type="text" name="PROJECTCODE"/>-->
+                        <!--                            </li>-->
+                        <!--                            <li>-->
+                        <!--                                <label>请求来源：</label>-->
+                        <!--                                <input type="text" name="SOURCE"/>-->
+                        <!--                            </li>-->
+                        <li>
+                            <label>手机号：</label>
+                            <input type="text" name="PHONE"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
 
-            <div class="btn-group-sm" id="toolbar" role="group">
-<!--                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="activity:record:add">-->
-<!--                    <i class="fa fa-plus"></i> 添加-->
-<!--                </a>-->
-<!--                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="activity:record:edit">-->
-<!--                    <i class="fa fa-edit"></i> 修改-->
-<!--                </a>-->
-<!--                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="activity:record:remove">-->
-<!--                    <i class="fa fa-remove"></i> 删除-->
-<!--                </a>-->
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="activity:record:export">
-                    <i class="fa fa-download"></i> 导出
-                </a>
-            </div>
-            <div class="col-sm-12 select-table table-striped">
-                <table id="bootstrap-table"></table>
-            </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <!--                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="activity:record:add">-->
+            <!--                    <i class="fa fa-plus"></i> 添加-->
+            <!--                </a>-->
+            <!--                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="activity:record:edit">-->
+            <!--                    <i class="fa fa-edit"></i> 修改-->
+            <!--                </a>-->
+            <!--                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="activity:record:remove">-->
+            <!--                    <i class="fa fa-remove"></i> 删除-->
+            <!--                </a>-->
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="activity:record:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
         </div>
     </div>
-    <th:block th:include="include :: footer" />
-    <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('activity:record:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('activity:record:remove')}]];
-        var prefix = ctx + "activity/record";
-        var datas = [[${@dict.getType('prizeLevel')}]];
-        var prizetypes = [[${@dict.getType('prizeType')}]];
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('activity:record:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('activity:record:remove')}]];
+    var prefix = ctx + "activity/record";
+    var datas = [[${@dict.getType('prizeLevel')}]];
+    var prizetypes = [[${@dict.getType('prizeType')}]];
+    var drawInfoList = [[${@drawInfo.findDrawInfoList()}]];
+    var drawPrizeList = [[${@drawPrize.findDrawPrizeInfoList()}]];
 
-        $(function() {
-            var options = {
-                url: prefix + "/list",
-                createUrl: prefix + "/add",
-                updateUrl: prefix + "/edit/{id}",
-                removeUrl: prefix + "/remove",
-                exportUrl: prefix + "/export",
-                modalName: "抽奖记录信息",
-                columns: [{
-                    checkbox: true
-                },
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "抽奖记录信息",
+            columns: [{
+                checkbox: true
+            },
                 {
                     field: 'drawrecordid',
                     title: '主键',
                     visible: false
                 },
                 {
-                    field: 'drawtranseqno',
-                    title: '抽奖流水'
-                },
-                {
-                    field: 'drawcode',
-                    title: '抽奖活动代码'
-                },
-                {
                     field: 'userid',
                     title: '用户标识'
                 },
                 {
-                    field: 'DRAWTIME',
-                    title: '抽奖时间'
+                    field: 'username',
+                    title: '用户名'
+                },
+                {
+                    field: 'phone',
+                    title: '手机号'
+                },
+                {
+                    field: 'drawcode',
+                    title: '抽奖活动代码',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDrawname(drawInfoList, value);
+                    }
                 },
                 {
                     field: 'drawresult',
@@ -154,18 +171,37 @@
                 },
                 {
                     field: 'prizecode',
-                    title: '奖品代码'
+                    title: '奖品名称',
+                    formatter: function (value, row, index) {
+                        return $.table.selectprivename(drawPrizeList, value);
+                    }
+                },
+                {
+                    field: 'DRAWTIME',
+                    title: '抽奖时间'
+                },
+                {
+                    field: 'drawtranseqno',
+                    title: '抽奖流水',
+                    visible: false
+                },
+                {
+                    field: 'projectcode',
+                    title: '奖品项目编码',
+                    visible: false
                 },
                 {
                     field: 'prizetype',
                     title: '奖品类型',
-                    formatter: function(value, row, index) {
+                    visible: false,
+                    formatter: function (value, row, index) {
                         return $.table.selectDictLabel(prizetypes, value);
                     }
                 },
                 {
                     field: 'CHECKINGDATE',
-                    title: '账务日期'
+                    title: '账务日期',
+                    visible: false
                 },
                 // {
                 //     field: 'CREATETIMESTAMP',
@@ -177,34 +213,29 @@
                 // },
                 {
                     field: 'channel',
-                    title: '渠道'
+                    title: '渠道',
+                    visible: false,
                 },
-                {
-                    field: 'username',
-                    title: '用户名'
-                },
+
                 {
                     field: 'prizelevel',
                     title: '奖品等级',
-                    formatter: function(value, row, index) {
+                    visible: false,
+                    formatter: function (value, row, index) {
                         return $.table.selectDictLabel(datas, value);
                     }
                 },
-                {
-                    field: 'projectcode',
-                    title: '奖品项目编码'
-                },
+
                 {
                     field: 'source',
-                    title: '请求来源'
+                    title: '请求来源',
+                    visible: false
                 },
-                {
-                    field: 'phone',
-                    title: '手机号'
-                },
+
                 {
                     field: 'extarea',
-                    title: '扩展域'
+                    title: '扩展域',
+                    visible: false
                 },
                 // {
                 //     title: '操作',
@@ -216,10 +247,10 @@
                 //         return actions.join('');
                 //     }
                 // }
-                ]
-            };
-            $.table.init(options);
-        });
-    </script>
+            ]
+        };
+        $.table.init(options);
+    });
+</script>
 </body>
 </html>

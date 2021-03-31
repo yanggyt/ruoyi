@@ -525,6 +525,21 @@ var table = {
                 });
                 return actions.join('');
             },
+            // 回显奖品名称
+            selectprivename: function(datas, value) {
+                if ($.common.isEmpty(datas) || $.common.isEmpty(value)) {
+                    return '';
+                }
+                var actions = [];
+                $.each(datas, function(index, draw) {
+                    if (draw.prizecode == ('' + value)) {
+                        var listClass = $.common.equals("default", draw.listClass) || $.common.isEmpty(draw.listClass) ? "" : "badge badge-" + draw.listClass;
+                        actions.push($.common.sprintf("<span class='%s'>%s</span>", listClass, draw.prizename));
+                        return false;
+                    }
+                });
+                return actions.join('');
+            },
             // 回显数据字典（字符串数组）
             selectDictLabels: function(datas, value, separator) {
             	if ($.common.isEmpty(datas) || $.common.isEmpty(value)) {

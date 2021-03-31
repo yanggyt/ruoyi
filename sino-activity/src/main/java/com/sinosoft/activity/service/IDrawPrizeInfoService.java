@@ -28,6 +28,12 @@ public interface IDrawPrizeInfoService
     public List<DrawPrizeInfo> selectDrawPrizeInfoList(DrawPrizeInfo drawPrizeInfo);
 
     /**
+     * 奖品列表-下拉框
+     * @return
+     */
+    List<DrawPrizeInfo> findDrawPrizeInfoList();
+
+    /**
      * 新增存储奖品的基础信息
      * 
      * @param drawPrizeInfo 存储奖品的基础信息
