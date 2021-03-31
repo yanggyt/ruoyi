@@ -18,24 +18,7 @@
                                 <label>任务流水：</label>
                                 <input type="text" name="TASKID"/>
                             </li>
-                            <li>
-                                <label>次数类型：</label>
-                                <select name="TYPE" th:with="type=${@dict.getType('drawType')}" style="width: 80px">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
-<!--                            <li>-->
-<!--                                <label>赠送次数：</label>-->
-<!--                                <input type="text" name="ADDNUMBER"/>-->
-<!--                            </li>-->
-                            <li>
-                                <label>状态：</label>
-                                <select name="STATE" th:with="type=${@dict.getType('status')}" style="width: 80px">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
-                            </li>
+
 <!--                            <li>-->
 <!--                                <label>可用次数：</label>-->
 <!--                                <input type="text" name="AVAILABLENUMBER"/>-->
@@ -51,6 +34,24 @@
                             <li>
                                 <label>用户等级：</label>
                                 <input type="text" name="ULEVEL"/>
+                            </li>
+                            <li>
+                                <label>次数类型：</label>
+                                <select name="TYPE" th:with="type=${@dict.getType('drawType')}" style="width: 80px">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <!--                            <li>-->
+                            <!--                                <label>赠送次数：</label>-->
+                            <!--                                <input type="text" name="ADDNUMBER"/>-->
+                            <!--                            </li>-->
+                            <li>
+                                <label>状态：</label>
+                                <select name="STATE" th:with="type=${@dict.getType('status')}" style="width: 80px">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
                             </li>
 <!--                            <li>-->
 <!--                                <label>请求来源：</label>-->
