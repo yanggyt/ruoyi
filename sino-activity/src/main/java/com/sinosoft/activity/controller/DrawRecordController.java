@@ -22,7 +22,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 /**
  * 抽奖记录信息Controller
  * 
- * @author ruoyi
+ * @author dy
  * @date 2021-03-25
  */
 @Controller
