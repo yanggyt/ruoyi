@@ -49,10 +49,10 @@
             <a class="btn btn-primary" onclick="includeArticle(1)">
                 <i class="fa fa-plus"></i> 批量收录
             </a>
-            <a class="btn btn-danger single disabled" style="margin-left: 15px;" onclick="includeArticle(2)">
+            <a class="btn btn-danger" style="margin-left: 15px;" onclick="includeArticle(2)">
                 <i class="fa fa-remove"></i> 批量移除
             </a>
-            <a class="btn btn-success single disabled" style="margin-left: 15px;" onclick="includeArticle(2)">
+            <a class="btn btn-success" style="margin-left: 15px;" data-toggle="modal" data-target="#myModal4">
                 <i class="fa fa-newspaper-o"></i> 创建文章
             </a>
         </div>
@@ -176,6 +176,72 @@
             <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
                 <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
                 <button type="button" class="btn btn-primary" th:onclick="onTimeSend()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">创建文章</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <form class="form-horizontal m" id="form-picAdverts-add3">
+                    <div class="col-md-12" style="margin-top: -15px;">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">广告添加：</label>
+                            <div class="col-sm-8">
+                                <select th:name="advertisementTypeInit" th:id="advertisementTypeInit"
+                                        class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">标签添加：</label>
+                            <div class="col-sm-8">
+                                <select th:name="labelTypeInit" th:id="labelTypeInit"
+                                        class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">必须授权才能观看：</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="isAuthorization" style="margin-top: 9px;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">是否添加预约按钮：</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="isReserve" style="margin-top: 9px;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">优选活动报名：</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="isJoinActive" style="margin-top: 9px;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">创建文章地址：</label>
+                            <div class="col-sm-8">
+                                <textarea style="height: 70px;" id="ccomment" name="comment" class="form-control"
+                                          placeholder="复制任意微信文章链接（格式类似http://mp.weixin.qq.com/s/XXXXXX），一键导入重新发布，即可实现对文章观看情况的追踪。"
+                                          required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
+                <button type="button" class="btn btn-primary" th:onclick="importArticle()">导入文章</button>
             </div>
         </div>
     </div>
@@ -370,6 +436,9 @@
 
         cloumnTreeInit();
         ldcomList();
+
+        advertisementTypeInit();
+        labelTypeInit();
 
         layui.use('laydate', function () {
             var laydate = layui.laydate;
@@ -590,7 +659,7 @@
             //移除绑定事件
             $('#sure').unbind('click');
             $('#myModal1').modal('show');
-            const url = ctx + "column/columnTree?codeType=ARTICLE&flag=1";
+            const url = ctx + "column/columnTrees?codeType=ARTICLE&flag=1";
             let options = {
                 url: url,
                 expandLevel: 1,                // 展开等级节点
@@ -939,26 +1008,187 @@
 
     function loadPreviewData(id) {
         $.ajax({
-            url : prefix + "/preview",
-            data : {
-                "publishId" : id
+            url: prefix + "/preview",
+            data: {
+                "publishId": id
             },
-            dataType : "json",
-            type : "post",
-            cache : false,
-            success : function(data) {
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
                 if (data.result) {
                     $.modal.open('文章预览', data.object.editUrl)
 
-                }else{
+                } else {
                     $.modal.alertError("预览失败，请稍后重试！");
                 }
             },
-            error : function(textStatus, e) {
+            error: function (textStatus, e) {
                 $.modal.alertError('系统异常,请稍后重试!');
             }
         });
     }
+
+    //广告列表初始化
+    function advertisementTypeInit() {
+        $.ajax({
+            type: "post",
+            url: path + 'content/adverts/queryAdvertisements',
+            data: {},
+            async: false,
+            success: function (data) {
+                if (data.result) {
+                    let obj = data.object.advertiseAdList;
+                    for (let i = 0; i < obj.length; i++) {
+                        if (i > 0) {
+                            if (obj[i].adTypeName == obj[i - 1].adTypeName) {
+                                $("#advertisementTypeInit").append(
+                                    "<option value='" + obj[i].adId + "'>"
+                                    + obj[i].adTitle + "</option>");
+                            } else {
+                                // 除了名片的其他类型都按类型名显示
+                                $("#advertisementTypeInit").append(
+                                    "<optgroup label=" + obj[i].adTypeName
+                                    + "></optgroup>");
+                                $("#advertisementTypeInit").append(
+                                    "<option value='" + obj[i].adId + "'>"
+                                    + obj[i].adTypeName + "</option>");
+                            }
+                        } else {
+                            $("#advertisementTypeInit").append(
+                                "<optgroup label=" + obj[i].adTypeName
+                                + "></optgroup>");
+                            $("#advertisementTypeInit").append(
+                                "<option value='" + obj[i].adId + "'>"
+                                + obj[i].adTitle + "</option>");
+                        }
+                    }
+                } else {
+                    $.modal.alertError("网络异常，请稍后再试！");
+                }
+            }
+        });
+    }
+
+    /* 查询标签信息 */
+    function labelTypeInit() {
+        $.ajax({
+            type: "post",
+            url: path + 'label/queryLabel',
+            data: {},
+            async: false,
+            success: function (data) {
+                if (data.result) {
+                    var obj = data.object.labelList;
+                    $("#labelTypeInit").append(
+                        "<optgroup id=" + "LABEL" + " label=" + "标签"
+                        + "></optgroup>");
+                    for (var i = 0; i < obj.length; i++) {
+                        $("#LABEL").append(
+                            "<option value='" + obj[i].labelId + "'>"
+                            + obj[i].labelName + "</option>");
+
+                    }
+                } else {
+                    $.modal.alertError("网络异常，请稍后再试！");
+                }
+            }
+        });
+    }
+
+    function importArticle() {
+        let ids = [];
+        let labelIds = [];
+        let length = $("#advertisementTypeInit option:selected").length;
+        if (length > 1) {
+            $.modal.alertError("请选择一条广告!")
+            return false;
+        }
+        $("#advertisementTypeInit option:selected").each(function () {
+            ids.push($(this).val())
+        })
+        $("#labelTypeInit option:selected").each(function () {
+            labelIds.push($(this).val())
+        })
+        let email = $("#email").val();
+        let isWarrant = $("#isAuthorization").prop('checked');
+        let isReservation = $("#isReserve").prop('checked');
+        let isAddActive = $("#isJoinActive").prop('checked');
+        if (isWarrant) { // 1授权 0未授权
+            var isAuthorization = "1";
+        } else {
+            var isAuthorization = "0";
+        }
+
+        let automaticName = "";
+        let introduction = "";
+
+        if (isReservation) { // 1预约 0不预约
+            var isReserve = "1";
+            if (automaticName == '' || introduction == '') {
+                $.modal.alertError('您填写的按钮名称或预约介绍为空，请重新输入');
+                return;
+            }
+        } else {
+
+            var isReserve = "0";
+        }
+        if (isAddActive) {//1添加活动0不添加
+            var isJoinActive = "1";
+        } else {
+            var isJoinActive = "0";
+        }
+
+        let originalUrl = $("#ccomment").val();
+        // if (originalUrl.indexOf("mp.weixin.qq.com") == -1) {
+        //     $.modal.alertError("文章链接格式不正确！应为微信文章链接");
+        //     return;
+        // }
+        $('#myModal4').modal('hide');
+        $.modal.loading("导入中请等待。。。");
+        $.ajax({
+            url: path + "article/getArticleContentByUrl",
+            data: {
+                'author': email,
+                'createUser': email,
+                'ids': ids.join(','),
+                'isAuthorization': isAuthorization,
+                'isReserve': isReserve,
+                'automaticName': automaticName,
+                'introduction': introduction,
+                'labelIds': labelIds.join(','),
+                'isJoinActive': isJoinActive,
+                'originalUrl': originalUrl
+            },
+            type: "post",
+            success: function (data) {
+                $.modal.closeLoading();
+                if (data.result) {
+                    debugger
+                    localStorage.setItem("nryx_articleContent", data.object.articleContent); // 文章内容
+                    localStorage.setItem("nryx_originalUrl", data.object.originalUrl); // 文章链接
+                    // //文章名称
+                    localStorage.setItem("nryx_articleName", data.object.articleName); // 文章名称
+                    localStorage.setItem("nryx_shareImgUrl", data.object.shareImgUrl); // 文章分享图片
+                    // //文章分享标题
+                    localStorage.setItem("nryx_shareTitle", data.object.shareTitle); // 文章分享标题
+                    localStorage.setItem("nryx_shareDes", data.object.shareDes); // 文章分享描述
+                    localStorage.setItem("nryx_listPicUrl", data.object.listPicUrl); // 文章列表展示图片
+                    localStorage.setItem("nryx_adId", data.object.adId); // 广告id
+                    localStorage.setItem("nryx_isAuthorization", data.object.isAuthorization); // 是否授权
+                    localStorage.setItem("nryx_isJoinActive", data.object.isJoinActive); // 是否添加优选活动
+                    localStorage['nryx_editahref'] = data.object.articleEditUrl;
+                    $.table.refresh();
+                    $.modal.open('创建文章', localStorage['nryx_editahref'])
+                } else {
+                    $.modal.alertError(data.info)
+                }
+            },
+            error: function () {
+                $.modal.closeLoading();
+            }
+        });
+    };
 
 </script>
 </body>

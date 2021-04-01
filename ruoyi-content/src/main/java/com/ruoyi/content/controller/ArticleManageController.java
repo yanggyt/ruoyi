@@ -151,13 +151,15 @@ public class ArticleManageController extends BaseController {
         Thread.currentThread().setName(UUID.randomUUID().toString());
         Message msg = new Message();
         logger.info("通过文章链接获取文章内容控制层方法开始");
-        String createUser = request.getParameter("createUser");
+//        String createUser = request.getParameter("createUser");
+        String createUser = "13152783264";
         if (StringUtils.isBlank(createUser)) {
             logger.info("用户已离线");
             throw new BusinessException("通过文章链接获取文章内容,用户已离线");
         }
         String originalUrl = request.getParameter("originalUrl"); // 文章连接,如果是通过连接导入文章,则必传
-        String author = request.getParameter("author"); // 作者
+//        String author = request.getParameter("author"); // 作者
+        String author = "13152783264";
         String ids = request.getParameter("ids"); // 广告ids
         String isAuthorization = request.getParameter("isAuthorization"); // 是否授权
         String isReserve = request.getParameter("isReserve"); // 是否预约

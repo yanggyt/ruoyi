@@ -5,6 +5,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.content.domain.BaseCode;
 import com.ruoyi.content.domain.BaseCodeTree;
+import com.ruoyi.content.domain.ZtreeDto;
 import com.ruoyi.content.message.Message;
 import com.ruoyi.content.service.BaseCodeService;
 import com.ruoyi.content.utils.DateUtil;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -68,12 +68,11 @@ public class BaseCodeController extends BaseController {
      * 添加栏目
      *
      * @param request
-     * @param response
      * @return
      */
     @RequestMapping("/addColumn")
     @ResponseBody
-    public Message addColumn(HttpServletRequest request, HttpServletResponse response) {
+    public Message addColumn(HttpServletRequest request) {
         logger.info("进入新建栏目控制层方法");
         Message msg = new Message();
         Thread.currentThread().setName(UUID.randomUUID().toString());
@@ -115,12 +114,11 @@ public class BaseCodeController extends BaseController {
      * 更新栏目信息
      *
      * @param request
-     * @param response
      * @return
      */
     @RequestMapping("/updateColumn")
     @ResponseBody
-    public Message updateColumn(HttpServletRequest request, HttpServletResponse response) {
+    public Message updateColumn(HttpServletRequest request) {
         logger.info("进入更新栏目控制层方法");
         Message msg = new Message();
         Thread.currentThread().setName(UUID.randomUUID().toString());
@@ -166,12 +164,11 @@ public class BaseCodeController extends BaseController {
      * 修改栏目信息
      *
      * @param request
-     * @param response
      * @return
      */
     @RequestMapping("/changeState")
     @ResponseBody
-    public Message changeState(HttpServletRequest request, HttpServletResponse response) {
+    public Message changeState(HttpServletRequest request) {
         logger.info("进入修改栏目状态栏目控制层方法");
         Message msg = new Message();
         Thread.currentThread().setName(UUID.randomUUID().toString());
@@ -220,8 +217,7 @@ public class BaseCodeController extends BaseController {
         Message msg = new Message();
         Map<String, Object> policyMap = new HashMap<String, Object>();
         // 银行列表信息
-        List<BaseCode> bankList = new ArrayList<BaseCode>();
-        bankList = baseCodeService.queryBaseCodeByType(basicType);
+        List<BaseCode> bankList = baseCodeService.queryBaseCodeByType(basicType);
         policyMap.put("baseList", bankList);
         msg.setInfo("成功");
         msg.setObject(policyMap);
@@ -232,14 +228,12 @@ public class BaseCodeController extends BaseController {
     /**
      * 获取栏目全部信息
      *
-     * @param request
      * @param response
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = "/queryColumn")
     @ResponseBody
-    public Message getColumn(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public Message getColumn(HttpServletResponse response) {
         response.setHeader("Access-Control-Allow-Origin", "*");
         Message msg = new Message();
         Map<String, Object> policyMap = new HashMap<String, Object>();
@@ -262,148 +256,57 @@ public class BaseCodeController extends BaseController {
      */
     @RequestMapping(value = "/columnTree")
     @ResponseBody
-    public List<Ztree> columnTree(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public List<ZtreeDto> columnTree(HttpServletRequest request, HttpServletResponse response) {
         response.setHeader("Access-Control-Allow-Origin", "*");
-        Message msg = new Message();
-        Map<String, Object> policyMap = new HashMap<String, Object>();
         String codeCode = request.getParameter("codeCode");
         String codeType = request.getParameter("codeType");
         String flag = request.getParameter("flag");
         // 查询栏目树
-        List<BaseCodeTree> columnList = baseCodeService.columnTree(codeCode, codeType);
-//        policyMap.put("columnList", columnList);
-//        msg.setInfo("成功");
-//        msg.setObject(policyMap);
-//        msg.setResult(true);
+        List<ZtreeDto> columnList = baseCodeService.columnTree(codeCode, codeType);
 
         return initZtree(columnList, flag);
     }
 
-    public List<Ztree> initZtree(List<BaseCodeTree> deptList, String flag) {
+    /**
+     * 获取栏目树
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/columnTrees")
+    @ResponseBody
+    public List<ZtreeDto> columnTrees(HttpServletRequest request, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String codeCode = request.getParameter("codeCode");
+        String codeType = request.getParameter("codeType");
+        String flag = request.getParameter("flag");
+        // 查询栏目树
+        List<ZtreeDto> columnList = baseCodeService.columnTrees(codeCode, codeType);
 
-        List<Ztree> ztreeList = new ArrayList<>();
+        return initZtree(columnList, flag);
+    }
+
+    public List<ZtreeDto> initZtree(List<ZtreeDto> deptList, String flag) {
         if (deptList != null && deptList.size() > 0) {
             if (StringUtils.isBlank(flag)) {
-                Ztree z = new Ztree();
+                ZtreeDto z = new ZtreeDto();
                 z.setId("FIRST_COLUMN");
                 z.setpId("");
                 z.setName("栏目");
                 z.setTitle("栏目");
-                ztreeList.add(z);
+                deptList.add(z);
             } else if (StringUtils.equals(flag, "1")) {
-                Ztree z = new Ztree();
+                ZtreeDto z = new ZtreeDto();
                 z.setId("ARTICLE");
                 z.setpId("");
                 z.setName("文库");
                 z.setTitle("文库");
-                ztreeList.add(z);
-            }
-            for (BaseCodeTree dept : deptList) {
-                Ztree ztree = new Ztree();
-                ztree.setId(dept.getCodeCode());
-                ztree.setpId(dept.getCodeType());
-                ztree.setName(dept.getCodeCname());
-                ztree.setTitle(dept.getCodeCname());
-                ztreeList.add(ztree);
+                deptList.add(z);
             }
         }
-        return ztreeList;
-    }
-
-    static class Ztree implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * 节点ID
-         */
-        private String id;
-
-        /**
-         * 节点父ID
-         */
-        private String pId;
-
-        /**
-         * 节点名称
-         */
-        private String name;
-
-        /**
-         * 节点标题
-         */
-        private String title;
-
-        /**
-         * 是否勾选
-         */
-        private boolean checked = false;
-
-        /**
-         * 是否展开
-         */
-        private boolean open = false;
-
-        /**
-         * 是否能勾选
-         */
-        private boolean nocheck = false;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getpId() {
-            return pId;
-        }
-
-        public void setpId(String pId) {
-            this.pId = pId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public boolean isChecked() {
-            return checked;
-        }
-
-        public void setChecked(boolean checked) {
-            this.checked = checked;
-        }
-
-        public boolean isOpen() {
-            return open;
-        }
-
-        public void setOpen(boolean open) {
-            this.open = open;
-        }
-
-        public boolean isNocheck() {
-            return nocheck;
-        }
-
-        public void setNocheck(boolean nocheck) {
-            this.nocheck = nocheck;
-        }
+        return deptList;
     }
 
     /**

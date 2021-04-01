@@ -7,11 +7,16 @@ package com.ruoyi.content.constants;
  */
 public class PropertiesConstants {
 
-    public static final String TEMPLATE_VIEW_PATH = "/WEB-INF/static/template/view.flt";
-    public static final String TEMPLATE_EDIT_PATH = "/WEB-INF/static/template/edit.flt";
+//    public static final String TEMPLATE_VIEW_PATH = "/WEB-INF/static/template/view.flt";
+//    public static final String TEMPLATE_EDIT_PATH = "/WEB-INF/static/template/edit.flt";
+//
+//    public static final String FILE_PATH = "/app/contentMKTCms/webapp/WEB-INF/static/";
+//    public static final String PROJECT_LOCALPATH = "/app/contentMKTCms/webapp";
+    public static final String TEMPLATE_VIEW_PATH = "view.flt";
+    public static final String TEMPLATE_EDIT_PATH = "edit.flt";
 
-    public static final String FILE_PATH = "/app/contentMKTCms/webapp/WEB-INF/static/";
-    public static final String PROJECT_LOCALPATH = "/app/contentMKTCms/webapp";
+    public static final String FILE_PATH = "/Users/liushenlu/Desktop/";
+    public static final String PROJECT_LOCALPATH = "/Users/liushenlu/Desktop";
     public static final String ONLINE_IMG_PATH = "network/article/";
     public static final String OSS_URL = "http://cdn.sinosoftec.com/";
     public static final String OSS_URL_HTTPS = "https://cdn.sinosoftec.com/";

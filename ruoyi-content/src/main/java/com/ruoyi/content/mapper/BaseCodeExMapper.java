@@ -2,6 +2,7 @@ package com.ruoyi.content.mapper;
 
 import com.ruoyi.content.domain.BaseCode;
 import com.ruoyi.content.domain.BaseCodeTree;
+import com.ruoyi.content.domain.ZtreeDto;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -23,4 +24,7 @@ public interface BaseCodeExMapper {
 
     public List<BaseCodeTree> getNextNodeTree(HashMap<String, String> parMap);
 
+    List<ZtreeDto> columnTrees(HashMap<String, String> parMap);
+
+    List<ZtreeDto> getNextNodeTrees(HashMap map);
 }

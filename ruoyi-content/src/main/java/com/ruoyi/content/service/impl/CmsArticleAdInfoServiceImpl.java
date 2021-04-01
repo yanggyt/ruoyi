@@ -2,7 +2,9 @@ package com.ruoyi.content.service.impl;
 
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.content.constants.PropertiesConstants;
+import com.ruoyi.content.domain.ArticleAdInfo;
 import com.ruoyi.content.domain.CmsArticleAdInfo;
+import com.ruoyi.content.mapper.ArticleAdQueryMapper;
 import com.ruoyi.content.mapper.CmsArticleAdInfoMapper;
 import com.ruoyi.content.redis.RedisManager;
 import com.ruoyi.content.service.ICmsArticleAdInfoService;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +32,8 @@ public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
 
     @Autowired
     private CmsArticleAdInfoMapper cmsArticleAdInfoMapper;
+    @Autowired
+    private ArticleAdQueryMapper articleAdQueryMapper;
     @Autowired
     private RedisManager redisManager;
 
@@ -170,5 +175,13 @@ public class CmsArticleAdInfoServiceImpl implements ICmsArticleAdInfoService {
     @Override
     public int deleteCmsArticleAdInfoById(Long adId) {
         return cmsArticleAdInfoMapper.deleteCmsArticleAdInfoById(adId);
+    }
+
+    @Override
+    public List<ArticleAdInfo> queryAdByCompanyId(String companyId) {
+        LOGGER.info("获取到的公司companyId[{}]",companyId);
+        List<ArticleAdInfo> adList = articleAdQueryMapper.queryAdByCompanyId(companyId);
+        LOGGER.info("该公司查询到的广告【{}】", adList.size());
+        return adList;
     }
 }

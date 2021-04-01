@@ -6,7 +6,9 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.content.domain.ArticleAdInfo;
 import com.ruoyi.content.domain.CmsArticleAdInfo;
+import com.ruoyi.content.message.Message;
 import com.ruoyi.content.service.ICmsArticleAdInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * 文章广告Controller
@@ -34,6 +38,30 @@ public class AdvertisementController extends BaseController {
     @GetMapping()
     public String adverts() {
         return prefix + "/adverts";
+    }
+
+    /**
+     * 查询所有广告列表（本程序调用）
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/queryAdvertisements")
+    @ResponseBody
+    public Message queryAdvertisements(HttpServletRequest request, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        Thread.currentThread().setName(UUID.randomUUID().toString());
+        Message msg = new Message();
+        Map<String, Object> adMap = new HashMap<>();
+        String companyId = "1";
+        // 广告列表信息
+        List<ArticleAdInfo> advertiseAdList = cmsArticleAdInfoService.queryAdByCompanyId(companyId);
+        adMap.put("advertiseAdList", advertiseAdList);
+        msg.setInfo("成功");
+        msg.setObject(adMap);
+        msg.setResult(true);
+        return msg;
     }
 
     /**

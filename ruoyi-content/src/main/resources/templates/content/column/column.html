@@ -270,7 +270,7 @@
     });
 
     function queryColumnTree() {
-        var url = ctx + "column/columnTree?codeType=FIRST_COLUMN";
+        var url = ctx + "column/columnTree";
         var options = {
             url: url,
             expandLevel: 1,
@@ -654,7 +654,6 @@
 
     // 编辑后保存操作
     function editColum() {
-        debugger
         let id = $('#asdid').val();
         let rowData = $("#" + table.options.id).bootstrapTable('getRowByUniqueId', id);
         let cName = $("#cName").val();

@@ -3,6 +3,7 @@ package com.ruoyi.content.service.impl;
 import com.ruoyi.content.domain.BaseCode;
 import com.ruoyi.content.domain.BaseCodeExample;
 import com.ruoyi.content.domain.BaseCodeTree;
+import com.ruoyi.content.domain.ZtreeDto;
 import com.ruoyi.content.exception.ParameterException;
 import com.ruoyi.content.mapper.BaseCodeExMapper;
 import com.ruoyi.content.mapper.BaseCodeMapper;
@@ -31,6 +32,17 @@ import java.util.Set;
 @Service
 public class BaseCodeServiceImpl implements BaseCodeService {
     private static final Logger logger = LoggerFactory.getLogger(BaseCodeServiceImpl.class);
+
+    static List<String> columnList = new ArrayList<>();
+
+    static {
+        columnList.add("INCREASE_ARTICLE");
+        columnList.add("ARTICLE");
+        columnList.add("GALLERY");
+        columnList.add("FIRST_COLUMN");
+        columnList.add("INCREASE_GALLERY");
+    }
+
     @Autowired
     private BaseCodeMapper baseCodeMapper;
     @Autowired
@@ -350,6 +362,7 @@ public class BaseCodeServiceImpl implements BaseCodeService {
                             logger.info("删除的redis的key是：" + "baseCode_companyId" + companyId + "_branchId" + baseCode.getBranchId() + "_" + delCodeType);
                             redisManager.delete("baseCode_companyId" + companyId + "_branchId" + baseCode.getBranchId() + "_" + delCodeType);
                         }
+                        recursionDelete(baseCode);
                         logger.info("成功删除栏目状态！");
                     } else {
                         logger.info("删除栏目状态失败！");
@@ -368,6 +381,25 @@ public class BaseCodeServiceImpl implements BaseCodeService {
         }
         logger.info("删除栏目状态的业务方法结束。");
         return 1;
+    }
+
+    private void recursionDelete(BaseCode baseCode) {
+        if (!columnList.contains(baseCode.getCodeType())) {
+            return;
+        }
+        BaseCodeExample example = new BaseCodeExample();
+        example.createCriteria().andCodeTypeEqualTo(baseCode.getCodeCode());
+        List<BaseCode> baseCodeList = baseCodeMapper.selectByExample(example);
+        if (baseCodeList != null && baseCodeList.size() > 0) {
+            for (BaseCode base : baseCodeList) {
+                //标志位0:有效1:无效;2删除
+                base.setState("2");
+                base.setUpdateTime(DateUtil.getDate());
+                base.setUpdateUser("");
+                baseCodeMapper.updateByPrimaryKeySelective(base);
+                recursionDelete(base);
+            }
+        }
     }
 
     /**
@@ -454,45 +486,35 @@ public class BaseCodeServiceImpl implements BaseCodeService {
     }
 
     @Override
-    public List<BaseCodeTree> columnTree(String codeCode, String codeType) {
+    public List<ZtreeDto> columnTree(String codeCode, String codeType) {
         logger.info("进入查询栏目树的方法");
-        if (StringUtils.isAllBlank(codeCode, codeType)) {
-            logger.info("查询栏目树请求参数不正确codeCode【{}】", codeCode);
-            throw new ParameterException("创建失败，参数不足！");
-        }
-        List<BaseCodeTree> list = null;
-        String companyId = "1";
         String branchId = "86";
         String state = "0";
-        HashMap<String, String> parMap = new HashMap<String, String>();
+        HashMap<String, String> parMap = new HashMap<>();
         parMap.put("codeCode", codeCode);
-        parMap.put("companyId", companyId);
+        parMap.put("companyId", "1");
         parMap.put("state", state);
         parMap.put("codeType", codeType);
         if (!"86".equals(branchId)) {
             parMap.put("branchId", branchId);
         }
-        list = baseCodeExMapper.columnTree(parMap);
-        List<BaseCodeTree> baseCodeList = new ArrayList<>();
-        if (list != null && list.size() > 0) {
-            recursion(list, baseCodeList);
-        }
+        List<ZtreeDto> list = baseCodeExMapper.columnTrees(parMap);
         logger.info("查询栏目树结束，查询到的结果为【{}】" + JsonUtil.objectToJackson(list));
         logger.info("查询栏目信息的方法结束！");
-        return baseCodeList;
+        return list;
     }
 
-    private void recursion(List<BaseCodeTree> baseCodeList, List<BaseCodeTree> list1) {
-        for (BaseCodeTree baseCode : baseCodeList) {
+    private void recursion(List<ZtreeDto> baseCodeList, List<ZtreeDto> list1, String companyId, String state, String branchId) {
+        for (ZtreeDto baseCode : baseCodeList) {
             HashMap map = new HashMap();
-            map.put("CODE_CODE", baseCode.getCodeCode());
-            map.put("parentCompanyId", baseCode.getCompanyId());
-            map.put("parentState", baseCode.getState());
-            map.put("parentBranchId", baseCode.getBranchId());
-            List<BaseCodeTree> list = baseCodeExMapper.getNextNodeTree(map);
+            map.put("CODE_CODE", baseCode.getId());
+            map.put("parentCompanyId", companyId);
+            map.put("parentState", state);
+            map.put("parentBranchId", branchId);
+            List<ZtreeDto> list = baseCodeExMapper.getNextNodeTrees(map);
             list1.add(baseCode);
             if (list != null && list.size() > 0) {
-                recursion(list, list1);
+                recursion(list, list1, companyId, state, branchId);
             }
         }
     }
@@ -585,6 +607,26 @@ public class BaseCodeServiceImpl implements BaseCodeService {
         }
         logger.info("操作栏目排序业务层方法结束");
         return msg;
+    }
+
+    @Override
+    public List<ZtreeDto> columnTrees(String codeCode, String codeType) {
+        logger.info("进入查询栏目树的方法");
+        String branchId = "86";
+        String state = "0";
+        HashMap<String, String> parMap = new HashMap<>();
+        parMap.put("codeCode", codeCode);
+        parMap.put("companyId", "1");
+        parMap.put("state", state);
+        parMap.put("codeType", codeType);
+        if (!"86".equals(branchId)) {
+            parMap.put("branchId", branchId);
+        }
+        List<ZtreeDto> list = baseCodeExMapper.columnTrees(parMap);
+        List<ZtreeDto> list1 = new ArrayList<>();
+        recursion(list, list1, "1", state, branchId);
+        logger.info("查询栏目信息的方法结束！");
+        return list1;
     }
 
     @Override

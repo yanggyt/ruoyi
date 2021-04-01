@@ -120,5 +120,50 @@
 		</if>
 		order by ORDER_NO*1,CREATE_TIME
 	</select>
+
+	<select id="columnTrees" resultType="com.ruoyi.content.domain.ZtreeDto" parameterType="map">
+		select  CODE_CODE id,
+				CODE_TYPE pId,
+				CODE_CNAME name,
+				CODE_CNAME title
+		from base_code
+		<where>
+			<if test="codeCode != null and codeCode !=''">
+				and CODE_CODE = #{codeCode,jdbcType=VARCHAR}
+			</if>
+			<if test="codeType != null and codeType !=''">
+				and CODE_TYPE = #{codeType,jdbcType=VARCHAR}
+			</if>
+			<if test="companyId != null and companyId !=''">
+				and COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+			</if>
+			<if test="state != null and state !=''">
+				and STATE = #{state,jdbcType=VARCHAR}
+			</if>
+			<if test="branchId != null and branchId !=''">
+				and BRANCH_ID like concat("%",concat(#{branchId,jdbcType=VARCHAR},"%"))
+			</if>
+		</where>
+		order by ORDER_NO*1,CREATE_TIME
+	</select>
+
+	<select id="getNextNodeTrees" resultType="com.ruoyi.content.domain.ZtreeDto" parameterType="map">
+		select  CODE_CODE id,
+		CODE_TYPE pId,
+		CODE_CNAME name,
+		CODE_CNAME title
+		from base_code
+		WHERE CODE_TYPE = #{CODE_CODE}
+		<if test="parentCompanyId != null and parentCompanyId !=''">
+			and COMPANY_ID = #{parentCompanyId}
+		</if>
+		<if test="parentState != null and parentState !=''">
+			and STATE = #{parentState}
+		</if>
+		<if test="parentBranchId != null and parentBranchId !=''">
+			and BRANCH_ID like concat("%",concat(#{parentBranchId},"%"))
+		</if>
+		order by ORDER_NO*1,CREATE_TIME
+	</select>
 	
 </mapper>

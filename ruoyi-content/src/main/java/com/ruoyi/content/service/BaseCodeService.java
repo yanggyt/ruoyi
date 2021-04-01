@@ -2,6 +2,7 @@ package com.ruoyi.content.service;
 
 import com.ruoyi.content.domain.BaseCode;
 import com.ruoyi.content.domain.BaseCodeTree;
+import com.ruoyi.content.domain.ZtreeDto;
 import com.ruoyi.content.message.Message;
 
 import java.util.List;
@@ -87,7 +88,7 @@ public interface BaseCodeService {
      * @param codeType
      * @return
      */
-    public List<BaseCodeTree> columnTree(String codeCode, String codeType);
+    public List<ZtreeDto> columnTree(String codeCode, String codeType);
 
     /**
      * 操作栏目排序
@@ -106,4 +107,5 @@ public interface BaseCodeService {
      */
     List<BaseCodeTree> baseColumnTree(String codeCode);
 
+    List<ZtreeDto> columnTrees(String codeCode, String codeType);
 }
