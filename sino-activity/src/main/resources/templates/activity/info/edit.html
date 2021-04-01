@@ -123,7 +123,7 @@
                             <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
                             <div class="col-sm-8">
                                 <div class="input-group date">
-                                    <input name="DAILYSTARTTIME"  th:field="*{DAILYSTARTTIME}"  class="form-control" placeholder="HH:mm:ss" type="text">
+                                    <input name="DAILYSTARTTIME" id="dailystarttime"  th:field="*{DAILYSTARTTIME}"  class="form-control" placeholder="HH:mm:ss" type="text">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                             <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
                             <div class="col-sm-8">
                                 <div class="input-group date">
-                                    <input name="DAILYENDTIME" th:field="*{DAILYENDTIME}"  class="form-control" placeholder="HH:mm:ss" type="text">
+                                    <input name="DAILYENDTIME" id="dailyendtime" th:field="*{DAILYENDTIME}"  class="form-control" placeholder="HH:mm:ss" type="text">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 </div>
                             </div>
@@ -195,11 +195,13 @@
         $(document).ready(function() {
             var DAILYFLAG = $("#DAILYFLAG").val();
             if(DAILYFLAG==0){
-                $("#dailynumber").attr('readonly','true');
+                $("#dailynumber").attr('disabled','true');
+                $("#dailystarttime").attr('disabled','true');
+                $("#dailyendtime").attr('disabled','true');
             }
             var WILLDRAWFLAG = $("#WILLDRAWFLAG").val();
           if(WILLDRAWFLAG==0){
-                $("#willdrawawardnumber").attr('readonly','true');
+                $("#willdrawawardnumber").attr('disabled','true');
               $("#willdrawawardprize").attr('disabled','true');
             }
             var FIRSTFLAG = $("#FIRSTFLAG").val();
@@ -263,19 +265,24 @@
         function dailyflag(){
             var DAILYFLAG = $("#DAILYFLAG").val();
             if (DAILYFLAG==1){
-                $('#dailynumber').removeAttr('readonly');
+                $('#dailynumber').removeAttr('disabled');
+                $('#dailystarttime').removeAttr('disabled');
+                $('#dailyendtime').removeAttr('disabled');
             }else if(DAILYFLAG==0){
-                $("#dailynumber").attr('readonly','true');
+                $("#dailynumber").attr('disabled','true');
+                $("#dailystarttime").attr('disabled','true');
+                $("#dailyendtime").attr('disabled','true');
+
             }
         }
         //抽奖必中配置
         function willdrawflag(){
             var WILLDRAWFLAG = $("#WILLDRAWFLAG").val();
             if (WILLDRAWFLAG==1){
-                $('#willdrawawardnumber').removeAttr('readonly');
+                $('#willdrawawardnumber').removeAttr('disabled');
                 $('#willdrawawardprize').removeAttr('disabled');
             }else if(WILLDRAWFLAG==0){
-                $("#willdrawawardnumber").attr('readonly','true');
+                $("#willdrawawardnumber").attr('disabled','true');
                 $("#willdrawawardprize").attr('disabled','true');
             }
         }
