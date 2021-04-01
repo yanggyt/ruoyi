@@ -170,7 +170,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
                             <div class="col-sm-8">
-                                <select name="WILLDRAWAWARDPRIZE"  class="form-control" id="willdrawawardprize">
+                                <select name="WILLDRAWAWARDPRIZE"   class="form-control" id="willdrawawardprize">
                                 </select>
                             </div>
                         </div>
@@ -200,6 +200,7 @@
             var WILLDRAWFLAG = $("#WILLDRAWFLAG").val();
           if(WILLDRAWFLAG==0){
                 $("#willdrawawardnumber").attr('readonly','true');
+              $("#willdrawawardprize").attr('disabled','true');
             }
             var FIRSTFLAG = $("#FIRSTFLAG").val();
          if(FIRSTFLAG==0){
@@ -272,8 +273,10 @@
             var WILLDRAWFLAG = $("#WILLDRAWFLAG").val();
             if (WILLDRAWFLAG==1){
                 $('#willdrawawardnumber').removeAttr('readonly');
+                $('#willdrawawardprize').removeAttr('disabled');
             }else if(WILLDRAWFLAG==0){
                 $("#willdrawawardnumber").attr('readonly','true');
+                $("#willdrawawardprize").attr('disabled','true');
             }
         }
 
