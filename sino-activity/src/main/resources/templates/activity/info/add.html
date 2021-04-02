@@ -8,26 +8,36 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-info-add">
-                <h4 class="form-header h4">活动管理</h4>
+
             <div id="smartwizard">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#step-1"> 第一步 </a>
+                        <a class="nav-link" href="#step-1"> 基本信息 </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#step-2"> 第二步 </a>
+                        <a class="nav-link" href="#step-2"> 选择UI模板 </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#step-3"> 第三步 </a>
+                        <a class="nav-link" href="#step-3"> 配置展现内容 </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#step-4"> 第四步 </a>
+                        <a class="nav-link" href="#step-4"> 选择玩法 </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#step-4"> 配置收集信息 </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#step-4"> 配置分享信息 </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#step-4"> 关注二维码 </a>
                     </li>
                 </ul>
-                <div class="tab-content">
+                <div class="tab-content" style="height: 500px;">
                     <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
                         <div>
                             <form class="form form-horizontal m-t">
+                                <h4 class="form-header h4">第1步-基本信息</h4>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
@@ -98,193 +108,209 @@
                     <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
                         <div>
                             <form class="form form-horizontal m-t">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">性别：</label>
-                                    <div class="col-sm-8">
-                                        <select name="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
-                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">时间：</label>
-                                    <div class="col-sm-8">
-                                        <input id="time" name="time" class="form-control time-input" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">状态：</label>
-                                    <div class="col-sm-8">
-                                        <div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">
-                                            <input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${dict.default}">
-                                            <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
-                                        </div>
-                                    </div>
-                                </div>
+                                <h4 class="form-header h4">第2步-选择UI模板</h4>
+                                分格查询字典表 单选按钮
+                                <h4 class="form-header h4">字典表显示字段</h4>
+                                <img src="file://C:/Users/dengyu/Desktop/1.jpg" width="104" height="142">
                             </form>
                         </div>
                     </div>
                     <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
-                        <div class="m-t-md">
-                            <p>1、如果需要工具栏在页面底部显示, 将style中下面的部分取消注释<blockquote>.sw>.toolbar-bottom </blockquote></p>
-                            <p>2、如果设置了自动调节高度为false, 将style中下面的部分取消注释<blockquote>.sw>.tab-content </blockquote></p>
-                            <p>3、工具栏的按钮样式会被表单插件中.btn样式覆盖导致bootstrap中的按钮样式无效, 如果需要改变按钮样式可以自己定义并提高优先级</blockquote></p>
-                        </div>
+                        <form class="form form-horizontal m-t">
+                            <h4 class="form-header h4">第3步-配置展现内容</h4>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">活动标题：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">活动描述：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">活动描述：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">背景图片：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">自定义按钮1：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">按钮1跳转链接：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">自定义按钮2：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">按钮2跳转链接：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </form>
                     </div>
                     <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
-                        <div class="m-t-md">
-                            <h3>测试多行显示</h3>
-                            <pre style="overflow-x: hidden;">
-$('#smartwizard').smartWizard({
-  selected: 0, // Initial selected step, 0 = first step
-  theme: 'default', // theme for the wizard, related css need to include for other than default theme
-  justified: true, // Nav menu justification. true/false
-  darkMode:false, // Enable/disable Dark Mode if the theme supports. true/false
-  autoAdjustHeight: true, // Automatically adjust content height
-  cycleSteps: false, // Allows to cycle the navigation of steps
-  backButtonSupport: true, // Enable the back button support
-  enableURLhash: true, // Enable selection of the step based on url hash
-  transition: {
-      animation: 'none', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
-      speed: '400', // Transion animation speed
-      easing:'' // Transition animation easing. Not supported without a jQuery easing plugin
-  },
-  toolbarSettings: {
-      toolbarPosition: 'bottom', // none, top, bottom, both
-      toolbarButtonPosition: 'right', // left, right, center
-      showNextButton: true, // show/hide a Next button
-      showPreviousButton: true, // show/hide a Previous button
-      toolbarExtraButtons: [] // Extra buttons to show on toolbar, array of jQuery input/buttons elements
-  },
-  anchorSettings: {
-      anchorClickable: true, // Enable/Disable anchor navigation
-      enableAllAnchors: false, // Activates all anchors clickable all times
-      markDoneStep: true, // Add done state on navigation
-      markAllPreviousStepsAsDone: true, // When a step selected by url hash, all previous steps are marked done
-      removeDoneStepOnNavigateBack: false, // While navigate back done step after active step will be cleared
-      enableAnchorOnDoneStep: true // Enable/Disable the done steps navigation
-  },
-  keyboardSettings: {
-      keyNavigation: true, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
-      keyLeft: [37], // Left key code
-      keyRight: [39] // Right key code
-  },
-  lang: { // Language variables for button
-      next: 'Next',
-      previous: 'Previous'
-  },
-  disabledSteps: [], // Array Steps disabled
-  errorSteps: [], // Highlight step with errors
-  hiddenSteps: [] // Hidden steps
-});
-										</pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-                <h4 class="form-header h4">活动规则</h4>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">首次中奖配置：</label>
-                        <div class="col-sm-8">
-                            <select name="FIRSTFLAG" id="FIRSTFLAG" onchange="firstflag()"  class="form-control" th:with="type=${@dict.getType('is_boolean')}">
-                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
-                        <div class="col-sm-8">
-                            <select name="FIRSTAWARDPRIZE"  class="form-control" id="firstawardprize" disabled >
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
-                        <div class="col-sm-8">
-                            <select name="DAILYFLAG" id="DAILYFLAG"  onchange="dailyflag()" class="form-control" th:with="type=${@dict.getType('is_boolean')}">
-                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
-                        <div class="col-sm-8">
-                            <input name="DAILYNUMBER" id="dailynumber" placeholder="时间段限制次数" class="form-control" type="text" maxlength="30" disabled>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
-                        <div class="col-sm-8">
-                            <div class="input-group date">
-                                <input name="DAILYSTARTTIME" id="dailystarttime"   class="form-control" placeholder="HH:mm:ss" type="text" disabled>
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <h4 class="form-header h4">活动规则</h4>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">首次中奖配置：</label>
+                                    <div class="col-sm-8">
+                                        <select name="FIRSTFLAG" id="FIRSTFLAG" onchange="firstflag()"  class="form-control" th:with="type=${@dict.getType('is_boolean')}">
+                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
+                                    <div class="col-sm-8">
+                                        <select name="FIRSTAWARDPRIZE"  class="form-control" id="firstawardprize" disabled >
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
-                        <div class="col-sm-8">
-                            <div class="input-group date">
-                                <input name="DAILYENDTIME" id="dailyendtime" class="form-control" placeholder="HH:mm:ss" type="text" disabled>
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
+                                    <div class="col-sm-8">
+                                        <select name="DAILYFLAG" id="DAILYFLAG"  onchange="dailyflag()" class="form-control" th:with="type=${@dict.getType('is_boolean')}">
+                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
+                                    <div class="col-sm-8">
+                                        <input name="DAILYNUMBER" id="dailynumber" placeholder="时间段限制次数" class="form-control" type="text" maxlength="30" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group date">
+                                            <input name="DAILYSTARTTIME" id="dailystarttime"   class="form-control" placeholder="HH:mm:ss" type="text" disabled>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group date">
+                                            <input name="DAILYENDTIME" id="dailyendtime" class="form-control" placeholder="HH:mm:ss" type="text" disabled>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
+                                    <div class="col-sm-8">
+                                        <select name="WILLDRAWFLAG" id="WILLDRAWFLAG" onchange="willdrawflag()"  class="form-control" th:with="type=${@dict.getType('is_boolean')}">
+                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
+                                    <div class="col-sm-8">
+                                        <input name="WILLDRAWAWARDNUMBER" id="willdrawawardnumber" placeholder="抽奖必中计数" class="form-control" type="text" maxlength="30" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
+                                    <div class="col-sm-8">
+                                        <select name="WILLDRAWAWARDPRIZE"  class="form-control" id="willdrawawardprize" disabled>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-
-
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
-                        <div class="col-sm-8">
-                            <select name="WILLDRAWFLAG" id="WILLDRAWFLAG" onchange="willdrawflag()"  class="form-control" th:with="type=${@dict.getType('is_boolean')}">
-                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
-                        <div class="col-sm-8">
-                            <input name="WILLDRAWAWARDNUMBER" id="willdrawawardnumber" placeholder="抽奖必中计数" class="form-control" type="text" maxlength="30" disabled>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
-                        <div class="col-sm-8">
-                            <select name="WILLDRAWAWARDPRIZE"  class="form-control" id="willdrawawardprize" disabled>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
             </form>
     </div>
     <th:block th:include="include :: footer" />
@@ -431,7 +457,7 @@ $('#smartwizard').smartWizard({
             // 初始化表单向导组件
             $('#smartwizard').smartWizard({
                 theme: 'dots', // default, arrows, dots, progress
-                autoAdjustHeight : false, // 自动调整高度, 默认true
+                autoAdjustHeight : true, // 自动调整高度, 默认true
                 enableURLhash:false, //开启URL hash,开启后点击浏览器前进后退按钮会执行下一步和上一步操作
                 transition: {
                     animation: 'slide-horizontal', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
