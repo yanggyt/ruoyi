@@ -1,129 +1,181 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="include :: header('创建活动')" />
-    <th:block th:include="include :: datetimepicker-css" />
-    <th:block th:include="include :: jquery-smartwizard-css" />
+    <th:block th:include="include :: header('创建活动')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+    <th:block th:include="include :: jquery-smartwizard-css"/>
 </head>
-<body class="white-bg">
-    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-info-add">
+<style type='text/css'>
+    .rightarea
+    {
+        float: left;
+        width: 40%;
+        height: 300px;
+    }
+    .leftarea
+    {
+        float: left;
+        width: 50%;
+        height: 300px;
+    }
 
-            <div id="smartwizard">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#step-1"> 基本信息 </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#step-2"> 选择UI模板 </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#step-3"> 配置展现内容 </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#step-4"> 选择玩法 </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#step-4"> 配置收集信息 </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#step-4"> 配置分享信息 </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#step-4"> 关注二维码 </a>
-                    </li>
-                </ul>
-                <div class="tab-content" style="height: 500px;">
-                    <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
-                        <div>
-                            <form class="form form-horizontal m-t">
-                                <h4 class="form-header h4">第1步-基本信息</h4>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">活动名称：</label>
-                                            <div class="col-sm-8">
-                                                <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">状态：</label>
-                                            <div class="col-sm-8">
-                                                <select name="STATUS" class="form-control" th:with="type=${@dict.getType('start_stop')}">
-                                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">消耗对象：</label>
-                                            <div class="col-sm-8">
-                                                <select name="EXPENO" class="form-control" th:with="type=${@dict.getType('expeType')}">
-                                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">消耗价值：</label>
-                                            <div class="col-sm-8">
-                                                <input name="EXPENOVALUE" placeholder="消耗价值" class="form-control" type="text" maxlength="30">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">开始时间：</label>
-                                            <div class="col-sm-8">
-                                                <div class="input-group date">
-                                                    <input name="STARTTIME" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">结束时间：</label>
-                                            <div class="col-sm-8">
-                                                <div class="input-group date">
-                                                    <input name="ENDTIME" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
-                        <div>
-                            <form class="form form-horizontal m-t">
-                                <h4 class="form-header h4">第2步-选择UI模板</h4>
-                                分格查询字典表 单选按钮
-                                <h4 class="form-header h4">字典表显示字段</h4>
-                                <img src="file://C:/Users/dengyu/Desktop/1.jpg" width="104" height="142">
-                            </form>
-                        </div>
-                    </div>
-                    <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+    .sw > .tab-content {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .col-sm-6 {
+        width: 70%;
+    }
+    .drawNamePic{
+        text-align:center;
+        position: absolute;
+        top: 100px;
+        font-size: 37px;
+        left: 0px;
+        color:#F00;
+        width: 100%;
+    }
+    .drawDescribePic{
+        text-align:center;
+        position: absolute;
+        top: 150px;
+        font-size: 20px;
+        left: 0px;
+        color:#F00;
+        width: 100%;
+    }
+
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-info-add">
+
+        <div id="smartwizard">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-1"> 基本信息 </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-2"> 选择UI模板 </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-3"> 配置展现内容 </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-4"> 选择玩法 </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-4"> 配置收集信息 </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-4"> 配置分享信息 </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#step-4"> 关注二维码 </a>
+                </li>
+            </ul>
+            <div class="tab-content" style="height: 610px;">
+                <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+                    <div>
                         <form class="form form-horizontal m-t">
+                            <h4 class="form-header h4">第1步-基本信息</h4>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">活动名称：</label>
+                                        <div class="col-sm-8">
+                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text"
+                                                   maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">状态：</label>
+                                        <div class="col-sm-8">
+                                            <select name="STATUS" class="form-control"
+                                                    th:with="type=${@dict.getType('start_stop')}">
+                                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                        th:value="${dict.dictValue}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">消耗对象：</label>
+                                        <div class="col-sm-8">
+                                            <select name="EXPENO" class="form-control"
+                                                    th:with="type=${@dict.getType('expeType')}">
+                                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                        th:value="${dict.dictValue}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">消耗价值：</label>
+                                        <div class="col-sm-8">
+                                            <input name="EXPENOVALUE" placeholder="消耗价值" class="form-control"
+                                                   type="text" maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">开始时间：</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group date">
+                                                <input name="STARTTIME" class="form-control"
+                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">结束时间：</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group date">
+                                                <input name="ENDTIME" class="form-control"
+                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+                    <div>
+                        <form class="form form-horizontal m-t">
+                            <h4 class="form-header h4">第2步-选择UI模板</h4>
+                            分格查询字典表 单选按钮
+                            <h4 class="form-header h4">字典表显示字段</h4>
+                            <img src="../../img/1.jpg" width="104" height="142">
+                        </form>
+                    </div>
+                </div>
+                <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                    <div style="height: 610px">
+                    <form class="form form-horizontal m-t">
+                        <div class="leftarea">
                             <h4 class="form-header h4">第3步-配置展现内容</h4>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">活动标题：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                            <input id="drawname" name="DRAWNAME" placeholder="活动名称" class="form-control" type="text"
+                                                   maxlength="30" onkeyup="updatePic(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -133,17 +185,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">活动描述：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label is-required">活动描述：</label>
-                                        <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                            <input id="drawDescribe" name="drawDescribe" placeholder="活动描述" class="form-control" type="text"
+                                                   maxlength="30" onkeyup="updatePic(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +196,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">背景图片：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                            <input id="pic" name="pic" placeholder="背景图片" class="form-control" type="text"
+                                                   maxlength="30">
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +207,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">自定义按钮1：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                            <input id="btn1" name="btn1" placeholder="自定义按钮1" class="form-control" type="text"
+                                                   maxlength="30" onkeyup="updatePic(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -173,7 +218,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">按钮1跳转链接：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                            <input  name="btn1Link" placeholder="按钮1跳转链接" class="form-control" type="text"
+                                                   maxlength="30">
                                         </div>
                                     </div>
                                 </div>
@@ -183,7 +229,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">自定义按钮2：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                            <input name="btn2" placeholder="自定义按钮2" class="form-control" type="text"
+                                                   maxlength="30" onkeyup="updatePic(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -193,346 +240,380 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">按钮2跳转链接：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text" maxlength="30">
+                                            <input name="btn2Link" placeholder="按钮2跳转链接" class="form-control" type="text"
+                                                   maxlength="30">
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                        </div>
+                        <div class="rightarea">
+                            <h4 class="form-header h4">效果图</h4>
+                            <div style="position: relative;">
+                                <img src="../../img/1.jpg" width="380" height="500">
+                                <span class="drawNamePic" id="drawnamePic" >活动标题</span>
+                                <span class="drawDescribePic" id="drawDescribePic" >活动描述</span>
+                            </div>
+                        </div>
 
-
-                        </form>
+                    </form>
                     </div>
-                    <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                </div>
+                <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
 
-                        <h4 class="form-header h4">活动规则</h4>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">首次中奖配置：</label>
-                                    <div class="col-sm-8">
-                                        <select name="FIRSTFLAG" id="FIRSTFLAG" onchange="firstflag()"  class="form-control" th:with="type=${@dict.getType('is_boolean')}">
-                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                        </select>
-                                    </div>
+                    <h4 class="form-header h4">活动规则</h4>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">首次中奖配置：</label>
+                                <div class="col-sm-8">
+                                    <select name="FIRSTFLAG" id="FIRSTFLAG" onchange="firstflag()" class="form-control"
+                                            th:with="type=${@dict.getType('is_boolean')}">
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                th:value="${dict.dictValue}"></option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
-                                    <div class="col-sm-8">
-                                        <select name="FIRSTAWARDPRIZE"  class="form-control" id="firstawardprize" disabled >
-                                        </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
+                                <div class="col-sm-8">
+                                    <select name="FIRSTAWARDPRIZE" class="form-control" id="firstawardprize" disabled>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
+                                <div class="col-sm-8">
+                                    <select name="DAILYFLAG" id="DAILYFLAG" onchange="dailyflag()" class="form-control"
+                                            th:with="type=${@dict.getType('is_boolean')}">
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                th:value="${dict.dictValue}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
+                                <div class="col-sm-8">
+                                    <input name="DAILYNUMBER" id="dailynumber" placeholder="时间段限制次数"
+                                           class="form-control" type="text" maxlength="30" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date">
+                                        <input name="DAILYSTARTTIME" id="dailystarttime" class="form-control"
+                                               placeholder="HH:mm:ss" type="text" disabled>
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
-                                    <div class="col-sm-8">
-                                        <select name="DAILYFLAG" id="DAILYFLAG"  onchange="dailyflag()" class="form-control" th:with="type=${@dict.getType('is_boolean')}">
-                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
-                                    <div class="col-sm-8">
-                                        <input name="DAILYNUMBER" id="dailynumber" placeholder="时间段限制次数" class="form-control" type="text" maxlength="30" disabled>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date">
+                                        <input name="DAILYENDTIME" id="dailyendtime" class="form-control"
+                                               placeholder="HH:mm:ss" type="text" disabled>
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
-                                    <div class="col-sm-8">
-                                        <div class="input-group date">
-                                            <input name="DAILYSTARTTIME" id="dailystarttime"   class="form-control" placeholder="HH:mm:ss" type="text" disabled>
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
-                                    <div class="col-sm-8">
-                                        <div class="input-group date">
-                                            <input name="DAILYENDTIME" id="dailyendtime" class="form-control" placeholder="HH:mm:ss" type="text" disabled>
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        </div>
-                                    </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
+                                <div class="col-sm-8">
+                                    <select name="WILLDRAWFLAG" id="WILLDRAWFLAG" onchange="willdrawflag()"
+                                            class="form-control" th:with="type=${@dict.getType('is_boolean')}">
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                th:value="${dict.dictValue}"></option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-
-
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
-                                    <div class="col-sm-8">
-                                        <select name="WILLDRAWFLAG" id="WILLDRAWFLAG" onchange="willdrawflag()"  class="form-control" th:with="type=${@dict.getType('is_boolean')}">
-                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
-                                    <div class="col-sm-8">
-                                        <input name="WILLDRAWAWARDNUMBER" id="willdrawawardnumber" placeholder="抽奖必中计数" class="form-control" type="text" maxlength="30" disabled>
-                                    </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
+                                <div class="col-sm-8">
+                                    <input name="WILLDRAWAWARDNUMBER" id="willdrawawardnumber" placeholder="抽奖必中计数"
+                                           class="form-control" type="text" maxlength="30" disabled>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
-                                    <div class="col-sm-8">
-                                        <select name="WILLDRAWAWARDPRIZE"  class="form-control" id="willdrawawardprize" disabled>
-                                        </select>
-                                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
+                                <div class="col-sm-8">
+                                    <select name="WILLDRAWAWARDPRIZE" class="form-control" id="willdrawawardprize"
+                                            disabled>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            </form>
-    </div>
-    <th:block th:include="include :: footer" />
-    <th:block th:include="include :: datetimepicker-js" />
-    <th:block th:include="include :: jquery-smartwizard-js" />
-    <script th:inline="javascript">
-        var prefix = ctx + "activity/info"
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<th:block th:include="include :: jquery-smartwizard-js"/>
+<script th:inline="javascript">
+    var prefix = ctx + "activity/info"
 
-        /**获取奖品及信息列表*/
-        $(document).ready(function() {
-            var job= "";
-            $.ajax({
+    /**获取奖品及信息列表*/
+    $(document).ready(function () {
+        var job = "";
+        $.ajax({
 
-                    url:prefix + "/prizeInfo",
-                    success: function (data) {
+                url: prefix + "/prizeInfo",
+                success: function (data) {
 
-                        for(var i in data){
-                            if (job.length==0){
-                                job = "<option value='"+data[i].prizecode+"'>"+data[i].prizename+"</option>"
-                            }
-                            else{
-                                job += "<option value='"+data[i].prizecode+"'>"+data[i].prizename+"</option>"
-                            }
+                    for (var i in data) {
+                        if (job.length == 0) {
+                            job = "<option value='" + data[i].prizecode + "'>" + data[i].prizename + "</option>"
+                        } else {
+                            job += "<option value='" + data[i].prizecode + "'>" + data[i].prizename + "</option>"
                         }
-                        $("#firstawardprize").html(job);
-                        $("#willdrawawardprize").html(job);
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert(errorThrown);
-                    },
-                    async:false             //false表示同步
-                }
-
-            );
-        });
-
-        $("#form-info-add").validate({
-            focusCleanup: true
-        });
-
-
-        function submitHandler(){
-            var data = $("#form-info-add").serializeArray();
-            $.operate.saveModal(prefix+"/add", data);
-        }
-
-         //时间段抽奖配置
-        function dailyflag(){
-            var DAILYFLAG = $("#DAILYFLAG").val();
-            if (DAILYFLAG==1){
-                $('#dailynumber').removeAttr('disabled');
-                $('#dailystarttime').removeAttr('disabled');
-                $('#dailyendtime').removeAttr('disabled');
-            }else if(DAILYFLAG==0){
-                $("#dailynumber").attr('disabled','true');
-                $("#dailystarttime").attr('disabled','true');
-                $("#dailyendtime").attr('disabled','true');
-            }
-        }
-        //抽奖必中配置
-        function willdrawflag(){
-            var WILLDRAWFLAG = $("#WILLDRAWFLAG").val();
-            if (WILLDRAWFLAG==1){
-                $('#willdrawawardnumber').removeAttr('disabled');
-                $('#willdrawawardprize').removeAttr('disabled');
-            }else if(WILLDRAWFLAG==0){
-                $("#willdrawawardnumber").attr('disabled','true');
-                $("#willdrawawardprize").attr('disabled','true');
-
-            }
-        }
-
-        //首次中奖配置
-        function firstflag(){
-            var FIRSTFLAG = $("#FIRSTFLAG").val();
-            if (FIRSTFLAG==1){
-                $('#firstawardprize').removeAttr('disabled');
-            }else if(FIRSTFLAG==0){
-                $("#firstawardprize").attr('disabled','true');
-            }
-
-        }
-
-        $("input[name='STARTTIME']").datetimepicker({
-            weekStart: 1,
-            todayBtn:  1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format:  'yyyy-mm-dd hh:ii:ss'
-        });
-
-        $("input[name='ENDTIME']").datetimepicker({
-            weekStart: 1,
-            todayBtn:  1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format:  'yyyy-mm-dd hh:ii:ss'
-        });
-
-        $("input[name='DAILYSTARTTIME']").datetimepicker({
-            weekStart: 1,
-            todayBtn:  1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format:  'hh:ii:ss'
-        });
-
-        $("input[name='DAILYENDTIME']").datetimepicker({
-            weekStart: 1,
-            todayBtn:  1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format:  'hh:ii:ss'
-        });
-    </script>
-    <script th:inline="javascript">
-        $(document).ready(function() {
-            // 工具栏按钮
-            var btnFinish = $('<a id="btn-finish"></a>').text('完成')
-                .addClass('btn btn-info')
-                .on('click', function(){ submit(); });
-            var btnCancel = $('<a id="btn-cancel"></a>').text('取消')
-                .addClass('btn btn-danger')
-                .on('click', function(){ $('#smartwizard').smartWizard("reset"); });
-            // 下面两个按钮是为了因为插件默认的是botton,这里换成<a>,也可以选择用样式替换,或者不替换
-            var btnNext = $('<a id="btn-next"></a>').text('下一步')
-                .addClass('btn btn-info')
-                .on('click', function(){ $('#smartwizard').smartWizard("next");});
-            var btnPrev = $('<a id="btn-prev"></a>').text('上一步')
-                .addClass('btn btn-success disabled')
-                .on('click', function(){ $('#smartwizard').smartWizard("prev"); });
-            // 初始化表单向导组件
-            $('#smartwizard').smartWizard({
-                theme: 'dots', // default, arrows, dots, progress
-                autoAdjustHeight : true, // 自动调整高度, 默认true
-                enableURLhash:false, //开启URL hash,开启后点击浏览器前进后退按钮会执行下一步和上一步操作
-                transition: {
-                    animation: 'slide-horizontal', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
+                    }
+                    $("#firstawardprize").html(job);
+                    $("#willdrawawardprize").html(job);
                 },
-                toolbarSettings: {
-                    showNextButton: false,// 因为上面自定义了下一步按钮, 所以隐藏掉插件自带的按钮, 如果不使用自定义按钮, 需要改为true或者去掉该属性
-                    showPreviousButton: false,// 因为上面自定义了上一步按钮, 所以隐藏掉插件自带的按钮, 如果不使用自定义按钮, 需要改为true或者去掉该属性
-                    toolbarExtraButtons: [btnCancel,btnPrev,btnNext,btnFinish]// 扩展的按钮集合
-                }
-            });
-        });
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                async: false             //false表示同步
+            }
+        );
+    });
 
-        // 显示步骤时将触发事件
-        $("#smartwizard").on("showStep", function(e, anchorObject, stepNumber, stepDirection, stepPosition) {
-            // 下面按钮是快速操作栏的
-            $("#prev-btn").removeClass('disabled');
-            $("#next-btn").removeClass('disabled');
-            // 下面按钮是工具栏的
+    $("#form-info-add").validate({
+        focusCleanup: true
+    });
+
+
+    function submitHandler() {
+        var data = $("#form-info-add").serializeArray();
+        $.operate.saveModal(prefix + "/add", data);
+    }
+
+    //时间段抽奖配置
+    function dailyflag() {
+        var DAILYFLAG = $("#DAILYFLAG").val();
+        if (DAILYFLAG == 1) {
+            $('#dailynumber').removeAttr('disabled');
+            $('#dailystarttime').removeAttr('disabled');
+            $('#dailyendtime').removeAttr('disabled');
+        } else if (DAILYFLAG == 0) {
+            $("#dailynumber").attr('disabled', 'true');
+            $("#dailystarttime").attr('disabled', 'true');
+            $("#dailyendtime").attr('disabled', 'true');
+        }
+    }
+
+    //抽奖必中配置
+    function willdrawflag() {
+        var WILLDRAWFLAG = $("#WILLDRAWFLAG").val();
+        if (WILLDRAWFLAG == 1) {
+            $('#willdrawawardnumber').removeAttr('disabled');
+            $('#willdrawawardprize').removeAttr('disabled');
+        } else if (WILLDRAWFLAG == 0) {
+            $("#willdrawawardnumber").attr('disabled', 'true');
+            $("#willdrawawardprize").attr('disabled', 'true');
+
+        }
+    }
+
+    //首次中奖配置
+    function firstflag() {
+        var FIRSTFLAG = $("#FIRSTFLAG").val();
+        if (FIRSTFLAG == 1) {
+            $('#firstawardprize').removeAttr('disabled');
+        } else if (FIRSTFLAG == 0) {
+            $("#firstawardprize").attr('disabled', 'true');
+        }
+
+    }
+
+    $("input[name='STARTTIME']").datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format: 'yyyy-mm-dd hh:ii:ss'
+    });
+
+    $("input[name='ENDTIME']").datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format: 'yyyy-mm-dd hh:ii:ss'
+    });
+
+    $("input[name='DAILYSTARTTIME']").datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format: 'hh:ii:ss'
+    });
+
+    $("input[name='DAILYENDTIME']").datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format: 'hh:ii:ss'
+    });
+</script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        // 工具栏按钮
+        var btnFinish = $('<a id="btn-finish"></a>').text('完成')
+            .addClass('btn btn-info')
+            .on('click', function () {
+                submit();
+            });
+        var btnCancel = $('<a id="btn-cancel"></a>').text('取消')
+            .addClass('btn btn-danger')
+            .on('click', function () {
+                $('#smartwizard').smartWizard("reset");
+            });
+        // 下面两个按钮是为了因为插件默认的是botton,这里换成<a>,也可以选择用样式替换,或者不替换
+        var btnNext = $('<a id="btn-next"></a>').text('下一步')
+            .addClass('btn btn-info')
+            .on('click', function () {
+                $('#smartwizard').smartWizard("next");
+            });
+        var btnPrev = $('<a id="btn-prev"></a>').text('上一步')
+            .addClass('btn btn-success disabled')
+            .on('click', function () {
+                $('#smartwizard').smartWizard("prev");
+            });
+        // 初始化表单向导组件
+        $('#smartwizard').smartWizard({
+            theme: 'dots', // default, arrows, dots, progress
+            autoAdjustHeight: true, // 自动调整高度, 默认true
+            enableURLhash: false, //开启URL hash,开启后点击浏览器前进后退按钮会执行下一步和上一步操作
+            transition: {
+                animation: 'slide-horizontal', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
+            },
+            toolbarSettings: {
+                showNextButton: false,// 因为上面自定义了下一步按钮, 所以隐藏掉插件自带的按钮, 如果不使用自定义按钮, 需要改为true或者去掉该属性
+                showPreviousButton: false,// 因为上面自定义了上一步按钮, 所以隐藏掉插件自带的按钮, 如果不使用自定义按钮, 需要改为true或者去掉该属性
+                toolbarExtraButtons: [btnCancel, btnPrev, btnNext, btnFinish]// 扩展的按钮集合
+            }
+        });
+    });
+
+    // 显示步骤时将触发事件
+    $("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection, stepPosition) {
+        // 下面按钮是快速操作栏的
+        $("#prev-btn").removeClass('disabled');
+        $("#next-btn").removeClass('disabled');
+        // 下面按钮是工具栏的
+        $("#btn-prev").removeClass('disabled');
+        $("#btn-next").removeClass('disabled');
+        $("#btn-finish").removeClass('disabled');
+        if (stepPosition === 'first') {
+            $("#prev-btn").addClass('disabled');// 快速操作栏（演示用）
+            $("#btn-prev").addClass('disabled');
+            $("#btn-finish").addClass('disabled');
+        } else if (stepPosition === 'last') {
+            $("#next-btn").addClass('disabled');// 快速操作栏（演示用）
+            $("#btn-next").addClass('disabled');
+        } else {
+            $("#prev-btn").removeClass('disabled');// 快速操作栏（演示用）
+            $("#next-btn").removeClass('disabled');// 快速操作栏（演示用）
             $("#btn-prev").removeClass('disabled');
             $("#btn-next").removeClass('disabled');
-            $("#btn-finish").removeClass('disabled');
-            if(stepPosition === 'first') {
-                $("#prev-btn").addClass('disabled');// 快速操作栏（演示用）
-                $("#btn-prev").addClass('disabled');
-                $("#btn-finish").addClass('disabled');
-            } else if(stepPosition === 'last') {
-                $("#next-btn").addClass('disabled');// 快速操作栏（演示用）
-                $("#btn-next").addClass('disabled');
-            } else {
-                $("#prev-btn").removeClass('disabled');// 快速操作栏（演示用）
-                $("#next-btn").removeClass('disabled');// 快速操作栏（演示用）
-                $("#btn-prev").removeClass('disabled');
-                $("#btn-next").removeClass('disabled');
-                $("#btn-finish").addClass('disabled');
-            }
-        });
+            $("#btn-finish").addClass('disabled');
+        }
+    });
 
-        // 该事件在离开某个步骤之前触发
-        $("#smartwizard").on("leaveStep", function(e, anchorObject, currentStepNumber, nextStepNumber, stepDirection) {
-            if(stepDirection == 'forward'){
-                var form = $("#step-" + (currentStepNumber + 1)).find('.form');
-                if(form.length > 0){
-                    return form.validate().form();
-                }
-                return true;
+    // 该事件在离开某个步骤之前触发
+    $("#smartwizard").on("leaveStep", function (e, anchorObject, currentStepNumber, nextStepNumber, stepDirection) {
+        if (stepDirection == 'forward') {
+            var form = $("#step-" + (currentStepNumber + 1)).find('.form');
+            if (form.length > 0) {
+                return form.validate().form();
             }
             return true;
-        });
+        }
+        return true;
+    });
 
-        $("#theme-selector").on("change", function() {
-            // Change theme
-            var options = {
-                theme : $(this).val()
-            };
-            $('#smartwizard').smartWizard("setOptions", options);
-            return true;
-        });
+    $("#theme-selector").on("change", function () {
+        // Change theme
+        var options = {
+            theme: $(this).val()
+        };
+        $('#smartwizard').smartWizard("setOptions", options);
+        return true;
+    });
 
-        $("#reset-btn").on("click", function() {
-            // Reset wizard
-            $('#smartwizard').smartWizard("reset");
-            return true;
-        });
+    $("#reset-btn").on("click", function () {
+        // Reset wizard
+        $('#smartwizard').smartWizard("reset");
+        return true;
+    });
 
-        $("#prev-btn").on("click", function() {
-            // Navigate previous
-            $('#smartwizard').smartWizard("prev");
-            return true;
-        });
+    $("#prev-btn").on("click", function () {
+        // Navigate previous
+        $('#smartwizard').smartWizard("prev");
+        return true;
+    });
 
-        $("#next-btn").on("click", function() {
-            // Navigate next
-            $('#smartwizard').smartWizard("next");
-            return true;
-        });
-    </script>
+    $("#next-btn").on("click", function () {
+        // Navigate next
+        $('#smartwizard').smartWizard("next");
+        return true;
+    });
+</script>
+<script th:inline="javascript">
+    function updatePic(val){
+        var id = val.id;
+        var value = val.value;
+        $("#"+id+"Pic").text(value);
+    }
+</script>
 </body>
 </html>
