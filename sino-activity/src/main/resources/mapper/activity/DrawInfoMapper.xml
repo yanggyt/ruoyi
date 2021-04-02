@@ -65,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 SELECT
 	i.DRAWID,
 	i.DRAWNAME,
-	i. STATUS,
+	i.STATUS,
 	i.EXPENO,
 	i.EXPENOVALUE,
 	i.STARTTIME,

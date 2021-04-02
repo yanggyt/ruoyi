@@ -34,12 +34,10 @@ public class DrawRule extends BaseEntity
     private String DAILYFLAG;
 
     /** 日抽奖限制开始时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date DAILYSTARTTIME;
+    private String DAILYSTARTTIME;
 
     /** 日抽奖限制结束时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date DAILYENDTIME;
+    private String DAILYENDTIME;
 
     /** 日抽奖限制次数 */
     private Long DAILYNUMBER;
@@ -90,19 +88,19 @@ public class DrawRule extends BaseEntity
         this.DRAWRULEID = DRAWRULEID;
     }
 
-    public Date getDAILYSTARTTIME() {
+    public String getDAILYSTARTTIME() {
         return DAILYSTARTTIME;
     }
 
-    public void setDAILYSTARTTIME(Date DAILYSTARTTIME) {
+    public void setDAILYSTARTTIME(String DAILYSTARTTIME) {
         this.DAILYSTARTTIME = DAILYSTARTTIME;
     }
 
-    public Date getDAILYENDTIME() {
+    public String getDAILYENDTIME() {
         return DAILYENDTIME;
     }
 
-    public void setDAILYENDTIME(Date DAILYENDTIME) {
+    public void setDAILYENDTIME(String DAILYENDTIME) {
         this.DAILYENDTIME = DAILYENDTIME;
     }
 
