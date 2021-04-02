@@ -506,7 +506,13 @@ public class ArticleServiceImpl implements ArticleService {
         for (PublishedArticleInfo publishedArticleInfo : articleList) {
             String articleId = publishedArticleInfo.getArticleId();
             Map<String, String> countJsonMap = rManager.hGetAll("company_articleInfo_Id" + articleId);
-            publishedArticleInfo.setVisitorCount(countJsonMap.get("visitorCount"));
+            String clickTotal = rManager.query("company_clickTotal_articleId" + articleId);
+            if (StringUtils.isBlank(clickTotal)) {
+                rManager.save("company_clickTotal_articleId" + articleId, countJsonMap.get("visitorCount"));
+                publishedArticleInfo.setVisitorCount(countJsonMap.get("visitorCount"));
+            } else {
+                publishedArticleInfo.setVisitorCount(clickTotal);
+            }
             publishedArticleInfo.setShareCount(countJsonMap.get("sharedCount"));
         }
         LOGGER.info("查询文章列表的业务层方法结束！");
