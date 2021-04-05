@@ -508,12 +508,20 @@ public class ArticleServiceImpl implements ArticleService {
             Map<String, String> countJsonMap = rManager.hGetAll("company_articleInfo_Id" + articleId);
             String clickTotal = rManager.query("company_clickTotal_articleId" + articleId);
             if (StringUtils.isBlank(clickTotal)) {
-                rManager.save("company_clickTotal_articleId" + articleId, countJsonMap.get("visitorCount"));
-                publishedArticleInfo.setVisitorCount(countJsonMap.get("visitorCount"));
+                if (countJsonMap != null) {
+                    rManager.save("company_clickTotal_articleId" + articleId, countJsonMap.get("visitorCount"));
+                    publishedArticleInfo.setVisitorCount(countJsonMap.get("visitorCount"));
+                } else {
+                    publishedArticleInfo.setVisitorCount("0");
+                }
             } else {
                 publishedArticleInfo.setVisitorCount(clickTotal);
             }
-            publishedArticleInfo.setShareCount(countJsonMap.get("sharedCount"));
+            if (countJsonMap != null) {
+                publishedArticleInfo.setShareCount(countJsonMap.get("sharedCount"));
+            } else {
+                publishedArticleInfo.setShareCount("0");
+            }
         }
         LOGGER.info("查询文章列表的业务层方法结束！");
         return articleList;
