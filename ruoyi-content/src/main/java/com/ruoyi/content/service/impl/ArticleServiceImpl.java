@@ -508,7 +508,7 @@ public class ArticleServiceImpl implements ArticleService {
             Map<String, String> countJsonMap = rManager.hGetAll("company_articleInfo_Id" + articleId);
             String clickTotal = rManager.query("company_clickTotal_articleId" + articleId);
             if (StringUtils.isBlank(clickTotal)) {
-                if (countJsonMap != null) {
+                if (countJsonMap != null && countJsonMap.size() > 0) {
                     rManager.save("company_clickTotal_articleId" + articleId, countJsonMap.get("visitorCount"));
                     publishedArticleInfo.setVisitorCount(countJsonMap.get("visitorCount"));
                 } else {
@@ -517,7 +517,7 @@ public class ArticleServiceImpl implements ArticleService {
             } else {
                 publishedArticleInfo.setVisitorCount(clickTotal);
             }
-            if (countJsonMap != null) {
+            if (countJsonMap != null && countJsonMap.size() > 0) {
                 publishedArticleInfo.setShareCount(countJsonMap.get("sharedCount"));
             } else {
                 publishedArticleInfo.setShareCount("0");
