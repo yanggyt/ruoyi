@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmContactsMapper">
+    
+    <resultMap type="WkCrmContacts" id="WkCrmContactsResult">
+        <result property="contactsId"    column="contacts_id"    />
+        <result property="name"    column="name"    />
+        <result property="nextTime"    column="next_time"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="email"    column="email"    />
+        <result property="post"    column="post"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="address"    column="address"    />
+        <result property="remark"    column="remark"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="ownerUserId"    column="owner_user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="lastTime"    column="last_time"    />
+    </resultMap>
+
+    <sql id="selectWkCrmContactsVo">
+        select contacts_id, name, next_time, mobile, telephone, email, post, customer_id, address, remark, create_user_id, owner_user_id, create_time, update_time, batch_id, last_time from wk_crm_contacts
+    </sql>
+
+    <select id="selectWkCrmContactsList" parameterType="WkCrmContacts" resultMap="WkCrmContactsResult">
+        <include refid="selectWkCrmContactsVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="nextTime != null "> and next_time = #{nextTime}</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="telephone != null  and telephone != ''"> and telephone = #{telephone}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="post != null  and post != ''"> and post = #{post}</if>
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="ownerUserId != null "> and owner_user_id = #{ownerUserId}</if>
+            <if test="batchId != null  and batchId != ''"> and batch_id = #{batchId}</if>
+            <if test="lastTime != null "> and last_time = #{lastTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmContactsById" parameterType="Long" resultMap="WkCrmContactsResult">
+        <include refid="selectWkCrmContactsVo"/>
+        where contacts_id = #{contactsId}
+    </select>
+        
+    <insert id="insertWkCrmContacts" parameterType="WkCrmContacts" useGeneratedKeys="true" keyProperty="contactsId">
+        insert into wk_crm_contacts
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="nextTime != null">next_time,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="telephone != null">telephone,</if>
+            <if test="email != null">email,</if>
+            <if test="post != null">post,</if>
+            <if test="customerId != null">customer_id,</if>
+            <if test="address != null">address,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="ownerUserId != null">owner_user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="batchId != null and batchId != ''">batch_id,</if>
+            <if test="lastTime != null">last_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="nextTime != null">#{nextTime},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="telephone != null">#{telephone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="post != null">#{post},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="address != null">#{address},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="ownerUserId != null">#{ownerUserId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="batchId != null and batchId != ''">#{batchId},</if>
+            <if test="lastTime != null">#{lastTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmContacts" parameterType="WkCrmContacts">
+        update wk_crm_contacts
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="nextTime != null">next_time = #{nextTime},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="telephone != null">telephone = #{telephone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="post != null">post = #{post},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="ownerUserId != null">owner_user_id = #{ownerUserId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="batchId != null and batchId != ''">batch_id = #{batchId},</if>
+            <if test="lastTime != null">last_time = #{lastTime},</if>
+        </trim>
+        where contacts_id = #{contactsId}
+    </update>
+
+    <delete id="deleteWkCrmContactsById" parameterType="Long">
+        delete from wk_crm_contacts where contacts_id = #{contactsId}
+    </delete>
+
+    <delete id="deleteWkCrmContactsByIds" parameterType="String">
+        delete from wk_crm_contacts where contacts_id in 
+        <foreach item="contactsId" collection="array" open="(" separator="," close=")">
+            #{contactsId}
+        </foreach>
+    </delete>
+
+</mapper>
