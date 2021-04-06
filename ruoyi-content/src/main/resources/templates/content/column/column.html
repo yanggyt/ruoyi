@@ -187,7 +187,8 @@
                         <div class="form-group" style="display:none" id="secSelect">
                             <label class="col-sm-4 control-label">所属栏目:</label>
                             <div class="col-sm-6">
-                                <select class="selectpicker form-control" th:id="cType" name="cType"></select>
+                                <!--                                <select class="selectpicker form-control" th:id="cType" name="cType"></select>-->
+                                <input th:hidden="true" th:id="cType" name="cType">
                             </div>
                         </div>
 
@@ -590,6 +591,7 @@
         var rowData = $("#" + table.options.id).bootstrapTable('getRowByUniqueId', id);
         $("#cName").val(rowData.codeCname);
         $("#cOrderNo").val(rowData.orderNo);
+        $("#cType").val(rowData.codeType);
         // 处理公司下拉框
         $("#branchIdEdit option").remove();
         $.ajax({
@@ -617,39 +619,39 @@
         })
 
         // 处理一级栏目下拉
-        $("#cType option").remove();
-        var objc = [];
-        if (rowData.codeType.indexOf("文库-") == -1) {
-            $("#secSelect").hide();
-            objc = baseDataList;
-            for (var i = 0; i < objc.length; i++) {
-                var codeType = rowData.codeType;
-                if (objc[i].codeCname == codeType) {
-                    $("#cType").append(
-                        "<option selected=\"true\" value='" + objc[i].codeCode
-                        + "'>" + objc[i].codeCname + "</option>");
-                } else {
-                    $("#cType").append(
-                        "<option value='" + objc[i].codeCode + "'>"
-                        + objc[i].codeCname + "</option>");
-                }
-            }
-        } else {
-            objc = articleSecList;
-            $("#secSelect").show();
-            for (var i = 0; i < objc.length; i++) {
-                var codeType = rowData.codeType.split("-")[1];
-                if (objc[i].codeCname == codeType) {
-                    $("#cType").append(
-                        "<option selected=\"true\" value='" + objc[i].codeCode
-                        + "'>" + objc[i].codeCname + "</option>");
-                } else {
-                    $("#cType").append(
-                        "<option value='" + objc[i].codeCode + "'>"
-                        + objc[i].codeCname + "</option>");
-                }
-            }
-        }
+        // $("#cType option").remove();
+        // var objc = [];
+        // if (rowData.codeType.indexOf("文库-") == -1) {
+        //     $("#secSelect").hide();
+        //     objc = baseDataList;
+        //     for (var i = 0; i < objc.length; i++) {
+        //         var codeType = rowData.codeType;
+        //         if (objc[i].codeCode == codeType) {
+        //             $("#cType").append(
+        //                 "<option selected=\"true\" value='" + objc[i].codeCode
+        //                 + "'>" + objc[i].codeCname + "</option>");
+        //         } else {
+        //             $("#cType").append(
+        //                 "<option value='" + objc[i].codeCode + "'>"
+        //                 + objc[i].codeCname + "</option>");
+        //         }
+        //     }
+        // } else {
+        //     objc = articleSecList;
+        //     $("#secSelect").show();
+        //     for (var i = 0; i < objc.length; i++) {
+        //         var codeType = rowData.codeType.split("-")[1];
+        //         if (objc[i].codeCode == codeType) {
+        //             $("#cType").append(
+        //                 "<option selected=\"true\" value='" + objc[i].codeCode
+        //                 + "'>" + objc[i].codeCname + "</option>");
+        //         } else {
+        //             $("#cType").append(
+        //                 "<option value='" + objc[i].codeCode + "'>"
+        //                 + objc[i].codeCname + "</option>");
+        //         }
+        //     }
+        // }
     };
 
     // 编辑后保存操作
