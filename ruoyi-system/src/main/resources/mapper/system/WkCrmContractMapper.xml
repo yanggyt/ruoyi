@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmContractMapper">
+    
+    <resultMap type="WkCrmContract" id="WkCrmContractResult">
+        <result property="contractId"    column="contract_id"    />
+        <result property="num"    column="num"    />
+        <result property="name"    column="name"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="money"    column="money"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="contactsId"    column="contacts_id"    />
+        <result property="companyUserId"    column="company_user_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="types"    column="types"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="receivedMoney"    column="received_money"    />
+        <result property="unreceivedMoney"    column="unreceived_money"    />
+        <result property="oldContractId"    column="old_contract_id"    />
+        <result property="lastTime"    column="last_time"    />
+        <result property="ownerUserId"    column="owner_user_id"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="examineRecordId"    column="examine_record_id"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="paymentType"    column="payment_type"    />
+    </resultMap>
+
+    <sql id="selectWkCrmContractVo">
+        select contract_id, num, name, customer_id, money, order_date, start_time, end_time, contacts_id, company_user_id, remark, types, check_status, received_money, unreceived_money, old_contract_id, last_time, owner_user_id, update_time, create_time, create_user_id, examine_record_id, total_price, payment_type from wk_crm_contract
+    </sql>
+
+    <select id="selectWkCrmContractList" parameterType="WkCrmContract" resultMap="WkCrmContractResult">
+        <include refid="selectWkCrmContractVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="types != null  and types != ''"> and types = #{types}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmContractById" parameterType="Integer" resultMap="WkCrmContractResult">
+        <include refid="selectWkCrmContractVo"/>
+        where contract_id = #{contractId}
+    </select>
+        
+    <insert id="insertWkCrmContract" parameterType="WkCrmContract" useGeneratedKeys="true" keyProperty="contractId">
+        insert into wk_crm_contract
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num != null">num,</if>
+            <if test="name != null">name,</if>
+            <if test="customerId != null">customer_id,</if>
+            <if test="money != null">money,</if>
+            <if test="orderDate != null">order_date,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="contactsId != null">contacts_id,</if>
+            <if test="companyUserId != null">company_user_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="types != null">types,</if>
+            <if test="checkStatus != null">check_status,</if>
+            <if test="receivedMoney != null">received_money,</if>
+            <if test="unreceivedMoney != null">unreceived_money,</if>
+            <if test="oldContractId != null">old_contract_id,</if>
+            <if test="lastTime != null">last_time,</if>
+            <if test="ownerUserId != null">owner_user_id,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="examineRecordId != null">examine_record_id,</if>
+            <if test="totalPrice != null">total_price,</if>
+            <if test="paymentType != null">payment_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="num != null">#{num},</if>
+            <if test="name != null">#{name},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="money != null">#{money},</if>
+            <if test="orderDate != null">#{orderDate},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="contactsId != null">#{contactsId},</if>
+            <if test="companyUserId != null">#{companyUserId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="types != null">#{types},</if>
+            <if test="checkStatus != null">#{checkStatus},</if>
+            <if test="receivedMoney != null">#{receivedMoney},</if>
+            <if test="unreceivedMoney != null">#{unreceivedMoney},</if>
+            <if test="oldContractId != null">#{oldContractId},</if>
+            <if test="lastTime != null">#{lastTime},</if>
+            <if test="ownerUserId != null">#{ownerUserId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="examineRecordId != null">#{examineRecordId},</if>
+            <if test="totalPrice != null">#{totalPrice},</if>
+            <if test="paymentType != null">#{paymentType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmContract" parameterType="WkCrmContract">
+        update wk_crm_contract
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="num != null">num = #{num},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="money != null">money = #{money},</if>
+            <if test="orderDate != null">order_date = #{orderDate},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="contactsId != null">contacts_id = #{contactsId},</if>
+            <if test="companyUserId != null">company_user_id = #{companyUserId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="types != null">types = #{types},</if>
+            <if test="checkStatus != null">check_status = #{checkStatus},</if>
+            <if test="receivedMoney != null">received_money = #{receivedMoney},</if>
+            <if test="unreceivedMoney != null">unreceived_money = #{unreceivedMoney},</if>
+            <if test="oldContractId != null">old_contract_id = #{oldContractId},</if>
+            <if test="lastTime != null">last_time = #{lastTime},</if>
+            <if test="ownerUserId != null">owner_user_id = #{ownerUserId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="examineRecordId != null">examine_record_id = #{examineRecordId},</if>
+            <if test="totalPrice != null">total_price = #{totalPrice},</if>
+            <if test="paymentType != null">payment_type = #{paymentType},</if>
+        </trim>
+        where contract_id = #{contractId}
+    </update>
+
+    <delete id="deleteWkCrmContractById" parameterType="Integer">
+        delete from wk_crm_contract where contract_id = #{contractId}
+    </delete>
+
+    <delete id="deleteWkCrmContractByIds" parameterType="String">
+        delete from wk_crm_contract where contract_id in 
+        <foreach item="contractId" collection="array" open="(" separator="," close=")">
+            #{contractId}
+        </foreach>
+    </delete>
+
+</mapper>
