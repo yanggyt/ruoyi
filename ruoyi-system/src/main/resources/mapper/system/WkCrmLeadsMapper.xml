@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmLeadsMapper">
+    
+    <resultMap type="WkCrmLeads" id="WkCrmLeadsResult">
+        <result property="leadsId"    column="leads_id"    />
+        <result property="followup"    column="followup"    />
+        <result property="leadsName"    column="leads_name"    />
+        <result property="nextTime"    column="next_time"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="email"    column="email"    />
+        <result property="address"    column="address"    />
+        <result property="remark"    column="remark"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="ownerUserId"    column="owner_user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="lastTime"    column="last_time"    />
+        <result property="lastContent"    column="last_content"    />
+    </resultMap>
+
+    <sql id="selectWkCrmLeadsVo">
+        select leads_id, followup, leads_name, next_time, telephone, mobile, email, address, remark, create_user_id, owner_user_id, create_time, update_time, last_time, last_content from wk_crm_leads
+    </sql>
+
+    <select id="selectWkCrmLeadsList" parameterType="WkCrmLeads" resultMap="WkCrmLeadsResult">
+        <include refid="selectWkCrmLeadsVo"/>
+        <where>  
+            <if test="followup != null "> and followup = #{followup}</if>
+            <if test="leadsName != null  and leadsName != ''"> and leads_name like concat('%', #{leadsName}, '%')</if>
+            <if test="nextTime != null "> and next_time = #{nextTime}</if>
+            <if test="telephone != null  and telephone != ''"> and telephone = #{telephone}</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="ownerUserId != null "> and owner_user_id = #{ownerUserId}</if>
+            <if test="lastTime != null "> and last_time = #{lastTime}</if>
+            <if test="lastContent != null  and lastContent != ''"> and last_content = #{lastContent}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmLeadsById" parameterType="Long" resultMap="WkCrmLeadsResult">
+        <include refid="selectWkCrmLeadsVo"/>
+        where leads_id = #{leadsId}
+    </select>
+        
+    <insert id="insertWkCrmLeads" parameterType="WkCrmLeads" useGeneratedKeys="true" keyProperty="leadsId">
+        insert into wk_crm_leads
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="followup != null">followup,</if>
+            <if test="leadsName != null">leads_name,</if>
+            <if test="nextTime != null">next_time,</if>
+            <if test="telephone != null">telephone,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="email != null">email,</if>
+            <if test="address != null">address,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="ownerUserId != null">owner_user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="lastTime != null">last_time,</if>
+            <if test="lastContent != null">last_content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="followup != null">#{followup},</if>
+            <if test="leadsName != null">#{leadsName},</if>
+            <if test="nextTime != null">#{nextTime},</if>
+            <if test="telephone != null">#{telephone},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="email != null">#{email},</if>
+            <if test="address != null">#{address},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="ownerUserId != null">#{ownerUserId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="lastTime != null">#{lastTime},</if>
+            <if test="lastContent != null">#{lastContent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmLeads" parameterType="WkCrmLeads">
+        update wk_crm_leads
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="followup != null">followup = #{followup},</if>
+            <if test="leadsName != null">leads_name = #{leadsName},</if>
+            <if test="nextTime != null">next_time = #{nextTime},</if>
+            <if test="telephone != null">telephone = #{telephone},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="ownerUserId != null">owner_user_id = #{ownerUserId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="lastTime != null">last_time = #{lastTime},</if>
+            <if test="lastContent != null">last_content = #{lastContent},</if>
+        </trim>
+        where leads_id = #{leadsId}
+    </update>
+
+    <delete id="deleteWkCrmLeadsById" parameterType="Long">
+        delete from wk_crm_leads where leads_id = #{leadsId}
+    </delete>
+
+    <delete id="deleteWkCrmLeadsByIds" parameterType="String">
+        delete from wk_crm_leads where leads_id in 
+        <foreach item="leadsId" collection="array" open="(" separator="," close=")">
+            #{leadsId}
+        </foreach>
+    </delete>
+
+</mapper>
