@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -303,6 +304,7 @@ public class ArticleManageController extends BaseController {
      * 保存(更新)文章静态页面 @Title: updateArticle @Description: TODO() @param @return
      * 参数 @return Message 返回类型 @throws
      */
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*", origins = "*", maxAge = 1800)
     @RequestMapping("/updateArticle")
     @ResponseBody
     public Message updateArticle(HttpServletRequest request, HttpServletResponse response) {
