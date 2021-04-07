@@ -1017,7 +1017,7 @@
             cache: false,
             success: function (data) {
                 if (data.result) {
-                    $.modal.open('文章预览', data.object.editUrl)
+                    $.modal.open('文章预览', data.object.editUrl + '?l=1')
 
                 } else {
                     $.modal.alertError("预览失败，请稍后重试！");
