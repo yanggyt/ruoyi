@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmStaffManagement1Mapper">
+    
+    <resultMap type="WkCrmStaffManagement1" id="WkCrmStaffManagement1Result">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="mobilePhone"    column="mobile_phone"    />
+        <result property="certificateType"    column="certificate_type"    />
+        <result property="certificateId"    column="certificate_id"    />
+        <result property="gender"    column="gender"    />
+        <result property="birthdayDate"    column="birthday_date"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="age"    column="age"    />
+        <result property="married"    column="married"    />
+        <result property="pregnancy"    column="pregnancy"    />
+        <result property="countriesRegions"    column="countries_regions"    />
+        <result property="nation"    column="nation"    />
+        <result property="politicsStatus"    column="politics_status"    />
+        <result property="nativePlace"    column="native_place"    />
+        <result property="placeOfDomicile"    column="place_of_domicile"    />
+        <result property="health"    column="health"    />
+        <result property="highestEducation"    column="highest_education"    />
+        <result property="hireDate"    column="hire_date"    />
+        <result property="probationPeriod"    column="probation_period"    />
+        <result property="regularizationDate"    column="Regularization_date"    />
+        <result property="jobNumber"    column="job_number"    />
+        <result property="department"    column="department"    />
+        <result property="directSupervisor"    column="direct_supervisor"    />
+        <result property="post"    column="post"    />
+        <result property="jobGrade"    column="job_grade"    />
+        <result property="workSite"    column="work_site"    />
+        <result property="detailedWorkLocation"    column="detailed_work_location"    />
+        <result property="workCity"    column="work_city"    />
+        <result property="recruitmentChannel"    column="recruitment_channel"    />
+        <result property="employmentCity"    column="employment_city"    />
+        <result property="commencementSeniorityDate"    column="commencement_seniority_date"    />
+        <result property="workingYears"    column="working_years"    />
+        <result property="contractType"    column="contract_type"    />
+        <result property="contractCommencementTime"    column="contract_commencement_time"    />
+        <result property="endOfContrac"    column="end_of_contrac"    />
+        <result property="currentContractTerm"    column="current_contract_term"    />
+        <result property="wagesCardNumber"    column="wages_card_number"    />
+        <result property="accountOpeningCity"    column="account_opening_city"    />
+        <result property="bankCardName"    column="bank_card_name"    />
+        <result property="payCardBank"    column="pay_card_bank"    />
+        <result property="socialSecurityAccount"    column="social_security_account"    />
+        <result property="providentFundAccount"    column="provident_fund_account"    />
+        <result property="operation"    column="operation"    />
+        <result property="regularization"    column="regularization"    />
+        <result property="adjustmentOfDepartmentalPosts"    column="adjustment_of_departmental_posts"    />
+        <result property="promotion"    column="promotion"    />
+        <result property="ginsengProtectPlan"    column="ginseng_protect_plan"    />
+        <result property="forDeparture"    column="for_departure"    />
+        <result property="userId"    column="userId"    />
+    </resultMap>
+
+    <sql id="selectWkCrmStaffManagement1Vo">
+        select id, name, mobile_phone, certificate_type, certificate_id, gender, birthday_date, birthday, age, married, pregnancy, countries_regions, nation, politics_status, native_place, place_of_domicile, health, highest_education, hire_date, probation_period, Regularization_date, job_number, department, direct_supervisor, post, job_grade, work_site, detailed_work_location, work_city, recruitment_channel, employment_city, commencement_seniority_date, working_years, contract_type, contract_commencement_time, end_of_contrac, current_contract_term, wages_card_number, account_opening_city, bank_card_name, pay_card_bank, social_security_account, provident_fund_account, operation, regularization, adjustment_of_departmental_posts, promotion, ginseng_protect_plan, for_departure, userId from wk_crm_staff_management1
+    </sql>
+
+    <select id="selectWkCrmStaffManagement1List" parameterType="WkCrmStaffManagement1" resultMap="WkCrmStaffManagement1Result">
+        <include refid="selectWkCrmStaffManagement1Vo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="mobilePhone != null  and mobilePhone != ''"> and mobile_phone = #{mobilePhone}</if>
+            <if test="certificateType != null  and certificateType != ''"> and certificate_type = #{certificateType}</if>
+            <if test="certificateId != null  and certificateId != ''"> and certificate_id = #{certificateId}</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="birthdayDate != null "> and birthday_date = #{birthdayDate}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="married != null  and married != ''"> and married = #{married}</if>
+            <if test="pregnancy != null  and pregnancy != ''"> and pregnancy = #{pregnancy}</if>
+            <if test="countriesRegions != null  and countriesRegions != ''"> and countries_regions = #{countriesRegions}</if>
+            <if test="nation != null  and nation != ''"> and nation = #{nation}</if>
+            <if test="politicsStatus != null  and politicsStatus != ''"> and politics_status = #{politicsStatus}</if>
+            <if test="nativePlace != null  and nativePlace != ''"> and native_place = #{nativePlace}</if>
+            <if test="placeOfDomicile != null  and placeOfDomicile != ''"> and place_of_domicile = #{placeOfDomicile}</if>
+            <if test="health != null  and health != ''"> and health = #{health}</if>
+            <if test="highestEducation != null  and highestEducation != ''"> and highest_education = #{highestEducation}</if>
+            <if test="hireDate != null "> and hire_date = #{hireDate}</if>
+            <if test="probationPeriod != null "> and probation_period = #{probationPeriod}</if>
+            <if test="regularizationDate != null "> and Regularization_date = #{regularizationDate}</if>
+            <if test="jobNumber != null "> and job_number = #{jobNumber}</if>
+            <if test="department != null  and department != ''"> and department = #{department}</if>
+            <if test="directSupervisor != null  and directSupervisor != ''"> and direct_supervisor = #{directSupervisor}</if>
+            <if test="post != null  and post != ''"> and post = #{post}</if>
+            <if test="jobGrade != null  and jobGrade != ''"> and job_grade = #{jobGrade}</if>
+            <if test="workSite != null  and workSite != ''"> and work_site = #{workSite}</if>
+            <if test="detailedWorkLocation != null  and detailedWorkLocation != ''"> and detailed_work_location = #{detailedWorkLocation}</if>
+            <if test="workCity != null  and workCity != ''"> and work_city = #{workCity}</if>
+            <if test="recruitmentChannel != null  and recruitmentChannel != ''"> and recruitment_channel = #{recruitmentChannel}</if>
+            <if test="employmentCity != null  and employmentCity != ''"> and employment_city = #{employmentCity}</if>
+            <if test="commencementSeniorityDate != null "> and commencement_seniority_date = #{commencementSeniorityDate}</if>
+            <if test="workingYears != null "> and working_years = #{workingYears}</if>
+            <if test="contractType != null  and contractType != ''"> and contract_type = #{contractType}</if>
+            <if test="contractCommencementTime != null "> and contract_commencement_time = #{contractCommencementTime}</if>
+            <if test="endOfContrac != null "> and end_of_contrac = #{endOfContrac}</if>
+            <if test="currentContractTerm != null "> and current_contract_term = #{currentContractTerm}</if>
+            <if test="wagesCardNumber != null "> and wages_card_number = #{wagesCardNumber}</if>
+            <if test="accountOpeningCity != null  and accountOpeningCity != ''"> and account_opening_city = #{accountOpeningCity}</if>
+            <if test="bankCardName != null  and bankCardName != ''"> and bank_card_name like concat('%', #{bankCardName}, '%')</if>
+            <if test="payCardBank != null  and payCardBank != ''"> and pay_card_bank = #{payCardBank}</if>
+            <if test="socialSecurityAccount != null "> and social_security_account = #{socialSecurityAccount}</if>
+            <if test="providentFundAccount != null "> and provident_fund_account = #{providentFundAccount}</if>
+            <if test="operation != null  and operation != ''"> and operation = #{operation}</if>
+            <if test="regularization != null  and regularization != ''"> and regularization = #{regularization}</if>
+            <if test="adjustmentOfDepartmentalPosts != null  and adjustmentOfDepartmentalPosts != ''"> and adjustment_of_departmental_posts = #{adjustmentOfDepartmentalPosts}</if>
+            <if test="promotion != null  and promotion != ''"> and promotion = #{promotion}</if>
+            <if test="ginsengProtectPlan != null  and ginsengProtectPlan != ''"> and ginseng_protect_plan = #{ginsengProtectPlan}</if>
+            <if test="forDeparture != null  and forDeparture != ''"> and for_departure = #{forDeparture}</if>
+            <if test="userId != null  and userId != ''"> and userId = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmStaffManagement1ById" parameterType="Long" resultMap="WkCrmStaffManagement1Result">
+        <include refid="selectWkCrmStaffManagement1Vo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWkCrmStaffManagement1" parameterType="WkCrmStaffManagement1" useGeneratedKeys="true" keyProperty="id">
+        insert into wk_crm_staff_management1
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="mobilePhone != null">mobile_phone,</if>
+            <if test="certificateType != null">certificate_type,</if>
+            <if test="certificateId != null">certificate_id,</if>
+            <if test="gender != null">gender,</if>
+            <if test="birthdayDate != null">birthday_date,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="age != null">age,</if>
+            <if test="married != null">married,</if>
+            <if test="pregnancy != null">pregnancy,</if>
+            <if test="countriesRegions != null">countries_regions,</if>
+            <if test="nation != null">nation,</if>
+            <if test="politicsStatus != null">politics_status,</if>
+            <if test="nativePlace != null">native_place,</if>
+            <if test="placeOfDomicile != null">place_of_domicile,</if>
+            <if test="health != null">health,</if>
+            <if test="highestEducation != null">highest_education,</if>
+            <if test="hireDate != null">hire_date,</if>
+            <if test="probationPeriod != null">probation_period,</if>
+            <if test="regularizationDate != null">Regularization_date,</if>
+            <if test="jobNumber != null">job_number,</if>
+            <if test="department != null">department,</if>
+            <if test="directSupervisor != null">direct_supervisor,</if>
+            <if test="post != null">post,</if>
+            <if test="jobGrade != null">job_grade,</if>
+            <if test="workSite != null">work_site,</if>
+            <if test="detailedWorkLocation != null">detailed_work_location,</if>
+            <if test="workCity != null">work_city,</if>
+            <if test="recruitmentChannel != null">recruitment_channel,</if>
+            <if test="employmentCity != null">employment_city,</if>
+            <if test="commencementSeniorityDate != null">commencement_seniority_date,</if>
+            <if test="workingYears != null">working_years,</if>
+            <if test="contractType != null">contract_type,</if>
+            <if test="contractCommencementTime != null">contract_commencement_time,</if>
+            <if test="endOfContrac != null">end_of_contrac,</if>
+            <if test="currentContractTerm != null">current_contract_term,</if>
+            <if test="wagesCardNumber != null">wages_card_number,</if>
+            <if test="accountOpeningCity != null">account_opening_city,</if>
+            <if test="bankCardName != null">bank_card_name,</if>
+            <if test="payCardBank != null">pay_card_bank,</if>
+            <if test="socialSecurityAccount != null">social_security_account,</if>
+            <if test="providentFundAccount != null">provident_fund_account,</if>
+            <if test="operation != null">operation,</if>
+            <if test="regularization != null">regularization,</if>
+            <if test="adjustmentOfDepartmentalPosts != null">adjustment_of_departmental_posts,</if>
+            <if test="promotion != null">promotion,</if>
+            <if test="ginsengProtectPlan != null">ginseng_protect_plan,</if>
+            <if test="forDeparture != null">for_departure,</if>
+            <if test="userId != null">userId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="mobilePhone != null">#{mobilePhone},</if>
+            <if test="certificateType != null">#{certificateType},</if>
+            <if test="certificateId != null">#{certificateId},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="birthdayDate != null">#{birthdayDate},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="age != null">#{age},</if>
+            <if test="married != null">#{married},</if>
+            <if test="pregnancy != null">#{pregnancy},</if>
+            <if test="countriesRegions != null">#{countriesRegions},</if>
+            <if test="nation != null">#{nation},</if>
+            <if test="politicsStatus != null">#{politicsStatus},</if>
+            <if test="nativePlace != null">#{nativePlace},</if>
+            <if test="placeOfDomicile != null">#{placeOfDomicile},</if>
+            <if test="health != null">#{health},</if>
+            <if test="highestEducation != null">#{highestEducation},</if>
+            <if test="hireDate != null">#{hireDate},</if>
+            <if test="probationPeriod != null">#{probationPeriod},</if>
+            <if test="regularizationDate != null">#{regularizationDate},</if>
+            <if test="jobNumber != null">#{jobNumber},</if>
+            <if test="department != null">#{department},</if>
+            <if test="directSupervisor != null">#{directSupervisor},</if>
+            <if test="post != null">#{post},</if>
+            <if test="jobGrade != null">#{jobGrade},</if>
+            <if test="workSite != null">#{workSite},</if>
+            <if test="detailedWorkLocation != null">#{detailedWorkLocation},</if>
+            <if test="workCity != null">#{workCity},</if>
+            <if test="recruitmentChannel != null">#{recruitmentChannel},</if>
+            <if test="employmentCity != null">#{employmentCity},</if>
+            <if test="commencementSeniorityDate != null">#{commencementSeniorityDate},</if>
+            <if test="workingYears != null">#{workingYears},</if>
+            <if test="contractType != null">#{contractType},</if>
+            <if test="contractCommencementTime != null">#{contractCommencementTime},</if>
+            <if test="endOfContrac != null">#{endOfContrac},</if>
+            <if test="currentContractTerm != null">#{currentContractTerm},</if>
+            <if test="wagesCardNumber != null">#{wagesCardNumber},</if>
+            <if test="accountOpeningCity != null">#{accountOpeningCity},</if>
+            <if test="bankCardName != null">#{bankCardName},</if>
+            <if test="payCardBank != null">#{payCardBank},</if>
+            <if test="socialSecurityAccount != null">#{socialSecurityAccount},</if>
+            <if test="providentFundAccount != null">#{providentFundAccount},</if>
+            <if test="operation != null">#{operation},</if>
+            <if test="regularization != null">#{regularization},</if>
+            <if test="adjustmentOfDepartmentalPosts != null">#{adjustmentOfDepartmentalPosts},</if>
+            <if test="promotion != null">#{promotion},</if>
+            <if test="ginsengProtectPlan != null">#{ginsengProtectPlan},</if>
+            <if test="forDeparture != null">#{forDeparture},</if>
+            <if test="userId != null">#{userId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmStaffManagement1" parameterType="WkCrmStaffManagement1">
+        update wk_crm_staff_management1
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
+            <if test="certificateType != null">certificate_type = #{certificateType},</if>
+            <if test="certificateId != null">certificate_id = #{certificateId},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="birthdayDate != null">birthday_date = #{birthdayDate},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="married != null">married = #{married},</if>
+            <if test="pregnancy != null">pregnancy = #{pregnancy},</if>
+            <if test="countriesRegions != null">countries_regions = #{countriesRegions},</if>
+            <if test="nation != null">nation = #{nation},</if>
+            <if test="politicsStatus != null">politics_status = #{politicsStatus},</if>
+            <if test="nativePlace != null">native_place = #{nativePlace},</if>
+            <if test="placeOfDomicile != null">place_of_domicile = #{placeOfDomicile},</if>
+            <if test="health != null">health = #{health},</if>
+            <if test="highestEducation != null">highest_education = #{highestEducation},</if>
+            <if test="hireDate != null">hire_date = #{hireDate},</if>
+            <if test="probationPeriod != null">probation_period = #{probationPeriod},</if>
+            <if test="regularizationDate != null">Regularization_date = #{regularizationDate},</if>
+            <if test="jobNumber != null">job_number = #{jobNumber},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="directSupervisor != null">direct_supervisor = #{directSupervisor},</if>
+            <if test="post != null">post = #{post},</if>
+            <if test="jobGrade != null">job_grade = #{jobGrade},</if>
+            <if test="workSite != null">work_site = #{workSite},</if>
+            <if test="detailedWorkLocation != null">detailed_work_location = #{detailedWorkLocation},</if>
+            <if test="workCity != null">work_city = #{workCity},</if>
+            <if test="recruitmentChannel != null">recruitment_channel = #{recruitmentChannel},</if>
+            <if test="employmentCity != null">employment_city = #{employmentCity},</if>
+            <if test="commencementSeniorityDate != null">commencement_seniority_date = #{commencementSeniorityDate},</if>
+            <if test="workingYears != null">working_years = #{workingYears},</if>
+            <if test="contractType != null">contract_type = #{contractType},</if>
+            <if test="contractCommencementTime != null">contract_commencement_time = #{contractCommencementTime},</if>
+            <if test="endOfContrac != null">end_of_contrac = #{endOfContrac},</if>
+            <if test="currentContractTerm != null">current_contract_term = #{currentContractTerm},</if>
+            <if test="wagesCardNumber != null">wages_card_number = #{wagesCardNumber},</if>
+            <if test="accountOpeningCity != null">account_opening_city = #{accountOpeningCity},</if>
+            <if test="bankCardName != null">bank_card_name = #{bankCardName},</if>
+            <if test="payCardBank != null">pay_card_bank = #{payCardBank},</if>
+            <if test="socialSecurityAccount != null">social_security_account = #{socialSecurityAccount},</if>
+            <if test="providentFundAccount != null">provident_fund_account = #{providentFundAccount},</if>
+            <if test="operation != null">operation = #{operation},</if>
+            <if test="regularization != null">regularization = #{regularization},</if>
+            <if test="adjustmentOfDepartmentalPosts != null">adjustment_of_departmental_posts = #{adjustmentOfDepartmentalPosts},</if>
+            <if test="promotion != null">promotion = #{promotion},</if>
+            <if test="ginsengProtectPlan != null">ginseng_protect_plan = #{ginsengProtectPlan},</if>
+            <if test="forDeparture != null">for_departure = #{forDeparture},</if>
+            <if test="userId != null">userId = #{userId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWkCrmStaffManagement1ById" parameterType="Long">
+        delete from wk_crm_staff_management1 where id = #{id}
+    </delete>
+
+    <delete id="deleteWkCrmStaffManagement1ByIds" parameterType="String">
+        delete from wk_crm_staff_management1 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

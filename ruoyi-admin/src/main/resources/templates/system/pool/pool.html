@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('公海列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>公海名称：</label>
+                                <input type="text" name="poolName"/>
+                            </li>
+                            <!--<li>
+                                <label>状态 0 停用 1启用：</label>
+                                <select name="status">
+                                    <option value="">所有</option>
+                                    <option value="-1">代码生成请选择字典属性</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>前负责人领取规则 0不限制 1限制：</label>
+                                <input type="text" name="preOwnerSetting"/>
+                            </li>
+                            <li>
+                                <label>前负责人领取规则限制天数：</label>
+                                <input type="text" name="preOwnerSettingDay"/>
+                            </li>
+                            <li>
+                                <label>是否限制领取频率 0不限制 1限制：</label>
+                                <input type="text" name="receiveSetting"/>
+                            </li>
+                            <li>
+                                <label>领取频率规则：</label>
+                                <input type="text" name="receiveNum"/>
+                            </li>
+                            <li>
+                                <label>是否设置提前提醒 0不开启 1开启：</label>
+                                <input type="text" name="remindSetting"/>
+                            </li>
+                            <li>
+                                <label>提醒规则天数：</label>
+                                <input type="text" name="remindDay"/>
+                            </li>
+                            <li>
+                                <label>收回规则 0不自动收回 1自动收回：</label>
+                                <input type="text" name="putInRule"/>
+                            </li>
+                            <li>
+                                <label>：</label>
+                                <input type="text" name="createUserId"/>
+                            </li>-->
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:pool:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:pool:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:pool:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:pool:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:pool:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:pool:remove')}]];
+        var prefix = ctx + "system/pool";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "公海",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'poolId',
+                    title: '公海id',
+                    visible: false
+                },
+                {
+                    field: 'poolName',
+                    title: '公海名称'
+                },
+                {
+                    field: 'adminUserId',
+                    title: '管理员 '
+                },
+                {
+                    field: 'memberUserId',
+                    title: '公海规则员工成员'
+                },
+                {
+                    field: 'memberDeptId',
+                    title: '公海规则部门成员'
+                },
+                {
+                    field: 'status',
+                    title: '状态 0 停用 1启用'
+                },
+                {
+                    field: 'preOwnerSetting',
+                    title: '前负责人领取规则 0不限制 1限制'
+                },
+                {
+                    field: 'preOwnerSettingDay',
+                    title: '前负责人领取规则限制天数'
+                },
+                {
+                    field: 'receiveSetting',
+                    title: '是否限制领取频率 0不限制 1限制'
+                },
+                {
+                    field: 'receiveNum',
+                    title: '领取频率规则'
+                },
+                {
+                    field: 'remindSetting',
+                    title: '是否设置提前提醒 0不开启 1开启'
+                },
+                {
+                    field: 'remindDay',
+                    title: '提醒规则天数'
+                },
+                {
+                    field: 'putInRule',
+                    title: '收回规则 0不自动收回 1自动收回'
+                },
+                {
+                    field: 'createUserId',
+                    title: ''
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.poolId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.poolId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>
