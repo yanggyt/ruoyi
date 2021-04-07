@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.WkCrmLeadsMapper">
     
-    <resultMap type="WkCrmLeads" id="WkCrmLeadsResult">
+    <resultMap type="com.ruoyi.system.domain.WkCrmLeads" id="WkCrmLeadsResult">
         <result property="leadsId"    column="leads_id"    />
         <result property="followup"    column="followup"    />
         <result property="leadsName"    column="leads_name"    />
