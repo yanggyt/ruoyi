@@ -9,12 +9,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="num"    column="num"    />
         <result property="name"    column="name"    />
         <result property="customerId"    column="customer_id"    />
+        <result property="customerName"    column="customer_name"    />
         <result property="money"    column="money"    />
         <result property="orderDate"    column="order_date"    />
         <result property="startTime"    column="start_time"    />
         <result property="endTime"    column="end_time"    />
         <result property="contactsId"    column="contacts_id"    />
-        <result property="companyUserId"    column="company_user_id"    />
+        <result property="lName"    column="lname"/>
+        <result property="companyUserId"    column="tname"    />
         <result property="remark"    column="remark"    />
         <result property="types"    column="types"    />
         <result property="checkStatus"    column="check_status"    />
@@ -29,10 +31,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="examineRecordId"    column="examine_record_id"    />
         <result property="totalPrice"    column="total_price"    />
         <result property="paymentType"    column="payment_type"    />
+
+
     </resultMap>
 
     <sql id="selectWkCrmContractVo">
-        select contract_id, num, name, customer_id, money, order_date, start_time, end_time, contacts_id, company_user_id, remark, types, check_status, received_money, unreceived_money, old_contract_id, last_time, owner_user_id, update_time, create_time, create_user_id, examine_record_id, total_price, payment_type from wk_crm_contract
+--         select contract_id, num, name, customer_id, money, order_date, start_time, end_time, contacts_id
+--         , company_user_id, remark, types, check_status, received_money, unreceived_money, old_contract_id,
+--          last_time, owner_user_id, update_time, create_time, create_user_id, examine_record_id, total_price,
+--          payment_type from wk_crm_contract
+    SELECT
+        ht.contract_id,
+        ht.num,
+        ht.`name`,
+        kh.customer_name,
+        ht.money,
+        ht.order_date,
+        ht.start_time,
+        ht.end_time,
+        lxr.`name` lname,
+        txl.`name` tname,
+        ht.remark,
+        ht.types,
+        ht.check_status,
+        ht.received_money,
+        ht.unreceived_money,
+        ht.old_contract_id,
+        ht.last_time,
+        ht.owner_user_id,
+        ht.update_time,
+        ht.create_time,
+        ht.create_user_id,
+        ht.examine_record_id,
+        ht.total_price,
+        ht.payment_type
+    FROM
+        wk_crm_contract ht
+        LEFT JOIN wk_crm_customer kh ON ht.customer_id = kh.customer_id
+        LEFT JOIN wk_crm_address txl ON txl.id = ht.company_user_id
+        LEFT JOIN wk_crm_contacts lxr ON lxr.contacts_id = ht.contacts_id
     </sql>
 
     <select id="selectWkCrmContractList" parameterType="WkCrmContract" resultMap="WkCrmContractResult">

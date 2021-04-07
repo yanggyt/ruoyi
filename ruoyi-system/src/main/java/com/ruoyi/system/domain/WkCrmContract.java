@@ -80,6 +80,26 @@ public class WkCrmContract extends BaseEntity
     @Excel(name = "最后跟进人")
     private Integer oldContractId;
 
+    private String customerName;
+
+    private String lName;
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getlName() {
+        return lName;
+    }
+
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
+
     /** 最后跟进时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "最后跟进时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -319,6 +339,8 @@ public class WkCrmContract extends BaseEntity
             .append("examineRecordId", getExamineRecordId())
             .append("totalPrice", getTotalPrice())
             .append("paymentType", getPaymentType())
+            .append("customerName",getCustomerName())
+            .append("lName",getlName())
             .toString();
     }
 }
