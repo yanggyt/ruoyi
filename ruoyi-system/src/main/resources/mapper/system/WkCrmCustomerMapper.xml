@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmCustomerMapper">
+    
+    <resultMap type="WkCrmCustomer" id="WkCrmCustomerResult">
+        <result property="customerId"    column="customer_id"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="nextTime"    column="next_time"    />
+        <result property="dealStatus"    column="deal_status"    />
+        <result property="dealTime"    column="deal_time"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="website"    column="website"    />
+        <result property="email"    column="email"    />
+        <result property="remark"    column="remark"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="ownerUserId"    column="owner_user_id"    />
+        <result property="roUserId"    column="ro_user_id"    />
+        <result property="rwUserId"    column="rw_user_id"    />
+        <result property="detailAddress"    column="detail_address"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="lastTime"    column="last_time"    />
+        <result property="poolTime"    column="pool_time"    />
+        <result property="isReceive"    column="is_receive"    />
+        <result property="lastContent"    column="last_content"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="preOwnerUserId"    column="pre_owner_user_id"    />
+    </resultMap>
+
+    <sql id="selectWkCrmCustomerVo">
+        select customer_id, customer_name, next_time, deal_status, deal_time, mobile, telephone, website, email, remark, create_user_id, owner_user_id, ro_user_id, rw_user_id, detail_address, create_time, update_time, batch_id, last_time, pool_time, is_receive, last_content, receive_time, pre_owner_user_id from wk_crm_customer
+    </sql>
+
+    <select id="selectWkCrmCustomerList" parameterType="WkCrmCustomer" resultMap="WkCrmCustomerResult">
+        <include refid="selectWkCrmCustomerVo"/>
+        <where>  
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="nextTime != null "> and next_time = #{nextTime}</if>
+            <if test="dealStatus != null "> and deal_status = #{dealStatus}</if>
+            <if test="dealTime != null "> and deal_time = #{dealTime}</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="telephone != null  and telephone != ''"> and telephone = #{telephone}</if>
+            <if test="website != null  and website != ''"> and website = #{website}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="ownerUserId != null "> and owner_user_id = #{ownerUserId}</if>
+            <if test="roUserId != null  and roUserId != ''"> and ro_user_id = #{roUserId}</if>
+            <if test="rwUserId != null  and rwUserId != ''"> and rw_user_id = #{rwUserId}</if>
+            <if test="detailAddress != null  and detailAddress != ''"> and detail_address = #{detailAddress}</if>
+            <if test="batchId != null  and batchId != ''"> and batch_id = #{batchId}</if>
+            <if test="lastTime != null "> and last_time = #{lastTime}</if>
+            <if test="poolTime != null "> and pool_time = #{poolTime}</if>
+            <if test="isReceive != null "> and is_receive = #{isReceive}</if>
+            <if test="lastContent != null  and lastContent != ''"> and last_content = #{lastContent}</if>
+            <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
+            <if test="preOwnerUserId != null "> and pre_owner_user_id = #{preOwnerUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmCustomerById" parameterType="Long" resultMap="WkCrmCustomerResult">
+        <include refid="selectWkCrmCustomerVo"/>
+        where customer_id = #{customerId}
+    </select>
+        
+    <insert id="insertWkCrmCustomer" parameterType="WkCrmCustomer" useGeneratedKeys="true" keyProperty="customerId">
+        insert into wk_crm_customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerName != null">customer_name,</if>
+            <if test="nextTime != null">next_time,</if>
+            <if test="dealStatus != null">deal_status,</if>
+            <if test="dealTime != null">deal_time,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="telephone != null">telephone,</if>
+            <if test="website != null">website,</if>
+            <if test="email != null">email,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="ownerUserId != null">owner_user_id,</if>
+            <if test="roUserId != null">ro_user_id,</if>
+            <if test="rwUserId != null">rw_user_id,</if>
+            <if test="detailAddress != null">detail_address,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="batchId != null and batchId != ''">batch_id,</if>
+            <if test="lastTime != null">last_time,</if>
+            <if test="poolTime != null">pool_time,</if>
+            <if test="isReceive != null">is_receive,</if>
+            <if test="lastContent != null">last_content,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="preOwnerUserId != null">pre_owner_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerName != null">#{customerName},</if>
+            <if test="nextTime != null">#{nextTime},</if>
+            <if test="dealStatus != null">#{dealStatus},</if>
+            <if test="dealTime != null">#{dealTime},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="telephone != null">#{telephone},</if>
+            <if test="website != null">#{website},</if>
+            <if test="email != null">#{email},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="ownerUserId != null">#{ownerUserId},</if>
+            <if test="roUserId != null">#{roUserId},</if>
+            <if test="rwUserId != null">#{rwUserId},</if>
+            <if test="detailAddress != null">#{detailAddress},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="batchId != null and batchId != ''">#{batchId},</if>
+            <if test="lastTime != null">#{lastTime},</if>
+            <if test="poolTime != null">#{poolTime},</if>
+            <if test="isReceive != null">#{isReceive},</if>
+            <if test="lastContent != null">#{lastContent},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="preOwnerUserId != null">#{preOwnerUserId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmCustomer" parameterType="WkCrmCustomer">
+        update wk_crm_customer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="customerName != null">customer_name = #{customerName},</if>
+            <if test="nextTime != null">next_time = #{nextTime},</if>
+            <if test="dealStatus != null">deal_status = #{dealStatus},</if>
+            <if test="dealTime != null">deal_time = #{dealTime},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="telephone != null">telephone = #{telephone},</if>
+            <if test="website != null">website = #{website},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="ownerUserId != null">owner_user_id = #{ownerUserId},</if>
+            <if test="roUserId != null">ro_user_id = #{roUserId},</if>
+            <if test="rwUserId != null">rw_user_id = #{rwUserId},</if>
+            <if test="detailAddress != null">detail_address = #{detailAddress},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="batchId != null and batchId != ''">batch_id = #{batchId},</if>
+            <if test="lastTime != null">last_time = #{lastTime},</if>
+            <if test="poolTime != null">pool_time = #{poolTime},</if>
+            <if test="isReceive != null">is_receive = #{isReceive},</if>
+            <if test="lastContent != null">last_content = #{lastContent},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+            <if test="preOwnerUserId != null">pre_owner_user_id = #{preOwnerUserId},</if>
+        </trim>
+        where customer_id = #{customerId}
+    </update>
+
+    <delete id="deleteWkCrmCustomerById" parameterType="Long">
+        delete from wk_crm_customer where customer_id = #{customerId}
+    </delete>
+
+    <delete id="deleteWkCrmCustomerByIds" parameterType="String">
+        delete from wk_crm_customer where customer_id in 
+        <foreach item="customerId" collection="array" open="(" separator="," close=")">
+            #{customerId}
+        </foreach>
+    </delete>
+
+</mapper>

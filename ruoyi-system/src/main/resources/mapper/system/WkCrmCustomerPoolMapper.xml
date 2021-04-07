@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmCustomerPoolMapper">
+    
+    <resultMap type="WkCrmCustomerPool" id="WkCrmCustomerPoolResult">
+        <result property="poolId"    column="pool_id"    />
+        <result property="poolName"    column="pool_name"    />
+        <result property="adminUserId"    column="admin_user_id"    />
+        <result property="memberUserId"    column="member_user_id"    />
+        <result property="memberDeptId"    column="member_dept_id"    />
+        <result property="status"    column="status"    />
+        <result property="preOwnerSetting"    column="pre_owner_setting"    />
+        <result property="preOwnerSettingDay"    column="pre_owner_setting_day"    />
+        <result property="receiveSetting"    column="receive_setting"    />
+        <result property="receiveNum"    column="receive_num"    />
+        <result property="remindSetting"    column="remind_setting"    />
+        <result property="remindDay"    column="remind_day"    />
+        <result property="putInRule"    column="put_in_rule"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectWkCrmCustomerPoolVo">
+        select pool_id, pool_name, admin_user_id, member_user_id, member_dept_id, status, pre_owner_setting, pre_owner_setting_day, receive_setting, receive_num, remind_setting, remind_day, put_in_rule, create_user_id, create_time from wk_crm_customer_pool
+    </sql>
+
+    <select id="selectWkCrmCustomerPoolList" parameterType="WkCrmCustomerPool" resultMap="WkCrmCustomerPoolResult">
+        <include refid="selectWkCrmCustomerPoolVo"/>
+        <where>  
+            <if test="poolName != null  and poolName != ''"> and pool_name like concat('%', #{poolName}, '%')</if>
+            <if test="adminUserId != null  and adminUserId != ''"> and admin_user_id = #{adminUserId}</if>
+            <if test="memberUserId != null  and memberUserId != ''"> and member_user_id = #{memberUserId}</if>
+            <if test="memberDeptId != null  and memberDeptId != ''"> and member_dept_id = #{memberDeptId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="preOwnerSetting != null "> and pre_owner_setting = #{preOwnerSetting}</if>
+            <if test="preOwnerSettingDay != null "> and pre_owner_setting_day = #{preOwnerSettingDay}</if>
+            <if test="receiveSetting != null "> and receive_setting = #{receiveSetting}</if>
+            <if test="receiveNum != null "> and receive_num = #{receiveNum}</if>
+            <if test="remindSetting != null "> and remind_setting = #{remindSetting}</if>
+            <if test="remindDay != null "> and remind_day = #{remindDay}</if>
+            <if test="putInRule != null "> and put_in_rule = #{putInRule}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmCustomerPoolById" parameterType="Long" resultMap="WkCrmCustomerPoolResult">
+        <include refid="selectWkCrmCustomerPoolVo"/>
+        where pool_id = #{poolId}
+    </select>
+        
+    <insert id="insertWkCrmCustomerPool" parameterType="WkCrmCustomerPool" useGeneratedKeys="true" keyProperty="poolId">
+        insert into wk_crm_customer_pool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="poolName != null and poolName != ''">pool_name,</if>
+            <if test="adminUserId != null and adminUserId != ''">admin_user_id,</if>
+            <if test="memberUserId != null">member_user_id,</if>
+            <if test="memberDeptId != null">member_dept_id,</if>
+            <if test="status != null">status,</if>
+            <if test="preOwnerSetting != null">pre_owner_setting,</if>
+            <if test="preOwnerSettingDay != null">pre_owner_setting_day,</if>
+            <if test="receiveSetting != null">receive_setting,</if>
+            <if test="receiveNum != null">receive_num,</if>
+            <if test="remindSetting != null">remind_setting,</if>
+            <if test="remindDay != null">remind_day,</if>
+            <if test="putInRule != null">put_in_rule,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="poolName != null and poolName != ''">#{poolName},</if>
+            <if test="adminUserId != null and adminUserId != ''">#{adminUserId},</if>
+            <if test="memberUserId != null">#{memberUserId},</if>
+            <if test="memberDeptId != null">#{memberDeptId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="preOwnerSetting != null">#{preOwnerSetting},</if>
+            <if test="preOwnerSettingDay != null">#{preOwnerSettingDay},</if>
+            <if test="receiveSetting != null">#{receiveSetting},</if>
+            <if test="receiveNum != null">#{receiveNum},</if>
+            <if test="remindSetting != null">#{remindSetting},</if>
+            <if test="remindDay != null">#{remindDay},</if>
+            <if test="putInRule != null">#{putInRule},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmCustomerPool" parameterType="WkCrmCustomerPool">
+        update wk_crm_customer_pool
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="poolName != null and poolName != ''">pool_name = #{poolName},</if>
+            <if test="adminUserId != null and adminUserId != ''">admin_user_id = #{adminUserId},</if>
+            <if test="memberUserId != null">member_user_id = #{memberUserId},</if>
+            <if test="memberDeptId != null">member_dept_id = #{memberDeptId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="preOwnerSetting != null">pre_owner_setting = #{preOwnerSetting},</if>
+            <if test="preOwnerSettingDay != null">pre_owner_setting_day = #{preOwnerSettingDay},</if>
+            <if test="receiveSetting != null">receive_setting = #{receiveSetting},</if>
+            <if test="receiveNum != null">receive_num = #{receiveNum},</if>
+            <if test="remindSetting != null">remind_setting = #{remindSetting},</if>
+            <if test="remindDay != null">remind_day = #{remindDay},</if>
+            <if test="putInRule != null">put_in_rule = #{putInRule},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where pool_id = #{poolId}
+    </update>
+
+    <delete id="deleteWkCrmCustomerPoolById" parameterType="Long">
+        delete from wk_crm_customer_pool where pool_id = #{poolId}
+    </delete>
+
+    <delete id="deleteWkCrmCustomerPoolByIds" parameterType="String">
+        delete from wk_crm_customer_pool where pool_id in 
+        <foreach item="poolId" collection="array" open="(" separator="," close=")">
+            #{poolId}
+        </foreach>
+    </delete>
+
+</mapper>

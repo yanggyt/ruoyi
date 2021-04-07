@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmOrganizationManagementMapper">
+    
+    <resultMap type="WkCrmOrganizationManagement" id="WkCrmOrganizationManagementResult">
+        <result property="id"    column="id"    />
+        <result property="company"    column="company"    />
+        <result property="generalManager"    column="general_manager"    />
+        <result property="administrationSection"    column="administration_section"    />
+        <result property="ministryPersonnel"    column="ministry_personnel"    />
+        <result property="accountingDepartment"    column="accounting_department"    />
+        <result property="researchDevelopment"    column="research_development"    />
+        <result property="bazaar"    column="bazaar"    />
+    </resultMap>
+
+    <sql id="selectWkCrmOrganizationManagementVo">
+        select id, company, general_manager, administration_section, ministry_personnel, accounting_department, research_development, bazaar from wk_crm_organization_management
+    </sql>
+
+    <select id="selectWkCrmOrganizationManagementList" parameterType="WkCrmOrganizationManagement" resultMap="WkCrmOrganizationManagementResult">
+        <include refid="selectWkCrmOrganizationManagementVo"/>
+        <where>  
+            <if test="company != null  and company != ''"> and company = #{company}</if>
+            <if test="generalManager != null  and generalManager != ''"> and general_manager = #{generalManager}</if>
+            <if test="administrationSection != null  and administrationSection != ''"> and administration_section = #{administrationSection}</if>
+            <if test="ministryPersonnel != null  and ministryPersonnel != ''"> and ministry_personnel = #{ministryPersonnel}</if>
+            <if test="accountingDepartment != null  and accountingDepartment != ''"> and accounting_department = #{accountingDepartment}</if>
+            <if test="researchDevelopment != null  and researchDevelopment != ''"> and research_development = #{researchDevelopment}</if>
+            <if test="bazaar != null  and bazaar != ''"> and bazaar = #{bazaar}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmOrganizationManagementById" parameterType="Long" resultMap="WkCrmOrganizationManagementResult">
+        <include refid="selectWkCrmOrganizationManagementVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWkCrmOrganizationManagement" parameterType="WkCrmOrganizationManagement" useGeneratedKeys="true" keyProperty="id">
+        insert into wk_crm_organization_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="company != null">company,</if>
+            <if test="generalManager != null">general_manager,</if>
+            <if test="administrationSection != null">administration_section,</if>
+            <if test="ministryPersonnel != null">ministry_personnel,</if>
+            <if test="accountingDepartment != null">accounting_department,</if>
+            <if test="researchDevelopment != null">research_development,</if>
+            <if test="bazaar != null">bazaar,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="company != null">#{company},</if>
+            <if test="generalManager != null">#{generalManager},</if>
+            <if test="administrationSection != null">#{administrationSection},</if>
+            <if test="ministryPersonnel != null">#{ministryPersonnel},</if>
+            <if test="accountingDepartment != null">#{accountingDepartment},</if>
+            <if test="researchDevelopment != null">#{researchDevelopment},</if>
+            <if test="bazaar != null">#{bazaar},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmOrganizationManagement" parameterType="WkCrmOrganizationManagement">
+        update wk_crm_organization_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="company != null">company = #{company},</if>
+            <if test="generalManager != null">general_manager = #{generalManager},</if>
+            <if test="administrationSection != null">administration_section = #{administrationSection},</if>
+            <if test="ministryPersonnel != null">ministry_personnel = #{ministryPersonnel},</if>
+            <if test="accountingDepartment != null">accounting_department = #{accountingDepartment},</if>
+            <if test="researchDevelopment != null">research_development = #{researchDevelopment},</if>
+            <if test="bazaar != null">bazaar = #{bazaar},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWkCrmOrganizationManagementById" parameterType="Long">
+        delete from wk_crm_organization_management where id = #{id}
+    </delete>
+
+    <delete id="deleteWkCrmOrganizationManagementByIds" parameterType="String">
+        delete from wk_crm_organization_management where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

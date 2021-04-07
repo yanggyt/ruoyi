@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增公海')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-pool-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">公海名称：</label>
+                <div class="col-sm-8">
+                    <input name="poolName" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">管理员 “,”分割：</label>
+                <div class="col-sm-8">
+                    <textarea name="adminUserId" class="form-control" required></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">公海规则员工成员 “,”分割：</label>
+                <div class="col-sm-8">
+                    <textarea name="memberUserId" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">公海规则部门成员 “,”分割：</label>
+                <div class="col-sm-8">
+                    <textarea name="memberDeptId" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">状态 0 停用 1启用：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box">
+                        <input type="radio" name="status" value="" required>
+                        <label th:for="status" th:text="未知"></label>
+                    </div>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">前负责人领取规则 0不限制 1限制：</label>
+                <div class="col-sm-8">
+                    <input name="preOwnerSetting" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">前负责人领取规则限制天数：</label>
+                <div class="col-sm-8">
+                    <input name="preOwnerSettingDay" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">是否限制领取频率 0不限制 1限制：</label>
+                <div class="col-sm-8">
+                    <input name="receiveSetting" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">领取频率规则：</label>
+                <div class="col-sm-8">
+                    <input name="receiveNum" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">是否设置提前提醒 0不开启 1开启：</label>
+                <div class="col-sm-8">
+                    <input name="remindSetting" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">提醒规则天数：</label>
+                <div class="col-sm-8">
+                    <input name="remindDay" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">收回规则 0不自动收回 1自动收回：</label>
+                <div class="col-sm-8">
+                    <input name="putInRule" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">：</label>
+                <div class="col-sm-8">
+                    <input name="createUserId" class="form-control" type="text" required>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/pool"
+        $("#form-pool-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-pool-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

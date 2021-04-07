@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmCandidateMapper">
+    
+    <resultMap type="WkCrmCandidate" id="WkCrmCandidateResult">
+        <result property="id"    column="id"    />
+        <result property="position"    column="position"    />
+        <result property="department"    column="department"    />
+        <result property="candidateStatus"    column="candidate_status"    />
+        <result property="phone"    column="phone"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="email"    column="email"    />
+        <result property="boss"    column="boss"    />
+        <result property="workingYears"    column="working_years"    />
+        <result property="education"    column="education"    />
+        <result property="graduate"    column="graduate"    />
+        <result property="work"    column="work"    />
+        <result property="recruitment"    column="recruitment"    />
+        <result property="interview"    column="interview"    />
+        <result property="degree"    column="degree"    />
+        <result property="interviewer"    column="interviewer"    />
+        <result property="waysOfIntervie"    column="ways_of_intervie"    />
+        <result property="elseInterviewer"    column="else_interviewer"    />
+        <result property="creation"    column="creation"    />
+    </resultMap>
+
+    <sql id="selectWkCrmCandidateVo">
+        select id, position, department, candidate_status, phone, gender, age, email, boss, working_years, education, graduate, work, recruitment, interview, degree, interviewer, ways_of_intervie, else_interviewer, creation from wk_crm_candidate
+    </sql>
+
+    <select id="selectWkCrmCandidateList" parameterType="WkCrmCandidate" resultMap="WkCrmCandidateResult">
+        <include refid="selectWkCrmCandidateVo"/>
+        <where>  
+            <if test="position != null  and position != ''"> and position = #{position}</if>
+            <if test="department != null  and department != ''"> and department = #{department}</if>
+            <if test="candidateStatus != null  and candidateStatus != ''"> and candidate_status = #{candidateStatus}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="boss != null  and boss != ''"> and boss = #{boss}</if>
+            <if test="workingYears != null  and workingYears != ''"> and working_years = #{workingYears}</if>
+            <if test="education != null  and education != ''"> and education = #{education}</if>
+            <if test="graduate != null  and graduate != ''"> and graduate = #{graduate}</if>
+            <if test="work != null  and work != ''"> and work = #{work}</if>
+            <if test="recruitment != null  and recruitment != ''"> and recruitment = #{recruitment}</if>
+            <if test="interview != null "> and interview = #{interview}</if>
+            <if test="degree != null  and degree != ''"> and degree = #{degree}</if>
+            <if test="interviewer != null  and interviewer != ''"> and interviewer = #{interviewer}</if>
+            <if test="waysOfIntervie != null  and waysOfIntervie != ''"> and ways_of_intervie = #{waysOfIntervie}</if>
+            <if test="elseInterviewer != null  and elseInterviewer != ''"> and else_interviewer = #{elseInterviewer}</if>
+            <if test="creation != null "> and creation = #{creation}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmCandidateById" parameterType="Integer" resultMap="WkCrmCandidateResult">
+        <include refid="selectWkCrmCandidateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWkCrmCandidate" parameterType="WkCrmCandidate" useGeneratedKeys="true" keyProperty="id">
+        insert into wk_crm_candidate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="position != null">position,</if>
+            <if test="department != null">department,</if>
+            <if test="candidateStatus != null">candidate_status,</if>
+            <if test="phone != null">phone,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="email != null">email,</if>
+            <if test="boss != null">boss,</if>
+            <if test="workingYears != null">working_years,</if>
+            <if test="education != null">education,</if>
+            <if test="graduate != null">graduate,</if>
+            <if test="work != null">work,</if>
+            <if test="recruitment != null">recruitment,</if>
+            <if test="interview != null">interview,</if>
+            <if test="degree != null">degree,</if>
+            <if test="interviewer != null">interviewer,</if>
+            <if test="waysOfIntervie != null">ways_of_intervie,</if>
+            <if test="elseInterviewer != null">else_interviewer,</if>
+            <if test="creation != null">creation,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="position != null">#{position},</if>
+            <if test="department != null">#{department},</if>
+            <if test="candidateStatus != null">#{candidateStatus},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="email != null">#{email},</if>
+            <if test="boss != null">#{boss},</if>
+            <if test="workingYears != null">#{workingYears},</if>
+            <if test="education != null">#{education},</if>
+            <if test="graduate != null">#{graduate},</if>
+            <if test="work != null">#{work},</if>
+            <if test="recruitment != null">#{recruitment},</if>
+            <if test="interview != null">#{interview},</if>
+            <if test="degree != null">#{degree},</if>
+            <if test="interviewer != null">#{interviewer},</if>
+            <if test="waysOfIntervie != null">#{waysOfIntervie},</if>
+            <if test="elseInterviewer != null">#{elseInterviewer},</if>
+            <if test="creation != null">#{creation},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmCandidate" parameterType="WkCrmCandidate">
+        update wk_crm_candidate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="position != null">position = #{position},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="candidateStatus != null">candidate_status = #{candidateStatus},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="boss != null">boss = #{boss},</if>
+            <if test="workingYears != null">working_years = #{workingYears},</if>
+            <if test="education != null">education = #{education},</if>
+            <if test="graduate != null">graduate = #{graduate},</if>
+            <if test="work != null">work = #{work},</if>
+            <if test="recruitment != null">recruitment = #{recruitment},</if>
+            <if test="interview != null">interview = #{interview},</if>
+            <if test="degree != null">degree = #{degree},</if>
+            <if test="interviewer != null">interviewer = #{interviewer},</if>
+            <if test="waysOfIntervie != null">ways_of_intervie = #{waysOfIntervie},</if>
+            <if test="elseInterviewer != null">else_interviewer = #{elseInterviewer},</if>
+            <if test="creation != null">creation = #{creation},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWkCrmCandidateById" parameterType="Integer">
+        delete from wk_crm_candidate where id = #{id}
+    </delete>
+
+    <delete id="deleteWkCrmCandidateByIds" parameterType="String">
+        delete from wk_crm_candidate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

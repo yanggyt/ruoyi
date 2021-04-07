@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WkCrmRecruitmentMapper">
+    
+    <resultMap type="WkCrmRecruitment" id="WkCrmRecruitmentResult">
+        <result property="id"    column="id"    />
+        <result property="jobTitle"    column="job_title"    />
+        <result property="employPersons"    column="employ_persons"    />
+        <result property="natureofWork"    column="natureof_work"    />
+        <result property="workCity"    column="work_city"    />
+        <result property="hiring"    column="hiring"    />
+        <result property="employees"    column="employees"    />
+        <result property="schedule"    column="schedule"    />
+        <result property="experience"    column="experience"    />
+        <result property="required"    column="required"    />
+        <result property="range"    column="range"    />
+    </resultMap>
+
+    <sql id="selectWkCrmRecruitmentVo">
+        select id, job_title, employ_persons, natureof_work, work_city, hiring, employees, schedule, experience, required, range from wk_crm_recruitment
+    </sql>
+
+    <select id="selectWkCrmRecruitmentList" parameterType="WkCrmRecruitment" resultMap="WkCrmRecruitmentResult">
+        <include refid="selectWkCrmRecruitmentVo"/>
+        <where>  
+            <if test="jobTitle != null  and jobTitle != ''"> and job_title = #{jobTitle}</if>
+            <if test="employPersons != null  and employPersons != ''"> and employ_persons = #{employPersons}</if>
+            <if test="natureofWork != null  and natureofWork != ''"> and natureof_work = #{natureofWork}</if>
+            <if test="workCity != null  and workCity != ''"> and work_city = #{workCity}</if>
+            <if test="hiring != null "> and hiring = #{hiring}</if>
+            <if test="employees != null "> and employees = #{employees}</if>
+            <if test="schedule != null  and schedule != ''"> and schedule = #{schedule}</if>
+            <if test="experience != null  and experience != ''"> and experience = #{experience}</if>
+            <if test="required != null  and required != ''"> and required = #{required}</if>
+            <if test="range != null  and range != ''"> and range = #{range}</if>
+        </where>
+    </select>
+    
+    <select id="selectWkCrmRecruitmentById" parameterType="Long" resultMap="WkCrmRecruitmentResult">
+        <include refid="selectWkCrmRecruitmentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWkCrmRecruitment" parameterType="WkCrmRecruitment" useGeneratedKeys="true" keyProperty="id">
+        insert into wk_crm_recruitment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="jobTitle != null">job_title,</if>
+            <if test="employPersons != null">employ_persons,</if>
+            <if test="natureofWork != null">natureof_work,</if>
+            <if test="workCity != null">work_city,</if>
+            <if test="hiring != null">hiring,</if>
+            <if test="employees != null">employees,</if>
+            <if test="schedule != null">schedule,</if>
+            <if test="experience != null">experience,</if>
+            <if test="required != null">required,</if>
+            <if test="range != null">range,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="jobTitle != null">#{jobTitle},</if>
+            <if test="employPersons != null">#{employPersons},</if>
+            <if test="natureofWork != null">#{natureofWork},</if>
+            <if test="workCity != null">#{workCity},</if>
+            <if test="hiring != null">#{hiring},</if>
+            <if test="employees != null">#{employees},</if>
+            <if test="schedule != null">#{schedule},</if>
+            <if test="experience != null">#{experience},</if>
+            <if test="required != null">#{required},</if>
+            <if test="range != null">#{range},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWkCrmRecruitment" parameterType="WkCrmRecruitment">
+        update wk_crm_recruitment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="jobTitle != null">job_title = #{jobTitle},</if>
+            <if test="employPersons != null">employ_persons = #{employPersons},</if>
+            <if test="natureofWork != null">natureof_work = #{natureofWork},</if>
+            <if test="workCity != null">work_city = #{workCity},</if>
+            <if test="hiring != null">hiring = #{hiring},</if>
+            <if test="employees != null">employees = #{employees},</if>
+            <if test="schedule != null">schedule = #{schedule},</if>
+            <if test="experience != null">experience = #{experience},</if>
+            <if test="required != null">required = #{required},</if>
+            <if test="range != null">range = #{range},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWkCrmRecruitmentById" parameterType="Long">
+        delete from wk_crm_recruitment where id = #{id}
+    </delete>
+
+    <delete id="deleteWkCrmRecruitmentByIds" parameterType="String">
+        delete from wk_crm_recruitment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
