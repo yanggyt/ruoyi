@@ -18,24 +18,24 @@ public class ActPageConfigSubscribe extends BaseEntity
     /**  */
     private Integer id;
 
-    /**  */
-    @Excel(name = "")
+    /**活动代码  */
+    @Excel(name = "活动代码")
     private String actCode;
 
-    /**  */
-    @Excel(name = "")
+    /**描述  */
+    @Excel(name = "描述")
     private String description;
 
-    /**  */
-    @Excel(name = "")
+    /**背景图片  */
+    @Excel(name = "背景图片")
     private String bgImg;
 
-    /**  */
-    @Excel(name = "")
+    /** 二维码图片 */
+    @Excel(name = "二维码图片")
     private String bgImg2;
 
-    /**  */
-    @Excel(name = "")
+    /** 关注二维码描述 */
+    @Excel(name = "关注二维码描述")
     private String qrCode;
 
     public void setId(Integer id) 

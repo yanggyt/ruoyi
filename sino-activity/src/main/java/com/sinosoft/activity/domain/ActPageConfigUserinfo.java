@@ -18,64 +18,64 @@ public class ActPageConfigUserinfo extends BaseEntity
     /**  */
     private Integer id;
 
-    /**  */
-    @Excel(name = "")
+    /** 活动代码 */
+    @Excel(name = "活动代码")
     private String actCode;
 
-    /**  */
-    @Excel(name = "")
+    /**标题  */
+    @Excel(name = "标题")
     private String title;
 
-    /**  */
-    @Excel(name = "")
+    /**描述  */
+    @Excel(name = "描述")
     private String description;
 
-    /**  */
-    @Excel(name = "")
+    /**图片  */
+    @Excel(name = "图片")
     private String bgImg;
 
-    /**  */
-    @Excel(name = "")
+    /**按钮  */
+    @Excel(name = "按钮")
     private String btnText;
 
-    /**  */
-    @Excel(name = "")
+    /**按钮连接  */
+    @Excel(name = "按钮连接")
     private String btnLink;
 
-    /**  */
-    @Excel(name = "")
+    /**协议内容  */
+    @Excel(name = "协议内容")
     private String agreement;
 
-    /**  */
-    @Excel(name = "")
+    /**姓名  */
+    @Excel(name = "姓名")
     private String userName;
 
-    /**  */
-    @Excel(name = "")
+    /**手机号  */
+    @Excel(name = "手机号")
     private String mobile;
 
-    /**  */
-    @Excel(name = "")
+    /** 性别 */
+    @Excel(name = "性别")
     private String gender;
 
-    /**  */
-    @Excel(name = "")
+    /**地址  */
+    @Excel(name = "地址")
     private String address;
 
-    /**  */
-    @Excel(name = "")
+    /**代理人姓名 */
+    @Excel(name = "代理人姓名")
     private String agentName;
 
-    /**  */
-    @Excel(name = "")
+    /**代理人手机号  */
+    @Excel(name = "代理人手机号")
     private String agentMobile;
 
-    /**  */
-    @Excel(name = "")
+    /**代理人性别  */
+    @Excel(name = "代理人性别")
     private String agentGender;
 
-    /**  */
-    @Excel(name = "")
+    /** 代理人工号 */
+    @Excel(name = "代理人工号")
     private String agentNo;
 
     public void setId(Integer id) 

@@ -562,7 +562,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label is-required">描述：</label>
                                             <div class="col-sm-8">
-                                                <input id="describe" name="describe" placeholder="例如：客户手机号" class="form-control" type="text"
+                                                <input id="describe" name="description" placeholder="例如：客户手机号" class="form-control" type="text"
                                                        maxlength="30" onkeyup="updatePri(this)">
                                             </div>
                                         </div>
@@ -589,7 +589,7 @@
                                             <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="picture"></span>
+                                                    <input type="file" id="picture" name="bgImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
                                             </div>
@@ -600,9 +600,9 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">自定义按钮1：</label>
+                                            <label class="col-sm-4 control-label is-required">自定义按钮：</label>
                                             <div class="col-sm-8">
-                                                <input id="btn" name="btn" placeholder="自定义按钮" class="form-control" type="text"
+                                                <input id="btn" name="btnText" placeholder="自定义按钮" class="form-control" type="text"
                                                        maxlength="30" onkeyup="updatePri(this)">
                                             </div>
                                         </div>
@@ -625,13 +625,13 @@
                                             <label class="col-sm-4 control-label is-required">客户必填信息：</label>
                                             <div class="col-sm-8">
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="name"   id="name" onclick="updateText(this)">姓名</input>
+                                                    <input type="checkbox" name="userName"   id="name" onclick="updateText(this)">姓名</input>
                                                 </label>
                                                 <label class="checkbox-inline">
                                                     <input type="checkbox" name="phone"   id="phone" onclick="updateText(this)">手机号</input>
                                                 </label>
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="sex"  id="sex"  onclick="updateText(this)">性别</input>
+                                                    <input type="checkbox" name="gender"  id="sex"  onclick="updateText(this)">性别</input>
                                                 </label>
                                                 <label class="checkbox-inline">
                                                     <input type="checkbox" name="address" id="address"   onclick="updateText(this)">地址</input>
@@ -649,13 +649,13 @@
                                                     <input type="checkbox" name="agentName"   id="agentName" onclick="updateText(this)">代理人姓名</input>
                                                 </label>
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="agentPhone"   id="agentPhone" onclick="updateText(this)">代理人手机号</input>
+                                                    <input type="checkbox" name="agentMobile"   id="agentPhone" onclick="updateText(this)">代理人手机号</input>
                                                 </label>
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="agentSex"  id="agentSex"  onclick="updateText(this)">代理人性别</input>
+                                                    <input type="checkbox" name="agentGender"  id="agentSex"  onclick="updateText(this)">代理人性别</input>
                                                 </label>
                                                 <label class="checkbox-inline">
-                                                    <input type="checkbox" name="agentNumber" id="agentNumber"   onclick="updateText(this)">代理人工号</input>
+                                                    <input type="checkbox" name="agentNo" id="agentNumber"   onclick="updateText(this)">代理人工号</input>
                                                 </label>
                                             </div>
                                         </div>
@@ -722,7 +722,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label is-required">分享连接：</label>
                                             <div class="col-sm-8">
-                                                <input id="shareConnect" name="shareConnect" placeholder="例如：http://XX" class="form-control" type="text"
+                                                <input id="shareConnect" name="shareLink" placeholder="例如：http://XX" class="form-control" type="text"
                                                        maxlength="30" onkeyup="updatePri(this)">
                                             </div>
                                         </div>
@@ -744,7 +744,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label is-required">分享描述：</label>
                                             <div class="col-sm-8">
-                                                <input id="shareDescribe" name="shareDescribe" placeholder="例如：参与活动，赢大奖" class="form-control" type="text"
+                                                <input id="shareDescribe" name="shareDesc" placeholder="例如：参与活动，赢大奖" class="form-control" type="text"
                                                        maxlength="30" onkeyup="updatePri(this)">
                                             </div>
                                         </div>
@@ -760,7 +760,7 @@
                                             <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="shareImg"></span>
+                                                    <input type="file" id="shareImg" name="shareImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
                                             </div>
@@ -814,7 +814,7 @@
                                             <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="backdropImg"></span>
+                                                    <input type="file" id="backdropImg" name="bgImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
                                             </div>
@@ -831,7 +831,7 @@
                                             <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="qrCodeImg"></span>
+                                                    <input type="file" id="qrCodeImg" name="bgImg2"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
                                             </div>
