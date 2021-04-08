@@ -233,7 +233,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">活动名称：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称"  class="form-control" type="text" maxlength="30">
+                                            <input name="drawInfo-DRAWNAME" placeholder="活动名称"  class="form-control" type="text" maxlength="30">
                                         </div>
                                     </div>
                                 </div>
@@ -241,7 +241,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">状态：</label>
                                         <div class="col-sm-8">
-                                            <select name="STATUS" class="form-control" th:with="type=${@dict.getType('start_stop')}">
+                                            <select name="drawInfo-STATUS" class="form-control" th:with="type=${@dict.getType('start_stop')}">
                                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  ></option>
                                             </select>
                                         </div>
@@ -253,7 +253,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">消耗对象：</label>
                                         <div class="col-sm-8">
-                                            <select name="EXPENO" class="form-control" th:with="type=${@dict.getType('expeType')}">
+                                            <select name="drawInfo-EXPENO" class="form-control" th:with="type=${@dict.getType('expeType')}">
                                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" ></option>
                                             </select>
                                         </div>
@@ -263,7 +263,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">消耗价值：</label>
                                         <div class="col-sm-8">
-                                            <input name="EXPENOVALUE"  placeholder="消耗价值" class="form-control" type="text" maxlength="30">
+                                            <input name="drawInfo-EXPENOVALUE"  placeholder="消耗价值" class="form-control" type="text" maxlength="30">
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +274,7 @@
                                         <label class="col-sm-4 control-label is-required">开始时间：</label>
                                         <div class="col-sm-8">
                                             <div class="input-group date">
-                                                <input name="STARTTIME"  class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                <input name="drawInfo-STARTTIME"  class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -981,7 +981,7 @@
             .addClass('btn btn-info')
             .on('click', function () {
                 //添加保存逻辑
-                var data = $("#form-info-add").serialize();
+                var data = customSerialize("form-info-add",false);
                 alert(data);
             });
         var btnCancel = $('<a id="btn-cancel"></a>').text('取消')

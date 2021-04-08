@@ -1755,3 +1755,41 @@ modal_status = {
     FAIL: "error",
     WARNING: "warning"
 };
+
+/**
+ *  --- 表单数据接收格式化 ---
+ *  @param1 form_id* 表单id
+ *  @param2 boolean false  是否返回json数据，默认为false
+ *  @param3 callback 回调函数，参数是返回的obj||json, 处理完数据调用自定义方法
+ *  @return obj||json
+ */
+var customSerialize = function(form, json, callback) {
+    var arr = $('#' + form).serializeArray();
+    var tmp = {};
+    var res2 = {};
+    //处理array
+    $.each(arr, function(k, v) {
+        tmp[v.name] = v.value;
+    });
+    $.each(tmp, function(k, v) {
+        res2[k] = v;
+    });
+    $.each(res2, function(k, v) {
+        var path = k.split('-');
+        var k2 = path.pop();
+        var next_node = res2;
+        $.each(path, function(k2, node) {
+            if (!next_node[node]) next_node[node] = {};
+            next_node = next_node[node];
+        });
+        next_node[k2] = v;
+    });
+    if (arguments[1] && arguments[1] == true) {
+        var json = JSON.stringify(res2);
+        // if (callback) callback(json);
+        return json;
+    } else {
+        // if (callback) callback(res2);
+        return res2;
+    }
+}
