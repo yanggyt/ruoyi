@@ -25,7 +25,7 @@
     }
 
     .col-sm-6 {
-        width: 70%;
+        width: 50%;
     }
 
     .drawNamePic {
@@ -67,6 +67,13 @@
         left: 0px;
         width: 100%;
     }
+    .btnSelect{
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;padding: 15px 32px;
+        display: inline-block;
+        font-size: 15px;
+    }
 
 </style>
 <body class="white-bg">
@@ -107,8 +114,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">活动名称：</label>
                                         <div class="col-sm-8">
-                                            <input name="DRAWNAME" placeholder="活动名称" class="form-control" type="text"
-                                                   maxlength="30">
+                                            <input name="DRAWNAME" placeholder="活动名称"  class="form-control" type="text" maxlength="30">
                                         </div>
                                     </div>
                                 </div>
@@ -116,10 +122,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">状态：</label>
                                         <div class="col-sm-8">
-                                            <select name="STATUS" class="form-control"
-                                                    th:with="type=${@dict.getType('start_stop')}">
-                                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                        th:value="${dict.dictValue}"></option>
+                                            <select name="STATUS" class="form-control" th:with="type=${@dict.getType('start_stop')}">
+                                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  ></option>
                                             </select>
                                         </div>
                                     </div>
@@ -130,10 +134,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">消耗对象：</label>
                                         <div class="col-sm-8">
-                                            <select name="EXPENO" class="form-control"
-                                                    th:with="type=${@dict.getType('expeType')}">
-                                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                        th:value="${dict.dictValue}"></option>
+                                            <select name="EXPENO" class="form-control" th:with="type=${@dict.getType('expeType')}">
+                                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" ></option>
                                             </select>
                                         </div>
                                     </div>
@@ -142,8 +144,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">消耗价值：</label>
                                         <div class="col-sm-8">
-                                            <input name="EXPENOVALUE" placeholder="消耗价值" class="form-control"
-                                                   type="text" maxlength="30">
+                                            <input name="EXPENOVALUE"  placeholder="消耗价值" class="form-control" type="text" maxlength="30">
                                         </div>
                                     </div>
                                 </div>
@@ -154,8 +155,7 @@
                                         <label class="col-sm-4 control-label is-required">开始时间：</label>
                                         <div class="col-sm-8">
                                             <div class="input-group date">
-                                                <input name="STARTTIME" class="form-control"
-                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                <input name="STARTTIME"  class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -166,8 +166,7 @@
                                         <label class="col-sm-4 control-label is-required">结束时间：</label>
                                         <div class="col-sm-8">
                                             <div class="input-group date">
-                                                <input name="ENDTIME" class="form-control"
-                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                <input name="ENDTIME"  class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -181,7 +180,9 @@
                     <div>
                         <form class="form form-horizontal m-t">
                             <h4 class="form-header h4">第2步-选择UI模板</h4>
-                            分格查询字典表 单选按钮
+                            <div th:with="type=${@dict.getType('activityTemplate')}">
+                                <a class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
+                            </div>
                             <h4 class="form-header h4">字典表显示字段</h4>
                             <img src="../../img/1.jpg" width="104" height="142">
                         </form>
@@ -303,7 +304,11 @@
                     </div>
                 </div>
                 <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
-
+                    <h4 class="form-header h4">第4步-选择玩法</h4>
+                    <div th:with="type=${@dict.getType('activityPlay')}">
+                        <a class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
+                    </div>
+                    <img src="../../img/1.jpg" width="104" height="142">
                     <h4 class="form-header h4">活动规则</h4>
                     <div class="row">
                         <div class="col-sm-6">
@@ -655,6 +660,10 @@
     function updatePic(val) {
         var id = val.id;
         var value = val.value;
+        if (value == null || value == ""&& id.indexOf("btn") != -1){
+            //默认值
+            value = "自定义按钮"+id.charAt(id.length -1);
+        }
         $("#" + id + "Pic").text(value);
     }
 
@@ -694,6 +703,11 @@
 
             reader.readAsDataURL(input.files[0]);
         }
+    }
+
+    function activityTemplate(val){
+        $(val).addClass('btn-success').siblings().removeClass('btn-success');
+        //todo 添加逻辑
     }
 
 </script>
