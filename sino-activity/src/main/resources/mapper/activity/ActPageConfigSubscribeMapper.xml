@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.ActPageConfigSubscribeMapper">
+    
+    <resultMap type="ActPageConfigSubscribe" id="ActPageConfigSubscribeResult">
+        <result property="id"    column="id"    />
+        <result property="actCode"    column="act_code"    />
+        <result property="description"    column="description"    />
+        <result property="bgImg"    column="bg_img"    />
+        <result property="bgImg2"    column="bg_img2"    />
+        <result property="qrCode"    column="qr_code"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectActPageConfigSubscribeVo">
+        select id, act_code, description, bg_img, bg_img2, qr_code, create_time, update_time from act_page_config_subscribe
+    </sql>
+
+    <select id="selectActPageConfigSubscribeList" parameterType="ActPageConfigSubscribe" resultMap="ActPageConfigSubscribeResult">
+        <include refid="selectActPageConfigSubscribeVo"/>
+        <where>  
+            <if test="actCode != null  and actCode != ''"> and act_code = #{actCode}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="bgImg != null  and bgImg != ''"> and bg_img = #{bgImg}</if>
+            <if test="bgImg2 != null  and bgImg2 != ''"> and bg_img2 = #{bgImg2}</if>
+            <if test="qrCode != null  and qrCode != ''"> and qr_code = #{qrCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectActPageConfigSubscribeById" parameterType="Integer" resultMap="ActPageConfigSubscribeResult">
+        <include refid="selectActPageConfigSubscribeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertActPageConfigSubscribe" parameterType="ActPageConfigSubscribe" useGeneratedKeys="true" keyProperty="id">
+        insert into act_page_config_subscribe
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="actCode != null and actCode != ''">act_code,</if>
+            <if test="description != null">description,</if>
+            <if test="bgImg != null">bg_img,</if>
+            <if test="bgImg2 != null">bg_img2,</if>
+            <if test="qrCode != null">qr_code,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="actCode != null and actCode != ''">#{actCode},</if>
+            <if test="description != null">#{description},</if>
+            <if test="bgImg != null">#{bgImg},</if>
+            <if test="bgImg2 != null">#{bgImg2},</if>
+            <if test="qrCode != null">#{qrCode},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateActPageConfigSubscribe" parameterType="ActPageConfigSubscribe">
+        update act_page_config_subscribe
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="actCode != null and actCode != ''">act_code = #{actCode},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="bgImg != null">bg_img = #{bgImg},</if>
+            <if test="bgImg2 != null">bg_img2 = #{bgImg2},</if>
+            <if test="qrCode != null">qr_code = #{qrCode},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteActPageConfigSubscribeById" parameterType="Integer">
+        delete from act_page_config_subscribe where id = #{id}
+    </delete>
+
+    <delete id="deleteActPageConfigSubscribeByIds" parameterType="String">
+        delete from act_page_config_subscribe where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

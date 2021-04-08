@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.ActPageConfigUserinfoMapper">
+    
+    <resultMap type="ActPageConfigUserinfo" id="ActPageConfigUserinfoResult">
+        <result property="id"    column="id"    />
+        <result property="actCode"    column="act_code"    />
+        <result property="title"    column="title"    />
+        <result property="description"    column="description"    />
+        <result property="bgImg"    column="bg_img"    />
+        <result property="btnText"    column="btn_text"    />
+        <result property="btnLink"    column="btn_link"    />
+        <result property="agreement"    column="agreement"    />
+        <result property="userName"    column="user_name"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="gender"    column="gender"    />
+        <result property="address"    column="address"    />
+        <result property="agentName"    column="agent_name"    />
+        <result property="agentMobile"    column="agent_mobile"    />
+        <result property="agentGender"    column="agent_gender"    />
+        <result property="agentNo"    column="agent_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectActPageConfigUserinfoVo">
+        select id, act_code, title, description, bg_img, btn_text, btn_link, agreement, user_name, mobile, gender, address, agent_name, agent_mobile, agent_gender, agent_no, create_time, update_time from act_page_config_userinfo
+    </sql>
+
+    <select id="selectActPageConfigUserinfoList" parameterType="ActPageConfigUserinfo" resultMap="ActPageConfigUserinfoResult">
+        <include refid="selectActPageConfigUserinfoVo"/>
+        <where>  
+            <if test="actCode != null  and actCode != ''"> and act_code = #{actCode}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="bgImg != null  and bgImg != ''"> and bg_img = #{bgImg}</if>
+            <if test="btnText != null  and btnText != ''"> and btn_text = #{btnText}</if>
+            <if test="btnLink != null  and btnLink != ''"> and btn_link = #{btnLink}</if>
+            <if test="agreement != null  and agreement != ''"> and agreement = #{agreement}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="agentName != null  and agentName != ''"> and agent_name like concat('%', #{agentName}, '%')</if>
+            <if test="agentMobile != null  and agentMobile != ''"> and agent_mobile = #{agentMobile}</if>
+            <if test="agentGender != null  and agentGender != ''"> and agent_gender = #{agentGender}</if>
+            <if test="agentNo != null  and agentNo != ''"> and agent_no = #{agentNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectActPageConfigUserinfoById" parameterType="Integer" resultMap="ActPageConfigUserinfoResult">
+        <include refid="selectActPageConfigUserinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertActPageConfigUserinfo" parameterType="ActPageConfigUserinfo" useGeneratedKeys="true" keyProperty="id">
+        insert into act_page_config_userinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="actCode != null and actCode != ''">act_code,</if>
+            <if test="title != null">title,</if>
+            <if test="description != null">description,</if>
+            <if test="bgImg != null">bg_img,</if>
+            <if test="btnText != null">btn_text,</if>
+            <if test="btnLink != null">btn_link,</if>
+            <if test="agreement != null">agreement,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="gender != null">gender,</if>
+            <if test="address != null">address,</if>
+            <if test="agentName != null">agent_name,</if>
+            <if test="agentMobile != null">agent_mobile,</if>
+            <if test="agentGender != null">agent_gender,</if>
+            <if test="agentNo != null">agent_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="actCode != null and actCode != ''">#{actCode},</if>
+            <if test="title != null">#{title},</if>
+            <if test="description != null">#{description},</if>
+            <if test="bgImg != null">#{bgImg},</if>
+            <if test="btnText != null">#{btnText},</if>
+            <if test="btnLink != null">#{btnLink},</if>
+            <if test="agreement != null">#{agreement},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="address != null">#{address},</if>
+            <if test="agentName != null">#{agentName},</if>
+            <if test="agentMobile != null">#{agentMobile},</if>
+            <if test="agentGender != null">#{agentGender},</if>
+            <if test="agentNo != null">#{agentNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateActPageConfigUserinfo" parameterType="ActPageConfigUserinfo">
+        update act_page_config_userinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="actCode != null and actCode != ''">act_code = #{actCode},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="bgImg != null">bg_img = #{bgImg},</if>
+            <if test="btnText != null">btn_text = #{btnText},</if>
+            <if test="btnLink != null">btn_link = #{btnLink},</if>
+            <if test="agreement != null">agreement = #{agreement},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="agentName != null">agent_name = #{agentName},</if>
+            <if test="agentMobile != null">agent_mobile = #{agentMobile},</if>
+            <if test="agentGender != null">agent_gender = #{agentGender},</if>
+            <if test="agentNo != null">agent_no = #{agentNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteActPageConfigUserinfoById" parameterType="Integer">
+        delete from act_page_config_userinfo where id = #{id}
+    </delete>
+
+    <delete id="deleteActPageConfigUserinfoByIds" parameterType="String">
+        delete from act_page_config_userinfo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

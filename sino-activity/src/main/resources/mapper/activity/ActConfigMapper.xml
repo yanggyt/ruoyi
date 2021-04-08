@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.ActConfigMapper">
+    
+    <resultMap type="ActConfig" id="ActConfigResult">
+        <result property="id"    column="id"    />
+        <result property="pageStyle"    column="page_style"    />
+        <result property="actType"    column="act_type"    />
+        <result property="actCode"    column="act_code"    />
+        <result property="actName"    column="act_name"    />
+        <result property="shareTitle"    column="share_title"    />
+        <result property="shareDesc"    column="share_desc"    />
+        <result property="shareLink"    column="share_link"    />
+        <result property="shareImg"    column="share_img"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectActConfigVo">
+        select id, page_style, act_type, act_code, act_name, share_title, share_desc, share_link, share_img, create_time, update_time from act_config
+    </sql>
+
+    <select id="selectActConfigList" parameterType="ActConfig" resultMap="ActConfigResult">
+        <include refid="selectActConfigVo"/>
+        <where>  
+            <if test="pageStyle != null "> and page_style = #{pageStyle}</if>
+            <if test="actType != null "> and act_type = #{actType}</if>
+            <if test="actCode != null  and actCode != ''"> and act_code = #{actCode}</if>
+            <if test="actName != null  and actName != ''"> and act_name like concat('%', #{actName}, '%')</if>
+            <if test="shareTitle != null  and shareTitle != ''"> and share_title = #{shareTitle}</if>
+            <if test="shareDesc != null  and shareDesc != ''"> and share_desc = #{shareDesc}</if>
+            <if test="shareLink != null  and shareLink != ''"> and share_link = #{shareLink}</if>
+            <if test="shareImg != null  and shareImg != ''"> and share_img = #{shareImg}</if>
+        </where>
+    </select>
+    
+    <select id="selectActConfigById" parameterType="Integer" resultMap="ActConfigResult">
+        <include refid="selectActConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertActConfig" parameterType="ActConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into act_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pageStyle != null">page_style,</if>
+            <if test="actType != null">act_type,</if>
+            <if test="actCode != null and actCode != ''">act_code,</if>
+            <if test="actName != null">act_name,</if>
+            <if test="shareTitle != null">share_title,</if>
+            <if test="shareDesc != null">share_desc,</if>
+            <if test="shareLink != null">share_link,</if>
+            <if test="shareImg != null">share_img,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pageStyle != null">#{pageStyle},</if>
+            <if test="actType != null">#{actType},</if>
+            <if test="actCode != null and actCode != ''">#{actCode},</if>
+            <if test="actName != null">#{actName},</if>
+            <if test="shareTitle != null">#{shareTitle},</if>
+            <if test="shareDesc != null">#{shareDesc},</if>
+            <if test="shareLink != null">#{shareLink},</if>
+            <if test="shareImg != null">#{shareImg},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateActConfig" parameterType="ActConfig">
+        update act_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pageStyle != null">page_style = #{pageStyle},</if>
+            <if test="actType != null">act_type = #{actType},</if>
+            <if test="actCode != null and actCode != ''">act_code = #{actCode},</if>
+            <if test="actName != null">act_name = #{actName},</if>
+            <if test="shareTitle != null">share_title = #{shareTitle},</if>
+            <if test="shareDesc != null">share_desc = #{shareDesc},</if>
+            <if test="shareLink != null">share_link = #{shareLink},</if>
+            <if test="shareImg != null">share_img = #{shareImg},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteActConfigById" parameterType="Integer">
+        delete from act_config where id = #{id}
+    </delete>
+
+    <delete id="deleteActConfigByIds" parameterType="String">
+        delete from act_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -34,13 +34,21 @@ public class ActPageConfigGuide extends BaseEntity
     @Excel(name = "背景图片")
     private String bgImg;
 
-    /** 按钮文本 */
-    @Excel(name = "按钮文本")
+    /** 按钮文本1 */
+    @Excel(name = "按钮文本1")
     private String btnText;
 
-    /** 按钮链接 */
-    @Excel(name = "按钮链接")
+    /** 按钮链接1 */
+    @Excel(name = "按钮链接1")
     private String btnLink;
+
+    /** 按钮链接2 */
+    @Excel(name = "按钮链接2")
+    private String btnLink2;
+
+    /** 按钮文本2 */
+    @Excel(name = "按钮文本2")
+    private String btnText2;
 
     public void setId(Integer id) 
     {
@@ -105,6 +113,24 @@ public class ActPageConfigGuide extends BaseEntity
     {
         return btnLink;
     }
+    public void setBtnLink2(String btnLink2) 
+    {
+        this.btnLink2 = btnLink2;
+    }
+
+    public String getBtnLink2() 
+    {
+        return btnLink2;
+    }
+    public void setBtnText2(String btnText2) 
+    {
+        this.btnText2 = btnText2;
+    }
+
+    public String getBtnText2() 
+    {
+        return btnText2;
+    }
 
     @Override
     public String toString() {
@@ -116,6 +142,8 @@ public class ActPageConfigGuide extends BaseEntity
             .append("bgImg", getBgImg())
             .append("btnText", getBtnText())
             .append("btnLink", getBtnLink())
+            .append("btnLink2", getBtnLink2())
+            .append("btnText2", getBtnText2())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .toString();
