@@ -349,7 +349,7 @@
                                                    data-dismiss="fileinput">清除</a>
                                             </div>
                                         </div>
-
+                                        <input id="picval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -1266,6 +1266,7 @@
             reader.onload = function (e) {
                 //$('#prevImg').attr('src', e.target.result);
                 $("#imgPic").attr("src", e.target.result);
+                $("#picval").val(e.target.result);
                 //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
             }
 
