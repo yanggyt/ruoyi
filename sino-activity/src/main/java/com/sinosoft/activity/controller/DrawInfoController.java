@@ -7,22 +7,20 @@ import java.util.List;
 
 
 import com.alibaba.fastjson.JSON;
+import com.sinosoft.activity.domain.ActConfig;
 import com.sinosoft.activity.domain.DrawInfo;
 import com.sinosoft.activity.domain.DrawPrizeInfo;
 import com.sinosoft.activity.domain.DrawRule;
 import com.sinosoft.activity.service.IDrawInfoService;
 import com.sinosoft.activity.service.IDrawPrizeInfoService;
 import com.sinosoft.activity.service.IDrawRuleService;
+import com.sinosoft.activity.vo.ActVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 
@@ -116,6 +114,14 @@ public class DrawInfoController extends BaseController
         int i = iDrawRuleService.insertDrawRule(drawRule);
         return toAjax(i);
     }
+
+    @PostMapping("/add/test")
+    @ResponseBody
+    public AjaxResult addtest(@RequestBody ActVO vo){
+        ActConfig actConfig = vo.getActConfig();
+        return null;
+    }
+
 
     /**
      * 修改抽奖活动管理

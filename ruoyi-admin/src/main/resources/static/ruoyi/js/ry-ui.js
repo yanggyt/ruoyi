@@ -1786,7 +1786,7 @@ var customSerialize = function(form, json, callback) {
         next_node[k2] = v;
     });
     if (arguments[1] && arguments[1] == true) {
-        var json = JSON.stringify(res2);
+        var json = JSON.stringify(res3);
         // if (callback) callback(json);
         return json;
     } else {

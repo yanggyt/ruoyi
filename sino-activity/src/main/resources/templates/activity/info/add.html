@@ -241,7 +241,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">状态：</label>
                                         <div class="col-sm-8">
-                                            <select name="drawInfo-STATUS" class="form-control" th:with="type=${@dict.getType('start_stop')}">
+                                            <select name="drawInfo-status" class="form-control" th:with="type=${@dict.getType('start_stop')}">
                                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  ></option>
                                             </select>
                                         </div>
@@ -981,8 +981,27 @@
             .addClass('btn btn-info')
             .on('click', function () {
                 //添加保存逻辑
-                var data = customSerialize("form-info-add",false);
-
+                var data = customSerialize("form-info-add",true);
+                alert(data);
+                $.ajax({
+                    url: prefix + "/add/test",
+                    data: data,
+                    type: "post",
+                    contentType: "application/json;charset=UTF-8",
+                    success: function(result) {
+                        if (result.code == web_status.SUCCESS) {
+                            layer.msg("保存成功,正在刷新数据请稍后……", {
+                                icon: 1,
+                                time: 500,
+                                shade: [0.1, '#8F8F8F']
+                            },function() {
+                                location.reload();
+                            });
+                        } else {
+                            alert(result.msg);
+                        }
+                    }
+                })
             });
         var btnCancel = $('<a id="btn-cancel"></a>').text('取消')
             .addClass('btn btn-danger')
