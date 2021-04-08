@@ -233,7 +233,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">活动名称：</label>
                                         <div class="col-sm-8">
-                                            <input name="drawInfo-DRAWNAME" placeholder="活动名称"  class="form-control" type="text" maxlength="30">
+                                            <input name="drawInfo-drawname" placeholder="活动名称"  class="form-control" type="text" maxlength="30">
                                         </div>
                                     </div>
                                 </div>
@@ -253,7 +253,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">消耗对象：</label>
                                         <div class="col-sm-8">
-                                            <select name="drawInfo-EXPENO" class="form-control" th:with="type=${@dict.getType('expeType')}">
+                                            <select name="drawInfo-expeno" class="form-control" th:with="type=${@dict.getType('expeType')}">
                                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" ></option>
                                             </select>
                                         </div>
@@ -263,7 +263,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">消耗价值：</label>
                                         <div class="col-sm-8">
-                                            <input name="drawInfo-EXPENOVALUE"  placeholder="消耗价值" class="form-control" type="text" maxlength="30">
+                                            <input name="drawInfo-expenovalue"  placeholder="消耗价值" class="form-control" type="text" maxlength="30">
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +274,7 @@
                                         <label class="col-sm-4 control-label is-required">开始时间：</label>
                                         <div class="col-sm-8">
                                             <div class="input-group date">
-                                                <input name="drawInfo-STARTTIME"  class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                <input name="drawInfo-starttime"  class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -285,7 +285,7 @@
                                         <label class="col-sm-4 control-label is-required">结束时间：</label>
                                         <div class="col-sm-8">
                                             <div class="input-group date">
-                                                <input name="drawInfo-ENDTIME"  class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                <input name="drawInfo-endtime"  class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -429,7 +429,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">首次中奖配置：</label>
                                 <div class="col-sm-8">
-                                    <select name="drawRule-FIRSTFLAG" id="FIRSTFLAG" onchange="firstflag()" class="form-control"
+                                    <select name="drawRule-firstflag" id="FIRSTFLAG" onchange="firstflag()" class="form-control"
                                             th:with="type=${@dict.getType('is_boolean')}">
                                         <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                                 th:value="${dict.dictValue}"></option>
@@ -441,7 +441,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
                                 <div class="col-sm-8">
-                                    <select name="drawRule-FIRSTAWARDPRIZE" class="form-control" id="firstawardprize" disabled>
+                                    <select name="drawRule-firstawardprize" class="form-control" id="firstawardprize" disabled>
                                     </select>
                                 </div>
                             </div>
@@ -453,7 +453,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
                                 <div class="col-sm-8">
-                                    <select name="drawRule-DAILYFLAG" id="DAILYFLAG" onchange="dailyflag()" class="form-control"
+                                    <select name="drawRule-dailyflag" id="DAILYFLAG" onchange="dailyflag()" class="form-control"
                                             th:with="type=${@dict.getType('is_boolean')}">
                                         <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                                 th:value="${dict.dictValue}"></option>
@@ -465,7 +465,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
                                 <div class="col-sm-8">
-                                    <input name="drawRule-DAILYNUMBER" id="dailynumber" placeholder="时间段限制次数"
+                                    <input name="drawRule-dailynumber" id="dailynumber" placeholder="时间段限制次数"
                                            class="form-control" type="text" maxlength="30" disabled>
                                 </div>
                             </div>
@@ -477,7 +477,7 @@
                                 <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
                                 <div class="col-sm-8">
                                     <div class="input-group date">
-                                        <input name="drawRule-DAILYSTARTTIME" id="dailystarttime" class="form-control"
+                                        <input name="drawRule-dailystarttime" id="dailystarttime" class="form-control"
                                                placeholder="HH:mm:ss" type="text" disabled>
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
@@ -489,7 +489,7 @@
                                 <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
                                 <div class="col-sm-8">
                                     <div class="input-group date">
-                                        <input name="drawRule-DAILYENDTIME" id="dailyendtime" class="form-control"
+                                        <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control"
                                                placeholder="HH:mm:ss" type="text" disabled>
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                     </div>
@@ -504,7 +504,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
                                 <div class="col-sm-8">
-                                    <select name="drawRule-WILLDRAWFLAG" id="WILLDRAWFLAG" onchange="willdrawflag()"
+                                    <select name="drawRule-willdrawflag" id="WILLDRAWFLAG" onchange="willdrawflag()"
                                             class="form-control" th:with="type=${@dict.getType('is_boolean')}">
                                         <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                                 th:value="${dict.dictValue}"></option>
@@ -516,7 +516,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
                                 <div class="col-sm-8">
-                                    <input name="drawRule-WILLDRAWAWARDNUMBER" id="willdrawawardnumber" placeholder="抽奖必中计数"
+                                    <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber" placeholder="抽奖必中计数"
                                            class="form-control" type="text" maxlength="30" disabled>
                                 </div>
                             </div>
@@ -528,7 +528,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
                                 <div class="col-sm-8">
-                                    <select name="drawRule-WILLDRAWAWARDPRIZE" class="form-control" id="willdrawawardprize"
+                                    <select name="drawRule-willdrawawardprize" class="form-control" id="willdrawawardprize"
                                             disabled>
                                     </select>
                                 </div>
@@ -586,6 +586,7 @@
                                                     <input type="file" id="picture" name="actPageConfigUserinfo-bgImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
+                                                <input id="pictureval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
                                             </div>
                                         </div>
 
@@ -755,6 +756,7 @@
                                                     <input type="file" id="shareImg" name="actConfig-shareImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
+                                                <input id="shareImgval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
                                             </div>
                                         </div>
 
@@ -807,6 +809,7 @@
                                                     <input type="file" id="backdropImg" name="actPageConfigSubscribe-bgImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
+                                                <input id="backdropImgval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
                                             </div>
                                         </div>
 
@@ -824,6 +827,7 @@
                                                     <input type="file" id="qrCodeImg" name="actPageConfigSubscribe-bgImg2"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
+                                                <input id="qrCodeImgval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
                                             </div>
                                         </div>
 
@@ -1144,6 +1148,7 @@
            reader.onload = function (e) {
                //$('#prevImg').attr('src', e.target.result);
                $("#qrCodeImgPri").attr("src", e.target.result);
+               $("#qrCodeImgPrival").val(e.target.result);
                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
            }
 
@@ -1165,6 +1170,7 @@
            reader.onload = function (e) {
                //$('#prevImg').attr('src', e.target.result);
                $("#backdropImgPri").attr("src", e.target.result);
+               $("#backdropImgPrival").val(e.target.result);
                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
            }
 
@@ -1186,6 +1192,7 @@
            reader.onload = function (e) {
                //$('#prevImg').attr('src', e.target.result);
                $("#shareImgPic").attr("src", e.target.result);
+               $("#shareImgPicval").val(e.target.result);
                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
            }
 
@@ -1224,6 +1231,7 @@
             reader.onload = function (e) {
                 //$('#prevImg').attr('src', e.target.result);
                 $("#imgPri").attr("src", e.target.result);
+                $("#imgPrival").val(e.target.result);
                 //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
             }
 
