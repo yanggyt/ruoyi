@@ -1767,6 +1767,7 @@ var customSerialize = function(form, json, callback) {
     var arr = $('#' + form).serializeArray();
     var tmp = {};
     var res2 = {};
+    var res3 = {};
     //处理array
     $.each(arr, function(k, v) {
         tmp[v.name] = v.value;
@@ -1777,7 +1778,7 @@ var customSerialize = function(form, json, callback) {
     $.each(res2, function(k, v) {
         var path = k.split('-');
         var k2 = path.pop();
-        var next_node = res2;
+        var next_node = res3;
         $.each(path, function(k2, node) {
             if (!next_node[node]) next_node[node] = {};
             next_node = next_node[node];
@@ -1790,6 +1791,6 @@ var customSerialize = function(form, json, callback) {
         return json;
     } else {
         // if (callback) callback(res2);
-        return res2;
+        return res3;
     }
 }
