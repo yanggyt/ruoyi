@@ -586,7 +586,7 @@
                                                     <input type="file" id="picture" name="actPageConfigUserinfo-bgImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
-                                                <input id="pictureval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
+                                                <input id="pictureval" type="hidden" name = "actPageConfigUserinfo-bgImg" value="">
                                             </div>
                                         </div>
 
@@ -756,7 +756,7 @@
                                                     <input type="file" id="shareImg" name="actConfig-shareImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
-                                                <input id="shareImgval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
+                                                <input id="shareImgval" type="hidden" name = "actConfig-shareImg" value="">
                                             </div>
                                         </div>
 
@@ -809,7 +809,7 @@
                                                     <input type="file" id="backdropImg" name="actPageConfigSubscribe-bgImg"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
-                                                <input id="backdropImgval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
+                                                <input id="backdropImgval" type="hidden" name = "actPageConfigSubscribe-bgImg" value="">
                                             </div>
                                         </div>
 
@@ -827,7 +827,7 @@
                                                     <input type="file" id="qrCodeImg" name="actPageConfigSubscribe-bgImg2"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
                                                    data-dismiss="fileinput">清除</a>
-                                                <input id="qrCodeImgval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
+                                                <input id="qrCodeImgval" type="hidden" name = "actPageConfigSubscribe-bgImg2" value="">
                                             </div>
                                         </div>
 
@@ -1196,7 +1196,7 @@
            reader.onload = function (e) {
                //$('#prevImg').attr('src', e.target.result);
                $("#shareImgPic").attr("src", e.target.result);
-               $("#shareImgPicval").val(e.target.result);
+               $("#shareImgval").val(e.target.result);
                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
            }
 
@@ -1235,7 +1235,7 @@
             reader.onload = function (e) {
                 //$('#prevImg').attr('src', e.target.result);
                 $("#imgPri").attr("src", e.target.result);
-                $("#imgPrival").val(e.target.result);
+                $("#pictureval").val(e.target.result);
                 //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
             }
 
