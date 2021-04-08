@@ -362,7 +362,7 @@
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg"></span>
+                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg" onchange="syncPic(this)" ></span>
                                             <a href="#" class="btn btn-white fileinput-exists"
                                                data-dismiss="fileinput">清除</a>
                                         </div>
@@ -426,7 +426,7 @@
                         <div class="rightarea">
                             <h4 class="form-header h4">效果图</h4>
                             <div style="position: relative;text-align:center">
-                                <img id="imgPic" src="../../img/1.jpg" width="380" height="500">
+                                <img id="picimg" src="../../img/1.jpg" width="380" height="500">
                                 <span class="drawNamePic" id="actTitlePic">活动标题</span>
                                 <span class="drawDescribePic" id="actDescPic">活动描述</span>
                                 <span class="drawbtnPic">
@@ -614,14 +614,14 @@
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="picture" name="actPageConfigUserinfo-bgImg"></span>
+                                                    <input type="file" id="picture" name="actPageConfigUserinfo-bgImg" onchange="syncPic(this)"></span>
                                             <a href="#" class="btn btn-white fileinput-exists"
                                                data-dismiss="fileinput">清除</a>
-                                            <input id="pictureval" type="hidden" name="actPageConfigUserinfo-bgImg"
-                                                   value="">
+
                                         </div>
                                     </div>
-
+                                    <input id="pictureval" type="hidden" name="actPageConfigUserinfo-bgImg"
+                                           value="">
                                 </div>
                             </div>
                             <div class="row">
@@ -704,7 +704,7 @@
                         <div class="rightarea">
                             <h4 class="form-header h4">效果图</h4>
                             <div style="position: relative;text-align:center">
-                                <img id="imgPri" src="../../img/shj.jpg" width="380" height="500">
+                                <img id="pictureimg" src="../../img/shj.jpg" width="380" height="500">
                                 <span class="drawTotalPri" id="titlePri">标题</span>
                                 <span class="drawDescribePri" id="describePri">描述</span>
                                 <span class="drawTextPri">请填写您的基本信息</span>
@@ -798,13 +798,12 @@
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="shareImg" name="actConfig-shareImg"></span>
+                                                    <input type="file" id="shareImg" name="actConfig-shareImg" onchange="syncPic(this)"></span>
                                             <a href="#" class="btn btn-white fileinput-exists"
                                                data-dismiss="fileinput">清除</a>
-                                            <input id="shareImgval" type="hidden" name="actConfig-shareImg" value="">
                                         </div>
                                     </div>
-
+                                    <input id="shareImgval" type="hidden" name="actConfig-shareImg" value="">
                                 </div>
                             </div>
                         </div>
@@ -815,7 +814,7 @@
                                     <img id="ss" src="../../img/shj.jpg" width="254" height="142">
                                 </div>
                                 <div class="drawShareImgPic">
-                                    <img id="shareImgPic" src="../../img/shj.jpg" width="50" height="50">
+                                    <img id="shareImgimg" src="../../img/shj.jpg" width="50" height="50">
                                 </div>
                                 <div>
                                     <span class="drawShareTitlePri" id="shareTitlePri">中国人寿举办活动</span>
@@ -845,7 +844,6 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label class="col-sm-4 control-label is-required">背景图片：</label>
-
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"
                                              style="width: 200px; height: 150px;"></div>
@@ -853,15 +851,14 @@
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
                                                     <input type="file" id="backdropImg"
-                                                           name="actPageConfigSubscribe-bgImg"></span>
+                                                           name="actPageConfigSubscribe-bgImg" onchange="syncPic(this)"></span>
                                             <a href="#" class="btn btn-white fileinput-exists"
                                                data-dismiss="fileinput">清除</a>
-                                            <input id="backdropImgval" type="hidden" name="actPageConfigSubscribe-bgImg"
-                                                   value="">
                                         </div>
                                     </div>
-
                                 </div>
+                                <input id="backdropImgval" type="hidden" name="actPageConfigSubscribe-bgImg"
+                                       value="">
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
@@ -873,23 +870,22 @@
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
                                                     <input type="file" id="qrCodeImg"
-                                                           name="actPageConfigSubscribe-bgImg2"></span>
+                                                           name="actPageConfigSubscribe-bgImg2" onchange="syncPic(this)"></span>
                                             <a href="#" class="btn btn-white fileinput-exists"
                                                data-dismiss="fileinput">清除</a>
-                                            <input id="qrCodeImgval" type="hidden" name="actPageConfigSubscribe-bgImg2"
-                                                   value="">
                                         </div>
                                     </div>
-
                                 </div>
+                                <input id="qrCodeImgval" type="hidden" name="actPageConfigSubscribe-bgImg2"
+                                       value="">
                             </div>
                         </div>
                         <div class="rightarea">
                             <h4 class="form-header h4">效果图</h4>
                             <div style="position: relative;text-align:center">
-                                <img id="backdropImgPri" src="../../img/shj.jpg" width="400" height="400">
+                                <img id="backdropImgimg" src="../../img/shj.jpg" width="400" height="400">
                                 <div class="drawCodeImgPic">
-                                    <img id="qrCodeImgPri" src="../../img/shj.jpg" width="80" height="80">
+                                    <img id="qrCodeImgimg" src="../../img/shj.jpg" width="80" height="80">
                                 </div>
 
                                 <span class="drawQrCodePri" id="qrCodePri">关注二维码</span>
@@ -1189,150 +1185,20 @@
         $("#" + id + "Pri").text(value);
     }
 
-    //分享图片
-    $("#qrCodeImg").change(function () {
-        qrCodeImg(this);
-        if ($(this).val() != '') {
-            $("#qrCodeImgPri").attr("src", $(this).val());
-
-        }
-    });
-
-    function qrCodeImg(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                //$('#prevImg').attr('src', e.target.result);
-                $("#qrCodeImgPri").attr("src", e.target.result);
-                $("#qrCodeImgPrival").val(e.target.result);
-                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
+    //图片同步
+    function syncPic(val){
+        previewURL(val);
     }
-
-    //分享图片
-    $("#backdropImg").change(function () {
-        backdropImg(this);
-        if ($(this).val() != '') {
-            $("#backdropImgPri").attr("src", $(this).val());
-
-        }
-    });
-
-    function backdropImg(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                //$('#prevImg').attr('src', e.target.result);
-                $("#backdropImgPri").attr("src", e.target.result);
-                $("#backdropImgval").val(e.target.result);
-                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    //分享图片
-    $("#shareImg").change(function () {
-        shareImg(this);
-        if ($(this).val() != '') {
-            $("#shareImgPic").attr("src", $(this).val());
-
-        }
-    });
-
-    function shareImg(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                //$('#prevImg').attr('src', e.target.result);
-                $("#shareImgPic").attr("src", e.target.result);
-                $("#shareImgval").val(e.target.result);
-                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#picture").change(function () {
-        btnURL(this);
-        if ($(this).val() != '') {
-            // var formData = new FormData();
-            // formData.append('file', $(this)[0].files[0]);
-            // $.ajax({
-            //     url: '/path/to/upload',
-            //     type: 'POST',
-            //     data: formData,
-            //     async: false,
-            //     success: function (r) {
-            //         if(r.success) {
-            //             //success work
-            //         }
-            //     },
-            //     cache: false,
-            //     contentType: false,
-            //     processData: false
-            // });
-            $("#imgPri").attr("src", $(this).val());
-
-        }
-    });
-
-    function btnURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                //$('#prevImg').attr('src', e.target.result);
-                $("#imgPri").attr("src", e.target.result);
-                $("#pictureval").val(e.target.result);
-                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#pic").change(function () {
-        previewURL(this);
-        if ($(this).val() != '') {
-            // var formData = new FormData();
-            // formData.append('file', $(this)[0].files[0]);
-            // $.ajax({
-            //     url: '/path/to/upload',
-            //     type: 'POST',
-            //     data: formData,
-            //     async: false,
-            //     success: function (r) {
-            //         if(r.success) {
-            //             //success work
-            //         }
-            //     },
-            //     cache: false,
-            //     contentType: false,
-            //     processData: false
-            // });
-            $("#imgPic").attr("src", $(this).val());
-
-        }
-    });
 
     function previewURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-
+            var id = input.id;
             reader.onload = function (e) {
-                //$('#prevImg').attr('src', e.target.result);
-                $("#imgPic").attr("src", e.target.result);
-                $("#picval").val(e.target.result);
-                //$('#preview').css("background", "url(" + e.target.result +")" + " right top no-repeat");
+                //效果图
+                $("#"+id+"img").attr("src", e.target.result);
+                //传递值
+                $("#"+id+"val").val(e.target.result);
             }
 
             reader.readAsDataURL(input.files[0]);
