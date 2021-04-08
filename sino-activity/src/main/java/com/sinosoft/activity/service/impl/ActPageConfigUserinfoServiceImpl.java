@@ -54,7 +54,6 @@ public class ActPageConfigUserinfoServiceImpl implements IActPageConfigUserinfoS
     @Override
     public int insertActPageConfigUserinfo(ActPageConfigUserinfo actPageConfigUserinfo)
     {
-        actPageConfigUserinfo.setCreateTime(DateUtils.getNowDate());
         return actPageConfigUserinfoMapper.insertActPageConfigUserinfo(actPageConfigUserinfo);
     }
 

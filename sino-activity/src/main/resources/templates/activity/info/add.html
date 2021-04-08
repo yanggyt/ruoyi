@@ -887,10 +887,6 @@
     });
 
 
-    function submitHandler() {
-        var data = $("#form-info-add").serializeArray();
-        $.operate.saveModal(prefix + "/add", data);
-    }
 
     //时间段抽奖配置
     function dailyflag() {
@@ -930,7 +926,7 @@
 
     }
 
-    $("input[name='STARTTIME']").datetimepicker({
+    $("input[name='drawInfo-STARTTIME']").datetimepicker({
         weekStart: 1,
         todayBtn: 1,
         autoclose: 1,
@@ -941,7 +937,7 @@
         format: 'yyyy-mm-dd hh:ii:ss'
     });
 
-    $("input[name='ENDTIME']").datetimepicker({
+    $("input[name='drawInfo-ENDTIME']").datetimepicker({
         weekStart: 1,
         todayBtn: 1,
         autoclose: 1,
@@ -952,7 +948,7 @@
         format: 'yyyy-mm-dd hh:ii:ss'
     });
 
-    $("input[name='DAILYSTARTTIME']").datetimepicker({
+    $("input[name='drawRule-DAILYSTARTTIME']").datetimepicker({
         weekStart: 1,
         todayBtn: 1,
         autoclose: 1,
@@ -963,7 +959,7 @@
         format: 'hh:ii:ss'
     });
 
-    $("input[name='DAILYENDTIME']").datetimepicker({
+    $("input[name='drawRule-DAILYENDTIME']").datetimepicker({
         weekStart: 1,
         todayBtn: 1,
         autoclose: 1,

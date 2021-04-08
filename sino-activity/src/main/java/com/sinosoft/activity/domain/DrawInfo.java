@@ -2,15 +2,17 @@ package com.sinosoft.activity.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.BaseEntity;
+
 import java.util.Date;
 
 /**
  * 抽奖活动管理对象 draw_info
  *
- * @author ruoyi
+ * @author xlh
  * @date 2021-03-25
  */
-public class DrawInfo extends DrawRule
+public class DrawInfo  extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

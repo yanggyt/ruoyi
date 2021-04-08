@@ -11,9 +11,7 @@ import com.sinosoft.activity.domain.ActConfig;
 import com.sinosoft.activity.domain.DrawInfo;
 import com.sinosoft.activity.domain.DrawPrizeInfo;
 import com.sinosoft.activity.domain.DrawRule;
-import com.sinosoft.activity.service.IDrawInfoService;
-import com.sinosoft.activity.service.IDrawPrizeInfoService;
-import com.sinosoft.activity.service.IDrawRuleService;
+import com.sinosoft.activity.service.*;
 import com.sinosoft.activity.vo.ActVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
@@ -56,6 +54,62 @@ public class DrawInfoController extends BaseController
 
     @Autowired
     private IDrawRuleService iDrawRuleService;
+
+    @Autowired
+    private IActConfigService iActConfigService;
+
+    @Autowired
+    private IActPageConfigGuideService iActPageConfigGuideService;
+
+    @Autowired
+    private IActPageConfigUserinfoService iActPageConfigUserinfoService;
+
+    @Autowired
+    private IActPageConfigSubscribeService iActPageConfigSubscribeService;
+
+    /**
+     * 新增保存抽奖活动管理
+     */
+    @RequiresPermissions("activity:info:add")
+    @Log(title = "抽奖活动管理", businessType = BusinessType.INSERT)
+    @PostMapping("/add")
+    @ResponseBody
+    public AjaxResult addSave(@RequestBody ActVO vo)
+    {
+        logger.info("前台传参"+ JSON.toJSONString(vo));
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        Date date = new Date();
+        //新增基本信息
+        vo.getDrawInfo().setCREATETIMESTAMP(date);
+        String code = format.format(date);
+        vo.getDrawInfo().setDRAWCODE(code);
+        drawInfoService.insertDrawInfo(vo.getDrawInfo());
+
+        //新增展示内容
+        vo.getActPageConfigGuide().setCreateTime(date);
+        vo.getActPageConfigGuide().setActCode(code);
+        iActPageConfigGuideService.insertActPageConfigGuide(vo.getActPageConfigGuide());
+
+        //新增选择玩法
+        vo.getDrawRule().setCREATETIMESTAMP(date);
+        vo.getDrawRule().setDRAWCODE(code);
+        iDrawRuleService.insertDrawRule(vo.getDrawRule());
+
+        //新增收集信息
+        vo.getActPageConfigUserinfo().setCreateTime(date);
+        vo.getActPageConfigUserinfo().setActCode(code);
+        iActPageConfigUserinfoService.insertActPageConfigUserinfo(vo.getActPageConfigUserinfo());
+
+        //新增分享信息
+        vo.getActConfig().setCreateTime(date);
+        vo.getActConfig().setActCode(code);
+        iActConfigService.insertActConfig(vo.getActConfig());
+        //新增二维码信息
+        vo.getActPageConfigSubscribe().setCreateTime(date);
+        vo.getActPageConfigSubscribe().setActCode(code);
+        int i = iActPageConfigSubscribeService.insertActPageConfigSubscribe(vo.getActPageConfigSubscribe());
+        return toAjax(i);
+    }
     /**
      * 查询抽奖活动管理列表
      */
@@ -92,35 +146,6 @@ public class DrawInfoController extends BaseController
         return prefix + "/add";
     }
 
-    /**
-     * 新增保存抽奖活动管理
-     */
-    @RequiresPermissions("activity:info:add")
-    @Log(title = "抽奖活动管理", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(DrawInfo drawInfo)
-    {
-        logger.info("前台传参"+ JSON.toJSONString(drawInfo));
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        Date date = new Date();
-        drawInfo.setCREATETIMESTAMP(date);
-        String format1 = format.format(date);
-        drawInfo.setDRAWCODE(format1);
-         drawInfoService.insertDrawInfo(drawInfo);
-        DrawRule drawRule = new  DrawRule();
-        BeanUtils.copyProperties(drawInfo,drawRule);
-        logger.info("接口新增"+ JSON.toJSONString(drawRule));
-        int i = iDrawRuleService.insertDrawRule(drawRule);
-        return toAjax(i);
-    }
-
-    @PostMapping("/add/test")
-    @ResponseBody
-    public AjaxResult addtest(@RequestBody ActVO vo){
-        ActConfig actConfig = vo.getActConfig();
-        return null;
-    }
 
 
     /**
