@@ -448,7 +448,7 @@
                            th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
                     </div>
                     <input type="hidden" name="actConfig-actType" id="activityPlayval" value="">
-                    <img id="activityPlayimg" src="../../img/act/1.jpg" width="60%" height="500">
+                    <img id="activityPlayimg" src="../../img/act/1.jpg" width="60%" height="300">
                     <h4 class="form-header h4">活动规则</h4>
                     <div class="row">
                         <div class="col-sm-6">
@@ -1212,7 +1212,7 @@
         var path = "../../img/act/";
         $(val).addClass('btn-success').siblings().removeClass('btn-success');
         var id = val.id;
-        var valus = $("#"+id).attr("value");
+        var valus = $("#"+id+".btn-success").attr("value");
         $("#"+id+"val").val(valus);
         $("#"+id+"h4").text(val.text);
         $("#"+id+"img").attr("src",path+valus+".jpg");
