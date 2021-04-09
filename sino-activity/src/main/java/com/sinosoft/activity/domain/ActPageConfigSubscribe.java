@@ -30,15 +30,16 @@ public class ActPageConfigSubscribe extends BaseEntity
     @Excel(name = "背景图片")
     private String bgImg;
 
-    /** 二维码图片 */
-    @Excel(name = "二维码图片")
-    private String bgImg2;
 
-    /** 关注二维码描述 */
-    @Excel(name = "关注二维码描述")
+    /** 二维码 */
+    @Excel(name = "二维码")
     private String qrCode;
 
-    public void setId(Integer id) 
+    public String getBgImg() {
+        return bgImg;
+    }
+
+    public void setId(Integer id)
     {
         this.id = id;
     }
@@ -70,19 +71,7 @@ public class ActPageConfigSubscribe extends BaseEntity
         this.bgImg = bgImg;
     }
 
-    public String getBgImg() 
-    {
-        return bgImg;
-    }
-    public void setBgImg2(String bgImg2) 
-    {
-        this.bgImg2 = bgImg2;
-    }
 
-    public String getBgImg2() 
-    {
-        return bgImg2;
-    }
     public void setQrCode(String qrCode) 
     {
         this.qrCode = qrCode;
@@ -100,7 +89,6 @@ public class ActPageConfigSubscribe extends BaseEntity
             .append("actCode", getActCode())
             .append("description", getDescription())
             .append("bgImg", getBgImg())
-            .append("bgImg2", getBgImg2())
             .append("qrCode", getQrCode())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
