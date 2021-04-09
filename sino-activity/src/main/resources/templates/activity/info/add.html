@@ -1035,24 +1035,16 @@
             .on('click', function () {
                 //添加保存逻辑
                 var data = customSerialize("form-info-add", true);
-                alert(data);
                 $.ajax({
                     url: prefix + "/add",
                     data: data,
                     type: "post",
                     contentType: "application/json;charset=UTF-8",
                     success: function (result) {
-                        if (result.code == web_status.SUCCESS) {
-                            layer.msg("保存成功,正在刷新数据请稍后……", {
-                                icon: 1,
-                                time: 500,
-                                shade: [0.1, '#8F8F8F']
-                            }, function () {
-                                location.reload();
-                            });
-                        } else {
-                            alert(result.msg);
+                        if (typeof callback == "function") {
+                            callback(result);
                         }
+                        $.operate.successTabCallback(result);
                     }
                 })
             });

@@ -76,39 +76,45 @@ public class DrawInfoController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody ActVO vo)
     {
-        logger.info("前台传参"+ JSON.toJSONString(vo));
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        Date date = new Date();
-        //新增基本信息
-        vo.getDrawInfo().setCREATETIMESTAMP(date);
-        String code = format.format(date);
-        vo.getDrawInfo().setDRAWCODE(code);
-        drawInfoService.insertDrawInfo(vo.getDrawInfo());
+        try{
+            logger.info("前台传参"+ JSON.toJSONString(vo));
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            Date date = new Date();
+            //新增基本信息
+            vo.getDrawInfo().setCREATETIMESTAMP(date);
+            String code = format.format(date);
+            vo.getDrawInfo().setDRAWCODE(code);
+            drawInfoService.insertDrawInfo(vo.getDrawInfo());
 
-        //新增展示内容
-        vo.getActPageConfigGuide().setCreateTime(date);
-        vo.getActPageConfigGuide().setActCode(code);
-        iActPageConfigGuideService.insertActPageConfigGuide(vo.getActPageConfigGuide());
+            //新增展示内容
+            vo.getActPageConfigGuide().setCreateTime(date);
+            vo.getActPageConfigGuide().setActCode(code);
+            iActPageConfigGuideService.insertActPageConfigGuide(vo.getActPageConfigGuide());
 
-        //新增选择玩法
-        vo.getDrawRule().setCREATETIMESTAMP(date);
-        vo.getDrawRule().setDRAWCODE(code);
-        iDrawRuleService.insertDrawRule(vo.getDrawRule());
+            //新增选择玩法
+            vo.getDrawRule().setCREATETIMESTAMP(date);
+            vo.getDrawRule().setDRAWCODE(code);
+            iDrawRuleService.insertDrawRule(vo.getDrawRule());
 
-        //新增收集信息
-        vo.getActPageConfigUserinfo().setCreateTime(date);
-        vo.getActPageConfigUserinfo().setActCode(code);
-        iActPageConfigUserinfoService.insertActPageConfigUserinfo(vo.getActPageConfigUserinfo());
+            //新增收集信息
+            vo.getActPageConfigUserinfo().setCreateTime(date);
+            vo.getActPageConfigUserinfo().setActCode(code);
+            iActPageConfigUserinfoService.insertActPageConfigUserinfo(vo.getActPageConfigUserinfo());
 
-        //新增分享信息
-        vo.getActConfig().setCreateTime(date);
-        vo.getActConfig().setActCode(code);
-        iActConfigService.insertActConfig(vo.getActConfig());
-        //新增二维码信息
-        vo.getActPageConfigSubscribe().setCreateTime(date);
-        vo.getActPageConfigSubscribe().setActCode(code);
-        int i = iActPageConfigSubscribeService.insertActPageConfigSubscribe(vo.getActPageConfigSubscribe());
-        return toAjax(i);
+            //新增分享信息
+            vo.getActConfig().setCreateTime(date);
+            vo.getActConfig().setActCode(code);
+            iActConfigService.insertActConfig(vo.getActConfig());
+            //新增二维码信息
+            vo.getActPageConfigSubscribe().setCreateTime(date);
+            vo.getActPageConfigSubscribe().setActCode(code);
+            int i = iActPageConfigSubscribeService.insertActPageConfigSubscribe(vo.getActPageConfigSubscribe());
+            return toAjax(i);
+        }
+      catch (Exception e){
+        e.printStackTrace();
+      return AjaxResult.error("系统繁忙");
+  }
     }
     /**
      * 查询抽奖活动管理列表
