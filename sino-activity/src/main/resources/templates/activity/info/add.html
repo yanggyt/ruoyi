@@ -1205,6 +1205,13 @@
             }
 
             reader.readAsDataURL(input.files[0]);
+        } else{
+            //清除
+            //效果图
+            var id = input.id;
+            $("#"+id+"img").attr("src", "");
+            //传递值
+            $("#"+id+"val").val("");
         }
     }
 
