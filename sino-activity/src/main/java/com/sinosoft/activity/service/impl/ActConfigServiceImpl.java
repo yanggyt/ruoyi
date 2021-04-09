@@ -54,7 +54,6 @@ public class ActConfigServiceImpl implements IActConfigService
     @Override
     public int insertActConfig(ActConfig actConfig)
     {
-        actConfig.setCreateTime(DateUtils.getNowDate());
         return actConfigMapper.insertActConfig(actConfig);
     }
 

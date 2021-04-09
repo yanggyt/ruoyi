@@ -54,7 +54,6 @@ public class ActPageConfigGuideServiceImpl implements IActPageConfigGuideService
     @Override
     public int insertActPageConfigGuide(ActPageConfigGuide actPageConfigGuide)
     {
-        actPageConfigGuide.setCreateTime(DateUtils.getNowDate());
         return actPageConfigGuideMapper.insertActPageConfigGuide(actPageConfigGuide);
     }
 

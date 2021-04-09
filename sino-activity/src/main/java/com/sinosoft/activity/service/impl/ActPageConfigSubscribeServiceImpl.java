@@ -54,7 +54,6 @@ public class ActPageConfigSubscribeServiceImpl implements IActPageConfigSubscrib
     @Override
     public int insertActPageConfigSubscribe(ActPageConfigSubscribe actPageConfigSubscribe)
     {
-        actPageConfigSubscribe.setCreateTime(DateUtils.getNowDate());
         return actPageConfigSubscribeMapper.insertActPageConfigSubscribe(actPageConfigSubscribe);
     }
 
