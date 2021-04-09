@@ -321,8 +321,8 @@
                                th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
                         </div>
                         <input id="activityTemplateval" name="actConfig-pageStyle" value="" type="hidden">
-                        <h4 class="form-header h4">字典表显示字段</h4>
-                        <img src="../../img/1.jpg" width="104" height="142">
+                        <h4 id="activityTemplateh4" class="form-header h4"></h4>
+                        <img id="activityTemplateimg" src="../../img/act/1.jpg" width="60%" height="500">
                     </div>
                 </div>
                 <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
@@ -364,77 +364,81 @@
                                             <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg"></span>
-                                                <a href="#" class="btn btn-white fileinput-exists"
-                                                   data-dismiss="fileinput">清除</a>
-                                            </div>
-                                        </div>
-                                        <input id="picval" type="hidden" name = "actPageConfigGuide-bgImg" value="">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">自定义按钮1：</label>
-                                            <div class="col-sm-8">
-                                                <input id="btn1" name="actPageConfigGuide-btnText" placeholder="自定义按钮1" class="form-control"
-                                                       type="text"
-                                                       maxlength="30" onkeyup="updatePic(this)">
-                                            </div>
+                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg" onchange="syncPic(this)" ></span>
+                                            <a href="#" class="btn btn-white fileinput-exists"
+                                               data-dismiss="fileinput">清除</a>
                                         </div>
                                     </div>
+                                    <input id="picval" type="hidden" name="actPageConfigGuide-bgImg" value="">
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">按钮1跳转链接：</label>
-                                            <div class="col-sm-8">
-                                                <input name="actPageConfigGuide-btnLink" placeholder="按钮1跳转链接" class="form-control"
-                                                       type="text"
-                                                       maxlength="30">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">自定义按钮2：</label>
-                                            <div class="col-sm-8">
-                                                <input id="btn2" name="actPageConfigGuide-btnText2" placeholder="自定义按钮2" class="form-control" type="text"
-                                                       maxlength="30" onkeyup="updatePic(this)">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label is-required">按钮2跳转链接：</label>
-                                            <div class="col-sm-8">
-                                                <input name="actPageConfigGuide-btnLink2" placeholder="按钮2跳转链接" class="form-control"
-                                                       type="text"
-                                                       maxlength="30">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
-                            <div class="rightarea">
-                                <h4 class="form-header h4">效果图</h4>
-                                <div style="position: relative;text-align:center">
-                                    <img id="imgPic" src="../../img/1.jpg" width="380" height="500">
-                                    <span class="drawNamePic" id="actTitlePic">活动标题</span>
-                                    <span class="drawDescribePic" id="actDescPic">活动描述</span>
-                                    <span class="drawbtnPic">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">自定义按钮1：</label>
+                                        <div class="col-sm-8">
+                                            <input id="btn1" name="actPageConfigGuide-btnText" placeholder="自定义按钮1"
+                                                   class="form-control"
+                                                   type="text"
+                                                   maxlength="30" onkeyup="updatePic(this)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">按钮1跳转链接：</label>
+                                        <div class="col-sm-8">
+                                            <input name="actPageConfigGuide-btnLink" placeholder="按钮1跳转链接"
+                                                   class="form-control"
+                                                   type="text"
+                                                   maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">自定义按钮2：</label>
+                                        <div class="col-sm-8">
+                                            <input id="btn2" name="actPageConfigGuide-btnText2" placeholder="自定义按钮2"
+                                                   class="form-control" type="text"
+                                                   maxlength="30" onkeyup="updatePic(this)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">按钮2跳转链接：</label>
+                                        <div class="col-sm-8">
+                                            <input name="actPageConfigGuide-btnLink2" placeholder="按钮2跳转链接"
+                                                   class="form-control"
+                                                   type="text"
+                                                   maxlength="30">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="rightarea">
+                            <h4 class="form-header h4">效果图</h4>
+                            <div style="position: relative;text-align:center">
+                                <img id="picimg" src="../../img/act/1.jpg" width="380" height="500">
+                                <span class="drawNamePic" id="actTitlePic">活动标题</span>
+                                <span class="drawDescribePic" id="actDescPic">活动描述</span>
+                                <span class="drawbtnPic">
                                         <a id="btn1Pic" class="btn btn-success btn-xs ">自定义按钮1</a>
                                     </span>
-                                    <span class="drawbtnPic2">
+                                <span class="drawbtnPic2">
                                         <a id="btn2Pic" class="btn btn-success btn-xs ">自定义按钮2</a>
                                     </span>
-                                </div>
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
@@ -442,10 +446,9 @@
                     <div th:with="type=${@dict.getType('activityPlay')}">
                         <a id="activityPlay" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
                            th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
-                        <a class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
                     </div>
                     <input type="hidden" name="actConfig-actType" id="activityPlayval" value="">
-                    <img src="../../img/1.jpg" width="104" height="142">
+                    <img id="activityPlayimg" src="../../img/act/1.jpg" width="60%" height="500">
                     <h4 class="form-header h4">活动规则</h4>
                     <div class="row">
                         <div class="col-sm-6">
@@ -1206,10 +1209,14 @@
     }
 
     function activityTemplate(val) {
+        var path = "../../img/act/";
         $(val).addClass('btn-success').siblings().removeClass('btn-success');
         var id = val.id;
         var valus = $("#"+id).attr("value");
         $("#"+id+"val").val(valus);
+        $("#"+id+"h4").text(val.text);
+        $("#"+id+"img").attr("src",path+valus+".jpg");
+
     }
 
 </script>
