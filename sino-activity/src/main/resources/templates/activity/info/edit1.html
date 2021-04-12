@@ -207,8 +207,9 @@
 </style>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-    <form class="form-horizontal m" id="form-info-add">
-
+    <form class="form-horizontal m" id="form-info-add" th:object="${vo}">
+        <input name="DRAWID" th:field="*{drawInfo.DRAWID}" type="hidden">
+        <input name="DRAWRULEID" th:field="*{drawInfo.DRAWRULEID}" type="hidden">
         <div id="smartwizard">
             <ul class="nav">
                 <li class="nav-item">
@@ -244,7 +245,7 @@
                                         <label class="col-sm-4 control-label is-required">活动名称：</label>
                                         <div class="col-sm-8">
                                             <input name="drawInfo-drawname" placeholder="活动名称" class="form-control"
-                                                   type="text" maxlength="30">
+                                                   type="text" maxlength="30" th:field="*{drawInfo.DRAWNAME}" >
                                         </div>
                                     </div>
                                 </div>
@@ -255,7 +256,7 @@
                                             <select name="drawInfo-status" class="form-control"
                                                     th:with="type=${@dict.getType('start_stop')}">
                                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                        th:value="${dict.dictValue}"></option>
+                                                        th:value="${dict.dictValue}" th:field="*{drawInfo.STATUS}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -269,7 +270,7 @@
                                             <select name="drawInfo-expeno" class="form-control"
                                                     th:with="type=${@dict.getType('expeType')}">
                                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                        th:value="${dict.dictValue}"></option>
+                                                        th:value="${dict.dictValue}" th:field="*{drawInfo.EXPENO}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -279,7 +280,7 @@
                                         <label class="col-sm-4 control-label is-required">消耗价值：</label>
                                         <div class="col-sm-8">
                                             <input name="drawInfo-expenovalue" placeholder="消耗价值" class="form-control"
-                                                   type="text" maxlength="30">
+                                                   type="text" maxlength="30" th:field="*{drawInfo.EXPENOVALUE}">
                                         </div>
                                     </div>
                                 </div>
@@ -290,7 +291,7 @@
                                         <label class="col-sm-4 control-label is-required">开始时间：</label>
                                         <div class="col-sm-8">
                                             <div class="input-group date">
-                                                <input name="drawInfo-starttime" class="form-control"
+                                                <input name="drawInfo-starttime" class="form-control" th:value="${#dates.format(vo.drawInfo.STARTTIME, 'yyyy-MM-dd HH:mm:ss')}"
                                                        placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
@@ -302,7 +303,7 @@
                                         <label class="col-sm-4 control-label is-required">结束时间：</label>
                                         <div class="col-sm-8">
                                             <div class="input-group date">
-                                                <input name="drawInfo-endtime" class="form-control"
+                                                <input name="drawInfo-endtime" class="form-control" th:value="${#dates.format(vo.drawInfo.ENDTIME, 'yyyy-MM-dd HH:mm:ss')}"
                                                        placeholder="yyyy-MM-dd HH:mm:ss" type="text">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
@@ -317,12 +318,12 @@
                     <div>
                         <h4 class="form-header h4">第2步-选择UI模板</h4>
                         <div th:with="type=${@dict.getType('activityTemplate')}">
-                            <a id="activityTemplate" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            <a id="activityTemplate" th:if="${dict.dictValue} != *{actConfig.pageStyle}" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
-                            <a id="activityTemplate" th:if="${dict.dictValue} eq '0'" class="btn btn-success btn-rounded"  href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                               th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
+                            <a id="activityTemplate" th:if="${dict.dictValue} eq *{actConfig.pageStyle}" class="btn btn-success btn-rounded"  href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                               th:value="${dict.dictValue}" onclick="activityTemplate(this)" ></a>
                         </div>
-                        <input id="activityTemplateval" name="actConfig-pageStyle" value="" type="hidden">
+                        <input id="activityTemplateval" name="actConfig-pageStyle" value="" type="hidden" th:field="*{actConfig.pageStyle}">
                         <h4 id="activityTemplateh4" class="form-header h4">暂不选择</h4>
                         <img id="activityTemplateimg" src="../../img/act/0.jpg" width="60%" height="500">
                     </div>
@@ -338,7 +339,7 @@
                                         <div class="col-sm-8">
                                             <input id="actTitle" name="actPageConfigGuide-actTitle" placeholder="活动名称"
                                                    class="form-control" type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)">
+                                                   maxlength="30" onkeyup="updatePic(this)" th:field="*{actPageConfigGuide.actTitle}">
                                         </div>
                                     </div>
                                 </div>
@@ -350,7 +351,7 @@
                                         <div class="col-sm-8">
                                             <input id="actDesc" name="actPageConfigGuide-actDesc" placeholder="活动描述"
                                                    class="form-control" type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)">
+                                                   maxlength="30" onkeyup="updatePic(this)" th:field="*{actPageConfigGuide.actDesc}">
                                         </div>
                                     </div>
                                 </div>
@@ -371,7 +372,7 @@
                                                data-dismiss="fileinput">清除</a>
                                         </div>
                                     </div>
-                                    <input id="picval" type="hidden" name="actPageConfigGuide-bgImg" value="">
+                                    <input id="picval" type="hidden" name="actPageConfigGuide-bgImg" value="" th:field="*{actPageConfigGuide.bgImg}">
                                 </div>
                             </div>
                             <div class="row">
@@ -382,7 +383,7 @@
                                             <input id="btn1" name="actPageConfigGuide-btnText" placeholder="自定义按钮1"
                                                    class="form-control"
                                                    type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)">
+                                                   maxlength="30" onkeyup="updatePic(this)" th:field="*{actPageConfigGuide.btnText}">
                                         </div>
                                     </div>
                                 </div>
@@ -395,7 +396,7 @@
                                             <input name="actPageConfigGuide-btnLink" placeholder="按钮1跳转链接"
                                                    class="form-control"
                                                    type="text"
-                                                   maxlength="30">
+                                                   maxlength="30" th:field="*{actPageConfigGuide.btnLink}">
                                         </div>
                                     </div>
                                 </div>
@@ -407,7 +408,7 @@
                                         <div class="col-sm-8">
                                             <input id="btn2" name="actPageConfigGuide-btnText2" placeholder="自定义按钮2"
                                                    class="form-control" type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)">
+                                                   maxlength="30" onkeyup="updatePic(this)" th:field="*{actPageConfigGuide.btnText2}">
                                         </div>
                                     </div>
                                 </div>
@@ -420,7 +421,7 @@
                                             <input name="actPageConfigGuide-btnLink2" placeholder="按钮2跳转链接"
                                                    class="form-control"
                                                    type="text"
-                                                   maxlength="30">
+                                                   maxlength="30" th:field="*{actPageConfigGuide.btnLink2}">
                                         </div>
                                     </div>
                                 </div>
@@ -451,7 +452,7 @@
                         <a id="activityPlay" th:if="${dict.dictValue} eq '0'" class="btn btn-success  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
                            th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
                     </div>
-                    <input type="hidden" name="actConfig-actType" id="activityPlayval" value="">
+                    <input type="hidden" name="actConfig-actType" id="activityPlayval" value="" th:field="*{actConfig.actType}">
                     <img id="activityPlayimg" src="../../img/act/0.jpg" width="60%" height="300">
                     <h4 class="form-header h4">活动规则</h4>
                     <div class="row" id="activityPlaydiv" style="display: none">
@@ -463,7 +464,7 @@
                                             class="form-control"
                                             th:with="type=${@dict.getType('is_boolean')}">
                                         <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                th:value="${dict.dictValue}"></option>
+                                                th:value="${dict.dictValue}" th:field="*{drawRule.firstflag}"></option>
                                     </select>
                                 </div>
                             </div>
@@ -487,7 +488,7 @@
                                                 class="form-control"
                                                 th:with="type=${@dict.getType('is_boolean')}">
                                             <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                    th:value="${dict.dictValue}"></option>
+                                                    th:value="${dict.dictValue}" th:field="*{drawRule.dailyflag}"></option>
                                         </select>
                                     </div>
                                 </div>
@@ -497,7 +498,7 @@
                                     <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-dailynumber" id="dailynumber" placeholder="时间段限制次数"
-                                               class="form-control" type="text" maxlength="30" disabled>
+                                               class="form-control" type="text" maxlength="30" disabled th:field="*{drawRule.dailynumber}">
                                     </div>
                                 </div>
                             </div>
@@ -508,7 +509,7 @@
                                     <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
                                     <div class="col-sm-8">
                                         <div class="input-group date">
-                                            <input name="drawRule-dailystarttime" id="dailystarttime"
+                                            <input name="drawRule-dailystarttime" id="dailystarttime" th:field="*{drawRule.dailystarttime}"
                                                    class="form-control"
                                                    placeholder="HH:mm:ss" type="text" disabled>
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -521,7 +522,7 @@
                                     <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
                                     <div class="col-sm-8">
                                         <div class="input-group date">
-                                            <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control"
+                                            <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control" th:field="*{drawRule.dailyendtime}"
                                                    placeholder="HH:mm:ss" type="text" disabled>
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         </div>
@@ -537,7 +538,7 @@
                                         <select name="drawRule-willdrawflag" id="WILLDRAWFLAG" onchange="willdrawflag()"
                                                 class="form-control" th:with="type=${@dict.getType('is_boolean')}">
                                             <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                    th:value="${dict.dictValue}"></option>
+                                                    th:value="${dict.dictValue}" th:field="*{drawRule.willdrawflag}"></option>
                                         </select>
                                     </div>
                                 </div>
@@ -547,7 +548,7 @@
                                     <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
-                                               placeholder="抽奖必中计数"
+                                               placeholder="抽奖必中计数" th:field="*{drawRule.willdrawawardnumber}"
                                                class="form-control" type="text" maxlength="30" disabled>
                                     </div>
                                 </div>
@@ -578,7 +579,7 @@
                                         <label class="col-sm-4 control-label is-required">标题：</label>
                                         <div class="col-sm-8">
                                             <input id="title" name="actPageConfigUserinfo-title" placeholder="例如：客户姓名"
-                                                   class="form-control" type="text"
+                                                   class="form-control" type="text" th:field="*{actPageConfigUserinfo.title}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -590,7 +591,7 @@
                                         <label class="col-sm-4 control-label is-required">描述：</label>
                                         <div class="col-sm-8">
                                             <input id="describe" name="actPageConfigUserinfo-description"
-                                                   placeholder="例如：客户手机号" class="form-control" type="text"
+                                                   placeholder="例如：客户手机号" class="form-control" type="text" th:field="*{actPageConfigUserinfo.description}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -602,7 +603,7 @@
                                         <label class="col-sm-4 control-label is-required">协议内容：</label>
                                         <div class="col-sm-8">
                                             <input id="agreement" name="actPageConfigUserinfo-agreement" height="100px"
-                                                   class="form-control" type="text"
+                                                   class="form-control" type="text" th:field="*{actPageConfigUserinfo.agreement}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -624,7 +625,7 @@
 
                                         </div>
                                     </div>
-                                    <input id="pictureval" type="hidden" name="actPageConfigUserinfo-bgImg"
+                                    <input id="pictureval" type="hidden" name="actPageConfigUserinfo-bgImg" th:field="*{actPageConfigUserinfo.bgImg}"
                                            value="">
                                 </div>
                             </div>
@@ -634,7 +635,7 @@
                                         <label class="col-sm-4 control-label is-required">自定义按钮：</label>
                                         <div class="col-sm-8">
                                             <input id="btn" name="actPageConfigUserinfo-btnText" placeholder="自定义按钮"
-                                                   class="form-control" type="text"
+                                                   class="form-control" type="text" th:field="*{actPageConfigUserinfo.btnText}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -646,7 +647,7 @@
                                         <label class="col-sm-4 control-label is-required">按钮跳转链接：</label>
                                         <div class="col-sm-8">
                                             <input name="actPageConfigUserinfo-btnLink" placeholder="按钮跳转链接"
-                                                   class="form-control" type="text"
+                                                   class="form-control" type="text" th:field="*{actPageConfigUserinfo.btnLink}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -658,19 +659,22 @@
                                         <label class="col-sm-4 control-label is-required">客户必填信息：</label>
                                         <div class="col-sm-8">
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" name="actPageConfigUserinfo-userName" id="name"
+                                                <input type="checkbox" name="actPageConfigUserinfo-userName" id="name" th:field="*{actPageConfigUserinfo.userName}"
                                                        onclick="updateText(this)">姓名</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-mobile" id="phone"
+                                                       th:field="*{actPageConfigUserinfo.mobile}"
                                                        onclick="updateText(this)">手机号</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-gender" id="sex"
+                                                       th:field="*{actPageConfigUserinfo.gender}"
                                                        onclick="updateText(this)">性别</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-address" id="address"
+                                                       th:field="*{actPageConfigUserinfo.address}"
                                                        onclick="updateText(this)">地址</input>
                                             </label>
                                         </div>
@@ -684,18 +688,22 @@
                                         <div class="col-sm-8">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentName"
+                                                       th:field="*{actPageConfigUserinfo.agentName}"
                                                        id="agentName" onclick="updateText(this)">代理人姓名</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentMobile"
+                                                       th:field="*{actPageConfigUserinfo.agentMobile}"
                                                        id="agentPhone" onclick="updateText(this)">代理人手机号</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentGender"
+                                                       th:field="*{actPageConfigUserinfo.agentGender}"
                                                        id="agentSex" onclick="updateText(this)">代理人性别</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentNo"
+                                                       th:field="*{actPageConfigUserinfo.agentNo}"
                                                        id="agentNumber" onclick="updateText(this)">代理人工号</input>
                                             </label>
                                         </div>
@@ -763,6 +771,7 @@
                                         <div class="col-sm-8">
                                             <input id="shareConnect" name="actConfig-shareLink"
                                                    placeholder="例如：http://XX" class="form-control" type="text"
+                                                   th:field="*{actConfig.shareLink}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -775,6 +784,7 @@
                                         <div class="col-sm-8">
                                             <input id="shareTitle" name="actConfig-shareTitle"
                                                    placeholder="例如：2021XX客户节" class="form-control" type="text"
+                                                   th:field="*{actConfig.shareTitle}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -787,6 +797,7 @@
                                         <div class="col-sm-8">
                                             <input id="shareDescribe" name="actConfig-shareDesc"
                                                    placeholder="例如：参与活动，赢大奖" class="form-control" type="text"
+                                                   th:field="*{actConfig.shareDesc}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -807,7 +818,7 @@
                                                data-dismiss="fileinput">清除</a>
                                         </div>
                                     </div>
-                                    <input id="shareImgval" type="hidden" name="actConfig-shareImg" value="">
+                                    <input id="shareImgval" type="hidden" name="actConfig-shareImg" value="" th:field="*{actConfig.shareImg}">
                                 </div>
                             </div>
                         </div>
@@ -840,6 +851,7 @@
                                         <div class="col-sm-8">
                                             <input id="qrCode" name="actPageConfigSubscribe-description"
                                                    placeholder="例如：扫描二维码参加活动" class="form-control" type="text"
+                                                   th:field="*{actPageConfigSubscribe.description}"
                                                    maxlength="30" onkeyup="updatePri(this)">
                                         </div>
                                     </div>
@@ -862,6 +874,7 @@
                                     </div>
                                 </div>
                                 <input id="backdropImgval" type="hidden" name="actPageConfigSubscribe-bgImg"
+                                       th:field="*{actPageConfigSubscribe.bgImg}"
                                        value="">
                             </div>
                             <div class="row">
@@ -881,6 +894,7 @@
                                     </div>
                                 </div>
                                 <input id="qrCodeImgval" type="hidden" name="actPageConfigSubscribe-qrCode"
+                                       th:field="*{actPageConfigSubscribe.qrCode}"
                                        value="">
                             </div>
                         </div>
