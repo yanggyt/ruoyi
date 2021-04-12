@@ -89,7 +89,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateDrawRule" parameterType="DrawRule">
         update draw_rule
         <trim prefix="SET" suffixOverrides=",">
-            <if test="DRAWCODE != null and DRAWCODE != ''">DRAWCODE = #{DRAWCODE},</if>
             <if test="FIRSTFLAG != null">FIRSTFLAG = #{FIRSTFLAG},</if>
             <if test="FIRSTAWARDPRIZE != null">FIRSTAWARDPRIZE = #{FIRSTAWARDPRIZE},</if>
             <if test="DAILYFLAG != null">DAILYFLAG = #{DAILYFLAG},</if>
@@ -102,7 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
             <if test="WILLDRAWAWARDNUMBER != null">WILLDRAWAWARDNUMBER = #{WILLDRAWAWARDNUMBER},</if>
         </trim>
-        where DRAWRULEID = #{DRAWRULEID}
+        where DRAWCODE = #{DRAWCODE}
     </update>
 
     <delete id="deleteDrawRuleById" parameterType="String">

@@ -70,5 +70,5 @@ public interface DrawRuleMapper
      *  根据活动代码删除抽奖活动管理信息
      * @param toStrArray
      */
-   public void deleteDrawRuleByIdCode(String[] toStrArray);
+   public int deleteDrawRuleByIdCode(String[] toStrArray);
 }

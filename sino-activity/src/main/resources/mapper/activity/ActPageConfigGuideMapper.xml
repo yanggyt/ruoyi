@@ -76,7 +76,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateActPageConfigGuide" parameterType="ActPageConfigGuide">
         update act_page_config_guide
         <trim prefix="SET" suffixOverrides=",">
-            <if test="actCode != null and actCode != ''">act_code = #{actCode},</if>
             <if test="actTitle != null">act_title = #{actTitle},</if>
             <if test="actDesc != null">act_desc = #{actDesc},</if>
             <if test="bgImg != null">bg_img = #{bgImg},</if>
@@ -87,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where id = #{id}
+        where act_code = #{actCode}
     </update>
 
     <delete id="deleteActPageConfigGuideById" parameterType="Integer">
