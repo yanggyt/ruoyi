@@ -2,6 +2,7 @@ package com.sinosoft.activity.service;
 
 import java.util.List;
 import com.sinosoft.activity.domain.DrawPrizeInfo;
+import com.sinosoft.activity.vo.PrizeInfo;
 
 /**
  * 存储奖品的基础信息Service接口
@@ -32,6 +33,7 @@ public interface IDrawPrizeInfoService
      * @return
      */
     List<DrawPrizeInfo> findDrawPrizeInfoList();
+    List<DrawPrizeInfo> selectDrawPrizeInfoByDrawCode(PrizeInfo prizeInfo);
 
     /**
      * 新增存储奖品的基础信息

@@ -64,4 +64,10 @@ public interface ActConfigMapper
      * @return
      */
    public ActConfig selectActConfigByCode(String drawCode);
+
+    /**
+     * 根据活动代码删除活动配置信息
+     * @param toStrArray
+     */
+   public void deleteActConfigByCode(String[] toStrArray);
 }

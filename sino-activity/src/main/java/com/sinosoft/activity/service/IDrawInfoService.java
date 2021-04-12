@@ -2,6 +2,7 @@ package com.sinosoft.activity.service;
 
 
 import com.sinosoft.activity.domain.DrawInfo;
+import com.sinosoft.activity.vo.ActVO;
 
 import java.util.List;
 
@@ -68,4 +69,5 @@ public interface IDrawInfoService
     public int deleteDrawInfoById(String DRAWID);
 
 
+   public  int updateActVO(ActVO vo);
 }

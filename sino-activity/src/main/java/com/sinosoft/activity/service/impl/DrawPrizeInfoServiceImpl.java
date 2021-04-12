@@ -2,6 +2,8 @@ package com.sinosoft.activity.service.impl;
 
 import java.util.Date;
 import java.util.List;
+
+import com.sinosoft.activity.vo.PrizeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sinosoft.activity.mapper.DrawPrizeInfoMapper;
@@ -48,6 +50,10 @@ public class DrawPrizeInfoServiceImpl implements IDrawPrizeInfoService
     @Override
     public List<DrawPrizeInfo> findDrawPrizeInfoList() {
         return drawPrizeInfoMapper.findDrawPrizeInfoList();
+    }
+    @Override
+    public List<DrawPrizeInfo> selectDrawPrizeInfoByDrawCode(PrizeInfo prizeInfo) {
+        return drawPrizeInfoMapper.selectDrawPrizeInfoByDrawCode(prizeInfo);
     }
 
     /**

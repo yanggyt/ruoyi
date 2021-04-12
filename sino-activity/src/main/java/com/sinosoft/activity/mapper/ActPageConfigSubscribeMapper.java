@@ -64,4 +64,10 @@ public interface ActPageConfigSubscribeMapper
      * @return
      */
     public ActPageConfigSubscribe selectActPageConfigSubscribeByCode(String drawCode);
+
+    /**
+     *  根据活动代码删除活动配置信息
+     * @param toStrArray
+     */
+   public void deleteActPageConfigSubscribeByCode(String[] toStrArray);
 }

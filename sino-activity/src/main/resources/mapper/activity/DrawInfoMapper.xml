@@ -28,7 +28,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectDrawInfoList" parameterType="DrawInfo" resultMap="DrawInfoResult">
         <include refid="selectDrawInfoVo"/>
-        <where>  
+        <where>
+            <if test="drawId != null  and drawId != '' ">
+                and  DRAWID in
+                <foreach item="DRAWID" collection="drawId" open="(" separator="," close=")">
+                    #{DRAWID}
+                </foreach>
+            </if>
             <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
             <if test="DRAWTYPE != null  and DRAWTYPE != ''"> and DRAWTYPE = #{DRAWTYPE}</if>
             <if test="DRAWNAME != null  and DRAWNAME != ''"> and DRAWNAME like concat('%', #{DRAWNAME}, '%')</if>

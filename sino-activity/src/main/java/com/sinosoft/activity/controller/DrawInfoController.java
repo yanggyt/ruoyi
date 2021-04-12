@@ -188,16 +188,20 @@ public class DrawInfoController extends BaseController
     @Log(title = "抽奖活动管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(DrawInfo drawInfo)
-    {
-        logger.info("修改存储抽奖特殊规则对象传参："+JSON.toJSONString(drawInfo));
-        drawInfo.setLASTUPDATETIMESTAMP(new Date());
-        drawInfoService.updateDrawInfo(drawInfo);
-        DrawRule drawRule = new  DrawRule();
-        BeanUtils.copyProperties(drawInfo,drawRule);
-        logger.info("修改存储抽奖特殊规则对象入参："+JSON.toJSONString(drawRule));
-        int i = iDrawRuleService.updateDrawRule(drawRule);
-        return toAjax(i);
+        public AjaxResult editSave(ActVO vo)
+        {
+            try{
+                logger.info("前台传参"+ JSON.toJSONString(vo));
+                Date date = new Date();
+
+                int i = drawInfoService.updateActVO(vo);
+                return toAjax(i);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                return AjaxResult.error("系统繁忙");
+            }
+            
     }
 
     /**
@@ -209,6 +213,8 @@ public class DrawInfoController extends BaseController
     @ResponseBody
     public AjaxResult remove(String ids)
     {
+
+
         return toAjax(drawInfoService.deleteDrawInfoByIds(ids));
     }
 

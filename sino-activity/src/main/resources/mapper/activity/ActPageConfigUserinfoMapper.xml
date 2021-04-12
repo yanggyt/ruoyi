@@ -104,7 +104,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateActPageConfigUserinfo" parameterType="ActPageConfigUserinfo">
         update act_page_config_userinfo
         <trim prefix="SET" suffixOverrides=",">
-            <if test="actCode != null and actCode != ''">act_code = #{actCode},</if>
             <if test="title != null">title = #{title},</if>
             <if test="description != null">description = #{description},</if>
             <if test="bgImg != null">bg_img = #{bgImg},</if>
@@ -122,7 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where id = #{id}
+        where act_code = #{actCode}
     </update>
 
     <delete id="deleteActPageConfigUserinfoById" parameterType="Integer">
@@ -133,6 +132,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from act_page_config_userinfo where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteActPageConfigUserinfoByCode" parameterType="String">
+        delete from act_page_config_userinfo where act_code in
+        <foreach item="actCode" collection="array" open="(" separator="," close=")">
+            #{actCode}
         </foreach>
     </delete>
 

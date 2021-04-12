@@ -5,6 +5,7 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 抽奖活动管理对象 draw_info
@@ -78,6 +79,15 @@ public class DrawInfo  extends BaseEntity
     /**  */
     private String VALIDATETYPE;
 
+    private List<String> drawId;
+
+    public List<String> getDrawId() {
+        return drawId;
+    }
+
+    public void setDrawId(List<String> drawId) {
+        this.drawId = drawId;
+    }
 
     public void setDRAWID(String DRAWID)
     {
