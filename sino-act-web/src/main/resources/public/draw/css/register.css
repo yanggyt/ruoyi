@@ -1,0 +1,40 @@
+.register{
+	/* opacity:0;
+	height:0; */
+}
+.register .cont{
+	min-height:260px;
+}
+.register .cont{
+	/* background: url(../images/back01.png)no-repeat; */
+	background-size: 100% auto;
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	
+}
+.register .cont>img:first-child{
+	width:75%;
+	height:auto;
+	object-fit:contain;
+}
+.register .cont>div:nth-child(2){
+	font-size:23px;
+	color:#ffe2ab;
+	text-align:center;
+	margin-top:12px;
+	font-weight:bold;
+}
+.register .cont>div:nth-child(3){
+	text-align:center;
+	font-size:12px;
+	color:#ffcece;
+	margin-top:8px;
+}
+.register .cont>img:last-child{
+	width:82%;
+	height:auto;
+	object-fit:contain;
+	margin-top:20px;
+	margin-bottom:15px;
+}
