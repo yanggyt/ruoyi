@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectActPageConfigGuideByCode" resultType="ActPageConfigGuide">
         <include refid="selectActPageConfigGuideVo"/>
-        where actCode = #{drawCode}
+        where act_code = #{drawCode}
     </select>
 
     <insert id="insertActPageConfigGuide" parameterType="ActPageConfigGuide" useGeneratedKeys="true" keyProperty="id">

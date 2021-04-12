@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectActConfigByCode" resultType="com.sinosoft.activity.domain.ActConfig">
         <include refid="selectActConfigVo"/>
-        where actCode = #{drawCode}
+        where act_code = #{drawCode}
     </select>
 
     <insert id="insertActConfig" parameterType="ActConfig" useGeneratedKeys="true" keyProperty="id">

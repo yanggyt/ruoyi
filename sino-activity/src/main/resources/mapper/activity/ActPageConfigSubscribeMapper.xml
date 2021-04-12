@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectActPageConfigSubscribeByCode" resultType="ActPageConfigSubscribe">
         <include refid="selectActPageConfigSubscribeVo"/>
-        where actCode = #{drawCode}
+        where act_code = #{drawCode}
     </select>
 
     <insert id="insertActPageConfigSubscribe" parameterType="ActPageConfigSubscribe" useGeneratedKeys="true" keyProperty="id">
