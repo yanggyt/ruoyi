@@ -104,6 +104,7 @@ public class DrawInfoController extends BaseController
             //新增分享信息
             vo.getActConfig().setCreateTime(date);
             vo.getActConfig().setActCode(code);
+            vo.getActConfig().setActName(vo.getDrawInfo().getDRAWNAME());
             iActConfigService.insertActConfig(vo.getActConfig());
             //新增二维码信息
             vo.getActPageConfigSubscribe().setCreateTime(date);
