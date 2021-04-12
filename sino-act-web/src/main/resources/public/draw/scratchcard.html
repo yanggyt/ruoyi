@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta charset="GBK">
+	<meta name="format-detection" content="telephone=no" />
+	<title>支付抽好礼，好运伴随你</title>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/popup.css"/>
+    <link rel="stylesheet" type="text/css" href="css/myPrize.css"/>
+  <link rel="stylesheet" type="text/css" href="css/rule.css"/>
+    <style type="text/css">
+        .popupBox{
+            width:100%;
+            height:100%;
+            /*overflow: hidden;*/
+        }
+    </style>
+</head>
+
+<body class="template_bg popupBox" style="background-color: #f9eec8;">
+  <div class="promotion_goBack rtn_btn" onclick="rtn()">
+    <span class="btn_back"><img src="images/btn_back.png" alt=""></span>
+    <span>返回</span>
+  </div>
+	<div class="promotion_container">
+		<header class="template_header">
+      <p class="header_left"><span onclick="drawrule()">活动规则</span></p>
+			<p class="header_right"><span onclick="myprizes()">我的奖品</span></p>
+<!--      <p class="header_right" style="position: absolute;top: 2rem;right: 0;z-index: 10;"><span onclick="rtn()">&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回&nbsp;</span></p>-->
+		</header>
+
+		<!-- 推广图1 -->
+		<div class="promotion_main clearfix promotion_main_1 nowPage">
+            <!-- 红包 -->
+            <div class="zk_red_box">
+                <div class="zk_red_box_header">
+                    <h2 class="title">剩余抽奖次数：<span class="num">0</span>次</h2>
+                    <!-- 刮奖区 -->
+                    <!-- <div class="scratch_off_popup"> -->
+                        <canvas id="canvas" style="height: 4rem;"></canvas>
+                    <!-- </div> -->
+                    <!-- 三种状态 -->
+                    <div style="display: none;" class="scratch_off_box success">
+                        <p class="cue" style="display: none;">恭喜你获得现金红包</p>
+                        <p class="amount" style="margin-top: 0.18rem;">0.08元</p>
+                        <p class="remark" style="padding-top: 0.3rem;color: #bbadad;">红包将在2小时内发放至您的一账通绑定银行卡中，请注意查收</p>
+                        <p class="again_btn">再来一次</p>
+                    </div>
+                    <div style="display: none;" class="scratch_off_box fail">
+                        <p>大奖离你还差一点儿，加油</p>
+                        <p class="again_btn">再抽一次</p>
+                    </div>
+                    <div style="display: none;" class="scratch_off_box no_chance">
+                        <p><img src="images/16.gif" style="width: 25px;vertical-align: middle;" alt="">您的抽奖机会已用完</p>
+                        <p>推荐客户获取更多抽奖机会吧～</p>
+                    </div>
+                </div>
+                <div class="zk_red_box_footer">
+                    <p>今日有机会刮出</p>
+                </div>
+                
+                
+                
+            </div>
+            <!-- 获奖人 -->
+            <div class="myscroll zk_carry_box">
+                <ul class="">
+                    <!-- zk_carry_box -->
+                    <li>恭喜 187****1234 获得现金红包</li>
+                </ul>
+            </div>
+		</div>
+	</div>
+    <div class="tip_copy" style="display: none;">
+        <p></p>
+    </div>
+    <!--我的奖品   弹窗-->
+    <div class='popup myPrize' style="display: none;">
+        <div class='popupMin'>
+            <img src="images/top02.png" class='top'>
+            <div class='popCont'>
+                <div class='left'></div>
+                <div class='cont'>
+                    <div>
+                        <img src="images/left.png">
+                        <div>我的奖品</div>
+                        <img src="images/right.png">
+                    </div>
+                    <div class='postListTop'>
+                        <div>
+                            <div>抽中奖品</div>
+                            <div>获奖时间</div>
+                        </div>
+                    </div>
+                    <div class='popList'>
+
+                    </div>
+                </div>
+                <div class='right'></div>
+            </div>
+            <img src="images/popupList04.png" class='bottom'>
+        </div>
+        <img src="images/delect.png" class='popDelect prizeDelect'>
+    </div>
+    <div class="prize_li" style="display: none;">
+        <div class="pname">奖品名称</div>
+        <div class="time">2020/08/05 09:00</div>
+    </div>
+    <!--活动规则-->
+    <div class='popup rule' style="display: none;">
+      <div class='popupMin'>
+        <img src="images/top02.png" class='top'>
+        <div class='popCont'>
+          <div class='left'></div>
+          <div class='cont'>
+            <div>
+              <img src="images/left.png">
+              <div>活动规则</div>
+              <img src="images/right.png">
+            </div>
+            <ul class='contBox' style="list-style: inside">
+              <li class='content'>活动时间：2020年10月29日-12月31日。</li>
+              <li class='content'>活动期间，客户推荐客户使用一账通完成支付（不包含理财产品购买、手机充值、生活缴费），即可获得一次红包抽奖机会，中奖概率100%。抽奖机会有效期截止至2021年1月15日。</li>
+              <li class='content'>奖品现金红包29400个，中奖概率100%，中奖后，系统将自动发放到您的手机或银行卡中，请及时查收。</li>
+              <li class='content'>最终奖品情况以活动实际情况为准，中国人寿保留调整相关奖品情况的权利，如奖品发生变更，将通过抽奖活动页面进行公示。</li>
+              <li class='content'>中奖后，用户需及时领取奖励，并提交所需领取信息，若因领奖信息有误、不完整而导致奖品未能及时获得、无法正常发放，或活动结束用户仍未领取奖品，则视为用户放弃该奖品。</li>
+              <li class='content'>用户参加活动即视为理解并同意本活动规则。</li>
+              <li class='content'>对活动有任何疑问，请点击活动首页左侧的客服图标进行咨询，也可联系中国人寿在线客服（关注“中国人寿保险”微信公众号，在对话框输入“0”，再输入“2”即可）。</li>
+              <li class='content'>理财产品包括养老保障、现金宝、鑫享宝及其他基金产品。</li>
+              <li class='content'>在参与活动的过程中，如出现违规操作行为或违反活动规则进行恶意套利的用户，中国人寿有权追回奖励、取消其参与本次活动的资格并追究其法律责任。</li>
+              <li class='content'>本活动最终解释权归中国人寿电子商务有限公司所有，中国人寿电子商务有限公司保留修改上述条款和条件的权利，所有条款和条件将在法律允许的最大程度内使用。</li>
+              <li class='content'>本活动与苹果公司无关。</li>
+              <li class='content'>奖品数量有限，先到先得。</li>
+            </ul>
+
+          </div>
+          <div class='right'></div>
+        </div>
+        <img src="images/popupList04.png" class='bottom'>
+      </div>
+      <img src="images/delect.png" class='popDelect ruleDelect'>
+      <span style='clear: both;'></span>
+    </div>
+	  <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="../../common/taglibs.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/draw.js"></script>
+    <script src="js/common.js"></script>
+    <script src="../../js/mobile/login_register/login.js"></script>
+	<script>
+		(function () {
+      var num = 0;
+      $.ajax({
+          type: "POST",
+          url: contextRootPath+"/draw/num.action",
+          data: {drawCode: drawCode},
+          dataType: "json",
+          success: function(data){
+              num = data.num||0;
+              $('.num').text(num);
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log('网络异常', textStatus, errorThrown);
+          }
+      });
+
+      // 设置推广内容高度
+      function innerHeight() {
+        if(!$('.promotion_main_1').is(':hidden')) {
+          var arr = [];
+          $('.promotion_main_1 .promotion_content').each(function () {
+            var height = $(this).outerHeight();
+            arr.push(height);
+          })
+          var minHeight = Math.max.apply(null, arr);
+          $('.promotion_main_1 .promotion_content').css('minHeight', minHeight);
+        }
+      }
+      innerHeight();
+      $(window).resize(function () {
+        $('.promotion_main_1 .promotion_content').css('minHeight', '');
+        innerHeight();
+      })
+
+
+      $('.myscroll').myScroll({
+        speed: 80, //数值越大，速度越慢
+        rowHeight: 24//li的高度
+      });
+
+      // 设置初始的中奖状态 success-中奖  fail-未中奖  no_chance-没有抽奖机会
+      var status = '';
+
+      // 刮奖效果 -zk
+      window.onload = function(){
+        // let list = $('.scratch_off_box');
+        // setTimeout(()=>{
+        //   for(var n=0;n<list.length;n++){
+        //     if(list.eq(n).hasClass(`${status}`)){
+        //       list.eq(n).siblings('.scratch_off_box').hide();
+        //       return;
+        //     }
+        //   }
+        // })
+
+        var canvas = document.getElementById('canvas');
+        var cx = canvas.offsetWidth;
+        var cy = canvas.offsetHeight;
+        var style = window.getComputedStyle(canvas, null);
+        var cssWidth = parseFloat(style["width"]);
+        var cssHeight = parseFloat(style["height"]);
+        var scaleX = canvas.width / cssWidth; // 水平方向的缩放因子
+        var scaleY = canvas.height / cssHeight; // 垂直方向的缩放因子
+        var ctx = canvas.getContext('2d');
+
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = '1';
+        function drawimage(){
+          var img = new Image();
+          img.src = 'images/img_scratch_popup.png';
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.onload = function(){
+            ctx.drawImage(img,0,0,cx*scaleX,cy*scaleY+10)
+          }
+        }
+        drawimage();
+
+
+        // ctx.fillStyle = '#c0c0c0';
+        var rect = canvas.getBoundingClientRect();
+        var time = 0;
+        var running = false;
+        // 新增-2020-8-20-初始化 中奖状态
+        canvas.addEventListener('touchstart',function(){
+          // success-中奖  fail-未中奖  no_chance-没有抽奖机会
+          if (running) {
+            console.log('running...');
+            return;
+          }
+          running=!running;
+          console.log('start');
+          start();
+        })
+        canvas.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+          var touch = e.touches[0];
+
+
+          var x = touch.pageX;
+          var y = touch.pageY;
+
+          x -= rect.left;
+          y -= rect.top;
+          x *= scaleX; // 修正水平方向的坐标
+          y *= scaleY; // 修正垂直方向的坐标
+          // ctx.clearRect(x,y,15,15)
+          clearArcFun(x,y,15,ctx);
+          isArea();
+
+        })
+
+        function isArea(){
+          //判断刮开面积是否到达百分之六十
+          console.log('执行isArea效果')
+          var data = ctx.getImageData(0,0,canvas.width,canvas.height).data;//获取画布的信息
+          var n = 0 ;
+          for (var i = 0; i < data.length; i++) {
+            if (data[i] == 0) {
+              n++;
+            };
+          };
+          if (n >= data.length * 0.6) {
+            ctx.globalCompositeOperation = 'destination-over';//重点
+            // ctx.canvas.style.opacity = 0;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            $('#canvas').css('pointer-events','none')
+          }
+        }
+
+        function clearArcFun(x,y,r,cxt){    //(x,y)为要清除的圆的圆心，r为半径，cxt为context
+          var stepClear=1;//别忘记这一步
+          clearArc(x,y,r);
+          function clearArc(x,y,radius){
+            var calcWidth=radius-stepClear;
+            var calcHeight=Math.sqrt(radius*radius-calcWidth*calcWidth);
+
+            var posX=x-calcWidth;
+            var posY=y-calcHeight;
+
+            var widthX=2*calcWidth;
+            var heightY=2*calcHeight;
+
+            if(stepClear<=radius){
+              cxt.clearRect(posX,posY,widthX,heightY);
+              stepClear+=1;
+              clearArc(x,y,radius);
+            }
+          }
+        }
+
+        // 再抽一次
+        $('.again_btn').click(function(){
+          if(num<1) {
+            $('.no_chance').show().siblings('.scratch_off_box').hide();
+            console.log('抽奖次数不足')
+            return;
+          }
+          drawimage();
+          $('#canvas').css('pointer-events','auto');
+          start();
+        })
+
+        function start() {
+          $.ajax({
+            type: "POST",
+            // async:false,
+            url: contextRootPath+"/draw/start.action",
+            data: {drawCode: drawCode},
+            dataType: "json",
+            success: function(data){
+              let respCode = data.respCode;
+              if (respCode != 1) {
+                let message = data.respMsg;
+                console.log(message);
+                if (respCode == '-2') {
+                  to_login();
+                  return;
+                }
+                if(respCode == 'GT00007') {
+                  $('.no_chance').show().siblings('.scratch_off_box').hide();
+                  console.log('抽奖次数不足');
+                  return;
+                }
+                running = false;
+                tip(message);
+                return;
+              }
+              console.log(data.result);
+              if (data.result == '1') {
+                // $('.cue').text(data.cue);
+                $('.amount').text(data.cue);
+                $('.scratch_off_box').eq(0).show().siblings('.scratch_off_box').hide();
+              } else {
+                $('.scratch_off_box').eq(1).show().siblings('.scratch_off_box').hide();
+              }
+              prizeType = data.prizeType;
+              prizeCode = data.prizeCode;
+              num = data.available || 0;
+              $('.num').text(num);
+              setPrizeInfo(prizeType, prizeCode, data.cue, data.gatewayFlow);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log('网络异常', textStatus, errorThrown);
+              running = false;
+            }
+          });
+        }
+      }
+
+
+
+		})();
+        prizes();
+	</script>
+</body>
+
+</html>

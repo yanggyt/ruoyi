@@ -31,6 +31,11 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
     {
         return drawTaskNotifyMapper.selectDrawTaskNotifyById(USERID);
     }
+    @Override
+    public int selectDrawNumByUserId(String userId, String drawCode)
+    {
+        return drawTaskNotifyMapper.selectDrawNumByUserId(userId, drawCode);
+    }
 
     /**
      * 查询活动次数记录信息列表

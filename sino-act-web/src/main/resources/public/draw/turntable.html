@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta charset="UTF-8">
+	<meta name="format-detection" content="telephone=no" />
+	<title>幸运大转盘，好运伴随你</title>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/popup.css"/>
+	<link rel="stylesheet" type="text/css" href="css/myPrize.css"/>
+	<link rel="stylesheet" type="text/css" href="css/register.css"/>
+	<link rel="stylesheet" type="text/css" href="css/winPrize.css"/>
+	<link rel="stylesheet" type="text/css" href="css/goods.css"/>
+	<link rel="stylesheet" type="text/css" href="css/rule.css"/>
+	<script src="/js/config.js"></script>
+	<style type="text/css">
+		.popupBox{
+			width:100%;
+			height:100%;
+			/*overflow: hidden;*/
+		}
+	</style>
+	<link rel="stylesheet" href="css/main.css">
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/awardRotate.js"></script>
+	<script src="js/util.js"></script>
+	<script src="js/draw.js"></script>
+	<script>
+
+		var turnplate = {
+			restaraunts: [],	//大转盘奖品名称
+			colors: [],			//大转盘奖品区块对应背景颜色
+			outsideRadius: 118,	//大转盘外圆的半径
+			textRadius: 100,  	//大转盘奖品位置距离圆心的距离
+			insideRadius: 49,	//大转盘内圆的半径
+			startAngle: 0,		//开始角度
+			bRotate: false		//false:停止;ture:旋转
+		};
+		var num = 0;
+		var prizeImgs = [];
+
+		$(document).ready(function () {
+			//动态添加大转盘的奖品与奖品区域背景颜色
+			turnplate.restaraunts = ["华为P40", "现金红包", "汽车加油卡", "现金红包", "爱奇艺月卡", "现金红包", "现金红包", "戴森吸尘器"];
+			turnplate.colors = ["#fffef8", "#ffdcae", "#fffef8", "#ffdcae", "#fffef8", "#ffdcae", "#fffef8", "#ffdcae"];
+			//
+			$.ajax({
+				type: "POST",
+				async:false,
+				url: contextRootPath+"/draw/init.action",
+				data: {drawCode: drawCode},
+				dataType: "json",
+				success: function(data){
+					prizes = data.prizes;
+					$('.prizeImg').each(function(i, v) {
+						let prizeImg = prizes[i].prizeImg;
+						let pcode = prizes[i].prizeCode;
+						let prizeName = prizes[i].prizeName;
+						turnplate.restaraunts[i] = prizeName;
+						$(v).attr('pcode', pcode);
+						if (prizeImg) {
+							$(v).attr('src', contextRootPath+ prizeImg);
+						}
+					});
+					// drawRouletteWheel();
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					console.log('网络异常', textStatus, errorThrown);
+				}
+			});
+			$.ajax({
+				type: "POST",
+				url: contextRootPath+"/draw/num.action",
+				data: {drawCode: drawCode},
+				dataType: "json",
+				success: function(data){
+					num = data.num||0;
+					$('.num').text(num);
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					console.log('网络异常', textStatus, errorThrown);
+				}
+			});
+			var rotateTimeOut = function () {
+				$('#wheelcanvas').rotate({
+					angle:0,
+					animateTo: 2160,
+					duration: 8000,
+					callback: function () {
+						alert('网络超时，请检查您的网络设置！');
+					}
+				});
+			};
+
+			//旋转转盘 item:奖品位置; txt：提示语;
+			var rotateFn = function (item, txt) {
+				var angles = item * (360 / turnplate.restaraunts.length) - (360 / (turnplate.restaraunts.length * 2));
+				//                商品对应的值
+				//                        1:22.5 飞吻再接再厉
+				//                        2:67.5 i购电子券
+				//                        3:112.5 积分
+				//                        4:157.5几率翻倍
+				//                        5:202.5京东E卡电子券
+				//                        6:247.5西门子洗衣机
+				//                        7:292.5换个姿势再来一次
+				//                        8:337.5一账通电子券
+				if (angles < 270) {
+					angles = 270 - angles;
+				} else {
+					angles = 360 - angles + 270;
+				}
+				$('#wheelcanvas').stopRotate();
+				$('#wheelcanvas').rotate({
+					angle: 0,
+					animateTo: angles + 1800,
+					duration: 8000,
+					callback: function () {	//回调
+						console.log(txt);
+						if ('materialObject' == prizeType) {
+							$('.goods').show();
+						} else {
+							$('.winPrize').show();
+						}
+						turnplate.bRotate = false;
+
+					}
+				});
+			};
+
+			$('.pointer').click(function () {
+				if (turnplate.bRotate) {
+					console.log('return');
+					return;
+				}
+				turnplate.bRotate = !turnplate.bRotate;
+				//获取随机数(奖品个数范围内)
+				//奖品数量等于10,指针落在对应奖品区域的中心角度[252, 216, 180, 144, 108, 72, 36, 360, 324, 288]
+				$.ajax({
+					type: "POST",
+					// async:false,
+					url: contextRootPath+"/draw/start.action",
+					data: {drawCode: drawCode},
+					dataType: "json",
+					success: function(data){
+						let respCode = data.respCode;
+						if (respCode != 1) {
+							let message = data.respMsg;
+							console.log(message);
+							turnplate.bRotate = false;
+							if (respCode == '-2') {
+								to_login();
+								return;
+							}
+							tip(message);
+							return;
+						}
+						console.log(data.displayOrder);
+						var item = parseInt(data.displayOrder);
+						rotateFn(item, turnplate.restaraunts[item-1]);
+						prizeType = data.prizeType;
+						prizeCode = data.prizeCode;
+						num = data.available || 0;
+						$('.num').text(num);
+						setPrizeInfo(prizeType, prizeCode, data.cue, data.gatewayFlow);
+					},
+					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						console.log('网络异常', textStatus, errorThrown);
+						turnplate.bRotate = false;
+					}
+				});
+			});
+		});
+
+		function rnd(n, m) {
+			var random = Math.floor(Math.random() * (m - n + 1) + n);
+			return random;
+		}
+
+		//页面所有元素加载完毕后执行drawRouletteWheel()方法对转盘进行渲染
+		window.onload = function () {
+			drawRouletteWheel();
+		};
+		function drawRouletteWheel() {
+			var canvas = document.getElementById("wheelcanvas");
+			if (canvas.getContext) {
+				//根据奖品个数计算圆周角度
+				var arc = Math.PI / (turnplate.restaraunts.length / 2);
+				var ctx = canvas.getContext("2d");
+				//在给定矩形内清空一个矩形
+				ctx.clearRect(0, 0, 304, 304);
+				//strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式
+				ctx.strokeStyle = "#fff";
+				//font 属性设置或返回画布上文本内容的当前字体属性
+				ctx.font = 'normal 12px Microsoft YaHei';
+				for (var i = 0; i < turnplate.restaraunts.length; i++) {
+					var angle = turnplate.startAngle + i * arc;
+					ctx.fillStyle = turnplate.colors[i];
+					ctx.beginPath();
+					//arc(x,y,r,起始角,结束角,绘制方向) 方法创建弧/曲线（用于创建圆或部分圆）
+					ctx.arc(152, 152, turnplate.outsideRadius, angle, angle + arc, false);
+					ctx.arc(152, 152, turnplate.insideRadius, angle + arc, angle, true);
+					ctx.stroke();
+					ctx.fill();
+					//锁画布(为了保存之前的画布状态)
+					ctx.save();
+
+					//改变画布文字颜色
+					var b = i + 2;
+					if (b % 2) {
+						ctx.fillStyle = "#cd2b2b";
+					} else {
+						ctx.fillStyle = "#cd2b2b";
+					};
+
+					//----绘制奖品开始----
+					var text = turnplate.restaraunts[i];
+					var line_height = 17;
+					//translate方法重新映射画布上的 (0,0) 位置
+					ctx.translate(152 + Math.cos(angle + arc / 2) * turnplate.textRadius, 152 + Math.sin(angle + arc / 2) * turnplate.textRadius);
+
+					//rotate方法旋转当前的绘图
+					ctx.rotate(angle + arc / 2 + Math.PI / 2);
+
+					/** 下面代码根据奖品类型、奖品名称长度渲染不同效果，如字体、颜色、图片效果。(具体根据实际情况改变) **/
+					if (text.indexOf("盘") > 0) {//判断字符进行换行
+						var texts = text.split("盘");
+						for (var j = 0; j < texts.length; j++) {
+							ctx.font = j == 0 ? 'bold 20px Microsoft YaHei' : '14px Microsoft YaHei';
+							if (j == 0) {
+								ctx.fillText(texts[j] + "盘", -ctx.measureText(texts[j] + "盘").width / 2, j * line_height);
+							} else {
+								ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height * 1.2); //调整行间距
+							}
+						}
+					} else if (text.length > 8) {//奖品名称长度超过一定范围
+						text = text.substring(0, 8) + "||" + text.substring(8);
+						var texts = text.split("||");
+						for (var j = 0; j < texts.length; j++) {
+							ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height);
+						}
+					} else {
+
+						//在画布上绘制填色的文本。文本的默认颜色是黑色
+
+						//measureText()方法返回包含一个对象，该对象包含以像素计的指定字体宽度
+						ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+					}
+
+					//添加对应图标
+					// alert(text.indexOf(turnplate.restaraunts[1]))
+                    var imgId = 'diy'+(i+1)+'-img';
+                    var img = document.getElementById(imgId);
+                    try {
+						img.onload = function () {
+							ctx.drawImage(img, -15, 5, 35, 35);
+						};
+						ctx.drawImage(img, -15, 5, 35, 35);
+					} catch (e) {
+						console.log(e);
+					}
+					//把当前画布返回（调整）到上一个save()状态之前
+					ctx.restore();
+					//----绘制奖品结束----
+				}
+			}
+		};
+	</script>
+</head>
+
+<body class="template_bg popupBox" style="background-color: #fbdaaf;">
+	<div class="draw_container">
+		<header class="template_header">
+			<p class="header_left"><span onclick="drawrule()">活动规则</span></p>
+			<p class="header_right"><span onclick="myprizes()">我的奖品</span></p>
+<!--			<p class="header_right" style="position: absolute;top: 2rem;right: 0;"><span onclick="rtn()">&nbsp;返&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回&nbsp;</span></p>-->
+		</header>
+
+		<div class="lucy_wheel">
+			<img class="prizeImg" src="images/icon_a.png" id="diy1-img" style="display:none;" />
+			<img class="prizeImg" src="images/icon_b.png" id="diy2-img" style="display:none;" />
+			<img class="prizeImg" src="images/icon_c.png" id="diy3-img" style="display:none;" />
+			<img class="prizeImg" src="images/icon_b.png" id="diy4-img" style="display:none;" />
+			<img class="prizeImg" src="images/icon_e.png" id="diy5-img" style="display:none;" />
+			<img class="prizeImg" src="images/icon_b.png" id="diy6-img" style="display:none;" />
+			<img class="prizeImg" src="images/icon_b.png" id="diy7-img" style="display:none;" />
+			<img class="prizeImg" src="images/icon_h.png" id="diy8-img" style="display:none;" />
+			<div class="banner">
+				<p class="draw_title">您有<span class="num">0</span>次抽奖机会，祝您好运！</p>
+				<div class="turnplate"
+				style="background-image:url(images/cj_bg2.png);background-size:100% 100%;">
+					<canvas class="item" id="wheelcanvas" width="304px" height="304px"></canvas>
+					<img class="pointer" src="images/btn_start.png"/>
+				</div>
+				<img src="images/icon_footer.png" alt="" class="draw_footer">
+			</div>
+			<div class="lucy_info">
+				<img src="images/icon_hb1.png" />
+				<div class="myscroll">
+					<ul>
+						<li>恭喜 187****1234 获得爱奇艺月卡</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="tip_copy" style="display: none;">
+		<p></p>
+	</div>
+	<!--我的奖品   弹窗-->
+	<div class='popup myPrize' style="display: none;">
+		<div class='popupMin'>
+			<img src="images/top02.png" class='top'>
+			<div class='popCont'>
+				<div class='left'></div>
+				<div class='cont'>
+					<div>
+						<img src="images/left.png">
+						<div>我的奖品</div>
+						<img src="images/right.png">
+					</div>
+					<div class='postListTop'>
+						<div>
+							<div>抽中奖品</div>
+							<div>获奖时间</div>
+						</div>
+					</div>
+					<div class='popList'>
+
+					</div>
+				</div>
+				<div class='right'></div>
+			</div>
+			<img src="images/popupList04.png" class='bottom'>
+		</div>
+		<img src="images/delect.png" class='popDelect prizeDelect'>
+	</div>
+	<div class="prize_li" style="display: none;">
+		<div class="pname">奖品名称</div>
+		<div class="time">2020/08/05 09:00</div>
+	</div>
+	<!--登记 弹窗-->
+	<div class='popup register' style="display: none;">
+		<div class='popupMin'>
+			<img src="images/top01.png" class='top'>
+			<div class='popCont'>
+				<div class='left'></div>
+				<div class='cont'>
+					<img src="images/success.png" >
+					<div>信息登记成功</div>
+					<div>奖品将在活动结束后四十个工作日寄送</div>
+					<img src="images/btn.png" class='popBtn popBtn1'>
+				</div>
+				<div class='right'></div>
+			</div>
+			<img src="images/popupList04.png" class='bottom'>
+		</div>
+		<img src="images/delect.png" class='popDelect regDelect'>
+	</div>
+	<!--中奖 弹窗-->
+	<div class='popup winPrize' style="display: none;">
+		<div class='popupMin'>
+			<img src="images/top01.png" class='top'>
+			<div class='popCont'>
+				<div class='left'></div>
+				<div class='cont'>
+					<img class="pimg" src="images/prize.png">
+					<div>恭喜您获得</div>
+					<div class="cue">爱奇艺月卡</div>
+					<div class="remark">电子码将以短信的形式发送到您的手机号上，请注意查收</div>
+					<img src="images/btn.png" class='popBtn popBtn2'>
+				</div>
+				<div class='right'></div>
+			</div>
+			<img src="images/popupList04.png" class='bottom'>
+		</div>
+		<img src="images/delect.png" class='popDelect winDelect'>
+	</div>
+	<!--中奖 实物奖  弹窗-->
+	<div class='popup goods' style="display: none;">
+		<div class='popupMin'>
+			<img src="images/top01.png" class='top'>
+			<div class='popCont'>
+				<div class='left'></div>
+				<div class='cont'>
+					<img class="pimg" src="images/prize1.png">
+					<div>恭喜您获得</div>
+					<div class="cue">戴森吸尘器</div>
+					<div>请留下收货信息，我们奖品将在活动结束后四十个工作日寄送</div>
+					<input class="uname" type="text" value="" placeholder="请输入收货人姓名"/>
+					<input class="phone" type="text" value="" placeholder="请输入收货人手机号码" maxlength="11"/>
+					<textarea class="addr" rows="" cols="" placeholder="请输入收货地址"></textarea>
+					<input class="flow" type="hidden" value="">
+					<img src="images/btn1.png" class='popBtn popBtn3' onclick="saveAddr()">
+				</div>
+				<div class='right'></div>
+			</div>
+			<img src="images/popupList04.png" class='bottom'>
+		</div>
+		<img src="images/delect.png" class='popDelect goodsDelect'>
+	</div>
+	<!--活动规则-->
+	<div class='popup rule' style="display: none;">
+		<div class='popupMin'>
+			<img src="images/top02.png" class='top'>
+			<div class='popCont'>
+				<div class='left'></div>
+				<div class='cont'>
+					<div>
+						<img src="images/left.png">
+						<div>活动规则</div>
+						<img src="images/right.png">
+					</div>
+					<ul class='contBox' style="list-style: inside;">
+						<li class='content'>活动时间：2020年10月29日-12月31日。</li>
+						<li class='content'>活动期间，客户使用一账通完成支付（不包含理财产品购买、手机充值、生活缴费），即可获得一次抽奖机会。奖品包括华为手机、戴森吸尘器、爱奇艺月卡、现金红包、加油卡等。中奖概率100%。抽奖机会有效期截止至2021年1月15日。</li>
+						<li class='content'>活动期间，客户推荐客户使用一账通完成支付（不包含理财产品购买、手机充值、生活缴费），即可获得一次红包抽奖机会，中奖概率100%。抽奖机会有效期截止至2021年1月15日。</li>
+						<li class='content'>奖品包括华为手机、戴森吸尘器、爱奇艺月卡、现金红包、加油卡等。其中：华为手机1台，中奖概率为0.0014%，戴森吸尘器1台，中奖概率为0.0014%，爱奇艺视频月卡100张，中奖概率0.14%，100元加油卡10张，中奖概率 0.01%，现金红包7000个，金额0.08-888元不等，中奖概率99.84%。</li>
+						<li class='content'>关于非实物奖品发放，系统将自动发放到您的手机或银行卡中，请及时查收。</li>
+						<li class='content'>关于实物奖品发放，我司将在活动结束后的40个工作日内审核获奖信息，并通过快递寄出。</li>
+						<li class='content'>最终奖品情况以活动实际情况为准，中国人寿保留调整相关奖品情况的权利，如奖品发生变更，将通过抽奖活动页面进行公示。</li>
+						<li class='content'>中奖后，用户需及时领取奖励，并提交所需领取信息，若因领奖信息有误、不完整而导致奖品未能及时获得、无法正常发放，或活动结束用户仍未领取奖品，则视为用户放弃该奖品。</li>
+						<li class='content'>用户参加活动即视为理解并同意本活动规则。</li>
+						<li class='content'>对活动有任何疑问，请点击活动首页左侧的客服图标进行咨询，也可联系中国人寿在线客服（关注“中国人寿保险”微信公众号，在对话框输入“0”，再输入“2”即可）。</li>
+						<li class='content'>理财产品包括养老保障、现金宝、鑫享宝及其他基金产品。</li>
+						<li class='content'>在参与活动的过程中，如出现违规操作行为或违反活动规则进行恶意套利的用户，中国人寿有权追回奖励、取消其参与本次活动的资格并追究其法律责任。</li>
+						<li class='content'>本活动最终解释权归中国人寿电子商务有限公司所有，中国人寿电子商务有限公司保留修改上述条款和条件的权利，所有条款和条件将在法律允许的最大程度内使用。</li>
+						<li class='content'>本活动与苹果公司无关。</li>
+						<li class='content'>奖品数量有限，先到先得。</li>
+					</ul>
+
+				</div>
+				<div class='right'></div>
+			</div>
+			<img src="images/popupList04.png" class='bottom'>
+		</div>
+		<img src="images/delect.png" class='popDelect ruleDelect'>
+		<span style='clear: both;'></span>
+	</div>
+	<script src="js/main.js"></script>
+	<script src="js/scroll.js"></script>
+	<script src="js/common.js"></script>
+	<script>
+		prizes();
+	</script>
+</body>
+
+</html>

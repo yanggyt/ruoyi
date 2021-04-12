@@ -29,6 +29,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select TASKNOTIFYID, DRAWCODE, TASKID, USERID, TYPE, ADDNUMBER, STATE, CREATETIMESTAMP, LASTUPDATETIMESTAMP, AVAILABLENUMBER, CHECKINGDATE, PHONE, TASKTYPE, VSTATE, ULEVEL, SOURCE, ISSPECIALFLAG, REQUESTFLAG from draw_task_notify
     </sql>
 
+    <select id="selectDrawNumByUserId" parameterType="String" resultType="Integer">
+        SELECT SUM(dtn.`AVAILABLENUMBER`) FROM draw_task_notify dtn
+        WHERE dtn.`STATE`='1' AND dtn.`USERID`=#{userId} and dtn.`DRAWCODE`=#{drawCode}
+        GROUP BY dtn.`DRAWCODE`, dtn.`USERID`
+    </select>
+
     <select id="selectDrawTaskNotifyList" parameterType="DrawTaskNotify" resultMap="DrawTaskNotifyResult">
         <include refid="selectDrawTaskNotifyVo"/>
         <where>  
