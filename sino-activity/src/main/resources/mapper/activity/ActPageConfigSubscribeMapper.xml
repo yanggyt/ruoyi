@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectActPageConfigSubscribeVo"/>
         where id = #{id}
     </select>
-    <select id="selectActPageConfigSubscribeByCode" resultType="ActPageConfigSubscribe">
+    <select id="selectActPageConfigSubscribeByCode" resultMap="ActPageConfigSubscribeResult">
         <include refid="selectActPageConfigSubscribeVo"/>
         where act_code = #{drawCode}
     </select>
