@@ -40,7 +40,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectActConfigVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectActConfigByCode" resultType="com.sinosoft.activity.domain.ActConfig">
+        <include refid="selectActConfigVo"/>
+        where actCode = #{drawCode}
+    </select>
+
     <insert id="insertActConfig" parameterType="ActConfig" useGeneratedKeys="true" keyProperty="id">
         insert into act_config
         <trim prefix="(" suffix=")" suffixOverrides=",">

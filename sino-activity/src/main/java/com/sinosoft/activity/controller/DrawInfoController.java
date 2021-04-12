@@ -7,10 +7,7 @@ import java.util.List;
 
 
 import com.alibaba.fastjson.JSON;
-import com.sinosoft.activity.domain.ActConfig;
-import com.sinosoft.activity.domain.DrawInfo;
-import com.sinosoft.activity.domain.DrawPrizeInfo;
-import com.sinosoft.activity.domain.DrawRule;
+import com.sinosoft.activity.domain.*;
 import com.sinosoft.activity.service.*;
 import com.sinosoft.activity.vo.ActVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -161,8 +158,26 @@ public class DrawInfoController extends BaseController
     @GetMapping("/edit/{DRAWID}")
     public String edit(@PathVariable("DRAWID") String DRAWID, ModelMap mmap)
     {
+        ActVO vo = new ActVO();
+        //查询基本信息
         DrawInfo drawInfo = drawInfoService.selectDrawInfoById(DRAWID);
-        mmap.put("drawInfo", drawInfo);
+        vo.setDrawInfo(drawInfo);
+        //查询展示内容
+        ActPageConfigGuide actPageConfigGuide = iActPageConfigGuideService.selectActPageConfigGuideByCode(drawInfo.getDRAWCODE());
+         vo.setActPageConfigGuide(actPageConfigGuide);
+        //查询选择玩法
+        DrawRule drawRule = iDrawRuleService.selectDrawRuleByCode(drawInfo.getDRAWCODE());
+        vo.setDrawRule(drawRule);
+        //查询收集信息
+        ActPageConfigUserinfo actPageConfigUserinfo=   iActPageConfigUserinfoService.selectActPageConfigUserinfoByCode(drawInfo.getDRAWCODE());
+        vo.setActPageConfigUserinfo(actPageConfigUserinfo);
+        //查询分享信息
+        ActConfig actConfig = iActConfigService.selectActConfigByCode(drawInfo.getDRAWCODE());
+        vo.setActConfig(actConfig);
+        //查询二维码信息
+        ActPageConfigSubscribe actPageConfigSubscribe= iActPageConfigSubscribeService.selectActPageConfigSubscribeByCode(drawInfo.getDRAWCODE());
+        vo.setActPageConfigSubscribe(actPageConfigSubscribe);
+        mmap.put("vo",vo);
         return prefix + "/edit";
     }
 

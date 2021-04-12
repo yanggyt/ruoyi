@@ -93,4 +93,13 @@ public class ActPageConfigSubscribeServiceImpl implements IActPageConfigSubscrib
     {
         return actPageConfigSubscribeMapper.deleteActPageConfigSubscribeById(id);
     }
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+    @Override
+    public ActPageConfigSubscribe selectActPageConfigSubscribeByCode(String drawCode) {
+        return actPageConfigSubscribeMapper.selectActPageConfigSubscribeByCode(drawCode);
+    }
 }

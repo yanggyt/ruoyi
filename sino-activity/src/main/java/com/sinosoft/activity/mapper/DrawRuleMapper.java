@@ -59,4 +59,10 @@ public interface DrawRuleMapper
      * @return 结果
      */
     public int deleteDrawRuleByIds(String[] DRAWRULEIDs);
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+    public DrawRule selectDrawRuleByCode(String drawCode);
 }

@@ -46,7 +46,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDrawRuleVo"/>
         where DRAWRULEID = #{DRAWRULEID}
     </select>
-        
+    <select id="selectDrawRuleByCode" resultType="com.sinosoft.activity.domain.DrawRule">
+        <include refid="selectDrawRuleVo"/>
+        where DRAWCODE = #{drawCode}
+
+    </select>
+
     <insert id="insertDrawRule" parameterType="DrawRule">
         insert into draw_rule
         <trim prefix="(" suffix=")" suffixOverrides=",">

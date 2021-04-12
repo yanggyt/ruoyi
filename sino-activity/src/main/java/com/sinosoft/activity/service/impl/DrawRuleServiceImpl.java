@@ -93,4 +93,14 @@ public class DrawRuleServiceImpl implements IDrawRuleService
     {
         return drawRuleMapper.deleteDrawRuleById(DRAWRULEID);
     }
+
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+    @Override
+    public DrawRule selectDrawRuleByCode(String drawCode) {
+        return drawRuleMapper.selectDrawRuleByCode(drawCode);
+    }
 }

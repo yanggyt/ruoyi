@@ -66,4 +66,6 @@ public interface IDrawInfoService
      * @return 结果
      */
     public int deleteDrawInfoById(String DRAWID);
+
+
 }

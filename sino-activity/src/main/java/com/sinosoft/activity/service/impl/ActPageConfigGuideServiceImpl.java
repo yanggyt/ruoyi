@@ -93,4 +93,14 @@ public class ActPageConfigGuideServiceImpl implements IActPageConfigGuideService
     {
         return actPageConfigGuideMapper.deleteActPageConfigGuideById(id);
     }
+
+    /**
+     * 根活动代码查询
+     * @param drawCode
+     * @return
+     */
+    @Override
+    public ActPageConfigGuide selectActPageConfigGuideByCode(String drawCode) {
+        return actPageConfigGuideMapper.selectActPageConfigGuideByCode(drawCode);
+    }
 }

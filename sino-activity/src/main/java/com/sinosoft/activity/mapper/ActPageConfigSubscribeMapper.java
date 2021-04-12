@@ -58,4 +58,10 @@ public interface ActPageConfigSubscribeMapper
      * @return 结果
      */
     public int deleteActPageConfigSubscribeByIds(String[] ids);
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+    public ActPageConfigSubscribe selectActPageConfigSubscribeByCode(String drawCode);
 }

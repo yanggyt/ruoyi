@@ -93,4 +93,13 @@ public class ActPageConfigUserinfoServiceImpl implements IActPageConfigUserinfoS
     {
         return actPageConfigUserinfoMapper.deleteActPageConfigUserinfoById(id);
     }
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+    @Override
+    public ActPageConfigUserinfo selectActPageConfigUserinfoByCode(String drawCode) {
+        return actPageConfigUserinfoMapper.selectActPageConfigUserinfoByCode(drawCode);
+    }
 }

@@ -58,4 +58,10 @@ public interface ActConfigMapper
      * @return 结果
      */
     public int deleteActConfigByIds(String[] ids);
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+   public ActConfig selectActConfigByCode(String drawCode);
 }
