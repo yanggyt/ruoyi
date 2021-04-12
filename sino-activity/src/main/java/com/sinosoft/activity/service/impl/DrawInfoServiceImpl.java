@@ -1,9 +1,11 @@
 package com.sinosoft.activity.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.sinosoft.activity.domain.DrawInfo;
-import com.sinosoft.activity.mapper.DrawInfoMapper;
+import com.sinosoft.activity.mapper.*;
 import com.sinosoft.activity.service.IDrawInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,17 @@ public class DrawInfoServiceImpl implements IDrawInfoService
 {
     @Autowired
     private DrawInfoMapper drawInfoMapper;
+    @Autowired
+    private ActConfigMapper actConfigMapper;
+    @Autowired
+    private ActPageConfigGuideMapper actPageConfigGuideMapper;
+    @Autowired
+    private ActPageConfigSubscribeMapper actPageConfigSubscribeMapper;
+    @Autowired
+    private ActPageConfigUserinfoMapper actPageConfigUserinfoMapper;
+    @Autowired
+    private DrawRuleMapper drawRuleMapper;
+
 
     /**
      * 查询抽奖活动管理对象
@@ -76,7 +89,7 @@ public class DrawInfoServiceImpl implements IDrawInfoService
     }
 
     /**
-     * 删除抽奖活动管理对象对象
+     * 删除抽奖活动管理及其相关活动配置信息
      * 
      * @param ids 需要删除的数据ID
      * @return 结果
@@ -84,7 +97,28 @@ public class DrawInfoServiceImpl implements IDrawInfoService
     @Override
     public int deleteDrawInfoByIds(String ids)
     {
-        return drawInfoMapper.deleteDrawInfoByIds(Convert.toStrArray(ids));
+        DrawInfo drawInfo = new DrawInfo();
+        String[] string = ids.split(",");
+        List<String> code = Arrays.asList(string);
+        drawInfo.setDrawId(code);
+        //根据ID查询抽奖活动信息
+        List<DrawInfo> drawInfos = drawInfoMapper.selectDrawInfoList(drawInfo);
+        //删除活动管理信息
+        int i = drawInfoMapper.deleteDrawInfoByIds(Convert.toStrArray(ids));
+        List<String> collect = drawInfos.stream().map(DrawInfo::getDRAWCODE).collect(Collectors.toList());
+        String policyEndorseNos = String.join(",",collect);
+
+        //根据活动代码删除活动配置信息
+        actConfigMapper.deleteActConfigByCode(Convert.toStrArray(policyEndorseNos));
+        //根据活动代码删除活动展示内容配置信息
+        actPageConfigGuideMapper.deleteActPageConfigGuideByCode(Convert.toStrArray(policyEndorseNos));
+        //根据活动代码删除活动配置信息
+        actPageConfigSubscribeMapper.deleteActPageConfigSubscribeByCode(Convert.toStrArray(policyEndorseNos));
+        //根据活动代码删除活动收集配置信息
+        actPageConfigUserinfoMapper.deleteActPageConfigUserinfoByCode(Convert.toStrArray(policyEndorseNos));
+        //根据活动代码删除抽奖活动管理信息
+        drawRuleMapper.deleteDrawRuleByIdCode(Convert.toStrArray(policyEndorseNos));
+        return i;
     }
 
     /**
