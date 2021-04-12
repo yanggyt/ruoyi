@@ -21,9 +21,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select PRIZEID, PRIZECODE, PRIZENAME, PRIZETYPE, PRIZEVALUE, COMMENTS, CREATETIMESTAMP, LASTUPDATETIMESTAMP, STATUS, INTEGRALPROJECTCODE from draw_prize_info
     </sql>
 
+    <select id="selectDrawPrizeInfoByDrawCode" parameterType="com.sinosoft.activity.vo.PrizeInfo" resultMap="DrawPrizeInfoResult">
+        select dpi.* from draw_prize_info dpi left join draw_config dc on dpi.prizecode=dc.prizecode
+        <where>
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
+            <if test="STATUS != null  and STATUS != ''"> and STATUS = #{STATUS}</if>
+        </where>
+    </select>
     <select id="selectDrawPrizeInfoList" parameterType="com.sinosoft.activity.domain.DrawPrizeInfo" resultMap="DrawPrizeInfoResult">
         <include refid="selectDrawPrizeInfoVo"/>
-        <where>  
+        <where>
             <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
             <if test="PRIZENAME != null  and PRIZENAME != ''"> and PRIZENAME like concat('%', #{PRIZENAME}, '%')</if>
             <if test="PRIZETYPE != null  and PRIZETYPE != ''"> and PRIZETYPE = #{PRIZETYPE}</if>
