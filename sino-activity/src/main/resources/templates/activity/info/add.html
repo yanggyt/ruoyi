@@ -315,12 +315,14 @@
                     <div>
                         <h4 class="form-header h4">第2步-选择UI模板</h4>
                         <div th:with="type=${@dict.getType('activityTemplate')}">
-                            <a id="activityTemplate" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            <a id="activityTemplate" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                               th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
+                            <a id="activityTemplate" th:if="${dict.dictValue} eq '0'" class="btn btn-success btn-rounded"  href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
                         </div>
                         <input id="activityTemplateval" name="actConfig-pageStyle" value="" type="hidden">
-                        <h4 id="activityTemplateh4" class="form-header h4"></h4>
-                        <img id="activityTemplateimg" src="../../img/act/1.jpg" width="60%" height="500">
+                        <h4 id="activityTemplateh4" class="form-header h4">暂不选择</h4>
+                        <img id="activityTemplateimg" src="../../img/yun.jpg" width="60%" height="500">
                     </div>
                 </div>
                 <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
@@ -442,13 +444,15 @@
                 <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
                     <h4 class="form-header h4">第4步-选择玩法</h4>
                     <div th:with="type=${@dict.getType('activityPlay')}">
-                        <a id="activityPlay" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                        <a id="activityPlay" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                           th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
+                        <a id="activityPlay" th:if="${dict.dictValue} eq '0'" class="btn btn-success  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
                            th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
                     </div>
                     <input type="hidden" name="actConfig-actType" id="activityPlayval" value="">
-                    <img id="activityPlayimg" src="../../img/act/1.jpg" width="60%" height="300">
+                    <img id="activityPlayimg" src="../../img/act/0.jpg" width="60%" height="300">
                     <h4 class="form-header h4">活动规则</h4>
-                    <div class="row">
+                    <div class="row" id="activityPlaydiv" style="display: none">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label is-required">首次中奖配置：</label>
@@ -472,94 +476,91 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
-                                <div class="col-sm-8">
-                                    <select name="drawRule-dailyflag" id="DAILYFLAG" onchange="dailyflag()"
-                                            class="form-control"
-                                            th:with="type=${@dict.getType('is_boolean')}">
-                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                th:value="${dict.dictValue}"></option>
-                                    </select>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
+                                    <div class="col-sm-8">
+                                        <select name="drawRule-dailyflag" id="DAILYFLAG" onchange="dailyflag()"
+                                                class="form-control"
+                                                th:with="type=${@dict.getType('is_boolean')}">
+                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                    th:value="${dict.dictValue}"></option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
-                                <div class="col-sm-8">
-                                    <input name="drawRule-dailynumber" id="dailynumber" placeholder="时间段限制次数"
-                                           class="form-control" type="text" maxlength="30" disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group date">
-                                        <input name="drawRule-dailystarttime" id="dailystarttime" class="form-control"
-                                               placeholder="HH:mm:ss" type="text" disabled>
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
+                                    <div class="col-sm-8">
+                                        <input name="drawRule-dailynumber" id="dailynumber" placeholder="时间段限制次数"
+                                               class="form-control" type="text" maxlength="30" disabled>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group date">
-                                        <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control"
-                                               placeholder="HH:mm:ss" type="text" disabled>
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group date">
+                                            <input name="drawRule-dailystarttime" id="dailystarttime"
+                                                   class="form-control"
+                                                   placeholder="HH:mm:ss" type="text" disabled>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group date">
+                                            <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control"
+                                                   placeholder="HH:mm:ss" type="text" disabled>
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
-                                <div class="col-sm-8">
-                                    <select name="drawRule-willdrawflag" id="WILLDRAWFLAG" onchange="willdrawflag()"
-                                            class="form-control" th:with="type=${@dict.getType('is_boolean')}">
-                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                th:value="${dict.dictValue}"></option>
-                                    </select>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
+                                    <div class="col-sm-8">
+                                        <select name="drawRule-willdrawflag" id="WILLDRAWFLAG" onchange="willdrawflag()"
+                                                class="form-control" th:with="type=${@dict.getType('is_boolean')}">
+                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                    th:value="${dict.dictValue}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
+                                    <div class="col-sm-8">
+                                        <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
+                                               placeholder="抽奖必中计数"
+                                               class="form-control" type="text" maxlength="30" disabled>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
-                                <div class="col-sm-8">
-                                    <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
-                                           placeholder="抽奖必中计数"
-                                           class="form-control" type="text" maxlength="30" disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
-                                <div class="col-sm-8">
-                                    <select name="drawRule-willdrawawardprize" class="form-control"
-                                            id="willdrawawardprize"
-                                            disabled>
-                                    </select>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
+                                    <div class="col-sm-8">
+                                        <select name="drawRule-willdrawawardprize" class="form-control"
+                                                id="willdrawawardprize"
+                                                disabled>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1208,6 +1209,11 @@
         $("#"+id+"val").val(valus);
         $("#"+id+"h4").text(val.text);
         $("#"+id+"img").attr("src",path+valus+".jpg");
+        if (valus != "0"){
+            $("#activityPlaydiv").css('display','block');//显示
+        }else{
+            $("#activityPlaydiv").css('display','none');//隐藏
+        }
 
     }
 
