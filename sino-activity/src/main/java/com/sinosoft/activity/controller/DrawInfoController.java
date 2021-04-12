@@ -178,7 +178,7 @@ public class DrawInfoController extends BaseController
         ActPageConfigSubscribe actPageConfigSubscribe= iActPageConfigSubscribeService.selectActPageConfigSubscribeByCode(drawInfo.getDRAWCODE());
         vo.setActPageConfigSubscribe(actPageConfigSubscribe);
         mmap.put("vo",vo);
-        return prefix + "/edit";
+        return prefix + "/edit1";
     }
 
     /**
@@ -188,7 +188,7 @@ public class DrawInfoController extends BaseController
     @Log(title = "抽奖活动管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-        public AjaxResult editSave(ActVO vo)
+        public AjaxResult editSave(@RequestBody ActVO vo)
         {
             try{
                 logger.info("前台传参"+ JSON.toJSONString(vo));
