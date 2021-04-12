@@ -208,7 +208,8 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-info-add" th:object="${vo}">
-        <input name="DRAWID" th:field="*{drawInfo.DRAWID}" type="hidden">
+        <input name="drawInfo-DRAWID" th:field="*{drawInfo.DRAWID}" type="hidden">
+        <input name="drawInfo-DRAWCODE" th:field="*{drawInfo.DRAWCODE}" type="hidden">
         <div id="smartwizard">
             <ul class="nav">
                 <li class="nav-item">
@@ -317,10 +318,9 @@
                     <div>
                         <h4 class="form-header h4">第2步-选择UI模板</h4>
                         <div th:with="type=${@dict.getType('activityTemplate')}">
-                            <a id="activityTemplate" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+
+                            <a id="activityTemplate" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
-                            <a id="activityTemplate" th:if="${dict.dictValue} eq '0'" class="btn btn-success btn-rounded"  href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                               th:value="${dict.dictValue}" onclick="activityTemplate(this)" ></a>
                         </div>
                         <input id="activityTemplateval" name="actConfig-pageStyle" value="" type="hidden" th:field="*{actConfig.pageStyle}">
                         <h4 id="activityTemplateh4" class="form-header h4">暂不选择</h4>
@@ -362,7 +362,9 @@
 
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                             style="width: 200px; height: 150px;"></div>
+                                             style="width: 200px; height: 150px;">
+                                            <img th:src="*{actPageConfigGuide.bgImg}">
+                                        </div>
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
@@ -614,7 +616,9 @@
 
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                             style="width: 200px; height: 150px;"></div>
+                                             style="width: 200px; height: 150px;">
+                                            <img th:src="*{actPageConfigUserinfo.bgImg}">
+                                        </div>
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
@@ -801,7 +805,9 @@
 
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                             style="width: 200px; height: 150px;"></div>
+                                             style="width: 200px; height: 150px;">
+                                            <img th:src="*{actConfig.shareImg}">
+                                        </div>
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
@@ -854,7 +860,9 @@
                                     <label class="col-sm-4 control-label is-required">背景图片：</label>
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                             style="width: 200px; height: 150px;"></div>
+                                             style="width: 200px; height: 150px;">
+                                            <img th:src="*{actPageConfigSubscribe.bgImg}">
+                                        </div>
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
@@ -874,7 +882,9 @@
                                     <label class="col-sm-4 control-label is-required">二维码图片：</label>
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                             style="width: 200px; height: 150px;"></div>
+                                             style="width: 200px; height: 150px;">
+                                            <img th:src="*{actPageConfigSubscribe.bgImg2}">
+                                        </div>
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
@@ -1093,6 +1103,44 @@
                 toolbarExtraButtons: [btnCancel, btnPrev, btnNext, btnFinish]// 扩展的按钮集合
             }
         });
+        //加载步骤2数据
+        var path = "../../../img/act/";
+        var val = $("#activityTemplateval").val();
+        $("a[id = 'activityTemplate']").each(function (){
+            if ($(this).attr("value") == val){
+                $(this).addClass('btn-success').siblings().removeClass('btn-success');
+                $("#activityTemplateh4").text(this.text);
+                $("#activityTemplateimg").attr("src",path+val+".jpg");
+            }
+        });
+        //加载步骤3数据
+        var title = $("#actTitle").val();
+        $("#actTitlePic").text(title);
+        var desc = $("#actDesc").val();
+        $("#actDescPic").text(desc);
+        var picval = $("#picval").val();
+        $("#picimg").attr("src", picval);
+        var btn1 = $("#btn1").val();
+        $("#btn1Pic").text(btn1);
+        var btn2 = $("#btn2").val();
+        $("#btn2Pic").text(btn2);
+        //加载步骤4数据
+        var val = $("#activityPlayval").val();
+        $("a[id = 'activityPlay']").each(function (){
+            if ($(this).attr("value") == val){
+                $(this).addClass('btn-success').siblings().removeClass('btn-success');
+                $("#activityPlayh4").text(this.text);
+                $("#activityPlayimg").attr("src",path+val+".jpg");
+                if (val != "0"){
+                    $("#activityPlaydiv").css('display','block');//显示
+                }else{
+                    $("#activityPlaydiv").css('display','none');//隐藏
+                }
+            }
+        });
+
+
+
     });
 
     // 显示步骤时将触发事件
@@ -1223,7 +1271,7 @@
     }
 
     function activityTemplate(val) {
-        var path = "../../img/act/";
+        var path = "../../../img/act/";
         $(val).addClass('btn-success').siblings().removeClass('btn-success');
         var id = val.id;
         var valus = $("#"+id+".btn-success").attr("value");
