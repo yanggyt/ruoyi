@@ -883,7 +883,7 @@
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"
                                              style="width: 200px; height: 150px;">
-                                            <img th:src="*{actPageConfigSubscribe.bgImg2}">
+                                            <img th:src="*{actPageConfigSubscribe.qrCode}">
                                         </div>
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
@@ -1054,7 +1054,7 @@
                 var data = customSerialize("form-info-add", true);
                 alert(data);
                 $.ajax({
-                    url: prefix + "/add",
+                    url: prefix + "/edit",
                     data: data,
                     type: "post",
                     contentType: "application/json;charset=UTF-8",
