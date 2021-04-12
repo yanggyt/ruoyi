@@ -209,7 +209,6 @@
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-info-add" th:object="${vo}">
         <input name="DRAWID" th:field="*{drawInfo.DRAWID}" type="hidden">
-        <input name="DRAWRULEID" th:field="*{drawInfo.DRAWRULEID}" type="hidden">
         <div id="smartwizard">
             <ul class="nav">
                 <li class="nav-item">
@@ -318,9 +317,9 @@
                     <div>
                         <h4 class="form-header h4">第2步-选择UI模板</h4>
                         <div th:with="type=${@dict.getType('activityTemplate')}">
-                            <a id="activityTemplate" th:if="${dict.dictValue} != *{actConfig.pageStyle}" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            <a id="activityTemplate" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
-                            <a id="activityTemplate" th:if="${dict.dictValue} eq *{actConfig.pageStyle}" class="btn btn-success btn-rounded"  href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            <a id="activityTemplate" th:if="${dict.dictValue} eq '0'" class="btn btn-success btn-rounded"  href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                th:value="${dict.dictValue}" onclick="activityTemplate(this)" ></a>
                         </div>
                         <input id="activityTemplateval" name="actConfig-pageStyle" value="" type="hidden" th:field="*{actConfig.pageStyle}">
@@ -464,7 +463,7 @@
                                             class="form-control"
                                             th:with="type=${@dict.getType('is_boolean')}">
                                         <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                th:value="${dict.dictValue}" th:field="*{drawRule.firstflag}"></option>
+                                                th:value="${dict.dictValue}" th:field="*{drawRule.FIRSTFLAG}"></option>
                                     </select>
                                 </div>
                             </div>
@@ -488,7 +487,7 @@
                                                 class="form-control"
                                                 th:with="type=${@dict.getType('is_boolean')}">
                                             <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                    th:value="${dict.dictValue}" th:field="*{drawRule.dailyflag}"></option>
+                                                    th:value="${dict.dictValue}" th:field="*{drawRule.DAILYFLAG}"></option>
                                         </select>
                                     </div>
                                 </div>
@@ -498,7 +497,7 @@
                                     <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-dailynumber" id="dailynumber" placeholder="时间段限制次数"
-                                               class="form-control" type="text" maxlength="30" disabled th:field="*{drawRule.dailynumber}">
+                                               class="form-control" type="text" maxlength="30" disabled th:field="*{drawRule.DAILYNUMBER}">
                                     </div>
                                 </div>
                             </div>
@@ -509,7 +508,7 @@
                                     <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
                                     <div class="col-sm-8">
                                         <div class="input-group date">
-                                            <input name="drawRule-dailystarttime" id="dailystarttime" th:field="*{drawRule.dailystarttime}"
+                                            <input name="drawRule-dailystarttime" id="dailystarttime" th:field="*{drawRule.DAILYSTARTTIME}"
                                                    class="form-control"
                                                    placeholder="HH:mm:ss" type="text" disabled>
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -522,7 +521,7 @@
                                     <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
                                     <div class="col-sm-8">
                                         <div class="input-group date">
-                                            <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control" th:field="*{drawRule.dailyendtime}"
+                                            <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control" th:field="*{drawRule.DAILYENDTIME}"
                                                    placeholder="HH:mm:ss" type="text" disabled>
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         </div>
@@ -538,7 +537,7 @@
                                         <select name="drawRule-willdrawflag" id="WILLDRAWFLAG" onchange="willdrawflag()"
                                                 class="form-control" th:with="type=${@dict.getType('is_boolean')}">
                                             <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
-                                                    th:value="${dict.dictValue}" th:field="*{drawRule.willdrawflag}"></option>
+                                                    th:value="${dict.dictValue}" th:field="*{drawRule.WILLDRAWFLAG}"></option>
                                         </select>
                                     </div>
                                 </div>
@@ -548,7 +547,7 @@
                                     <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
-                                               placeholder="抽奖必中计数" th:field="*{drawRule.willdrawawardnumber}"
+                                               placeholder="抽奖必中计数" th:field="*{drawRule.WILLDRAWAWARDNUMBER}"
                                                class="form-control" type="text" maxlength="30" disabled>
                                     </div>
                                 </div>
@@ -659,22 +658,19 @@
                                         <label class="col-sm-4 control-label is-required">客户必填信息：</label>
                                         <div class="col-sm-8">
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" name="actPageConfigUserinfo-userName" id="name" th:field="*{actPageConfigUserinfo.userName}"
+                                                <input type="checkbox" name="actPageConfigUserinfo-userName" id="name"
                                                        onclick="updateText(this)">姓名</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-mobile" id="phone"
-                                                       th:field="*{actPageConfigUserinfo.mobile}"
                                                        onclick="updateText(this)">手机号</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-gender" id="sex"
-                                                       th:field="*{actPageConfigUserinfo.gender}"
                                                        onclick="updateText(this)">性别</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-address" id="address"
-                                                       th:field="*{actPageConfigUserinfo.address}"
                                                        onclick="updateText(this)">地址</input>
                                             </label>
                                         </div>
@@ -688,22 +684,18 @@
                                         <div class="col-sm-8">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentName"
-                                                       th:field="*{actPageConfigUserinfo.agentName}"
                                                        id="agentName" onclick="updateText(this)">代理人姓名</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentMobile"
-                                                       th:field="*{actPageConfigUserinfo.agentMobile}"
                                                        id="agentPhone" onclick="updateText(this)">代理人手机号</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentGender"
-                                                       th:field="*{actPageConfigUserinfo.agentGender}"
                                                        id="agentSex" onclick="updateText(this)">代理人性别</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentNo"
-                                                       th:field="*{actPageConfigUserinfo.agentNo}"
                                                        id="agentNumber" onclick="updateText(this)">代理人工号</input>
                                             </label>
                                         </div>

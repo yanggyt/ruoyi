@@ -246,4 +246,5 @@ public class ActPageConfigUserinfo extends BaseEntity
             .append("updateTime", getUpdateTime())
             .toString();
     }
+
 }
