@@ -2,19 +2,34 @@ package com.ruoyi.service;
 
 import com.ruoyi.cache.Cache;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.dto.GtPrizeConfigTemp;
+import com.ruoyi.web.vo.Const;
+import com.sinosoft.activity.domain.DrawConfig;
+import com.sinosoft.activity.domain.DrawPrizeInfo;
 import com.sinosoft.activity.domain.DrawRule;
+import com.sinosoft.activity.service.IDrawConfigService;
+import com.sinosoft.activity.service.IDrawPrizeInfoService;
 import com.sinosoft.activity.service.IDrawRuleService;
+import com.sinosoft.activity.vo.PrizeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DrawService {
 
     private static final Logger logger = LoggerFactory.getLogger(DrawService.class);
     @Autowired
     private IDrawRuleService drawRuleService;
+    @Autowired
+    private IDrawConfigService drawConfigService;
+    @Autowired
+    private IDrawPrizeInfoService drawPrizeInfoService;
     /**
      * 刷新抽奖需要的缓存信息
      *
@@ -41,53 +56,56 @@ public class DrawService {
         DrawRule drawRule = drawRuleService.selectDrawRuleList(drawRuleParams).get(0);
         cacheAdd("_" + drawCode + "_" + currentDateStr + "_rule_", drawRule, "_" + drawCode + "_" + yesterdayDateStr + "_rule_", timeOut);
         // 奖项配置加入缓存
-        QueryRule gtDrawConfigQueryRule = QueryRule.getInstance();
-        gtDrawConfigQueryRule.addEqual("drawCode", drawCode);
-        gtDrawConfigQueryRule.addEqual("state", Constant.DRAW_CONFIG_STATUS_EFFECTIVE);
-        gtDrawConfigQueryRule.addAscOrder("prizeLevel");
-        List<GtDrawConfig> gtDrawConfigs = gtDrawConfigService.queryByQueryRule(gtDrawConfigQueryRule);
-        cacheAdd("_" + drawCode + "_" + currentDateStr + "_config_", gtDrawConfigs, "_" + drawCode + "_" + yesterdayDateStr + "_config_", timeOut);
-        // 空奖品加入缓存
-        QueryRule gtDrawConfigBlankCondition = QueryRule.getInstance();
-        gtDrawConfigBlankCondition.addEqual("drawCode", drawCode);
-        gtDrawConfigBlankCondition.addEqual("state", Constant.DRAW_CONFIG_STATUS_EFFECTIVE);
-        gtDrawConfigBlankCondition.addEqual("prizeLevel", "blank");
-        List<GtDrawConfig> gtDrawConfigBlankList = gtDrawConfigService.queryByQueryRule(gtDrawConfigBlankCondition);
-        if (gtDrawConfigBlankList == null) {
+//        gtDrawConfigQueryRule.addAscOrder("prizeLevel");
+        DrawConfig drawConfigParams = new DrawConfig();
+        drawConfigParams.setDRAWCODE(drawCode);
+        drawConfigParams.setSTATUS(Const.STATUS_VALID);
+        List<DrawConfig> drawConfigs = drawConfigService.selectDrawConfigList(drawConfigParams);
+        cacheAdd("_" + drawCode + "_" + currentDateStr + "_config_", drawConfigs, "_" + drawCode + "_" + yesterdayDateStr + "_config_", timeOut);
+        // 空奖奖项配置
+        DrawConfig drawConfigBlank = null;
+        // 非空奖项配置
+        List<DrawConfig> gtDrawConfigList = new ArrayList<>();
+        for (DrawConfig drawConfig : drawConfigs) {
+            String prizelevel = drawConfig.getPRIZELEVEL();
+            if (Const.PRIZE_LEVEL_BLANK.equals(prizelevel)) {
+                drawConfigBlank = drawConfig;
+            } else {
+                gtDrawConfigList.add(drawConfig);
+            }
+        }
+        if (drawConfigBlank == null) {
             throw new Exception("空奖品配置错误");
         }
-        QueryRule blankQueryRule = QueryRule.getInstance();
-        blankQueryRule.addEqual("prizeCode", gtDrawConfigBlankList.get(0).getPrizeCode());
-        blankQueryRule.addEqual("status", "1");
-        GtPrizeInfo blankPrize = gtPrizeInfoService.queryUniqueGtPrizeInfo(blankQueryRule);
+        // 非空奖奖项配置加入缓存
+        cacheAdd("_" + drawCode + "_" + currentDateStr + "_gtDrawConfigList_", gtDrawConfigList, "_" + drawCode + "_" + yesterdayDateStr + "_gtDrawConfigList_", timeOut);
+        // 空奖奖项配置加入缓存
+        Cache.remove("_" + drawCode + "_blankConfig_");
+        Cache.add("_" + drawCode + "_blankConfig_", drawConfigBlank);
+        //空奖奖品加入缓存
+
+        String prizeCodeBlank = drawConfigBlank.getPRIZECODE();
+        PrizeInfo prizeInfoParams =  new PrizeInfo();
+        prizeInfoParams.setDRAWCODE(drawCode);
+        prizeInfoParams.setSTATUS(Const.STATUS_VALID);
+        List<DrawPrizeInfo> drawPrizeInfos = drawPrizeInfoService.selectDrawPrizeInfoByDrawCode(prizeInfoParams);
+        Map<String, DrawPrizeInfo> prizeMap = new HashMap<>();
+        for (DrawPrizeInfo prizeInfo : drawPrizeInfos) {
+            String prizeCode = prizeInfo.getPRIZECODE();
+            prizeMap.put(prizeCode, prizeInfo);
+        }
+        DrawPrizeInfo blankPrize = prizeMap.get(prizeCodeBlank);
         Cache.remove("_" + drawCode + "_blank_");
         Cache.add("_" + drawCode + "_blank_", blankPrize);
-        // 空奖奖项配置加入缓存
-        QueryRule gtBlankDrawConfigCondition = QueryRule.getInstance();
-        gtBlankDrawConfigCondition.addEqual("drawCode", drawCode);
-        gtBlankDrawConfigCondition.addEqual("prizeLevel", "blank");
-        List<GtDrawConfig> gtBlankDrawConfigList = gtDrawConfigService.queryByQueryRule(gtBlankDrawConfigCondition);
-        if (gtBlankDrawConfigList != null && gtBlankDrawConfigList.size() > 0) {
-            GtDrawConfig gtDrawConfig = gtBlankDrawConfigList.get(0);
-            Cache.remove("_" + drawCode + "_blankConfig_");
-            Cache.add("_" + drawCode + "_blankConfig_", gtDrawConfig);
-        }
-        // 非空奖奖项配置加入缓存
-        QueryRule gtDrawConfigCondition = QueryRule.getInstance();
-        gtDrawConfigCondition.addEqual("drawCode", drawCode);
-        gtDrawConfigCondition.addEqual("state", Constant.DRAW_CONFIG_STATUS_EFFECTIVE);
-        gtDrawConfigCondition.addNotEqual("prizeLevel", "blank");
-        gtDrawConfigCondition.addAscOrder("prizeLevel");
-        List<GtDrawConfig> gtDrawConfigList = gtDrawConfigService.queryByQueryRule(gtDrawConfigCondition);
-        cacheAdd("_" + drawCode + "_" + currentDateStr + "_gtDrawConfigList_", gtDrawConfigList, "_" + drawCode + "_" + yesterdayDateStr + "_gtDrawConfigList_", timeOut);
+
         // 计算总权重
         BigDecimal totalProbability = BigDecimal.ZERO;
         // 最小概率
         BigDecimal minProbability = BigDecimal.ZERO;
         if (gtDrawConfigList != null && gtDrawConfigList.size() > 0) {
             for (int i = 0; i < gtDrawConfigList.size(); i++) {
-                GtDrawConfig gtDrawConfig = gtDrawConfigList.get(i);
-                String prizeWigth = new BigDecimal(gtDrawConfig.getProbability()).divide(new BigDecimal(100)).toString();
+                DrawConfig gtDrawConfig = gtDrawConfigList.get(i);
+                String prizeWigth = new BigDecimal(gtDrawConfig.getPROBABILITY()).divide(new BigDecimal(100)).toString();
                 totalProbability = totalProbability.add(new BigDecimal(prizeWigth));
                 String n = prizeWigth;
                 if (i == 0) {
@@ -110,15 +128,12 @@ public class DrawService {
         long tmp = 0;
         if (gtDrawConfigList != null && gtDrawConfigList.size() > 0) {
             for (int i = 0; i < gtDrawConfigList.size(); i++) {
-                GtDrawConfig gtDrawConfig = gtDrawConfigList.get(i);
-                String probability = gtDrawConfig.getProbability();
+                DrawConfig gtDrawConfig = gtDrawConfigList.get(i);
+                String probability = gtDrawConfig.getPROBABILITY();
                 GtPrizeConfigTemp gtPrizeConfigTemp = new GtPrizeConfigTemp();
                 gtPrizeConfigTemp.setBaseNumer(baseNumer.longValue());
                 gtPrizeConfigTemp.setConfig(gtDrawConfig);
-                QueryRule prizeQueryRule = QueryRule.getInstance();
-                prizeQueryRule.addEqual("prizeCode", gtDrawConfig.getPrizeCode());
-                List<GtPrizeInfo> prizeInfo = gtPrizeInfoService.queryByQueryRule(prizeQueryRule);
-                gtPrizeConfigTemp.setPrizeInfo(prizeInfo.get(0));
+                gtPrizeConfigTemp.setPrizeInfo(prizeMap.get(gtDrawConfig.getPRIZECODE()));
                 // 区间1从0开始
                 if (i == 0) {
                     // 区间数从1开始
@@ -137,7 +152,7 @@ public class DrawService {
                     tmp = end;
                 }
                 // 奖项开始结束区间加入缓存
-                cacheAdd("_cache_" + drawCode + "_" + currentDateStr + "_" + gtDrawConfig.getPrizeLevel() + "_", gtPrizeConfigTemp, "_cache_" + drawCode + "_" + yesterdayDateStr + "_" + gtDrawConfig.getPrizeLevel() + "_", timeOut);
+                cacheAdd("_cache_" + drawCode + "_" + currentDateStr + "_" + gtDrawConfig.getPRIZELEVEL() + "_", gtPrizeConfigTemp, "_cache_" + drawCode + "_" + yesterdayDateStr + "_" + gtDrawConfig.getPRIZELEVEL() + "_", timeOut);
             }
         }
     }

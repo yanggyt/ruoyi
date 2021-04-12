@@ -2,6 +2,7 @@ package com.sinosoft.activity.mapper;
 
 import java.util.List;
 import com.sinosoft.activity.domain.DrawPrizeInfo;
+import com.sinosoft.activity.vo.PrizeInfo;
 
 /**
  * 存储奖品的基础信息Mapper接口
@@ -34,6 +35,7 @@ public interface DrawPrizeInfoMapper
     public List<DrawPrizeInfo> selectDrawPrizeInfoList(DrawPrizeInfo drawPrizeInfo);
 
     List<DrawPrizeInfo> findDrawPrizeInfoList();
+    List<DrawPrizeInfo> selectDrawPrizeInfoByDrawCode(PrizeInfo prizeInfo);
 
     /**
      * 新增存储奖品的基础信息

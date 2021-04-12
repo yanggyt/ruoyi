@@ -29,4 +29,6 @@ public interface Const {
 
     String STATUS_VALID = "1";
     String STATUS_INVALID = "0";
+
+    String PRIZE_LEVEL_BLANK = "blank";
 }
