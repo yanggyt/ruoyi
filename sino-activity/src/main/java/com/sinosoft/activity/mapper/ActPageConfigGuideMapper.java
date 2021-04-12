@@ -58,4 +58,16 @@ public interface ActPageConfigGuideMapper
      * @return 结果
      */
     public int deleteActPageConfigGuideByIds(String[] ids);
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+   public ActPageConfigGuide selectActPageConfigGuideByCode(String drawCode);
+
+    /**
+     * 根据活动代码删除活动展示内容配置信息
+     * @param toStrArray
+     */
+    public void deleteActPageConfigGuideByCode(String[] toStrArray);
 }

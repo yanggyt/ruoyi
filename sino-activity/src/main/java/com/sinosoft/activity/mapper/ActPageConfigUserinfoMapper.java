@@ -58,4 +58,16 @@ public interface ActPageConfigUserinfoMapper
      * @return 结果
      */
     public int deleteActPageConfigUserinfoByIds(String[] ids);
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+   public ActPageConfigUserinfo selectActPageConfigUserinfoByCode(String drawCode);
+
+    /**
+     *   根据活动代码删除活动收集配置信息
+     * @param toStrArray
+     */
+   public void deleteActPageConfigUserinfoByCode(String[] toStrArray);
 }

@@ -7,10 +7,7 @@ import java.util.List;
 
 
 import com.alibaba.fastjson.JSON;
-import com.sinosoft.activity.domain.ActConfig;
-import com.sinosoft.activity.domain.DrawInfo;
-import com.sinosoft.activity.domain.DrawPrizeInfo;
-import com.sinosoft.activity.domain.DrawRule;
+import com.sinosoft.activity.domain.*;
 import com.sinosoft.activity.service.*;
 import com.sinosoft.activity.vo.ActVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -76,39 +73,46 @@ public class DrawInfoController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody ActVO vo)
     {
-        logger.info("前台传参"+ JSON.toJSONString(vo));
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        Date date = new Date();
-        //新增基本信息
-        vo.getDrawInfo().setCREATETIMESTAMP(date);
-        String code = format.format(date);
-        vo.getDrawInfo().setDRAWCODE(code);
-        drawInfoService.insertDrawInfo(vo.getDrawInfo());
+        try{
+            logger.info("前台传参"+ JSON.toJSONString(vo));
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            Date date = new Date();
+            //新增基本信息
+            vo.getDrawInfo().setCREATETIMESTAMP(date);
+            String code = format.format(date);
+            vo.getDrawInfo().setDRAWCODE(code);
+            drawInfoService.insertDrawInfo(vo.getDrawInfo());
 
-        //新增展示内容
-        vo.getActPageConfigGuide().setCreateTime(date);
-        vo.getActPageConfigGuide().setActCode(code);
-        iActPageConfigGuideService.insertActPageConfigGuide(vo.getActPageConfigGuide());
+            //新增展示内容
+            vo.getActPageConfigGuide().setCreateTime(date);
+            vo.getActPageConfigGuide().setActCode(code);
+            iActPageConfigGuideService.insertActPageConfigGuide(vo.getActPageConfigGuide());
 
-        //新增选择玩法
-        vo.getDrawRule().setCREATETIMESTAMP(date);
-        vo.getDrawRule().setDRAWCODE(code);
-        iDrawRuleService.insertDrawRule(vo.getDrawRule());
+            //新增选择玩法
+            vo.getDrawRule().setCREATETIMESTAMP(date);
+            vo.getDrawRule().setDRAWCODE(code);
+            iDrawRuleService.insertDrawRule(vo.getDrawRule());
 
-        //新增收集信息
-        vo.getActPageConfigUserinfo().setCreateTime(date);
-        vo.getActPageConfigUserinfo().setActCode(code);
-        iActPageConfigUserinfoService.insertActPageConfigUserinfo(vo.getActPageConfigUserinfo());
+            //新增收集信息
+            vo.getActPageConfigUserinfo().setCreateTime(date);
+            vo.getActPageConfigUserinfo().setActCode(code);
+            iActPageConfigUserinfoService.insertActPageConfigUserinfo(vo.getActPageConfigUserinfo());
 
-        //新增分享信息
-        vo.getActConfig().setCreateTime(date);
-        vo.getActConfig().setActCode(code);
-        iActConfigService.insertActConfig(vo.getActConfig());
-        //新增二维码信息
-        vo.getActPageConfigSubscribe().setCreateTime(date);
-        vo.getActPageConfigSubscribe().setActCode(code);
-        int i = iActPageConfigSubscribeService.insertActPageConfigSubscribe(vo.getActPageConfigSubscribe());
-        return toAjax(i);
+            //新增分享信息
+            vo.getActConfig().setCreateTime(date);
+            vo.getActConfig().setActCode(code);
+            vo.getActConfig().setActName(vo.getDrawInfo().getDRAWNAME());
+            iActConfigService.insertActConfig(vo.getActConfig());
+            //新增二维码信息
+            vo.getActPageConfigSubscribe().setCreateTime(date);
+            vo.getActPageConfigSubscribe().setActCode(code);
+            int i = iActPageConfigSubscribeService.insertActPageConfigSubscribe(vo.getActPageConfigSubscribe());
+            return toAjax(i);
+        }
+      catch (Exception e){
+        e.printStackTrace();
+      return AjaxResult.error("系统繁忙");
+  }
     }
     /**
      * 查询抽奖活动管理列表
@@ -154,8 +158,26 @@ public class DrawInfoController extends BaseController
     @GetMapping("/edit/{DRAWID}")
     public String edit(@PathVariable("DRAWID") String DRAWID, ModelMap mmap)
     {
+        ActVO vo = new ActVO();
+        //查询基本信息
         DrawInfo drawInfo = drawInfoService.selectDrawInfoById(DRAWID);
-        mmap.put("drawInfo", drawInfo);
+        vo.setDrawInfo(drawInfo);
+        //查询展示内容
+        ActPageConfigGuide actPageConfigGuide = iActPageConfigGuideService.selectActPageConfigGuideByCode(drawInfo.getDRAWCODE());
+         vo.setActPageConfigGuide(actPageConfigGuide);
+        //查询选择玩法
+        DrawRule drawRule = iDrawRuleService.selectDrawRuleByCode(drawInfo.getDRAWCODE());
+        vo.setDrawRule(drawRule);
+        //查询收集信息
+        ActPageConfigUserinfo actPageConfigUserinfo=   iActPageConfigUserinfoService.selectActPageConfigUserinfoByCode(drawInfo.getDRAWCODE());
+        vo.setActPageConfigUserinfo(actPageConfigUserinfo);
+        //查询分享信息
+        ActConfig actConfig = iActConfigService.selectActConfigByCode(drawInfo.getDRAWCODE());
+        vo.setActConfig(actConfig);
+        //查询二维码信息
+        ActPageConfigSubscribe actPageConfigSubscribe= iActPageConfigSubscribeService.selectActPageConfigSubscribeByCode(drawInfo.getDRAWCODE());
+        vo.setActPageConfigSubscribe(actPageConfigSubscribe);
+        mmap.put("vo",vo);
         return prefix + "/edit";
     }
 

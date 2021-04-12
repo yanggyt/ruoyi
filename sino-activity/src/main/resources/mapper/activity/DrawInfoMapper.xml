@@ -20,17 +20,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="UPDATEFLAG"    column="UPDATEFLAG"    />
         <result property="RULEDESCRIPTION"    column="RULEDESCRIPTION"    />
         <result property="VALIDATETYPE"    column="VALIDATETYPE"    />
-
-        <result property="DRAWRULEID"    column="DRAWRULEID"    />
-        <result property="FIRSTFLAG"    column="FIRSTFLAG"    />
-        <result property="FIRSTAWARDPRIZE"    column="FIRSTAWARDPRIZE"    />
-        <result property="DAILYFLAG"    column="DAILYFLAG"    />
-        <result property="DAILYSTARTTIME"    column="DAILYSTARTTIME"    />
-        <result property="DAILYENDTIME"    column="DAILYENDTIME"    />
-        <result property="DAILYNUMBER"    column="DAILYNUMBER"    />
-        <result property="WILLDRAWFLAG"    column="WILLDRAWFLAG"    />
-        <result property="WILLDRAWAWARDPRIZE"    column="WILLDRAWAWARDPRIZE"    />
-        <result property="WILLDRAWAWARDNUMBER"    column="WILLDRAWAWARDNUMBER"    />
     </resultMap>
 
     <sql id="selectDrawInfoVo">
@@ -39,7 +28,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectDrawInfoList" parameterType="DrawInfo" resultMap="DrawInfoResult">
         <include refid="selectDrawInfoVo"/>
-        <where>  
+        <where>
+            <if test="drawId != null  and drawId != '' ">
+                and  DRAWID in
+                <foreach item="DRAWID" collection="drawId" open="(" separator="," close=")">
+                    #{DRAWID}
+                </foreach>
+            </if>
             <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
             <if test="DRAWTYPE != null  and DRAWTYPE != ''"> and DRAWTYPE = #{DRAWTYPE}</if>
             <if test="DRAWNAME != null  and DRAWNAME != ''"> and DRAWNAME like concat('%', #{DRAWNAME}, '%')</if>
@@ -62,29 +57,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectDrawInfoById" parameterType="String" resultMap="DrawInfoResult">
-SELECT
-	i.DRAWID,
-	i.DRAWNAME,
-	i.STATUS,
-	i.EXPENO,
-	i.EXPENOVALUE,
-	i.STARTTIME,
-	i.ENDTIME,
-	r.FIRSTFLAG,
-	r.FIRSTAWARDPRIZE,
-	r.DAILYFLAG,
-	r.DAILYNUMBER,
-	r.DAILYSTARTTIME,
-	r.DAILYENDTIME,
-	r.WILLDRAWFLAG,
-	r.WILLDRAWAWARDNUMBER,
-	r.WILLDRAWAWARDPRIZE,
-	r.DRAWRULEID
-    FROM
-	draw_info i
-    LEFT JOIN draw_rule r ON i.DRAWCODE = r.DRAWCODE
-    WHERE
-    DRAWID = #{DRAWID}
+     <include refid="selectDrawInfoVo"/>
+      WHERE
+        DRAWID = #{DRAWID}
     </select>
         
     <insert id="insertDrawInfo" parameterType="DrawInfo">

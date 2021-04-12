@@ -60,4 +60,11 @@ public interface IDrawRuleService
      * @return 结果
      */
     public int deleteDrawRuleById(String DRAWRULEID);
+
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+    public DrawRule selectDrawRuleByCode(String drawCode);
 }

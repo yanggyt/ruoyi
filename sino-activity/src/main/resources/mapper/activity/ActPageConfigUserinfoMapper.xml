@@ -54,7 +54,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectActPageConfigUserinfoVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectActPageConfigUserinfoByCode" resultMap="ActPageConfigUserinfoResult">
+        <include refid="selectActPageConfigUserinfoVo"/>
+        where act_code = #{drawCode}
+    </select>
+
     <insert id="insertActPageConfigUserinfo" parameterType="ActPageConfigUserinfo" useGeneratedKeys="true" keyProperty="id">
         insert into act_page_config_userinfo
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -129,6 +133,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from act_page_config_userinfo where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteActPageConfigUserinfoByCode" parameterType="String">
+        delete from act_page_config_userinfo where act_code in
+        <foreach item="actCode" collection="array" open="(" separator="," close=")">
+            #{actCode}
         </foreach>
     </delete>
 

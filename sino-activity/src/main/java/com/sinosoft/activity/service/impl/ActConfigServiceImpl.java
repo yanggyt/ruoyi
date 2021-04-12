@@ -93,4 +93,13 @@ public class ActConfigServiceImpl implements IActConfigService
     {
         return actConfigMapper.deleteActConfigById(id);
     }
+    /**
+     * 根据活动编码查询
+     * @param drawCode
+     * @return
+     */
+    @Override
+    public ActConfig selectActConfigByCode(String drawCode) {
+        return actConfigMapper.selectActConfigByCode(drawCode);
+    }
 }

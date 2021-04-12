@@ -40,7 +40,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectActPageConfigGuideVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectActPageConfigGuideByCode" resultMap="ActPageConfigGuideResult">
+        <include refid="selectActPageConfigGuideVo"/>
+        where act_code = #{drawCode}
+    </select>
+
     <insert id="insertActPageConfigGuide" parameterType="ActPageConfigGuide" useGeneratedKeys="true" keyProperty="id">
         insert into act_page_config_guide
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -95,6 +99,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
+    </delete>
+    <delete id="deleteActPageConfigGuideByCode" parameterType="String">
+        delete from act_page_config_guide where act_code in
+        <foreach item="actCode" collection="array" open="(" separator="," close=")">
+            #{actCode}
+        </foreach>
+
     </delete>
 
 </mapper>

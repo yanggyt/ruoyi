@@ -57,6 +57,18 @@ public class DrawPrizeInfo extends BaseEntity
     /** 积分项目编码 */
     @Excel(name = "积分项目编码")
     private String INTEGRALPROJECTCODE;
+    /**
+     * 奖品图片
+     */
+    private String PRIZEIMG;
+
+    public String getPRIZEIMG() {
+        return PRIZEIMG;
+    }
+
+    public void setPRIZEIMG(String PRIZEIMG) {
+        this.PRIZEIMG = PRIZEIMG;
+    }
 
     public void setPRIZEID(int PRIZEID)
     {

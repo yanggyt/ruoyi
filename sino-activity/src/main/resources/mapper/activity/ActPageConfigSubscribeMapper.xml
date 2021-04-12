@@ -32,7 +32,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectActPageConfigSubscribeVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectActPageConfigSubscribeByCode" resultMap="ActPageConfigSubscribeResult">
+        <include refid="selectActPageConfigSubscribeVo"/>
+        where act_code = #{drawCode}
+    </select>
+
     <insert id="insertActPageConfigSubscribe" parameterType="ActPageConfigSubscribe" useGeneratedKeys="true" keyProperty="id">
         insert into act_page_config_subscribe
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -74,6 +78,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from act_page_config_subscribe where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteActPageConfigSubscribeByCode" parameterType="String">
+        delete from act_page_config_subscribe where act_code in
+        <foreach item="actCode" collection="array" open="(" separator="," close=")">
+            #{actCode}
         </foreach>
     </delete>
 

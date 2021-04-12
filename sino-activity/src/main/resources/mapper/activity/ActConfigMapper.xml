@@ -40,7 +40,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectActConfigVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectActConfigByCode" resultMap="ActConfigResult">
+        <include refid="selectActConfigVo"/>
+        where act_code = #{drawCode}
+    </select>
+
     <insert id="insertActConfig" parameterType="ActConfig" useGeneratedKeys="true" keyProperty="id">
         insert into act_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -94,6 +98,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from act_config where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteActConfigByCode" parameterType="String">
+        delete from act_config where act_code in
+        <foreach item="actCode" collection="array" open="(" separator="," close=")">
+            #{actCode}
         </foreach>
     </delete>
 

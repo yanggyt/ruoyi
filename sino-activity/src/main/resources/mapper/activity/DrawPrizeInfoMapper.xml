@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
         <result property="STATUS"    column="STATUS"    />
         <result property="INTEGRALPROJECTCODE"    column="INTEGRALPROJECTCODE"    />
+        <result property="PRIZEIMG"    column="PRIZEIMG"    />
     </resultMap>
 
     <sql id="selectDrawPrizeInfoVo">
-        select PRIZEID, PRIZECODE, PRIZENAME, PRIZETYPE, PRIZEVALUE, COMMENTS, CREATETIMESTAMP, LASTUPDATETIMESTAMP, STATUS, INTEGRALPROJECTCODE from draw_prize_info
+        select PRIZEID, PRIZECODE, PRIZENAME, PRIZETYPE, PRIZEVALUE, COMMENTS, CREATETIMESTAMP, LASTUPDATETIMESTAMP, STATUS, INTEGRALPROJECTCODE, PRIZEIMG from draw_prize_info
     </sql>
 
     <select id="selectDrawPrizeInfoByDrawCode" parameterType="com.sinosoft.activity.vo.PrizeInfo" resultMap="DrawPrizeInfoResult">
@@ -69,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
             <if test="STATUS != null">STATUS,</if>
             <if test="INTEGRALPROJECTCODE != null">INTEGRALPROJECTCODE,</if>
+            <if test="PRIZEIMG != null">PRIZEIMG,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="PRIZEID != null">#{PRIZEID},</if>
@@ -81,6 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
             <if test="STATUS != null">#{STATUS},</if>
             <if test="INTEGRALPROJECTCODE != null">#{INTEGRALPROJECTCODE},</if>
+            <if test="PRIZEIMG != null">#{PRIZEIMG},</if>
          </trim>
     </insert>
 
@@ -96,6 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
             <if test="STATUS != null">STATUS = #{STATUS},</if>
             <if test="INTEGRALPROJECTCODE != null">INTEGRALPROJECTCODE = #{INTEGRALPROJECTCODE},</if>
+            <if test="PRIZEIMG != null">PRIZEIMG = #{PRIZEIMG},</if>
         </trim>
         where PRIZEID = #{PRIZEID}
     </update>
