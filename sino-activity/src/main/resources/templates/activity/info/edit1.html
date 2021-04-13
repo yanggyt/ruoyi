@@ -15,8 +15,8 @@
 
     .leftarea {
         float: left;
-        width: 50%;
-        height: 300px;
+        width: 60%;
+        height: 500px;
     }
 
     .sw > .tab-content {
@@ -140,21 +140,19 @@
 
     /* 配置分享信息*/
     .drawShareTitlePri {
-        text-align: center;
         position: absolute;
-        top: 40%;
+        top: 45%;
         font-size: 20px;
-        left: 28%;
+        left: 73%;
         color: #F00;
         width: 100%;
     }
 
     .drawShareDescribePri {
-        text-align: center;
         position: absolute;
         top: 50%;
         font-size: 10px;
-        left: 25%;
+        left: 73%;
         color: #F00;
         width: 100%;
     }
@@ -162,9 +160,9 @@
     .drawShareImgPic {
         text-align: center;
         position: absolute;
-        top: 50%;
+        top: 52%;
         font-size: 37px;
-        left: 35%;
+        left: 38%;
         color: #F00;
         width: 100%;
     }
@@ -579,7 +577,7 @@
                     </div>
                 </div>
                 <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-5">
-                    <div style="height: 610px">
+                    <div style="height: 810px">
                         <div class="leftarea">
                             <h4 class="form-header h4">第五步-配置收集信息</h4>
                             <div class="row">
@@ -611,9 +609,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">协议内容：</label>
                                         <div class="col-sm-8">
-                                            <input id="agreement" name="actPageConfigUserinfo-agreement" height="100px"
-                                                   class="form-control" type="text" th:value="*{actPageConfigUserinfo.agreement}"
-                                                   maxlength="30" onkeyup="updatePri(this)">
+                                            <textarea id="agreement"  name="actPageConfigUserinfo-agreement" cols="40" rows="6" onkeyup="updatePri(this)">
+                                              [[*{actPageConfigUserinfo.agreement}]]
+                                            </textarea>
+                                            <input type="hidden" >
                                         </div>
                                     </div>
                                 </div>
@@ -671,19 +670,19 @@
                                         <div class="col-sm-8">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-userName" id="name"
-                                                       onclick="updateText(this)">姓名</input>
+                                                       onclick="updateText(this)" th:checked="*{actPageConfigUserinfo.userName == 'on' ? true : false}" >姓名</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-mobile" id="phone"
-                                                       onclick="updateText(this)">手机号</input>
+                                                       onclick="updateText(this)" th:checked="*{actPageConfigUserinfo.mobile == 'on' ? true : false}">手机号</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-gender" id="sex"
-                                                       onclick="updateText(this)">性别</input>
+                                                       onclick="updateText(this)" th:checked="*{actPageConfigUserinfo.gender == 'on' ? true : false}">性别</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-address" id="address"
-                                                       onclick="updateText(this)">地址</input>
+                                                       onclick="updateText(this)" th:checked="*{actPageConfigUserinfo.address == 'on' ? true : false}">地址</input>
                                             </label>
                                         </div>
                                     </div>
@@ -696,19 +695,19 @@
                                         <div class="col-sm-8">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentName"
-                                                       id="agentName" onclick="updateText(this)">代理人姓名</input>
+                                                       id="agentName" onclick="updateText(this)" th:checked="*{actPageConfigUserinfo.agentName == 'on' ? true : false}">代理人姓名</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentMobile"
-                                                       id="agentPhone" onclick="updateText(this)">代理人手机号</input>
+                                                       id="agentPhone" onclick="updateText(this)"th:checked="*{actPageConfigUserinfo.agentMobile == 'on' ? true : false}">代理人手机号</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentGender"
-                                                       id="agentSex" onclick="updateText(this)">代理人性别</input>
+                                                       id="agentSex" onclick="updateText(this)"th:checked="*{actPageConfigUserinfo.agentGender == 'on' ? true : false}">代理人性别</input>
                                             </label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-agentNo"
-                                                       id="agentNumber" onclick="updateText(this)">代理人工号</input>
+                                                       id="agentNumber" onclick="updateText(this)"th:checked="*{actPageConfigUserinfo.agentNo == 'on' ? true : false}">代理人工号</input>
                                             </label>
                                         </div>
                                     </div>
@@ -799,10 +798,9 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">分享描述：</label>
                                         <div class="col-sm-8">
-                                            <input id="shareDescribe" name="actConfig-shareDesc"
-                                                   placeholder="例如：参与活动，赢大奖" class="form-control" type="text"
-                                                   th:value="*{actConfig.shareDesc}"
-                                                   maxlength="30" onkeyup="updatePri(this)">
+                                            <textarea id="shareDescribe"  name="actConfig-shareDesc"   cols="40" rows="6" onkeyup="updatePri(this)">
+                                             [[*{actConfig.shareDesc}]]
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -832,7 +830,7 @@
                             <h4 class="form-header h4">效果图</h4>
                             <div style="height: 210px">
                                 <div class="drawShareImg2Pic">
-                                    <img id="ss" src="../../img/shj.jpg" width="254" height="142">
+                                    <img  src="../../img/bj.png" height="170" width="340">
                                 </div>
                                 <div class="drawShareImgPic">
                                     <img id="shareImgimg" src="../../img/shj.jpg" width="50" height="50">
@@ -965,10 +963,7 @@
     });
 
 
-    function submitHandler() {
-        var data = $("#form-info-add").serializeArray();
-        $.operate.saveModal(prefix + "/add", data);
-    }
+
 
     //时间段抽奖配置
     function dailyflag() {
@@ -1146,9 +1141,42 @@
                 }
             }
         });
+     //记载步骤5数据
+        var title = $("#title").val();
+        $("#titlePri").text(title);
+        var describe = $("#describe").val();
+        $("#describePri").text(describe);
+        var agreement = $("#agreement").val();
+        $("#agreementPri").text(agreement);
+        var btn = $("#btn").val();
+        $("#btnPri").text(btn);
+        var pictureval = $("#pictureval").val();
+        $("#pictureimg").attr("src", picval);
+        $("input[type='checkbox'][name ^='actPageConfigUserinfo']").each(function (){
+            var id = this.id;
+            var boolean = $("#" + id).prop("checked");
+            if (boolean) {
+                $("#" + id + "Pri").attr('type', 'text');
+            } else {
+                $("#" + id + "Pri").attr('type', 'hidden');
+            }
 
+        });
 
-
+        //记载步骤6数据
+        var shareDescribe = $("#shareDescribe").val();
+        $("#shareDescribePri").text(shareDescribe);
+        var shareTitle = $("#shareTitle").val();
+        $("#shareTitlePri").text(shareTitle);
+        var shareImgval = $("#shareImgval").val();
+        $("#shareImgimg").attr("src", shareImgval);
+        //记载步骤7数据
+        var qrCode = $("#qrCode").val();
+        $("#qrCodePri").text(qrCode);
+        var backdropImgval = $("#backdropImgval").val();
+        $("#backdropImgimg").attr("src", backdropImgval);
+        var qrCodeImgval = $("#qrCodeImgval").val();
+        $("#qrCodeImgimg").attr("src", qrCodeImgval);
     });
 
     // 显示步骤时将触发事件
@@ -1279,7 +1307,7 @@
     }
 
     function activityTemplate(val) {
-        var path = "../../../img/act/";
+        var path = "../../img/act/";
         $(val).addClass('btn-success').siblings().removeClass('btn-success');
         var id = val.id;
         var valus = $("#"+id+".btn-success").attr("value");
