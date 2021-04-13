@@ -178,7 +178,7 @@ public class DrawInfoController extends BaseController
         ActPageConfigSubscribe actPageConfigSubscribe= iActPageConfigSubscribeService.selectActPageConfigSubscribeByCode(drawInfo.getDRAWCODE());
         vo.setActPageConfigSubscribe(actPageConfigSubscribe);
         mmap.put("vo",vo);
-        return prefix + "/edit1";
+        return prefix + "/edit";
     }
 
     /**
