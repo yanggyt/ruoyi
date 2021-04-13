@@ -287,10 +287,8 @@
             cache: false,
             success: function (data) {
                 if (data.result) {
-                    const code = {
-                        'code': 0
-                    };
-                    $.operate.successCallback(code);
+                    $.modal.alertSuccess("删除成功！");
+                    $.table.search();
                 } else {
                     $.modal.alertError(data.info);
                 }

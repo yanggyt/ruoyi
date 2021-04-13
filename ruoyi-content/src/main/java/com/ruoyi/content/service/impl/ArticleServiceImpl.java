@@ -1138,9 +1138,11 @@ public class ArticleServiceImpl implements ArticleService {
         LOGGER.info(
                 "根据文章链接获取文章内容,参数createUser[{}],author[{}],ids[{}],isAuthorization[{}],isReserve[{}],automaticName[{}],introduction[{}],isJoinActive[{}]",
                 createUser, author, ids, isAuthorization, isReserve, automaticName, introduction, isJoinActive);
-        CmsSysUser userInfoDTO = (CmsSysUser) SecurityUtils.getSubject().getPrincipal();
-        String companyId = userInfoDTO.getCompanyId();// 渠道id
-        String email = userInfoDTO.getEmail();
+        //CmsSysUser userInfoDTO = (CmsSysUser) SecurityUtils.getSubject().getPrincipal();
+        //String companyId = userInfoDTO.getCompanyId();// 渠道id
+        //String email = userInfoDTO.getEmail();
+        String companyId = "1";// 渠道id
+        String email = "13152783264";
         // 根据登录人查询登录信息（shiro里有缓存数据不是最新）
         CmsSysUser cmsSysUser = cmsSysUserExMapper.queryLoginInfoByEmail(email);
         // 此时后台管理员
@@ -1154,7 +1156,7 @@ public class ArticleServiceImpl implements ArticleService {
                         createTime});
 
         ArticleInfo article = new ArticleInfo();
-        article.setArticleAuthor(userInfoDTO.getName() + "");
+        article.setArticleAuthor(cmsSysUser.getName() + "");
         article.setArticleName(articleName);
         article.setOriginalUrl("0");
         article.setShareImgUrl(shareImgUrl);
@@ -1203,7 +1205,7 @@ public class ArticleServiceImpl implements ArticleService {
         // 存文章和标签的关系
         articleLabelServiceImpl.addlabel(String.valueOf(articleId), labelIds);
         this.checkJobNumber(articleId, articleName, shareImgUrl, ids, publishId, companyId, jobNumber, userId,
-                userInfoDTO.getName() + "", modifiedEditUrl, modifiedViewUrl, versionNumber);
+                cmsSysUser.getName() + "", modifiedEditUrl, modifiedViewUrl, versionNumber);
         msg.setInfo("成功导入文章!");
         msg.setResult(true);
         msg.setObject(resultMap);

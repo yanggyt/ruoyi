@@ -203,7 +203,7 @@ public class ArticleManageController extends BaseController {
         Thread.currentThread().setName(UUID.randomUUID().toString());
         Message msg = new Message();
         logger.info("通过文章链接获取文章内容控制层方法开始");
-        String createUser = request.getParameter("createUser");
+        String createUser = "13152783264";
         if (StringUtils.isBlank(createUser)) {
             logger.info("用户已离线");
             throw new BusinessException("通过文章链接获取文章内容,用户已离线");

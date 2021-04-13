@@ -5,10 +5,163 @@
     <th:block th:include="include :: layout-latest-css"/>
     <th:block th:include="include :: ztree-css"/>
     <th:block th:include="include :: datetimepicker-css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no,email=no">
 </head>
 <style>
     #tree_1_check {
         display: none;
+    }
+
+    .layui-layer-btn0 {
+        display: none;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    #div1 {
+        margin: 10px auto;
+        border: 1px solid #ccc;
+    }
+
+    #div1 .title {
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        z-index: 0;
+        padding: 5px 24px;
+        border-top: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    .text {
+        min-height: 27.43px;
+    }
+
+    .head, .author {
+        display: block;
+        width: 100%;
+        font-size: 20px;
+        color: #000;
+        min-height: 30px;
+        margin-bottom: 5px;
+        outline: none;
+        resize: none;
+        border: none;
+    }
+
+    .head {
+        font-size: 24px;
+    }
+
+    .head[contenteditable]:empty:before, .author[contenteditable]:empty:before {
+        content: attr(placeholder);
+        color: #D4D4D4;
+    }
+
+    .head[contenteditable]:focus, .author[contenteditable]:focus {
+        content: none;
+    }
+
+    .editorcontent {
+        font-size: 18px;
+        line-height: 20px;
+        height: 370px;
+        overflow: auto;
+        padding-top: 10px;
+        border-top: 1px solid #ccc;
+    }
+
+    .editorcontent div {
+        min-height: 27.43px;
+    }
+
+    /* 上传图片*/
+    .abstract {
+        font-size: .26rem;
+        margin: 10px 0;
+        color: #333;
+        float: left;
+    }
+
+    .cover_abstract {
+        width: 100%;
+        display: flex;
+    }
+
+    .imgload {
+        position: relative;
+        width: 25%;
+        text-align: center;
+        overflow: hidden;
+        height: 90px;
+        line-height: 90px;
+        background-color: #fbfdff;
+        border: 1px dashed #c0ccda;
+        border-radius: 6px;
+        margin: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .fileImg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background: none;
+        margin: 0px;
+        padding: 0px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .avatar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .addIcon {
+        position: relative;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .addIcon::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 30px;
+        margin-left: -15px;
+        margin-top: -2px;
+        border-top: 2px solid #cccccc;
+    }
+
+    .addIcon::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        height: 30px;
+        margin-left: -2px;
+        margin-top: -15px;
+        border-left: 2px solid #ccc;
     }
 </style>
 <body class="gray-bg">
@@ -53,6 +206,9 @@
                 <i class="fa fa-remove"></i> 批量移除
             </a>
             <a class="btn btn-success" style="margin-left: 15px;" data-toggle="modal" data-target="#myModal4">
+                <i class="fa fa-newspaper-o"></i> 导入文章
+            </a>
+            <a class="btn btn-success" style="margin-left: 15px;" onclick="createArticle()">
                 <i class="fa fa-newspaper-o"></i> 创建文章
             </a>
         </div>
@@ -187,7 +343,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span>
                 </button>
-                <h5 class="modal-title" style="text-align: left; font-size: 23px;">创建文章</h5>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">导入文章</h5>
             </div>
             <div class="modal-body" style="background: #ffffff;">
                 <form class="form-horizontal m" id="form-picAdverts-add3">
@@ -246,21 +402,78 @@
         </div>
     </div>
 </div>
+<div class="modal inmodal" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">创建文章</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <form class="form-horizontal" id="form-picAdverts-add5">
+                    <div class="col-md-12" style="margin-top: -15px;">
+                        <div class="form-group">
+                            <div id="div1">
+                                <div class="toolbar"></div>
+                                <div class="title">
+                                    <div contenteditable="true" class="head" placeholder="请在这里输入标题"></div>
+                                    <div contenteditable="true" class="author" placeholder="请输入作者"></div>
+                                    <div class="editorcontent" contenteditable="true">
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="abstract" style="margin-left: 15px;">封面摘要：</p>
+                            <p class="abstract" style="margin-left: 135px;">分享描述：</p>
+                            <div>
+                                <div class="cover_abstract">
+                                    <div class="imgload">
+                                        <input type="file" class="fileImg"
+                                               accept="image/png,image/gif，image/jpg, image/jpeg"
+                                               onchange="uploadOss(this)">
+                                        <img src="" class="avatar" style="display:none"/>
+                                        <i class="addIcon"></i>
+                                    </div>
+                                    <textarea autocomplete="off" placeholder="请输入内容" class="el-textarea__inner"
+                                              style="min-height: 33px;height: 90px; width: 70%"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
+                <button type="button" class="btn btn-primary" th:onclick="createArticleL()">创建文章</button>
+            </div>
+        </div>
+    </div>
+</div>
 <th:block th:include="include :: footer"/>
 <th:block th:include="include :: layout-latest-js"/>
 <th:block th:include="include :: ztree-js"/>
 <th:block th:include="include :: datetimepicker-js"/>
+<link th:href="@{/css/bootstrapValidator.min.css}" rel="stylesheet"/>
+<link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
+<script th:src="@{/js/bootstrapValidator.min.js}"></script>
+<script th:src="@{/js/fileinput.min.js}"></script>
+<script th:src="@{/js/fileinput_locale_zh.js}"></script>
+<script th:src="@{/js/wangEditor.js}"></script>
 <script th:inline="javascript">
 
-    var path = ctx;
-    var prefix = ctx + "article";
+    let path = ctx;
+    let prefix = ctx + "article";
 
-    var baseDataList = [];
-    var baseDataListSecond = [];
-    var cloumnTree = [];
-    var article;
-    var publish;
-    var number;
+    let baseDataList = [];
+    let baseDataListSecond = [];
+    let cloumnTree = [];
+    let article;
+    let publish;
+    let number;
+    let filePath;
 
     $(function () {
         setFirstQuery();
@@ -450,7 +663,20 @@
             });
 
         });
+
     });
+
+    // 富文本的创建
+    const E = window.wangEditor;
+    const editor = new E('#div1');
+
+    editor.config.onchange = function (newHtml) {
+        console.log('change 之后最新的 html', newHtml)
+        console.log($('.editorcontent').html())
+
+    }
+
+    editor.create();
 
     function queryCnameBySpecialChannel(id, type, num) {
         if (baseDataListSecond == null) {
@@ -482,6 +708,142 @@
             }
         }
         return returnValue;
+    }
+
+    function uploadOss(obj) {
+        $('#myModal5').modal('hide');
+        $.modal.loading("上传中。。。");
+        let formData = new FormData();
+        formData.append('file', obj.files[0]);
+        $.ajax({
+            type: "post",
+            url: '/oss',
+            data: formData,
+            processData: false,//不需要对数据进行处理
+            contentType: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $(".avatar").attr("src", data.object);
+                filePath = data.object;
+                $(".avatar").css('display', 'block');
+                $(".addIcon").css('display', 'none');
+                $.modal.closeLoading();
+                $('#myModal5').modal('show');
+            },
+            error: function () {
+                $.modal.closeLoading();
+                $('#myModal5').modal('show');
+            }
+        });
+    }
+
+    function createArticle() {
+        $('.head').html('');
+        $('.author').html('');
+        $('.el-textarea__inner').text('');
+        $('.editorcontent').html('<div></div>');
+
+
+        filePath = '';
+        $(".avatar").attr('src', '')
+        $(".avatar").css('display', 'none');
+        $(".addIcon").css('display', 'block');
+        $('#myModal5').modal('show');
+    }
+
+    function createArticleL() {
+        let title = $('.head').text();
+        let author = $('.author').text();
+        let body = $('.editorcontent').html();
+        if (title == '') {
+            $.modal.alertWarning("请输入标题");
+            return;
+        }
+        if (author == '') {
+            $.modal.alertWarning("请输入作者");
+            return;
+        }
+        if (body == '') {
+            $.modal.alertWarning("请输入文章内容");
+            return;
+        }
+        if (filePath == '') {
+            $.modal.alertWarning("请上传分享图片");
+            return;
+        }
+
+        body = '<div id="js_article" class="rich_media"><div class="rich_media_inner">' +
+            '<div id="page-content" class="rich_media_area_primary">' +
+            '<div id="img-content" class="rich_media_wrp"><div id="activity-name">' + title + '</div>'
+            + '<div id="meta_content">' + author + '</div>' + body + '</div></div></div></div>';
+
+        body = body + '<style>table{border-top: 1px solid #ccc;border-left: 1px solid #ccc;}' +
+            'table td, table th{border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; padding: 3px 5px;}' +
+            'table th {border-bottom: 2px solid #ccc; text-align: center;}' +
+            'blockquote{display: block;border-left: 8px solid #d0e5f2;padding: 5px 10px;margin: 10px 0;' +
+            'line-height: 1.4;font-size: 100%;background-color: #f1f1f1;}' +
+            'code {display: inline-block;*display: inline;*zoom: 1;background-color: #f1f1f1;' +
+            'border-radius: 3px;padding: 3px 5px;margin: 0 3px;}' +
+            'pre code {display: block;}' +
+            'ul, ol {margin: 10px 0 10px 20px;}</style>'
+
+        $('#myModal5').modal('hide');
+        $.modal.loading("创建文章中请等待。。。");
+        $.ajax({
+            url: path + "article/create",
+            data: {
+                'author': "",
+                'createUser': "",
+                'ids': "",
+                'isAuthorization': "0",
+                'isReserve': "0",
+                'automaticName': "",
+                'introduction': "",
+                'labelIds': "",
+                'isJoinActive': "0",
+                'articleName': title,
+                'shareImgUrl': filePath,
+                'shareDes': $('.el-textarea__inner').text(),
+                'articleContent': body
+            },
+            type: "post",
+            success: function (data) {
+                $.modal.closeLoading();
+                if (data.result) {
+                    $.modal.alertSuccess("创建成功！");
+                    $.table.search();
+                    // localStorage.setItem("nryx_articleContent", data.object.articleContent); // 文章内容
+                    // localStorage.setItem("nryx_originalUrl", data.object.originalUrl); // 文章链接
+                    // // //文章名称
+                    // localStorage.setItem("nryx_articleName", data.object.articleName); // 文章名称
+                    // localStorage.setItem("nryx_shareImgUrl", data.object.shareImgUrl); // 文章分享图片
+                    // // //文章分享标题
+                    // localStorage.setItem("nryx_shareTitle", data.object.shareTitle); // 文章分享标题
+                    // localStorage.setItem("nryx_shareDes", data.object.shareDes); // 文章分享描述
+                    // localStorage.setItem("nryx_listPicUrl", data.object.listPicUrl); // 文章列表展示图片
+                    // localStorage.setItem("nryx_adId", data.object.adId); // 广告id
+                    // localStorage.setItem("nryx_isAuthorization", data.object.isAuthorization); // 是否授权
+                    // localStorage.setItem("nryx_isJoinActive", data.object.isJoinActive); // 是否添加优选活动
+                    // localStorage['nryx_editahref'] = data.object.articleEditUrl;
+                    // $.table.refresh();
+                    // let btn = ['<i class="fa fa-close"></i> 关闭'];
+                    // let options = {
+                    //     title: '创建文章',
+                    //     url: localStorage['nryx_editahref'],
+                    //     btn: btn,
+                    //     callBack: closeFrame
+                    // };
+                    // $.modal.openOptions(options);
+                } else {
+                    $.modal.alertError(data.info)
+                }
+            },
+            error: function () {
+                $.modal.closeLoading();
+            }
+        });
+
     }
 
     /** **查询公共数据** */
@@ -1017,8 +1379,15 @@
             cache: false,
             success: function (data) {
                 if (data.result) {
-                    $.modal.open('文章预览', data.object.editUrl + '?l=1')
 
+                    let btn = ['<i class="fa fa-close"></i> 关闭'];
+                    let options = {
+                        title: '文章预览',
+                        url: data.object.editUrl + '?l=1',
+                        btn: btn,
+                        callBack: closeFrame
+                    };
+                    $.modal.openOptions(options);
                 } else {
                     $.modal.alertError("预览失败，请稍后重试！");
                 }
@@ -1027,6 +1396,10 @@
                 $.modal.alertError('系统异常,请稍后重试!');
             }
         });
+    }
+
+    function closeFrame(index, layero) {
+        $.modal.close(index);
     }
 
     //广告列表初始化
@@ -1164,7 +1537,6 @@
             success: function (data) {
                 $.modal.closeLoading();
                 if (data.result) {
-                    debugger
                     localStorage.setItem("nryx_articleContent", data.object.articleContent); // 文章内容
                     localStorage.setItem("nryx_originalUrl", data.object.originalUrl); // 文章链接
                     // //文章名称
@@ -1179,7 +1551,14 @@
                     localStorage.setItem("nryx_isJoinActive", data.object.isJoinActive); // 是否添加优选活动
                     localStorage['nryx_editahref'] = data.object.articleEditUrl;
                     $.table.refresh();
-                    $.modal.open('创建文章', localStorage['nryx_editahref'])
+                    let btn = ['<i class="fa fa-close"></i> 关闭'];
+                    let options = {
+                        title: '创建文章',
+                        url: localStorage['nryx_editahref'],
+                        btn: btn,
+                        callBack: closeFrame
+                    };
+                    $.modal.openOptions(options);
                 } else {
                     $.modal.alertError(data.info)
                 }
