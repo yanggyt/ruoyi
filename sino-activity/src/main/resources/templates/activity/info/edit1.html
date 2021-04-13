@@ -475,7 +475,11 @@
                                 <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
                                 <div class="col-sm-8">
                                     <select name="drawRule-firstawardprize" class="form-control" id="firstawardprize"
+                                            th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
                                             disabled>
+                                        <option value="">所有</option>
+                                        <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
+                                                th:value="${drawPrize.PRIZECODE}"></option>
                                     </select>
                                 </div>
                             </div>
@@ -562,7 +566,11 @@
                                     <div class="col-sm-8">
                                         <select name="drawRule-willdrawawardprize" class="form-control"
                                                 id="willdrawawardprize"
+                                                th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
                                                 disabled>
+                                            <option value="">所有</option>
+                                            <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
+                                                    th:value="${drawPrize.PRIZECODE}"></option>
                                         </select>
                                     </div>
                                 </div>

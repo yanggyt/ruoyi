@@ -471,7 +471,11 @@
                                 <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
                                 <div class="col-sm-8">
                                     <select name="drawRule-firstawardprize" class="form-control" id="firstawardprize"
+                                            th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
                                             disabled>
+                                        <option value="">所有</option>
+                                        <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
+                                                th:value="${drawPrize.PRIZECODE}"></option>
                                     </select>
                                 </div>
                             </div>
@@ -546,7 +550,12 @@
                                     <div class="col-sm-8">
                                         <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
                                                placeholder="抽奖必中计数"
-                                               class="form-control" type="text" maxlength="30" disabled>
+                                               class="form-control" type="text" maxlength="30"
+                                               th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
+                                               disabled>
+                                        <option value="">所有</option>
+                                        <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
+                                                th:value="${drawPrize.PRIZECODE}"></option>
                                     </div>
                                 </div>
                             </div>
@@ -905,32 +914,6 @@
 <th:block th:include="include :: jasny-bootstrap-js"/>
 <script th:inline="javascript">
     var prefix = ctx + "activity/info"
-
-    /**获取奖品及信息列表*/
-    $(document).ready(function () {
-        var job = "";
-        $.ajax({
-
-                url: prefix + "/prizeInfo",
-                success: function (data) {
-
-                    for (var i in data) {
-                        if (job.length == 0) {
-                            job = "<option value='" + data[i].prizecode + "'>" + data[i].prizename + "</option>"
-                        } else {
-                            job += "<option value='" + data[i].prizecode + "'>" + data[i].prizename + "</option>"
-                        }
-                    }
-                    $("#firstawardprize").html(job);
-                    $("#willdrawawardprize").html(job);
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                },
-                async: false             //false表示同步
-            }
-        );
-    });
 
     $("#form-info-add").validate({
         focusCleanup: true
