@@ -473,8 +473,7 @@
                                 <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
                                 <div class="col-sm-8">
                                     <select name="drawRule-firstawardprize" class="form-control" id="firstawardprize"
-                                            th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
-                                            disabled>
+                                            th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}">
                                         <option value="">所有</option>
                                         <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
                                                 th:value="${drawPrize.PRIZECODE}"></option>
@@ -501,7 +500,7 @@
                                     <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-dailynumber" id="dailynumber" placeholder="时间段限制次数"
-                                               class="form-control" type="text" maxlength="30" disabled th:value="*{drawRule.DAILYNUMBER}">
+                                               class="form-control" type="text" maxlength="30"  th:value="*{drawRule.DAILYNUMBER}">
                                     </div>
                                 </div>
                             </div>
@@ -514,7 +513,7 @@
                                         <div class="input-group date">
                                             <input name="drawRule-dailystarttime" id="dailystarttime" th:value="*{drawRule.DAILYSTARTTIME}"
                                                    class="form-control"
-                                                   placeholder="HH:mm:ss" type="text" disabled>
+                                                   placeholder="HH:mm:ss" type="text" >
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         </div>
                                     </div>
@@ -526,7 +525,7 @@
                                     <div class="col-sm-8">
                                         <div class="input-group date">
                                             <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control" th:value="*{drawRule.DAILYENDTIME}"
-                                                   placeholder="HH:mm:ss" type="text" disabled>
+                                                   placeholder="HH:mm:ss" type="text" >
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         </div>
                                     </div>
@@ -552,7 +551,7 @@
                                     <div class="col-sm-8">
                                         <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
                                                placeholder="抽奖必中计数" th:value="*{drawRule.WILLDRAWAWARDNUMBER}"
-                                               class="form-control" type="text" maxlength="30" disabled>
+                                               class="form-control" type="text" maxlength="30" >
                                     </div>
                                 </div>
                             </div>
@@ -564,8 +563,7 @@
                                     <div class="col-sm-8">
                                         <select name="drawRule-willdrawawardprize" class="form-control"
                                                 id="willdrawawardprize"
-                                                th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
-                                                disabled>
+                                                th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}">
                                             <option value="">所有</option>
                                             <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
                                                     th:value="${drawPrize.PRIZECODE}"></option>
@@ -934,28 +932,24 @@
 
     /**获取奖品及信息列表*/
     $(document).ready(function () {
-        var job = "";
-        $.ajax({
+        var DAILYFLAG = $("#DAILYFLAG").val();
+        alert(DAILYFLAG);
+        if(DAILYFLAG==0){
+            $("#dailynumber").attr('disabled','true');
+            $("#dailystarttime").attr('disabled','true');
+            $("#dailyendtime").attr('disabled','true');
+        }
+        var WILLDRAWFLAG = $("#WILLDRAWFLAG").val();
+        if(WILLDRAWFLAG==0){
+            $("#willdrawawardnumber").attr('disabled','true');
+            $("#willdrawawardprize").attr('disabled','true');
+        }
+        var FIRSTFLAG = $("#FIRSTFLAG").val();
+        if(FIRSTFLAG==0){
+            $("#firstawardprize").attr('disabled','true');
+        }
 
-                url: prefix + "/prizeInfo",
-                success: function (data) {
 
-                    for (var i in data) {
-                        if (job.length == 0) {
-                            job = "<option value='" + data[i].prizecode + "'>" + data[i].prizename + "</option>"
-                        } else {
-                            job += "<option value='" + data[i].prizecode + "'>" + data[i].prizename + "</option>"
-                        }
-                    }
-                    $("#firstawardprize").html(job);
-                    $("#willdrawawardprize").html(job);
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                },
-                async: false             //false表示同步
-            }
-        );
     });
 
     $("#form-info-add").validate({
