@@ -606,11 +606,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">协议内容：</label>
-                                        <div class="col-sm-8">
-                                            <textarea id="agreement"  name="actPageConfigUserinfo-agreement" cols="40" rows="6" onkeyup="updatePri(this)">
-                                              [[*{actPageConfigUserinfo.agreement}]]
-                                            </textarea>
-                                            <input type="hidden" >
+                                        <div class="col-xs-8">
+                                            <textarea id="agreement"  name="actPageConfigUserinfo-agreement" maxlength="500" onkeyup="updatePri(this)" class="form-control" rows="3">[[*{actPageConfigUserinfo.agreement}]]</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -795,10 +792,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">分享描述：</label>
-                                        <div class="col-sm-8">
-                                            <textarea id="shareDescribe"  name="actConfig-shareDesc"   cols="40" rows="6" onkeyup="updatePri(this)">
-                                             [[*{actConfig.shareDesc}]]
-                                            </textarea>
+                                        <div class="col-xs-8">
+                                            <textarea id="shareDescribe"  name="actConfig-shareDesc" maxlength="500" onkeyup="updatePri(this)" class="form-control" rows="3">[[*{actConfig.shareDesc}]]</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -828,7 +823,7 @@
                             <h4 class="form-header h4">效果图</h4>
                             <div style="height: 210px">
                                 <div class="drawShareImg2Pic">
-                                    <img  src="../../img/bj.png" height="170" width="340">
+                                    <img  src="../../../img/bj.png" height="170" width="340">
                                 </div>
                                 <div class="drawShareImgPic">
                                     <img id="shareImgimg" src="../../img/shj.jpg" width="50" height="50">
@@ -1116,7 +1111,7 @@
         if (btn2!= null && btn2 != ''){
             $("#btn2Pic").text(btn2);
         }else{
-            $("#btn2Pic").text("自定义按钮2");
+                $("#btn2Pic").text("自定义按钮2");
         }
         //加载步骤4数据
         var val = $("#activityPlayval").val();
