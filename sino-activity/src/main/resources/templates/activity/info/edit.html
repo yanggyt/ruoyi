@@ -947,8 +947,6 @@
         if(FIRSTFLAG==0){
             $("#firstawardprize").attr('disabled','true');
         }
-
-
     });
 
     $("#form-info-add").validate({
@@ -1109,9 +1107,17 @@
         var picval = $("#picval").val();
         $("#picimg").attr("src", picval);
         var btn1 = $("#btn1").val();
-        $("#btn1Pic").text(btn1);
+        if (btn1!= null && btn1 != ''){
+            $("#btn1Pic").text(btn1);
+        }else{
+            $("#btn1Pic").text("自定义按钮1");
+        }
         var btn2 = $("#btn2").val();
-        $("#btn2Pic").text(btn2);
+        if (btn2!= null && btn2 != ''){
+            $("#btn2Pic").text(btn2);
+        }else{
+            $("#btn2Pic").text("自定义按钮2");
+        }
         //加载步骤4数据
         var val = $("#activityPlayval").val();
         $("a[id = 'activityPlay']").each(function (){
@@ -1134,7 +1140,11 @@
         var agreement = $("#agreement").val();
         $("#agreementPri").text(agreement);
         var btn = $("#btn").val();
-        $("#btnPri").text(btn);
+        if (btn!= null && btn != ''){
+            $("#btnPri").text(btn);
+        }else{
+            $("#btnPri").text("自定义按钮");
+        }
         var pictureval = $("#pictureval").val();
         $("#pictureimg").attr("src", picval);
         $("input[type='checkbox'][name ^='actPageConfigUserinfo']").each(function (){
@@ -1292,7 +1302,7 @@
     }
 
     function activityTemplate(val) {
-        var path = "../../img/act/";
+        var path = "../../../img/act/";
         $(val).addClass('btn-success').siblings().removeClass('btn-success');
         var id = val.id;
         var valus = $("#"+id+".btn-success").attr("value");
