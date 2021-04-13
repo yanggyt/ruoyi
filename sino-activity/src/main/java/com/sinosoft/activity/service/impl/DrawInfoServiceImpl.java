@@ -136,6 +136,11 @@ public class DrawInfoServiceImpl implements IDrawInfoService
         return drawInfoMapper.deleteDrawInfoById(DRAWID);
     }
 
+    /**
+     * 新增抽奖活动信息
+     * @param vo
+     * @return
+     */
     @Override
     public int updateActVO(ActVO vo) {
         Date date = new Date();

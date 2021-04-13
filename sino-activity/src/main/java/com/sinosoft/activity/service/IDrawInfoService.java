@@ -68,6 +68,10 @@ public interface IDrawInfoService
      */
     public int deleteDrawInfoById(String DRAWID);
 
-
+    /**
+     * 新增抽奖活动信息
+     * @param vo
+     * @return
+     */
    public  int updateActVO(ActVO vo);
 }
