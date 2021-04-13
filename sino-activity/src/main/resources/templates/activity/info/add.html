@@ -550,12 +550,7 @@
                                     <div class="col-sm-8">
                                         <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
                                                placeholder="抽奖必中计数"
-                                               class="form-control" type="text" maxlength="30"
-                                               th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
-                                               disabled>
-                                        <option value="">所有</option>
-                                        <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
-                                                th:value="${drawPrize.PRIZECODE}"></option>
+                                               class="form-control" type="text" maxlength="30" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -567,7 +562,11 @@
                                     <div class="col-sm-8">
                                         <select name="drawRule-willdrawawardprize" class="form-control"
                                                 id="willdrawawardprize"
+                                                th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
                                                 disabled>
+                                            <option value="">所有</option>
+                                            <option th:each="drawPrize : ${drawPrize}" th:text="${drawPrize.PRIZENAME}"
+                                                    th:value="${drawPrize.PRIZECODE}"></option>
                                         </select>
                                     </div>
                                 </div>
