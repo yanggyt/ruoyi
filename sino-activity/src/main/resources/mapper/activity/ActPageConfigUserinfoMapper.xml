@@ -110,14 +110,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="btnText != null">btn_text = #{btnText},</if>
             <if test="btnLink != null">btn_link = #{btnLink},</if>
             <if test="agreement != null">agreement = #{agreement},</if>
-            <if test="userName != null">user_name = #{userName},</if>
-            <if test="mobile != null">mobile = #{mobile},</if>
-            <if test="gender != null">gender = #{gender},</if>
-            <if test="address != null">address = #{address},</if>
-            <if test="agentName != null">agent_name = #{agentName},</if>
-            <if test="agentMobile != null">agent_mobile = #{agentMobile},</if>
-            <if test="agentGender != null">agent_gender = #{agentGender},</if>
-            <if test="agentNo != null">agent_no = #{agentNo},</if>
+            user_name = #{userName},
+            mobile = #{mobile},
+            gender = #{gender},
+            address = #{address},
+            agent_name = #{agentName},
+            agent_mobile = #{agentMobile},
+            agent_gender = #{agentGender},
+            agent_no = #{agentNo},
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
