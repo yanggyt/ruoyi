@@ -741,7 +741,7 @@
     function createArticle() {
         $('.head').html('');
         $('.author').html('');
-        $('.el-textarea__inner').text('');
+        $('.el-textarea__inner').val('');
         $('.editorcontent').html('<div></div>');
 
 
@@ -776,7 +776,7 @@
         body = '<div id="js_article" class="rich_media"><div class="rich_media_inner">' +
             '<div id="page-content" class="rich_media_area_primary">' +
             '<div id="img-content" class="rich_media_wrp"><div id="activity-name">' + title + '</div>'
-            + '<div id="meta_content">' + author + '</div>' + body + '</div></div></div></div>';
+            + '<div id="meta_content">' + author + '</div><div id="bodycontent">' + body + '</div></div></div></div></div>';
 
         body = body + '<style>table{border-top: 1px solid #ccc;border-left: 1px solid #ccc;}' +
             'table td, table th{border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; padding: 3px 5px;}' +
@@ -786,7 +786,12 @@
             'code {display: inline-block;*display: inline;*zoom: 1;background-color: #f1f1f1;' +
             'border-radius: 3px;padding: 3px 5px;margin: 0 3px;}' +
             'pre code {display: block;}' +
-            'ul, ol {margin: 10px 0 10px 20px;}</style>'
+            'ul, ol {margin: 10px 0 10px 20px;}' +
+            '#activity-name,#meta_content{display: block;width: 100%;font-size: 20px;color: #000;' +
+            'min-height: 30px;margin-bottom: 5px;outline: none;resize: none;border: none;}' +
+            '#activity-name{font-size: 24px;}' +
+            '#bodycontent{font-size: 18px;line-height: 20px;padding-top: 10px;}' +
+            '#bodycontent div{min-height: 27.43px;}</style>';
 
         $('#myModal5').modal('hide');
         $.modal.loading("创建文章中请等待。。。");
