@@ -1308,8 +1308,12 @@
         $("#"+id+"img").attr("src",path+valus+".jpg");
         if (valus != "0"){
             $("#activityPlaydiv").css('display','block');//显示
+            $("#activityTemplateimg").css('display','block');//显示
+            $("#activityPlayimg").css('display','block');//显示
         }else{
             $("#activityPlaydiv").css('display','none');//隐藏
+            $("#activityTemplateimg").css('display','none');
+            $("#activityPlayimg").css('display','none');
         }
 
     }
