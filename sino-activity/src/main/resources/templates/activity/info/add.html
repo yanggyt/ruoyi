@@ -8,17 +8,17 @@
 </head>
 <style type='text/css'>
     /* 如果要让工具栏固定在页面底部,使用下面的样式,不需要的可以注释 */
-    .sw>.toolbar-bottom{
-        z-index: 100;
-        bottom: 0px;
-        left: 0;
-        width: 100%;
-        position: fixed;
-        text-align: right;
-        background: #fff;
-        box-shadow: 0 -2px 6px 1px hsla(223,8%,83%,.5);
-        border-top: 1px solid #e3e4e8;
-    }
+    /*.sw>.toolbar-bottom{*/
+    /*    z-index: 100;*/
+    /*    bottom: 0px;*/
+    /*    left: 0;*/
+    /*    width: 100%;*/
+    /*    position: fixed;*/
+    /*    text-align: right;*/
+    /*    background: #fff;*/
+    /*    box-shadow: 0 -2px 6px 1px hsla(223,8%,83%,.5);*/
+    /*    border-top: 1px solid #e3e4e8;*/
+    /*}*/
     .rightarea {
         float: left;
         width: 40%;
@@ -31,10 +31,10 @@
         height: 500px;
     }
 
-    .sw > .tab-content {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
+    /*.sw > .tab-content {*/
+    /*    overflow-x: hidden;*/
+    /*    overflow-y: auto;*/
+    /*}*/
 
     .col-sm-6 {
         width: 50%;
@@ -320,7 +320,7 @@
                     </div>
                 </div>
                 <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
-                    <div style="height: 400px">
+                    <div style="height: 500px">
                         <h4 class="form-header h4">第2步-选择UI模板</h4>
                         <div th:with="type=${@dict.getType('activityTemplate')}">
                             <a id="activityTemplate" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
@@ -330,7 +330,7 @@
                         </div>
                         <input id="activityTemplateval" name="actConfig-pageStyle" value="" type="hidden">
                         <h4 id="activityTemplateh4" class="form-header h4">暂不选择</h4>
-                        <img id="activityTemplateimg" src="../../img/yun.jpg" width="60%" height="400" style="display: none">
+                        <img id="activityTemplateimg" src="../../img/yun.jpg" width="60%" height="400px" style="display: none">
                     </div>
                 </div>
                 <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3" style="height: 100%">
@@ -450,7 +450,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4" style="height: 100%">
+                <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4" style="height: 120%">
                     <h4 class="form-header h4">第4步-选择玩法</h4>
                     <div th:with="type=${@dict.getType('activityPlay')}">
                         <a id="activityPlay" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
