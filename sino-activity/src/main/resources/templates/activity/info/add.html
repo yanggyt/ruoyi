@@ -320,7 +320,7 @@
                     </div>
                 </div>
                 <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
-                    <div style="height: 500px">
+                    <div style="height: 600px">
                         <h4 class="form-header h4">第2步-选择UI模板</h4>
                         <div th:with="type=${@dict.getType('activityTemplate')}">
                             <a id="activityTemplate" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
