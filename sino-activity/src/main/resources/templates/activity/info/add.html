@@ -320,7 +320,7 @@
                     </div>
                 </div>
                 <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
-                    <div>
+                    <div style="height: 400px">
                         <h4 class="form-header h4">第2步-选择UI模板</h4>
                         <div th:with="type=${@dict.getType('activityTemplate')}">
                             <a id="activityTemplate" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
@@ -330,7 +330,7 @@
                         </div>
                         <input id="activityTemplateval" name="actConfig-pageStyle" value="" type="hidden">
                         <h4 id="activityTemplateh4" class="form-header h4">暂不选择</h4>
-                        <img id="activityTemplateimg" src="../../img/yun.jpg" width="60%" height="400">
+                        <img id="activityTemplateimg" src="../../img/yun.jpg" width="60%" height="400" style="display: none">
                     </div>
                 </div>
                 <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3" style="height: 100%">
@@ -459,7 +459,9 @@
                            th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
                     </div>
                     <input type="hidden" name="actConfig-actType" id="activityPlayval" value="">
-                    <img id="activityPlayimg" src="../../img/act/0.jpg" width="60%" height="300">
+                    <div style="height: 300">
+                        <img id="activityPlayimg" src="../../img/act/0.jpg" width="60%" height="300" style="display: none">
+                    </div>
                     <h4 class="form-header h4">活动规则</h4>
                     <div class="row" id="activityPlaydiv" style="display: none">
                         <div class="col-sm-6">
@@ -1188,9 +1190,12 @@
         $("#"+id+"img").attr("src",path+valus+".jpg");
         if (valus != "0"){
             $("#activityPlaydiv").css('display','block');//显示
+            $("#activityTemplateimg").css('display','block');//显示
+            $("#activityPlayimg").css('display','block');//显示
         }else{
             $("#activityPlaydiv").css('display','none');//隐藏
-            $('#smartwizard').smartWizard();
+            $("#activityTemplateimg").css('display','none');
+            $("#activityPlayimg").css('display','none');
         }
 
     }
