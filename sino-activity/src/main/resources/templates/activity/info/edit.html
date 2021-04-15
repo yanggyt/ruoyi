@@ -5,6 +5,7 @@
     <th:block th:include="include :: datetimepicker-css"/>
     <th:block th:include="include :: jquery-smartwizard-css"/>
     <th:block th:include="include :: jasny-bootstrap-css"/>
+    <th:block th:include="include :: summernote-css" />
 </head>
 <style type='text/css'>
     /*.sw>.toolbar-bottom{*/
@@ -207,7 +208,7 @@
 
 </style>
 <body class="white-bg">
-<div class="wrapper wrapper-content animated fadeInRight ibox-content" style="height: 100%;">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content" >
     <form class="form-horizontal m" id="form-info-add" th:object="${vo}">
         <input name="drawInfo-drawid" th:value="*{drawInfo.DRAWID}" type="hidden">
         <input name="drawInfo-drawcode" th:value="*{drawInfo.DRAWCODE}" type="hidden">
@@ -332,7 +333,7 @@
                         <img id="activityTemplateimg" src="../../img/act/0.jpg" width="60%" height="400px">
                     </div>
                 </div>
-                <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3" style="height: 100%">
+                <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3" style="height: 130%">
                     <div style="">
                         <div class="leftarea">
                             <h4 class="form-header h4">第3步-配置展现内容</h4>
@@ -419,18 +420,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
+                            <div class="row" style="height: 850">
+                                <div class="form-group" style="float: left">
+                                    <div  style="width: 60%">
                                         <label class="col-sm-4 control-label is-required">按钮2页面内容：</label>
-                                        <!--                                            <input name="actPageConfigGuide-btnLink2" placeholder="例如：http：//xx"-->
-                                        <!--                                                   class="form-control"-->
-                                        <!--                                                   type="text"-->
-                                        <!--                                                   maxlength="30">-->
-                                        <div class="col-xs-8">
-                                            <textarea  name="actPageConfigGuide-btnLink2" maxlength="500" class="form-control" rows="5" aria-invalid="false" placeholder="例如：http：//xx"></textarea>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="summernote">
+                                            例如：http：//xx
                                         </div>
                                     </div>
+                                    <textarea id="btnLink2"  type="text" th:value="*{actPageConfigGuide.btnLink2}"  name="actPageConfigGuide-btnLink2" maxlength="500" class="form-control" rows="5" aria-invalid="false" placeholder="" style="display: none"></textarea>
                                 </div>
                             </div>
 
@@ -920,6 +920,7 @@
 <th:block th:include="include :: datetimepicker-js"/>
 <th:block th:include="include :: jquery-smartwizard-js"/>
 <th:block th:include="include :: jasny-bootstrap-js"/>
+<th:block th:include="include :: summernote-js" />
 <script th:inline="javascript">
     var prefix = ctx + "activity/info"
 
@@ -1038,6 +1039,8 @@
             .addClass('btn btn-info')
             .on('click', function () {
                 //添加保存逻辑
+                var markupStr  = $('.summernote').summernote('code');
+                $("#btnLink2").val(markupStr);
                 var data = customSerialize("form-info-add", true);
                 $.ajax({
                     url: prefix + "/edit",
@@ -1114,6 +1117,12 @@
         }else{
                 $("#btn2Pic").text("自定义按钮2");
         }
+        $('.summernote').summernote({
+            height:200,
+            lang: 'zh-CN'
+        });
+        var linkvar = [[${vo.actPageConfigGuide.btnLink2}]];
+        $('.summernote').summernote('code',linkvar);
         //加载步骤4数据
         var val = $("#activityPlayval").val();
         $("a[id = 'activityPlay']").each(function (){
