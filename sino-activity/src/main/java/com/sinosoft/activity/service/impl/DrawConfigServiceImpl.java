@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sinosoft.activity.domain.DrawConfig;
 import com.sinosoft.activity.mapper.DrawConfigMapper;
+import com.sinosoft.activity.mapper.DrawInfoMapper;
 import com.sinosoft.activity.service.IDrawConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class DrawConfigServiceImpl implements IDrawConfigService
 {
     @Autowired
     private DrawConfigMapper drawConfigMapper;
+    @Autowired
+    private DrawInfoMapper drawInfoMapper;
 
     /**
      * 查询存储奖项配置信息列表
@@ -32,6 +35,11 @@ public class DrawConfigServiceImpl implements IDrawConfigService
     public DrawConfig selectDrawConfigById(String DRAWCONFIGID)
     {
         return drawConfigMapper.selectDrawConfigById(DRAWCONFIGID);
+    }
+    @Override
+    public DrawConfig selectDrawConfigByDraw(DrawConfig drawConfig)
+    {
+        return drawConfigMapper.selectDrawConfigByDraw(drawConfig);
     }
 
     /**
@@ -68,6 +76,20 @@ public class DrawConfigServiceImpl implements IDrawConfigService
     public int updateDrawConfig(DrawConfig drawConfig)
     {
         return drawConfigMapper.updateDrawConfig(drawConfig);
+    }
+    @Override
+    public int updateDrawConfigNumAndStatus(DrawConfig drawConfig)
+    {
+        int result = drawConfigMapper.updateDrawConfigNumAndStatus(drawConfig);
+        drawInfoMapper.updateDrawInfoFlag(drawConfig.getDRAWCODE());
+        return result;
+    }
+    @Override
+    public int updateDrawConfigRollback(DrawConfig drawConfig)
+    {
+        int result = drawConfigMapper.updateDrawConfigRollback(drawConfig);
+        drawInfoMapper.updateDrawInfoFlag(drawConfig.getDRAWCODE());
+        return result;
     }
 
     /**

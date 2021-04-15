@@ -77,7 +77,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDrawConfigVo"/>
         where DRAWCONFIGID = #{DRAWCONFIGID}
     </select>
-        
+
+    <select id="selectDrawConfigByDraw" parameterType="DrawConfig" resultMap="DrawConfigResult">
+        <include refid="selectDrawConfigVo"/>
+        <where>
+            <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="PRIZELEVEL != null  and PRIZELEVEL != ''"> and PRIZELEVEL = #{PRIZELEVEL}</if>
+            <if test="AVAILABLENUMBER != null "> and AVAILABLENUMBER > #{AVAILABLENUMBER}</if>
+            <if test="STATUS != null  and STATUS != ''"> and STATUS = #{STATUS}</if>
+        </where>
+    </select>
+
     <insert id="insertDrawConfig" parameterType="DrawConfig">
         insert into draw_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -120,6 +131,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <update id="updateDrawConfigNumAndStatus" parameterType="DrawConfig">
+        update draw_config t
+        set
+            t.availablenumber=case when t.availablenumber>=1
+                then  t.availablenumber-1 else t.availablenumber end,
+            t.status=case when t.availablenumber-1>0 then 1 else 0 end
+        where
+            t.drawcode=#{DRAWCODE} and t.prizecode=#{PRIZECODE}
+            and t.prizelevel=#{PRIZELEVEL}
+    </update>
+    <update id="updateDrawConfigRollback" parameterType="DrawConfig">
+        update draw_config t
+        set
+            t.availablenumber=t.availablenumber+1,t.status='1'
+        where
+            t.drawcode=#{DRAWCODE} and t.prizecode=#{PRIZECODE}
+            and t.prizelevel=#{PRIZELEVEL}
+    </update>
     <update id="updateDrawConfig" parameterType="DrawConfig">
         update draw_config
         <trim prefix="SET" suffixOverrides=",">

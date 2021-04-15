@@ -100,6 +100,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <update id="updateDrawInfoFlag" parameterType="String">
+        update gt_draw_info set updateFlag='1' where drawCode=#{DRAWCODE}
+    </update>
     <update id="updateDrawInfo" parameterType="DrawInfo">
         update draw_info
         <trim prefix="SET" suffixOverrides=",">

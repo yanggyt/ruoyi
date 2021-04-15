@@ -81,6 +81,10 @@
 
         <dependency>
             <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-system</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
             <artifactId>sino-activity</artifactId>
         </dependency>
         <dependency>

@@ -2,24 +2,31 @@ package com.ruoyi.service;
 
 import com.ruoyi.cache.Cache;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.dto.DrawActivityRequest;
+import com.ruoyi.dto.DrawActivityResult;
 import com.ruoyi.dto.GtPrizeConfigTemp;
+import com.ruoyi.thread.DrawActivityThread;
+import com.ruoyi.thread.ThreadPool;
 import com.ruoyi.web.vo.Const;
+import com.ruoyi.web.vo.draw.DrawResult;
 import com.sinosoft.activity.domain.DrawConfig;
+import com.sinosoft.activity.domain.DrawInfo;
 import com.sinosoft.activity.domain.DrawPrizeInfo;
 import com.sinosoft.activity.domain.DrawRule;
 import com.sinosoft.activity.service.IDrawConfigService;
+import com.sinosoft.activity.service.IDrawInfoService;
 import com.sinosoft.activity.service.IDrawPrizeInfoService;
 import com.sinosoft.activity.service.IDrawRuleService;
 import com.sinosoft.activity.vo.PrizeInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class DrawService {
 
@@ -30,6 +37,85 @@ public class DrawService {
     private IDrawConfigService drawConfigService;
     @Autowired
     private IDrawPrizeInfoService drawPrizeInfoService;
+    @Autowired
+    private IDrawInfoService drawInfoService;
+
+    /**
+     * 抽奖实现主方法
+     */
+    public DrawResult drawActivity(DrawActivityRequest request) {
+        long start = System.currentTimeMillis();
+        long end = 0;
+        long proct = 0;
+        String exception = "";
+        DrawResult drawResult = new DrawResult();
+        long point = System.currentTimeMillis();
+        logger.info("抽奖开始时间:" + request.getSerialNo() + ":" + point);
+        try {
+            // 校验体信息
+            String drawCode = request.getDrawCode();
+            if(StringUtils.isBlank(drawCode)){
+                return processResp(request, DrawActivityResult.EXCEPTION_000001,
+                        DrawActivityResult.getMsg(DrawActivityResult.EXCEPTION_000001, "drawCode参数为空"));
+            }
+            long point1 = System.currentTimeMillis();
+            logger.info("抽奖检查点1:" + request.getSerialNo() + ":" + point1 + "与前一个检查点时间差" + (point1 - point));
+            // 查询活动信息
+            DrawInfo queryInfo = new DrawInfo();
+            queryInfo.setDRAWCODE(drawCode);
+            queryInfo.setSTATUS(Const.DRAW_STATUS_EFFECTIVE);
+            List<DrawInfo> drawInfos = drawInfoService.selectDrawInfoList(queryInfo);
+            if (drawInfos == null || drawInfos.size() == 0) {
+                drawResult.setRespCode("-3");
+                drawResult.setRespMsg("活动未开启");
+                return processResp(request, DrawActivityResult.EXCEPTION_000011,
+                        DrawActivityResult.getMsg(DrawActivityResult.EXCEPTION_000011));
+            }
+            DrawInfo drawInfo = drawInfos.get(0);
+            Date starttime = drawInfo.getSTARTTIME();
+            Date endtime = drawInfo.getENDTIME();
+            Date currDate = new Date();
+            if (currDate.before(starttime) || currDate.after(endtime)) {
+                return processResp(request, DrawActivityResult.EXCEPTION_000011,
+                        DrawActivityResult.getMsg(DrawActivityResult.EXCEPTION_000011));
+            }
+            long point2 = System.currentTimeMillis();
+            logger.info("抽奖检查点2:" + request.getSerialNo() + ":" + point2 + "与前一个检查点时间差" + (point2 - point1));
+            String currentDateStr = DateUtils.dateTime();
+            DrawInfo gtDrawInfo = null;
+            if ("1".equals(gtDrawInfo.getUPDATEFLAG()) || Cache.get("_" + drawCode + "_currentDateStr_") == null
+                || Cache.get("_" + drawCode + "_" + currentDateStr + "_rule_") == null
+                || Cache.get("_" + drawCode + "_" + currentDateStr + "_config_") == null
+                || Cache.get("_" + drawCode + "_blank_") == null || Cache.get("_" + drawCode + "_blankConfig_") == null
+                || Cache.get("_" + drawCode + "_" + currentDateStr + "_gtDrawConfigList_") == null
+                || Cache.get("_" + drawCode + "_" + currentDateStr + "_baseNumber_") == null) {
+                // 刷新缓存
+                loadDrawRule(drawCode);
+                gtDrawInfo.setUPDATEFLAG("0");
+                drawInfoService.updateDrawInfo(gtDrawInfo);
+            }
+            long point3 = System.currentTimeMillis();
+            logger.info("抽奖检查点3:" + request.getSerialNo() + ":" + point3 + "与前一个检查点时间差" + (point3 - point2));
+            DrawRule gtDrawRule = (DrawRule) Cache.get("_" + drawCode + "_" + currentDateStr + "_rule_");
+            Future<DrawResult> resFuture = ThreadPool.drawActivityExecutorService.submit(new DrawActivityThread(request, gtDrawInfo, gtDrawRule, drawResult));
+            drawResult = resFuture.get(15 * 1000, TimeUnit.SECONDS);
+            end = System.currentTimeMillis();
+            logger.info("抽奖接口返回:" + request.getSerialNo() + "&返回时间" + end + "总时间" + (end - point));
+            return drawResult;
+        } catch (Exception e) {
+            drawResult = processResp(request, DrawActivityResult.EXCEPTION, DrawActivityResult.getMsg(DrawActivityResult.EXCEPTION));
+            logger.error("抽奖接口异常，异常原因：", e);
+            return drawResult;
+        }
+    }
+
+    private DrawResult processResp(DrawActivityRequest request, String resultCode, String resultInfo) {
+        DrawResult response = new DrawResult();
+        response.setRespCode(resultCode);
+        response.setRespMsg(resultInfo);
+        return response;
+    }
+
     /**
      * 刷新抽奖需要的缓存信息
      *
@@ -59,7 +145,7 @@ public class DrawService {
 //        gtDrawConfigQueryRule.addAscOrder("prizeLevel");
         DrawConfig drawConfigParams = new DrawConfig();
         drawConfigParams.setDRAWCODE(drawCode);
-        drawConfigParams.setSTATUS(Const.STATUS_VALID);
+        drawConfigParams.setSTATUS(Const.DRAW_CONFIG_STATUS_EFFECTIVE);
         List<DrawConfig> drawConfigs = drawConfigService.selectDrawConfigList(drawConfigParams);
         cacheAdd("_" + drawCode + "_" + currentDateStr + "_config_", drawConfigs, "_" + drawCode + "_" + yesterdayDateStr + "_config_", timeOut);
         // 空奖奖项配置

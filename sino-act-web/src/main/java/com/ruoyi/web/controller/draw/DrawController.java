@@ -1,11 +1,10 @@
 package com.ruoyi.web.controller.draw;
 
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.web.vo.Const;
+import com.ruoyi.dto.DrawActivityRequest;
 import com.ruoyi.web.vo.Result;
 import com.ruoyi.web.vo.draw.*;
 import com.sinosoft.activity.domain.DrawConfig;
-import com.sinosoft.activity.domain.DrawInfo;
 import com.sinosoft.activity.service.IDrawConfigService;
 import com.sinosoft.activity.service.IDrawInfoService;
 import com.sinosoft.activity.service.IDrawTaskNotifyService;
@@ -24,9 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 抽奖Controller
@@ -133,62 +130,17 @@ public class DrawController {
             }
             String openid = userInfo.getOpenid();
             String userName = userInfo.getNickname();
-
-            DrawInfo queryInfo = new DrawInfo();
-            queryInfo.setDRAWCODE(drawCode);
-            queryInfo.setSTATUS(Const.STATUS_VALID);
-            List<DrawInfo> drawInfos = drawInfoService.selectDrawInfoList(queryInfo);
-            if (drawInfos == null || drawInfos.size() == 0) {
-                result.setRespCode("-3");
-                result.setRespMsg("活动未开启");
-                return result;
-            }
-            DrawInfo drawInfo = drawInfos.get(0);
-            Date starttime = drawInfo.getSTARTTIME();
-            Date endtime = drawInfo.getENDTIME();
-            Date currDate = new Date();
-            if (currDate.before(starttime) || currDate.after(endtime)) {
-                result.setRespCode("-3");
-                result.setRespMsg("活动未开始");
-                return result;
-            }
-//            String userAccount = geUserPersonal.getUserAccount();
-//            String mobile = geUserPersonal.getMobliePhone();
-//            DrawActivityRequestBody body = new DrawActivityRequestBody();
-//            body.setDrawCode(drawCode);
-//            body.setUserId(openid);
-//            body.setUserType("01");
-//            body.setUserName(StringUtils.isBlank(userName)?userAccount:userName);
-//            body.setDrawTime(DateUtil.convertDate(new Date(), DateUtil.YYYYMMDDHHMMSSS));
-//            body.setMerchantCode("MerchantCode");
-//            body.setMerchantSysCode("MerchantSysCode");
-//            body.setBusinessArea("6");
-//            body.setChannel("WEIXIN");
-//            body.setSource("24");
-//            body.setPhone(mobile);
-//            DrawActivityResponse drawActivityResponse = activityService.drawActivityService(body).get_return();
-//            DrawActivityResponseHeader header = drawActivityResponse.getHeader();
-//            String resultCode = header.getResultCode();
-//            if (!WSResult.SUCCESS.equals(resultCode)) {
-//                result.setRespCode(resultCode);
-//                result.setRespMsg(WSResult.getMsg(resultCode));
-//                return result;
-//            }
-//            DrawActivityResponseBody responseBody = drawActivityResponse.getBody();
-//            String prizeCode = responseBody.getPrizeCode();
-//            result.setPrizeCode(prizeCode);
-//            String prizeName = responseBody.getPrizeName();
-//            result.setPrizeName(prizeName);
-//            String prizeType = responseBody.getPrizeType();
-//            result.setPrizeType(prizeType);
-//            result.setPrizeLevel(responseBody.getPrizeLevel());
-//            result.setDisplayOrder(responseBody.getDisplayOrder());
-//            result.setCue(responseBody.getCue());
-//            result.setAvailable(responseBody.getAvailable());
-//            String extId = responseBody.getExtId();
-//            result.setExtId(extId);
-//            result.setGatewayFlow(responseBody.getGatewayFolw());
-//            result.setResult(responseBody.getResult());
+            DrawActivityRequest body = new DrawActivityRequest();
+            body.setDrawCode(drawCode);
+            body.setUserId(openid);
+            body.setUserType("01");
+            body.setUserName(userName);
+            body.setDrawTime(DateUtils.dateTimeNow(DateUtils.YYYYMMDDHHMMSSS));
+            body.setMerchantCode("MerchantCode");
+            body.setMerchantSysCode("MerchantSysCode");
+            body.setBusinessArea("6");
+            body.setChannel("WEIXIN");
+            body.setSource("24");
         } catch (Exception e) {
             result.setRespCode("-1");
             result.setRespMsg("系统异常，请稍后再试");

@@ -50,8 +50,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="PHONE != null  and PHONE != ''"> and PHONE = #{PHONE}</if>
             <if test="EXTAREA != null  and EXTAREA != ''"> and EXTAREA = #{EXTAREA}</if>
         </where>
+        <if test="params.start != null  and params.start != ''"> limit #{params.start}, #{params.end}</if>
+        order by CREATETIMESTAMP desc
     </select>
-    
+
+    <select id="selectDrawRecordCount" parameterType="DrawRecord" resultType="Long">
+        select count(*) from draw_record
+        <where>
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="USERID != null  and USERID != ''"> and USERID = #{USERID}</if>
+            <if test="DRAWRESULT != null  and DRAWRESULT != ''"> and DRAWRESULT = #{DRAWRESULT}</if>
+            <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
+            <if test="PRIZETYPE != null  and PRIZETYPE != ''"> and PRIZETYPE = #{PRIZETYPE}</if>
+            <if test="params.startTime != null "> and createTimeStamp >= to_date(#{params.startTime},'yyyy-MM-dd hh24:mi:ss')</if>
+            <if test="params.endTime != null "> and createTimeStamp &lt;= to_date(#{params.endTime},'yyyy-MM-dd hh24:mi:ss')</if>
+            <if test="CHANNEL != null  and CHANNEL != ''"> and CHANNEL = #{CHANNEL}</if>
+            <if test="USERNAME != null  and USERNAME != ''"> and USERNAME like concat('%', #{USERNAME}, '%')</if>
+            <if test="PRIZELEVEL != null  and PRIZELEVEL != ''"> and PRIZELEVEL = #{PRIZELEVEL}</if>
+            <if test="PROJECTCODE != null  and PROJECTCODE != ''"> and PROJECTCODE = #{PROJECTCODE}</if>
+            <if test="SOURCE != null  and SOURCE != ''"> and SOURCE = #{SOURCE}</if>
+            <if test="PHONE != null  and PHONE != ''"> and PHONE = #{PHONE}</if>
+            <if test="EXTAREA != null  and EXTAREA != ''"> and EXTAREA = #{EXTAREA}</if>
+        </where>
+    </select>
+
     <select id="selectDrawRecordById" parameterType="String" resultMap="DrawRecordResult">
         <include refid="selectDrawRecordVo"/>
         where DRAWRECORDID = #{DRAWRECORDID}

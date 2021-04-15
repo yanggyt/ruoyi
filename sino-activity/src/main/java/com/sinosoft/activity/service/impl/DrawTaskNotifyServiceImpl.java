@@ -1,6 +1,10 @@
 package com.sinosoft.activity.service.impl;
 
+import java.util.Date;
 import java.util.List;
+
+import com.sinosoft.activity.domain.DrawTaskConsume;
+import com.sinosoft.activity.mapper.DrawTaskConsumeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sinosoft.activity.mapper.DrawTaskNotifyMapper;
@@ -19,6 +23,8 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
 {
     @Autowired
     private DrawTaskNotifyMapper drawTaskNotifyMapper;
+    @Autowired
+    private DrawTaskConsumeMapper drawTaskConsumeMapper;
 
     /**
      * 查询活动次数记录信息
@@ -71,6 +77,36 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
     public int updateDrawTaskNotify(DrawTaskNotify drawTaskNotify)
     {
         return drawTaskNotifyMapper.updateDrawTaskNotify(drawTaskNotify);
+    }
+    @Override
+    public String updateDrawTaskNotifyNum(DrawTaskNotify drawTaskNotify)
+    {
+        DrawTaskNotify queryParams = new DrawTaskNotify();
+        queryParams.setUSERID(drawTaskNotify.getUSERID());
+        queryParams.setDRAWCODE(drawTaskNotify.getDRAWCODE());
+        queryParams.setSTATE("1");
+        List<DrawTaskNotify> drawTaskNotifies = drawTaskNotifyMapper.selectDrawTaskNotifyList(queryParams);
+        if (drawTaskNotifies == null || drawTaskNotifies.size() == 0) {
+            return null;
+        }
+        DrawTaskNotify taskNotify = drawTaskNotifies.get(drawTaskNotifies.size() - 1);
+        String taskNotifyId = taskNotify.getTASKNOTIFYID();
+        int result = drawTaskNotifyMapper.updateDrawTaskNotifyNum(taskNotifyId);
+        if (result > 0) {
+            DrawTaskConsume gtTaskConsume = new DrawTaskConsume();
+            gtTaskConsume.setCONSUMENUMBER(1L);
+            gtTaskConsume.setCreateTime(new Date());
+            gtTaskConsume.setDRAWCODE(taskNotify.getDRAWCODE());
+            gtTaskConsume.setLASTUPDATETIMESTAMP(new Date());
+            gtTaskConsume.setSTATE("0");
+            gtTaskConsume.setTASKID(taskNotify.getTASKID());
+            gtTaskConsume.setTASKNOTIFYID(taskNotifyId);
+            gtTaskConsume.setTYPE(taskNotify.getTYPE());
+            gtTaskConsume.setUSERID(taskNotify.getUSERID());
+            drawTaskConsumeMapper.insertDrawTaskConsume(gtTaskConsume);
+            return gtTaskConsume.getTASKCONSUMEID();
+        }
+        return null;
     }
 
     /**

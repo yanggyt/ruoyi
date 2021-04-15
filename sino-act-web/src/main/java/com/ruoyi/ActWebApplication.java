@@ -16,7 +16,6 @@ public class ActWebApplication
     {
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(ActWebApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  活动前端服务启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
-                " ''-'   `'-'    `-..-'              ");
+        System.out.println("Activity Server Running Successful");
     }
 }

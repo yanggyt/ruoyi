@@ -27,6 +27,7 @@ public interface DrawConfigMapper
      * @return 存储奖项配置信息对象集合
      */
     public List<DrawConfig> selectDrawConfigList(DrawConfig drawConfig);
+    public DrawConfig selectDrawConfigByDraw(DrawConfig drawConfig);
 
     /**
      * 新增存储奖项配置信息对象
@@ -43,6 +44,8 @@ public interface DrawConfigMapper
      * @return 结果
      */
     public int updateDrawConfig(DrawConfig drawConfig);
+    public int updateDrawConfigNumAndStatus(DrawConfig drawConfig);
+    public int updateDrawConfigRollback(DrawConfig drawConfig);
 
     /**
      * 删除存储奖项配置信息对象

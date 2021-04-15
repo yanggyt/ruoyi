@@ -67,6 +67,11 @@ public class DrawTaskConsumeServiceImpl implements IDrawTaskConsumeService
     {
         return drawTaskConsumeMapper.updateDrawTaskConsume(drawTaskConsume);
     }
+    @Override
+    public int updateDrawTaskConsumeState(DrawTaskConsume drawTaskConsume)
+    {
+        return drawTaskConsumeMapper.updateDrawTaskConsumeState(drawTaskConsume);
+    }
 
     /**
      * 删除抽奖次数消费信息对象
