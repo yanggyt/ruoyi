@@ -238,6 +238,8 @@
         <module>ruoyi-generator</module>
         <module>sino-activity</module>
         <module>ruoyi-common</module>
+        <module>sino-act-web</module>
+
     </modules>
     <packaging>pom</packaging>
 

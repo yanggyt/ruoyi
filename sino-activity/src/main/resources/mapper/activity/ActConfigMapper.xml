@@ -78,7 +78,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="pageStyle != null">page_style = #{pageStyle},</if>
             <if test="actType != null">act_type = #{actType},</if>
-            <if test="actCode != null and actCode != ''">act_code = #{actCode},</if>
             <if test="actName != null">act_name = #{actName},</if>
             <if test="shareTitle != null">share_title = #{shareTitle},</if>
             <if test="shareDesc != null">share_desc = #{shareDesc},</if>
@@ -87,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where id = #{id}
+        where act_code = #{actCode}
     </update>
 
     <delete id="deleteActConfigById" parameterType="Integer">
