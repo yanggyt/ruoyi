@@ -1,17 +1,20 @@
 package com.ruoyi.web.controller.draw;
 
-import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.web.vo.Const;
 import com.ruoyi.web.vo.Result;
 import com.ruoyi.web.vo.draw.*;
+import com.sinosoft.activity.domain.ActConfig;
+import com.sinosoft.activity.domain.ActPageConfigGuide;
 import com.sinosoft.activity.domain.DrawConfig;
 import com.sinosoft.activity.domain.DrawInfo;
-import com.sinosoft.activity.service.IDrawConfigService;
-import com.sinosoft.activity.service.IDrawInfoService;
-import com.sinosoft.activity.service.IDrawTaskNotifyService;
+import com.sinosoft.activity.service.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
 import me.chanjar.weixin.mp.api.WxMpService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +29,13 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 抽奖Controller
  * @author huayue
  * @since 2020-08-13
  */
+@Api("活动管理")
 @Controller
 @RequestMapping("/draw")
 public class DrawController {
@@ -46,6 +49,10 @@ public class DrawController {
     private IDrawInfoService drawInfoService;
     @Autowired
     private WxMpService wxService;
+    @Autowired
+    private IActPageConfigGuideService actPageConfigGuideService;
+    @Autowired
+    private IActConfigService actConfigService;
 
     private WxOAuth2UserInfo getUserInfo(HttpServletRequest request, String code) throws Exception {
 //        if (!this.wxService.switchover(appid)) {
@@ -340,5 +347,41 @@ public class DrawController {
         }
         return result;
     }
+
+    /**
+     *  获取活动配置展示信息，根据活动编码
+     *  todo 判断活动状态
+     * @param request
+     * @param actCode
+     * @return
+     */
+    @ApiOperation("获取活动配置展示信息")
+    @ApiImplicitParam(name = "actCode", value = "活动编码", required = true, dataType = "string", paramType = "path")
+    @RequestMapping(value="/guide", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getActGuide(HttpServletRequest request, String actCode) {
+        ActGuideResult result = new ActGuideResult();
+        try {
+            //查询活动内容
+            DrawInfo drawInfo = new DrawInfo();
+            drawInfo.setDRAWCODE(actCode);
+            drawInfo.setSTATUS("1");
+            List<DrawInfo> drawInfos = drawInfoService.selectDrawInfoList(drawInfo);
+            result.setDrawInfo(drawInfos.get(0));
+            //查询获取风格
+            ActConfig actConfig = actConfigService.selectActConfigByCode(actCode);
+            result.setPageStyle(actConfig.getPageStyle());
+            result.setActType(actConfig.getActType());
+            //获取页面展示内容配置
+            ActPageConfigGuide actPageConfigGuide = actPageConfigGuideService.selectActPageConfigGuideByCode(actCode);
+            result.setActPageConfigGuide(actPageConfigGuide);
+        }catch (Exception e){
+            result.setRespCode("-1");
+            result.setRespMsg("系统异常，请稍后再试");
+            logger.error("DrawController.saveAddress ex: ", e);
+        }
+        return result;
+    }
+
 
 }
