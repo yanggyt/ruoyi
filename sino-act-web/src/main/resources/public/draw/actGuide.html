@@ -78,9 +78,6 @@
     <script src="js/util.js"></script>
     <script src="js/draw.js"></script>
     <script>
-        var num = 0;
-        var prizeImgs = [];
-
         $(document).ready(function () {
             $.ajax({
                 type: "POST",
@@ -114,7 +111,6 @@
     <div>
         <h1 class="title" id="title"></h1>
         <h2 class="desc" id="desc"></h2>
-<!--        <p><a href="#" class="button" id="btntext" ></a></p>-->
         <p class="btntext"><input class="button" id="btntext" type="button" onclick="jump()"/></p>
         <p class="btntext2"><input class="button" id="btntext2" type="button"/></p>
         <input id="flag" type="hidden" value=""/>
@@ -129,9 +125,9 @@
         var flag = $("#flag").val;
         //根据不同玩法跳转不同页面
         if (flag == "0"){
-            window.location.href='turntable.html';
+            window.location.href='turntable.html?drawCode='+drawCode;
         }else{
-            window.location.href='scratchcard.html';
+            window.location.href='scratchcard.html?drawCode='+drawCode;
         }
     }
 </script>
