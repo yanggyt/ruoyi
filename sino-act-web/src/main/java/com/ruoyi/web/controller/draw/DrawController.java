@@ -3,10 +3,11 @@ package com.ruoyi.web.controller.draw;
 import com.ruoyi.web.vo.Const;
 import com.ruoyi.web.vo.Result;
 import com.ruoyi.web.vo.draw.*;
-import com.sinosoft.activity.domain.ActConfig;
-import com.sinosoft.activity.domain.ActPageConfigGuide;
-import com.sinosoft.activity.domain.DrawConfig;
-import com.sinosoft.activity.domain.DrawInfo;
+import com.sinosoft.activity.domain.*;
+import com.sinosoft.activity.service.IActPageConfigUserinfoService;
+import com.sinosoft.activity.service.IDrawConfigService;
+import com.sinosoft.activity.service.IDrawInfoService;
+import com.sinosoft.activity.service.IDrawTaskNotifyService;
 import com.sinosoft.activity.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -53,6 +54,11 @@ public class DrawController {
     private IActPageConfigGuideService actPageConfigGuideService;
     @Autowired
     private IActConfigService actConfigService;
+    @Autowired
+    private IActPageConfigSubscribeService iActPageConfigSubscribeService;
+
+    @Autowired
+    private IActPageConfigUserinfoService  iActPageConfigUserinfoService;
 
     private WxOAuth2UserInfo getUserInfo(HttpServletRequest request, String code) throws Exception {
 //        if (!this.wxService.switchover(appid)) {
@@ -204,6 +210,23 @@ public class DrawController {
         return result;
     }
 
+    @RequestMapping(value="/info.action", method = RequestMethod.POST)
+    @ResponseBody
+    public ActPageConfigUserinfoResult info(HttpServletRequest request, String drawCode) {
+        ActPageConfigUserinfoResult result = new ActPageConfigUserinfoResult();
+        logger.info("活动编码"+drawCode);
+        try{
+            List<ActPageConfigUserinfo> prizes = new ArrayList<ActPageConfigUserinfo>();
+            ActPageConfigUserinfo actPageConfigUserinfo = iActPageConfigUserinfoService.selectActPageConfigUserinfoByCode(drawCode);
+            prizes.add(actPageConfigUserinfo);
+            result.setActPageConfigUserinfo(prizes);
+        }catch (Exception e){
+            result.setRespCode("-1");
+            result.setRespMsg("系统异常，请稍后再试");
+            logger.error("DrawController.prizes ex: ", e);
+        }
+        return  result;
+    }
     @RequestMapping(value="/prizes.action", method = RequestMethod.POST)
     @ResponseBody
     public PrizeResult prizes(HttpServletRequest request, String drawCode, String isAll) {
@@ -375,6 +398,33 @@ public class DrawController {
             //获取页面展示内容配置
             ActPageConfigGuide actPageConfigGuide = actPageConfigGuideService.selectActPageConfigGuideByCode(actCode);
             result.setActPageConfigGuide(actPageConfigGuide);
+        }catch (Exception e){
+            result.setRespCode("-1");
+            result.setRespMsg("系统异常，请稍后再试");
+            logger.error("DrawController.saveAddress ex: ", e);
+        }
+        return result;
+    }
+
+    /**
+     *  获取活动配置展示信息，根据活动编码
+     *
+     * @param request
+     * @param actCode
+     * @return
+     */
+    @ApiOperation("获取二维码信息")
+    @ApiImplicitParam(name = "actCode", value = "活动编码", required = true, dataType = "string", paramType = "path")
+    @RequestMapping(value="/qrCode", method = RequestMethod.POST)
+    @ResponseBody
+    public ActPageConfigSubscribeResult qrcode(HttpServletRequest request, String actCode) {
+        ActPageConfigSubscribeResult result = new  ActPageConfigSubscribeResult ();
+        try {
+            List<ActPageConfigSubscribe> list = new ArrayList<>();
+
+            ActPageConfigSubscribe subscribe = iActPageConfigSubscribeService.selectActPageConfigSubscribeByCode(actCode);
+            list.add(subscribe);
+            result.setActPageConfigSubscribe(list);
         }catch (Exception e){
             result.setRespCode("-1");
             result.setRespMsg("系统异常，请稍后再试");
