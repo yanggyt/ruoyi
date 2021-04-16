@@ -1,7 +1,9 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,15 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @param dictType 字典类型
      * @return 字典数据集合信息
      */
+    @Override
+    public Map<String, SysDictData> selectDictMapByType(String dictType) {
+        Map<String, SysDictData> map = new HashMap<>();
+        List<SysDictData> sysDictData = selectDictDataByType(dictType);
+        for (SysDictData dict : sysDictData) {
+            map.put(dict.getDictValue(), dict);
+        }
+        return map;
+    }
     @Override
     public List<SysDictData> selectDictDataByType(String dictType)
     {

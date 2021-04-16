@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.core.domain.entity.SysDictType;
@@ -26,6 +28,8 @@ public interface ISysDictTypeService
      * @return 字典类型集合信息
      */
     public List<SysDictType> selectDictTypeAll();
+
+    Map<String, SysDictData> selectDictMapByType(String dictType);
 
     /**
      * 根据字典类型查询字典数据

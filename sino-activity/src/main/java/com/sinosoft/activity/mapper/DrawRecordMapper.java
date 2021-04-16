@@ -26,6 +26,7 @@ public interface DrawRecordMapper
      * @return 抽奖记录信息集合
      */
     public List<DrawRecord> selectDrawRecordList(DrawRecord drawRecord);
+    public Long selectDrawRecordCount(DrawRecord drawRecord);
 
     /**
      * 新增抽奖记录信息

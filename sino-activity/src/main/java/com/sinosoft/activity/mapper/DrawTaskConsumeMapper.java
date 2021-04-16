@@ -42,6 +42,7 @@ public interface DrawTaskConsumeMapper
      * @return 结果
      */
     public int updateDrawTaskConsume(DrawTaskConsume drawTaskConsume);
+    public int updateDrawTaskConsumeState(DrawTaskConsume drawTaskConsume);
 
     /**
      * 删除抽奖次数消费信息

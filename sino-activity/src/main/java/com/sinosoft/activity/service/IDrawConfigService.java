@@ -19,6 +19,7 @@ public interface IDrawConfigService
      * @return 存储奖项配置信息列表
      */
     public DrawConfig selectDrawConfigById(String DRAWCONFIGID);
+    public DrawConfig selectDrawConfigByDraw(DrawConfig drawConfig);
 
     /**
      * 查询存储奖项配置信息列表列表
@@ -43,6 +44,8 @@ public interface IDrawConfigService
      * @return 结果
      */
     public int updateDrawConfig(DrawConfig drawConfig);
+    public int updateDrawConfigNumAndStatus(DrawConfig drawConfig);
+    public int updateDrawConfigRollback(DrawConfig drawConfig);
 
     /**
      * 批量删除存储奖项配置信息列表

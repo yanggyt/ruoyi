@@ -46,6 +46,7 @@ public interface DrawInfoMapper
      * @return 结果
      */
     public int updateDrawInfo(DrawInfo drawInfo);
+    public int updateDrawInfoFlag(String DRAWCODE);
 
     /**
      * 删除抽奖活动管理对象

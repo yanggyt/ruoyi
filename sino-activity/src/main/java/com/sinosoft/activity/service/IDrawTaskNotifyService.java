@@ -42,6 +42,7 @@ public interface IDrawTaskNotifyService
      * @return 结果
      */
     public int updateDrawTaskNotify(DrawTaskNotify drawTaskNotify);
+    public String updateDrawTaskNotifyNum(DrawTaskNotify drawTaskNotify);
 
     /**
      * 批量删除活动次数记录信息
