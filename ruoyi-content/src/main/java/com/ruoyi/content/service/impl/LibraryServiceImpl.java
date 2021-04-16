@@ -57,8 +57,6 @@ public class LibraryServiceImpl implements LibraryService {
     @Autowired
     private ArticlePublishTrackMapper articlePublishTrackMapper;
     @Autowired
-    private ArticleSendUrlMapper articleSendUrlMapper;
-    @Autowired
     private CmsSysUserMapper cmsSysUserMapper;
     @Autowired
     private ArticlePublishSendMapper articlePublishSendMapper;
@@ -692,7 +690,6 @@ public class LibraryServiceImpl implements LibraryService {
             LOGGER.info("请求企业号跳转文章url[{}]", articleUrl);
             Map result = new HashMap();
             String qyhArticleUrl = "";
-            ArticleSendUrl articleSendUrl = this.articleSendUrlMapper.selectByPrimaryKey(publishId);
 
             String sendViewUrl = viewUrl + "?" + "companyId=" + companyId + "&parentClickId=" + newClickId + "&qyhState=1";
             if ("1".equals(sendType)) {
