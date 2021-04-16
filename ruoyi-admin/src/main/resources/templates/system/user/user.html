@@ -181,7 +181,7 @@
 		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.userId + '\')"><i class="fa fa-remove"></i>删除</a> ');
 		                var more = [];
 		                more.push("<a class='btn btn-default btn-xs " + resetPwdFlag + "' href='javascript:void(0)' onclick='resetPwd(" + row.userId + ")'><i class='fa fa-key'></i>重置密码</a> ");
-		                more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authRole(" + row.userId + ")'><i class='fa fa-check-square-o'></i>分配角色</a>");
+		                more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authRole(" + row.userId + ")'><i class='fa fa-check-square-o'></i>分配角色</a> ");
 		                if(null != row.errorLoginTimes && row.errorLoginTimes > 0) {
 		                	more.push("<a class='btn btn-default btn-xs " + clearFlag + "' href='javascript:void(0)' onclick='clearErrorLoginTimes(" + row.userId + ")'><i class='fa fa-remove'></i>清除失败登录</a>");
 		                }
