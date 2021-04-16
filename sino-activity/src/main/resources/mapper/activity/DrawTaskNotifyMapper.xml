@@ -53,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="SOURCE != null  and SOURCE != ''"> and SOURCE = #{SOURCE}</if>
             <if test="ISSPECIALFLAG != null  and ISSPECIALFLAG != ''"> and ISSPECIALFLAG = #{ISSPECIALFLAG}</if>
         </where>
+        order by CREATETIMESTAMP desc
     </select>
     
     <select id="selectDrawTaskNotifyById" parameterType="String" resultMap="DrawTaskNotifyResult">
@@ -104,6 +105,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <update id="updateDrawTaskNotifyNum" parameterType="String">
+        UPDATE draw_task_notify t SET AVAILABLENUMBER=AVAILABLENUMBER-1, LASTUPDATETIMESTAMP=SYSDATE(),
+            t.state=case when t.availablenumber-1>0 then 1 else 0 end where t.tasknotifyid=#{TASKNOTIFYID}
+    </update>
     <update id="updateDrawTaskNotify" parameterType="DrawTaskNotify">
         update draw_task_notify
         <trim prefix="SET" suffixOverrides=",">

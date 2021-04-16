@@ -77,6 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <update id="updateDrawTaskConsumeState" parameterType="DrawTaskConsume">
+        update draw_task_consume t set t.tranSeqNo=#{TRANSEQNO},t.tradeOrderId=#{TRADEORDERID},t.state='1' where t.taskConsumeId=#{TASKCONSUMEID}
+    </update>
     <update id="updateDrawTaskConsume" parameterType="DrawTaskConsume">
         update draw_task_consume
         <trim prefix="SET" suffixOverrides=",">

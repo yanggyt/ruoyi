@@ -43,6 +43,7 @@ public interface DrawTaskNotifyMapper
      * @return 结果
      */
     public int updateDrawTaskNotify(DrawTaskNotify drawTaskNotify);
+    public int updateDrawTaskNotifyNum(String TASKNOTIFYID);
 
     /**
      * 删除活动次数记录信息

@@ -12,7 +12,43 @@ public class DrawResult extends Result {
     private String available;
     private String extId;
     private String gatewayFlow;
+    private String gateWayTime;
+    private String drawCode;
+    private String source;
+    private String userId;
     private String result;
+
+    public String getGateWayTime() {
+        return gateWayTime;
+    }
+
+    public void setGateWayTime(String gateWayTime) {
+        this.gateWayTime = gateWayTime;
+    }
+
+    public String getDrawCode() {
+        return drawCode;
+    }
+
+    public void setDrawCode(String drawCode) {
+        this.drawCode = drawCode;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getPrizeCode() {
         return prizeCode;

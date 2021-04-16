@@ -43,6 +43,11 @@ public class DrawRecordServiceImpl implements IDrawRecordService
     {
         return drawRecordMapper.selectDrawRecordList(drawRecord);
     }
+    @Override
+    public Long selectDrawRecordCount(DrawRecord drawRecord)
+    {
+        return drawRecordMapper.selectDrawRecordCount(drawRecord);
+    }
 
     /**
      * 新增抽奖记录信息
