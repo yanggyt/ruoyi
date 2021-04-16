@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="GBK">
+	<title>积分抓好运</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="css/reset.css" />
+	<link rel="stylesheet" type="text/css" href="css/main.css?v=542" />
+	<link rel="stylesheet" type="text/css" href="css/iosSelect.css" />
+</head>
+<body>
+<div class="lottery">
+	<div class="my_scroll">
+		<ul class="awards">
+		</ul>
+	</div>
+	<div class="lottery_tool">
+		<span class="tool_line"></span>
+		<span class="tool">
+			<img src="images/img_prize.png" style="display:none;" />
+		</span>
+		<img class="tool_box" src="images/img_box.png" />
+	</div>
+	<p class="lottery_role"></p>
+	<p class="lottery_prize"></p>
+  <p class="lottery_tips">每次消耗<span class="integral">50</span>积分</p>
+  <button class="lottery_go"></button>
+	<p class="lottery_points">您还剩余<span class="num">0</span>积分</p>
+	<a href="javascript:void(0);" class="lottery_link"></a>
+</div>
+<input type="hidden" class="drawType"/>
+<!--未中奖-->
+<div class="pop pop_fail" style="display:none;">
+	<div class="pop_bg">
+		<span class="closed"></span>
+		<div class="contact">就差一点点<br/>再接再厉哦</div>
+		<p class="btn"></p>
+	</div>
+</div>
+<!--中奖-->
+<div class="pop pop_success" style="display:none;">
+	<div class="pop_bg">
+		<span class="closed"></span>
+		<div class="contact">
+			<img src="" alt=""/>
+			<span></span>
+		</div>
+		<p class="btn"></p>
+	</div>
+</div>
+<!--填写信息-->
+<div class="pop pop_fillin" style="display:none;">
+	<div class="pop_bg">
+		<span class="closed"></span>
+		<div class="contact">
+			<p><span>收&nbsp;&nbsp;货&nbsp;&nbsp;人:</span><input class="uname" type="text" placeholder="请输入"/></p>
+			<p><span>身份证号:</span><input class="idcard" type="text" maxlength="18" placeholder="请输入"/></p>
+			<p><span>联系电话:</span><input class="phone" type="text" maxlength="11" placeholder="请输入"/></p>
+			<p><span>所在地区:</span><input class="contact_sel city" type="text" placeholder="请输入" readonly value="北京市 北京市 西城区" id="select_contact"  data-city-code="110100" data-province-code="110000" data-district-code="110102"/></p>
+			<p><span>详细地址:</span><textarea class="addr" placeholder="请输入详细地址信息，如道路、门牌号、 小区、楼栋好、单元室等"></textarea></p>
+			<p class="contact_btn"></p>
+		</div>
+	</div>
+</div>
+<!--我的奖品-->
+<div class="pop pop_prize" style="display:none;">
+	<div class="pop_bg">
+		<h3 class="title"></h3>
+		<span class="closed"></span>
+		<div class="contact">
+			<ul class="content_list myPrizes">
+				<li><img src="images/img_prize01.png" /><span>50积分</span><span class="list_date">2020-11-23</span></li>
+				<li><img src="images/img_prize02.png" /><span>猫眼50</span><span class="list_date">2020-11-23</span></li>
+				<li><img src="images/img_prize03.png" /><span>猫眼70</span><span class="list_date">2020-11-23</span></li>
+				<li><img src="images/img_prize04.png" /><span>网易季卡</span><span class="list_date">2020-11-23</span></li>
+				<li><img src="images/img_prize05.png" /><span>网易月卡</span><span class="list_date">2020-11-23</span></li>
+				<li><img src="images/img_prize06.png" /><span>QQ音乐</span><span class="list_date">2020-11-23</span></li>
+				<li><img src="images/img_prize07.png" /><span>优酷月卡</span><span class="list_date">2020-11-23</span></li>
+				<li><img src="images/img_prize08.png" /><span>优酷季卡</span><span class="list_date">2020-11-23</span></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!--活动规则-->
+<div class="pop pop_role" style="display:none;">
+	<div class="pop_bg">
+		<h3 class="title"></h3>
+		<span class="closed"></span>
+		<div class="contact drawRule">
+		</div>
+	</div>
+</div>
+
+<div class="prizes" style="display: none;">
+	<img class="prize" src="" alt="">
+</div>
+<ul class="" style="display: none;">
+	<li class="award">恭喜 151****3445 获得京东E卡</li>
+</ul>
+<ul class="" style="display: none;">
+	<li class="prize_li"><img src="images/img_prize01.png" /><span class="pname">50积分</span><span class="list_date time">2020-11-23</span></li>
+</ul>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/scroll.js"></script>
+<script src="js/iosSelect.js"></script>
+<script src="js/areaData_v2.js" charset="GBK"></script>
+<script src="../../common/taglibs.js"></script>
+<script src="../../js/jsencrypt.min.js"></script>
+<script src="../../js/encryptUtil.js"></script>
+<script src="../../js/utils.js"></script>
+<script src="../../js/mobile/login_register/login.js"></script>
+<script src="../../js/layui/layer.js"></script>
+<script src="../../js/layui/layerUtils.js"></script>
+<script src="js/main.js"></script>
+<script>
+	const DOLL = 'doll';
+	$(function () {
+		init(DOLL);
+		initAwards();
+	});
+	//抽奖
+	var cH = $(".tool")[0].clientHeight;
+	var tH = $(".tool")[0].offsetTop;
+	var lH = $('.tool_line')[0].clientHeight;
+	var timer = null;
+	$('.lottery_go').click(function(){
+		//中奖传1，2，3，4，5，6，7，8（对应奖品）,未中奖传-1
+		//1:50积分,2:猫眼50,3:猫眼70,4:网易季卡,5:网易月卡,6:QQ音乐,7:优酷月卡,8:优酷季卡
+		fnLottery(-1);
+	});
+	function fnLottery(status){
+		try{
+			zhuge.track('娃娃机-开始抓奖按钮【'+drawCode+'】');
+		}catch(err){console.log(err);}
+		if (running) {
+			console.log('running...');
+			return;
+		}
+		start();
+		if (!body) {
+			console.log('body is null');
+			return;
+		}
+		if (body.prizeType != 'empty') {
+			status = body.displayOrder;
+		} else {
+			status = -1;
+		}
+		$('.tool_line').animate({height:cH*2.5},2000);
+		$(".tool").animate({top:cH*5},2000);
+		if(timer !== null){
+			clearTimeout(timer);
+		}
+		timer = setTimeout(() => {
+			if(status != -1){
+				$(".tool img").show();
+			}
+			$('.tool_line').animate({height:lH},1500);
+			$(".tool").animate({top:tH},1500,function(){
+				//中奖啦
+				if(status != -1){
+					$('.pop_success').show();
+					$(".tool img").hide();
+					let prizeCode = body.prizeCode;
+					let imgSrc = $('img[p-code='+prizeCode+']').attr('src');
+					$(".contact img").attr('src',imgSrc);
+				}
+				//未中奖
+				if(status == -1){
+					$('.pop_fail').show();
+				}
+				running = false;
+			});
+		}, 2500);
+	}
+
+	//所在地区选择
+	var selectContactDom = $('#select_contact');
+	selectContactDom.bind('click', function () {
+		var oneLevelId = selectContactDom.attr('data-province-code'); //省code
+		var twoLevelId = selectContactDom.attr('data-city-code');//市code
+		var threeLevelId = selectContactDom.attr('data-district-code');//区code
+		var iosSelect = new IosSelect(3,
+						[iosProvinces, iosCitys, iosCountys],
+						{
+							title: '地址选择',
+							itemHeight: 35,
+							relation: [1, 1],
+							oneLevelId: oneLevelId,
+							twoLevelId: twoLevelId,
+							threeLevelId: threeLevelId,
+							callback: function (selectOneObj, selectTwoObj, selectThreeObj) {
+								selectContactDom.attr('data-province-code', selectOneObj.id);
+								selectContactDom.attr('data-city-code', selectTwoObj.id);
+								selectContactDom.attr('data-district-code', selectThreeObj.id);
+								selectContactDom.attr('value',selectOneObj.value + ' ' + selectTwoObj.value + ' ' + selectThreeObj.value);
+							}
+						});
+	});
+	//活动规则
+	$('.lottery_role').click(function(){
+		$('.pop_role').show();
+	})
+	//关闭弹层
+	$('.closed,.btn').click(function(){
+		$(this).parents('.pop').hide();
+	})
+	//未中奖确认关闭弹层
+	$('.pop_fail .btn').click(function(){
+		$(this).parents('.pop').hide();
+	})
+	//中奖立即领取
+	$('.pop_success .btn').click(function(){
+		$(this).parents('.pop').hide();
+		let cue = body.cue;
+		let prizeType = body.prizeType;
+		if (prizeType === 'materialObject') {
+			$('.pop_fillin').show();
+		} else {
+			layerTip(cue);
+		}
+	});
+	$('.contact_btn').click(function () {
+		saveAddr()
+	})
+	$('.lottery_prize').click(function () {
+		myprizes(DOLL)
+	})
+	$('.lottery_link').click(function () {
+		try{
+			zhuge.track('娃娃机-点我赚积分按钮【'+drawCode+'】');
+		}catch(err){console.log(err);}
+		// location.href = contextRootPath+'/wechat/user/toPension.do?ak=pensionSecond';
+		location.href = contextRootPath+'/activity/tree/index.html?showTask=1&cl='+cl;
+	})
+</script>
+</body>
+</html>

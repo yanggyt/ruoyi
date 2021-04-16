@@ -1,0 +1,379 @@
+@charset "GBK";
+body {
+    background: url(../images/bg_repeat.jpg) repeat-y;
+    background-size: 15rem 0.1rem;
+    overflow: hidden;
+}
+
+.lottery {
+    position: relative;
+    padding-top: 4.2rem;
+    width: 15rem;
+    height: 26.1rem;
+    background: url(../images/bg.jpg) no-repeat;
+    background-size: 100% auto;
+    box-sizing: border-box;
+}
+
+.my_scroll {
+    margin: 0 auto;
+    width: 10.2rem;
+    height: 0.7rem;
+    overflow: hidden;
+    font-size: 0.52rem;
+    line-height: 0.8rem;
+    color: #ffc6bb;
+    text-align: center;
+}
+
+.lottery_role {
+    position: absolute;
+    right: 0.15rem;
+    top: 5.85rem;
+    width: 1rem;
+    height: 3.25rem;
+}
+
+.lottery_prize {
+    position: absolute;
+    right: 0.15rem;
+    top: 10.45rem;
+    width: 1rem;
+    height: 3.25rem;
+}
+
+.lottery_tips {
+    position: absolute;
+    top: 15.85rem;
+    width: 100%;
+    font-size: 0.48rem;
+    text-align: center;
+    color: #fed34c;
+}
+
+.tool_line {
+    position: absolute;
+    left: 7.6rem;
+    top: 5.6rem;
+    width: 0.12rem;
+    height: 0.5rem;
+    background: url(../images/bg_tool_line.png) repeat;
+    background-size: 0.12rem 0.02rem;
+}
+
+.tool {
+    position: absolute;
+    left: 6.4rem;
+    top: 6rem;
+    width: 2.48rem;
+    height: 2.24rem;
+    background: url(../images/bg_tool.png) no-repeat;
+    background-size: 100% auto;
+}
+
+.tool img {
+    margin-top: 1.4rem;
+}
+
+.tool_box {
+    position: absolute;
+    left: 50%;
+    top: 11.3rem;
+    margin-left: -4.76rem;
+    width: 9.52rem;
+    z-index: 3;
+}
+
+.lottery_go {
+    position: absolute;
+    left: 3.8rem;
+    top: 16.5rem;
+    width: 7.54rem;
+    height: 2.18rem;
+    line-height: 1.2rem;
+    background: url(../images/btn_go.png) no-repeat;
+    background-size: 100% auto;
+}
+
+.lottery_points {
+    position: absolute;
+    left: 1.2rem;
+    top: 20.75rem;
+    width: 7.4rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: center;
+    color: #fdd14a;
+    font-size: 0.6rem;
+}
+
+.lottery_link {
+    position: absolute;
+    left: 9.3rem;
+    top: 20.75rem;
+    width: 4.7rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+}
+
+
+/* 中奖弹层 */
+
+.pop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .75);
+    z-index: 100;
+}
+
+.pop_bg {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    margin-left: -6.15rem;
+    width: 12.3rem;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+.contact {
+    position: relative;
+    margin: 4.5rem auto 2rem;
+    width: 11rem;
+    font-size: 0.84rem;
+    color: #fff;
+    line-height: 1.2rem;
+    text-align: center;
+}
+
+.closed {
+    position: absolute;
+    top: 1.2rem;
+    right: 0rem;
+    width: 1.12rem;
+    height: 1.12rem;
+    background: url(../images/btn_success_closed.png) no-repeat center;
+    background-size: 100% auto;
+    z-index: 10;
+}
+
+.btn {
+    position: absolute;
+    top: 17rem;
+    left: 50%;
+    margin-left: -3.35rem;
+    width: 6.7rem;
+    height: 2.46rem;
+    background: url(../images/btn_receive.png) no-repeat;
+    background-size: 100% auto;
+}
+
+.pop.pop_success .pop_bg {
+    height: 15.34rem;
+    background-image: url(../images/bg_success.png);
+}
+
+.pop.pop_success .contact {
+    margin-top: 8rem;
+}
+
+.pop.pop_success .contact img {
+    width: 7.6rem;
+    height: 4.56rem;
+}
+
+.pop.pop_success .contact span {
+    display: inline-block;
+    position: relative;
+    margin-top: -4.05rem;
+    width: 8.7rem;
+    height: 6rem;
+    background: url(../images/bg_success_decorate.png) no-repeat;
+    background-size: 100% auto;
+    z-index: 10;
+}
+
+
+/*未中奖弹层*/
+
+.pop.pop_fail .pop_bg {
+    top: 4rem;
+    height: 11.94rem;
+    background-image: url(../images/bg_fail.png);
+}
+
+.pop.pop_fail .btn {
+    top: 14rem;
+    background-image: url(../images/btn_ok.png);
+}
+
+.pop.pop_fail .closed {
+    top: -2.1rem;
+    background-image: url(../images/btn_fail_closed.png);
+}
+
+
+/*活动规则*/
+
+.pop.pop_role .pop_bg,
+.pop.pop_prize .pop_bg {
+    height: 18.74rem;
+    background-image: url(../images/bg_alert.png);
+}
+
+.pop.pop_role .title,
+.pop.pop_prize .title {
+    margin: 0.5rem auto;
+    width: 6.22rem;
+    height: 1.02rem;
+    background: url(../images/bg_title_role.png) no-repeat;
+    background-size: 100% auto;
+}
+
+.pop.pop_role .contact {
+    margin-top: 1.5rem;
+    width: 10.4rem;
+    color: #333;
+    font-size: 0.56rem;
+    line-height: 0.8rem;
+    text-align: left;
+}
+
+.pop.pop_role .contact p {
+    margin-bottom: 0.8rem;
+}
+
+.pop.pop_role .closed,
+.pop.pop_prize .closed,
+.pop.pop_fillin .closed {
+    top: 20rem;
+    right: 50%;
+    margin-right: -0.56rem;
+}
+
+
+/*我的奖品*/
+
+.pop.pop_prize .title {
+    width: 6.18rem;
+    background-image: url(../images/bg_title_prize.png);
+}
+
+.pop.pop_prize .contact {
+    margin-top: 1rem;
+    width: 10rem;
+}
+
+.pop.pop_prize .content_list {
+    height: 15rem;
+    overflow: auto;
+}
+
+.pop.pop_prize .content_list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #d1d1d1;
+    overflow: hidden;
+}
+
+.pop.pop_prize .content_list li:last-child {
+    border-bottom: none;
+}
+
+.pop.pop_prize .content_list img {
+    float: left;
+    margin-right: 0.5rem;
+    width: 1.72rem;
+    height: 1.2rem;
+    vertical-align: middle;
+}
+
+.pop.pop_prize .content_list span {
+    float: left;
+    color: #2e2e2e;
+    font-size: 0.48rem;
+    vertical-align: middle;
+}
+
+.pop.pop_prize .content_list span.list_date {
+    float: right;
+    color: #bcbcbc;
+}
+
+
+/*填写信息*/
+
+.pop.pop_fillin .pop_bg {
+    height: 18.74rem;
+    background-image: url(../images/bg_fillin.png);
+}
+
+.pop.pop_fillin .contact {
+    margin-top: 2.7rem;
+}
+
+.pop.pop_fillin .contact p {
+    margin: 0 0.4rem;
+    margin-bottom: 0.5rem;
+    background: #fa5838;
+    /* height:1.36rem; */
+    line-height: 1.36rem;
+    font-size: 0.48rem;
+    color: #fff;
+    text-align: left;
+    border-radius: 0.3rem;
+    box-shadow: inset 1px 1px 1px #9f5f2e, 1px 1px 1px #f5d16f;
+}
+
+.pop.pop_fillin .contact p span {
+    display: inline-block;
+    width: 2.96rem;
+    text-align: center;
+}
+
+.pop.pop_fillin .contact p input {
+    padding-left: 0.4rem;
+    width: 7.1rem;
+    height: 1.1rem;
+    line-height: 1.1rem;
+    font-size: 0.48rem;
+    background: #fff;
+    box-sizing: border-box;
+    border-radius: 0.25rem;
+}
+
+.pop.pop_fillin .contact input.contact_sel {
+    background: #fff url(../images/icon_pre.png) no-repeat 6.6rem center;
+    background-size: 0.26rem 0.44rem;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #c2c2c2;
+}
+
+.pop.pop_fillin .contact p textarea {
+    padding-left: 0.3rem;
+    padding-top: 0.2rem;
+    margin-left: 0.4rem;
+    width: 9.4rem;
+    line-height: 0.8rem;
+    min-height: 3.2rem;
+    font-size: 0.48rem;
+    border: none;
+    outline: none;
+    background: #fff;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.pop.pop_fillin .contact p.contact_btn {
+    margin: 0 auto;
+    width: 4.68rem;
+    height: 1.32rem;
+    background: url(../images/btn_confirm.png) no-repeat;
+    background-size: 100% auto;
+}
