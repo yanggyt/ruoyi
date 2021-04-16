@@ -40,7 +40,9 @@ public class IpUtils
             ip = request.getRemoteAddr();
         }
 
-        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
+        ip = "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
+        //使用nginx代理时，会获取到多个ip，取第一个真实ip
+        return ip.split(",").length>1?ip.split(",")[0]:ip;
     }
 
     public static boolean internalIp(String ip)
