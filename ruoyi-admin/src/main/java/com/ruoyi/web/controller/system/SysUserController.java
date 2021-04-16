@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ruoyi.common.core.text.Convert;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,6 +68,8 @@ public class SysUserController extends BaseController
     {
         startPage();
         List<SysUser> list = userService.selectUserList(user);
+        list.forEach(sysUser -> sysUser.setErrorLoginTimes(
+                passwordService.getErrorLoginTimes(sysUser.getLoginName())));
         return getDataTable(list);
     }
 
@@ -241,6 +245,34 @@ public class SysUserController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(userService.deleteUserByIds(ids));
+    }
+
+    @RequiresPermissions("system:user:clear")
+    @Log(title = "用户管理", businessType = BusinessType.CLEAN)
+    @PostMapping("/clearErrorLoginTimes")
+    @ResponseBody
+    public AjaxResult clearErrorLoginTimes(String ids)
+    {
+        try
+        {
+            int result = 0;
+            Long[] userIds = Convert.toLongArray(ids);
+            for (Long userId : userIds)
+            {
+                SysUser sysUser = userService.selectUserById(userId);
+                if(null == sysUser)
+                {
+                    continue;
+                }
+                passwordService.clearLoginRecordCache(sysUser.getLoginName());
+                result++;
+            }
+            return AjaxResult.success(result);
+        }
+        catch (Exception e)
+        {
+            return error(e.getMessage());
+        }
     }
 
     /**

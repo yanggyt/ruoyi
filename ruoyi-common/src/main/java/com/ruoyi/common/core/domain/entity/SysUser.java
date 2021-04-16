@@ -100,6 +100,8 @@ public class SysUser extends BaseEntity
     /** 岗位组 */
     private Long[] postIds;
 
+    private Integer errorLoginTimes;
+
     public SysUser()
     {
 
@@ -351,6 +353,16 @@ public class SysUser extends BaseEntity
         this.postIds = postIds;
     }
 
+    public Integer getErrorLoginTimes()
+    {
+        return errorLoginTimes;
+    }
+
+    public void setErrorLoginTimes(Integer errorLoginTimes)
+    {
+        this.errorLoginTimes = errorLoginTimes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -376,6 +388,7 @@ public class SysUser extends BaseEntity
             .append("remark", getRemark())
             .append("dept", getDept())
 			.append("roles", getRoles())
+			.append("errorLoginTimes", getErrorLoginTimes())
             .toString();
     }
 }

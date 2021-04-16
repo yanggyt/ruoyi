@@ -73,6 +73,15 @@ public class SysPasswordService
         return user.getPassword().equals(encryptPassword(user.getLoginName(), newPassword, user.getSalt()));
     }
 
+    public int getErrorLoginTimes(String username)
+    {
+        AtomicInteger atomicInteger = loginRecordCache.get(username);
+        if (null == atomicInteger) {
+            return 0;
+        }
+        return atomicInteger.get();
+    }
+
     public void clearLoginRecordCache(String loginName)
     {
         loginRecordCache.remove(loginName);

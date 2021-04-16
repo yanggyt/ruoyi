@@ -92,6 +92,7 @@
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
+		var clearFlag = [[${@permission.hasPermi('system:user:clear')}]];
 		var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
 		var prefix = ctx + "system/user";
 
@@ -155,6 +156,10 @@
 		            title: '手机'
 		        },
 		        {
+		            field: 'errorLoginTimes',
+		            title: '登录失败次数'
+		        },
+		        {
 		        	visible: editFlag == 'hidden' ? false : true,
 		        	title: '用户状态',
 		        	align: 'center',
@@ -177,6 +182,9 @@
 		                var more = [];
 		                more.push("<a class='btn btn-default btn-xs " + resetPwdFlag + "' href='javascript:void(0)' onclick='resetPwd(" + row.userId + ")'><i class='fa fa-key'></i>重置密码</a> ");
 		                more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authRole(" + row.userId + ")'><i class='fa fa-check-square-o'></i>分配角色</a>");
+		                if(null != row.errorLoginTimes && row.errorLoginTimes > 0) {
+		                	more.push("<a class='btn btn-default btn-xs " + clearFlag + "' href='javascript:void(0)' onclick='clearErrorLoginTimes(" + row.userId + ")'><i class='fa fa-remove'></i>清除失败登录</a>");
+		                }
 		                actions.push('<a tabindex="0" class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
 		                return actions.join('');
 		            }
@@ -256,6 +264,13 @@
 		function enable(userId) {
 			$.modal.confirm("确认要启用用户吗？", function() {
 				$.operate.post(prefix + "/changeStatus", { "userId": userId, "status": 0 });
+		    })
+		}
+
+		/* 清除失败登录次数 */
+		function clearErrorLoginTimes(userId) {
+			$.modal.confirm("确认要清除用户失败登录次数吗？", function() {
+				$.operate.post(prefix + "/clearErrorLoginTimes", { "ids": userId });
 		    })
 		}
 	</script>
