@@ -18,10 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
         <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
         <result property="WILLDRAWAWARDNUMBER"    column="WILLDRAWAWARDNUMBER"    />
+        <result property="DRAWDESCRIBE"    column="DRAWDESCRIBE"    />
     </resultMap>
 
     <sql id="selectDrawRuleVo">
-        select DRAWRULEID, DRAWCODE, FIRSTFLAG, FIRSTAWARDPRIZE, DAILYFLAG, DAILYSTARTTIME, DAILYENDTIME, DAILYNUMBER, WILLDRAWFLAG, WILLDRAWAWARDPRIZE, CREATETIMESTAMP, LASTUPDATETIMESTAMP, WILLDRAWAWARDNUMBER from draw_rule
+        select DRAWRULEID, DRAWCODE, FIRSTFLAG, FIRSTAWARDPRIZE, DAILYFLAG, DAILYSTARTTIME, DAILYENDTIME, DAILYNUMBER, WILLDRAWFLAG, WILLDRAWAWARDPRIZE, CREATETIMESTAMP, LASTUPDATETIMESTAMP, WILLDRAWAWARDNUMBER,DRAWDESCRIBE from draw_rule
     </sql>
 
     <select id="selectDrawRuleList" parameterType="DrawRule" resultMap="DrawRuleResult">
@@ -39,6 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
             <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
             <if test="WILLDRAWAWARDNUMBER != null "> and WILLDRAWAWARDNUMBER = #{WILLDRAWAWARDNUMBER}</if>
+            <if test="DRAWDESCRIBE != null "> and DRAWDESCRIBE = #{DRAWDESCRIBE}</if>
         </where>
     </select>
     
@@ -68,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
             <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
             <if test="WILLDRAWAWARDNUMBER != null">WILLDRAWAWARDNUMBER,</if>
+            <if test="DRAWDESCRIBE != null">DRAWDESCRIBE,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="DRAWRULEID != null">#{DRAWRULEID},</if>
@@ -83,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
             <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
             <if test="WILLDRAWAWARDNUMBER != null">#{WILLDRAWAWARDNUMBER},</if>
+            <if test="DRAWDESCRIBE != null">#{DRAWDESCRIBE},</if>
          </trim>
     </insert>
 
@@ -100,6 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
             <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
             <if test="WILLDRAWAWARDNUMBER != null">WILLDRAWAWARDNUMBER = #{WILLDRAWAWARDNUMBER},</if>
+            <if test="DRAWDESCRIBE != null">DRAWDESCRIBE = #{DRAWDESCRIBE},</if>
         </trim>
         where DRAWCODE = #{DRAWCODE}
     </update>

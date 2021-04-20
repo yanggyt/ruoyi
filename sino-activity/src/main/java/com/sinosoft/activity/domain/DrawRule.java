@@ -58,6 +58,18 @@ public class DrawRule extends BaseEntity
 
     /** N次抽奖必中基数 */
     private Long WILLDRAWAWARDNUMBER;
+    /**
+     * 活动描述
+     */
+    private String DRAWDESCRIBE;
+
+    public String getDRAWDESCRIBE() {
+        return DRAWDESCRIBE;
+    }
+
+    public void setDRAWDESCRIBE(String DRAWDESCRIBE) {
+        this.DRAWDESCRIBE = DRAWDESCRIBE;
+    }
 
     public String getDRAWCODE() {
         return DRAWCODE;

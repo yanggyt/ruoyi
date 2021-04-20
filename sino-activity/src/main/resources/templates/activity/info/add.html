@@ -450,7 +450,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4" style="height: 120%">
+                <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4" style="height: 130%">
                     <h4 class="form-header h4">第4步-选择玩法</h4>
                     <div th:with="type=${@dict.getType('activityPlay')}">
                         <a id="activityPlay" th:if="${dict.dictValue} != '0'" class="btn  btn-rounded" href="#" th:each="dict : ${type}" th:text="${dict.dictLabel}"
@@ -459,6 +459,7 @@
                            th:value="${dict.dictValue}" onclick="activityTemplate(this)"></a>
                     </div>
                     <input type="hidden" name="actConfig-actType" id="activityPlayval" value="">
+                    <h4 class="form-header h4"></h4>
                     <div style="height: 300">
                         <img id="activityPlayimg" src="../../img/act/0.jpg" width="60%" height="300" style="display: none">
                     </div>
@@ -581,6 +582,18 @@
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row" style="height: 500">
+                            <div class="form-group" style="float: left">
+                                <div  style="width: 60%">
+                                    <label class="col-sm-4 control-label is-required">规则描述：</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="summernote">
+                                    </div>
+                                </div>
+                                <textarea id="drawdescribe"  name="drawRule-drawdescribe" maxlength="500" class="form-control" rows="5" aria-invalid="false" placeholder="" style="display: none"></textarea>
                             </div>
                         </div>
                     </div>

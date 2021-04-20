@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawWhitelistMapper">
+    
+    <resultMap type="DrawWhitelist" id="DrawWhitelistResult">
+        <result property="WHITELISTID"    column="WHITELISTID"    />
+        <result property="PHONE"    column="PHONE"    />
+        <result property="FILENAME"    column="FILENAME"    />
+        <result property="CREATETIMESTAMP"    column="CREATETIMESTAMP"    />
+        <result property="LASTUPDATETIMESTAMP"    column="LASTUPDATETIMESTAMP"    />
+    </resultMap>
+
+    <sql id="selectDrawWhitelistVo">
+        select WHITELISTID, PHONE, FILENAME, CREATETIMESTAMP, LASTUPDATETIMESTAMP from draw_whitelist
+    </sql>
+
+    <select id="selectDrawWhitelistList" parameterType="DrawWhitelist" resultMap="DrawWhitelistResult">
+        <include refid="selectDrawWhitelistVo"/>
+        <where>  
+            <if test="WHITELISTID != null  and WHITELISTID != ''"> and WHITELISTID = #{WHITELISTID}</if>
+            <if test="PHONE != null  and PHONE != ''"> and PHONE = #{PHONE}</if>
+            <if test="FILENAME != null  and FILENAME != ''"> and FILENAME like concat('%', #{FILENAME}, '%')</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawWhitelistById" parameterType="String" resultMap="DrawWhitelistResult">
+        <include refid="selectDrawWhitelistVo"/>
+        where WHITELISTID = #{WHITELISTID}
+    </select>
+        
+    <insert id="insertDrawWhitelist" parameterType="DrawWhitelist">
+        insert into draw_whitelist
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="WHITELISTID != null and WHITELISTID != ''">WHITELISTID,</if>
+            <if test="PHONE != null and PHONE != ''">PHONE,</if>
+            <if test="FILENAME != null">FILENAME,</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP,</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="WHITELISTID != null and WHITELISTID != ''">#{WHITELISTID},</if>
+            <if test="PHONE != null and PHONE != ''">#{PHONE},</if>
+            <if test="FILENAME != null">#{FILENAME},</if>
+            <if test="CREATETIMESTAMP != null">#{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">#{LASTUPDATETIMESTAMP},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawWhitelist" parameterType="DrawWhitelist">
+        update draw_whitelist
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="PHONE != null and PHONE != ''">PHONE = #{PHONE},</if>
+            <if test="FILENAME != null">FILENAME = #{FILENAME},</if>
+            <if test="CREATETIMESTAMP != null">CREATETIMESTAMP = #{CREATETIMESTAMP},</if>
+            <if test="LASTUPDATETIMESTAMP != null">LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP},</if>
+        </trim>
+        where WHITELISTID = #{WHITELISTID}
+    </update>
+
+    <delete id="deleteDrawWhitelistById" parameterType="String">
+        delete from draw_whitelist where WHITELISTID = #{WHITELISTID}
+    </delete>
+
+    <delete id="deleteDrawWhitelistByIds" parameterType="String">
+        delete from draw_whitelist where WHITELISTID in 
+        <foreach item="WHITELISTID" collection="array" open="(" separator="," close=")">
+            #{WHITELISTID}
+        </foreach>
+    </delete>
+
+</mapper>

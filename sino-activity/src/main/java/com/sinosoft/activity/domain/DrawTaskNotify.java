@@ -38,7 +38,7 @@ public class DrawTaskNotify extends BaseEntity
 
     /** 赠送次数 */
     @Excel(name = "赠送次数")
-    private Long ADDNUMBER;
+    private int ADDNUMBER;
 
     /** 状态 */
     @Excel(name = "状态")
@@ -56,7 +56,7 @@ public class DrawTaskNotify extends BaseEntity
 
     /** 可用次数 */
     @Excel(name = "可用次数")
-    private Long AVAILABLENUMBER;
+    private int AVAILABLENUMBER;
 
     /** 账务日期 */
     private String CHECKINGDATE;
@@ -132,12 +132,12 @@ public class DrawTaskNotify extends BaseEntity
     {
         return TYPE;
     }
-    public void setADDNUMBER(Long ADDNUMBER) 
+    public void setADDNUMBER(int ADDNUMBER)
     {
         this.ADDNUMBER = ADDNUMBER;
     }
 
-    public Long getADDNUMBER() 
+    public int getADDNUMBER()
     {
         return ADDNUMBER;
     }
@@ -168,12 +168,12 @@ public class DrawTaskNotify extends BaseEntity
     {
         return LASTUPDATETIMESTAMP;
     }
-    public void setAVAILABLENUMBER(Long AVAILABLENUMBER) 
+    public void setAVAILABLENUMBER(int AVAILABLENUMBER)
     {
         this.AVAILABLENUMBER = AVAILABLENUMBER;
     }
 
-    public Long getAVAILABLENUMBER() 
+    public int getAVAILABLENUMBER()
     {
         return AVAILABLENUMBER;
     }

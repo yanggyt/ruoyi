@@ -1,6 +1,8 @@
 package com.sinosoft.activity.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.sinosoft.activity.domain.DrawTaskNotify;
 
 /**
@@ -59,4 +61,10 @@ public interface IDrawTaskNotifyService
      * @return 结果
      */
     public int deleteDrawTaskNotifyById(String USERID);
+
+    /**
+     * 增加抽奖次数
+     * @param drawTaskNotify
+     */
+    Map<String,Object> addDrawNum(DrawTaskNotify drawTaskNotify);
 }

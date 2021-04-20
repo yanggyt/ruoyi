@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../draw/css/winPrize.css"/>
     <link rel="stylesheet" type="text/css" href="../draw/css/goods.css"/>
     <link rel="stylesheet" type="text/css" href="../draw/css/rule.css"/>
-    <script src="/static/js/config.js"></script>
+    <script src="/js/config.js"></script>
     <style type="text/css">
         .button { /* 按钮美化 */
             width: 200px; /* 宽度 */
@@ -93,7 +93,9 @@
                         $("#desc").text(data.actPageConfigGuide.actDesc);
                         $("#btntext").val(data.actPageConfigGuide.btnText);
                         $("#btntext2").val(data.actPageConfigGuide.btnText2);
+                        $("#btn2textshow").text(data.actPageConfigGuide.btnText2);
                         $("#flag").val(data.actType);
+                        $(".contBox").text(data.actPageConfigGuide.btnLink2);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log('网络异常', textStatus, errorThrown);
@@ -112,10 +114,32 @@
         <h1 class="title" id="title"></h1>
         <h2 class="desc" id="desc"></h2>
         <p class="btntext"><input class="button" id="btntext" type="button" onclick="jump()"/></p>
-        <p class="btntext2"><input class="button" id="btntext2" type="button"/></p>
+        <p class="btntext2"><input class="button" id="btntext2" type="button" onclick="btn2show()"/></p>
         <input id="flag" type="hidden" value=""/>
     </div>
+    <!--活动规则-->
+    <div class='popup rule btn2' style="display: none;">
+        <div class='popupMin'>
+            <img src="../draw/images/top02.png" class='top'>
+            <div class='popCont'>
+                <div class='left'></div>
+                <div class='cont'>
+                    <div>
+                        <img src="../draw/images/left.png">
+                        <div id="btn2textshow"></div>
+                        <img src="../draw/images/right.png">
+                    </div>
+                    <ul class='contBox' style="list-style: inside">
 
+                    </ul>
+                </div>
+                <div class='right'></div>
+            </div>
+            <img src="../draw/images/popupList04.png" class='bottom'>
+        </div>
+        <img src="../draw/images/delect.png" class='popDelect ruleDelect'>
+        <span style='clear: both;'></span>
+    </div>
 <script src="../draw/js/main.js"></script>
 <script src="../draw/js/scroll.js"></script>
 <script src="../draw/js/common.js"></script>
@@ -130,6 +154,9 @@
         }else{
             window.location.href='scratchcard.html?drawCode='+drawCode;
         }
+    }
+    function btn2show(){
+            $('.btn2').show();
     }
 </script>
 

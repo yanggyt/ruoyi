@@ -14,6 +14,7 @@ import com.sinosoft.activity.service.IDrawTaskNotifyService;
 import com.sinosoft.activity.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
@@ -61,6 +62,8 @@ public class DrawController {
 
     @Autowired
     private IActPageConfigUserinfoService  iActPageConfigUserinfoService;
+    @Autowired
+    private IDrawTaskNotifyService taskNotifyService;
 
     private WxOAuth2UserInfo getUserInfo(HttpServletRequest request, String code) throws Exception {
 //        if (!this.wxService.switchover(appid)) {
@@ -240,6 +243,19 @@ public class DrawController {
         }
         return result;
     }
+
+    /**
+     * 增加抽奖次数
+     * @param request
+     * @param drawCode
+     * @param taskType
+     * @return
+     */
+    @ApiOperation("增加抽奖次数")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "drawCode", value = "活动编码", required = true, dataType = "string", paramType = "path"),
+            @ApiImplicitParam(name = "taskType", value = "第三方活动编码", required = true, dataType = "string", paramType = "path")
+    })
     @RequestMapping(value="/addDrawNum", method = RequestMethod.POST)
     @ResponseBody
     public Result addDrawNum(HttpServletRequest request, String drawCode, String taskType) {
@@ -255,6 +271,13 @@ public class DrawController {
                 return result;
             }
             String openId = userInfo.getOpenid();
+            DrawTaskNotify drawTaskNotify = new DrawTaskNotify();
+            drawTaskNotify.setISSPECIALFLAG("0");
+            drawTaskNotify.setUSERID(openId);
+            drawTaskNotify.setTASKTYPE(taskType);
+            drawTaskNotify.setADDNUMBER(1);
+            drawTaskNotify.setDRAWCODE(drawCode);
+            taskNotifyService.addDrawNum(drawTaskNotify);
             //赠送抽奖机会
 //            TaskNotifyRequestBody requestBody =  new TaskNotifyRequestBody();
 //            requestBody.setTaskId("");

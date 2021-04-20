@@ -1,6 +1,8 @@
 package com.sinosoft.activity.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.sinosoft.activity.domain.DrawTaskNotify;
 
 /**
@@ -60,4 +62,11 @@ public interface DrawTaskNotifyMapper
      * @return 结果
      */
     public int deleteDrawTaskNotifyByIds(String[] USERIDs);
+
+    /**
+     * 查询基础代码表中的数据
+     * @param drawNumberLimit
+     * @return
+     */
+    Map<String, String> findAllCodeAndName(String drawNumberLimit);
 }

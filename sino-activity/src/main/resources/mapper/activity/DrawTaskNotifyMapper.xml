@@ -144,4 +144,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="findAllCodeAndName" parameterType="string">
+        select d.CODECODE,d.CODECNAME from GT_CODE d where d.CODETYPE= #{drawNumberLimit}
+    </select>
+
 </mapper>
