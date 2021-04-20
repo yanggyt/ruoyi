@@ -149,10 +149,18 @@
         var flag = $("#flag").val();
         //根据不同玩法跳转不同页面
         //todo 添加不同类型跳转页面
-        if (flag == "0"){
-            window.location.href='qrCode.html?drawCode='+drawCode;
-        }else{
-            window.location.href='scratchcard.html?drawCode='+drawCode;
+        switch (flag){
+            case "1"://大转盘
+                window.location.href='../draw/turntable.html?drawCode='+drawCode;
+                break;
+            case "2"://刮刮卡
+                window.location.href='../draw/scratchcard.html?drawCode='+drawCode;
+                break;
+            case "3"://娃娃机
+                window.location.href='../doll/index.html?drawCode='+drawCode;
+                break;
+            default://暂不选择
+                window.location.href='scratchcard.html?drawCode='+drawCode;
         }
     }
     function btn2show(){
