@@ -64,6 +64,8 @@ public class DrawController {
     private IActPageConfigUserinfoService  iActPageConfigUserinfoService;
     @Autowired
     private IDrawTaskNotifyService taskNotifyService;
+    @Autowired
+    private IDrawRuleService drawRuleService;
 
     private WxOAuth2UserInfo getUserInfo(HttpServletRequest request, String code) throws Exception {
 //        if (!this.wxService.switchover(appid)) {
@@ -405,6 +407,22 @@ public class DrawController {
             ActPageConfigSubscribe subscribe = iActPageConfigSubscribeService.selectActPageConfigSubscribeByCode(actCode);
             list.add(subscribe);
             result.setActPageConfigSubscribe(list);
+        }catch (Exception e){
+            result.setRespCode("-1");
+            result.setRespMsg("系统异常，请稍后再试");
+            logger.error("DrawController.saveAddress ex: ", e);
+        }
+        return result;
+    }
+    @ApiOperation("获取活动规则描述")
+    @ApiImplicitParam(name = "actCode", value = "活动编码", required = true, dataType = "string", paramType = "path")
+    @RequestMapping(value="/describe", method = RequestMethod.POST)
+    @ResponseBody
+    public Result findDescribe(HttpServletRequest request, String actCode){
+        RuleResult result = new RuleResult();
+        try {
+            DrawRule drawRule = drawRuleService.selectDrawRuleByCode(actCode);
+            result.setDrawRule(drawRule);
         }catch (Exception e){
             result.setRespCode("-1");
             result.setRespMsg("系统异常，请稍后再试");

@@ -95,7 +95,7 @@
                         $("#btntext2").val(data.actPageConfigGuide.btnText2);
                         $("#btn2textshow").text(data.actPageConfigGuide.btnText2);
                         $("#flag").val(data.actType);
-                        $(".contBox").text(data.actPageConfigGuide.btnLink2);
+                        $(".contBox").append(data.actPageConfigGuide.btnLink2);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log('网络异常', textStatus, errorThrown);
