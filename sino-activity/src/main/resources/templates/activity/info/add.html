@@ -590,7 +590,7 @@
                                     <label class="col-sm-4 control-label is-required">规则描述：</label>
                                 </div>
                                 <div class="col-sm-8">
-                                    <div class="summernote">
+                                    <div class="summernote1">
                                     </div>
                                 </div>
                                 <textarea id="drawdescribe"  name="drawRule-drawdescribe" maxlength="500" class="form-control" rows="5" aria-invalid="false" placeholder="" style="display: none"></textarea>
@@ -1026,7 +1026,9 @@
             .on('click', function () {
                 //添加保存逻辑
                 var markupStr  = $('.summernote').summernote('code');
-                $("btnLink2").val(markupStr);
+                $("#btnLink2").val(markupStr);
+                var markupStr1  = $('.summernote1').summernote('code');
+                $("#drawdescribe").val(markupStr1);
                 var data = customSerialize("form-info-add", true);
                 $.ajax({
                     url: prefix + "/add",
