@@ -1,0 +1,124 @@
+.address{
+	/* opacity:0;
+	height:0; */
+}
+.popupMin{
+	width:100%;
+	margin-left:0%;
+	height:auto !important;
+	box-sizing: border-box;
+	position:relative;
+	display:flex;
+	flex-direction: column;
+	/* max-height:1200px; */
+	margin-bottom:56px;
+}
+.address .cont{
+	min-height:400px;
+	margin-top:-0px;
+
+}
+.address .popCont{
+	z-index: 1000;
+}
+.address .cont{
+	background-size: 100% auto;
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.address .cont>div:nth-child(1){
+	font-size:23px;
+	color:#ffe2ab;
+	text-align:center;
+	margin-top:20px;
+}
+.address .cont>div:nth-child(2){
+	font-size:17px;
+	color:#ffe2ab;
+	text-align:center;
+	margin-top:9px;
+	font-weight:bold;
+
+}
+.address .cont>div:nth-child(3){
+	font-size:17px;
+	color:#ffe2ab;
+	text-align:center;
+	margin-top:20px;
+	font-weight:bold;
+}
+.address .cont>div:nth-child(12){
+	font-size:17px;
+	color:#ffe2ab;
+	margin-top:15px;
+	margin-right:35%;
+
+}
+.address .cont>div:nth-child(13){
+	font-size:17px;
+	color:#ffe2ab;
+	text-align:center;
+	margin-top:20px;
+	font-weight:bold;
+}
+.address .cont>img:last-child{
+	width:83%;
+	height:auto;
+	object-fit:contain;
+	margin-top:20px;
+	margin-bottom:15px;
+}
+.address .cont>input{
+	width:90%;
+	height:30px;
+	box-sizing: border-box;
+	margin:0;
+	padding:0 15px;
+	border:1px solid #f2ca77;
+	border-radius:15px;
+	background: #fff;
+	margin-top:12px;
+}
+.address .cont>textarea{
+	width:90% !important;
+	max-width:90% !important;
+	min-height:60px;
+	box-sizing: border-box;
+	margin:0;
+	padding:8px 15px;
+	border:1px solid #f2ca77;
+	border-radius:15px;
+	background: #fff;
+	margin-top:10px;
+	outline: none;
+	line-height:20px;
+}
+.button { /* 按钮美化 */
+		  width: 40px; /* 宽度 */
+		  height: 30px; /* 高度 */
+		  border-width: 0px; /* 边框宽度 */
+		  border-radius: 3px; /* 边框半径 */
+		  background: #f43c24; /* 背景颜色 */
+		  cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+		  outline: none; /* 不显示轮廓线 */
+		  font-family: Microsoft YaHei; /* 设置字体 */
+		  color: white; /* 字体颜色 */
+		  font-size: 17px; /* 字体大小 */
+	  }
+.button:hover { /* 鼠标移入按钮范围时改变颜色 */
+	background: #5599FF;
+}
+.button1 { /* 按钮美化 */
+	width: 80px; /* 宽度 */
+	height: 30px; /* 高度 */
+	border-width: 0px; /* 边框宽度 */
+	border-radius: 3px; /* 边框半径 */
+	background: #fff150; /* 背景颜色 */
+	cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+	outline: none; /* 不显示轮廓线 */
+	font-family: Microsoft YaHei; /* 设置字体 */
+	color: white; /* 字体颜色 */
+	font-size: 17px; /* 字体大小 */
+}

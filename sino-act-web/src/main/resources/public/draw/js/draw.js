@@ -58,23 +58,23 @@ function myprizes() {
         data: {drawCode: drawCode},
         dataType: "json",
         success: function(data){
-            if (!data.prizes) {
+            if (!data.record) {
                 return;
             }
-            console.log(data.prizes);
-            $.each(data.prizes, function (i, n) {
-                var ptype = n.prizeType;
+            console.log(data.record);
+            $.each(data.record, function (i, n) {
+                var ptype = n.prizetype;
                 var status = n.status;
                 var iscenter = 0;
-                var prize = $('.prize_li').clone();
-                $(prize).css('display', 'inherit');
-                prize.removeClass('prize_li');
-                prize.find('.pname').html(n.prizeName);
-                prize.find('.time').html(n.drawTime);
-                $(prize).attr('val', n.prizeCode);
-                $(prize).attr('flow', n.gatewayFlow);
-                $(prize).attr('ptype', ptype);
-                $('.popList').append(prize);
+                var record = $('.prize_li').clone();
+                $(record).css('display', 'inherit');
+                record.removeClass('prize_li');
+                record.find('.pname').html(n.prizename);
+                record.find('.time').html(n.createtimestamp);
+                $(record).attr('val', n.prizecode);
+                $(record).attr('flow', n.drawtranseqno);
+                $(record).attr('ptype', n.prizetype);
+                $('.popList').append(record);
             });
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -132,10 +132,10 @@ function prizes() {
         dataType: "json",
         success: function(data){
             var content = '';
-            if (data.prizes) {
-                $.each(data.prizes, function (i, n) {
-                    if (n.mobile) {
-                        content = content + ('<li>恭喜 '+n.mobile+' 获得'+n.prizeName+'</li>');
+            if (data.record) {
+                $.each(data.record, function (i, n) {
+                    if (n.phone) {
+                        content = content + ('<li>恭喜 '+n.phone+' 获得'+n.prizename+'</li>');
                     }
                 });
             }
@@ -152,6 +152,12 @@ function prizes() {
 
 }
 function saveAddr() {
+    var boolean = $("#protocol").prop("checked");
+    if (!boolean){
+        tip('请勾选协议');
+        return ;
+    }
+
     var uname = $('.uname').val();
     var phone = $('.phone').val();
     var addr = $('.addr').val();
@@ -172,22 +178,26 @@ function saveAddr() {
     } else {
     }
     var flow = $('.flow').val();
-    uname = getEntryptPwd(uname);
-    phone = getEntryptPwd(phone);
+  /*  uname = getEntryptPwd(uname);
+    phone = getEntryptPwd(phone);*/
+    var data = $("#addressId").serialize();
     $.ajax({
-        type: "POST",
-        url: contextRootPath+"/draw/saveAddress.action",
-        data: {drawCode: drawCode, flow:flow, uname: uname, phone: phone, addr: addr},
+        url: contextRootPath+"/draw/saveAddress",
         dataType: "json",
+        type: "post",
+        data:  data,
         success: function(data){
             if (data.respCode == '1') {
                 if ('integral' == prizeType) {
+
                 } else if ('materialObject' == prizeType) {
+
                 } else {
+
                 }
-                $('.goods').hide();
                 $('.register').show();
             } else {
+                $('.register').show();
                 tip(data.respMsg);
             }
         },

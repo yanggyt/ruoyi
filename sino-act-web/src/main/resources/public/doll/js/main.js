@@ -3,7 +3,7 @@ let cl = getParameter('cl');
 let uid = getParameter('uid');
 let running = false;
 let body;
-//Ê£Óà´ÎÊı»ò»ı·Ö
+//å‰©ä½™æ¬¡æ•°æˆ–ç§¯åˆ†
 function init(facade){
   $.ajax({
     type:'POST',
@@ -38,40 +38,40 @@ function init(facade){
     },
     error:function(XMLHttpRequest, textStatus, errorThrown){
       console.log(textStatus);
-      layerTip('ÍøÂçÒì³££¬Çë¼ì²éÍøÂç»·¾³');
+      layerTip('ç½‘ç»œå¼‚å¸¸ï¼Œè¯·æ£€æŸ¥ç½‘ç»œç¯å¢ƒ');
     }
   });
 }
 function initAwards(){
   $.ajax({
     type:'POST',
-    url:contextRootPath+'/integral/active/getRollList.do',
-    data: {"drawCode": drawCode},
+    url:contextRootPath+'/draw/prizes.action',
+    data: {"drawCode": drawCode, isAll: 1},
     dataType:'json',
     success:function(data){
-      let awards = data.awardPrizeLists;
+      let awards = data.record;
       if (!awards) {
         return;
       }
       $.each(awards, function (i, n) {
-        let userName = n.userName;
-        let prizeName = n.prizeName;
-        let dateStr = n.dateStr;
+        let userName = n.username;
+        let prizeName = n.prizename;
+        let dateStr = n.createtimestamp;
         let award = $('.award').clone();
         award.show();
         award.removeClass('award');
-        award.html('¹§Ï²'+userName+'»ñµÃ'+prizeName);
+        award.html('æ­å–œ'+userName+'è·å¾—'+prizeName);
         $('.awards').append(award);
       });
-      //ÖĞ½±Ãûµ¥¹ö¶¯
+      //ä¸­å¥–åå•æ»šåŠ¨
       $('.my_scroll').myScroll({
-        speed: 100, //ÊıÖµÔ½´ó£¬ËÙ¶ÈÔ½Âı
-        rowHeight: 38//liµÄ¸ß¶È
+        speed: 100, //æ•°å€¼è¶Šå¤§ï¼Œé€Ÿåº¦è¶Šæ…¢
+        rowHeight: 38//liçš„é«˜åº¦
       });
     },
     error:function(XMLHttpRequest, textStatus, errorThrown){
       console.log(textStatus);
-      layerTip('ÍøÂçÒì³££¬Çë¼ì²éÍøÂç»·¾³');
+      layerTip('ç½‘ç»œå¼‚å¸¸ï¼Œè¯·æ£€æŸ¥ç½‘ç»œç¯å¢ƒ');
     }
   });
 }
@@ -80,23 +80,23 @@ function myprizes(facade) {
   $('.pop_prize').show();
   $.ajax({
     type: "POST",
-    url: contextRootPath+'/integral/active/awardPrizeList.do',
+    url: contextRootPath+'/draw/prizes.action',
     data: {drawCode: drawCode, facade: facade},
     dataType: "json",
     success: function(data){
-      let prizes = data.awardPrizeLists;
+      let prizes = data.record;
       if (!prizes) {
         return;
       }
       $.each(prizes, function (i, n) {
-        let ptype = n.prizeType;
+        let ptype = n.prizetype;
         let status = n.status;
-        let prizeCode = n.prizeCode;
+        let prizeCode = n.prizecode;
         let prize = $('.prize_li').clone();
         prize.show();
         prize.removeClass('prize_li');
-        prize.find('.pname').html(n.prizeName);
-        prize.find('.time').html(n.dateStr);
+        prize.find('.pname').html(n.prizename);
+        prize.find('.time').html(n.createtimestamp);
         let imgSrc = $('img[p-code=' + prizeCode + ']').attr('src');
         prize.find("img").attr('src', imgSrc);
         let link = n.link;
@@ -106,13 +106,13 @@ function myprizes(facade) {
           });
         }
         $(prize).attr('val', prizeCode);
-        $(prize).attr('flow', n.gatewayFolw);
+        $(prize).attr('flow', n.drawtranseqno);
         $(prize).attr('ptype', ptype);
         $('.myPrizes').append(prize);
       });
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
-      console.log('ÍøÂçÒì³£', textStatus, errorThrown);
+      console.log('ç½‘ç»œå¼‚å¸¸', textStatus, errorThrown);
     }
   });
 
@@ -128,23 +128,23 @@ function saveAddr(type) {
   if ('integral' == prizeType) {
   } else if ('materialObject' == prizeType) {
     if (!uname) {
-      layerTip('ÇëÊäÈëÊÕ»õÈËĞÕÃû');
+      layerTip('è¯·è¾“å…¥æ”¶è´§äººå§“å');
       return;
     }
     if (!idcard) {
-      layerTip('ÇëÊäÈëÉí·İÖ¤ºÅ');
+      layerTip('è¯·è¾“å…¥èº«ä»½è¯å·');
       return;
     }
     if (!phone) {
-      layerTip('ÇëÊäÈëÁªÏµµç»°');
+      layerTip('è¯·è¾“å…¥è”ç³»ç”µè¯');
       return;
     }
     if (!city) {
-      layerTip('ÇëÑ¡ÔñËùÔÚµØÇø');
+      layerTip('è¯·é€‰æ‹©æ‰€åœ¨åœ°åŒº');
       return;
     }
     if (!addr) {
-      layerTip('ÇëÊäÈëÏêÏ¸µØÖ·');
+      layerTip('è¯·è¾“å…¥è¯¦ç»†åœ°å€');
       return;
     }
   } else {
@@ -168,11 +168,11 @@ function saveAddr(type) {
       } else {
       }
       $('.pop_fillin').hide();
-      layerTip('±£´æ³É¹¦')
+      layerTip('ä¿å­˜æˆåŠŸ')
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
-      console.log('ÍøÂçÒì³£', textStatus, errorThrown);
-      layerTip('ÍøÂçÒì³££¬Çë¼ì²éÍøÂç»·¾³');
+      console.log('ç½‘ç»œå¼‚å¸¸', textStatus, errorThrown);
+      layerTip('ç½‘ç»œå¼‚å¸¸ï¼Œè¯·æ£€æŸ¥ç½‘ç»œç¯å¢ƒ');
     }
   });
 
@@ -199,7 +199,7 @@ function start() {
         return;
       } else if (code == '-1') {
         running = false;
-        layerTip('ÇëÏÈÍêÉÆÊÖ»úºÅ');
+        layerTip('è¯·å…ˆå®Œå–„æ‰‹æœºå·');
         return;
       }
       if (code != '0') {
@@ -213,11 +213,11 @@ function start() {
     error:function(XMLHttpRequest, textStatus, errorThrown){
       running = false;
       console.log(textStatus);
-      layerTip('ÍøÂçÒì³££¬Çë¼ì²éÍøÂç»·¾³');
+      layerTip('ç½‘ç»œå¼‚å¸¸ï¼Œè¯·æ£€æŸ¥ç½‘ç»œç¯å¢ƒ');
     }
   });
 }
-//Ê£Óà´ÎÊı»ò»ı·Ö
+//å‰©ä½™æ¬¡æ•°æˆ–ç§¯åˆ†
 function num(drawType){
   // let drawType = $('.drawType').val();
   $.ajax({
@@ -232,7 +232,7 @@ function num(drawType){
     },
     error:function(XMLHttpRequest, textStatus, errorThrown){
       console.log(textStatus);
-      layerTip('ÍøÂçÒì³££¬Çë¼ì²éÍøÂç»·¾³');
+      layerTip('ç½‘ç»œå¼‚å¸¸ï¼Œè¯·æ£€æŸ¥ç½‘ç»œç¯å¢ƒ');
     }
   });
 }

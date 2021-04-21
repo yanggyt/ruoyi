@@ -59,4 +59,6 @@ public interface IDrawRecordService
      * @return 结果
      */
     public int deleteDrawRecordById(String DRAWRECORDID);
+
+    List<DrawRecord> selectDrawRecordCodeList(String drawCode, String userId);
 }

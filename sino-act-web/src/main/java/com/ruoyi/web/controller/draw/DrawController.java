@@ -1,8 +1,7 @@
 package com.ruoyi.web.controller.draw;
 
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.dto.DrawActivityRequest;
-import com.ruoyi.web.vo.Const;
+import com.ruoyi.dto.*;
 import com.ruoyi.web.vo.Result;
 import com.ruoyi.web.vo.draw.*;
 import com.sinosoft.activity.domain.DrawConfig;
@@ -12,6 +11,7 @@ import com.sinosoft.activity.service.IDrawConfigService;
 import com.sinosoft.activity.service.IDrawInfoService;
 import com.sinosoft.activity.service.IDrawTaskNotifyService;
 import com.sinosoft.activity.service.*;
+import com.sinosoft.activity.service.impl.ActPageConfigUserinfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -19,7 +19,6 @@ import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
 import me.chanjar.weixin.mp.api.WxMpService;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,10 +58,17 @@ public class DrawController {
     @Autowired
     private IActConfigService actConfigService;
     @Autowired
+    private ActPageConfigUserinfoServiceImpl actPageConfigUserinfoServiceImpl;
+    @Autowired
     private IActPageConfigSubscribeService iActPageConfigSubscribeService;
 
     @Autowired
     private IActPageConfigUserinfoService  iActPageConfigUserinfoService;
+    @Autowired
+    private IDrawRecordService iDrawRecordService;
+
+    @Autowired
+    private IDrawUserInfoService iDrawUserInfoService;
     @Autowired
     private IDrawTaskNotifyService taskNotifyService;
     @Autowired
@@ -174,12 +181,12 @@ public class DrawController {
 
     @RequestMapping(value="/info.action", method = RequestMethod.POST)
     @ResponseBody
-    public ActPageConfigUserinfoResult info(HttpServletRequest request, String drawCode) {
+    public ActPageConfigUserinfoResult info(HttpServletRequest request, String actCode) {
         ActPageConfigUserinfoResult result = new ActPageConfigUserinfoResult();
-        logger.info("活动编码"+drawCode);
+        logger.info("活动编码"+actCode);
         try{
             List<ActPageConfigUserinfo> prizes = new ArrayList<ActPageConfigUserinfo>();
-            ActPageConfigUserinfo actPageConfigUserinfo = iActPageConfigUserinfoService.selectActPageConfigUserinfoByCode(drawCode);
+            ActPageConfigUserinfo actPageConfigUserinfo = iActPageConfigUserinfoService.selectActPageConfigUserinfoByCode(actCode);
             prizes.add(actPageConfigUserinfo);
             result.setActPageConfigUserinfo(prizes);
         }catch (Exception e){
@@ -193,51 +200,28 @@ public class DrawController {
     @ResponseBody
     public PrizeResult prizes(HttpServletRequest request, String drawCode, String isAll) {
         PrizeResult result = new PrizeResult();
-        List<Prize> prizes = new ArrayList<Prize>();
+        List<DrawRecord> prizes = new ArrayList<DrawRecord>();
         try {
+
             HttpSession session = request.getSession();
             WxOAuth2UserInfo userInfo = getUserInfo(request, null);
-            if (userInfo == null && !"1".equals(isAll)) {
-                result.setPrizes(prizes);
+         /*   if (userInfo == null && !"1".equals(isAll)) {
+                result.setRecord(prizes);
                 return result;
-            }
-            String userId = null;
-            if (!"1".equals(isAll)) {
+            }*/
+            String userId ="";
+         /*   if (!"1".equals(isAll)) {
+                 Long userId1 = ShiroUtils.getUserId();
                 userId = userInfo.getOpenid();
+            }*/
+            List<DrawRecord> drawRecords = iDrawRecordService.selectDrawRecordCodeList(drawCode, userId);
+            for (DrawRecord draw: drawRecords) {
+                String mobile = draw.getPHONE();
+                if (StringUtils.isNotBlank(mobile)) {
+                    draw.setPHONE(mobile.substring(0, 3) + "****" + mobile.substring(7, mobile.length()));
+                }
             }
-//            AwardPrizeListResponse awardPrizeListResponse = activityService.awardPrizeList(drawCode, userId).get_return();
-//            AwardPrizeListResponseHeader header = awardPrizeListResponse.getHeader();
-//            result.setRespCode(header.getResultCode());
-//            result.setRespMsg(header.getResultInfo());
-//            AwardPrizeListResponseBody responseBody = awardPrizeListResponse.getResponseBody();
-//            AwardPrizeList[] awardPrizes = responseBody.getAwardPrizeLists();
-//            if (awardPrizes != null) {
-//                for (int i = 0; i < awardPrizes.length; i++) {
-//                    AwardPrizeList awardPrize = awardPrizes[i];
-//                    Prize prize = new Prize();
-//                    prize.setPrizeCode(awardPrize.getPrizeCode());
-//                    prize.setPrizeName(awardPrize.getPrizeName());
-//                    prize.setPrizeType(awardPrize.getPrizeType());
-//                    prize.setDrawTime(DateUtil.convertDate(DateUtil.convertStringToDate(awardPrize.getDrawTime(), DateUtil.YYYYMMDDHHMMSSS), "yyyy/MM/dd HH:mm"));
-//                    prize.setStatus(awardPrize.getStatus());
-//                    prize.setExtId(awardPrize.getExtId());
-//                    prize.setGatewayFlow(awardPrize.getGatewayFolw());
-//                    String userName = awardPrize.getUserName();
-//                    if (StringUtils.isNotBlank(userName)) {
-//                        int end = 1;
-//                        if (userName.length()==2) {
-//                            end = 0;
-//                        }
-//                        prize.setUserName(StringUtil.getStarString2(userName, 1, end));
-//                    }
-//                    String mobile = awardPrize.getMobile();
-//                    if (StringUtils.isNotBlank(mobile)) {
-//                        prize.setMobile(StringUtil.getStarString2(mobile, 3, 4));
-//                    }
-//                    prizes.add(prize);
-//                }
-//            }
-            result.setPrizes(prizes);
+            result.setRecord(drawRecords);
         } catch (Exception e) {
             result.setRespCode("-1");
             result.setRespMsg("系统异常，请稍后再试");
@@ -309,42 +293,13 @@ public class DrawController {
         }
         return result;
     }
-    @RequestMapping(value="/saveAddress.action", method = RequestMethod.POST)
+    @RequestMapping(value="/saveAddress", method = RequestMethod.POST)
     @ResponseBody
-    public Result saveAddress(HttpServletRequest request, String drawCode, String uname, String phone, String addr, String flow) {
+    public Result saveAddress(HttpServletRequest request, DrawUserInfo userInfo) {
         Result result = new Result();
         try {
-            HttpSession session = request.getSession();
-            WxOAuth2UserInfo userInfo = getUserInfo(request, null);
-            if (userInfo == null) {
-                result.setRespCode("-2");
-                result.setRespMsg("会话已失效，请重新登录");
-                logger.info("DrawController.saveAddress userId is null");
-                return result;
-            }
-            if (StringUtils.isBlank(uname)) {
-                result.setRespCode("-4");
-                result.setRespMsg("请输入姓名");
-                return result;
-            }
-//            String validateMobile = CommonValidate.validateMobile(phone, "1");
-//            if (StringUtils.isNotBlank(validateMobile)) {
-//                result.setRespCode("-4");
-//                result.setRespMsg(validateMobile);
-//                return result;
-//            }
-            String userId = userInfo.getOpenid();
-//            SaveUserAddressRequestBody requestBody = new SaveUserAddressRequestBody();
-//            requestBody.setDrawCode(drawCode);
-//            requestBody.setGatewayFlow(flow);
-//            requestBody.setUserId(userId);
-//            requestBody.setUserName(uname);
-//            requestBody.setPhone(phone);
-//            requestBody.setAddress(addr);
-//            //实物留资
-//            requestBody.setNotifyType("007");
-//            requestBody.setCity("无");
-//            activityService.saveUserAddress(requestBody);
+            userInfo.setCreateTime(new Date());
+            iDrawUserInfoService.insertDrawUserInfo(userInfo);
         } catch (Exception e) {
             result.setRespCode("-1");
             result.setRespMsg("系统异常，请稍后再试");
@@ -410,7 +365,7 @@ public class DrawController {
         }catch (Exception e){
             result.setRespCode("-1");
             result.setRespMsg("系统异常，请稍后再试");
-            logger.error("DrawController.saveAddress ex: ", e);
+            logger.error("DrawController.qrCode ex: ", e);
         }
         return result;
     }
@@ -430,6 +385,5 @@ public class DrawController {
         }
         return result;
     }
-
 
 }

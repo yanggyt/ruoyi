@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="SOURCE"    column="SOURCE"    />
         <result property="PHONE"    column="PHONE"    />
         <result property="EXTAREA"    column="EXTAREA"    />
+        <result property="PRIZENAME"    column="PRIZENAME"    />
     </resultMap>
 
     <sql id="selectDrawRecordVo">
@@ -78,7 +79,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDrawRecordVo"/>
         where DRAWRECORDID = #{DRAWRECORDID}
     </select>
-        
+    <select id="selectDrawRecordCodeUserList" parameterType="String" resultMap="DrawRecordResult">
+                 SELECT
+            dr.*, pi.PRIZENAME
+        FROM
+            draw_record dr
+        LEFT JOIN draw_prize_info pi ON dr.PRIZECODE = pi.PRIZECODE
+
+        WHERE
+	     dr.drawResult != '0'
+        AND dr.DRAWCODE = #{drawCode}
+        AND dr.USERID = #{userId}
+         order by dr.CREATETIMESTAMP desc
+
+    </select>
+    <select id="selectDrawRecordCodeList" parameterType="String" resultMap="DrawRecordResult">
+           SELECT
+            dr.*, pi.PRIZENAME
+        FROM
+            draw_record dr
+        LEFT JOIN draw_prize_info pi ON dr.PRIZECODE = pi.PRIZECODE
+        WHERE
+	     dr.DRAWRESULT != '0'
+        AND dr.DRAWCODE = #{drawCode}
+         order by dr.CREATETIMESTAMP desc
+         LIMIT 100
+    </select>
+
     <insert id="insertDrawRecord" parameterType="DrawRecord">
         insert into draw_record
         <trim prefix="(" suffix=")" suffixOverrides=",">

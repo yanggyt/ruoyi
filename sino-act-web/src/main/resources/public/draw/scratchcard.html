@@ -4,15 +4,18 @@
 <head>
 	<meta name="viewport"
 		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<meta charset="GBK">
+	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no" />
-	<title>Ö§¸¶³éºÃÀñ£¬ºÃÔË°éËæÄã</title>
+	<title>æ”¯ä»˜æŠ½å¥½ç¤¼ï¼Œå¥½è¿ä¼´éšä½ </title>
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/popup.css"/>
     <link rel="stylesheet" type="text/css" href="css/myPrize.css"/>
   <link rel="stylesheet" type="text/css" href="css/rule.css"/>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="/js/config.js"></script>
+
     <style type="text/css">
         .popupBox{
             width:100%;
@@ -25,61 +28,63 @@
 <body class="template_bg popupBox" style="background-color: #f9eec8;">
   <div class="promotion_goBack rtn_btn" onclick="rtn()">
     <span class="btn_back"><img src="images/btn_back.png" alt=""></span>
-    <span>·µ»Ø</span>
+    <span>è¿”å›ž</span>
   </div>
 	<div class="promotion_container">
 		<header class="template_header">
-      <p class="header_left"><span onclick="drawrule()">»î¶¯¹æÔò</span></p>
-			<p class="header_right"><span onclick="myprizes()">ÎÒµÄ½±Æ·</span></p>
-<!--      <p class="header_right" style="position: absolute;top: 2rem;right: 0;z-index: 10;"><span onclick="rtn()">&nbsp;·µ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;»Ø&nbsp;</span></p>-->
+      <p class="header_left"><span onclick="drawrule()">æ´»åŠ¨è§„åˆ™</span></p>
+			<p class="header_right"><span onclick="myprizes()">æˆ‘çš„å¥–å“</span></p>
+<!--      <p class="header_right" style="position: absolute;top: 2rem;right: 0;z-index: 10;"><span onclick="rtn()">&nbsp;è¿”&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;å›ž&nbsp;</span></p>-->
 		</header>
 
-		<!-- ÍÆ¹ãÍ¼1 -->
+		<!-- æŽ¨å¹¿å›¾1 -->
 		<div class="promotion_main clearfix promotion_main_1 nowPage">
-            <!-- ºì°ü -->
+            <!-- çº¢åŒ… -->
             <div class="zk_red_box">
                 <div class="zk_red_box_header">
-                    <h2 class="title">Ê£Óà³é½±´ÎÊý£º<span class="num">0</span>´Î</h2>
-                    <!-- ¹Î½±Çø -->
+                    <h2 class="title">å‰©ä½™æŠ½å¥–æ¬¡æ•°ï¼š<span class="num">0</span>æ¬¡</h2>
+                    <!-- åˆ®å¥–åŒº -->
                     <!-- <div class="scratch_off_popup"> -->
                         <canvas id="canvas" style="height: 4rem;"></canvas>
                     <!-- </div> -->
-                    <!-- ÈýÖÖ×´Ì¬ -->
+                    <!-- ä¸‰ç§çŠ¶æ€ -->
                     <div style="display: none;" class="scratch_off_box success">
-                        <p class="cue" style="display: none;">¹§Ï²Äã»ñµÃÏÖ½ðºì°ü</p>
-                        <p class="amount" style="margin-top: 0.18rem;">0.08Ôª</p>
-                        <p class="remark" style="padding-top: 0.3rem;color: #bbadad;">ºì°ü½«ÔÚ2Ð¡Ê±ÄÚ·¢·ÅÖÁÄúµÄÒ»ÕËÍ¨°ó¶¨ÒøÐÐ¿¨ÖÐ£¬Çë×¢Òâ²éÊÕ</p>
-                        <p class="again_btn">ÔÙÀ´Ò»´Î</p>
+                        <p class="cue" style="display: none;">æ­å–œä½ èŽ·å¾—çŽ°é‡‘çº¢åŒ…</p>
+                        <p class="amount" style="margin-top: 0.18rem;">0.08å…ƒ</p>
+                        <p class="remark" style="padding-top: 0.3rem;color: #bbadad;">çº¢åŒ…å°†åœ¨2å°æ—¶å†…å‘æ”¾è‡³æ‚¨çš„ä¸€è´¦é€šç»‘å®šé“¶è¡Œå¡ä¸­ï¼Œè¯·æ³¨æ„æŸ¥æ”¶</p>
+                        <p class="again_btn">å†æ¥ä¸€æ¬¡</p>
                     </div>
                     <div style="display: none;" class="scratch_off_box fail">
-                        <p>´ó½±ÀëÄã»¹²îÒ»µã¶ù£¬¼ÓÓÍ</p>
-                        <p class="again_btn">ÔÙ³éÒ»´Î</p>
+                        <p>å¤§å¥–ç¦»ä½ è¿˜å·®ä¸€ç‚¹å„¿ï¼ŒåŠ æ²¹</p>
+                        <p class="again_btn">å†æŠ½ä¸€æ¬¡</p>
                     </div>
                     <div style="display: none;" class="scratch_off_box no_chance">
-                        <p><img src="images/16.gif" style="width: 25px;vertical-align: middle;" alt="">ÄúµÄ³é½±»ú»áÒÑÓÃÍê</p>
-                        <p>ÍÆ¼ö¿Í»§»ñÈ¡¸ü¶à³é½±»ú»á°É¡«</p>
+                        <p><img src="images/16.gif" style="width: 25px;vertical-align: middle;" alt="">æ‚¨çš„æŠ½å¥–æœºä¼šå·²ç”¨å®Œ</p>
+                        <p>æŽ¨èå®¢æˆ·èŽ·å–æ›´å¤šæŠ½å¥–æœºä¼šå§ï½ž</p>
                     </div>
                 </div>
                 <div class="zk_red_box_footer">
-                    <p>½ñÈÕÓÐ»ú»á¹Î³ö</p>
+                    <p>ä»Šæ—¥æœ‰æœºä¼šåˆ®å‡º</p>
                 </div>
                 
                 
                 
             </div>
-            <!-- »ñ½±ÈË -->
-            <div class="myscroll zk_carry_box">
-                <ul class="">
-                    <!-- zk_carry_box -->
-                    <li>¹§Ï² 187****1234 »ñµÃÏÖ½ðºì°ü</li>
-                </ul>
+            <!-- èŽ·å¥–äºº -->
+            <div class="lucy_info">
+                <img src="images/icon_hb1.png" />
+                <div class="myscroll">
+                    <ul>
+                        <li>æ­å–œ 187****1234 èŽ·å¾—çˆ±å¥‡è‰ºæœˆå¡</li>
+                    </ul>
+                </div>
             </div>
 		</div>
 	</div>
     <div class="tip_copy" style="display: none;">
         <p></p>
     </div>
-    <!--ÎÒµÄ½±Æ·   µ¯´°-->
+    <!--æˆ‘çš„å¥–å“   å¼¹çª—-->
     <div class='popup myPrize' style="display: none;">
         <div class='popupMin'>
             <img src="images/top02.png" class='top'>
@@ -88,13 +93,13 @@
                 <div class='cont'>
                     <div>
                         <img src="images/left.png">
-                        <div>ÎÒµÄ½±Æ·</div>
+                        <div>æˆ‘çš„å¥–å“</div>
                         <img src="images/right.png">
                     </div>
                     <div class='postListTop'>
                         <div>
-                            <div>³éÖÐ½±Æ·</div>
-                            <div>»ñ½±Ê±¼ä</div>
+                            <div>æŠ½ä¸­å¥–å“</div>
+                            <div>èŽ·å¥–æ—¶é—´</div>
                         </div>
                     </div>
                     <div class='popList'>
@@ -108,10 +113,10 @@
         <img src="images/delect.png" class='popDelect prizeDelect'>
     </div>
     <div class="prize_li" style="display: none;">
-        <div class="pname">½±Æ·Ãû³Æ</div>
+        <div class="pname">å¥–å“åç§°</div>
         <div class="time">2020/08/05 09:00</div>
     </div>
-    <!--»î¶¯¹æÔò-->
+    <!--æ´»åŠ¨è§„åˆ™-->
     <div class='popup rule' style="display: none;">
       <div class='popupMin'>
         <img src="images/top02.png" class='top'>
@@ -120,22 +125,22 @@
           <div class='cont'>
             <div>
               <img src="images/left.png">
-              <div>»î¶¯¹æÔò</div>
+              <div>æ´»åŠ¨è§„åˆ™</div>
               <img src="images/right.png">
             </div>
             <ul class='contBox' style="list-style: inside">
-<!--              <li class='content'>»î¶¯Ê±¼ä£º2020Äê10ÔÂ29ÈÕ-12ÔÂ31ÈÕ¡£</li>-->
-<!--              <li class='content'>»î¶¯ÆÚ¼ä£¬¿Í»§ÍÆ¼ö¿Í»§Ê¹ÓÃÒ»ÕËÍ¨Íê³ÉÖ§¸¶£¨²»°üº¬Àí²Æ²úÆ·¹ºÂò¡¢ÊÖ»ú³äÖµ¡¢Éú»î½É·Ñ£©£¬¼´¿É»ñµÃÒ»´Îºì°ü³é½±»ú»á£¬ÖÐ½±¸ÅÂÊ100%¡£³é½±»ú»áÓÐÐ§ÆÚ½ØÖ¹ÖÁ2021Äê1ÔÂ15ÈÕ¡£</li>-->
-<!--              <li class='content'>½±Æ·ÏÖ½ðºì°ü29400¸ö£¬ÖÐ½±¸ÅÂÊ100%£¬ÖÐ½±ºó£¬ÏµÍ³½«×Ô¶¯·¢·Åµ½ÄúµÄÊÖ»ú»òÒøÐÐ¿¨ÖÐ£¬Çë¼°Ê±²éÊÕ¡£</li>-->
-<!--              <li class='content'>×îÖÕ½±Æ·Çé¿öÒÔ»î¶¯Êµ¼ÊÇé¿öÎª×¼£¬ÖÐ¹úÈËÊÙ±£Áôµ÷ÕûÏà¹Ø½±Æ·Çé¿öµÄÈ¨Àû£¬Èç½±Æ··¢Éú±ä¸ü£¬½«Í¨¹ý³é½±»î¶¯Ò³Ãæ½øÐÐ¹«Ê¾¡£</li>-->
-<!--              <li class='content'>ÖÐ½±ºó£¬ÓÃ»§Ðè¼°Ê±ÁìÈ¡½±Àø£¬²¢Ìá½»ËùÐèÁìÈ¡ÐÅÏ¢£¬ÈôÒòÁì½±ÐÅÏ¢ÓÐÎó¡¢²»ÍêÕû¶øµ¼ÖÂ½±Æ·Î´ÄÜ¼°Ê±»ñµÃ¡¢ÎÞ·¨Õý³£·¢·Å£¬»ò»î¶¯½áÊøÓÃ»§ÈÔÎ´ÁìÈ¡½±Æ·£¬ÔòÊÓÎªÓÃ»§·ÅÆú¸Ã½±Æ·¡£</li>-->
-<!--              <li class='content'>ÓÃ»§²Î¼Ó»î¶¯¼´ÊÓÎªÀí½â²¢Í¬Òâ±¾»î¶¯¹æÔò¡£</li>-->
-<!--              <li class='content'>¶Ô»î¶¯ÓÐÈÎºÎÒÉÎÊ£¬Çëµã»÷»î¶¯Ê×Ò³×ó²àµÄ¿Í·þÍ¼±ê½øÐÐ×ÉÑ¯£¬Ò²¿ÉÁªÏµÖÐ¹úÈËÊÙÔÚÏß¿Í·þ£¨¹Ø×¢¡°ÖÐ¹úÈËÊÙ±£ÏÕ¡±Î¢ÐÅ¹«ÖÚºÅ£¬ÔÚ¶Ô»°¿òÊäÈë¡°0¡±£¬ÔÙÊäÈë¡°2¡±¼´¿É£©¡£</li>-->
-<!--              <li class='content'>Àí²Æ²úÆ·°üÀ¨ÑøÀÏ±£ÕÏ¡¢ÏÖ½ð±¦¡¢öÎÏí±¦¼°ÆäËû»ù½ð²úÆ·¡£</li>-->
-<!--              <li class='content'>ÔÚ²ÎÓë»î¶¯µÄ¹ý³ÌÖÐ£¬Èç³öÏÖÎ¥¹æ²Ù×÷ÐÐÎª»òÎ¥·´»î¶¯¹æÔò½øÐÐ¶ñÒâÌ×ÀûµÄÓÃ»§£¬ÖÐ¹úÈËÊÙÓÐÈ¨×·»Ø½±Àø¡¢È¡ÏûÆä²ÎÓë±¾´Î»î¶¯µÄ×Ê¸ñ²¢×·¾¿Æä·¨ÂÉÔðÈÎ¡£</li>-->
-<!--              <li class='content'>±¾»î¶¯×îÖÕ½âÊÍÈ¨¹éÖÐ¹úÈËÊÙµç×ÓÉÌÎñÓÐÏÞ¹«Ë¾ËùÓÐ£¬ÖÐ¹úÈËÊÙµç×ÓÉÌÎñÓÐÏÞ¹«Ë¾±£ÁôÐÞ¸ÄÉÏÊöÌõ¿îºÍÌõ¼þµÄÈ¨Àû£¬ËùÓÐÌõ¿îºÍÌõ¼þ½«ÔÚ·¨ÂÉÔÊÐíµÄ×î´ó³Ì¶ÈÄÚÊ¹ÓÃ¡£</li>-->
-<!--              <li class='content'>±¾»î¶¯ÓëÆ»¹û¹«Ë¾ÎÞ¹Ø¡£</li>-->
-<!--              <li class='content'>½±Æ·ÊýÁ¿ÓÐÏÞ£¬ÏÈµ½ÏÈµÃ¡£</li>-->
+<!--              <li class='content'>ï¿½î¶¯Ê±ï¿½ä£º2020ï¿½ï¿½10ï¿½ï¿½29ï¿½ï¿½-12ï¿½ï¿½31ï¿½Õ¡ï¿½</li>-->
+<!--              <li class='content'>ï¿½î¶¯ï¿½Ú¼ä£¬ï¿½Í»ï¿½ï¿½Æ¼ï¿½ï¿½Í»ï¿½Ê¹ï¿½ï¿½Ò»ï¿½ï¿½Í¨ï¿½ï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ²ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É·Ñ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É»ï¿½ï¿½Ò»ï¿½Îºï¿½ï¿½ï¿½é½±ï¿½ï¿½ï¿½á£¬ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½100%ï¿½ï¿½ï¿½é½±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ú½ï¿½Ö¹ï¿½ï¿½2021ï¿½ï¿½1ï¿½ï¿½15ï¿½Õ¡ï¿½</li>-->
+<!--              <li class='content'>ï¿½ï¿½Æ·ï¿½Ö½ï¿½ï¿½ï¿½29400ï¿½ï¿½ï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½100%ï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½Ð£ï¿½ï¿½ë¼°Ê±ï¿½ï¿½ï¿½Õ¡ï¿½</li>-->
+<!--              <li class='content'>ï¿½ï¿½ï¿½Õ½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½Ô»î¶¯Êµï¿½ï¿½ï¿½ï¿½ï¿½Îª×¼ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½Ù±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½ç½±Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½é½±ï¿½î¶¯Ò³ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½Ê¾ï¿½ï¿½</li>-->
+<!--              <li class='content'>ï¿½Ð½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½è¼°Ê±ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì½±ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ó¡¢²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½Æ·Î´ï¿½Ü¼ï¿½Ê±ï¿½ï¿½Ã¡ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Î´ï¿½ï¿½È¡ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã½ï¿½Æ·ï¿½ï¿½</li>-->
+<!--              <li class='content'>ï¿½Ã»ï¿½ï¿½Î¼Ó»î¶¯ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½â²¢Í¬ï¿½â±¾ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½</li>-->
+<!--              <li class='content'>ï¿½Ô»î¶¯ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î¶¯ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ä¿Í·ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¿Í·ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½Ù±ï¿½ï¿½Õ¡ï¿½Î¢ï¿½Å¹ï¿½ï¿½ÚºÅ£ï¿½ï¿½Ú¶Ô»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡°0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡°2ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½</li>-->
+<!--              <li class='content'>ï¿½ï¿½Æ²ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ï¿½Ï¡ï¿½ï¿½Ö½ð±¦¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½</li>-->
+<!--              <li class='content'>ï¿½Ú²ï¿½ï¿½ï¿½î¶¯ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Î¥ï¿½ï¿½ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨×·ï¿½Ø½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë±¾ï¿½Î»î¶¯ï¿½ï¿½ï¿½Ê¸ï¿½×·ï¿½ï¿½ï¿½ä·¨ï¿½ï¿½ï¿½ï¿½ï¿½Î¡ï¿½</li>-->
+<!--              <li class='content'>ï¿½ï¿½ï¿½î¶¯ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½Ùµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾ï¿½ï¿½ï¿½Ð£ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½Ùµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Ê¹ï¿½Ã¡ï¿½</li>-->
+<!--              <li class='content'>ï¿½ï¿½ï¿½î¶¯ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½Ë¾ï¿½Þ¹Ø¡ï¿½</li>-->
+<!--              <li class='content'>ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ£ï¿½ï¿½Èµï¿½ï¿½ÈµÃ¡ï¿½</li>-->
             </ul>
 
           </div>
@@ -146,14 +151,11 @@
       <img src="images/delect.png" class='popDelect ruleDelect'>
       <span style='clear: both;'></span>
     </div>
-	  <script src="js/jquery-1.9.1.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/scroll.js"></script>
-    <script src="../../common/taglibs.js"></script>
     <script src="js/util.js"></script>
     <script src="js/draw.js"></script>
     <script src="js/common.js"></script>
-    <script src="../../js/mobile/login_register/login.js"></script>
 	<script>
 		(function () {
       var num = 0;
@@ -167,11 +169,11 @@
               $('.num').text(num);
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {
-              console.log('ÍøÂçÒì³£', textStatus, errorThrown);
+              console.log('ç½‘ç»œå¼‚å¸¸', textStatus, errorThrown);
           }
       });
 
-      // ÉèÖÃÍÆ¹ãÄÚÈÝ¸ß¶È
+      // è®¾ç½®æŽ¨å¹¿å†…å®¹é«˜åº¦
       function innerHeight() {
         if(!$('.promotion_main_1').is(':hidden')) {
           var arr = [];
@@ -191,14 +193,14 @@
 
 
       $('.myscroll').myScroll({
-        speed: 80, //ÊýÖµÔ½´ó£¬ËÙ¶ÈÔ½Âý
-        rowHeight: 24//liµÄ¸ß¶È
+        speed: 80, //æ•°å€¼è¶Šå¤§ï¼Œé€Ÿåº¦è¶Šæ…¢
+        rowHeight: 24//liçš„é«˜åº¦
       });
 
-      // ÉèÖÃ³õÊ¼µÄÖÐ½±×´Ì¬ success-ÖÐ½±  fail-Î´ÖÐ½±  no_chance-Ã»ÓÐ³é½±»ú»á
+      // è®¾ç½®åˆå§‹çš„ä¸­å¥–çŠ¶æ€ success-ä¸­å¥–  fail-æœªä¸­å¥–  no_chance-æ²¡æœ‰æŠ½å¥–æœºä¼š
       var status = '';
 
-      // ¹Î½±Ð§¹û -zk
+      // åˆ®å¥–æ•ˆæžœ -zk
       window.onload = function(){
         // let list = $('.scratch_off_box');
         // setTimeout(()=>{
@@ -216,8 +218,8 @@
         var style = window.getComputedStyle(canvas, null);
         var cssWidth = parseFloat(style["width"]);
         var cssHeight = parseFloat(style["height"]);
-        var scaleX = canvas.width / cssWidth; // Ë®Æ½·½ÏòµÄËõ·ÅÒò×Ó
-        var scaleY = canvas.height / cssHeight; // ´¹Ö±·½ÏòµÄËõ·ÅÒò×Ó
+        var scaleX = canvas.width / cssWidth; // æ°´å¹³æ–¹å‘çš„ç¼©æ”¾å› å­
+        var scaleY = canvas.height / cssHeight; // åž‚ç›´æ–¹å‘çš„ç¼©æ”¾å› å­
         var ctx = canvas.getContext('2d');
 
         ctx.strokeStyle = 'red';
@@ -238,9 +240,9 @@
         var rect = canvas.getBoundingClientRect();
         var time = 0;
         var running = false;
-        // ÐÂÔö-2020-8-20-³õÊ¼»¯ ÖÐ½±×´Ì¬
+        // æ–°å¢ž-2020-8-20-åˆå§‹åŒ– ä¸­å¥–çŠ¶æ€
         canvas.addEventListener('touchstart',function(){
-          // success-ÖÐ½±  fail-Î´ÖÐ½±  no_chance-Ã»ÓÐ³é½±»ú»á
+          // success-ä¸­å¥–  fail-æœªä¸­å¥–  no_chance-æ²¡æœ‰æŠ½å¥–æœºä¼š
           if (running) {
             console.log('running...');
             return;
@@ -259,8 +261,8 @@
 
           x -= rect.left;
           y -= rect.top;
-          x *= scaleX; // ÐÞÕýË®Æ½·½ÏòµÄ×ø±ê
-          y *= scaleY; // ÐÞÕý´¹Ö±·½ÏòµÄ×ø±ê
+          x *= scaleX; // ä¿®æ­£æ°´å¹³æ–¹å‘çš„åæ ‡
+          y *= scaleY; // ä¿®æ­£åž‚ç›´æ–¹å‘çš„åæ ‡
           // ctx.clearRect(x,y,15,15)
           clearArcFun(x,y,15,ctx);
           isArea();
@@ -268,9 +270,9 @@
         })
 
         function isArea(){
-          //ÅÐ¶Ï¹Î¿ªÃæ»ýÊÇ·ñµ½´ï°Ù·ÖÖ®ÁùÊ®
-          console.log('Ö´ÐÐisAreaÐ§¹û')
-          var data = ctx.getImageData(0,0,canvas.width,canvas.height).data;//»ñÈ¡»­²¼µÄÐÅÏ¢
+          //åˆ¤æ–­åˆ®å¼€é¢ç§¯æ˜¯å¦åˆ°è¾¾ç™¾åˆ†ä¹‹å…­å
+          console.log('æ‰§è¡ŒisAreaæ•ˆæžœ')
+          var data = ctx.getImageData(0,0,canvas.width,canvas.height).data;//èŽ·å–ç”»å¸ƒçš„ä¿¡æ¯
           var n = 0 ;
           for (var i = 0; i < data.length; i++) {
             if (data[i] == 0) {
@@ -278,15 +280,15 @@
             };
           };
           if (n >= data.length * 0.6) {
-            ctx.globalCompositeOperation = 'destination-over';//ÖØµã
+            ctx.globalCompositeOperation = 'destination-over';//é‡ç‚¹
             // ctx.canvas.style.opacity = 0;
             ctx.clearRect(0,0,canvas.width,canvas.height);
             $('#canvas').css('pointer-events','none')
           }
         }
 
-        function clearArcFun(x,y,r,cxt){    //(x,y)ÎªÒªÇå³ýµÄÔ²µÄÔ²ÐÄ£¬rÎª°ë¾¶£¬cxtÎªcontext
-          var stepClear=1;//±ðÍü¼ÇÕâÒ»²½
+        function clearArcFun(x,y,r,cxt){    //(x,y)ä¸ºè¦æ¸…é™¤çš„åœ†çš„åœ†å¿ƒï¼Œrä¸ºåŠå¾„ï¼Œcxtä¸ºcontext
+          var stepClear=1;//åˆ«å¿˜è®°è¿™ä¸€æ­¥
           clearArc(x,y,r);
           function clearArc(x,y,radius){
             var calcWidth=radius-stepClear;
@@ -306,11 +308,11 @@
           }
         }
 
-        // ÔÙ³éÒ»´Î
+        // å†æŠ½ä¸€æ¬¡
         $('.again_btn').click(function(){
           if(num<1) {
             $('.no_chance').show().siblings('.scratch_off_box').hide();
-            console.log('³é½±´ÎÊý²»×ã')
+            console.log('æŠ½å¥–æ¬¡æ•°ä¸è¶³')
             return;
           }
           drawimage();
@@ -336,7 +338,7 @@
                 }
                 if(respCode == 'GT00007') {
                   $('.no_chance').show().siblings('.scratch_off_box').hide();
-                  console.log('³é½±´ÎÊý²»×ã');
+                  console.log('æŠ½å¥–æ¬¡æ•°ä¸è¶³');
                   return;
                 }
                 running = false;
@@ -358,7 +360,7 @@
               setPrizeInfo(prizeType, prizeCode, data.cue, data.gatewayFlow);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-              console.log('ÍøÂçÒì³£', textStatus, errorThrown);
+              console.log('ç½‘ç»œå¼‚å¸¸', textStatus, errorThrown);
               running = false;
             }
           });
@@ -370,6 +372,7 @@
 		})();
         prizes();
 	</script>
+
 </body>
 
 </html>

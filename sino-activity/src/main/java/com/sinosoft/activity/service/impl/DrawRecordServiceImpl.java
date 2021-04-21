@@ -96,4 +96,13 @@ public class DrawRecordServiceImpl implements IDrawRecordService
     {
         return drawRecordMapper.deleteDrawRecordById(DRAWRECORDID);
     }
+
+    @Override
+    public List<DrawRecord> selectDrawRecordCodeList(String drawCode, String userId) {
+      if(!(userId==null || "".equals(userId))){
+       return   drawRecordMapper.selectDrawRecordCodeUserList(drawCode ,userId);
+       }else{
+        return  drawRecordMapper.selectDrawRecordCodeList(drawCode);
+      }
+    }
 }

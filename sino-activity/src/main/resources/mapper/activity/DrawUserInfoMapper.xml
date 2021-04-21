@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.activity.mapper.DrawUserInfoMapper">
+
+    <resultMap type="DrawUserInfo" id="DrawUserInfoResult">
+        <result property="awarDrecordId"    column="awarDrecordId"    />
+        <result property="userName"    column="userName"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="gender"    column="gender"    />
+        <result property="address"    column="address"    />
+        <result property="agentName"    column="agentName"    />
+        <result property="agentMobile"    column="agentMobile"    />
+        <result property="agentGender"    column="agentGender"    />
+        <result property="agentNo"    column="agentNo"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="updateTime"    column="updateTime"    />
+    </resultMap>
+
+    <sql id="selectDrawUserInfoVo">
+        select awarDrecordId, userName, mobile, gender, address, agentName, agentMobile, agentGender, agentNo, createTime, updateTime from draw_user_info
+    </sql>
+
+    <select id="selectDrawUserInfoList" parameterType="DrawUserInfo" resultMap="DrawUserInfoResult">
+        <include refid="selectDrawUserInfoVo"/>
+        <where>
+            <if test="userName != null  and userName != ''"> and userName like concat('%', #{userName}, '%')</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="agentName != null  and agentName != ''"> and agentName like concat('%', #{agentName}, '%')</if>
+            <if test="agentMobile != null  and agentMobile != ''"> and agentMobile = #{agentMobile}</if>
+            <if test="agentGender != null  and agentGender != ''"> and agentGender = #{agentGender}</if>
+            <if test="agentNo != null "> and agentNo = #{agentNo}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+            <if test="updateTime != null "> and updateTime = #{updateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDrawUserInfoById" parameterType="Long" resultMap="DrawUserInfoResult">
+        <include refid="selectDrawUserInfoVo"/>
+        where awarDrecordId = #{awarDrecordId}
+    </select>
+
+    <insert id="insertDrawUserInfo" parameterType="DrawUserInfo">
+        insert into draw_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">userName,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="gender != null">gender,</if>
+            <if test="address != null">address,</if>
+            <if test="agentName != null">agentName,</if>
+            <if test="agentMobile != null">agentMobile,</if>
+            <if test="agentGender != null">agentGender,</if>
+            <if test="agentNo != null">agentNo,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="updateTime != null">updateTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">#{userName},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="address != null">#{address},</if>
+            <if test="agentName != null">#{agentName},</if>
+            <if test="agentMobile != null">#{agentMobile},</if>
+            <if test="agentGender != null">#{agentGender},</if>
+            <if test="agentNo != null">#{agentNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDrawUserInfo" parameterType="DrawUserInfo">
+        update draw_user_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null">userName = #{userName},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="agentName != null">agentName = #{agentName},</if>
+            <if test="agentMobile != null">agentMobile = #{agentMobile},</if>
+            <if test="agentGender != null">agentGender = #{agentGender},</if>
+            <if test="agentNo != null">agentNo = #{agentNo},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+        </trim>
+        where awarDrecordId = #{awarDrecordId}
+    </update>
+
+    <delete id="deleteDrawUserInfoById" parameterType="Long">
+        delete from draw_user_info where awarDrecordId = #{awarDrecordId}
+    </delete>
+
+    <delete id="deleteDrawUserInfoByIds" parameterType="String">
+        delete from draw_user_info where awarDrecordId in
+        <foreach item="awarDrecordId" collection="array" open="(" separator="," close=")">
+            #{awarDrecordId}
+        </foreach>
+    </delete>
+
+</mapper>
