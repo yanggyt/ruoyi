@@ -82,11 +82,12 @@
 	</div>
 </div>
 <!--活动规则-->
-<div class="pop pop_role" style="display:none;">
+<div class="pop pop_role role" style="display:none;">
 	<div class="pop_bg">
 		<h3 class="title"></h3>
 		<span class="closed"></span>
-		<div class="contact drawRule">
+		<div class="contact drawRule contBox">
+
 		</div>
 	</div>
 </div>
@@ -108,10 +109,12 @@
 <script src="../../common/taglibs.js"></script>
 <script src="../../js/jsencrypt.min.js"></script>
 <script src="../../js/encryptUtil.js"></script>
-<script src="../../js/utils.js"></script>
+<script src="../draw/js/util.js"></script>
 <script src="../../js/mobile/login_register/login.js"></script>
 <script src="../../js/layui/layer.js"></script>
 <script src="../../js/layui/layerUtils.js"></script>
+<script src="../draw/js/draw.js"></script>
+<script src="/js/config.js"></script>
 <script src="js/main.js"></script>
 <script>
 	const DOLL = 'doll';
@@ -200,6 +203,7 @@
 	});
 	//活动规则
 	$('.lottery_role').click(function(){
+		drawrule();
 		$('.pop_role').show();
 	})
 	//关闭弹层

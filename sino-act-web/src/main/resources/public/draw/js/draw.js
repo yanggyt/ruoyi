@@ -11,6 +11,7 @@ function rtn() {
 }
 function drawrule() {
     console.log('rule');
+    console.log(drawCode);
     $.ajax({
         type: "POST",
         url: contextRootPath+"/draw/describe",

@@ -8,6 +8,8 @@ import com.sinosoft.activity.mapper.*;
 import com.sinosoft.activity.service.IDrawTaskNotifyService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,8 @@ import java.util.Map;
 @Service
 public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
 {
+    private static final Logger log = LoggerFactory.getLogger(DrawTaskNotifyServiceImpl.class);
+
     @Autowired
     private DrawTaskNotifyMapper drawTaskNotifyMapper;
     @Autowired
@@ -148,21 +152,18 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
     /**
      * 1.查询活动状态
      * 2.查询记录表是否重复
-     *
+     * orther一天只能调用一次设定number
      *
      * @param drawTaskNotify
      */
     @Override
     public Map<String, Object> addDrawNum(DrawTaskNotify drawTaskNotify) {
         HashMap<String, Object> response = new HashMap<>();
-        long start = System.currentTimeMillis();
-        long end = 0;
-        long proct = 0;
-        String exception = null;
         try {
             //请求类型
             String taskType = drawTaskNotify.getTASKTYPE();
             int number = 0;
+            //当前时间
             String currentDateString = new SimpleDateFormat("yyyyMMdd").format(new Date());
             String taskId = drawTaskNotify.getTASKID();
 //            String getNumber = requestBody.getGetNumber();
@@ -178,7 +179,7 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
             drawInfo.setDRAWCODE(drawCode);
             drawInfo.setSTATUS("1");
             List<DrawInfo> drawInfos = drawInfoMapper.selectDrawInfoList(drawInfo);
-            if (CollectionUtils.isNotEmpty(drawInfos)) {
+            if (CollectionUtils.isEmpty(drawInfos)) {
 //                response = response(request, WebServiceResult.EXCEPTION_000001, WebServiceResult.getReturnMessage(WebServiceResult.EXCEPTION_000001, "drawCode参数错误"));
                 response.put("msg", "drawCode参数错误");
                 response.put("code", "-1");
@@ -200,6 +201,7 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
                         }
                     }
                     // 发放次数
+                    //todo 修改值
                     if ("isLimited".equals("1")) {
                         //查询赠送限制次数
                         Map<String, String> drawNumberMap = drawTaskNotifyMapper.findAllCodeAndName("drawNumberLimit");
@@ -312,7 +314,6 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
                     }
                     drawCode = drawDiscConfig.getDRAWCODE();
                 }
-
             }
 
             if (number > 0) {
@@ -354,8 +355,6 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
 //            responseBody.setDrawCode(drawCode);
 //            responseBody.setTaskType(requestBody.getTaskType());
 //            response.setResponseBody(responseBody);
-            end = System.currentTimeMillis();
-            proct=end-start;
 //            logger.info("【任务完成通知接口请求报文】" + jsonBinder.toJson(request) + "【任务完成通知接口响应报文】" + jsonBinder.toJson(response) + "【处理时间】" + proct);
             return response;
         } catch (NumberFormatException e) {
