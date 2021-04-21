@@ -209,7 +209,7 @@ public class DrawController {
                 result.setRecord(prizes);
                 return result;
             }*/
-            String userId ="1328495419744";
+            String userId ="";
          /*   if (!"1".equals(isAll)) {
                  Long userId1 = ShiroUtils.getUserId();
                 userId = userInfo.getOpenid();

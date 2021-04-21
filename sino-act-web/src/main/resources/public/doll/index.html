@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<meta charset="GBK">
-	<title>»ı·Ö×¥ºÃÔË</title>
+	<meta charset="UTF-8">
+	<title>ç§¯åˆ†æŠ“å¥½è¿</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="css/main.css?v=542" />
 	<link rel="stylesheet" type="text/css" href="css/iosSelect.css" />
+	<script src="/js/config.js"></script>
 </head>
 <body>
 <div class="lottery">
@@ -23,21 +24,21 @@
 	</div>
 	<p class="lottery_role"></p>
 	<p class="lottery_prize"></p>
-  <p class="lottery_tips">Ã¿´ÎÏûºÄ<span class="integral">50</span>»ı·Ö</p>
+  <p class="lottery_tips">æ¯æ¬¡æ¶ˆè€—<span class="integral">50</span>ç§¯åˆ†</p>
   <button class="lottery_go"></button>
-	<p class="lottery_points">Äú»¹Ê£Óà<span class="num">0</span>»ı·Ö</p>
+	<p class="lottery_points">æ‚¨è¿˜å‰©ä½™<span class="num">0</span>ç§¯åˆ†</p>
 	<a href="javascript:void(0);" class="lottery_link"></a>
 </div>
 <input type="hidden" class="drawType"/>
-<!--Î´ÖĞ½±-->
+<!--æœªä¸­å¥–-->
 <div class="pop pop_fail" style="display:none;">
 	<div class="pop_bg">
 		<span class="closed"></span>
-		<div class="contact">¾Í²îÒ»µãµã<br/>ÔÙ½ÓÔÙÀ÷Å¶</div>
+		<div class="contact">å°±å·®ä¸€ç‚¹ç‚¹<br/>å†æ¥å†å‰å“¦</div>
 		<p class="btn"></p>
 	</div>
 </div>
-<!--ÖĞ½±-->
+<!--ä¸­å¥–-->
 <div class="pop pop_success" style="display:none;">
 	<div class="pop_bg">
 		<span class="closed"></span>
@@ -48,41 +49,33 @@
 		<p class="btn"></p>
 	</div>
 </div>
-<!--ÌîĞ´ĞÅÏ¢-->
+<!--å¡«å†™ä¿¡æ¯-->
 <div class="pop pop_fillin" style="display:none;">
 	<div class="pop_bg">
 		<span class="closed"></span>
 		<div class="contact">
-			<p><span>ÊÕ&nbsp;&nbsp;»õ&nbsp;&nbsp;ÈË:</span><input class="uname" type="text" placeholder="ÇëÊäÈë"/></p>
-			<p><span>Éí·İÖ¤ºÅ:</span><input class="idcard" type="text" maxlength="18" placeholder="ÇëÊäÈë"/></p>
-			<p><span>ÁªÏµµç»°:</span><input class="phone" type="text" maxlength="11" placeholder="ÇëÊäÈë"/></p>
-			<p><span>ËùÔÚµØÇø:</span><input class="contact_sel city" type="text" placeholder="ÇëÊäÈë" readonly value="±±¾©ÊĞ ±±¾©ÊĞ Î÷³ÇÇø" id="select_contact"  data-city-code="110100" data-province-code="110000" data-district-code="110102"/></p>
-			<p><span>ÏêÏ¸µØÖ·:</span><textarea class="addr" placeholder="ÇëÊäÈëÏêÏ¸µØÖ·ĞÅÏ¢£¬ÈçµÀÂ·¡¢ÃÅÅÆºÅ¡¢ Ğ¡Çø¡¢Â¥¶°ºÃ¡¢µ¥ÔªÊÒµÈ"></textarea></p>
+			<p><span>æ”¶&nbsp;&nbsp;è´§&nbsp;&nbsp;äºº:</span><input class="uname" type="text" placeholder="è¯·è¾“å…¥"/></p>
+			<p><span>èº«ä»½è¯å·:</span><input class="idcard" type="text" maxlength="18" placeholder="è¯·è¾“å…¥"/></p>
+			<p><span>è”ç³»ç”µè¯:</span><input class="phone" type="text" maxlength="11" placeholder="è¯·è¾“å…¥"/></p>
+			<p><span>æ‰€åœ¨åœ°åŒº:</span><input class="contact_sel city" type="text" placeholder="è¯·è¾“å…¥" readonly value="åŒ—äº¬å¸‚ åŒ—äº¬å¸‚ è¥¿åŸåŒº" id="select_contact"  data-city-code="110100" data-province-code="110000" data-district-code="110102"/></p>
+			<p><span>è¯¦ç»†åœ°å€:</span><textarea class="addr" placeholder="è¯·è¾“å…¥è¯¦ç»†åœ°å€ä¿¡æ¯ï¼Œå¦‚é“è·¯ã€é—¨ç‰Œå·ã€ å°åŒºã€æ¥¼æ ‹å¥½ã€å•å…ƒå®¤ç­‰"></textarea></p>
 			<p class="contact_btn"></p>
 		</div>
 	</div>
 </div>
-<!--ÎÒµÄ½±Æ·-->
+<!--æˆ‘çš„å¥–å“-->
 <div class="pop pop_prize" style="display:none;">
 	<div class="pop_bg">
 		<h3 class="title"></h3>
 		<span class="closed"></span>
 		<div class="contact">
 			<ul class="content_list myPrizes">
-				<li><img src="images/img_prize01.png" /><span>50»ı·Ö</span><span class="list_date">2020-11-23</span></li>
-				<li><img src="images/img_prize02.png" /><span>Ã¨ÑÛ50</span><span class="list_date">2020-11-23</span></li>
-				<li><img src="images/img_prize03.png" /><span>Ã¨ÑÛ70</span><span class="list_date">2020-11-23</span></li>
-				<li><img src="images/img_prize04.png" /><span>ÍøÒ×¼¾¿¨</span><span class="list_date">2020-11-23</span></li>
-				<li><img src="images/img_prize05.png" /><span>ÍøÒ×ÔÂ¿¨</span><span class="list_date">2020-11-23</span></li>
-				<li><img src="images/img_prize06.png" /><span>QQÒôÀÖ</span><span class="list_date">2020-11-23</span></li>
-				<li><img src="images/img_prize07.png" /><span>ÓÅ¿áÔÂ¿¨</span><span class="list_date">2020-11-23</span></li>
-				<li><img src="images/img_prize08.png" /><span>ÓÅ¿á¼¾¿¨</span><span class="list_date">2020-11-23</span></li>
 			</ul>
 		</div>
 	</div>
 </div>
-<!--»î¶¯¹æÔò-->
-<div class="pop pop_role role" style="display:none;">
+<!--æ´»åŠ¨è§„åˆ™-->
+<div class="pop pop_role" style="display:none;">
 	<div class="pop_bg">
 		<h3 class="title"></h3>
 		<span class="closed"></span>
@@ -96,16 +89,17 @@
 	<img class="prize" src="" alt="">
 </div>
 <ul class="" style="display: none;">
-	<li class="award">¹§Ï² 151****3445 »ñµÃ¾©¶«E¿¨</li>
+	<li class="award">æ­å–œ 151****3445 è·å¾—äº¬ä¸œEå¡</li>
 </ul>
 <ul class="" style="display: none;">
-	<li class="prize_li"><img src="images/img_prize01.png" /><span class="pname">50»ı·Ö</span><span class="list_date time">2020-11-23</span></li>
+	<li class="prize_li"><img src="images/img_prize01.png" /><span class="pname">50ç§¯åˆ†</span><span class="list_date time">2020-11-23</span></li>
 </ul>
 <script src="js/jquery-1.11.0.min.js"></script>
 <script src="js/common.js"></script>
 <script src="js/scroll.js"></script>
 <script src="js/iosSelect.js"></script>
 <script src="js/areaData_v2.js" charset="GBK"></script>
+<script src="../draw/js/util.js"></script>
 <script src="../../common/taglibs.js"></script>
 <script src="../../js/jsencrypt.min.js"></script>
 <script src="../../js/encryptUtil.js"></script>
@@ -114,27 +108,26 @@
 <script src="../../js/layui/layer.js"></script>
 <script src="../../js/layui/layerUtils.js"></script>
 <script src="../draw/js/draw.js"></script>
-<script src="/js/config.js"></script>
 <script src="js/main.js"></script>
 <script>
 	const DOLL = 'doll';
 	$(function () {
-		init(DOLL);
+		//init(DOLL);
 		initAwards();
 	});
-	//³é½±
+	//æŠ½å¥–
 	var cH = $(".tool")[0].clientHeight;
 	var tH = $(".tool")[0].offsetTop;
 	var lH = $('.tool_line')[0].clientHeight;
 	var timer = null;
 	$('.lottery_go').click(function(){
-		//ÖĞ½±´«1£¬2£¬3£¬4£¬5£¬6£¬7£¬8£¨¶ÔÓ¦½±Æ·£©,Î´ÖĞ½±´«-1
-		//1:50»ı·Ö,2:Ã¨ÑÛ50,3:Ã¨ÑÛ70,4:ÍøÒ×¼¾¿¨,5:ÍøÒ×ÔÂ¿¨,6:QQÒôÀÖ,7:ÓÅ¿áÔÂ¿¨,8:ÓÅ¿á¼¾¿¨
+		//ä¸­å¥–ä¼ 1ï¼Œ2ï¼Œ3ï¼Œ4ï¼Œ5ï¼Œ6ï¼Œ7ï¼Œ8ï¼ˆå¯¹åº”å¥–å“ï¼‰,æœªä¸­å¥–ä¼ -1
+		//1:50ç§¯åˆ†,2:çŒ«çœ¼50,3:çŒ«çœ¼70,4:ç½‘æ˜“å­£å¡,5:ç½‘æ˜“æœˆå¡,6:QQéŸ³ä¹,7:ä¼˜é…·æœˆå¡,8:ä¼˜é…·å­£å¡
 		fnLottery(-1);
 	});
 	function fnLottery(status){
 		try{
-			zhuge.track('ÍŞÍŞ»ú-¿ªÊ¼×¥½±°´Å¥¡¾'+drawCode+'¡¿');
+			zhuge.track('å¨ƒå¨ƒæœº-å¼€å§‹æŠ“å¥–æŒ‰é’®ã€'+drawCode+'ã€‘');
 		}catch(err){console.log(err);}
 		if (running) {
 			console.log('running...');
@@ -161,7 +154,7 @@
 			}
 			$('.tool_line').animate({height:lH},1500);
 			$(".tool").animate({top:tH},1500,function(){
-				//ÖĞ½±À²
+				//ä¸­å¥–å•¦
 				if(status != -1){
 					$('.pop_success').show();
 					$(".tool img").hide();
@@ -169,7 +162,7 @@
 					let imgSrc = $('img[p-code='+prizeCode+']').attr('src');
 					$(".contact img").attr('src',imgSrc);
 				}
-				//Î´ÖĞ½±
+				//æœªä¸­å¥–
 				if(status == -1){
 					$('.pop_fail').show();
 				}
@@ -178,16 +171,16 @@
 		}, 2500);
 	}
 
-	//ËùÔÚµØÇøÑ¡Ôñ
+	//æ‰€åœ¨åœ°åŒºé€‰æ‹©
 	var selectContactDom = $('#select_contact');
 	selectContactDom.bind('click', function () {
-		var oneLevelId = selectContactDom.attr('data-province-code'); //Ê¡code
-		var twoLevelId = selectContactDom.attr('data-city-code');//ÊĞcode
-		var threeLevelId = selectContactDom.attr('data-district-code');//Çøcode
+		var oneLevelId = selectContactDom.attr('data-province-code'); //çœcode
+		var twoLevelId = selectContactDom.attr('data-city-code');//å¸‚code
+		var threeLevelId = selectContactDom.attr('data-district-code');//åŒºcode
 		var iosSelect = new IosSelect(3,
 						[iosProvinces, iosCitys, iosCountys],
 						{
-							title: 'µØÖ·Ñ¡Ôñ',
+							title: 'åœ°å€é€‰æ‹©',
 							itemHeight: 35,
 							relation: [1, 1],
 							oneLevelId: oneLevelId,
@@ -201,29 +194,31 @@
 							}
 						});
 	});
-	//»î¶¯¹æÔò
+	//æ´»åŠ¨è§„åˆ™
 	$('.lottery_role').click(function(){
 		drawrule();
 		$('.pop_role').show();
 	})
-	//¹Ø±Õµ¯²ã
+	//å…³é—­å¼¹å±‚
 	$('.closed,.btn').click(function(){
 		$(this).parents('.pop').hide();
 	})
-	//Î´ÖĞ½±È·ÈÏ¹Ø±Õµ¯²ã
+	//æœªä¸­å¥–ç¡®è®¤å…³é—­å¼¹å±‚
 	$('.pop_fail .btn').click(function(){
 		$(this).parents('.pop').hide();
 	})
-	//ÖĞ½±Á¢¼´ÁìÈ¡
+	//ä¸­å¥–ç«‹å³é¢†å–
 	$('.pop_success .btn').click(function(){
-		$(this).parents('.pop').hide();
+		/*$(this).parents('.pop').hide();
 		let cue = body.cue;
 		let prizeType = body.prizeType;
 		if (prizeType === 'materialObject') {
 			$('.pop_fillin').show();
 		} else {
 			layerTip(cue);
-		}
+		}*/
+		window.location.href='../act/address.html?drawCode='+drawCode;
+
 	});
 	$('.contact_btn').click(function () {
 		saveAddr()
@@ -233,7 +228,7 @@
 	})
 	$('.lottery_link').click(function () {
 		try{
-			zhuge.track('ÍŞÍŞ»ú-µãÎÒ×¬»ı·Ö°´Å¥¡¾'+drawCode+'¡¿');
+			zhuge.track('å¨ƒå¨ƒæœº-ç‚¹æˆ‘èµšç§¯åˆ†æŒ‰é’®ã€'+drawCode+'ã€‘');
 		}catch(err){console.log(err);}
 		// location.href = contextRootPath+'/wechat/user/toPension.do?ak=pensionSecond';
 		location.href = contextRootPath+'/activity/tree/index.html?showTask=1&cl='+cl;
