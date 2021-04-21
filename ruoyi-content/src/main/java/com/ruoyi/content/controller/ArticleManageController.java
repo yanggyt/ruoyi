@@ -46,6 +46,11 @@ public class ArticleManageController extends BaseController {
         return prefix + "/articleList";
     }
 
+    @GetMapping("createPage")
+    public String createPage() {
+        return prefix + "/createArticle";
+    }
+
     /**
      * 查询所有公司发布的文章信息
      *

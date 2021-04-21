@@ -1,0 +1,343 @@
+/* 公共 */
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "微软雅黑";
+    transition: all .2s cubic-bezier(.6, .1, .1, .7);
+}
+
+html,
+body {
+    height: 100%;
+}
+
+li {
+    list-style-type: none;
+}
+
+hr {
+    height: 1px;
+    background: #e4e4e4;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background: #f6f7f8;
+}
+
+button {
+    border: none;
+    filter: contrast(1);
+}
+
+button:active {
+    filter: contrast(.9);
+}
+
+textarea {
+    resize: none;
+}
+
+/* edit页面 */
+
+/* 部分css效果在公共组件部分 */
+
+/* 包含Eleditor的样式修正*/
+
+#edit_head>.b {
+    padding: 0 0 0 calc(2.36rem - 1.68rem);
+}
+
+#edit_head>.c {
+    margin: 0 0.4rem 0 0;
+    width: 2.36rem;
+    height: 100%;
+    background: #fff;
+}
+
+#edit_head>.c>img {
+    width: 2.36rem;
+}
+
+#edit_cue {
+    font-size: 0.52rem;
+    line-height: 1.2rem;
+    text-align: center;
+    color: #37c7aa;
+    background: #d8efe9;
+}
+
+#edit_body {
+    flex-grow: 1;
+    padding: 0 0.6rem;
+    width: 13.8rem;
+}
+
+#edit_body .a {
+    word-break: break-all;
+    margin: .6rem 0 1.4rem;
+    padding: 0.6rem 0.5rem;
+    border: #37c7aa dashed 1px;
+}
+
+#edit_body .b {
+    font-size: 0.52rem;
+    color: #37c7aa;
+    text-align: right;
+    margin-top: -1rem;
+    padding: 0 0.1rem;
+    margin-left: 8.4rem;
+    padding-bottom: 1rem;
+    background: #f3f3f3;
+    width: 4rem;
+}
+
+.Eleditor-controller {
+    z-index: 10000;
+    max-width: fit-content;
+}
+.Eleditor-wrap {
+    width: 100px;
+}
+.Eleditor-controller ul li {
+    font-size: .52rem !important;
+    width: 90px !important;
+    margin: 5px 5px 0;
+    padding-left: 30px;
+}
+.Eleditor-controller ul {
+    margin: 0;
+    margin-bottom: 5px;
+}
+  
+/* 
+ *  当前页面的样式
+ */
+    #div1 {
+      margin:10px auto;
+      border:1px solid #ccc;
+    }
+    #div1 .title {
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+      z-index: 0;
+      padding: 5px 24px;
+      border-top:1px solid #ccc;
+      box-sizing: border-box;
+      background: #fff;
+    }
+    .text{
+      min-height: 27.43px;
+    }
+    .w-e-text p {
+      display: none;
+    }
+    .head,.author{
+      display: block;
+      width: 100%;
+      font-size: 20px;
+      color: #000;
+      min-height: 30px;
+      margin-bottom: 5px;
+      outline: none;
+      resize: none;
+      border:none;
+    }
+    .head {
+      font-size: 24px;
+    }
+    .head[contenteditable]:empty:before, .author[contenteditable]:empty:before{
+      content: attr(placeholder);
+      color: #D4D4D4;
+    }
+    .head[contenteditable]:focus,.author[contenteditable]:focus{
+      content:none;
+    }
+    .editorcontent{
+      width:800px;
+      font-size: 18px;
+      line-height: 20px;
+      height: 370px;
+      overflow: auto;
+      padding-top: 10px;
+      border-top: 1px solid #ccc;
+    }
+    .editorcontent div{
+      min-height: 27.43px;
+      line-height: 24px;
+      font-size: 15px;
+    }
+   /* 上传图片*/
+    .abstract {
+      font-size: .26rem;
+      margin:10px 0;
+      color: #333;
+    }
+    .cover_abstract {
+      width:100%;
+      display: flex;
+    }
+    .imgload {
+      position: relative;
+      width:25%;
+      text-align: center;
+      overflow: hidden;
+      height: 90px;
+      line-height: 90px;
+      background-color: #fbfdff;
+      border: 1px dashed #c0ccda;
+      border-radius: 6px;
+      margin: 0 10px;
+      box-sizing: border-box;
+    }
+    .fileImg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      background: none;
+      margin: 0px;
+      padding: 0px;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      cursor: pointer;
+      z-index: 2;
+    }
+    .avatar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .addIcon {
+      position: relative;
+      top: 0;
+      left: 0;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+    }
+    .addIcon::before{
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 30px;
+      margin-left: -15px;
+      margin-top: -2px;
+      border-top: 2px solid #cccccc;
+    }
+    .addIcon::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 30px;
+      margin-left: -2px;
+      margin-top: -15px;
+      border-left: 2px solid #ccc;
+    }
+    :focus {
+        outline: none;
+    }
+    .lables{
+      height: 200px;
+      width: 200px;
+      border: 1px solid #ccc;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin-top: -100px;
+      margin-left: -100px;
+      background: white;
+      z-index: 555;
+    }
+    .lables p{
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
+        background: #409eff;
+        padding: 0;
+        height: 30px;
+        line-height: 30px;
+    }
+    .lables label {
+      display: block;
+      font-size: 15px;
+      margin: 5px 0 5px 20px;
+    }
+    .lables label input{
+      margin: 0 10px 0 0;
+    }
+    .lables_box {
+        height: 135px;
+        overflow-y: scroll;
+    }
+    #sures{
+        display: block;
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        right: 0;
+        color: #fff;
+        width: 90px;
+        font-size: 14px;
+        text-align: center;
+        line-height: 30px;
+        background: #409eff;
+        border-radius: 5px;
+        margin: 0 auto;
+    }
+    /*样式修改*/
+    .textarea {
+        width:1000px;
+        margin: 0 auto;
+    }
+    .seldiv {
+      position: relative;
+    }
+    /*.w-e-text-container .label{
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      float: right;
+      background: rgba(0,205,50, 0.4);
+      display: flex;
+      font-size: 12px;
+      line-height: 14px;
+      color: #fff;
+      align-items: center;
+      justify-content: center;
+      padding: 0 3px;
+      transform: translateY(-50%);
+      box-shadow: -1px 1px 1px rgba(0,0,0,0.3);
+      margin: 10px 3px 0 12px;
+    }*/
+    .w-e-text-container .label{
+      display: inline-block;
+      min-width: 50px;
+      background: rgba(0,205,50, 0.4);
+      font-size: 12px;
+      line-height: 24px;
+      color: #fff;
+      padding: 0 6px;
+      box-shadow: -1px 1px 1px rgba(0,0,0,0.3);
+      margin: 0 10px 0 0;
+    }
+    /*.w-e-text-container .label::after{
+      content: "";
+      position: absolute;
+      left: 100%; 
+      top: 2px;
+      border-style: solid;     
+      border-color: transparent transparent transparent rgba(0,205,50, 0.4);
+      border-width: 13px;    
+    }*/

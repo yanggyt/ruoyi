@@ -1179,7 +1179,7 @@ public class ArticleServiceImpl implements ArticleService {
         // 文章的发布id
         String publishId = userId + "a" + articleId;
 
-        msg = this.getHtmlUrl(articleId, articleName, shareImgUrl, shareDes, articleContent, ids, publishId, companyId,
+        msg = this.getHtmlUrl123(articleId, articleName, shareImgUrl, shareDes, articleContent, ids, publishId, companyId,
                 isAuthorization, isReserve, automaticName, introduction, isJoinActive);
         Map<String, String> resultMap1 = new HashMap<String, String>();
         resultMap1 = (Map<String, String>) msg.getObject();
@@ -1208,6 +1208,84 @@ public class ArticleServiceImpl implements ArticleService {
                 cmsSysUser.getName() + "", modifiedEditUrl, modifiedViewUrl, versionNumber);
         msg.setInfo("成功导入文章!");
         msg.setResult(true);
+        msg.setObject(resultMap);
+        return msg;
+    }
+
+    /**
+     * 生成静态页面路径
+     */
+    public Message getHtmlUrl123(Integer articleId, String shareTitle, String shareImgUrl, String shareDes,
+                              String articleContent, String ids, String publishId, String companyId, String isAuthorization,
+                              String isReserve, String automaticName, String introduction, String isJoinActive) {
+        Message msg = new Message();
+        Map<String, String> resultMap = new HashMap<String, String>();
+        /*************** 根据链接爬文章***********start ****************************/
+        LOGGER.info(
+                "调用生成静态页面参数articleId[{}],shareTitle[{}],shareImgUrl[{}],shareDes[{}],ids[{}],publishId[{}],companyId[{}],isAuthorization[{}],isReserve[{}],automaticName[{}],introduction[{}],isJoinActive[{}]",
+                articleId, shareTitle, shareImgUrl, shareDes, ids, publishId, companyId, isAuthorization, isReserve,
+                automaticName, introduction, isJoinActive);
+        try {
+            /**************************** 生成静态页开始 ************************************/
+            Configuration conf = new Configuration();
+            Map<String, Object> pageData = new HashMap<String, Object>();
+            Map<String, String> articleMap = new HashMap<String, String>();
+            // 时间戳
+            String versionNumber = DateUtil.currentDate(DateUtil.yyyyMMddHHmmssSSS) + RandomUtils.randomNumber(3);
+            // 封装数据
+            articleMap.put("shareTitle", shareTitle);
+            articleMap.put("shareImgUrl", shareImgUrl);
+            articleMap.put("shareDes", shareDes);
+            articleMap.put("articleId", String.valueOf(articleId));
+            articleMap.put("articleContent", articleContent);
+            articleMap.put("companyId", companyId);
+            articleMap.put("versionNumber", versionNumber);
+            articleMap.put("publishId", publishId);
+            articleMap.put("isAuthorization", isAuthorization);// 是否授权
+            articleMap.put("isReserve", isReserve);
+            articleMap.put("isJoinActive", isJoinActive);
+            articleMap.put("automaticName", automaticName);
+            articleMap.put("introduction", introduction);
+            if (ids == null || "".equals(ids)) {
+                articleMap.put("adId", "");
+            } else {
+                articleMap.put("adId", ids);
+            }
+
+            pageData.put("articleInfo", articleMap);
+            // 静态页生成路径
+            String viewPath = PathUtil.getArticleViewUrl(versionNumber, String.valueOf(articleId));
+            String createPath = PathUtil.getArticleCreateUrl(versionNumber, articleId + versionNumber.substring(8, 14));
+            FreemakerUtil.generateStaticPage(conf, PropertiesConstants.TEMPLATE_VIEW_PATH,
+                    PropertiesConstants.FILE_PATH + viewPath, pageData);
+            FreemakerUtil.generateStaticPage(conf, PropertiesConstants.TEMPLATE_CREATE_PATH,
+                    PropertiesConstants.FILE_PATH + createPath, pageData);
+            // 把静态页上传到oss
+            OSSUtil.uploadFileHtml(PropertiesConstants.OSSENDPOINT, PropertiesConstants.OSSID,
+                    PropertiesConstants.OSSKEY, PropertiesConstants.BUCKETNAME,
+                    PropertiesConstants.FILE_PATH + viewPath, PropertiesConstants.OSSPATH + viewPath);
+            OSSUtil.uploadFileHtml(PropertiesConstants.OSSENDPOINT, PropertiesConstants.OSSID,
+                    PropertiesConstants.OSSKEY, PropertiesConstants.BUCKETNAME,
+                    PropertiesConstants.FILE_PATH + createPath, PropertiesConstants.OSSPATH + createPath);
+
+            String articleViewUrl = PropertiesConstants.OSS_URL + PropertiesConstants.OSSPATH + viewPath; // cdn路径
+            // 生产
+//			String articleEditUrl = PropertiesConstants.OSS_URL_HTTPS +
+//		    PropertiesConstants.OSSPATH + editPath; // cdn路径
+            // 测试
+            String articleEditUrl = PropertiesConstants.OSS_URL + PropertiesConstants.OSSPATH + createPath;
+            LOGGER.info("articleEditUrl[{}]===============", articleEditUrl);
+
+            /**************************** 生成静态页结束 ************************************/
+            // 保存文章的原始静态页面路径
+            resultMap.put("articleEditUrl", articleEditUrl);
+            resultMap.put("articleViewUrl", articleViewUrl);
+            resultMap.put("versionNumber", versionNumber);
+            LOGGER.info("生成静态页面的versionNumber为{}", versionNumber);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException("系统繁忙,请稍后再试");
+        }
         msg.setObject(resultMap);
         return msg;
     }

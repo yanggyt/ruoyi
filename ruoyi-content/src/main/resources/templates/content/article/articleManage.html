@@ -402,56 +402,56 @@
         </div>
     </div>
 </div>
-<div class="modal inmodal" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" style="width: 800px;">
-        <div class="modal-content animated fadeIn">
-            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span>
-                </button>
-                <h5 class="modal-title" style="text-align: left; font-size: 23px;">创建文章</h5>
-            </div>
-            <div class="modal-body" style="background: #ffffff;">
-                <form class="form-horizontal" id="form-picAdverts-add5">
-                    <div class="col-md-12" style="margin-top: -15px;">
-                        <div class="form-group">
-                            <div id="div1">
-                                <div class="toolbar"></div>
-                                <div class="title">
-                                    <div contenteditable="true" class="head" placeholder="请在这里输入标题"></div>
-                                    <div contenteditable="true" class="author" placeholder="请输入作者"></div>
-                                    <div class="editorcontent" contenteditable="true">
-                                        <div></div>
-                                    </div>
-                                </div>
-                            </div>
+<!--<div class="modal inmodal" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">-->
+<!--    <div class="modal-dialog" style="width: 800px;">-->
+<!--        <div class="modal-content animated fadeIn">-->
+<!--            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">-->
+<!--                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span-->
+<!--                        class="sr-only">Close</span>-->
+<!--                </button>-->
+<!--                <h5 class="modal-title" style="text-align: left; font-size: 23px;">创建文章</h5>-->
+<!--            </div>-->
+<!--            <div class="modal-body" style="background: #ffffff;">-->
+<!--                <form class="form-horizontal" id="form-picAdverts-add5">-->
+<!--                    <div class="col-md-12" style="margin-top: -15px;">-->
+<!--                        <div class="form-group">-->
+<!--                            <div id="div1">-->
+<!--                                <div class="toolbar"></div>-->
+<!--                                <div class="title">-->
+<!--                                    <div contenteditable="true" class="head" placeholder="请在这里输入标题"></div>-->
+<!--                                    <div contenteditable="true" class="author" placeholder="请输入作者"></div>-->
+<!--                                    <div class="editorcontent" contenteditable="true">-->
+<!--                                        <div></div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
 
-                            <p class="abstract" style="margin-left: 15px;">封面摘要：</p>
-                            <p class="abstract" style="margin-left: 135px;">分享描述：</p>
-                            <div>
-                                <div class="cover_abstract">
-                                    <div class="imgload">
-                                        <input type="file" class="fileImg"
-                                               accept="image/png,image/gif，image/jpg, image/jpeg"
-                                               onchange="uploadOss(this)">
-                                        <img src="" class="avatar" style="display:none"/>
-                                        <i class="addIcon"></i>
-                                    </div>
-                                    <textarea autocomplete="off" placeholder="请输入内容" class="el-textarea__inner"
-                                              style="min-height: 33px;height: 90px; width: 70%"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
-                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
-                <button type="button" class="btn btn-primary" th:onclick="createArticleL()">创建文章</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--                            <p class="abstract" style="margin-left: 15px;">封面摘要：</p>-->
+<!--                            <p class="abstract" style="margin-left: 135px;">分享描述：</p>-->
+<!--                            <div>-->
+<!--                                <div class="cover_abstract">-->
+<!--                                    <div class="imgload">-->
+<!--                                        <input type="file" class="fileImg"-->
+<!--                                               accept="image/png,image/gif，image/jpg, image/jpeg"-->
+<!--                                               onchange="uploadOss(this)">-->
+<!--                                        <img src="" class="avatar" style="display:none"/>-->
+<!--                                        <i class="addIcon"></i>-->
+<!--                                    </div>-->
+<!--                                    <textarea autocomplete="off" placeholder="请输入内容" class="el-textarea__inner"-->
+<!--                                              style="min-height: 33px;height: 90px; width: 70%"></textarea>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">-->
+<!--                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>-->
+<!--                <button type="button" class="btn btn-primary" th:onclick="createArticleL()">创建文章</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <th:block th:include="include :: footer"/>
 <th:block th:include="include :: layout-latest-js"/>
 <th:block th:include="include :: ztree-js"/>
@@ -739,17 +739,18 @@
     }
 
     function createArticle() {
-        $('.head').html('');
-        $('.author').html('');
-        $('.el-textarea__inner').val('');
-        $('.editorcontent').html('<div></div>');
-
-
-        filePath = '';
-        $(".avatar").attr('src', '')
-        $(".avatar").css('display', 'none');
-        $(".addIcon").css('display', 'block');
-        $('#myModal5').modal('show');
+        // $('.head').html('');
+        // $('.author').html('');
+        // $('.el-textarea__inner').val('');
+        // $('.editorcontent').html('<div></div>');
+        //
+        //
+        // filePath = '';
+        // $(".avatar").attr('src', '')
+        // $(".avatar").css('display', 'none');
+        // $(".addIcon").css('display', 'block');
+        // $('#myModal5').modal('show');
+        $.modal.parentTab('文章创建', prefix + "/createPage");
     }
 
     function createArticleL() {
@@ -777,21 +778,6 @@
             '<div id="page-content" class="rich_media_area_primary">' +
             '<div id="img-content" class="rich_media_wrp"><div id="activity-name">' + title + '</div>'
             + '<div id="meta_content">' + author + '</div><div id="bodycontent">' + body + '</div></div></div></div></div>';
-
-        body = body + '<style>table{border-top: 1px solid #ccc;border-left: 1px solid #ccc;}' +
-            'table td, table th{border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; padding: 3px 5px;}' +
-            'table th {border-bottom: 2px solid #ccc; text-align: center;}' +
-            'blockquote{display: block;border-left: 8px solid #d0e5f2;padding: 5px 10px;margin: 10px 0;' +
-            'line-height: 1.4;font-size: 100%;background-color: #f1f1f1;}' +
-            'code {display: inline-block;*display: inline;*zoom: 1;background-color: #f1f1f1;' +
-            'border-radius: 3px;padding: 3px 5px;margin: 0 3px;}' +
-            'pre code {display: block;}' +
-            'ul, ol {margin: 10px 0 10px 20px;}' +
-            '#activity-name,#meta_content{display: block;width: 100%;font-size: 20px;color: #000;' +
-            'min-height: 30px;margin-bottom: 5px;outline: none;resize: none;border: none;}' +
-            '#activity-name{font-size: 24px;}' +
-            '#bodycontent{font-size: 18px;line-height: 20px;padding-top: 10px;}' +
-            '#bodycontent div{min-height: 27.43px;}</style>';
 
         $('#myModal5').modal('hide');
         $.modal.loading("创建文章中请等待。。。");
