@@ -105,7 +105,7 @@
                             <input placeholder="代理人工号" class="agentNo" name="agentNo" style="display:none;" id="agentNo">
                             <div>
                                 <input type="checkbox" id="protocol"checked="checked" >
-                               <a onclick="protocol(this)" >点击查看协议</a>
+                               <a onclick="pro()" >点击查看协议</a>
                                 <input  id="agreementPri" type="hidden">
                             </div>
 
@@ -124,7 +124,7 @@
                     <img src="../draw/images/success.png" >
                     <div>信息登记成功</div>
                     <div>奖品将在活动结束后四十个工作日寄送</div>
-                    <div type="button"  class='button1'  onclick="qrCode()">关注微信</div>
+                    <div type="button"  class='button'  onclick="qrCode()">确定</div>
                 </div>
                 <div class='right'></div>
             </div>
@@ -132,8 +132,32 @@
         </div>
         <img src="../draw/images/delect.png" class='popDelect regDelect'>
     </div>
-<div class="tip_copy" style="display: none;">
+<div class="tip_copy " style="display: none;">
     <p></p>
+</div>
+<!--活动规则-->
+<div class='popup rule' style="display: none;">
+    <div class='popupMin'>
+        <img src="../draw/images/top02.png" class='top'>
+        <div class='popCont'>
+            <div class='left'></div>
+            <div class='cont'>
+                <div>
+                    <img src="../draw/images/left.png">
+                    <div>协议内容</div>
+                    <img src="../draw/images/right.png">
+                </div>
+                <ul class='contBox' style="list-style: inside;">
+
+                </ul>
+
+            </div>
+            <div class='right'></div>
+        </div>
+        <img src="../draw/images/popupList04.png" class='bottom'>
+    </div>
+    <img src="../draw/images/delect.png" class='popDelect ruleDelect'>
+    <span style='clear: both;'></span>
 </div>
 <script src="../draw/js/main.js"></script>
 <script src="../draw/js/scroll.js"></script>
@@ -143,9 +167,13 @@
     function qrCode(){
         window.location.href='subscribe.html?drawCode='+drawCode;
     }
-    function protocol() {
+    function pro() {
         var e = $("#agreementPri").val();
-        alert(e)
+        var desc = removeHTMLTag(e);
+        var desc1 = escape2Html(desc);
+        $('.contBox').append(desc1);
+        $('.rule').show();
+
     }
 </script>
 

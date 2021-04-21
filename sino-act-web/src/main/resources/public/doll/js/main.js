@@ -42,6 +42,40 @@ function init(facade){
     }
   });
 }
+
+function drawrule() {
+  console.log('rule');
+  console.log(drawCode);
+  $.ajax({
+    type: "POST",
+    url: contextRootPath+"/draw/describe",
+    data: {actCode: drawCode},
+    dataType: "json",
+    success: function(data){
+      var desc = removeHTMLTag(data.drawRule.drawdescribe);
+      var desc1 = escape2Html(desc);
+      console.log(desc1);
+      $(".contBox").append(desc1);
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.log('网络异常', textStatus, errorThrown);
+    }
+  });
+  $('.rule').show();
+}
+//转义替换
+/*移除HTML标签代码*/
+function removeHTMLTag(str) {
+  str = str.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+  str = str.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+  //str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+  //str=str.replace(/ /ig,'');//去掉
+  return str;
+}
+function escape2Html(str) {
+  var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+  return str.replace(/&(|lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+}
 function initAwards(){
   $.ajax({
     type:'POST',
@@ -235,4 +269,5 @@ function num(drawType){
       layerTip('网络异常，请检查网络环境');
     }
   });
+
 }
