@@ -14,42 +14,11 @@
     <link rel="stylesheet" type="text/css" href="../draw/css/winPrize.css"/>
     <link rel="stylesheet" type="text/css" href="../draw/css/goods.css"/>
     <link rel="stylesheet" type="text/css" href="../draw/css/rule.css"/>
-    <script src="/static/js/config.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/subscribe.css">
+
+    <script src="/js/config.js"></script>
     <style type="text/css">
-        .button { /* 按钮美化 */
-            width: 200px; /* 宽度 */
-            height: 40px; /* 高度 */
-            border-width: 0px; /* 边框宽度 */
-            border-radius: 3px; /* 边框半径 */
-            background: #1E90FF; /* 背景颜色 */
-            cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
-            outline: none; /* 不显示轮廓线 */
-            font-family: Microsoft YaHei; /* 设置字体 */
-            color: white; /* 字体颜色 */
-            font-size: 17px; /* 字体大小 */
-        }
-        .button:hover { /* 鼠标移入按钮范围时改变颜色 */
-            background: #5599FF;
-        }
-        p {
-            clear: both;
-            padding-bottom: 2em;
-        }
-        .drawCodeImgPic {
-            display: block;
-            margin:250px auto;
-            width: 200px;
-            height: 200px;
-        }
-        .drawQrCodePri {
-            text-align: center;
-            position:AS absolute;
-            top: 70%;
-            font-size: 25px;
-            left: 0%;
-            color: #F00;
-            width: 100%;
-        }
+
     </style>
     <link rel="stylesheet" href="../draw/css/main.css">
     <script src="../draw/js/jquery-1.9.1.min.js"></script>
@@ -95,16 +64,4 @@
 <script src="../draw/js/scroll.js"></script>
 <script src="../draw/js/common.js"></script>
 </body>
-<script>
-    function jump(){
-        var flag = $("#flag").val;
-        //根据不同玩法跳转不同页面
-        if (flag == "0"){
-            window.location.href='turntable.html?drawCode='+drawCode;
-        }else{
-            window.location.href='scratchcard.html?drawCode='+drawCode;
-        }
-    }
-</script>
-
 </html>

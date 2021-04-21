@@ -1,0 +1,20 @@
+
+.p {
+	clear: both;
+	padding-bottom: 2em;
+}
+.drawCodeImgPic {
+	display: block;
+	margin:250px auto;
+	width: 200px;
+	height: 200px;
+}
+.drawQrCodePri {
+	text-align: center;
+	position: absolute;
+	top: 70%;
+	font-size: 25px;
+	left: 0%;
+	color: #F00;
+	width: 100%;
+}
