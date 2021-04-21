@@ -47,7 +47,7 @@
         top: 100px;
         font-size: 37px;
         left: 0px;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -57,7 +57,7 @@
         top: 150px;
         font-size: 20px;
         left: 0px;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -66,7 +66,7 @@
         position: absolute;
         top: 70%;
         font-size: 20px;
-        color: #F00;
+        color: black;
         left: 0px;
         width: 100%;
     }
@@ -76,7 +76,7 @@
         position: absolute;
         top: 78%;
         font-size: 20px;
-        color: #F00;
+        color: black;
         left: 0px;
         width: 100%;
     }
@@ -97,7 +97,7 @@
         top: 10%;
         font-size: 37px;
         left: 0;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -107,7 +107,7 @@
         top: 25%;
         font-size: 20px;
         left: 0;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -117,7 +117,7 @@
         top: 50%;
         font-size: 15px;
         left: 0;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -127,7 +127,7 @@
         top: 55%;
         font-size: 10px;
         left: 0;
-        color: #F00;
+        color: black;
         width: 80%;
     }
 
@@ -137,7 +137,7 @@
         top: 60%;
         font-size: 20px;
         left: 0;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -146,7 +146,7 @@
         position: absolute;
         top: 88%;
         font-size: 20px;
-        color: #F00;
+        color: black;
         left: 0px;
         width: 100%;
     }
@@ -158,7 +158,7 @@
         top: 20%;
         font-size: 20px;
         left: 0%;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -168,7 +168,7 @@
         top: 50%;
         font-size: 10px;
         left: 0%;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -178,7 +178,7 @@
         top: 50%;
         font-size: 37px;
         left: 25%;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -192,7 +192,7 @@
         top: 50%;
         font-size: 37px;
         left: 0%;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -202,7 +202,7 @@
         top: 70%;
         font-size: 25px;
         left: 0%;
-        color: #F00;
+        color: black;
         width: 100%;
     }
 
@@ -250,8 +250,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">活动名称：</label>
                                         <div class="col-sm-8">
-                                            <input name="drawInfo-drawname" placeholder="活动名称" class="form-control"
-                                                   type="text" maxlength="30">
+                                            <input id="drawInfo-drawname" name="drawInfo-drawname" placeholder="活动名称" class="form-control"
+                                                   type="text" maxlength="30" required>
                                         </div>
                                     </div>
                                 </div>
@@ -286,7 +286,7 @@
                                         <label class="col-sm-4 control-label is-required">消耗价值：</label>
                                         <div class="col-sm-8">
                                             <input name="drawInfo-expenovalue" placeholder="消耗价值" class="form-control"
-                                                   type="text" maxlength="30">
+                                                   type="text" maxlength="30" required>
                                         </div>
                                     </div>
                                 </div>
@@ -298,7 +298,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group date">
                                                 <input name="drawInfo-starttime" class="form-control"
-                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -310,7 +310,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group date">
                                                 <input name="drawInfo-endtime" class="form-control"
-                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -345,7 +345,7 @@
                                         <div class="col-sm-8">
                                             <input id="actTitle" name="actPageConfigGuide-actTitle" placeholder="活动名称"
                                                    class="form-control" type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)">
+                                                   maxlength="30" onkeyup="updatePic(this)" required>
                                         </div>
                                     </div>
                                 </div>
@@ -357,28 +357,31 @@
                                         <div class="col-sm-8">
                                             <input id="actDesc" name="actPageConfigGuide-actDesc" placeholder="活动描述"
                                                    class="form-control" type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)">
+                                                   maxlength="30" onkeyup="updatePic(this)" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-
-                                    <div class="col-sm-6">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">背景图片：</label>
-
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                                 style="width: 200px; height: 150px;"></div>
-                                            <div>
+                                        <div class="col-sm-8">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <div class="fileinput-preview thumbnail" data-trigger="fileinput"
+                                                     style="width: 200px; height: 150px;"></div>
+                                                <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg" onchange="syncPic(this)" ></span>
-                                            <a href="#" class="btn btn-white fileinput-exists"
-                                               data-dismiss="fileinput">清除</a>
+                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg"
+                                                           onchange="syncPic(this)" required></span>
+                                                    <a href="#" class="btn btn-white fileinput-exists"
+                                                       data-dismiss="fileinput">清除</a>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <input id="picval" type="hidden" name="actPageConfigGuide-bgImg" value="" >
                                     </div>
-                                    <input id="picval" type="hidden" name="actPageConfigGuide-bgImg" value="">
                                 </div>
                             </div>
                             <div class="row">
@@ -389,28 +392,15 @@
                                             <input id="btn1" name="actPageConfigGuide-btnText" placeholder="例如：立即参与"
                                                    class="form-control"
                                                    type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)">
+                                                   maxlength="30" onkeyup="updatePic(this)" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-<!--                            <div class="row">-->
-<!--                                <div class="col-sm-6">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="col-sm-4 control-label is-required">按钮1跳转链接：</label>-->
-<!--                                        <div class="col-sm-8">-->
-<!--                                            <input name="actPageConfigGuide-btnLink" placeholder="按钮1跳转链接"-->
-<!--                                                   class="form-control"-->
-<!--                                                   type="text"-->
-<!--                                                   maxlength="30">-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label is-required">自定义按钮2：</label>
+                                        <label class="col-sm-4 control-label">自定义按钮2：</label>
                                         <div class="col-sm-8">
                                             <input id="btn2" name="actPageConfigGuide-btnText2" placeholder="例如：查看奖励"
                                                    class="form-control" type="text"
@@ -419,18 +409,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="height: 850">
-                                    <div class="form-group" style="float: left">
-                                        <div  style="width: 60%">
-                                        <label class="col-sm-4 control-label is-required">按钮2页面内容：</label>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div class="summernote">
+                            <div class="row">
+                                <div class="col-sm-6" style="width: 70%;">
+                                    <div class="form-group">
+                                            <label class="col-sm-4 control-label" style="width: 162.78px">按钮2页面内容：</label>
+                                            <div class="col-sm-8">
+                                                <div class="summernote">
                                                 例如：http：//xx
-                                            </div>
-                                        </div>
-                                        <textarea id="btnLink2"  name="actPageConfigGuide-btnLink2" maxlength="500" class="form-control" rows="5" aria-invalid="false" placeholder="" style="display: none"></textarea>
+                                                </div>
+                                             </div>
+                                        <textarea id="btnLink2" name="actPageConfigGuide-btnLink2" maxlength="500" class="form-control" rows="5" aria-invalid="false" placeholder="" style="display: none"></textarea>
                                     </div>
+                                </div>
                             </div>
 
                         </div>
@@ -480,7 +470,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
+                                <label class="col-sm-4 control-label">首次中奖奖品：</label>
                                 <div class="col-sm-8">
                                     <select name="drawRule-firstawardprize" class="form-control" id="firstawardprize"
                                             th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}"
@@ -492,7 +482,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
@@ -508,18 +497,16 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
+                                    <label class="col-sm-4 control-label">时间段限制次数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-dailynumber" id="dailynumber" placeholder="时间段限制次数"
                                                class="form-control" type="text" maxlength="30" disabled>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
+                                    <label class="col-sm-4 control-label">抽奖限制开始时间：</label>
                                     <div class="col-sm-8">
                                         <div class="input-group date">
                                             <input name="drawRule-dailystarttime" id="dailystarttime"
@@ -532,7 +519,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
+                                    <label class="col-sm-4 control-label">抽奖限制结束时间：</label>
                                     <div class="col-sm-8">
                                         <div class="input-group date">
                                             <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control"
@@ -542,8 +529,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
@@ -558,7 +543,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
+                                    <label class="col-sm-4 control-label">抽奖必中计数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
                                                placeholder="抽奖必中计数"
@@ -566,11 +551,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
+                                    <label class="col-sm-4 control-label">抽奖必中奖品：</label>
                                     <div class="col-sm-8">
                                         <select name="drawRule-willdrawawardprize" class="form-control"
                                                 id="willdrawawardprize"
@@ -583,12 +566,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" style="height: 500">
-                            <div class="form-group" style="float: left">
-                                <div  style="width: 60%">
-                                    <label class="col-sm-4 control-label is-required">规则描述：</label>
-                                </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                    <label class="col-sm-4 control-label">规则描述：</label>
                                 <div class="col-sm-8">
                                     <div class="summernote1">
                                     </div>
@@ -1020,6 +1000,10 @@
             height:200,
             lang: 'zh-CN'
         });
+        $('.summernote1').summernote({
+            height:200,
+            lang: 'zh-CN'
+        });
         // 工具栏按钮
         var btnFinish = $('<a id="btn-finish"></a>').text('完成')
             .addClass('btn btn-info')
@@ -1103,11 +1087,7 @@
     // 该事件在离开某个步骤之前触发
     $("#smartwizard").on("leaveStep", function (e, anchorObject, currentStepNumber, nextStepNumber, stepDirection) {
         if (stepDirection == 'forward') {
-            var form = $("#step-" + (currentStepNumber + 1)).find('.form');
-            if (form.length > 0) {
-                return form.validate().form();
-            }
-            return true;
+            return $("#step-" + (currentStepNumber + 1)).validate().form();
         }
         return true;
     });
