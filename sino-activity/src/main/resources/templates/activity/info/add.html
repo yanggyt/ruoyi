@@ -482,7 +482,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label is-required">时间段抽奖配置：</label>
@@ -505,8 +504,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
@@ -532,8 +529,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label is-required">抽奖必中配置：</label>
@@ -556,8 +551,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
@@ -573,12 +566,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" style="height: 500">
-                            <div class="form-group" style="float: left">
-                                <div  style="width: 60%">
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                     <label class="col-sm-4 control-label is-required">规则描述：</label>
-                                </div>
                                 <div class="col-sm-8">
                                     <div class="summernote1">
                                     </div>
@@ -1007,6 +997,10 @@
 <script th:inline="javascript">
     $(document).ready(function () {
         $('.summernote').summernote({
+            height:200,
+            lang: 'zh-CN'
+        });
+        $('.summernote1').summernote({
             height:200,
             lang: 'zh-CN'
         });
