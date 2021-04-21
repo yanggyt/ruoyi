@@ -251,7 +251,7 @@
                                         <label class="col-sm-4 control-label is-required">活动名称：</label>
                                         <div class="col-sm-8">
                                             <input name="drawInfo-drawname" placeholder="活动名称" class="form-control"
-                                                   type="text" maxlength="30" th:value="*{drawInfo.DRAWNAME}" >
+                                                   type="text" maxlength="30" th:value="*{drawInfo.DRAWNAME}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -286,7 +286,7 @@
                                         <label class="col-sm-4 control-label is-required">消耗价值：</label>
                                         <div class="col-sm-8">
                                             <input name="drawInfo-expenovalue" placeholder="消耗价值" class="form-control"
-                                                   type="text" maxlength="30" th:value="*{drawInfo.EXPENOVALUE}">
+                                                   type="text" maxlength="30" th:value="*{drawInfo.EXPENOVALUE}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -298,7 +298,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group date">
                                                 <input name="drawInfo-starttime" class="form-control" th:value="${#dates.format(vo.drawInfo.STARTTIME, 'yyyy-MM-dd HH:mm:ss')}"
-                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -310,7 +310,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group date">
                                                 <input name="drawInfo-endtime" class="form-control" th:value="${#dates.format(vo.drawInfo.ENDTIME, 'yyyy-MM-dd HH:mm:ss')}"
-                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text">
+                                                       placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
@@ -344,7 +344,7 @@
                                         <div class="col-sm-8">
                                             <input id="actTitle" name="actPageConfigGuide-actTitle" placeholder="活动名称"
                                                    class="form-control" type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)" th:value="*{actPageConfigGuide.actTitle}">
+                                                   maxlength="30" onkeyup="updatePic(this)" th:value="*{actPageConfigGuide.actTitle}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -356,7 +356,7 @@
                                         <div class="col-sm-8">
                                             <input id="actDesc" name="actPageConfigGuide-actDesc" placeholder="活动描述"
                                                    class="form-control" type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)" th:value="*{actPageConfigGuide.actDesc}">
+                                                   maxlength="30" onkeyup="updatePic(this)" th:value="*{actPageConfigGuide.actDesc}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -374,7 +374,7 @@
                                         <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg" onchange="syncPic(this)" ></span>
+                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg" onchange="syncPic(this)" required></span>
                                             <a href="#" class="btn btn-white fileinput-exists"
                                                data-dismiss="fileinput">清除</a>
                                         </div>
@@ -390,7 +390,7 @@
                                             <input id="btn1" name="actPageConfigGuide-btnText" placeholder="例如：立即参与"
                                                    class="form-control"
                                                    type="text"
-                                                   maxlength="30" onkeyup="updatePic(this)" th:value="*{actPageConfigGuide.btnText}">
+                                                   maxlength="30" onkeyup="updatePic(this)" th:value="*{actPageConfigGuide.btnText}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -411,7 +411,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label is-required">自定义按钮2：</label>
+                                        <label class="col-sm-4 control-label">自定义按钮2：</label>
                                         <div class="col-sm-8">
                                             <input id="btn2" name="actPageConfigGuide-btnText2" placeholder="例如：查看奖励"
                                                    class="form-control" type="text"
@@ -423,7 +423,7 @@
                             <div class="row" style="height: 850">
                                 <div class="form-group" style="float: left">
                                     <div  style="width: 60%">
-                                        <label class="col-sm-4 control-label is-required">按钮2页面内容：</label>
+                                        <label class="col-sm-4 control-label">按钮2页面内容：</label>
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="summernote">
@@ -479,7 +479,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label is-required">首次中奖奖品：</label>
+                                <label class="col-sm-4 control-label">首次中奖奖品：</label>
                                 <div class="col-sm-8">
                                     <select name="drawRule-firstawardprize" class="form-control" id="firstawardprize"
                                             th:with="drawPrize=${@drawPrize.findDrawPrizeInfoList()}">
@@ -506,7 +506,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">时间段限制次数：</label>
+                                    <label class="col-sm-4 control-label ">时间段限制次数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-dailynumber" id="dailynumber" placeholder="时间段限制次数"
                                                class="form-control" type="text" maxlength="30"  th:value="*{drawRule.DAILYNUMBER}">
@@ -517,7 +517,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖限制开始时间：</label>
+                                    <label class="col-sm-4 control-label ">抽奖限制开始时间：</label>
                                     <div class="col-sm-8">
                                         <div class="input-group date">
                                             <input name="drawRule-dailystarttime" id="dailystarttime" th:value="*{drawRule.DAILYSTARTTIME}"
@@ -530,7 +530,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖限制结束时间：</label>
+                                    <label class="col-sm-4 control-label ">抽奖限制结束时间：</label>
                                     <div class="col-sm-8">
                                         <div class="input-group date">
                                             <input name="drawRule-dailyendtime" id="dailyendtime" class="form-control" th:value="*{drawRule.DAILYENDTIME}"
@@ -556,7 +556,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖必中计数：</label>
+                                    <label class="col-sm-4 control-label">抽奖必中计数：</label>
                                     <div class="col-sm-8">
                                         <input name="drawRule-willdrawawardnumber" id="willdrawawardnumber"
                                                placeholder="抽奖必中计数" th:value="*{drawRule.WILLDRAWAWARDNUMBER}"
@@ -568,7 +568,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label is-required">抽奖必中奖品：</label>
+                                    <label class="col-sm-4 control-label">抽奖必中奖品：</label>
                                     <div class="col-sm-8">
                                         <select name="drawRule-willdrawawardprize" class="form-control"
                                                 id="willdrawawardprize"
@@ -584,7 +584,7 @@
                         <div class="row" style="height: 500">
                             <div class="form-group" style="float: left">
                                 <div  style="width: 60%">
-                                    <label class="col-sm-4 control-label is-required">规则描述：</label>
+                                    <label class="col-sm-4 control-label">规则描述：</label>
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="summernote1">
@@ -1224,11 +1224,7 @@
     // 该事件在离开某个步骤之前触发
     $("#smartwizard").on("leaveStep", function (e, anchorObject, currentStepNumber, nextStepNumber, stepDirection) {
         if (stepDirection == 'forward') {
-            var form = $("#step-" + (currentStepNumber + 1)).find('.form');
-            if (form.length > 0) {
-                return form.validate().form();
-            }
-            return true;
+            return $("#step-" + (currentStepNumber + 1)).validate().form();
         }
         return true;
     });
