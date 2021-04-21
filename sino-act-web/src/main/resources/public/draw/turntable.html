@@ -119,7 +119,9 @@
 					callback: function () {	//回调
 						console.log(txt);
 						if ('materialObject' == prizeType) {
+
 							$('.goods').show();
+							window.location.href='address.html?drawCode='+drawCode;
 						} else {
 							$('.winPrize').show();
 						}
@@ -389,11 +391,8 @@
 					<div>恭喜您获得</div>
 					<div class="cue">戴森吸尘器</div>
 					<div>请留下收货信息，我们奖品将在活动结束后四十个工作日寄送</div>
-					<input class="uname" type="text" value="" placeholder="请输入收货人姓名"/>
-					<input class="phone" type="text" value="" placeholder="请输入收货人手机号码" maxlength="11"/>
-					<textarea class="addr" rows="" cols="" placeholder="请输入收货地址"></textarea>
 					<input class="flow" type="hidden" value="">
-					<img src="images/btn1.png" class='popBtn popBtn3' onclick="saveAddr()">
+					<div type="button"  class='button'  onclick="qrCode()">确认</div>
 				</div>
 				<div class='right'></div>
 			</div>
@@ -444,6 +443,10 @@
 	<script src="js/common.js"></script>
 	<script>
 		prizes();
+
+		function qrCode(){
+			window.location.href='../act/address.html?drawCode='+drawCode;
+		}
 	</script>
 </body>
 

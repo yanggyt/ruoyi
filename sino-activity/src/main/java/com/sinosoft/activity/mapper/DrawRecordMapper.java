@@ -2,6 +2,7 @@ package com.sinosoft.activity.mapper;
 
 import java.util.List;
 import com.sinosoft.activity.domain.DrawRecord;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 抽奖记录信息Mapper接口
@@ -59,4 +60,19 @@ public interface DrawRecordMapper
      * @return 结果
      */
     public int deleteDrawRecordByIds(String[] DRAWRECORDIDs);
+
+    /**
+     *查询抽奖记录信息
+     * @param drawCode
+     * @param userId
+     * @return
+     */
+    List<DrawRecord> selectDrawRecordCodeUserList(@Param("drawCode") String drawCode,@Param("userId") String userId);
+
+    /**
+     *  查询抽奖记录信息
+     * @param drawCode
+     * @return
+     */
+    List<DrawRecord> selectDrawRecordCodeList(String drawCode);
 }

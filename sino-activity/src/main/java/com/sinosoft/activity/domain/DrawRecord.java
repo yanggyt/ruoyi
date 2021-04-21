@@ -91,8 +91,18 @@ public class DrawRecord extends BaseEntity
     /** 扩展域 */
     @Excel(name = "扩展域")
     private String EXTAREA;
+    /** 奖品名称*/
+    private String PRIZENAME;
 
-    public void setDRAWRECORDID(String DRAWRECORDID) 
+    public String getPRIZENAME() {
+        return PRIZENAME;
+    }
+
+    public void setPRIZENAME(String PRIZENAME) {
+        this.PRIZENAME = PRIZENAME;
+    }
+
+    public void setDRAWRECORDID(String DRAWRECORDID)
     {
         this.DRAWRECORDID = DRAWRECORDID;
     }
