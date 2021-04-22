@@ -15,7 +15,7 @@
         #meta_content {
             height: auto;
             overflow: hidden;
-            display: display;
+            display: block;
         }
     </style>
 </head>
