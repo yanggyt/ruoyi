@@ -1019,6 +1019,14 @@
         var btnFinish = $('<a id="btn-finish"></a>').text('完成')
             .addClass('btn btn-info')
             .on('click', function () {
+                 var flag = $("#step-7").validate({
+                     errorPlacement: function(error, element) {
+                         error.appendTo(element.parent().parent().parent());
+                     }
+                 }).form();
+                 if (flag == false){
+                     return;
+                 }
                 //添加保存逻辑
                 var markupStr  = $('.summernote').summernote('code');
                 $("#btnLink2").val(markupStr);
@@ -1098,7 +1106,11 @@
     // 该事件在离开某个步骤之前触发
     $("#smartwizard").on("leaveStep", function (e, anchorObject, currentStepNumber, nextStepNumber, stepDirection) {
         if (stepDirection == 'forward') {
-            return $("#step-" + (currentStepNumber + 1)).validate().form();
+            return $("#step-" + (currentStepNumber + 1)).validate({
+                errorPlacement: function(error, element) {
+                        error.appendTo(element.parent().parent().parent());
+                }
+            }).form();
         }
         return true;
     });
