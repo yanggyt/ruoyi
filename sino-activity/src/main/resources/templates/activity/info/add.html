@@ -29,7 +29,6 @@
     .leftarea {
         float: left;
         width: 60%;
-        height: 500px;
     }
 
     /*.sw > .tab-content {*/
@@ -205,7 +204,7 @@
         color: black;
         width: 100%;
     }
-
+    .clearfloat{clear:both;height:1px;}
 
 
 </style>
@@ -240,7 +239,7 @@
                     <a class="nav-link" href="#step-7"> 关注二维码 </a>
                 </li>
             </ul>
-            <div class="tab-content" >
+            <div class="tab-content">
                 <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
                     <div>
                         <form class="form form-horizontal m-t">
@@ -334,8 +333,8 @@
                         <img id="activityTemplateimg" src="../../img/yun.jpg" width="60%" height="400px" style="display: none">
                     </div>
                 </div>
-                <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3" style="height: 130%">
-                    <div >
+                <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                    <div id="step3div" style=" height: auto; min-height:500px;overflow:hidden">
                         <div class="leftarea">
                             <h4 class="form-header h4">第3步-配置展现内容</h4>
                             <div class="row">
@@ -412,7 +411,7 @@
                             <div class="row">
                                 <div class="col-sm-6" style="width: 70%;">
                                     <div class="form-group">
-                                            <label class="col-sm-4 control-label" style="width: 162.78px">按钮2页面内容：</label>
+                                            <label class="col-sm-4 control-label" style="width: 128.78px">按钮2页面内容：</label>
                                             <div class="col-sm-8">
                                                 <div class="summernote">
                                                 例如：http：//xx
@@ -438,6 +437,7 @@
                                     </span>
                             </div>
                         </div>
+                        <div class="clearfloat"></div>
                     </div>
                 </div>
                 <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4" style="height: 130%">
@@ -578,8 +578,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-5" style="height: 100%">
-                    <div >
+                <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-5" >
+                    <div style=" height: auto; min-height:500px;overflow:hidden">
                         <div class="leftarea">
                             <h4 class="form-header h4">第五步-配置收集信息</h4>
                             <div class="row">
@@ -700,8 +700,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="rightarea">
                             <h4 class="form-header h4">效果图</h4>
                             <div style="position: relative;text-align:center">
@@ -746,11 +744,11 @@
                                     </span>
                             </div>
                         </div>
-
+                        <div class="clearfloat"></div>
                     </div>
                 </div>
-                <div id="step-6" class="tab-pane" role="tabpanel" aria-labelledby="step-6" style="height: 100%">
-                    <div >
+                <div id="step-6" class="tab-pane" role="tabpanel" aria-labelledby="step-6" >
+                    <div style=" height: auto; min-height:500px;overflow:hidden">
                         <div class="leftarea">
                             <h4 class="form-header h4">第六步-配置分享信息</h4>
                             <div class="row">
@@ -820,10 +818,11 @@
 
                             </div>
                         </div>
+                        <div class="clearfloat"></div>
                     </div>
                 </div>
-                <div id="step-7" class="tab-pane" role="tabpanel" aria-labelledby="step-7" style="height: 100%">
-                    <div >
+                <div id="step-7" class="tab-pane" role="tabpanel" aria-labelledby="step-7" >
+                    <div style=" height: auto; min-height:500px;overflow:hidden">
                         <div class="leftarea">
                             <h4 class="form-header h4">第七步-关注二维码</h4>
                             <div class="row">
@@ -898,6 +897,7 @@
 
                             </div>
                         </div>
+                        <div class="clearfloat"></div>
                     </div>
                 </div>
             </div>
