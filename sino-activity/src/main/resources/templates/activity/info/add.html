@@ -627,23 +627,26 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <label class="col-sm-4 control-label is-required">背景图片：</label>
-                                    <div class="col-xs-8">
-                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                             style="width: 200px; height: 150px;"></div>
-                                        <div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">背景图片：</label>
+                                        <div class="col-xs-8">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <div class="fileinput-preview thumbnail" data-trigger="fileinput"
+                                                     style="width: 200px; height: 150px;"></div>
+                                                <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="picture" name="actPageConfigUserinfo-bgImg" onchange="syncPic(this)" required></span>
-                                            <a href="#" class="btn btn-white fileinput-exists"
-                                               data-dismiss="fileinput">清除</a>
+                                                    <input type="file" id="picture" name="actPageConfigUserinfo-bgImg"
+                                                           onchange="syncPic(this)" required></span>
+                                                    <a href="#" class="btn btn-white fileinput-exists"
+                                                       data-dismiss="fileinput">清除</a>
 
+                                                </div>
+                                            </div>
                                         </div>
+                                        <input id="pictureval" type="hidden" name="actPageConfigUserinfo-bgImg"
+                                               value="">
                                     </div>
-                                    </div>
-                                    <input id="pictureval" type="hidden" name="actPageConfigUserinfo-bgImg"
-                                           value="">
                                 </div>
                             </div>
                             <div class="row">
@@ -796,21 +799,24 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <label class="col-sm-4 control-label is-required">分享图片：</label>
-                                    <div class="col-xs-8">
-                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                             style="width: 200px; height: 150px;"></div>
-                                        <div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label is-required">分享图片：</label>
+                                        <div class="col-xs-8">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <div class="fileinput-preview thumbnail" data-trigger="fileinput"
+                                                     style="width: 200px; height: 150px;"></div>
+                                                <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="shareImg" name="actConfig-shareImg" onchange="syncPic(this)" required></span>
-                                            <a href="#" class="btn btn-white fileinput-exists"
-                                               data-dismiss="fileinput">清除</a>
+                                                    <input type="file" id="shareImg" name="actConfig-shareImg"
+                                                           onchange="syncPic(this)" required></span>
+                                                    <a href="#" class="btn btn-white fileinput-exists"
+                                                       data-dismiss="fileinput">清除</a>
+                                                </div>
+                                            </div>
+                                            <input id="shareImgval" type="hidden" name="actConfig-shareImg" value="">
                                         </div>
                                     </div>
-                                    <input id="shareImgval" type="hidden" name="actConfig-shareImg" value="">
-                                </div>
                                 </div>
                             </div>
                         </div>
