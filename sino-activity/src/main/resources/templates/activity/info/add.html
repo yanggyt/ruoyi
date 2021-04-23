@@ -1121,6 +1121,8 @@
     // 该事件在离开某个步骤之前触发
     $("#smartwizard").on("leaveStep", function (e, anchorObject, currentStepNumber, nextStepNumber, stepDirection) {
         if (stepDirection == 'forward') {
+            var form = $("#step-" + (currentStepNumber + 1)).find('.form');
+            console.log(form);
             return $("#step-" + (currentStepNumber + 1)).validate({
                 errorPlacement: function(error, element) {
                         error.appendTo(element.parent().parent().parent());

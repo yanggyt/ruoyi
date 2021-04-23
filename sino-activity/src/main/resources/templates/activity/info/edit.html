@@ -375,18 +375,18 @@
                                     <div class="form-group">
                                     <label class="col-sm-4 control-label is-required">背景图片：</label>
                                     <div class="col-sm-8">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="fileinput fileinput-exists" data-provides="fileinput">
                                             <div class="fileinput-preview thumbnail" data-trigger="fileinput"
                                                  style="width: 220px; height: 150px;">
-                                                <img th:src="*{actPageConfigGuide.bgImg}">
+                                                <img th:src="*{actPageConfigGuide.bgImg}" >
                                             </div>
                                             <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg"
-                                                           onchange="syncPic(this)" required></span>
+                                                    <input type="file" id="pic" name="actPageConfigGuide-bgImg" th:value="*{actPageConfigGuide.bgImg}"
+                                                           onchange="syncPic(this)"></span>
                                                 <a href="#" class="btn btn-white fileinput-exists"
-                                                   data-dismiss="fileinput">清除</a>
+                                                   data-dismiss="fileinput" onclick="clecreq('pic')">清除</a>
                                             </div>
                                         </div>
                                     </div>
@@ -651,9 +651,9 @@
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
                                                     <input type="file" id="picture" name="actPageConfigUserinfo-bgImg"
-                                                           onchange="syncPic(this)" required></span>
+                                                           onchange="syncPic(this)"  th:value="*{actPageConfigUserinfo.bgImg}"></span>
                                                     <a href="#" class="btn btn-white fileinput-exists"
-                                                       data-dismiss="fileinput">清除</a>
+                                                       data-dismiss="fileinput" onclick="clecreq('picture')">清除</a>
 
                                                 </div>
                                             </div>
@@ -827,10 +827,10 @@
                                                 <div>
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
-                                                    <input type="file" id="shareImg" name="actConfig-shareImg"
-                                                           onchange="syncPic(this)" required></span>
+                                                    <input type="file" id="shareImg" name="actConfig-shareImg"  th:value="*{actConfig.shareImg}"
+                                                           onchange="syncPic(this)"></span>
                                                     <a href="#" class="btn btn-white fileinput-exists"
-                                                       data-dismiss="fileinput">清除</a>
+                                                       data-dismiss="fileinput" onclick="clecreq('shareImg')">清除</a>
                                                 </div>
                                             </div>
                                             <input id="shareImgval" type="hidden" name="actConfig-shareImg" value=""
@@ -886,10 +886,10 @@
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
                                                     <input type="file" id="backdropImg"
-                                                           name="actPageConfigSubscribe-bgImg" onchange="syncPic(this)"
-                                                           required></span>
+                                                           name="actPageConfigSubscribe-bgImg" onchange="syncPic(this)" th:value="*{actPageConfigSubscribe.bgImg}"
+                                                           ></span>
                                                     <a href="#" class="btn btn-white fileinput-exists"
-                                                       data-dismiss="fileinput">清除</a>
+                                                       data-dismiss="fileinput" onclick="clecreq('backdropImg')">清除</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -913,10 +913,10 @@
                                                 <span class="btn btn-white btn-file"><span
                                                         class="fileinput-new">选择图片</span><span class="fileinput-exists">更改</span>
                                                     <input type="file" id="qrCodeImg"
-                                                           name="actPageConfigSubscribe-bgImg2" onchange="syncPic(this)"
-                                                           required></span>
+                                                           name="actPageConfigSubscribe-bgImg2" onchange="syncPic(this)" th:value="*{actPageConfigSubscribe.qrCode}"
+                                                           ></span>
                                             <a href="#" class="btn btn-white fileinput-exists"
-                                               data-dismiss="fileinput">清除</a>
+                                               data-dismiss="fileinput" onclick="clecreq('qrCodeImg')">清除</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1255,6 +1255,8 @@
     // 该事件在离开某个步骤之前触发
     $("#smartwizard").on("leaveStep", function (e, anchorObject, currentStepNumber, nextStepNumber, stepDirection) {
         if (stepDirection == 'forward') {
+            var form = $("#step-" + (currentStepNumber + 1)).context.forms;
+            console.log(form);
             return $("#step-" + (currentStepNumber + 1)).validate({
                     errorPlacement: function(error, element) {
                         error.appendTo(element.parent().parent().parent());
@@ -1373,6 +1375,10 @@
             $("#activityPlayimg").css('display','none');
         }
 
+    }
+    //补丁，添加必填校验
+    function clecreq(val){
+        $('#'+val).attr("required","true");
     }
 
 </script>
