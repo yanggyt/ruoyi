@@ -203,7 +203,10 @@ public class DrawActivityThread implements Callable<DrawResult> {
 			long point10 = System.currentTimeMillis();
 			logger.info("抽奖检查点10:" + request.getSerialNo() + "_" + tranSeqNo + "&时间:" + point10 + "&与前一个检查点时间差:" + (point10 - point9));
 			// 查询剩余抽奖次数
-			int available = drawTaskNotifyService.selectDrawNumByUserId(request.getUserId(), gtDrawInfo.getDRAWCODE());
+			DrawTaskNotify drawTaskNotify = new DrawTaskNotify();
+			drawTaskNotify.setDRAWCODE(gtDrawInfo.getDRAWCODE());
+			drawTaskNotify.setUSERID(request.getUserId());
+			Integer available = drawTaskNotifyService.selectDrawNumByUserId(drawTaskNotify);
 			long point11 = System.currentTimeMillis();
 			logger.info("抽奖检查点11:" + request.getSerialNo() + "_" + tranSeqNo + "&时间:" + point11 + "&与前一个检查点时间差:" + (point11 - point10));
 			response.setAvailable(available+"");

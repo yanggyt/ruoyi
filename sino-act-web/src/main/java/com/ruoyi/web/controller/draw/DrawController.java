@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.draw;
 
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.dto.DrawActivityRequest;
 import com.ruoyi.dto.*;
 import com.ruoyi.web.vo.Result;
 import com.ruoyi.web.vo.draw.*;
@@ -133,7 +134,10 @@ public class DrawController {
                 return result;
             }
             String userId = userInfo.getOpenid();
-            int num = drawTaskNotifyService.selectDrawNumByUserId(userId, drawCode);
+            DrawTaskNotify drawTaskNotify = new DrawTaskNotify();
+            drawTaskNotify.setDRAWCODE(drawCode);
+            drawTaskNotify.setUSERID(userId);
+            Integer num = drawTaskNotifyService.selectDrawNumByUserId(drawTaskNotify);
             //查询抽奖次数
             result.setTotal(null);
             result.setNum(num+"");

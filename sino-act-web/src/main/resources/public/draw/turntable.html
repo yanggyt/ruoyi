@@ -46,11 +46,12 @@
 			turnplate.restaraunts = ["华为P40", "现金红包", "汽车加油卡", "现金红包", "爱奇艺月卡", "现金红包", "现金红包", "戴森吸尘器"];
 			turnplate.colors = ["#fffef8", "#ffdcae", "#fffef8", "#ffdcae", "#fffef8", "#ffdcae", "#fffef8", "#ffdcae"];
 			//
+			let code = getParameter('code');
 			$.ajax({
 				type: "POST",
 				async:false,
 				url: contextRootPath+"/draw/init.action",
-				data: {drawCode: drawCode},
+				data: {drawCode: drawCode, code: code},
 				dataType: "json",
 				success: function(data){
 					prizes = data.prizes;

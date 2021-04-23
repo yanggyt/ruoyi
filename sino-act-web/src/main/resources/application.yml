@@ -36,6 +36,7 @@ logging:
     org.springframework.web: INFO
     com.github.binarywang.demo.wx.mp: DEBUG
     me.chanjar.weixin: DEBUG
+    com.spring.jiminshiro.mapper: DEBUG
 
 # 用户配置
 user:
@@ -81,6 +82,7 @@ mybatis:
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     # 加载全局的配置文件
     configLocation: classpath:mybatis/mybatis-config.xml
+
 
 # PageHelper分页插件
 pagehelper: 
@@ -146,11 +148,7 @@ wx:
       host: 127.0.0.1
       port: 6379
     configs:
-      - appId: wx0afa27c03093f9e6 # 第一个公众号的appid
-        secret: d4624c36b6795d1d99dcf0547af5443d # 公众号的appsecret
-        token: qpComing # 接口配置里的Token值
-        aesKey: 111 # 接口配置里的EncodingAESKey值
-      - appId: 2222 # 第二个公众号的appid，以下同上
-        secret: 1111
-        token: 111
-        aesKey: 111
+      - appId: wxbb9badc4655d21a2 # 第一个公众号的appid
+        secret: 12002584c28d2ce1d043b97b861af17d # 公众号的appsecret
+        token:  # 接口配置里的Token值
+        aesKey: # 接口配置里的EncodingAESKey值

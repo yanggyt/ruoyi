@@ -54,9 +54,9 @@ public class DrawTaskNotifyServiceImpl implements IDrawTaskNotifyService
         return drawTaskNotifyMapper.selectDrawTaskNotifyById(USERID);
     }
     @Override
-    public int selectDrawNumByUserId(String userId, String drawCode)
+    public Integer selectDrawNumByUserId(DrawTaskNotify drawTaskNotify)
     {
-        return drawTaskNotifyMapper.selectDrawNumByUserId(userId, drawCode);
+        return drawTaskNotifyMapper.selectDrawNumByUserId(drawTaskNotify);
     }
 
     /**
