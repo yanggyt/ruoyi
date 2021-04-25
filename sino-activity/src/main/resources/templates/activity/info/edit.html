@@ -680,7 +680,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label is-required">客户必填信息：</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="checkboxuser">
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="actPageConfigUserinfo-userName" id="name"
                                                        onclick="updateText(this)" th:checked="*{actPageConfigUserinfo.userName == 'on' ? true : false}" >姓名</input>
@@ -1298,13 +1298,20 @@
 
 
     function updateText(val) {
-
-        var id = val.id;
-        var boolean = $("#" + id).prop("checked");
-        if (boolean) {
-            $("#" + id + "Pri").attr('type', 'text');
-        } else {
-            $("#" + id + "Pri").attr('type', 'hidden');
+        console.log($("#checkboxuser").find("input:checked"));
+        var length = $("#checkboxuser").find("input:checked").length;
+        if (length < 1){
+            //只有一个，不可以进行修改
+            val.checked = !val.checked;
+            $.modal.msgError("至少选中一个");
+        }else{
+            var id = val.id;
+            var boolean = $("#" + id).prop("checked");
+            if (boolean) {
+                $("#" + id + "Pri").attr('type', 'text');
+            } else {
+                $("#" + id + "Pri").attr('type', 'hidden');
+            }
         }
     }
 
