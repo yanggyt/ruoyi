@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('文章列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>文章名称：</label>
+                            <input type="text" name="articleName"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 500px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">添加标签</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <form class="form-horizontal m" id="form-picAdverts-add">
+                    <div class="col-md-12" style="margin-top: -15px;">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">添加标签：</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" th:id="labelChoice" name="labelChoice"></select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
+                <button type="button" class="btn btn-primary" th:onclick="addArticleLabel()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal3" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">业务员分享情况</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff; margin-top: -20px;">
+                <form id="form2">
+                    <div class="select-list">
+                        <input type="text" th:hidden="true" name="articleId" th:id="articleId"/>
+                        <input type="text" th:hidden="true" name="userId" th:id="userId"/>
+                    </div>
+                </form>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="bootstrap-table1"></table>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 900px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">客户观看情况</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff; margin-top: -20px;">
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="bootstrap-table3"></table>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">客户来源</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff; margin-top: -20px;">
+                <form id="form5">
+                    <div class="select-list">
+                        <input type="text" th:hidden="true" name="clickId" th:id="clickId"/>
+                    </div>
+                </form>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="bootstrap-table5"></table>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var path = ctx;
+    var prefix = ctx + "article";
+
+    var labelArticleId = "";
+    var clickCount = 0;
+    var publishCount = 0;
+    var sharingCount = 0;
+
+    $(function () {
+        var options = {
+            id: "bootstrap-table",
+            url: prefix + "/articleArry",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "文章信息",
+            columns: [
+                {
+                    field: 'articleId',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'articleName',
+                    title: '文章名称'
+                },
+                {
+                    field: 'pushDate',
+                    title: '发布时间',
+                    visible: false
+                },
+                {
+                    field: 'articleAuthor',
+                    title: '文章作者',
+                    visible: false
+                },
+                {
+                    field: 'SPECIAL',
+                    title: '专栏',
+                    visible: false
+                },
+                {
+                    field: 'channelId',
+                    title: '所属栏目id',
+                    visible: false
+                },
+                {
+                    field: 'articleState',
+                    title: '收录状态：0未被收录2已收录1删除',
+                    visible: false
+                },
+                {
+                    field: 'createUser',
+                    title: '创建人',
+                    visible: false
+                },
+                {
+                    field: 'originalUrl',
+                    title: '原文连接地址',
+                    visible: false
+                },
+                {
+                    field: 'shareTitle',
+                    title: '分享标题',
+                    visible: false
+                },
+                {
+                    field: 'shareDes',
+                    title: '分享描述',
+                    visible: false
+                },
+                {
+                    field: 'updateDate',
+                    title: '更新日期'
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新时间'
+                },
+                {
+                    field: 'visitorCount',
+                    title: '浏览量'
+                },
+                {
+                    field: 'shareCount',
+                    title: '分享量'
+                },
+                {
+                    field: 'modifiedEditUrl',
+                    title: '预览路径',
+                    visible: false
+                },
+                {
+                    field: 'modifiedViewUrl',
+                    title: '编辑路径',
+                    visible: false
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal3" onclick="sharingTrack(\'' + row.articleId + '\')")"><i class="fa fa-eye"></i>分享与浏览情况</a> ');
+                        actions.push('<a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal2" onclick="changeArticleId(\'' + row.articleId + '\')"><i class="fa fa-bookmark-o"></i>添加标签</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="delArticleInfo(\'' + row.articleId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+
+        articleLabelChoice();
+
+        sharingTrack();
+
+        publishInfoList();
+
+        sharingTrackList();
+    });
+
+    function changeArticleId(id) {
+        labelArticleId = id;
+    }
+
+    /**
+     * 查询标签信息
+     */
+    function articleLabelChoice() {
+        $.ajax({
+            type: "post",
+            url: path + 'label/queryLabel',
+            data: {},
+            async: false,
+            success: function (data) {
+                if (data.result) {
+                    var obj = data.object.labelList;
+                    for (var i = 0; i < obj.length; i++) {
+                        $("#labelChoice").append(
+                            "<option value='" + obj[i].labelId + "'>"
+                            + obj[i].labelName + "</option>");
+                    }
+                } else {
+                    $.modal.alertError("网络异常，请稍后再试！");
+                }
+            }
+        });
+    }
+
+    function delArticleInfo(id) {
+        $.ajax({
+            url: "delArticleInfo",
+            data: {
+                ids: id
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    $.modal.alertSuccess("删除成功！");
+                    $.table.search();
+                } else {
+                    $.modal.alertError(data.info);
+                }
+            },
+            error: function (textStatus, e) {
+                $.modal.alertError('系统异常,请稍后重试!');
+            }
+        });
+    }
+
+    /**
+     * 文章添加标签
+     */
+    function addArticleLabel() {
+        var labelIds = [];
+        $("#labelChoice option:selected").each(function () {
+            labelIds.push($(this).val())
+        })
+        $.ajax({
+            url: path + "label/addlabel",
+            data: {
+                "labelIds": labelIds.join(','),
+                "articleId": labelArticleId,
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    $.modal.alertSuccess(data.info);
+                    $('#modalColse').trigger("click");
+                } else {
+                    $.modal.alertError(data.info);
+                }
+            },
+            error: function (textStatus, e) {
+                $.modal.alertError('系统异常,请稍后重试!');
+            }
+        });
+    }
+
+    function sharingTrack(id) {
+        $('#articleId').val(id);
+        if (clickCount > 0) {
+            $.table.search('form2', 'bootstrap-table1');
+        } else {
+            var options = {
+                id: "bootstrap-table1",
+                url: path + "article/articleSharingTrackList",
+                createUrl: prefix + "/add",
+                removeUrl: prefix + "/remove",
+                updateUrl: prefix + "/edit/{id}",
+                modalName: "业务员分享情况",
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                columns: [
+                    {
+                        field: 'userId',
+                        title: '用户ID',
+                        visible: false
+                    },
+                    {
+                        field: 'articleId',
+                        title: '文章id',
+                        visible: false
+                    },
+                    {
+                        field: 'headImgUrl',
+                        title: '发布业务员头像',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            actions.push('<img src="'
+                                + decodeURIComponent(row.headImgUrl)
+                                + '"  id="img'
+                                + row.userId
+                                + '"  style = "width:30;height:30px;border-radius:50px" />');
+                            return actions.join('');
+                        }
+                    },
+                    {
+                        field: 'nickName',
+                        title: '发布业务员昵称'
+                    },
+                    {
+                        field: 'createUser',
+                        title: '工号'
+                    },
+                    {
+                        field: 'createDate',
+                        title: '发布日期'
+                    },
+                    {
+                        title: '操作',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            actions.push('<a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal4" onclick="publishInfoList(\'' + row.userId + '\')"><i class="fa fa-user"></i>有谁看了</a> ');
+                            return actions.join('');
+                        }
+                    }]
+            };
+            $.table.init(options);
+            clickCount++;
+        }
+    }
+
+    function publishInfoList(id) {
+        $('#userId').val(id);
+        if (publishCount > 0) {
+            $.table.search('form2', 'bootstrap-table3');
+        } else {
+            var options = {
+                id: "bootstrap-table3",
+                url: path + "article/publishInfoList",
+                createUrl: prefix + "/add",
+                removeUrl: prefix + "/remove",
+                updateUrl: prefix + "/edit/{id}",
+                modalName: "客户观看情况",
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                columns: [
+                    {
+                        field: 'clickId',
+                        title: '用户clickid',
+                        visible: false
+                    },
+                    {
+                        field: 'openId',
+                        title: '用户openId'
+                    },
+                    {
+                        field: 'clientHeadImgurl',
+                        title: '用户头像',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            actions.push('<img src="'
+                                + decodeURIComponent(row.clientHeadImgurl)
+                                + '"  id="img'
+                                + row.userId
+                                + '"  style = "width:30;height:30px;border-radius:50px" />');
+                            return actions.join('');
+                        }
+                    },
+                    {
+                        field: 'clientNickName',
+                        title: '用户昵称',
+                        formatter: function (value, row, index) {
+                            if (row.clientNickName == "") {
+                                return '匿名';
+                            }
+                            return row.clientNickName;
+                        }
+
+                    },
+                    {
+                        field: 'watchTime',
+                        title: '观看时长(s/秒)'
+                    },
+                    {
+                        field: 'clickDate',
+                        title: '观看日期'
+                    },
+                    {
+                        field: 'clickTime',
+                        title: '观看时间'
+                    },
+                    {
+                        field: 'shareState',
+                        title: '分享状态',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            if (row.shareState === '0' || row.shareState === '' || row.shareState === null) {
+                                actions.push('未分享');
+                            }
+                            if (row.shareState === '1') {
+                                actions.push('对话框分享');
+                            }
+                            if (row.shareState === '2') {
+                                actions.push('朋友圈分享');
+                            }
+                            if (row.shareState === '5') {
+                                actions.push('对话框和朋友圈都分享');
+                            }
+                            return actions.join('');
+                        }
+                    },
+                    {
+                        title: '操作',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            actions.push('<a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal5" onclick="sharingTrackList(\'' + row.clickId + '\')"><i class="fa fa-user"></i>客户来源</a> ');
+                            return actions.join('');
+                        }
+                    }]
+            };
+            $.table.init(options);
+            publishCount++;
+        }
+    }
+
+    function sharingTrackList(id) {
+        $('#clickId').val(id);
+        if (sharingCount > 0) {
+            $.table.search('form5', 'bootstrap-table5');
+        } else {
+            var options = {
+                id: "bootstrap-table5",
+                url: path + "article/articleSharingTrackInfo",
+                createUrl: prefix + "/add",
+                removeUrl: prefix + "/remove",
+                updateUrl: prefix + "/edit/{id}",
+                modalName: "客户来源",
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                columns: [
+                    {
+                        title: "序号",
+                        formatter: function (value, row, index) {
+                            return $.table.serialNumber(index);
+                        }
+                    },
+                    {
+                        field: 'headImgUrl',
+                        title: '用户头像',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            actions.push('<img src="'
+                                + decodeURIComponent(row.headImgUrl)
+                                + '" style = "width:30;height:30px;border-radius:50px" />');
+                            return actions.join('');
+                        }
+                    },
+                    {
+                        field: 'nickName',
+                        title: '用户昵称',
+                        formatter: function (value, row, index) {
+                            if (row.nickName == "") {
+                                return '匿名';
+                            }
+                            return row.nickName;
+                        }
+                    },
+                    {
+                        field: 'toShareState',
+                        title: '点开方式',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            if (row.toShareState == "groupmessage") {
+                                actions.push('群组');
+                            }
+                            if (row.toShareState == "timeline") {
+                                actions.push('朋友圈');
+                            }
+                            if (row.toShareState == "singlemessage") {
+                                actions.push('个人');
+                            }
+                            return actions.join('');
+                        }
+                    },
+                    {
+                        field: 'openId',
+                        title: '用户openId'
+                    }]
+            };
+            $.table.init(options);
+            sharingCount++;
+        }
+    }
+</script>
+</body>
+</html>

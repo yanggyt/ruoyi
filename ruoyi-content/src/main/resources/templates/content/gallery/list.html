@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('图片列表')"/>
+</head>
+<style>
+    .article-table-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 4px;
+        display: block;
+        border-style: none;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>所属栏目：</label>
+                            <div class="col-sm-8">
+                                <select name="channel" th:id="channel" class="form-control" required>
+
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-danger multiple" onclick="$.operate.removeAll()">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5;">
+                <input th:hidden="true" value="" th:id="pictureId"/>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left;">分配栏目</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <div class="select-list">
+                    <ul style="margin-top: -15px;">
+                        <li>
+                            <label style="width: 80px;"><i style="color: #dc1212">*</i>专栏选择：</label>
+                            <div class="col-sm-8">
+                                <select th:id="columnId" class="form-control">
+
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" th:onclick="saveData()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "content/gallery";
+    var prefix1 = ctx + "column/queryBasicData";
+    var prefix2 = ctx + "column/queryColumn";
+    var prefix3 = ctx + "content/gallery/addGallery";
+
+    $(function () {
+        var options = {
+            url: prefix + "/galleryImgList",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "图片列表",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'picId',
+                    title: '图片编号',
+                },
+                {
+                    field: 'imgUrl',
+                    title: '图片',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<img class="article-table-img" src="' + row.imgUrl + '" ></img> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'picAdId',
+                    title: '广告'
+                },
+                {
+                    field: 'codeName',
+                    title: '所属栏目'
+                },
+                {
+                    field: 'picState',
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        if (row.picState == '0') {
+                            return '展示';
+                        } else {
+                            return '不展示';
+                        }
+                    }
+                },
+                {
+                    field: 'createDate',
+                    title: '创建日期'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal2" onclick="changeId(\'' + row.picId + '\')"><i class="fa fa-object-group"></i>分配栏目</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.picId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+
+        $.ajax({
+            type: "post",
+            url: prefix1,
+            data: {
+                "bType": "GALLERY"
+            },
+            async: false,
+            success: function (data) {
+                if (data.result) {// 跳转到列表页面
+                    var baseDataList = data.object.baseList;
+                    $("#channel").append("<option value=''>请选择</option>");
+                    for (var i = 0; i < baseDataList.length; i++) {
+                        $("#channel").append("<option value='" + baseDataList[i].codeCode + "' data-value='" + baseDataList[i].codeType + "'>" + baseDataList[i].codeCname + "</option>");
+                    }
+                } else {
+                }
+            }
+        });
+
+        $.ajax({
+            type: "post",
+            url: prefix2,
+            data: {},
+            async: false,
+            success: function (data) {
+                if (data.result) {
+                    var obj = data.object.columnList;
+                    for (var i = 0; i < obj.length; i++) {
+                        if (obj[i].codeType == "FIRST_COLUMN" && obj[i].codeCode.indexOf("GALLERY") != -1) {
+                            $("#columnId").append("<optgroup id=" + obj[i].codeCode + " label=" + obj[i].codeCname + "></optgroup>");
+                        }
+                        //先循环出标签并给标签id
+                        if (obj[i].codeType != "FIRST_COLUMN") {
+                            if (obj[i].codeType == "GALLERY") {
+                                $("#GALLERY").append("<option value='" + obj[i].id + "'>" + obj[i].codeCname + "</option>");
+                            }
+
+                            if (obj[i].codeType == "INCREASE_GALLERY") {
+                                if ($("#INCREASE_GALLERY").length == 0) {
+                                    $("#columnId").append("<optgroup id='INCREASE_GALLERY' label='增员图库'></optgroup>");
+                                }
+                                $("#INCREASE_GALLERY").append("<option value='" + obj[i].id + "'>" + obj[i].codeCname + "</option>");
+                            }
+                        }
+
+                    }
+                } else {
+
+                }
+            }
+        });
+    });
+
+    function changeId(id) {
+        $('#pictureId').val(id);
+    }
+
+    function saveData() {
+        // 打开遮罩层
+        $.modal.loading("请稍后...");
+        var channelId = $('#columnId').val();//栏目id
+        var picId = $('#pictureId').val();
+        $.ajax({
+            url: prefix3,
+            data: {
+                "channelId": channelId,
+                "picId": picId,
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                const code = {
+                    'code': 0
+                };
+                $.operate.successCallback(code);
+            },
+            error: function (textStatus, e) {
+                const code = {
+                    'code' : 500,
+                    'msg' : '操作失败'
+                }
+                $.operate.successCallback(code);
+            }
+        });
+    }
+</script>
+</body>
+</html>

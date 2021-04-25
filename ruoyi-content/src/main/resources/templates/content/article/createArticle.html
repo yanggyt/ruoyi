@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('文章创建')"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no,email=no">
+    <link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/createArticleBase.css}" rel="stylesheet"/>
+    <link th:href="@{/css/Eleditor.css}" rel="stylesheet"/>
+    <link th:href="@{/css/createArticleStyle.css}" rel="stylesheet"/>
+</head>
+<style>
+
+    .abstract {
+        float: left;
+    }
+
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="textarea">
+            <div id="div1">
+                <div class="toolbar"></div>
+                <div class="title">
+                    <div contenteditable="true" class="head" placeholder="请在这里输入标题"></div>
+                    <div contenteditable="true" class="author" placeholder="请输入作者"></div>
+                    <div class="editorcontent" contenteditable="true" id="editorcontent">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <p class="abstract" style="margin-left: 15px;">封面摘要：</p>
+            <p class="abstract" style="margin-left: 200px;">分享描述：</p>
+            <div class="cover_abstract">
+                <div class="imgload">
+                    <input type="file" class="fileImg" accept="image/png,image/gif，image/jpg, image/jpeg"
+                           onchange="uploadOss(this)">
+                    <img src="" class="avatar" style="display:none"/>
+                    <i class="addIcon"></i>
+                </div>
+                <textarea autocomplete="off" placeholder="请输入内容" class="el-textarea__inner"
+                          style="min-height: 33px;height: 90px; width: 72%"></textarea>
+            </div>
+        </div>
+        <div style="border-top: 0px solid #e5e5e5; text-align: center; margin-top: 15px;">
+            <button type="button" class="btn btn-primary" th:onclick="createArticleL()">创建文章</button>
+        </div>
+        <form style="display: none;" class="lables">
+            <p>标签：</p>
+            <div class="lables_box">
+                <label><input type="radio" name="1" value="旅游1" checked="checked">旅游1</label>
+                <label><input type="radio" name="1" value="美食1" checked="checked">美食1</label>
+                <label><input type="radio" name="1" value="旅游2" checked="checked">旅游2</label>
+                <label><input type="radio" name="1" value="美食2" checked="checked">美食2</label>
+
+            </div>
+            <button id="sures" type="button">确定</button>
+        </form>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:src="@{/js/fileinput.min.js}"></script>
+<script th:src="@{/js/fileinput_locale_zh.js}"></script>
+<script th:src="@{/js/wangEditor.js}"></script>
+<script th:src="@{/js/Eleditor.min.js}"></script>
+<script th:inline="javascript">
+
+    let path = ctx;
+    let prefix = ctx + "article";
+
+    let filePath;
+
+    // 富文本的创建
+    const E = window.wangEditor;
+    const editor = new E(".toolbar", ".editorcontent")
+
+    editor.config.height = 550
+
+    editor.config.onchange = function (newHtml) {
+        console.log('change 之后最新的 html', newHtml)
+        console.log($('.editorcontent').html())
+    }
+
+    editor.create();
+
+    /*实例化一个编辑器*/
+    var artEditor = new Eleditor({
+        el: '#editorcontent',
+        toolbars: [
+            {
+                id: 'insertLable',
+                name: '插入标签',
+                handle: function (select, controll) { //回调返回选择的dom对象和控制按钮对象
+                    artEditor.saveState();
+                    $(".lables").show();
+                    $("#sures").click(function () {
+                        artEditor.getEditNode().attr('data_sss', $("input[name='1']:checked").val()).attr('class', 'seldiv');
+                        let arr = [];
+                        if (artEditor.getEditNode().find('.label').length > 0) {
+                            for (var i = 0; i < artEditor.getEditNode().find('.label').length; i++) {
+                                arr.push(artEditor.getEditNode().find('.label')[i].innerText.replace(/\s/g, ''))
+                            }
+                            if (arr.indexOf($("input[name='1']:checked").val()) === -1) {
+                                artEditor.getEditNode().prepend(`<div class="label" contenteditable="false">
+                  ${$("input[name='1']:checked").val()}&nbsp;</div>`);
+                            }
+                        } else {
+                            artEditor.getEditNode().prepend(`<div class="label" contenteditable="false">${$("input[name='1']:checked").val()}&nbsp;</div>`);
+                        }
+                        artEditor.hideEditorControllerLayer();
+                        artEditor.saveState();
+                        $(".lables").hide();
+                    })
+                    return false;
+                }
+            },
+            {
+                id: 'cancel',
+                name: '取消',
+                handle: function (select, controll) { //回调返回选择的dom对象和控制按钮对象
+                    artEditor.saveState();
+                    $(".lables").hide();
+                    artEditor.hideEditorControllerLayer();
+                    return false;
+                }
+            },
+            {
+                id: 'undo',
+                name: '撤销',
+                handle: function (select, controll) { //回调返回选择的dom对象和控制按钮对象
+                    artEditor.saveState();
+                    artEditor.getEditNode().find('.label').remove();
+                    $(".lables").hide();
+                    artEditor.hideEditorControllerLayer();
+                    return false;
+                }
+            },
+        ]
+    });
+
+    $('.w-e-toolbar').css('z-index', '900');
+    $('.w-e-text-container').css('z-index', '901');
+
+    $.ajax({
+        type: "post",
+        url: path + 'label/queryLabel',
+        data: {},
+        async: false,
+        success: function (data) {
+            if (data.result) {
+                let obj = data.object.labelList;
+                $(".lables_box").html('');
+                for (let i = 0; i < obj.length; i++) {
+                    $(".lables_box").append(
+                        '<label><input type="radio" name="1" label-id="' + obj[i].labelId + '" value="' + obj[i].labelName + '" >' + obj[i].labelName + '</label>');
+
+                }
+            } else {
+                $.modal.alertError("网络异常，请稍后再试！");
+            }
+        }
+    });
+
+    function uploadOss(obj) {
+        $.modal.loading("上传中。。。");
+        let formData = new FormData();
+        formData.append('file', obj.files[0]);
+        $.ajax({
+            type: "post",
+            url: '/oss',
+            data: formData,
+            processData: false,//不需要对数据进行处理
+            contentType: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $(".avatar").attr("src", data.object);
+                filePath = data.object;
+                $(".avatar").css('display', 'block');
+                $(".addIcon").css('display', 'none');
+                $.modal.closeLoading();
+            },
+            error: function () {
+                $.modal.closeLoading();
+            }
+        });
+    }
+
+    function createArticleL() {
+        let title = $('.head').text();
+        let author = $('.author').text();
+        let body = $('.editorcontent').html();
+        if (title == '') {
+            $.modal.alertWarning("请输入标题");
+            return;
+        }
+        if (author == '') {
+            $.modal.alertWarning("请输入作者");
+            return;
+        }
+        if (body == '') {
+            $.modal.alertWarning("请输入文章内容");
+            return;
+        }
+        if (filePath == '') {
+            $.modal.alertWarning("请上传分享图片");
+            return;
+        }
+
+        body = '<div id="js_article" class="rich_media"><div class="rich_media_inner">' +
+            '<div id="page-content" class="rich_media_area_primary">' +
+            '<div id="img-content" class="rich_media_wrp"><div id="activity-name">' + title + '</div>'
+            + '<div id="meta_content">' + author + '</div><div id="bodycontent">' + body + '</div></div></div></div></div>';
+
+        body = body.replace('contenteditable="true"', '');
+
+        $('#myModal5').modal('hide');
+        $.modal.loading("创建文章中请等待。。。");
+        $.ajax({
+            url: path + "article/create",
+            data: {
+                'author': "",
+                'createUser': "",
+                'ids': "",
+                'isAuthorization': "0",
+                'isReserve': "0",
+                'automaticName': "",
+                'introduction': "",
+                'labelIds': "",
+                'isJoinActive': "0",
+                'articleName': title,
+                'shareImgUrl': filePath,
+                'shareDes': $('.el-textarea__inner').text(),
+                'articleContent': body
+            },
+            type: "post",
+            success: function (data) {
+                $.modal.closeLoading();
+                if (data.result) {
+                    $.modal.confirm("创建成功！是否去文库管理页面查看新增文章？", function () {
+                        $.modal.parentTab('文库管理', prefix + "/manage?v=" + new Date().getTime());
+                    });
+                } else {
+                    $.modal.alertError(data.info)
+                }
+            },
+            error: function () {
+                $.modal.closeLoading();
+            }
+        });
+
+    }
+
+</script>
+</body>
+</html>
