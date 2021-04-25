@@ -75,4 +75,12 @@ public interface DrawRecordMapper
      * @return
      */
     List<DrawRecord> selectDrawRecordCodeList(String drawCode);
+
+    /**
+     * 根据userid 查询信息
+     * @param drawRecord
+     * @return
+     */
+    public DrawRecord selectDrawRecordUserIdList(DrawRecord drawRecord);
+
 }

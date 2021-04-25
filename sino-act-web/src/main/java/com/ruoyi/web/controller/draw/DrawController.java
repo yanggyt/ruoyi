@@ -25,14 +25,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -169,7 +167,7 @@ public class DrawController {
             body.setUserId(openid);
             body.setUserType("01");
             body.setUserName(userName);
-            body.setDrawTime(DateUtils.dateTimeNow(DateUtils.YYYYMMDDHHMMSSS));
+            body.setDrawTime(DateUtils.dateTimeNow(DateUtils.YYYYMMDDHHMMSS));
             body.setMerchantCode("MerchantCode");
             body.setMerchantSysCode("MerchantSysCode");
             body.setBusinessArea("6");
@@ -183,7 +181,13 @@ public class DrawController {
         return result;
     }
 
-    @RequestMapping(value="/info.action", method = RequestMethod.POST)
+    /**
+     * 查询填写信息活动配置
+     * @param request
+     * @param actCode
+     * @return
+     */
+    @RequestMapping(value="/info", method = RequestMethod.POST)
     @ResponseBody
     public ActPageConfigUserinfoResult info(HttpServletRequest request, String actCode) {
         ActPageConfigUserinfoResult result = new ActPageConfigUserinfoResult();
@@ -208,16 +212,21 @@ public class DrawController {
         try {
 
             HttpSession session = request.getSession();
-            WxOAuth2UserInfo userInfo = getUserInfo(request, null);
-         /*   if (userInfo == null && !"1".equals(isAll)) {
+            WxOAuth2UserInfo userInfo = this.getUserInfo(request, null);
+            if (userInfo == null) {
+                result.setRespCode("-2");
+                result.setRespMsg("会话已失效，请重新登录");
+                logger.info("DrawController.prizes openid is null");
+                return result;
+            }
+         if (userInfo == null && !"1".equals(isAll)) {
                 result.setRecord(prizes);
                 return result;
-            }*/
+            }
             String userId ="";
-         /*   if (!"1".equals(isAll)) {
-                 Long userId1 = ShiroUtils.getUserId();
+           if (!"1".equals(isAll)) {
                 userId = userInfo.getOpenid();
-            }*/
+            }
             List<DrawRecord> drawRecords = iDrawRecordService.selectDrawRecordCodeList(drawCode, userId);
             for (DrawRecord draw: drawRecords) {
                 String mobile = draw.getPHONE();
@@ -297,13 +306,51 @@ public class DrawController {
         }
         return result;
     }
+
+    /**
+     * 新增发奖记录以及地址
+     * @param request
+     * @param userInfo
+     * @return
+     */
     @RequestMapping(value="/saveAddress", method = RequestMethod.POST)
     @ResponseBody
     public Result saveAddress(HttpServletRequest request, DrawUserInfo userInfo) {
         Result result = new Result();
         try {
-            userInfo.setCreateTime(new Date());
+            HttpSession session = request.getSession();
+            WxOAuth2UserInfo user = this.getUserInfo(request, null);
+            if (user == null) {
+                result.setRespCode("-2");
+                result.setRespMsg("会话已失效，请重新登录");
+                logger.info("DrawController.saveAddress openid is null");
+                return result;
+            }
+            userInfo.setUserId(user.getOpenid());
+            if (StringUtils.isBlank(userInfo.getUserName())) {
+                result.setRespCode("-4");
+                result.setRespMsg("请输入姓名");
+                return result;
+            }
+           if (StringUtils.isBlank(userInfo.getAddress())) {
+               result.setRespCode("-4");
+                result.setRespMsg("请输入地址");
+                return result;
+           }
+            if (StringUtils.isBlank(userInfo.getGender())) {
+                result.setRespCode("-4");
+                result.setRespMsg("请输姓名");
+                return result;
+            }
+            if (StringUtils.isBlank(userInfo.getMobile())) {
+                result.setRespCode("-4");
+                result.setRespMsg("请输手机号");
+                return result;
+            }
+
             iDrawUserInfoService.insertDrawUserInfo(userInfo);
+            result.setRespCode("1");
+            result.setRespMsg("新增成功");
         } catch (Exception e) {
             result.setRespCode("-1");
             result.setRespMsg("系统异常，请稍后再试");
@@ -311,6 +358,53 @@ public class DrawController {
         }
         return result;
     }
+
+    @RequestMapping(value="/etidAddress", method = RequestMethod.POST)
+    @ResponseBody
+    public Result etidAddress(HttpServletRequest request, DrawUserInfo userInfo) {
+        Result result = new Result();
+        try {
+            HttpSession session = request.getSession();
+            WxOAuth2UserInfo user = this.getUserInfo(request, null);
+            if (user == null) {
+                result.setRespCode("-2");
+                result.setRespMsg("会话已失效，请重新登录");
+                logger.info("DrawController.etidAddress openid is null");
+                return result;
+            }
+            userInfo.setUserId(user.getOpenid());
+            if (StringUtils.isBlank(userInfo.getUserName())) {
+                result.setRespCode("-4");
+                result.setRespMsg("请输入姓名");
+                return result;
+            }
+            if (StringUtils.isBlank(userInfo.getAddress())) {
+                result.setRespCode("-4");
+                result.setRespMsg("请输入地址");
+                return result;
+            }
+            if (StringUtils.isBlank(userInfo.getGender())) {
+                result.setRespCode("-4");
+                result.setRespMsg("请输姓名");
+                return result;
+            }
+            if (StringUtils.isBlank(userInfo.getMobile())) {
+                result.setRespCode("-4");
+                result.setRespMsg("请输手机号");
+                return result;
+            }
+
+            iDrawUserInfoService.updateDrawUserInfo(userInfo);
+            result.setRespCode("1");
+            result.setRespMsg("成功");
+        } catch (Exception e) {
+            result.setRespCode("-1");
+            result.setRespMsg("系统异常，请稍后再试");
+            logger.error("DrawController.saveAddress ex: ", e);
+        }
+        return result;
+    }
+
 
     /**
      *  获取活动配置展示信息，根据活动编码
@@ -361,6 +455,7 @@ public class DrawController {
     public ActPageConfigSubscribeResult qrcode(HttpServletRequest request, String actCode) {
         ActPageConfigSubscribeResult result = new  ActPageConfigSubscribeResult ();
         try {
+
             List<ActPageConfigSubscribe> list = new ArrayList<>();
 
             ActPageConfigSubscribe subscribe = iActPageConfigSubscribeService.selectActPageConfigSubscribeByCode(actCode);
@@ -389,5 +484,25 @@ public class DrawController {
         }
         return result;
     }
+
+     @RequestMapping(value="/listAddress", method = RequestMethod.POST)
+     @ResponseBody
+     public Result etidAddress(HttpServletRequest request , String awarDrecordId ){
+         DrawUserInfoResult result = new DrawUserInfoResult();
+         try{
+            DrawUserInfo drawUserInfo = iDrawUserInfoService.selectDrawUserInfoById(awarDrecordId);
+             result.setDrawUserInfo(drawUserInfo);
+        }catch (Exception e){
+            result.setRespCode("-1");
+            result.setRespMsg("系统异常，请稍后再试");
+            logger.error("DrawController.etidAddress ex: ", e);
+        }
+         return result;
+     }
+
+
+
+
+
 
 }

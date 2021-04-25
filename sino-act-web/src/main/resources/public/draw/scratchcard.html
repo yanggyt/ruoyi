@@ -58,6 +58,10 @@
                         <p>大奖离你还差一点儿，加油</p>
                         <p class="again_btn">再抽一次</p>
                     </div>
+                    <div style="display: none;" class="scratch_off_box fail">
+                        <p>恭喜你获得，戴风吹风机</p>
+                        <p onclick="qrCode()" class="again_btn1">领取</p>
+                    </div>
                     <div style="display: none;" class="scratch_off_box no_chance">
                         <p><img src="images/16.gif" style="width: 25px;vertical-align: middle;" alt="">您的抽奖机会已用完</p>
                         <p>推荐客户获取更多抽奖机会吧～</p>
@@ -66,9 +70,6 @@
                 <div class="zk_red_box_footer">
                     <p>今日有机会刮出</p>
                 </div>
-                
-                
-                
             </div>
             <!-- 获奖人 -->
             <div class="lucy_info">
@@ -100,6 +101,7 @@
                         <div>
                             <div>抽中奖品</div>
                             <div>获奖时间</div>
+                            <div>地址管理</div>
                         </div>
                     </div>
                     <div class='popList'>
@@ -112,9 +114,11 @@
         </div>
         <img src="images/delect.png" class='popDelect prizeDelect'>
     </div>
-    <div class="prize_li" style="display: none;">
-        <div class="pname">奖品名称</div>
+    <div class="prize_li" style="display: none;" >
+        <div class="pname" >奖品名称</div>
         <div class="time">2020/08/05 09:00</div>
+        <div class="awar" style="display: none"></div>
+        <div type="button"class="but"  onclick="etidAddress(this)"></div>
     </div>
     <!--活动规则-->
     <div class='popup rule' style="display: none;">
@@ -129,18 +133,7 @@
               <img src="images/right.png">
             </div>
             <ul class='contBox' style="list-style: inside">
-<!--              <li class='content'>�ʱ�䣺2020��10��29��-12��31�ա�</li>-->
-<!--              <li class='content'>��ڼ䣬�ͻ��Ƽ��ͻ�ʹ��һ��ͨ���֧������������Ʋ�Ʒ�����ֻ���ֵ������ɷѣ������ɻ��һ�κ���齱���ᣬ�н�����100%���齱������Ч�ڽ�ֹ��2021��1��15�ա�</li>-->
-<!--              <li class='content'>��Ʒ�ֽ���29400�����н�����100%���н���ϵͳ���Զ����ŵ������ֻ������п��У��뼰ʱ���ա�</li>-->
-<!--              <li class='content'>���ս�Ʒ����Իʵ�����Ϊ׼���й����ٱ���������ؽ�Ʒ�����Ȩ�����罱Ʒ�����������ͨ���齱�ҳ����й�ʾ��</li>-->
-<!--              <li class='content'>�н����û��輰ʱ��ȡ���������ύ������ȡ��Ϣ�������콱��Ϣ���󡢲����������½�Ʒδ�ܼ�ʱ��á��޷��������ţ��������û���δ��ȡ��Ʒ������Ϊ�û������ý�Ʒ��</li>-->
-<!--              <li class='content'>�û��μӻ����Ϊ��Ⲣͬ�Ȿ�����</li>-->
-<!--              <li class='content'>�Ի���κ����ʣ��������ҳ���Ŀͷ�ͼ�������ѯ��Ҳ����ϵ�й��������߿ͷ�����ע���й����ٱ��ա�΢�Ź��ںţ��ڶԻ������롰0���������롰2�����ɣ���</li>-->
-<!--              <li class='content'>��Ʋ�Ʒ�������ϱ��ϡ��ֽ𱦡����������������Ʒ��</li>-->
-<!--              <li class='content'>�ڲ����Ĺ����У������Υ�������Ϊ��Υ���������ж����������û����й�������Ȩ׷�ؽ�����ȡ������뱾�λ���ʸ�׷���䷨�����Ρ�</li>-->
-<!--              <li class='content'>������ս���Ȩ���й����ٵ����������޹�˾���У��й����ٵ����������޹�˾�����޸����������������Ȩ��������������������ڷ�����������̶���ʹ�á�</li>-->
-<!--              <li class='content'>�����ƻ����˾�޹ء�</li>-->
-<!--              <li class='content'>��Ʒ�������ޣ��ȵ��ȵá�</li>-->
+
             </ul>
 
           </div>
@@ -371,6 +364,20 @@
 
 		})();
         prizes();
+
+
+
+        function qrCode(){
+
+            window.location.href='../act/address.html?drawCode='+drawCode;
+        }
+        function etidAddress(val){
+            var awardrecordid = val.id;
+            var drawCode = this.drawCode;
+            window.location.href='../act/etid.html?drawCode='+drawCode+'&awardrecordid='+awardrecordid;
+
+
+        }
 	</script>
 
 </body>

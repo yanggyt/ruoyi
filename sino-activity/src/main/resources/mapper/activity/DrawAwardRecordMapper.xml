@@ -70,7 +70,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where AWARDRECORDID = #{AWARDRECORDID}
     </select>
         
-    <insert id="insertDrawAwardRecord" parameterType="DrawAwardRecord">
+    <insert id="insertDrawAwardRecord" parameterType="DrawAwardRecord" useGeneratedKeys="true"
+            keyProperty="AWARDRECORDID">
         insert into draw_award_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="AWARDRECORDID != null">AWARDRECORDID,</if>

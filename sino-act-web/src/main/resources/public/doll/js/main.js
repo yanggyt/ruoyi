@@ -123,14 +123,20 @@ function myprizes(facade) {
         return;
       }
       $.each(prizes, function (i, n) {
-        let ptype = n.prizetype;
+        if('materialObject' == n.prizetype){
+
+          let ptype = n.prizetype;
         let status = n.status;
         let prizeCode = n.prizecode;
+
         let prize = $('.prize_li').clone();
         prize.show();
         prize.removeClass('prize_li');
         prize.find('.pname').html(n.prizename);
         prize.find('.time').html(n.createtimestamp);
+        prize.find('.awar').html(n.awardrecordid);
+        prize.find('.but').html('收货地址');
+        prize.find('.but').attr('id',n.awardrecordid);
         let imgSrc = $('img[p-code=' + prizeCode + ']').attr('src');
         prize.find("img").attr('src', imgSrc);
         let link = n.link;
@@ -140,9 +146,34 @@ function myprizes(facade) {
           });
         }
         $(prize).attr('val', prizeCode);
-        $(prize).attr('flow', n.drawtranseqno);
+        $(prize).attr('id', n.drawtranseqno);
         $(prize).attr('ptype', ptype);
         $('.myPrizes').append(prize);
+        }else{
+
+          let ptype = n.prizetype;
+          let status = n.status;
+          let prizeCode = n.prizecode;
+
+          let prize = $('.prize_li').clone();
+          prize.show();
+          prize.removeClass('prize_li');
+          prize.find('.pname').html(n.prizename);
+          prize.find('.time').html(n.createtimestamp);
+          let imgSrc = $('img[p-code=' + prizeCode + ']').attr('src');
+          prize.find("img").attr('src', imgSrc);
+          let link = n.link;
+          if (link) {
+            prize.on('click', function () {
+              location.href = link;
+            });
+          }
+          $(prize).attr('val', prizeCode);
+          $(prize).attr('id', n.drawtranseqno);
+          $(prize).attr('ptype', ptype);
+          $('.myPrizes').append(prize);
+        }
+
       });
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
