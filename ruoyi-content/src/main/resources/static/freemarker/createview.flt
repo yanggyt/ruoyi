@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文章编辑</title>
+    <base href="../../../../ms/" />
+    <link rel="stylesheet" href="css/style.css">
+   
+	 <script src="js/common.js"></script>
+     <script src="js/common.1.js"></script>
+      <link rel="stylesheet" href="css/base.css">
+     <style type="text/css">
+			.lables {
+			    height: 200px;width: 200px;border: 1px solid #ccc;position: fixed;top: 50%;left: 50%;margin-top: -100px;margin-left: -100px;background: white;z-index: 555;
+			}
+			table {
+			    border-top: 1px solid #ccc;border-left: 1px solid #ccc;
+			}
+            table td, table th {
+                border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; padding: 3px 5px;
+            }
+            table th {
+                border-bottom: 2px solid #ccc; text-align: center;
+            }
+            blockquote {
+                display: block;border-left: 8px solid #d0e5f2;padding: 5px 10px;margin: 10px 0;
+                line-height: 1.4;font-size: 100%;background-color: #f1f1f1;
+            }
+            code {
+                display: inline-block;*display: inline;*zoom: 1;background-color: #f1f1f1;
+                border-radius: 3px;padding: 3px 5px;margin: 0 3px;
+            }
+            pre code {
+                display: block;
+            }
+            ul, ol {
+                margin: 10px 0 10px 20px;
+            }
+            #activity-name, #meta_content {
+                display: block;width: 100%;font-size: 20px;color: #000;
+                min-height: 30px;margin-bottom: 5px;outline: none;resize: none;border: none;
+            }
+            #activity-name {
+                font-size: 24px;
+            }
+            #bodycontent {
+                font-size: 18px;line-height: 20px;padding-top: 10px;
+            }
+            #bodycontent div {
+                min-height: 27.43px;
+            }
+	</style>
+</head>
+
+<body id="edit">
+<input type="hidden" name="shareTitle" value="${articleInfo.shareTitle}" class="shareTitle"/>	<#--分享标题-->	
+<input type="hidden" name="shareImgUrl" value="${articleInfo.shareImgUrl}" class="shareImgUrl"/>	<#--分享图片-->	
+<input type="hidden" name="shareDes" value="${articleInfo.shareDes}" class="shareDes"/>	<#--分享描述-->
+<input type="hidden" name="articleId" value="${articleInfo.articleId}" class="articleId"/>	<#--文章id-->	
+<input type="hidden" name="adId" value="${articleInfo.adId}" class="adId"/>	<#--广告id-->	
+<input type="hidden" name="companyId" value="${articleInfo.companyId}" class="companyId"/>	<#--公司id-->	
+<input type="hidden" name="publishId" value="${articleInfo.publishId}" class="publishId"/>	<#--发布id-->
+<input type="hidden" name="isAuthorization" value="${articleInfo.isAuthorization}" class="isAuthorization"/>	<#--是否授权 0未授权 1授权-->	
+<input type="hidden" name="isReserve" value="${articleInfo.isReserve}" class="isReserve"/>	<#--是否预约 0不预约 1预约-->	
+<input type="hidden" name="automaticName" value="${articleInfo.automaticName}" class="automaticName"/>	<#--自定义名称-->	
+<input type="hidden" name="introduction" value="${articleInfo.introduction}" class="introduction"/>	<#--介绍-->	
+    <div id="edit_head">
+        <button class="a">
+            <img src="img/share_icon4.png">
+        </button>
+        <p class="b">文章编辑</p>
+        <button class="c">
+            <img src="img/edit_icon_temp.png">
+        </button>
+    </div>
+    <p id="edit_cue">点击文章段落，可删除不需要的内容</p>
+    <div id="edit_body">
+        
+
+        <div class="a">
+            
+            <div class="b">&emsp;可编辑区域&emsp;</div>
+            <div id="articleEditor">
+              ${articleInfo.articleContent}
+            </div>
+        </div>
+        <button id="addAd">
+        <span>+</span>新增</button>
+    </div>
+    <div id="adSelect" class="form-group" style="display:none">
+		<label class="col-sm-4 control-label" style="float: left;position: relative;min-height: 1px;padding-left: 200px;">广告添加<i class="red"></i></label>
+		<div class="col-sm-5">
+			<select name="advertisementTypeInit" id="advertisementTypeInit" multiple="multiple">
+			</select><br>
+		</div>
+	</div>
+
+	<div  id="whetherOrNotAuthorization" class="form-group"  style="display:none">
+		<label class="col-sm-4 control-label" style="float: left;position: relative;min-height: 1px;padding-left: 145px;">必须授权才能观看<i class="red"></i></label>
+		 <div class="col-sm-4"> 
+			<input type="checkbox" id="isAuthorization"><br>
+		</div> 
+	</div>
+	
+	<div  id="whetherOrNotReserve" class="form-group"  style="display:none">
+		<label class="col-sm-4 control-label" style="float: left;position: relative;min-height: 1px;padding-left: 145px;">是否添加预约按钮<i class="red"></i></label>
+		 <div class="col-sm-4"> 
+			<input type="checkbox" id="isReserve"><br>
+		</div> 
+	</div>
+	
+	<div  id="button_name" class="form-group"  style="display:none">
+		<label class="col-sm-4 control-label" style="float: left;position: relative;min-height: 1px;padding-left: 200px;">按钮名称<i class="red">*</i></label>
+		 <div class="col-sm-4"> 
+			<input type="text" style="width: 200px;border:1px solid #ccc"
+					value="${articleInfo.automaticName}"></input>
+		</div> 
+	</div>
+	
+	<div  id="reserve_introduction" class="form-group"  style="display:none">
+		<label class="col-sm-4 control-label" style="float: left;position: relative;min-height: 1px;padding-left: 200px;">预约介绍<i class="red">*</i></label>
+		 <div class="col-sm-4"> 
+			<textarea type="text" style="width: 250px;border:1px solid #ccc"
+					 >${articleInfo.introduction}</textarea>
+		</div> 
+	</div>
+
+<form style="display: none;" class="lables">
+	       标签：<label><input type="radio" name="1" value="旅游" checked="checked">旅游</label> 
+		        <label><input type="radio" name="1" value="美食" checked="checked" >美食</label>
+				<button id="sures" type="button">确定</button>
+	            
+	</form>
+
+	<link rel="stylesheet" href="css/fSelect.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- 文章编辑组件 -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/Eleditor.min.js"></script>
+    <script src="js/webuploader.min.js"></script>
+    <!-- 页面组件 -->
+    <script src="js/common.2.js"></script>
+    <script src="js/fSelect.js"></script>
+    <script src="js/new/edit_ms.js?v=0.5"></script>
+
+</body>
+
+</html>

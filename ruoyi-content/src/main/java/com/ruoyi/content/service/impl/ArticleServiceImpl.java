@@ -1256,9 +1256,9 @@ public class ArticleServiceImpl implements ArticleService {
             // 静态页生成路径
             String viewPath = PathUtil.getArticleViewUrl(versionNumber, String.valueOf(articleId));
             String createPath = PathUtil.getArticleCreateUrl(versionNumber, articleId + versionNumber.substring(8, 14));
-            FreemakerUtil.generateStaticPage(conf, PropertiesConstants.TEMPLATE_VIEW_PATH,
+            FreemakerUtil.generateStaticPage(conf, PropertiesConstants.TEMPLATE_CREATE_VIEW_PATH,
                     PropertiesConstants.FILE_PATH + viewPath, pageData);
-            FreemakerUtil.generateStaticPage(conf, PropertiesConstants.TEMPLATE_CREATE_PATH,
+            FreemakerUtil.generateStaticPage(conf, PropertiesConstants.TEMPLATE_CREATE_EDIT_PATH,
                     PropertiesConstants.FILE_PATH + createPath, pageData);
             // 把静态页上传到oss
             OSSUtil.uploadFileHtml(PropertiesConstants.OSSENDPOINT, PropertiesConstants.OSSID,
