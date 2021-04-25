@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.content.mapper.CmsArticleAdInfoMapper">
+    
+    <resultMap type="CmsArticleAdInfo" id="CmsArticleAdInfoResult">
+        <result property="adId"    column="AD_ID"    />
+        <result property="companyId"    column="COMPANY_ID"    />
+        <result property="adType"    column="AD_TYPE"    />
+        <result property="adTypeName"    column="AD_TYPE_NAME"    />
+        <result property="adLinkUrl"    column="AD_LINK_URL"    />
+        <result property="adTitle"    column="AD_TITLE"    />
+        <result property="adName"    column="AD_NAME"    />
+        <result property="adSummary"    column="AD_SUMMARY"    />
+        <result property="adColorType"    column="AD_COLOR_TYPE"    />
+        <result property="adImageUrl"    column="AD_IMAGE_URL"    />
+        <result property="adState"    column="AD_STATE"    />
+        <result property="createDate"    column="CREATE_DATE"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="createUser"    column="CREATE_USER"    />
+        <result property="updateUser"    column="UPDATE_USER"    />
+        <result property="updateDate"    column="UPDATE_DATE"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+    </resultMap>
+
+    <sql id="selectCmsArticleAdInfoVo">
+        select AD_ID, COMPANY_ID, AD_TYPE, AD_TYPE_NAME, AD_LINK_URL, AD_TITLE, AD_NAME, AD_SUMMARY, AD_COLOR_TYPE, AD_IMAGE_URL, AD_STATE, CREATE_DATE, CREATE_TIME, CREATE_USER, UPDATE_USER, UPDATE_DATE, UPDATE_TIME from cms_article_ad_info
+    </sql>
+
+    <select id="selectCmsArticleAdInfoList" parameterType="CmsArticleAdInfo" resultMap="CmsArticleAdInfoResult">
+        <include refid="selectCmsArticleAdInfoVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and COMPANY_ID = #{companyId}</if>
+            <if test="adType != null  and adType != ''"> and AD_TYPE = #{adType}</if>
+            <if test="adTypeName != null  and adTypeName != ''"> and AD_TYPE_NAME like concat('%', #{adTypeName}, '%')</if>
+            <if test="adLinkUrl != null  and adLinkUrl != ''"> and AD_LINK_URL = #{adLinkUrl}</if>
+            <if test="adTitle != null  and adTitle != ''"> and AD_TITLE like concat('%', #{adTitle}, '%')</if>
+            <if test="adName != null  and adName != ''"> and AD_NAME like concat('%', #{adName}, '%')</if>
+            <if test="adSummary != null  and adSummary != ''"> and AD_SUMMARY = #{adSummary}</if>
+            <if test="adColorType != null  and adColorType != ''"> and AD_COLOR_TYPE = #{adColorType}</if>
+            <if test="adImageUrl != null  and adImageUrl != ''"> and AD_IMAGE_URL = #{adImageUrl}</if>
+            <if test="adState != null  and adState != ''"> and AD_STATE = #{adState}</if>
+            <if test="createDate != null  and createDate != ''"> and CREATE_DATE = #{createDate}</if>
+            <if test="createTime != null  and createTime != ''"> and CREATE_TIME = #{createTime}</if>
+            <if test="createUser != null  and createUser != ''"> and CREATE_USER = #{createUser}</if>
+            <if test="updateUser != null  and updateUser != ''"> and UPDATE_USER = #{updateUser}</if>
+            <if test="updateDate != null  and updateDate != ''"> and UPDATE_DATE = #{updateDate}</if>
+            <if test="updateTime != null  and updateTime != ''"> and UPDATE_TIME = #{updateTime}</if>
+        </where>
+        order by CREATE_DATE DESC,CREATE_TIME DESC, UPDATE_DATE DESC,UPDATE_TIME DESC
+    </select>
+    
+    <select id="selectCmsArticleAdInfoById" parameterType="Long" resultMap="CmsArticleAdInfoResult">
+        <include refid="selectCmsArticleAdInfoVo"/>
+        where AD_ID = #{adId}
+    </select>
+        
+    <insert id="insertCmsArticleAdInfo" parameterType="CmsArticleAdInfo" useGeneratedKeys="true" keyProperty="adId">
+        insert into cms_article_ad_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null">COMPANY_ID,</if>
+            <if test="adType != null">AD_TYPE,</if>
+            <if test="adTypeName != null">AD_TYPE_NAME,</if>
+            <if test="adLinkUrl != null">AD_LINK_URL,</if>
+            <if test="adTitle != null">AD_TITLE,</if>
+            <if test="adName != null">AD_NAME,</if>
+            <if test="adSummary != null">AD_SUMMARY,</if>
+            <if test="adColorType != null">AD_COLOR_TYPE,</if>
+            <if test="adImageUrl != null">AD_IMAGE_URL,</if>
+            <if test="adState != null">AD_STATE,</if>
+            <if test="createDate != null">CREATE_DATE,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="createUser != null">CREATE_USER,</if>
+            <if test="updateUser != null">UPDATE_USER,</if>
+            <if test="updateDate != null">UPDATE_DATE,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null">#{companyId},</if>
+            <if test="adType != null">#{adType},</if>
+            <if test="adTypeName != null">#{adTypeName},</if>
+            <if test="adLinkUrl != null">#{adLinkUrl},</if>
+            <if test="adTitle != null">#{adTitle},</if>
+            <if test="adName != null">#{adName},</if>
+            <if test="adSummary != null">#{adSummary},</if>
+            <if test="adColorType != null">#{adColorType},</if>
+            <if test="adImageUrl != null">#{adImageUrl},</if>
+            <if test="adState != null">#{adState},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCmsArticleAdInfo" parameterType="CmsArticleAdInfo">
+        update cms_article_ad_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null">COMPANY_ID = #{companyId},</if>
+            <if test="adType != null">AD_TYPE = #{adType},</if>
+            <if test="adTypeName != null">AD_TYPE_NAME = #{adTypeName},</if>
+            <if test="adLinkUrl != null">AD_LINK_URL = #{adLinkUrl},</if>
+            <if test="adTitle != null">AD_TITLE = #{adTitle},</if>
+            <if test="adName != null">AD_NAME = #{adName},</if>
+            <if test="adSummary != null">AD_SUMMARY = #{adSummary},</if>
+            <if test="adColorType != null">AD_COLOR_TYPE = #{adColorType},</if>
+            <if test="adImageUrl != null">AD_IMAGE_URL = #{adImageUrl},</if>
+            <if test="adState != null">AD_STATE = #{adState},</if>
+            <if test="createDate != null">CREATE_DATE = #{createDate},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="createUser != null">CREATE_USER = #{createUser},</if>
+            <if test="updateUser != null">UPDATE_USER = #{updateUser},</if>
+            <if test="updateDate != null">UPDATE_DATE = #{updateDate},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+        </trim>
+        where AD_ID = #{adId}
+    </update>
+
+    <delete id="deleteCmsArticleAdInfoById" parameterType="Long">
+        delete from cms_article_ad_info where AD_ID = #{adId}
+    </delete>
+
+    <delete id="deleteCmsArticleAdInfoByIds" parameterType="String">
+        delete from cms_article_ad_info where AD_ID in 
+        <foreach item="adId" collection="array" open="(" separator="," close=")">
+            #{adId}
+        </foreach>
+    </delete>
+
+</mapper>

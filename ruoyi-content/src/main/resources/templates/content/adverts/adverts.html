@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('文章广告列表')" />
+</head>
+<style>
+    .article-table-img {
+        width: 120%;
+        border-radius: 4px;
+        display: block;
+        border-style: none;
+    }
+    .article-color {
+        width: 40px;
+        height: 40px;
+        border-radius: 2px;
+        margin: auto;
+    }
+</style>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>广告标题：</label>
+                                <input type="text" name="adTitle"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "content/adverts";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "文章广告",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'adId',
+                    title: '',
+                    visible: false
+                },
+                {
+                    field: 'adTitle',
+                    title: '广告标题'
+                },
+                {
+                    field: 'adName',
+                    title: '广告名称'
+                },
+                {
+                    field: 'adTypeName',
+                    title: '广告类型名'
+                },
+                {
+                    field: 'adLinkUrl',
+                    title: '跳转地址',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-xs" href="javascript:void(0)" onclick="$.modal.msg(\''+row.adLinkUrl+'\');" ><i class="fa"></i>展示</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'adSummary',
+                    title: '简介',
+                    width: '20',
+                    widthUnit: '%'
+                },
+                {
+                    field: 'adColorType',
+                    title: '背景颜色',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        if (row.adColorType === '1') {
+                            actions.push('<div class="article-color" style="background-color: #67c5ab"></div>');
+                        }
+                        if (row.adColorType === '2') {
+                            actions.push('<div class="article-color" style="background-color: #b6d882"></div>');
+                        }
+                        if (row.adColorType === '3') {
+                            actions.push('<div class="article-color" style="background-color: #f88f81"></div>');
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'adImageUrl',
+                    title: '广告图片',
+                    width: '10',
+                    widthUnit: 'px',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<img class="article-table-img" src="'+row.adImageUrl+'" ></img> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs " href="javascript:void(0)" onclick="$.operate.edit(\'' + row.adId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs " href="javascript:void(0)" onclick="$.operate.remove(\'' + row.adId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

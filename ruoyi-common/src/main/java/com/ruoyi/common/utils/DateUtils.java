@@ -19,9 +19,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
 
     public static String YYYY_MM_DD = "yyyy-MM-dd";
 
+    public static String HH_MM_SS = "HH:mm:ss";
+
     public static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
 
-    public static String YYYYMMDDHHMMSSS = "yyyyMMddHHmmssSSS";
+    public static String YYYYMMDDHHMMSSSSS = "yyyyMMddHHmmssSSS";
 
     public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     
@@ -48,6 +50,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static String getDate()
     {
         return dateTimeNow(YYYY_MM_DD);
+    }
+
+    public static String getTimeNow()
+    {
+        return dateTimeNow(HH_MM_SS);
+    }
+
+    public static String getMillisecond()
+    {
+        return dateTimeNow(YYYYMMDDHHMMSSSSS);
     }
 
     public static final String getTime()
