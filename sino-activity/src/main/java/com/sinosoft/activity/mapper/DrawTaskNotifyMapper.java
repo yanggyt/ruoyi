@@ -20,7 +20,7 @@ public interface DrawTaskNotifyMapper
      * @return 活动次数记录信息
      */
     public DrawTaskNotify selectDrawTaskNotifyById(String USERID);
-    public int selectDrawNumByUserId(String userId, String drawCode);
+    public Integer selectDrawNumByUserId(DrawTaskNotify drawTaskNotify);
 
     /**
      * 查询活动次数记录信息列表

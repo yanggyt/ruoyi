@@ -20,7 +20,7 @@ public interface IDrawTaskNotifyService
      * @return 活动次数记录信息
      */
     public DrawTaskNotify selectDrawTaskNotifyById(String USERID);
-    int selectDrawNumByUserId(String userId, String drawCode);
+    Integer selectDrawNumByUserId(DrawTaskNotify drawTaskNotify);
     /**
      * 查询活动次数记录信息列表
      * 
