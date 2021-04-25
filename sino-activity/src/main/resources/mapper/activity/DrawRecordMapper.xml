@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="PHONE"    column="PHONE"    />
         <result property="EXTAREA"    column="EXTAREA"    />
         <result property="PRIZENAME"    column="PRIZENAME"    />
+        <result property="AWARDRECORDID"    column="AWARDRECORDID"    />
     </resultMap>
 
     <sql id="selectDrawRecordVo">
@@ -33,6 +34,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectDrawRecordList" parameterType="DrawRecord" resultMap="DrawRecordResult">
         <include refid="selectDrawRecordVo"/>
         <where>  
+            <if test="DRAWTRANSEQNO != null  and DRAWTRANSEQNO != ''"> and DRAWTRANSEQNO = #{DRAWTRANSEQNO}</if>
+            <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
+            <if test="USERID != null  and USERID != ''"> and USERID = #{USERID}</if>
+            <if test="DRAWTIME != null "> and DRAWTIME = #{DRAWTIME}</if>
+            <if test="DRAWRESULT != null  and DRAWRESULT != ''"> and DRAWRESULT = #{DRAWRESULT}</if>
+            <if test="PRIZECODE != null  and PRIZECODE != ''"> and PRIZECODE = #{PRIZECODE}</if>
+            <if test="PRIZETYPE != null  and PRIZETYPE != ''"> and PRIZETYPE = #{PRIZETYPE}</if>
+            <if test="CHECKINGDATE != null "> and CHECKINGDATE = #{CHECKINGDATE}</if>
+            <if test="CREATETIMESTAMP != null "> and CREATETIMESTAMP = #{CREATETIMESTAMP}</if>
+            <if test="LASTUPDATETIMESTAMP != null "> and LASTUPDATETIMESTAMP = #{LASTUPDATETIMESTAMP}</if>
+            <if test="CHANNEL != null  and CHANNEL != ''"> and CHANNEL = #{CHANNEL}</if>
+            <if test="USERNAME != null  and USERNAME != ''"> and USERNAME like concat('%', #{USERNAME}, '%')</if>
+            <if test="PRIZELEVEL != null  and PRIZELEVEL != ''"> and PRIZELEVEL = #{PRIZELEVEL}</if>
+            <if test="PROJECTCODE != null  and PROJECTCODE != ''"> and PROJECTCODE = #{PROJECTCODE}</if>
+            <if test="SOURCE != null  and SOURCE != ''"> and SOURCE = #{SOURCE}</if>
+            <if test="PHONE != null  and PHONE != ''"> and PHONE = #{PHONE}</if>
+            <if test="EXTAREA != null  and EXTAREA != ''"> and EXTAREA = #{EXTAREA}</if>
+        </where>
+        <if test="params.start != null  and params.start != ''"> limit #{params.start}, #{params.end}</if>
+        order by CREATETIMESTAMP desc
+    </select>
+    <select id="selectDrawRecordUserIdList" parameterType="DrawRecord" resultMap="DrawRecordResult">
+        <include refid="selectDrawRecordVo"/>
+        <where>
             <if test="DRAWTRANSEQNO != null  and DRAWTRANSEQNO != ''"> and DRAWTRANSEQNO = #{DRAWTRANSEQNO}</if>
             <if test="DRAWCODE != null  and DRAWCODE != ''"> and DRAWCODE = #{DRAWCODE}</if>
             <if test="USERID != null  and USERID != ''"> and USERID = #{USERID}</if>
@@ -81,12 +106,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectDrawRecordCodeUserList" parameterType="String" resultMap="DrawRecordResult">
                  SELECT
+                 	aw.AWARDRECORDID,
             dr.*, pi.PRIZENAME
         FROM
             draw_record dr
         LEFT JOIN draw_prize_info pi ON dr.PRIZECODE = pi.PRIZECODE
-
-        WHERE
+	    LEFT JOIN draw_award_record aw ON dr.DRAWRECORDID = aw.DRAWRECORDID
+	    WHERE
 	     dr.drawResult != '0'
         AND dr.DRAWCODE = #{drawCode}
         AND dr.USERID = #{userId}
@@ -95,10 +121,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectDrawRecordCodeList" parameterType="String" resultMap="DrawRecordResult">
            SELECT
+            aw.AWARDRECORDID,
             dr.*, pi.PRIZENAME
         FROM
             draw_record dr
         LEFT JOIN draw_prize_info pi ON dr.PRIZECODE = pi.PRIZECODE
+        LEFT JOIN draw_award_record aw ON dr.DRAWRECORDID = aw.DRAWRECORDID
         WHERE
 	     dr.DRAWRESULT != '0'
         AND dr.DRAWCODE = #{drawCode}

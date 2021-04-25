@@ -92,14 +92,19 @@
 	<li class="award">恭喜 151****3445 获得京东E卡</li>
 </ul>
 <ul class="" style="display: none;">
-	<li class="prize_li"><img src="images/img_prize01.png" /><span class="pname">50积分</span><span class="list_date time">2020-11-23</span></li>
+	<li class="prize_li" >
+     <!--   <img src="images/img_prize01.png" />-->
+        <span class="pname">50积分</span>
+        <span class="time">2020-11-23</span>
+		<span class="awar"  style="display: none;"></span>
+		<span class="but" onclick="etidAddress(this)"></span>
+    </li>
 </ul>
 <script src="js/jquery-1.11.0.min.js"></script>
 <script src="js/common.js"></script>
 <script src="js/scroll.js"></script>
 <script src="js/iosSelect.js"></script>
 <script src="js/areaData_v2.js" charset="GBK"></script>
-<script src="../draw/js/util.js"></script>
 <script src="../draw/js/util.js"></script>
 <script src="js/main.js"></script>
 <script>
@@ -226,6 +231,13 @@
 		// location.href = contextRootPath+'/wechat/user/toPension.do?ak=pensionSecond';
 		location.href = contextRootPath+'/activity/tree/index.html?showTask=1&cl='+cl;
 	})
+
+
+	function etidAddress(val){
+		var awardrecordid = val.id;
+		window.location.href='../act/etid.html?drawCode='+drawCode+'&awardrecordid='+awardrecordid;
+
+	}
 </script>
 </body>
 </html>

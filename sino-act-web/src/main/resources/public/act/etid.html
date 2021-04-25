@@ -63,12 +63,59 @@
                     }
                     if (data.actPageConfigUserinfo[0].agentNo=='on'){
                         $("#agentNo").attr('type','text')
+
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log('网络异常', textStatus, errorThrown);
                 }
             });
+
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: contextRootPath + "/draw/listAddress",
+                data: {awarDrecordId: awardrecordid},
+                dataType: "json",
+                success: function (data) {
+                    console.log(data)
+                    if(data.drawUserInfo!=null){
+                    if (data.drawUserInfo.awarDrecordId!=null ){
+                        $("#awarDrecordId").val(data.drawUserInfo.awarDrecordId)
+                    }
+                    if (data.drawUserInfo.mobile!=null){
+                        $("#phone").val(data.drawUserInfo.mobile)
+                    }
+                    if (data.drawUserInfo.userName!=null){
+                        $("#name").val(data.drawUserInfo.userName)
+                    }
+                    if (data.drawUserInfo.gender!=null){
+                        $("#gender").val(data.drawUserInfo.gender)
+                    }
+                    if (data.drawUserInfo.address!=null){
+                        $("#address").text(data.drawUserInfo.address)
+                    }
+                    if (data.drawUserInfo.agentName!=null){
+                        $("#agentName").val(data.drawUserInfo.agentName)
+                    }
+                    if (data.drawUserInfo.agentMobile!=null){
+                        $("#agentMobile").val(data.drawUserInfo.agentMobile)
+                    }
+                    if (data.drawUserInfo.agentGender!=null){
+                        $("#agentGender").val(data.drawUserInfo.agentGender)
+                    }
+                    if (data.drawUserInfo.agentNo!=null){
+                        $("#agentNo").val(data.drawUserInfo.agentNo)
+                    }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('网络异常', textStatus, errorThrown);
+                }
+            });
+
+
+
         });
 
     </script>
@@ -79,7 +126,7 @@
                 background-repeat:no-repeat;
                background-attachment:fixed;
                background-size:100% 100%;">
-<form id="addressId" >
+<form id="etid" >
     <div class='popup address'>
         <div class='popupMin'>
                 <div class='cont'>
@@ -103,13 +150,15 @@
                             <input placeholder="代理人性别" class="agentGender" name="agentGender" type="hidden" id="agentGender">
 
                             <input placeholder="代理人工号" class="agentNo" name="agentNo" type="hidden" id="agentNo">
-                            <div>
+
+                            <input  class="awarDrecordId" name="awarDrecordId" type="hidden" id="awarDrecordId">
+                    <div>
                                 <input type="checkbox" id="protocol"checked="checked" >
                                <a onclick="pro()" >点击查看协议</a>
                                 <input  id="agreementPri" type="hidden">
                             </div>
 
-                    <button type="button"  id="btnPri"  class='button' onclick="saveAddr()"></button>
+                    <button type="button"  id="btnPri"  class='button' onclick="etidAddr()"></button>
                 </div>
         </div>
     </div>

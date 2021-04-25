@@ -17,7 +17,7 @@ public class DrawUserInfo extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** id */
-    private Long awarDrecordId;
+    private String awarDrecordId;
 
     /** 姓名 */
     @Excel(name = "姓名")
@@ -51,12 +51,42 @@ public class DrawUserInfo extends BaseEntity
     @Excel(name = "代理人工号")
     private String agentNo;
 
-    public void setAwarDrecordId(Long awarDrecordId)
+    private String drawCode;
+
+    private String  flow;
+
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getFlow() {
+        return flow;
+    }
+
+    public void setFlow(String flow) {
+        this.flow = flow;
+    }
+
+    public String getDrawCode() {
+        return drawCode;
+    }
+
+    public void setDrawCode(String drawCode) {
+        this.drawCode = drawCode;
+    }
+
+    public void setAwarDrecordId(String awarDrecordId)
     {
         this.awarDrecordId = awarDrecordId;
     }
 
-    public Long getAwarDrecordId()
+    public String getAwarDrecordId()
     {
         return awarDrecordId;
     }

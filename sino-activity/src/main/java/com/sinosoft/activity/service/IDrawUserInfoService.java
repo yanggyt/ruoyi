@@ -18,7 +18,7 @@ public interface IDrawUserInfoService
      * @param awarDrecordId 用户信息收集页面ID
      * @return 用户信息收集页面
      */
-    public DrawUserInfo selectDrawUserInfoById(Long awarDrecordId);
+    public DrawUserInfo selectDrawUserInfoById(String awarDrecordId);
 
     /**
      * 查询用户信息收集页面列表

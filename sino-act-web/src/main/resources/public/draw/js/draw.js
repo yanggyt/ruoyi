@@ -1,5 +1,6 @@
 var drawCode = getParameter('drawCode');
-var prizeType = null;
+var awardrecordid = getParameter('awardrecordid');
+var prizeType = "materialObject";
 var prizeCode = null;
 function rtn() {
     let rtnBtn = getParameter('rtn');
@@ -63,18 +64,38 @@ function myprizes() {
             }
             console.log(data.record);
             $.each(data.record, function (i, n) {
+                if('materialObject' == n.prizetype){
+                    var ptype = n.prizetype;
+                    var status = n.status;
+                    var iscenter = 0;
+                    var record = $('.prize_li').clone();
+                    var but = $('.but').clone();
+                    $(record).css('display', 'inherit');
+                    record.removeClass('prize_li');
+                    record.removeClass('but');
+                    record.find('.pname').html(n.prizename)
+                    record.find('.time').html(n.createtimestamp);
+                    record.find('.but').html('收货地址');
+                    record.find('.but').attr('id',n.awardrecordid);
+                    $(record).attr('val', n.prizecode);
+                    $(record).attr('flow', n.drawtranseqno);
+                    $(record).attr('ptype', n.prizetype);
+                    $('.popList').append(record);
+                }else{
                 var ptype = n.prizetype;
                 var status = n.status;
                 var iscenter = 0;
                 var record = $('.prize_li').clone();
                 $(record).css('display', 'inherit');
                 record.removeClass('prize_li');
-                record.find('.pname').html(n.prizename);
+                record.find('.pname').html(n.prizename)
                 record.find('.time').html(n.createtimestamp);
+                record.find('.awar').html(n.awardrecordid);
                 $(record).attr('val', n.prizecode);
                 $(record).attr('flow', n.drawtranseqno);
                 $(record).attr('ptype', n.prizetype);
                 $('.popList').append(record);
+                }
             });
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -157,10 +178,10 @@ function saveAddr() {
         tip('请勾选协议');
         return ;
     }
-
     var uname = $('.uname').val();
     var phone = $('.phone').val();
     var addr = $('.addr').val();
+    var gender = $('.gender').val();
     if ('integral' == prizeType) {
     } else if ('materialObject' == prizeType) {
         if (!uname) {
@@ -175,12 +196,17 @@ function saveAddr() {
             tip('请输入收货人地址');
             return;
         }
+        if (!gender) {
+            tip('请输入收货人性别');
+            return;
+        }
     } else {
     }
-    var flow = $('.flow').val();
+    var flow = this.id;
+    alert(flow)
   /*  uname = getEntryptPwd(uname);
     phone = getEntryptPwd(phone);*/
-    var data = $("#addressId").serialize();
+  var data = $.param({'drawCode':drawCode,'flow':flow})+'&'+$("#addressId").serialize();
     $.ajax({
         url: contextRootPath+"/draw/saveAddress",
         dataType: "json",
@@ -191,13 +217,71 @@ function saveAddr() {
                 if ('integral' == prizeType) {
 
                 } else if ('materialObject' == prizeType) {
-
+                    $('.register').show();
                 } else {
 
                 }
                 $('.register').show();
             } else {
+                tip(data.respMsg);
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log('网络异常', textStatus, errorThrown);
+        }
+    });
+
+}
+function etidAddr() {
+    var boolean = $("#protocol").prop("checked");
+    if (!boolean){
+        tip('请勾选协议');
+        return ;
+    }
+    var uname = $('.uname').val();
+    var phone = $('.phone').val();
+    var addr = $('.addr').val();
+    var gender = $('.gender').val();
+    if ('integral' == prizeType) {
+    } else if ('materialObject' == prizeType) {
+        if (!uname) {
+            tip('请输入收货人姓名');
+            return;
+        }
+        if (!phone) {
+            tip('请输入收货人手机号码');
+            return;
+        }
+        if (!addr) {
+            tip('请输入收货人地址');
+            return;
+        }
+        if (!gender) {
+            tip('请输入收货人性别');
+            return;
+        }
+    } else {
+    }
+    /*  uname = getEntryptPwd(uname);
+      phone = getEntryptPwd(phone);*/
+
+    var data = $("#etid").serialize();
+    $.ajax({
+        url: contextRootPath+"/draw/etidAddress",
+        dataType: "json",
+        type: "post",
+        data:  data,
+        success: function(data){
+            if (data.respCode == '1') {
+                if ('integral' == prizeType) {
+
+                } else if ('materialObject' == prizeType) {
+                    $('.register').show();
+                } else {
+
+                }
                 $('.register').show();
+            } else {
                 tip(data.respMsg);
             }
         },

@@ -328,6 +328,7 @@
 						<div>
 							<div>抽中奖品</div>
 							<div>获奖时间</div>
+							<div>地址管理</div>
 						</div>
 					</div>
 					<div class='popList'>
@@ -340,9 +341,12 @@
 		</div>
 		<img src="images/delect.png" class='popDelect prizeDelect'>
 	</div>
-	<div class="prize_li" style="display: none;">
-		<div class="pname">奖品名称</div>
-		<div class="time">2020/08/05 09:00</div>
+	<div class="prize_li" style="display: none;"  >
+			<div class="pname" >奖品名称</div>
+			<div class="time">2020/08/05 09:00</div>
+			<div class="awar" style="display: none"></div>
+			<div type="button" class="but"  onclick="etidAddress(this)"></div>
+
 	</div>
 	<!--登记 弹窗-->
 	<div class='popup register' style="display: none;">
@@ -446,8 +450,16 @@
 		prizes();
 
 		function qrCode(){
+
 			window.location.href='../act/address.html?drawCode='+drawCode;
 		}
+		function etidAddress(val){
+			var awardrecordid = val.id;
+			var drawCode = this.drawCode;
+			window.location.href='../act/etid.html?drawCode='+drawCode+'&awardrecordid='+awardrecordid;
+
+		}
+
 	</script>
 </body>
 

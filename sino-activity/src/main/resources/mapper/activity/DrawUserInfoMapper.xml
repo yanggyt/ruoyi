@@ -38,7 +38,7 @@
         </where>
     </select>
 
-    <select id="selectDrawUserInfoById" parameterType="Long" resultMap="DrawUserInfoResult">
+    <select id="selectDrawUserInfoById" parameterType="String" resultMap="DrawUserInfoResult">
         <include refid="selectDrawUserInfoVo"/>
         where awarDrecordId = #{awarDrecordId}
     </select>
@@ -46,6 +46,7 @@
     <insert id="insertDrawUserInfo" parameterType="DrawUserInfo">
         insert into draw_user_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="awarDrecordId != null">awarDrecordId,</if>
             <if test="userName != null">userName,</if>
             <if test="mobile != null">mobile,</if>
             <if test="gender != null">gender,</if>
@@ -58,6 +59,7 @@
             <if test="updateTime != null">updateTime,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="awarDrecordId != null">#{awarDrecordId},</if>
             <if test="userName != null">#{userName},</if>
             <if test="mobile != null">#{mobile},</if>
             <if test="gender != null">#{gender},</if>

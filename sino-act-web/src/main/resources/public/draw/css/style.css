@@ -372,6 +372,16 @@
   font-size: 0.6rem;
   color: #f9edc7;
 }
+.zk_red_box .zk_red_box_header .scratch_off_box p.again_btn1{
+  width: 4.62rem;
+  height: 1.36rem;
+  background: url(../images/icon_again_bg.png) no-repeat center center;
+  background-size: 100%;
+  margin: 0 auto;
+  line-height: 1.6rem;
+  font-size: 0.6rem;
+  color: #f9edc7;
+}
 /* ¹Î½±×´Ì¬---Ê§°Ü */
 .zk_red_box .zk_red_box_header .scratch_off_box.fail p:first-child{
   margin-top: 1.26rem;

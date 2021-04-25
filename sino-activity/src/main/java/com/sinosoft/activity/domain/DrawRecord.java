@@ -94,6 +94,16 @@ public class DrawRecord extends BaseEntity
     /** 奖品名称*/
     private String PRIZENAME;
 
+    private String  AWARDRECORDID;
+
+    public String getAWARDRECORDID() {
+        return AWARDRECORDID;
+    }
+
+    public void setAWARDRECORDID(String AWARDRECORDID) {
+        this.AWARDRECORDID = AWARDRECORDID;
+    }
+
     public String getPRIZENAME() {
         return PRIZENAME;
     }
