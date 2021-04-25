@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.content.mapper.PicAdQueryMapper" >
+  
+  <resultMap id="PicAdMap" type="com.ruoyi.content.domain.PicAdInfo" >
+    <id column="PIC_AD_ID" property="picAdId" jdbcType="INTEGER" />
+    <result column="PIC_AD_TYPE" property="picAdType" jdbcType="VARCHAR" />
+    <result column="PIC_AD_TITLE" property="picAdTitle" jdbcType="VARCHAR" />
+    <result column="PIC_AD_NAME" property="picAdName" jdbcType="VARCHAR" />
+    <result column="PIC_AD_URL" property="picAdUrl" jdbcType="VARCHAR" />
+    <result column="PIC_AD_STATE" property="picAdState" jdbcType="VARCHAR" />
+    <result column="COMPANY_ID" property="companyId" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="updateDate" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Advertisement_Column_List" >
+    PIC_AD_ID, PIC_AD_TYPE, PIC_AD_TITLE, PIC_AD_NAME, PIC_AD_URL, PIC_AD_STATE, COMPANY_ID, 
+    CREATE_DATE, CREATE_TIME, CREATE_USER, UPDATE_USER, UPDATE_DATE, UPDATE_TIME
+  </sql>
+  
+  <select id="selectAllWithLimit" resultMap="PicAdMap">
+	SELECT
+	<include refid="Advertisement_Column_List" />
+	FROM pic_ad_info 	
+	WHERE
+	1=1
+	<if test="companyId != null and companyId !=''">
+		and COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+	</if>
+	<if test="picAdTitle != null and picAdTitle !=''">
+	    and PIC_AD_TITLE like CONCAT(CONCAT('%', #{picAdTitle,jdbcType=VARCHAR}), '%')
+	</if>
+	 AND PIC_AD_STATE = '0' AND CREATE_USER = 'company'
+	 order by CREATE_DATE DESC,CREATE_TIME DESC, UPDATE_DATE
+	DESC,UPDATE_TIME DESC
+	limit
+	#{startRow,jdbcType=DECIMAL},#{rows,jdbcType=DECIMAL}
+</select>	
+</mapper>

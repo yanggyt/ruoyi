@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文章详情</title>
+    <base href="../../../../gv/" />
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .label {
+            display: none;
+        }
+        #meta_content {
+            height: auto;
+            overflow: hidden;
+            display: block;
+        }
+    </style>
+</head>
+<body id="essay">
+<input type="hidden" name="shareTitle" value="${articleInfo.shareTitle}" class="shareTitle"/>	<#--分享标题-->	
+<input type="hidden" name="shareImgUrl" value="${articleInfo.shareImgUrl}" class="shareImgUrl"/>	<#--分享图片-->	
+<input type="hidden" name="shareDes" value="${articleInfo.shareDes}" class="shareDes"/>	<#--分享描述-->	
+<input type="hidden" name="articleId" value="${articleInfo.articleId}" class="articleId"/>	<#--文章id-->	
+<input type="hidden" name="versionNumber" value="${articleInfo.versionNumber}" class="versionNumber"/>	
+<input type="hidden" name="adId" value="${articleInfo.adId}" class="adId"/>	<#--广告id-->	
+<input type="hidden" name="isAuthorization" value="${articleInfo.isAuthorization}" class="isAuthorization"/>	<#--是否授权 0未授权 1授权-->	
+<input type="hidden" name="isReserve" value="${articleInfo.isReserve}" class="isReserve"/>	<#--是否预约 0不预约 1预约-->	
+<input type="hidden" name="automaticName" value="${articleInfo.automaticName}" class="automaticName"/>	<#--自定义名称-->	
+<input type="hidden" name="introduction" value="${articleInfo.introduction}" class="introduction"/>	<#--介绍-->	
+${articleInfo.articleContent}
+
+</body>
+<script src="js/common.1.js"></script>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src='js/jquery.cookie.js'></script>
+<script src="js/weChat_share2.js"></script>
+<script src="js/new/view.js"></script>
+</html>

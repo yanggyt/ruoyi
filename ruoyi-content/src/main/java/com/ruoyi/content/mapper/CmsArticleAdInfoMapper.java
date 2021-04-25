@@ -61,4 +61,6 @@ public interface CmsArticleAdInfoMapper {
      * @return 结果
      */
     public int deleteCmsArticleAdInfoByIds(String[] adIds);
+
+    CmsArticleAdInfo selectByPrimaryKey(Integer adId);
 }

@@ -2,6 +2,7 @@ package com.ruoyi.content.service;
 
 import java.util.List;
 
+import com.ruoyi.content.domain.ArticleAdInfo;
 import com.ruoyi.content.domain.CmsArticleAdInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,10 +41,11 @@ public interface ICmsArticleAdInfoService {
     /**
      * 修改文章广告
      *
+     * @param file 广告图片
      * @param cmsArticleAdInfo 文章广告
      * @return 结果
      */
-    public int updateCmsArticleAdInfo(CmsArticleAdInfo cmsArticleAdInfo);
+    public int updateCmsArticleAdInfo(MultipartFile file, CmsArticleAdInfo cmsArticleAdInfo);
 
     /**
      * 批量删除文章广告
@@ -60,4 +62,6 @@ public interface ICmsArticleAdInfoService {
      * @return 结果
      */
     public int deleteCmsArticleAdInfoById(Long adId);
+
+    List<ArticleAdInfo> queryAdByCompanyId(String companyId);
 }

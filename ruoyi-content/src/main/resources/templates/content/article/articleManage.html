@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('文库管理')"/>
+    <th:block th:include="include :: layout-latest-css"/>
+    <th:block th:include="include :: ztree-css"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no,email=no">
+</head>
+<style>
+    #tree_1_check {
+        display: none;
+    }
+
+    .layui-layer-btn0 {
+        display: none;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    #div1 {
+        margin: 10px auto;
+        border: 1px solid #ccc;
+    }
+
+    #div1 .title {
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        z-index: 0;
+        padding: 5px 24px;
+        border-top: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    .text {
+        min-height: 27.43px;
+    }
+
+    .head, .author {
+        display: block;
+        width: 100%;
+        font-size: 20px;
+        color: #000;
+        min-height: 30px;
+        margin-bottom: 5px;
+        outline: none;
+        resize: none;
+        border: none;
+    }
+
+    .head {
+        font-size: 24px;
+    }
+
+    .head[contenteditable]:empty:before, .author[contenteditable]:empty:before {
+        content: attr(placeholder);
+        color: #D4D4D4;
+    }
+
+    .head[contenteditable]:focus, .author[contenteditable]:focus {
+        content: none;
+    }
+
+    .editorcontent {
+        font-size: 18px;
+        line-height: 20px;
+        height: 370px;
+        overflow: auto;
+        padding-top: 10px;
+        border-top: 1px solid #ccc;
+    }
+
+    .editorcontent div {
+        min-height: 27.43px;
+    }
+
+    /* 上传图片*/
+    .abstract {
+        font-size: .26rem;
+        margin: 10px 0;
+        color: #333;
+        float: left;
+    }
+
+    .cover_abstract {
+        width: 100%;
+        display: flex;
+    }
+
+    .imgload {
+        position: relative;
+        width: 25%;
+        text-align: center;
+        overflow: hidden;
+        height: 90px;
+        line-height: 90px;
+        background-color: #fbfdff;
+        border: 1px dashed #c0ccda;
+        border-radius: 6px;
+        margin: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .fileImg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background: none;
+        margin: 0px;
+        padding: 0px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .avatar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .addIcon {
+        position: relative;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .addIcon::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 30px;
+        margin-left: -15px;
+        margin-top: -2px;
+        border-top: 2px solid #cccccc;
+    }
+
+    .addIcon::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        height: 30px;
+        margin-left: -2px;
+        margin-top: -15px;
+        border-left: 2px solid #ccc;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>文章名称：</label>
+                            <input type="text" name="articelName"/>
+                        </li>
+                        <li>
+                            <label style="width: 95px;">二级栏目名称：</label>
+                            <select name="channel" th:id="channel" onchange="autoChangeInitThirdType(value)">
+
+                            </select>
+                        </li>
+                        <li>
+                            <label style="width: 95px;">三级栏目名称：</label>
+                            <select name="articleThirdTypeInit" th:id="articleThirdTypeInit">
+
+                            </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-primary" onclick="includeArticle(1)">
+                <i class="fa fa-plus"></i> 批量收录
+            </a>
+            <a class="btn btn-danger" style="margin-left: 15px;" onclick="includeArticle(2)">
+                <i class="fa fa-remove"></i> 批量移除
+            </a>
+            <a class="btn btn-success" style="margin-left: 15px;" data-toggle="modal" data-target="#myModal4">
+                <i class="fa fa-newspaper-o"></i> 导入文章
+            </a>
+            <a class="btn btn-success" style="margin-left: 15px;" onclick="createArticle()">
+                <i class="fa fa-newspaper-o"></i> 创建文章
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 500px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">批量收录</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <form class="form-horizontal m" id="form-picAdverts-add">
+                    <div class="col-md-12" style="margin-top: -15px;">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">专栏选择：</label>
+                            <div class="col-sm-6">
+                                <div id="tree" class="ztree"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
+                <button type="button" class="btn btn-primary" th:id="sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 500px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">推送文章</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <form class="form-horizontal m" id="form-picAdverts-add1">
+                    <div class="col-md-12" style="margin-top: -15px;">
+                        <div class="form-group" th:id="companyChoice">
+                            <label class="col-sm-4 control-label is-required">公司：</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" th:id="partyId" name="partyId"></select>
+                            </div>
+                        </div>
+                        <div class="form-group" th:id="agentCodeText">
+                            <label class="col-sm-4 control-label is-required">工号：</label>
+                            <div class="col-sm-6">
+                                <input name="jobNumber" th:id="jobNumber" class="form-control" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
+                <button type="button" class="btn btn-primary" th:onclick="sendMsg()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal3" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">定时推送</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <form class="form-horizontal m" id="form-picAdverts-add2">
+                    <div class="col-md-12" style="margin-top: -15px;">
+                        <div class="form-group">
+                            <div class="col-sm-12" style="text-align: center;">
+                                <input type="radio" th:id="c1" th:name="sendCheck" th:value="0" th:checked="true"
+                                       style="vertical-align: middle; margin-bottom: 6px; margin-right: 5px;"
+                                       th:onclick="changeState()">
+                                <label th:for="c1" th:text="推送企业" style="margin-right: 15px;"
+                                       th:onclick="changeState()"></label>
+                                <input type="radio" th:id="c2" th:name="sendCheck" th:value="1"
+                                       style="vertical-align: middle; margin-bottom: 6px; margin-right: 5px;"
+                                       th:onclick="changeState()">
+                                <label th:for="c2" th:text="推送个人" th:onclick="changeState()"></label>
+                            </div>
+                        </div>
+                        <div class="form-group" th:id="companyChoice1">
+                            <label class="col-sm-4 control-label is-required">公司：</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" th:id="partyId1" name="partyId1"></select>
+                            </div>
+                        </div>
+                        <div class="form-group" th:id="agentCodeText1" style="display: none;">
+                            <label class="col-sm-4 control-label is-required">工号：</label>
+                            <div class="col-sm-6">
+                                <input name="jobNumber1" th:id="jobNumber1" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">发送时间：</label>
+                            <div class="input-group date col-sm-6">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input type="text" class="form-control" id="laydate-demo-3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: -15px;">
+                        <table id="bootstrap-table1"></table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
+                <button type="button" class="btn btn-primary" th:onclick="onTimeSend()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" style="text-align: left; font-size: 23px;">导入文章</h5>
+            </div>
+            <div class="modal-body" style="background: #ffffff;">
+                <form class="form-horizontal m" id="form-picAdverts-add3">
+                    <div class="col-md-12" style="margin-top: -15px;">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">广告添加：</label>
+                            <div class="col-sm-8">
+                                <select th:name="advertisementTypeInit" th:id="advertisementTypeInit"
+                                        class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">标签添加：</label>
+                            <div class="col-sm-8">
+                                <select th:name="labelTypeInit" th:id="labelTypeInit"
+                                        class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <label class="col-sm-4 control-label">必须授权才能观看：</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="isAuthorization" style="margin-top: 9px;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <label class="col-sm-4 control-label">是否添加预约按钮：</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="isReserve" style="margin-top: 9px;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <label class="col-sm-4 control-label">优选活动报名：</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="isJoinActive" style="margin-top: 9px;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">创建文章地址：</label>
+                            <div class="col-sm-8">
+                                <textarea style="height: 70px;" id="ccomment" name="comment" class="form-control"
+                                          placeholder="复制任意微信文章链接（格式类似http://mp.weixin.qq.com/s/XXXXXX），一键导入重新发布，即可实现对文章观看情况的追踪。"
+                                          required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>
+                <button type="button" class="btn btn-primary" th:onclick="importArticle()">导入文章</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="modal inmodal" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">-->
+<!--    <div class="modal-dialog" style="width: 800px;">-->
+<!--        <div class="modal-content animated fadeIn">-->
+<!--            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5; padding: 15px 15px;">-->
+<!--                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span-->
+<!--                        class="sr-only">Close</span>-->
+<!--                </button>-->
+<!--                <h5 class="modal-title" style="text-align: left; font-size: 23px;">创建文章</h5>-->
+<!--            </div>-->
+<!--            <div class="modal-body" style="background: #ffffff;">-->
+<!--                <form class="form-horizontal" id="form-picAdverts-add5">-->
+<!--                    <div class="col-md-12" style="margin-top: -15px;">-->
+<!--                        <div class="form-group">-->
+<!--                            <div id="div1">-->
+<!--                                <div class="toolbar"></div>-->
+<!--                                <div class="title">-->
+<!--                                    <div contenteditable="true" class="head" placeholder="请在这里输入标题"></div>-->
+<!--                                    <div contenteditable="true" class="author" placeholder="请输入作者"></div>-->
+<!--                                    <div class="editorcontent" contenteditable="true">-->
+<!--                                        <div></div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <p class="abstract" style="margin-left: 15px;">封面摘要：</p>-->
+<!--                            <p class="abstract" style="margin-left: 135px;">分享描述：</p>-->
+<!--                            <div>-->
+<!--                                <div class="cover_abstract">-->
+<!--                                    <div class="imgload">-->
+<!--                                        <input type="file" class="fileImg"-->
+<!--                                               accept="image/png,image/gif，image/jpg, image/jpeg"-->
+<!--                                               onchange="uploadOss(this)">-->
+<!--                                        <img src="" class="avatar" style="display:none"/>-->
+<!--                                        <i class="addIcon"></i>-->
+<!--                                    </div>-->
+<!--                                    <textarea autocomplete="off" placeholder="请输入内容" class="el-textarea__inner"-->
+<!--                                              style="min-height: 33px;height: 90px; width: 70%"></textarea>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">-->
+<!--                <button type="button" class="btn btn-white" data-dismiss="modal" th:id="modalColse">关闭</button>-->
+<!--                <button type="button" class="btn btn-primary" th:onclick="createArticleL()">创建文章</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: layout-latest-js"/>
+<th:block th:include="include :: ztree-js"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<link th:href="@{/css/bootstrapValidator.min.css}" rel="stylesheet"/>
+<link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
+<script th:src="@{/js/bootstrapValidator.min.js}"></script>
+<script th:src="@{/js/fileinput.min.js}"></script>
+<script th:src="@{/js/fileinput_locale_zh.js}"></script>
+<script th:src="@{/js/wangEditor.js}"></script>
+<script th:inline="javascript">
+
+    let path = ctx;
+    let prefix = ctx + "article";
+
+    let baseDataList = [];
+    let baseDataListSecond = [];
+    let cloumnTree = [];
+    let article;
+    let publish;
+    let number;
+    let filePath;
+
+    $(function () {
+        setFirstQuery();
+        autoChangeInitType("ARTICLE");
+
+        var options = {
+            id: "bootstrap-table",
+            url: prefix + "/libraryArry",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            fixedColumns: true,
+            toolbar: 'toolbar',
+            uniqueId: "articleId",
+            modalName: "文章",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'articleId',
+                    title: '文章ID',
+                    visible: false
+                },
+                {
+                    field: 'articleName',
+                    title: '文章名称'
+                },
+                {
+                    field: 'orderNo',
+                    title: '置顶状态',
+                    visible: false,
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if (row.orderNo === '1') {
+                            actions.push('已置顶');
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'channelSpecial',
+                    title: '二级分类',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var data = queryCnameBySpecialChannel(row.channelSpecial, "ARTICLE", "2");
+                        if (data == null) {
+                            actions.push('未收录');
+                        } else {
+                            actions.push(data);
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'channelSpecial',
+                    title: '三级分类',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var data = queryCnameBySecAndThird(row.channelSpecial, "ARTICLE", "2");
+                        if (data === '') {
+                            actions.push('未收录');
+                        } else {
+                            actions.push(data);
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'articleVersion',
+                    title: '文章版本',
+                    visible: false
+                },
+                {
+                    field: 'articleState',
+                    title: '状态',
+                    visible: false,
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if (row.articleState === '0') {
+                            actions.push('展示（已发布）');
+                        } else if (row.articleState === '2') {
+                            actions.push('未发布');
+                        } else {
+                            actions.push('');
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'createUser',
+                    title: '创建人',
+                    visible: false
+                },
+                {
+                    field: 'publishDate',
+                    title: '发布时间',
+                    width: '8',
+                    widthUnit: '%'
+                },
+                {
+                    field: 'updateDate',
+                    title: '更新时间',
+                    width: '8',
+                    widthUnit: '%'
+                },
+                {
+                    field: 'companyId',
+                    title: '公司id',
+                    visible: false
+                },
+                {
+                    field: 'publishId',
+                    title: '发布id',
+                    visible: false
+                },
+                {
+                    title: '推送个人（验证）',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" onclick="sendMsgModal(\'' + row.publishId + '\',\'' + row.articleId + '\',\'1\')">推送个人（验证）</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '推送企业号',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs" onclick="sendMsgModal(\'' + row.publishId + '\',\'' + row.articleId + '\',\'2\')">推送企业号</a>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '定时推送',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-info btn-xs" onclick="sendMsgModal(\'' + row.publishId + '\',\'' + row.articleId + '\',\'3\')">定时推送</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '展示链路',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs" href="javascript:void(0)" onclick="articleLinkUrl(\'1\',\'' + row.articleId + '\',\'' + row.publishId + '\');"><i class="fa fa-clone"></i> 展示链路</a>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '预览文章',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="loadPreviewData(\'' + row.publishId + '\');"><i class="fa fa-eye"></i> 预览文章</a>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '删除',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="deleteArticle(\'' + row.publishId + '\');"><i class="fa fa-remove"></i> 删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+
+        cloumnTreeInit();
+        ldcomList();
+
+        advertisementTypeInit();
+        labelTypeInit();
+
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            laydate.render({
+                elem: '#laydate-demo-3',
+                type: 'datetime',
+                trigger: 'click'
+            });
+
+        });
+
+    });
+
+    // 富文本的创建
+    const E = window.wangEditor;
+    const editor = new E('#div1');
+
+    editor.config.onchange = function (newHtml) {
+        console.log('change 之后最新的 html', newHtml)
+        console.log($('.editorcontent').html())
+
+    }
+
+    editor.create();
+
+    function queryCnameBySpecialChannel(id, type, num) {
+        if (baseDataListSecond == null) {
+            articleTypeInit(type, num);
+        }
+        if (id == null || id == "undefined") {
+            return "未收录"
+        }
+        var arr = id.split(",");
+        var returnValue = "";
+        var list = baseDataListSecond.length;
+        for (var j = 0; j < arr.length; j++) {
+            var arrVal = arr[j].split("-");
+            for (var i = 0; i < list; i++) {
+                if (arrVal[1] == "ARTICLE") {
+                    if (arrVal[0] == baseDataListSecond[i].codeCode) {
+                        if (returnValue.indexOf(baseDataListSecond[i].codeCname) == -1) {
+                            returnValue = returnValue + baseDataListSecond[i].codeCname + "  ";
+                        }
+                    }
+                } else {
+                    if (arrVal[1] == baseDataListSecond[i].codeCode) {
+                        if (returnValue.indexOf(baseDataListSecond[i].codeCname) == -1) {
+                            returnValue = returnValue + baseDataListSecond[i].codeCname + "  ";
+                        }
+                    }
+                }
+
+            }
+        }
+        return returnValue;
+    }
+
+    function uploadOss(obj) {
+        $('#myModal5').modal('hide');
+        $.modal.loading("上传中。。。");
+        let formData = new FormData();
+        formData.append('file', obj.files[0]);
+        $.ajax({
+            type: "post",
+            url: '/oss',
+            data: formData,
+            processData: false,//不需要对数据进行处理
+            contentType: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $(".avatar").attr("src", data.object);
+                filePath = data.object;
+                $(".avatar").css('display', 'block');
+                $(".addIcon").css('display', 'none');
+                $.modal.closeLoading();
+                $('#myModal5').modal('show');
+            },
+            error: function () {
+                $.modal.closeLoading();
+                $('#myModal5').modal('show');
+            }
+        });
+    }
+
+    function createArticle() {
+        // $('.head').html('');
+        // $('.author').html('');
+        // $('.el-textarea__inner').val('');
+        // $('.editorcontent').html('<div></div>');
+        //
+        //
+        // filePath = '';
+        // $(".avatar").attr('src', '')
+        // $(".avatar").css('display', 'none');
+        // $(".addIcon").css('display', 'block');
+        // $('#myModal5').modal('show');
+        $.modal.parentTab('文章创建', prefix + "/createPage");
+    }
+
+    function createArticleL() {
+        let title = $('.head').text();
+        let author = $('.author').text();
+        let body = $('.editorcontent').html();
+        if (title == '') {
+            $.modal.alertWarning("请输入标题");
+            return;
+        }
+        if (author == '') {
+            $.modal.alertWarning("请输入作者");
+            return;
+        }
+        if (body == '') {
+            $.modal.alertWarning("请输入文章内容");
+            return;
+        }
+        if (filePath == '') {
+            $.modal.alertWarning("请上传分享图片");
+            return;
+        }
+
+        body = '<div id="js_article" class="rich_media"><div class="rich_media_inner">' +
+            '<div id="page-content" class="rich_media_area_primary">' +
+            '<div id="img-content" class="rich_media_wrp"><div id="activity-name">' + title + '</div>'
+            + '<div id="meta_content">' + author + '</div><div id="bodycontent">' + body + '</div></div></div></div></div>';
+
+        $('#myModal5').modal('hide');
+        $.modal.loading("创建文章中请等待。。。");
+        $.ajax({
+            url: path + "article/create",
+            data: {
+                'author': "",
+                'createUser': "",
+                'ids': "",
+                'isAuthorization': "0",
+                'isReserve': "0",
+                'automaticName': "",
+                'introduction': "",
+                'labelIds': "",
+                'isJoinActive': "0",
+                'articleName': title,
+                'shareImgUrl': filePath,
+                'shareDes': $('.el-textarea__inner').text(),
+                'articleContent': body
+            },
+            type: "post",
+            success: function (data) {
+                $.modal.closeLoading();
+                if (data.result) {
+                    $.modal.alertSuccess("创建成功！");
+                    $.table.search();
+                    // localStorage.setItem("nryx_articleContent", data.object.articleContent); // 文章内容
+                    // localStorage.setItem("nryx_originalUrl", data.object.originalUrl); // 文章链接
+                    // // //文章名称
+                    // localStorage.setItem("nryx_articleName", data.object.articleName); // 文章名称
+                    // localStorage.setItem("nryx_shareImgUrl", data.object.shareImgUrl); // 文章分享图片
+                    // // //文章分享标题
+                    // localStorage.setItem("nryx_shareTitle", data.object.shareTitle); // 文章分享标题
+                    // localStorage.setItem("nryx_shareDes", data.object.shareDes); // 文章分享描述
+                    // localStorage.setItem("nryx_listPicUrl", data.object.listPicUrl); // 文章列表展示图片
+                    // localStorage.setItem("nryx_adId", data.object.adId); // 广告id
+                    // localStorage.setItem("nryx_isAuthorization", data.object.isAuthorization); // 是否授权
+                    // localStorage.setItem("nryx_isJoinActive", data.object.isJoinActive); // 是否添加优选活动
+                    // localStorage['nryx_editahref'] = data.object.articleEditUrl;
+                    // $.table.refresh();
+                    // let btn = ['<i class="fa fa-close"></i> 关闭'];
+                    // let options = {
+                    //     title: '创建文章',
+                    //     url: localStorage['nryx_editahref'],
+                    //     btn: btn,
+                    //     callBack: closeFrame
+                    // };
+                    // $.modal.openOptions(options);
+                } else {
+                    $.modal.alertError(data.info)
+                }
+            },
+            error: function () {
+                $.modal.closeLoading();
+            }
+        });
+
+    }
+
+    /** **查询公共数据** */
+    function articleTypeInit(type, num) {
+        $.ajax({
+            type: "post",
+            url: path + 'column/queryBasicData',
+            data: {
+                "bType": type
+            },
+            async: false,
+            success: function (data) {
+                if (data.result) {// 跳转到列表页面
+                    if (num == "1") {
+                        baseDataList = data.object.baseList;
+                    } else {
+                        baseDataListSecond = data.object.baseList;
+                    }
+                } else {
+
+                }
+            }
+        });
+    }
+
+    //二三级菜单名称显示
+    function queryCnameBySecAndThird(id) {
+        if (cloumnTree == null || cloumnTree.length == 0) {
+            cloumnTreeInit();
+        }
+        var child = [];
+        if (id == null || id == "undefined") {
+            return "未收录"
+        }
+        var arr = id.split(",");
+        var list = cloumnTree.length;
+        var returnValue = "";
+        for (var k = 0; k < arr.length; k++) {
+            var arrVal = arr[k];
+            if (arrVal.indexOf("ARTICLE") == -1) {
+                var split = arrVal.split("-");
+                for (var i = 0; i < list; i++) {
+                    child = cloumnTree[i].child;
+                    for (var j = 0; j < child.length; j++) {
+                        if (child[j].codeCode == split[0]) {
+                            if (returnValue.indexOf(cloumnTree[i].codeCname + "-" + child[j].codeCname) == -1) {
+                                returnValue = returnValue + cloumnTree[i].codeCname + "-" + child[j].codeCname + "  ";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return returnValue;
+    }
+
+    function cloumnTreeInit() {
+        $.ajax({
+            url: prefix + "/columnTree",
+            data: {
+                codeCode: "ARTICLE"
+            },
+            dataType: "json",
+            async: false,
+            type: "get",
+            cache: false,
+            success: function (data) {
+                cloumnTree = data.object.columnList[0].child
+            }
+        });
+    }
+
+    //给一级搜索框赋值
+    function setFirstQuery() {
+        articleTypeInit("FIRST_COLUMN", "1")
+        // $("#special option").remove();
+        // var obj = baseDataList;
+        // var secondObj;
+        // $("#special").append("<option value=''>请选择</option>");
+        // for (var i = 0; i < obj.length; i++) {
+        //     if (obj[i].codeCode == "ARTICLE") {
+        //         $("#special").append("<option value='" + obj[i].codeCode + "'>" + obj[i].codeCname + "</option>");
+        //     }
+        // }
+    }
+
+    //搜索时根据选择的一级分类加载二级分类
+    function autoChangeInitType(value) {
+        articleTypeInit(value, "2");
+        $("#channel option").remove();
+        var obj = baseDataListSecond;
+        $("#channel").append("<option value=''>请选择</option>");
+        for (var i = 0; i < obj.length; i++) {
+            $("#channel").append("<option value='" + obj[i].codeCode + "'>" + obj[i].codeCname + "</option>");
+        }
+    }
+
+    //选择二级加载三级
+    function autoChangeInitThirdType(value) {
+        $("#articleThirdTypeInit option").remove();
+        var obj = cloumnTree;
+        $("#articleThirdTypeInit").append("<option value=''>请选择</option>");
+        for (var i = 0; i < obj.length; i++) {
+            if (obj[i].codeCode == value) {
+                var children = obj[i].child;
+                for (var j = 0; j < children.length; j++) {
+                    $("#articleThirdTypeInit").append("<option value='" + children[j].codeCode + "'>" + obj[i].codeCname + "-" + children[j].codeCname + "</option>");
+                }
+                return;
+            }
+        }
+    }
+
+    /** **获取文章推送链接** */
+    function articleLinkUrl(sendType, articleId, publishId, agentCode, partyId) {
+        $.modal.loading("努力加载中。。。");
+        $.ajax({
+            url: path + "article/articleSend",
+            data: {
+                "articleId": articleId,
+                "publishId": publishId,
+                "agentCode": agentCode,
+                "sendType": sendType,
+                "partyId": partyId
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    if (sendType == "0") {
+                        $.modal.alertSuccess("文章推送成功");
+                    }
+                    if (sendType == "1") {
+                        $.modal.alertSuccess(data.object);
+                    }
+                } else {
+                    $.modal.alertWarning(data.info);
+                }
+
+            },
+            error: function (textStatus, e) {
+
+            }
+        });
+        $.modal.closeLoading();
+    }
+
+    function deleteArticle(id) {
+        $.ajax({
+            url: prefix + "/delLibrary",
+            data: {
+                ids: id
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    $.modal.alertSuccess("删除成功！");
+                    $.table.search();
+                } else {
+                    $.modal.alertSuccess("删除失败！");
+                }
+            },
+            error: function (textStatus, e) {
+                $.modal.alertSuccess('系统异常,请稍后重试!');
+            }
+        });
+    }
+
+    function includeArticle(num) {
+        let arrays = $.table.selectColumns("articleId");
+        if (arrays.length > 0) {
+            //移除绑定事件
+            $('#sure').unbind('click');
+            $('#myModal1').modal('show');
+            const url = ctx + "column/columnTrees?codeType=ARTICLE&flag=1";
+            let options = {
+                url: url,
+                expandLevel: 1,                // 展开等级节点
+                view: {
+                    selectedMulti: true,      // 设置是否允许同时选中多个节点
+                    nameIsHTML: true           // 设置 name 属性是否支持 HTML 脚本
+                },
+                check: {
+                    enable: true,             // 置 zTree 的节点上是否显示 checkbox / radio
+                    nocheckInherit: true      // 设置子节点是否自动继承
+                }
+                // onClick: zOnClick
+            };
+            $.tree.init(options);
+            //绑定事件
+            $('#sure').bind('click', function () {
+                if (num === 2) {
+                    removeArticle();
+                } else {
+                    include();
+                }
+            });
+        } else {
+            $.modal.alertWarning('请选择至少一条数据！');
+        }
+        return;
+    }
+
+    function include() {
+        let channel = '';
+        let idNodes = $.tree.getCheckedNodes('id');
+        if (idNodes === '') {
+            $.modal.alertWarning('请选择至少一个栏目！');
+            return;
+        }
+        let pidNodes = $.tree.getCheckedNodes('pId');
+        let channel1 = idNodes.split(',');
+        let channel2 = pidNodes.split(',');
+        for (let i = 1; i < channel1.length; i++) {
+            if (channel === '') {
+                channel = channel2[i - 1] + '-' + channel1[i];
+            } else {
+                channel = channel + ',' + channel2[i - 1] + '-' + channel1[i];
+            }
+        }
+        let arrays = $.table.selectColumns('articleId');
+        let ids = [];
+        for (let i = 0; i < arrays.length; i++) {
+            let item = {
+                "articleId": '',
+                "articleName": '',
+                "originalUrl": '',
+                "publishId": ''
+            }
+            let rowData = $("#" + table.options.id).bootstrapTable('getRowByUniqueId', arrays[i]);
+            item.articleId = rowData.articleId;
+            item.articleName = rowData.articleName;
+            item.originalUrl = rowData.originalUrl;
+            item.publishId = rowData.publishId;
+            ids.push(item);
+        }
+        $.ajax({
+            url: path + "article/addLibrary",
+            data: {
+                "channelId": channel,
+                "articleInfo": JSON.stringify(ids)
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                $.modal.closeLoading();
+                if (data.result) {
+                    $.modal.alertSuccess("收录成功！请到文库管理查看");
+                    $.table.search();
+                } else {
+                    $.modal.alertWarning(data.info);
+                }
+            },
+            error: function (textStatus, e) {
+                $.modal.closeLoading();
+                $.modal.alertError('系统异常,请稍后重试!');
+            }
+        });
+        $('#myModal1').modal('hide');
+        $.modal.loading('正在收录，请稍等！');
+    }
+
+    function removeArticle() {
+        let channel = '';
+        let idNodes = $.tree.getCheckedNodes('id');
+        if (idNodes === '') {
+            $.modal.alertWarning('请选择至少一个栏目！');
+            return;
+        }
+        let pidNodes = $.tree.getCheckedNodes('pId');
+        let channel1 = idNodes.split(',');
+        let channel2 = pidNodes.split(',');
+        for (let i = 1; i < channel1.length; i++) {
+            if (channel === '') {
+                channel = channel2[i - 1] + '-' + channel1[i];
+            } else {
+                channel = channel + ',' + channel2[i - 1] + '-' + channel1[i];
+            }
+        }
+        let arrays = $.table.selectColumns('articleId');
+        let ids = [];
+        for (let i = 0; i < arrays.length; i++) {
+            let item = {
+                "articleId": '',
+                "articleName": '',
+                "originalUrl": '',
+                "publishId": ''
+            }
+            let rowData = $("#" + table.options.id).bootstrapTable('getRowByUniqueId', arrays[i]);
+            item.articleId = rowData.articleId;
+            item.articleName = rowData.articleName;
+            item.originalUrl = rowData.originalUrl;
+            item.publishId = rowData.publishId;
+            ids.push(item);
+        }
+        $.ajax({
+            url: path + "article/removeArticleItem",
+            data: {
+                "channelId": channel,
+                "articleInfo": JSON.stringify(ids)
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                $.modal.closeLoading();
+                if (data.result) {
+                    $.modal.alertSuccess("移除成功！请到文库管理查看");
+                    $.table.search();
+                } else {
+                    $.modal.alertWarning(data.info);
+                }
+            },
+            error: function (textStatus, e) {
+                $.modal.closeLoading();
+                $.modal.alertError('系统异常,请稍后重试!');
+            }
+        });
+        $('#myModal1').modal('hide');
+        $.modal.loading('正在移除，请稍等！');
+    }
+
+    function sendMsgModal(publishId, articleId, num) {
+        number = num;
+        publish = publishId;
+        article = articleId;
+        if (num === '1') {
+            $("#jobNumber").val('');
+            $('#agentCodeText').css('display', 'block');
+            $('#companyChoice').css('display', 'none');
+            $('#myModal2').modal('show');
+        } else if (num === '2') {
+            $('#agentCodeText').css('display', 'none');
+            $('#companyChoice').css('display', 'block');
+            $('#myModal2').modal('show');
+        } else {
+            showSendMsg();
+            // $('#myModal3 ins').bind('click', function () {
+            //     changeState();
+            // });
+            $('#myModal3').modal('show');
+        }
+    }
+
+    function sendMsg() {
+        if (number === '1') {
+            let agentCode = $("#jobNumber").val();
+            if (agentCode == '' || agentCode == null) {
+                $.modal.alertError('请填写工号!');
+                return;
+            }
+            articleLinkUrl("0", article, publish, agentCode, null);
+        } else {
+            let partyId = $("#partyId").val();
+            articleLinkUrl("0", article, publish, null, partyId);
+        }
+    }
+
+    function ldcomList() {
+        $("#partyId option").remove();
+        $.ajax({
+            type: "post",
+            url: path + 'ldcom/queryldcomList',
+            data: {},
+            async: false,
+            success: function (data) {
+                let obj = data.object.ldcomList;
+                for (let i = 0; i < obj.length; i++) {
+                    $("#partyId").append(
+                        "<option value='" + obj[i].partyId + "'>"
+                        + obj[i].shortname + "</option>");
+                    $("#partyId1").append(
+                        "<option value='" + obj[i].partyId + "'>"
+                        + obj[i].shortname + "</option>");
+                }
+
+            }
+
+        })
+    }
+
+    function showSendMsg() {
+        let options = {
+            id: "bootstrap-table1",
+            url: prefix + "/noSendPublishArticle",
+            modalName: "定时推送信息",
+            paginationLoop: true,
+            toolbar: null,
+            queryParams: {
+                articleId: article,
+                publishId: publish,
+                page: '1',
+                rows: '1000'
+            },
+            columns: [
+                {
+                    field: 'id',
+                    title: '任务id',
+                    visible: false
+                },
+                {
+                    field: 'operateName',
+                    title: '操作人员'
+                },
+                {
+                    field: 'operateTime',
+                    title: '操作时间'
+                },
+                {
+                    field: 'groupId',
+                    title: '推送id'
+                },
+                {
+                    field: 'sendType',
+                    title: '推送类型'
+                },
+                {
+                    field: 'publishTime',
+                    title: '推送时间'
+                },
+                {
+                    field: 'sendState',
+                    title: '状态'
+                },
+                {
+                    title: '删除',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="removeSendMsg(\'' + row.id + '\');"><i class="fa fa-remove"></i> 删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    }
+
+    function removeSendMsg(id) {
+        $.ajax({
+            url: prefix + "/delOnTimeTask",
+            data: {
+                delId: id
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    $.modal.alertSuccess("删除成功！");
+                    $.table.search('', 'bootstrap-table1')
+                } else {
+                    $.modal.alertError("删除失败！");
+                }
+            },
+        });
+    }
+
+    function changeState() {
+        let code = $("input[name='sendCheck']:checked").val();
+        if (code == '1') {
+            $('#agentCodeText1').css('display', 'block');
+            $('#companyChoice1').css('display', 'none');
+        } else {
+            $('#agentCodeText1').css('display', 'none');
+            $('#companyChoice1').css('display', 'block');
+        }
+    }
+
+    function onTimeSend() {
+        var partyId = $("#partyId1").val();
+        var agentCode = $("#jobNumber1").val();
+        var sendTime = $("#laydate-demo-3").val();
+        var sendTimeType = $("input[name='sendCheck']:checked").val();
+
+        if ((partyId == '' || partyId == null) && (agentCode == '' || agentCode == null)) {
+            $.modal.alertError('请选择公司或填写推送人工号!');
+        } else if (sendTime == '' || sendTime == null) {
+            $.modal.alertError('请选择填写推送时间!');
+        }
+        var strtime = sendTime.replace("/-/g", "/");//时间转换
+        //时间
+        var date1 = new Date(strtime);
+        //现在时间
+        var date2 = new Date();
+        if (date1 < date2) {
+            $.modal.alertError('请选择非过期时间!');
+        } else {
+            onTimeSendLinkUrl(article, publish, partyId, agentCode, sendTime, sendTimeType);
+        }
+    }
+
+    /** **定时推送文章请求接口** */
+    function onTimeSendLinkUrl(articleId, publishId, partyId, agentCode, sendTime, sendTimeType) {
+        $.ajax({
+            url: prefix + "/onTimeSend",
+            data: {
+                "articleId": articleId,
+                "publishId": publishId,
+                "agentCode": agentCode,
+                "sendType": sendTimeType,
+                "partyId": partyId,
+                "sendTime": sendTime
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+                    $.modal.alertSuccess("文章定时推送设置成功");
+                    $('#myModal3').modal('hide');
+                } else {
+                    $.modal.alertError(data.info);
+                }
+            },
+            error: function (textStatus, e) {
+
+            }
+        });
+    }
+
+    function loadPreviewData(id) {
+        $.ajax({
+            url: prefix + "/preview",
+            data: {
+                "publishId": id
+            },
+            dataType: "json",
+            type: "post",
+            cache: false,
+            success: function (data) {
+                if (data.result) {
+
+                    let btn = ['<i class="fa fa-close"></i> 关闭'];
+                    let options = {
+                        title: '文章预览',
+                        url: data.object.editUrl + '?l=1',
+                        btn: btn,
+                        callBack: closeFrame
+                    };
+                    $.modal.openOptions(options);
+                } else {
+                    $.modal.alertError("预览失败，请稍后重试！");
+                }
+            },
+            error: function (textStatus, e) {
+                $.modal.alertError('系统异常,请稍后重试!');
+            }
+        });
+    }
+
+    function closeFrame(index, layero) {
+        $.modal.close(index);
+    }
+
+    //广告列表初始化
+    function advertisementTypeInit() {
+        $.ajax({
+            type: "post",
+            url: path + 'content/adverts/queryAdvertisements',
+            data: {},
+            async: false,
+            success: function (data) {
+                if (data.result) {
+                    let obj = data.object.advertiseAdList;
+                    for (let i = 0; i < obj.length; i++) {
+                        if (i > 0) {
+                            if (obj[i].adTypeName == obj[i - 1].adTypeName) {
+                                $("#advertisementTypeInit").append(
+                                    "<option value='" + obj[i].adId + "'>"
+                                    + obj[i].adTitle + "</option>");
+                            } else {
+                                // 除了名片的其他类型都按类型名显示
+                                $("#advertisementTypeInit").append(
+                                    "<optgroup label=" + obj[i].adTypeName
+                                    + "></optgroup>");
+                                $("#advertisementTypeInit").append(
+                                    "<option value='" + obj[i].adId + "'>"
+                                    + obj[i].adTypeName + "</option>");
+                            }
+                        } else {
+                            $("#advertisementTypeInit").append(
+                                "<optgroup label=" + obj[i].adTypeName
+                                + "></optgroup>");
+                            $("#advertisementTypeInit").append(
+                                "<option value='" + obj[i].adId + "'>"
+                                + obj[i].adTitle + "</option>");
+                        }
+                    }
+                } else {
+                    $.modal.alertError("网络异常，请稍后再试！");
+                }
+            }
+        });
+    }
+
+    /* 查询标签信息 */
+    function labelTypeInit() {
+        $.ajax({
+            type: "post",
+            url: path + 'label/queryLabel',
+            data: {},
+            async: false,
+            success: function (data) {
+                if (data.result) {
+                    var obj = data.object.labelList;
+                    $("#labelTypeInit").append(
+                        "<optgroup id=" + "LABEL" + " label=" + "标签"
+                        + "></optgroup>");
+                    for (var i = 0; i < obj.length; i++) {
+                        $("#LABEL").append(
+                            "<option value='" + obj[i].labelId + "'>"
+                            + obj[i].labelName + "</option>");
+
+                    }
+                } else {
+                    $.modal.alertError("网络异常，请稍后再试！");
+                }
+            }
+        });
+    }
+
+    function importArticle() {
+        let ids = [];
+        let labelIds = [];
+        let length = $("#advertisementTypeInit option:selected").length;
+        if (length > 1) {
+            $.modal.alertError("请选择一条广告!")
+            return false;
+        }
+        $("#advertisementTypeInit option:selected").each(function () {
+            ids.push($(this).val())
+        })
+        $("#labelTypeInit option:selected").each(function () {
+            labelIds.push($(this).val())
+        })
+        let email = $("#email").val();
+        let isWarrant = $("#isAuthorization").prop('checked');
+        let isReservation = $("#isReserve").prop('checked');
+        let isAddActive = $("#isJoinActive").prop('checked');
+        if (isWarrant) { // 1授权 0未授权
+            var isAuthorization = "1";
+        } else {
+            var isAuthorization = "0";
+        }
+
+        let automaticName = "";
+        let introduction = "";
+
+        if (isReservation) { // 1预约 0不预约
+            var isReserve = "1";
+            if (automaticName == '' || introduction == '') {
+                $.modal.alertError('您填写的按钮名称或预约介绍为空，请重新输入');
+                return;
+            }
+        } else {
+
+            var isReserve = "0";
+        }
+        if (isAddActive) {//1添加活动0不添加
+            var isJoinActive = "1";
+        } else {
+            var isJoinActive = "0";
+        }
+
+        let originalUrl = $("#ccomment").val();
+        // if (originalUrl.indexOf("mp.weixin.qq.com") == -1) {
+        //     $.modal.alertError("文章链接格式不正确！应为微信文章链接");
+        //     return;
+        // }
+        $('#myModal4').modal('hide');
+        $.modal.loading("导入中请等待。。。");
+        $.ajax({
+            url: path + "article/getArticleContentByUrl",
+            data: {
+                'author': email,
+                'createUser': email,
+                'ids': ids.join(','),
+                'isAuthorization': isAuthorization,
+                'isReserve': isReserve,
+                'automaticName': automaticName,
+                'introduction': introduction,
+                'labelIds': labelIds.join(','),
+                'isJoinActive': isJoinActive,
+                'originalUrl': originalUrl
+            },
+            type: "post",
+            success: function (data) {
+                $.modal.closeLoading();
+                if (data.result) {
+                    localStorage.setItem("nryx_articleContent", data.object.articleContent); // 文章内容
+                    localStorage.setItem("nryx_originalUrl", data.object.originalUrl); // 文章链接
+                    // //文章名称
+                    localStorage.setItem("nryx_articleName", data.object.articleName); // 文章名称
+                    localStorage.setItem("nryx_shareImgUrl", data.object.shareImgUrl); // 文章分享图片
+                    // //文章分享标题
+                    localStorage.setItem("nryx_shareTitle", data.object.shareTitle); // 文章分享标题
+                    localStorage.setItem("nryx_shareDes", data.object.shareDes); // 文章分享描述
+                    localStorage.setItem("nryx_listPicUrl", data.object.listPicUrl); // 文章列表展示图片
+                    localStorage.setItem("nryx_adId", data.object.adId); // 广告id
+                    localStorage.setItem("nryx_isAuthorization", data.object.isAuthorization); // 是否授权
+                    localStorage.setItem("nryx_isJoinActive", data.object.isJoinActive); // 是否添加优选活动
+                    localStorage['nryx_editahref'] = data.object.articleEditUrl;
+                    $.table.refresh();
+                    let btn = ['<i class="fa fa-close"></i> 关闭'];
+                    let options = {
+                        title: '创建文章',
+                        url: localStorage['nryx_editahref'],
+                        btn: btn,
+                        callBack: closeFrame
+                    };
+                    $.modal.openOptions(options);
+                } else {
+                    $.modal.alertError(data.info)
+                }
+            },
+            error: function () {
+                $.modal.closeLoading();
+            }
+        });
+    };
+
+</script>
+</body>
+</html>

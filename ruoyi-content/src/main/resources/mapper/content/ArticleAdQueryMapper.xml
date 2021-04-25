@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.content.mapper.ArticleAdQueryMapper" >
+  
+  <resultMap id="ArticleAdMap" type="com.ruoyi.content.domain.ArticleAdInfo" >
+    <id column="AD_ID" property="adId" jdbcType="INTEGER" />
+    <result column="COMPANY_ID" property="companyId" jdbcType="VARCHAR" />
+    <result column="AD_TYPE" property="adType" jdbcType="VARCHAR" />
+    <result column="AD_TYPE_NAME" property="adTypeName" jdbcType="VARCHAR" />
+    <result column="AD_LINK_URL" property="adLinkUrl" jdbcType="VARCHAR" />
+    <result column="AD_TITLE" property="adTitle" jdbcType="VARCHAR" />
+    <result column="AD_NAME" property="adName" jdbcType="VARCHAR" />
+    <result column="AD_SUMMARY" property="adSummary" jdbcType="VARCHAR" />
+    <result column="AD_COLOR_TYPE" property="adColorType" jdbcType="VARCHAR" />
+    <result column="AD_IMAGE_URL" property="adImageUrl" jdbcType="VARCHAR" />
+    <result column="AD_STATE" property="adState" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="updateDate" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Advertisement_Column_List" >
+     AD_ID, COMPANY_ID, AD_TYPE, AD_TYPE_NAME, AD_LINK_URL, AD_TITLE, AD_NAME, AD_SUMMARY, 
+    AD_COLOR_TYPE, AD_IMAGE_URL, AD_STATE, CREATE_DATE, CREATE_TIME, CREATE_USER, UPDATE_USER, 
+    UPDATE_DATE, UPDATE_TIME
+  </sql>
+
+   <select id="queryAdByCompanyId" resultMap="ArticleAdMap" parameterType="java.lang.String" >
+    SELECT AD_ID,AD_TYPE_NAME,AD_TITLE FROM article_ad_info 
+	WHERE COMPANY_ID = #{companyId,jdbcType=VARCHAR} AND AD_STATE = '0'
+	ORDER BY AD_TYPE_NAME,AD_TITLE
+  </select>
+  
+  <select id="selectAllWithLimit" resultMap="ArticleAdMap">
+	SELECT
+	<include refid="Advertisement_Column_List" />
+	FROM article_ad_info 	
+	WHERE
+	1=1
+	<if test="companyId != null and companyId !=''">
+		and COMPANY_ID = #{companyId,jdbcType=VARCHAR}
+	</if>
+	<if test="adTitle != null and adTitle !=''">
+	    and AD_TITLE like CONCAT(CONCAT('%', #{adTitle,jdbcType=VARCHAR}), '%')
+	</if>
+	 AND AD_STATE = '0' AND CREATE_USER = 'company'
+	 order by CREATE_DATE DESC,CREATE_TIME DESC, UPDATE_DATE
+	DESC,UPDATE_TIME DESC
+	limit
+	#{startRow,jdbcType=DECIMAL},#{rows,jdbcType=DECIMAL}
+</select>	
+</mapper>
