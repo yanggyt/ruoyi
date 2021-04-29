@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProductMapper">
+
+    <resultMap type="Product" id="ProductResult">
+        <result property="id"    column="id"    />
+        <result property="procuctInformationId"    column="procuct_information_id"    />
+        <result property="procuctTagId"    column="procuct_tag_id"    />
+        <result property="requested"    column="requested"    />
+        <result property="requiremssage"    column="requireMssage"    />
+    </resultMap>
+
+    <resultMap type="Product" id="ProductResultVo">
+        <result property="procuctInformationId"    column="procuct_information_id"    />
+        <result property="procuctTagId"    column="procuct_tag_id"    />
+        <result property="requested"    column="requested"    />
+        <result property="requiremssage"    column="requireMssage"    />
+
+        <result property="beanName"    column="bean_name"    />
+        <result property="rules"    column="rules"    />
+        <result property="instructions"    column="instructions"    />
+    </resultMap>
+
+    <sql id="selectProductVo">
+        select id, procuct_information_id, procuct_tag_id, requested, requireMssage from cbfa_product
+    </sql>
+
+
+
+    <select id="selectProduct"  resultMap="ProductResultVo">
+       SELECT p.procuct_information_id procuct_information_id,p.requested requested,pt.bean_name bean_name,pt.instructions instructions,pt.rules rules,p.requireMssage requireMssage FROM cbfa_product p LEFT JOIN cbfa_product_tag pt on p.procuct_tag_id = pt.id
+    </select>
+
+
+
+    <select id="selectProductList" parameterType="Product" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        <where>
+            <if test="procuctInformationId != null "> and procuct_information_id = #{procuctInformationId}</if>
+            <if test="procuctTagId != null "> and procuct_tag_id = #{procuctTagId}</if>
+            <if test="requested != null  and requested != ''"> and requested = #{requested}</if>
+            <if test="requiremssage != null  and requiremssage != ''"> and requireMssage = #{requiremssage}</if>
+        </where>
+    </select>
+
+    <select id="selectProductById" parameterType="Long" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        insert into cbfa_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="procuctInformationId != null ">procuct_information_id,</if>
+            <if test="procuctTagId != null ">procuct_tag_id,</if>
+            <if test="requested != null  and requested != ''">requested,</if>
+            <if test="requiremssage != null  and requiremssage != ''">requireMssage,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="procuctInformationId != null ">#{procuctInformationId},</if>
+            <if test="procuctTagId != null ">#{procuctTagId},</if>
+            <if test="requested != null  and requested != ''">#{requested},</if>
+            <if test="requiremssage != null  and requiremssage != ''">#{requiremssage},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProduct" parameterType="Product">
+        update cbfa_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="procuctInformationId != null ">procuct_information_id = #{procuctInformationId},</if>
+            <if test="procuctTagId != null ">procuct_tag_id = #{procuctTagId},</if>
+            <if test="requested != null  and requested != ''">requested = #{requested},</if>
+            <if test="requiremssage != null  and requiremssage != ''">requireMssage = #{requiremssage},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductById" parameterType="Long">
+        delete from cbfa_product where id = #{id}
+    </delete>
+
+    <delete id="deleteProductByIds" parameterType="String">
+        delete from cbfa_product where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

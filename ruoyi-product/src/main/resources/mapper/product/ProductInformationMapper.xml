@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProductInformationMapper">
+
+    <resultMap type="ProductInformation" id="ProductInformationResult">
+        <result property="id"    column="id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productDescribe"    column="product_describe"    />
+        <result property="productDescribeB"    column="product_describe_b"    />
+        <result property="productDescribeC"    column="product_describe_c"    />
+    </resultMap>
+
+    <sql id="selectProductInformationVo">
+        select id, product_name, product_describe, product_describe_b, product_describe_c from cbfa_product_information
+    </sql>
+
+    <select id="selectProductInformationList" parameterType="ProductInformation" resultMap="ProductInformationResult">
+        <include refid="selectProductInformationVo"/>
+        <where>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productDescribe != null  and productDescribe != ''"> and product_describe = #{productDescribe}</if>
+            <if test="productDescribeB != null  and productDescribeB != ''"> and product_describe_b = #{productDescribeB}</if>
+            <if test="productDescribeC != null  and productDescribeC != ''"> and product_describe_c = #{productDescribeC}</if>
+        </where>
+    </select>
+
+
+
+    <select id="selectProductInformationById" parameterType="Long" resultMap="ProductInformationResult">
+        <include refid="selectProductInformationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProductInformation" parameterType="ProductInformation">
+        insert into cbfa_product_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="productName != null  and productName != ''">product_name,</if>
+            <if test="productDescribe != null  and productDescribe != ''">product_describe,</if>
+            <if test="productDescribeB != null  and productDescribeB != ''">product_describe_b,</if>
+            <if test="productDescribeC != null  and productDescribeC != ''">product_describe_c,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="productName != null  and productName != ''">#{productName},</if>
+            <if test="productDescribe != null  and productDescribe != ''">#{productDescribe},</if>
+            <if test="productDescribeB != null  and productDescribeB != ''">#{productDescribeB},</if>
+            <if test="productDescribeC != null  and productDescribeC != ''">#{productDescribeC},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductInformation" parameterType="ProductInformation">
+        update cbfa_product_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null  and productName != ''">product_name = #{productName},</if>
+            <if test="productDescribe != null  and productDescribe != ''">product_describe = #{productDescribe},</if>
+            <if test="productDescribeB != null  and productDescribeB != ''">product_describe_b = #{productDescribeB},</if>
+            <if test="productDescribeC != null  and productDescribeC != ''">product_describe_c = #{productDescribeC},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductInformationById" parameterType="Long">
+        delete from cbfa_product_information where id = #{id}
+    </delete>
+
+    <delete id="deleteProductInformationByIds" parameterType="String">
+        delete from cbfa_product_information where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

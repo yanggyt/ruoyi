@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ApplyUserMapper">
+    
+    <resultMap type="ApplyUser" id="ApplyUserResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="age"    column="age"    />
+        <result property="enterpriseName"    column="enterprise_name"    />
+        <result property="idcrds"    column="idcrds"    />
+        <result property="importEnterprise"    column="import_enterprise"    />
+        <result property="establishment"    column="establishment"    />
+        <result property="proportion"    column="proportion"    />
+        <result property="proportionUserMax"    column="proportion_user_max"    />
+        <result property="shareholding"    column="shareholding"    />
+        <result property="administrativePenalty"    column="administrative_penalty"    />
+        <result property="significantLawsuit"    column="significant_lawsuit"    />
+        <result property="overdue"    column="overdue"    />
+        <result property="badRecord"    column="bad_record"    />
+        <result property="lastYearSaleroom"    column="last_year_saleroom"    />
+        <result property="homochronousSaleroom"    column="homochronous_saleroom"    />
+        <result property="makeOutAninvoice"    column="make_out_anInvoice"    />
+        <result property="declareCount"    column="declare_count"    />
+        <result property="recentSaleroom"    column="recent_saleroom"    />
+        <result property="makeOutAninvoiceTime"    column="make_out_anInvoice_time"    />
+        <result property="ratepayingTime"    column="ratepaying_time"    />
+        <result property="ratepayingLimit"    column="ratepaying_limit"    />
+        <result property="ratepayingRecent"    column="ratepaying_recent"    />
+        <result property="brackets"    column="brackets"    />
+        <result property="loansOverdueCount"    column="loans_overdue_count"    />
+        <result property="blacklist"    column="blacklist"    />
+        <result property="creditCard"    column="credit_card"    />
+        <result property="loansExamine"    column="loans_examine"    />
+        <result property="liabilities"    column="liabilities"    />
+        <result property="liabilitiesProbability"    column="liabilities_probability"    />
+        <result property="companyLoanOverdue"    column="company_loan_overdue"    />
+        <result property="totalAmountOfBorrowing"    column="total_amount_of_borrowing"    />
+        <result property="lineOfCredit"    column="line_of_credit"    />
+        <result property="yearTransaction"    column="year_transaction"    />
+        <result property="clearanceCount"    column="clearance_count"    />
+        <result property="halfaYearSum"    column="halfa_year_sum"    />
+        <result property="legalPerson"    column="legal_person"    />
+        <result property="legalPersonRecord"    column="legal_person_record"    />
+        <result property="promiseEnterprise"    column="promise_enterprise"    />
+        <result property="atPresentOverdue"    column="at_present_overdue"    />
+        <result property="yearPerson"    column="year_person"    />
+        <result property="investigation"    column="investigation"    />
+    </resultMap>
+
+    <sql id="selectApplyUserVo">
+        select id, name, sex, age, enterprise_name, idcrds, import_enterprise, establishment, proportion, proportion_user_max, shareholding, administrative_penalty, significant_lawsuit, overdue, bad_record, last_year_saleroom, homochronous_saleroom, make_out_anInvoice, declare_count, recent_saleroom, make_out_anInvoice_time, ratepaying_time, ratepaying_limit, ratepaying_recent, brackets, loans_overdue_count, blacklist, credit_card, loans_examine, liabilities, liabilities_probability, company_loan_overdue, total_amount_of_borrowing, line_of_credit, year_transaction, clearance_count, halfa_year_sum, legal_person, legal_person_record, promise_enterprise, at_present_overdue, year_person, investigation from cbfa_apply_user
+    </sql>
+
+    <select id="selectApplyUserList" parameterType="ApplyUser" resultMap="ApplyUserResult">
+        <include refid="selectApplyUserVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="age != null  and age != ''"> and age = #{age}</if>
+            <if test="enterpriseName != null  and enterpriseName != ''"> and enterprise_name like concat('%', #{enterpriseName}, '%')</if>
+            <if test="idcrds != null  and idcrds != ''"> and idcrds = #{idcrds}</if>
+            <if test="importEnterprise != null  and importEnterprise != ''"> and import_enterprise = #{importEnterprise}</if>
+            <if test="establishment != null  and establishment != ''"> and establishment = #{establishment}</if>
+            <if test="proportion != null  and proportion != ''"> and proportion = #{proportion}</if>
+            <if test="proportionUserMax != null  and proportionUserMax != ''"> and proportion_user_max = #{proportionUserMax}</if>
+            <if test="shareholding != null  and shareholding != ''"> and shareholding = #{shareholding}</if>
+            <if test="administrativePenalty != null  and administrativePenalty != ''"> and administrative_penalty = #{administrativePenalty}</if>
+            <if test="significantLawsuit != null  and significantLawsuit != ''"> and significant_lawsuit = #{significantLawsuit}</if>
+            <if test="overdue != null  and overdue != ''"> and overdue = #{overdue}</if>
+            <if test="badRecord != null  and badRecord != ''"> and bad_record = #{badRecord}</if>
+            <if test="lastYearSaleroom != null  and lastYearSaleroom != ''"> and last_year_saleroom = #{lastYearSaleroom}</if>
+            <if test="homochronousSaleroom != null  and homochronousSaleroom != ''"> and homochronous_saleroom = #{homochronousSaleroom}</if>
+            <if test="makeOutAninvoice != null  and makeOutAninvoice != ''"> and make_out_anInvoice = #{makeOutAninvoice}</if>
+            <if test="declareCount != null  and declareCount != ''"> and declare_count = #{declareCount}</if>
+            <if test="recentSaleroom != null  and recentSaleroom != ''"> and recent_saleroom = #{recentSaleroom}</if>
+            <if test="makeOutAninvoiceTime != null  and makeOutAninvoiceTime != ''"> and make_out_anInvoice_time = #{makeOutAninvoiceTime}</if>
+            <if test="ratepayingTime != null  and ratepayingTime != ''"> and ratepaying_time = #{ratepayingTime}</if>
+            <if test="ratepayingLimit != null  and ratepayingLimit != ''"> and ratepaying_limit = #{ratepayingLimit}</if>
+            <if test="ratepayingRecent != null  and ratepayingRecent != ''"> and ratepaying_recent = #{ratepayingRecent}</if>
+            <if test="brackets != null  and brackets != ''"> and brackets = #{brackets}</if>
+            <if test="loansOverdueCount != null  and loansOverdueCount != ''"> and loans_overdue_count = #{loansOverdueCount}</if>
+            <if test="blacklist != null  and blacklist != ''"> and blacklist = #{blacklist}</if>
+            <if test="creditCard != null  and creditCard != ''"> and credit_card = #{creditCard}</if>
+            <if test="loansExamine != null  and loansExamine != ''"> and loans_examine = #{loansExamine}</if>
+            <if test="liabilities != null  and liabilities != ''"> and liabilities = #{liabilities}</if>
+            <if test="liabilitiesProbability != null  and liabilitiesProbability != ''"> and liabilities_probability = #{liabilitiesProbability}</if>
+            <if test="companyLoanOverdue != null  and companyLoanOverdue != ''"> and company_loan_overdue = #{companyLoanOverdue}</if>
+            <if test="totalAmountOfBorrowing != null  and totalAmountOfBorrowing != ''"> and total_amount_of_borrowing = #{totalAmountOfBorrowing}</if>
+            <if test="lineOfCredit != null  and lineOfCredit != ''"> and line_of_credit = #{lineOfCredit}</if>
+            <if test="yearTransaction != null  and yearTransaction != ''"> and year_transaction = #{yearTransaction}</if>
+            <if test="clearanceCount != null  and clearanceCount != ''"> and clearance_count = #{clearanceCount}</if>
+            <if test="halfaYearSum != null  and halfaYearSum != ''"> and halfa_year_sum = #{halfaYearSum}</if>
+            <if test="legalPerson != null  and legalPerson != ''"> and legal_person = #{legalPerson}</if>
+            <if test="legalPersonRecord != null  and legalPersonRecord != ''"> and legal_person_record = #{legalPersonRecord}</if>
+            <if test="promiseEnterprise != null  and promiseEnterprise != ''"> and promise_enterprise = #{promiseEnterprise}</if>
+            <if test="atPresentOverdue != null  and atPresentOverdue != ''"> and at_present_overdue = #{atPresentOverdue}</if>
+            <if test="yearPerson != null  and yearPerson != ''"> and year_person = #{yearPerson}</if>
+            <if test="investigation != null  and investigation != ''"> and investigation = #{investigation}</if>
+        </where>
+    </select>
+    
+    <select id="selectApplyUserById" parameterType="Long" resultMap="ApplyUserResult">
+        <include refid="selectApplyUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertApplyUser" parameterType="ApplyUser" useGeneratedKeys="true" keyProperty="id">
+        insert into cbfa_apply_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="sex != null  and sex != ''">sex,</if>
+            <if test="age != null  and age != ''">age,</if>
+            <if test="enterpriseName != null  and enterpriseName != ''">enterprise_name,</if>
+            <if test="idcrds != null  and idcrds != ''">idcrds,</if>
+            <if test="importEnterprise != null  and importEnterprise != ''">import_enterprise,</if>
+            <if test="establishment != null  and establishment != ''">establishment,</if>
+            <if test="proportion != null  and proportion != ''">proportion,</if>
+            <if test="proportionUserMax != null  and proportionUserMax != ''">proportion_user_max,</if>
+            <if test="shareholding != null  and shareholding != ''">shareholding,</if>
+            <if test="administrativePenalty != null  and administrativePenalty != ''">administrative_penalty,</if>
+            <if test="significantLawsuit != null  and significantLawsuit != ''">significant_lawsuit,</if>
+            <if test="overdue != null  and overdue != ''">overdue,</if>
+            <if test="badRecord != null  and badRecord != ''">bad_record,</if>
+            <if test="lastYearSaleroom != null  and lastYearSaleroom != ''">last_year_saleroom,</if>
+            <if test="homochronousSaleroom != null  and homochronousSaleroom != ''">homochronous_saleroom,</if>
+            <if test="makeOutAninvoice != null  and makeOutAninvoice != ''">make_out_anInvoice,</if>
+            <if test="declareCount != null  and declareCount != ''">declare_count,</if>
+            <if test="recentSaleroom != null  and recentSaleroom != ''">recent_saleroom,</if>
+            <if test="makeOutAninvoiceTime != null  and makeOutAninvoiceTime != ''">make_out_anInvoice_time,</if>
+            <if test="ratepayingTime != null  and ratepayingTime != ''">ratepaying_time,</if>
+            <if test="ratepayingLimit != null  and ratepayingLimit != ''">ratepaying_limit,</if>
+            <if test="ratepayingRecent != null  and ratepayingRecent != ''">ratepaying_recent,</if>
+            <if test="brackets != null  and brackets != ''">brackets,</if>
+            <if test="loansOverdueCount != null  and loansOverdueCount != ''">loans_overdue_count,</if>
+            <if test="blacklist != null  and blacklist != ''">blacklist,</if>
+            <if test="creditCard != null  and creditCard != ''">credit_card,</if>
+            <if test="loansExamine != null  and loansExamine != ''">loans_examine,</if>
+            <if test="liabilities != null  and liabilities != ''">liabilities,</if>
+            <if test="liabilitiesProbability != null  and liabilitiesProbability != ''">liabilities_probability,</if>
+            <if test="companyLoanOverdue != null  and companyLoanOverdue != ''">company_loan_overdue,</if>
+            <if test="totalAmountOfBorrowing != null  and totalAmountOfBorrowing != ''">total_amount_of_borrowing,</if>
+            <if test="lineOfCredit != null  and lineOfCredit != ''">line_of_credit,</if>
+            <if test="yearTransaction != null  and yearTransaction != ''">year_transaction,</if>
+            <if test="clearanceCount != null  and clearanceCount != ''">clearance_count,</if>
+            <if test="halfaYearSum != null  and halfaYearSum != ''">halfa_year_sum,</if>
+            <if test="legalPerson != null  and legalPerson != ''">legal_person,</if>
+            <if test="legalPersonRecord != null  and legalPersonRecord != ''">legal_person_record,</if>
+            <if test="promiseEnterprise != null  and promiseEnterprise != ''">promise_enterprise,</if>
+            <if test="atPresentOverdue != null  and atPresentOverdue != ''">at_present_overdue,</if>
+            <if test="yearPerson != null  and yearPerson != ''">year_person,</if>
+            <if test="investigation != null  and investigation != ''">investigation,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="sex != null  and sex != ''">#{sex},</if>
+            <if test="age != null  and age != ''">#{age},</if>
+            <if test="enterpriseName != null  and enterpriseName != ''">#{enterpriseName},</if>
+            <if test="idcrds != null  and idcrds != ''">#{idcrds},</if>
+            <if test="importEnterprise != null  and importEnterprise != ''">#{importEnterprise},</if>
+            <if test="establishment != null  and establishment != ''">#{establishment},</if>
+            <if test="proportion != null  and proportion != ''">#{proportion},</if>
+            <if test="proportionUserMax != null  and proportionUserMax != ''">#{proportionUserMax},</if>
+            <if test="shareholding != null  and shareholding != ''">#{shareholding},</if>
+            <if test="administrativePenalty != null  and administrativePenalty != ''">#{administrativePenalty},</if>
+            <if test="significantLawsuit != null  and significantLawsuit != ''">#{significantLawsuit},</if>
+            <if test="overdue != null  and overdue != ''">#{overdue},</if>
+            <if test="badRecord != null  and badRecord != ''">#{badRecord},</if>
+            <if test="lastYearSaleroom != null  and lastYearSaleroom != ''">#{lastYearSaleroom},</if>
+            <if test="homochronousSaleroom != null  and homochronousSaleroom != ''">#{homochronousSaleroom},</if>
+            <if test="makeOutAninvoice != null  and makeOutAninvoice != ''">#{makeOutAninvoice},</if>
+            <if test="declareCount != null  and declareCount != ''">#{declareCount},</if>
+            <if test="recentSaleroom != null  and recentSaleroom != ''">#{recentSaleroom},</if>
+            <if test="makeOutAninvoiceTime != null  and makeOutAninvoiceTime != ''">#{makeOutAninvoiceTime},</if>
+            <if test="ratepayingTime != null  and ratepayingTime != ''">#{ratepayingTime},</if>
+            <if test="ratepayingLimit != null  and ratepayingLimit != ''">#{ratepayingLimit},</if>
+            <if test="ratepayingRecent != null  and ratepayingRecent != ''">#{ratepayingRecent},</if>
+            <if test="brackets != null  and brackets != ''">#{brackets},</if>
+            <if test="loansOverdueCount != null  and loansOverdueCount != ''">#{loansOverdueCount},</if>
+            <if test="blacklist != null  and blacklist != ''">#{blacklist},</if>
+            <if test="creditCard != null  and creditCard != ''">#{creditCard},</if>
+            <if test="loansExamine != null  and loansExamine != ''">#{loansExamine},</if>
+            <if test="liabilities != null  and liabilities != ''">#{liabilities},</if>
+            <if test="liabilitiesProbability != null  and liabilitiesProbability != ''">#{liabilitiesProbability},</if>
+            <if test="companyLoanOverdue != null  and companyLoanOverdue != ''">#{companyLoanOverdue},</if>
+            <if test="totalAmountOfBorrowing != null  and totalAmountOfBorrowing != ''">#{totalAmountOfBorrowing},</if>
+            <if test="lineOfCredit != null  and lineOfCredit != ''">#{lineOfCredit},</if>
+            <if test="yearTransaction != null  and yearTransaction != ''">#{yearTransaction},</if>
+            <if test="clearanceCount != null  and clearanceCount != ''">#{clearanceCount},</if>
+            <if test="halfaYearSum != null  and halfaYearSum != ''">#{halfaYearSum},</if>
+            <if test="legalPerson != null  and legalPerson != ''">#{legalPerson},</if>
+            <if test="legalPersonRecord != null  and legalPersonRecord != ''">#{legalPersonRecord},</if>
+            <if test="promiseEnterprise != null  and promiseEnterprise != ''">#{promiseEnterprise},</if>
+            <if test="atPresentOverdue != null  and atPresentOverdue != ''">#{atPresentOverdue},</if>
+            <if test="yearPerson != null  and yearPerson != ''">#{yearPerson},</if>
+            <if test="investigation != null  and investigation != ''">#{investigation},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApplyUser" parameterType="ApplyUser">
+        update cbfa_apply_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="sex != null  and sex != ''">sex = #{sex},</if>
+            <if test="age != null  and age != ''">age = #{age},</if>
+            <if test="enterpriseName != null  and enterpriseName != ''">enterprise_name = #{enterpriseName},</if>
+            <if test="idcrds != null  and idcrds != ''">idcrds = #{idcrds},</if>
+            <if test="importEnterprise != null  and importEnterprise != ''">import_enterprise = #{importEnterprise},</if>
+            <if test="establishment != null  and establishment != ''">establishment = #{establishment},</if>
+            <if test="proportion != null  and proportion != ''">proportion = #{proportion},</if>
+            <if test="proportionUserMax != null  and proportionUserMax != ''">proportion_user_max = #{proportionUserMax},</if>
+            <if test="shareholding != null  and shareholding != ''">shareholding = #{shareholding},</if>
+            <if test="administrativePenalty != null  and administrativePenalty != ''">administrative_penalty = #{administrativePenalty},</if>
+            <if test="significantLawsuit != null  and significantLawsuit != ''">significant_lawsuit = #{significantLawsuit},</if>
+            <if test="overdue != null  and overdue != ''">overdue = #{overdue},</if>
+            <if test="badRecord != null  and badRecord != ''">bad_record = #{badRecord},</if>
+            <if test="lastYearSaleroom != null  and lastYearSaleroom != ''">last_year_saleroom = #{lastYearSaleroom},</if>
+            <if test="homochronousSaleroom != null  and homochronousSaleroom != ''">homochronous_saleroom = #{homochronousSaleroom},</if>
+            <if test="makeOutAninvoice != null  and makeOutAninvoice != ''">make_out_anInvoice = #{makeOutAninvoice},</if>
+            <if test="declareCount != null  and declareCount != ''">declare_count = #{declareCount},</if>
+            <if test="recentSaleroom != null  and recentSaleroom != ''">recent_saleroom = #{recentSaleroom},</if>
+            <if test="makeOutAninvoiceTime != null  and makeOutAninvoiceTime != ''">make_out_anInvoice_time = #{makeOutAninvoiceTime},</if>
+            <if test="ratepayingTime != null  and ratepayingTime != ''">ratepaying_time = #{ratepayingTime},</if>
+            <if test="ratepayingLimit != null  and ratepayingLimit != ''">ratepaying_limit = #{ratepayingLimit},</if>
+            <if test="ratepayingRecent != null  and ratepayingRecent != ''">ratepaying_recent = #{ratepayingRecent},</if>
+            <if test="brackets != null  and brackets != ''">brackets = #{brackets},</if>
+            <if test="loansOverdueCount != null  and loansOverdueCount != ''">loans_overdue_count = #{loansOverdueCount},</if>
+            <if test="blacklist != null  and blacklist != ''">blacklist = #{blacklist},</if>
+            <if test="creditCard != null  and creditCard != ''">credit_card = #{creditCard},</if>
+            <if test="loansExamine != null  and loansExamine != ''">loans_examine = #{loansExamine},</if>
+            <if test="liabilities != null  and liabilities != ''">liabilities = #{liabilities},</if>
+            <if test="liabilitiesProbability != null  and liabilitiesProbability != ''">liabilities_probability = #{liabilitiesProbability},</if>
+            <if test="companyLoanOverdue != null  and companyLoanOverdue != ''">company_loan_overdue = #{companyLoanOverdue},</if>
+            <if test="totalAmountOfBorrowing != null  and totalAmountOfBorrowing != ''">total_amount_of_borrowing = #{totalAmountOfBorrowing},</if>
+            <if test="lineOfCredit != null  and lineOfCredit != ''">line_of_credit = #{lineOfCredit},</if>
+            <if test="yearTransaction != null  and yearTransaction != ''">year_transaction = #{yearTransaction},</if>
+            <if test="clearanceCount != null  and clearanceCount != ''">clearance_count = #{clearanceCount},</if>
+            <if test="halfaYearSum != null  and halfaYearSum != ''">halfa_year_sum = #{halfaYearSum},</if>
+            <if test="legalPerson != null  and legalPerson != ''">legal_person = #{legalPerson},</if>
+            <if test="legalPersonRecord != null  and legalPersonRecord != ''">legal_person_record = #{legalPersonRecord},</if>
+            <if test="promiseEnterprise != null  and promiseEnterprise != ''">promise_enterprise = #{promiseEnterprise},</if>
+            <if test="atPresentOverdue != null  and atPresentOverdue != ''">at_present_overdue = #{atPresentOverdue},</if>
+            <if test="yearPerson != null  and yearPerson != ''">year_person = #{yearPerson},</if>
+            <if test="investigation != null  and investigation != ''">investigation = #{investigation},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApplyUserById" parameterType="Long">
+        delete from cbfa_apply_user where id = #{id}
+    </delete>
+
+    <delete id="deleteApplyUserByIds" parameterType="String">
+        delete from cbfa_apply_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

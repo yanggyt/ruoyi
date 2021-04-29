@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.AduitMessageMapper">
+
+    <resultMap type="AduitMessage" id="AduitMessageResult">
+        <result property="id"    column="id"    />
+        <result property="applyUserId"    column="apply_user_id"    />
+        <result property="success"    column="success"    />
+        <result property="loser"    column="loser"    />
+        <result property="flag"    column="flag"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <insert id="insertBatch">
+        INSERT INTO cbfa_aduit_message
+        ( apply_user_id, success,loser,flag)
+        VALUES
+        <foreach collection ="list" item="item" separator =",">
+            (#{item.applyUserId}, #{item.success}, #{item.loser}, #{item.flag})
+        </foreach >
+    </insert>
+
+    <sql id="selectAduitMessageVo">
+        select id, apply_user_id, success, loser, flag, create_time, user_id, update_time from cbfa_aduit_message
+    </sql>
+
+    <select id="selectAduitMessageList" parameterType="AduitMessage" resultMap="AduitMessageResult">
+        <include refid="selectAduitMessageVo"/>
+        <where>
+            <if test="applyUserId != null "> and apply_user_id = #{applyUserId}</if>
+            <if test="success != null  and success != ''"> and success = #{success}</if>
+            <if test="loser != null  and loser != ''"> and loser = #{loser}</if>
+            <if test="flag != null  and flag != ''"> and flag = #{flag}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectAduitMessageById" parameterType="Long" resultMap="AduitMessageResult">
+        <include refid="selectAduitMessageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAduitMessage" parameterType="AduitMessage">
+        insert into cbfa_aduit_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="applyUserId != null ">apply_user_id,</if>
+            <if test="success != null  and success != ''">success,</if>
+            <if test="loser != null  and loser != ''">loser,</if>
+            <if test="flag != null  and flag != ''">flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="applyUserId != null ">#{applyUserId},</if>
+            <if test="success != null  and success != ''">#{success},</if>
+            <if test="loser != null  and loser != ''">#{loser},</if>
+            <if test="flag != null  and flag != ''">#{flag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAduitMessage" parameterType="AduitMessage">
+        update cbfa_aduit_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applyUserId != null ">apply_user_id = #{applyUserId},</if>
+            <if test="success != null  and success != ''">success = #{success},</if>
+            <if test="loser != null  and loser != ''">loser = #{loser},</if>
+            <if test="flag != null  and flag != ''">flag = #{flag},</if>
+            <if test="createTime != null ">createTime = #{createTime},</if>
+            <if test="userId != null ">userId = #{userId},</if>
+            <if test="updateTime != null ">updateTime = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAduitMessageById" parameterType="Long">
+        delete from cbfa_aduit_message where id = #{id}
+    </delete>
+
+    <delete id="deleteAduitMessageByIds" parameterType="String">
+        delete from cbfa_aduit_message where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
