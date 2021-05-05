@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ShuiniMapper">
+    
+    <resultMap type="Shuini" id="ShuiniResult">
+        <result property="liquidNumber"    column="liquid_Number"    />
+        <result property="rheologicalParameterNumber"    column="rheological_Parameter_Number"    />
+        <result property="oilWellId"    column="oil_well_ID"    />
+        <result property="liquidName"    column="liquid_Name"    />
+        <result property="liquidDensity"    column="liquid_density"    />
+        <result property="liquidReturnDepth"    column="liquid_Return_Depth"    />
+        <result property="liquidVolume"    column="liquid_Volume"    />
+        <result property="liquidAdditional"    column="liquid_Additional"    />
+        <result property="liquidAdditionalCapacity"    column="liquid_Additional_Capacity"    />
+        <result property="liquidDosage"    column="liquid_Dosage"    />
+        <result property="liquidBasicProperties"    column="liquid_Basic_Properties"    />
+        <result property="liquidWaterLoss"    column="liquid_Water_Loss"    />
+        <result property="fivebcLiquidThickeningTime"    column="FiveBC_liquid_Thickening_Time"    />
+        <result property="onehbcLiquidThickeningTime"    column="OneHBC_liquid_Thickening_Time"    />
+        <result property="liquidServiceLength"    column="liquid_Service_Length"    />
+        <result property="liquidFormula"    column="liquid_Formula"    />
+    </resultMap>
+
+    <sql id="selectShuiniVo">
+        select liquid_Number, rheological_Parameter_Number, oil_well_ID, liquid_Name, liquid_density, liquid_Return_Depth, liquid_Volume, liquid_Additional, liquid_Additional_Capacity, liquid_Dosage, liquid_Basic_Properties, liquid_Water_Loss, FiveBC_liquid_Thickening_Time, OneHBC_liquid_Thickening_Time, liquid_Service_Length, liquid_Formula from liquid
+    </sql>
+
+    <select id="selectShuiniList" parameterType="Shuini" resultMap="ShuiniResult">
+        <include refid="selectShuiniVo"/>
+        <where>  
+            <if test="liquidName != null  and liquidName != ''"> and liquid_Name like concat('%', #{liquidName}, '%')</if>
+            <if test="liquidDensity != null "> and liquid_density = #{liquidDensity}</if>
+            <if test="liquidReturnDepth != null "> and liquid_Return_Depth = #{liquidReturnDepth}</if>
+            <if test="liquidVolume != null "> and liquid_Volume = #{liquidVolume}</if>
+            <if test="liquidAdditional != null "> and liquid_Additional = #{liquidAdditional}</if>
+            <if test="liquidAdditionalCapacity != null "> and liquid_Additional_Capacity = #{liquidAdditionalCapacity}</if>
+            <if test="liquidDosage != null "> and liquid_Dosage = #{liquidDosage}</if>
+        </where>
+    </select>
+    
+    <select id="selectShuiniById" parameterType="Long" resultMap="ShuiniResult">
+        <include refid="selectShuiniVo"/>
+        where liquid_Number = #{liquidNumber}
+    </select>
+        
+    <insert id="insertShuini" parameterType="Shuini" useGeneratedKeys="true" keyProperty="liquidNumber">
+        insert into liquid
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rheologicalParameterNumber != null">rheological_Parameter_Number,</if>
+            <if test="oilWellId != null">oil_well_ID,</if>
+            <if test="liquidName != null">liquid_Name,</if>
+            <if test="liquidDensity != null">liquid_density,</if>
+            <if test="liquidReturnDepth != null">liquid_Return_Depth,</if>
+            <if test="liquidVolume != null">liquid_Volume,</if>
+            <if test="liquidAdditional != null">liquid_Additional,</if>
+            <if test="liquidAdditionalCapacity != null">liquid_Additional_Capacity,</if>
+            <if test="liquidDosage != null">liquid_Dosage,</if>
+            <if test="liquidBasicProperties != null">liquid_Basic_Properties,</if>
+            <if test="liquidWaterLoss != null">liquid_Water_Loss,</if>
+            <if test="fivebcLiquidThickeningTime != null">FiveBC_liquid_Thickening_Time,</if>
+            <if test="onehbcLiquidThickeningTime != null">OneHBC_liquid_Thickening_Time,</if>
+            <if test="liquidServiceLength != null">liquid_Service_Length,</if>
+            <if test="liquidFormula != null">liquid_Formula,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rheologicalParameterNumber != null">#{rheologicalParameterNumber},</if>
+            <if test="oilWellId != null">#{oilWellId},</if>
+            <if test="liquidName != null">#{liquidName},</if>
+            <if test="liquidDensity != null">#{liquidDensity},</if>
+            <if test="liquidReturnDepth != null">#{liquidReturnDepth},</if>
+            <if test="liquidVolume != null">#{liquidVolume},</if>
+            <if test="liquidAdditional != null">#{liquidAdditional},</if>
+            <if test="liquidAdditionalCapacity != null">#{liquidAdditionalCapacity},</if>
+            <if test="liquidDosage != null">#{liquidDosage},</if>
+            <if test="liquidBasicProperties != null">#{liquidBasicProperties},</if>
+            <if test="liquidWaterLoss != null">#{liquidWaterLoss},</if>
+            <if test="fivebcLiquidThickeningTime != null">#{fivebcLiquidThickeningTime},</if>
+            <if test="onehbcLiquidThickeningTime != null">#{onehbcLiquidThickeningTime},</if>
+            <if test="liquidServiceLength != null">#{liquidServiceLength},</if>
+            <if test="liquidFormula != null">#{liquidFormula},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShuini" parameterType="Shuini">
+        update liquid
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="rheologicalParameterNumber != null">rheological_Parameter_Number = #{rheologicalParameterNumber},</if>
+            <if test="oilWellId != null">oil_well_ID = #{oilWellId},</if>
+            <if test="liquidName != null">liquid_Name = #{liquidName},</if>
+            <if test="liquidDensity != null">liquid_density = #{liquidDensity},</if>
+            <if test="liquidReturnDepth != null">liquid_Return_Depth = #{liquidReturnDepth},</if>
+            <if test="liquidVolume != null">liquid_Volume = #{liquidVolume},</if>
+            <if test="liquidAdditional != null">liquid_Additional = #{liquidAdditional},</if>
+            <if test="liquidAdditionalCapacity != null">liquid_Additional_Capacity = #{liquidAdditionalCapacity},</if>
+            <if test="liquidDosage != null">liquid_Dosage = #{liquidDosage},</if>
+            <if test="liquidBasicProperties != null">liquid_Basic_Properties = #{liquidBasicProperties},</if>
+            <if test="liquidWaterLoss != null">liquid_Water_Loss = #{liquidWaterLoss},</if>
+            <if test="fivebcLiquidThickeningTime != null">FiveBC_liquid_Thickening_Time = #{fivebcLiquidThickeningTime},</if>
+            <if test="onehbcLiquidThickeningTime != null">OneHBC_liquid_Thickening_Time = #{onehbcLiquidThickeningTime},</if>
+            <if test="liquidServiceLength != null">liquid_Service_Length = #{liquidServiceLength},</if>
+            <if test="liquidFormula != null">liquid_Formula = #{liquidFormula},</if>
+        </trim>
+        where liquid_Number = #{liquidNumber}
+    </update>
+
+    <delete id="deleteShuiniById" parameterType="Long">
+        delete from liquid where liquid_Number = #{liquidNumber}
+    </delete>
+
+    <delete id="deleteShuiniByIds" parameterType="String">
+        delete from liquid where liquid_Number in 
+        <foreach item="liquidNumber" collection="array" open="(" separator="," close=")">
+            #{liquidNumber}
+        </foreach>
+    </delete>
+
+</mapper>

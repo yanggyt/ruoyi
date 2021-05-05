@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DseignCeiteriaMapper">
+    
+    <resultMap type="DseignCeiteria" id="DseignCeiteriaResult">
+        <result property="designStandardNumber"    column="design_standard_Number"    />
+        <result property="oilWellId"    column="oil_well_ID"    />
+        <result property="designStandardName"    column="design_standard_Name"    />
+        <result property="designDisplacementofdesignstandard"    column="design_DisplacementOfDesignStandard"    />
+    </resultMap>
+
+    <sql id="selectDseignCeiteriaVo">
+        select design_standard_Number, oil_well_ID, design_standard_Name, design_DisplacementOfDesignStandard from dseign_ceiteria
+    </sql>
+
+    <select id="selectDseignCeiteriaList" parameterType="DseignCeiteria" resultMap="DseignCeiteriaResult">
+        <include refid="selectDseignCeiteriaVo"/>
+        <where>  
+            <if test="oilWellId != null "> and oil_well_ID = #{oilWellId}</if>
+            <if test="designStandardName != null  and designStandardName != ''"> and design_standard_Name like concat('%', #{designStandardName}, '%')</if>
+            <if test="designDisplacementofdesignstandard != null "> and design_DisplacementOfDesignStandard = #{designDisplacementofdesignstandard}</if>
+        </where>
+    </select>
+    
+    <select id="selectDseignCeiteriaById" parameterType="Long" resultMap="DseignCeiteriaResult">
+        <include refid="selectDseignCeiteriaVo"/>
+        where design_standard_Number = #{designStandardNumber}
+    </select>
+        
+    <insert id="insertDseignCeiteria" parameterType="DseignCeiteria" useGeneratedKeys="true" keyProperty="designStandardNumber">
+        insert into dseign_ceiteria
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="oilWellId != null">oil_well_ID,</if>
+            <if test="designStandardName != null">design_standard_Name,</if>
+            <if test="designDisplacementofdesignstandard != null">design_DisplacementOfDesignStandard,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="oilWellId != null">#{oilWellId},</if>
+            <if test="designStandardName != null">#{designStandardName},</if>
+            <if test="designDisplacementofdesignstandard != null">#{designDisplacementofdesignstandard},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDseignCeiteria" parameterType="DseignCeiteria">
+        update dseign_ceiteria
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="oilWellId != null">oil_well_ID = #{oilWellId},</if>
+            <if test="designStandardName != null">design_standard_Name = #{designStandardName},</if>
+            <if test="designDisplacementofdesignstandard != null">design_DisplacementOfDesignStandard = #{designDisplacementofdesignstandard},</if>
+        </trim>
+        where design_standard_Number = #{designStandardNumber}
+    </update>
+
+    <delete id="deleteDseignCeiteriaById" parameterType="Long">
+        delete from dseign_ceiteria where design_standard_Number = #{designStandardNumber}
+    </delete>
+
+    <delete id="deleteDseignCeiteriaByIds" parameterType="String">
+        delete from dseign_ceiteria where design_standard_Number in 
+        <foreach item="designStandardNumber" collection="array" open="(" separator="," close=")">
+            #{designStandardNumber}
+        </foreach>
+    </delete>
+
+</mapper>

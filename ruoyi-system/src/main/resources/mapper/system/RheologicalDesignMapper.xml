@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RheologicalDesignMapper">
+    
+    <resultMap type="RheologicalDesign" id="RheologicalDesignResult">
+        <result property="rheologicalDesignNumber"    column="rheological_design_Number"    />
+        <result property="oilWellId"    column="oil_well_ID"    />
+        <result property="displacementDisplacementDesign"    column="displacement_displacement_Design"    />
+        <result property="focusOn3292Pressure"    column="focus_on_3292_Pressure"    />
+        <result property="focusOn3342Pressure"    column="focus_on_3342_Pressure"    />
+        <result property="overallWellStatichydraulicdifference"    column="overall_well_StaticHydraulicDifference"    />
+        <result property="annularCirculationpressureloss"    column="annular_CirculationPressureLoss"    />
+        <result property="circulatingPressurelossinthetube"    column="circulating_PressureLossInTheTube"    />
+        <result property="circulatingPressurelossthroughoutthewell"    column="circulating_PressureLossThroughoutTheWell"    />
+        <result property="finalDisplacementpumppressure"    column="final_DisplacementPumpPressure"    />
+    </resultMap>
+
+    <sql id="selectRheologicalDesignVo">
+        select rheological_design_Number, oil_well_ID, displacement_displacement_Design, focus_on_3292_Pressure, focus_on_3342_Pressure, overall_well_StaticHydraulicDifference, annular_CirculationPressureLoss, circulating_PressureLossInTheTube, circulating_PressureLossThroughoutTheWell, final_DisplacementPumpPressure from rheological_design
+    </sql>
+
+    <select id="selectRheologicalDesignList" parameterType="RheologicalDesign" resultMap="RheologicalDesignResult">
+        <include refid="selectRheologicalDesignVo"/>
+        <where>  
+            <if test="displacementDisplacementDesign != null "> and displacement_displacement_Design = #{displacementDisplacementDesign}</if>
+            <if test="focusOn3292Pressure != null "> and focus_on_3292_Pressure = #{focusOn3292Pressure}</if>
+            <if test="focusOn3342Pressure != null "> and focus_on_3342_Pressure = #{focusOn3342Pressure}</if>
+            <if test="overallWellStatichydraulicdifference != null "> and overall_well_StaticHydraulicDifference = #{overallWellStatichydraulicdifference}</if>
+            <if test="annularCirculationpressureloss != null "> and annular_CirculationPressureLoss = #{annularCirculationpressureloss}</if>
+            <if test="circulatingPressurelossinthetube != null "> and circulating_PressureLossInTheTube = #{circulatingPressurelossinthetube}</if>
+            <if test="circulatingPressurelossthroughoutthewell != null "> and circulating_PressureLossThroughoutTheWell = #{circulatingPressurelossthroughoutthewell}</if>
+            <if test="finalDisplacementpumppressure != null "> and final_DisplacementPumpPressure = #{finalDisplacementpumppressure}</if>
+        </where>
+    </select>
+    
+    <select id="selectRheologicalDesignById" parameterType="Long" resultMap="RheologicalDesignResult">
+        <include refid="selectRheologicalDesignVo"/>
+        where rheological_design_Number = #{rheologicalDesignNumber}
+    </select>
+        
+    <insert id="insertRheologicalDesign" parameterType="RheologicalDesign" useGeneratedKeys="true" keyProperty="rheologicalDesignNumber">
+        insert into rheological_design
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="oilWellId != null">oil_well_ID,</if>
+            <if test="displacementDisplacementDesign != null">displacement_displacement_Design,</if>
+            <if test="focusOn3292Pressure != null">focus_on_3292_Pressure,</if>
+            <if test="focusOn3342Pressure != null">focus_on_3342_Pressure,</if>
+            <if test="overallWellStatichydraulicdifference != null">overall_well_StaticHydraulicDifference,</if>
+            <if test="annularCirculationpressureloss != null">annular_CirculationPressureLoss,</if>
+            <if test="circulatingPressurelossinthetube != null">circulating_PressureLossInTheTube,</if>
+            <if test="circulatingPressurelossthroughoutthewell != null">circulating_PressureLossThroughoutTheWell,</if>
+            <if test="finalDisplacementpumppressure != null">final_DisplacementPumpPressure,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="oilWellId != null">#{oilWellId},</if>
+            <if test="displacementDisplacementDesign != null">#{displacementDisplacementDesign},</if>
+            <if test="focusOn3292Pressure != null">#{focusOn3292Pressure},</if>
+            <if test="focusOn3342Pressure != null">#{focusOn3342Pressure},</if>
+            <if test="overallWellStatichydraulicdifference != null">#{overallWellStatichydraulicdifference},</if>
+            <if test="annularCirculationpressureloss != null">#{annularCirculationpressureloss},</if>
+            <if test="circulatingPressurelossinthetube != null">#{circulatingPressurelossinthetube},</if>
+            <if test="circulatingPressurelossthroughoutthewell != null">#{circulatingPressurelossthroughoutthewell},</if>
+            <if test="finalDisplacementpumppressure != null">#{finalDisplacementpumppressure},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRheologicalDesign" parameterType="RheologicalDesign">
+        update rheological_design
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="oilWellId != null">oil_well_ID = #{oilWellId},</if>
+            <if test="displacementDisplacementDesign != null">displacement_displacement_Design = #{displacementDisplacementDesign},</if>
+            <if test="focusOn3292Pressure != null">focus_on_3292_Pressure = #{focusOn3292Pressure},</if>
+            <if test="focusOn3342Pressure != null">focus_on_3342_Pressure = #{focusOn3342Pressure},</if>
+            <if test="overallWellStatichydraulicdifference != null">overall_well_StaticHydraulicDifference = #{overallWellStatichydraulicdifference},</if>
+            <if test="annularCirculationpressureloss != null">annular_CirculationPressureLoss = #{annularCirculationpressureloss},</if>
+            <if test="circulatingPressurelossinthetube != null">circulating_PressureLossInTheTube = #{circulatingPressurelossinthetube},</if>
+            <if test="circulatingPressurelossthroughoutthewell != null">circulating_PressureLossThroughoutTheWell = #{circulatingPressurelossthroughoutthewell},</if>
+            <if test="finalDisplacementpumppressure != null">final_DisplacementPumpPressure = #{finalDisplacementpumppressure},</if>
+        </trim>
+        where rheological_design_Number = #{rheologicalDesignNumber}
+    </update>
+
+    <delete id="deleteRheologicalDesignById" parameterType="Long">
+        delete from rheological_design where rheological_design_Number = #{rheologicalDesignNumber}
+    </delete>
+
+    <delete id="deleteRheologicalDesignByIds" parameterType="String">
+        delete from rheological_design where rheological_design_Number in 
+        <foreach item="rheologicalDesignNumber" collection="array" open="(" separator="," close=")">
+            #{rheologicalDesignNumber}
+        </foreach>
+    </delete>
+
+</mapper>
