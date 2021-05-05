@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增水泥浆')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-Shuini-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">流变参数编号：</label>
+                <div class="col-sm-8">
+                    <input name="rheologicalParameterNumber" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">井编号：</label>
+                <div class="col-sm-8">
+                    <input name="oilWellId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">液体名称：</label>
+                <div class="col-sm-8">
+                    <input name="liquidName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">液体密度：</label>
+                <div class="col-sm-8">
+                    <input name="liquidDensity" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">液体返深：</label>
+                <div class="col-sm-8">
+                    <input name="liquidReturnDepth" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">液体容积：</label>
+                <div class="col-sm-8">
+                    <input name="liquidVolume" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">液体附加：</label>
+                <div class="col-sm-8">
+                    <input name="liquidAdditional" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">液体附加量：</label>
+                <div class="col-sm-8">
+                    <input name="liquidAdditionalCapacity" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">液体用量：</label>
+                <div class="col-sm-8">
+                    <input name="liquidDosage" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/Shuini"
+        $("#form-Shuini-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-Shuini-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

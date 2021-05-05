@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.EheologicalParametersMapper">
+    
+    <resultMap type="EheologicalParameters" id="EheologicalParametersResult">
+        <result property="rheologicalParameternumber"    column="rheological_ParameterNumber"    />
+        <result property="rheologicalName"    column="rheological_Name"    />
+        <result property="rheologicalDensity"    column="rheological_Density"    />
+        <result property="rheologicalModel"    column="rheological_Model"    />
+        <result property="plasticViscosity"    column="plastic_Viscosity"    />
+        <result property="dynamicShear"    column="dynamic_Shear"    />
+        <result property="consistencyCoefficient"    column="consistency_Coefficient"    />
+        <result property="fluidityIndex"    column="fluidity_Index"    />
+        <result property="newtonianViscosity"    column="newtonian_Viscosity"    />
+    </resultMap>
+
+    <sql id="selectEheologicalParametersVo">
+        select rheological_ParameterNumber, rheological_Name, rheological_Density, rheological_Model, plastic_Viscosity, dynamic_Shear, consistency_Coefficient, fluidity_Index, newtonian_Viscosity from eheological_parameters
+    </sql>
+
+    <select id="selectEheologicalParametersList" parameterType="EheologicalParameters" resultMap="EheologicalParametersResult">
+        <include refid="selectEheologicalParametersVo"/>
+        <where>  
+            <if test="rheologicalName != null  and rheologicalName != ''"> and rheological_Name like concat('%', #{rheologicalName}, '%')</if>
+            <if test="rheologicalDensity != null  and rheologicalDensity != ''"> and rheological_Density = #{rheologicalDensity}</if>
+            <if test="rheologicalModel != null  and rheologicalModel != ''"> and rheological_Model = #{rheologicalModel}</if>
+            <if test="plasticViscosity != null  and plasticViscosity != ''"> and plastic_Viscosity = #{plasticViscosity}</if>
+            <if test="dynamicShear != null  and dynamicShear != ''"> and dynamic_Shear = #{dynamicShear}</if>
+            <if test="consistencyCoefficient != null  and consistencyCoefficient != ''"> and consistency_Coefficient = #{consistencyCoefficient}</if>
+            <if test="fluidityIndex != null  and fluidityIndex != ''"> and fluidity_Index = #{fluidityIndex}</if>
+            <if test="newtonianViscosity != null  and newtonianViscosity != ''"> and newtonian_Viscosity = #{newtonianViscosity}</if>
+        </where>
+    </select>
+    
+    <select id="selectEheologicalParametersById" parameterType="Long" resultMap="EheologicalParametersResult">
+        <include refid="selectEheologicalParametersVo"/>
+        where rheological_ParameterNumber = #{rheologicalParameternumber}
+    </select>
+        
+    <insert id="insertEheologicalParameters" parameterType="EheologicalParameters" useGeneratedKeys="true" keyProperty="rheologicalParameternumber">
+        insert into eheological_parameters
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rheologicalName != null and rheologicalName != ''">rheological_Name,</if>
+            <if test="rheologicalDensity != null and rheologicalDensity != ''">rheological_Density,</if>
+            <if test="rheologicalModel != null and rheologicalModel != ''">rheological_Model,</if>
+            <if test="plasticViscosity != null">plastic_Viscosity,</if>
+            <if test="dynamicShear != null">dynamic_Shear,</if>
+            <if test="consistencyCoefficient != null">consistency_Coefficient,</if>
+            <if test="fluidityIndex != null">fluidity_Index,</if>
+            <if test="newtonianViscosity != null">newtonian_Viscosity,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rheologicalName != null and rheologicalName != ''">#{rheologicalName},</if>
+            <if test="rheologicalDensity != null and rheologicalDensity != ''">#{rheologicalDensity},</if>
+            <if test="rheologicalModel != null and rheologicalModel != ''">#{rheologicalModel},</if>
+            <if test="plasticViscosity != null">#{plasticViscosity},</if>
+            <if test="dynamicShear != null">#{dynamicShear},</if>
+            <if test="consistencyCoefficient != null">#{consistencyCoefficient},</if>
+            <if test="fluidityIndex != null">#{fluidityIndex},</if>
+            <if test="newtonianViscosity != null">#{newtonianViscosity},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEheologicalParameters" parameterType="EheologicalParameters">
+        update eheological_parameters
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="rheologicalName != null and rheologicalName != ''">rheological_Name = #{rheologicalName},</if>
+            <if test="rheologicalDensity != null and rheologicalDensity != ''">rheological_Density = #{rheologicalDensity},</if>
+            <if test="rheologicalModel != null and rheologicalModel != ''">rheological_Model = #{rheologicalModel},</if>
+            <if test="plasticViscosity != null">plastic_Viscosity = #{plasticViscosity},</if>
+            <if test="dynamicShear != null">dynamic_Shear = #{dynamicShear},</if>
+            <if test="consistencyCoefficient != null">consistency_Coefficient = #{consistencyCoefficient},</if>
+            <if test="fluidityIndex != null">fluidity_Index = #{fluidityIndex},</if>
+            <if test="newtonianViscosity != null">newtonian_Viscosity = #{newtonianViscosity},</if>
+        </trim>
+        where rheological_ParameterNumber = #{rheologicalParameternumber}
+    </update>
+
+    <delete id="deleteEheologicalParametersById" parameterType="Long">
+        delete from eheological_parameters where rheological_ParameterNumber = #{rheologicalParameternumber}
+    </delete>
+
+    <delete id="deleteEheologicalParametersByIds" parameterType="String">
+        delete from eheological_parameters where rheological_ParameterNumber in 
+        <foreach item="rheologicalParameternumber" collection="array" open="(" separator="," close=")">
+            #{rheologicalParameternumber}
+        </foreach>
+    </delete>
+
+</mapper>

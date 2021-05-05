@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('前置液数据列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+         <div class="box">
+             <div class="box-1">
+                 <div class="row">
+                     <div class="col-sm-12 search-collapse">
+                         <form id="formId">
+                             <div class="select-list">
+                                 <ul>
+                                     <li>
+                                         <label>前置液编号：</label>
+                                         <input type="text" name="liquidNumber"/>
+                                     </li>
+                                     <li>
+                                         <label>井编号：</label>
+                                         <input type="text" name="oilWellId"/>
+                                     </li>
+                                     <li>
+                                         <label>前置液名称：</label>
+                                         <input type="text" name="liquidName"/>
+                                     </li>
+                                     <li>
+                                         <label>前置液密度：</label>
+                                         <input type="text" name="liquidDensity"/>
+                                     </li>
+                                     <li>
+                                         <label>前置液用量：</label>
+                                         <input type="text" name="liquidDosage"/>
+                                     </li>
+                                     <li>
+                                         <label>前置液使用长度：</label>
+                                         <input type="text" name="liquidServiceLength"/>
+                                     </li>
+                                     <li>
+                                         <label>前置液配方：</label>
+                                         <input type="text" name="liquidFormula"/>
+                                     </li>
+                                     <li>
+                                         <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                         <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                     </li>
+                                 </ul>
+                             </div>
+                         </form>
+                     </div>
+
+                     <div class="btn-group-sm" id="toolbar" role="group">
+                         <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:liquid:add">
+                             <i class="fa fa-plus"></i> 添加
+                         </a>
+                         <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:liquid:edit">
+                             <i class="fa fa-edit"></i> 修改
+                         </a>
+                         <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:liquid:remove">
+                             <i class="fa fa-remove"></i> 删除
+                         </a>
+                         <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:liquid:export">
+                             <i class="fa fa-download"></i> 导出
+                         </a>
+                     </div>
+                     <div class="col-sm-12 select-table table-striped">
+                         <table id="bootstrap-table"></table>
+                     </div>
+
+                 </div>
+             </div>
+
+
+         </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:liquid:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:liquid:remove')}]];
+        var prefix = ctx + "system/liquid";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "液体数据",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'liquidNumber',
+                    title: '前置液编号',
+                    visible: false
+                },
+                {
+                    field: 'liquidName',
+                    title: '前置液名称'
+                },
+                {
+                    field: 'liquidDensity',
+                    title: '前置液密度'
+                },
+                {
+                    field: 'liquidDosage',
+                    title: '前置液用量'
+                },
+                {
+                    field: 'liquidServiceLength',
+                    title: '前置液使用长度'
+                },
+                {
+                    field: 'liquidFormula',
+                    title: '前置液配方'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.liquidNumber + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.liquidNumber + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

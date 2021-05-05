@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('水泥浆列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>液体名称：</label>
+                                <input type="text" name="liquidName"/>
+                            </li>
+                            <li>
+                                <label>液体密度：</label>
+                                <input type="text" name="liquidDensity"/>
+                            </li>
+                            <li>
+                                <label>液体返深：</label>
+                                <input type="text" name="liquidReturnDepth"/>
+                            </li>
+                            <li>
+                                <label>液体容积：</label>
+                                <input type="text" name="liquidVolume"/>
+                            </li>
+                            <li>
+                                <label>液体附加：</label>
+                                <input type="text" name="liquidAdditional"/>
+                            </li>
+                            <li>
+                                <label>液体附加量：</label>
+                                <input type="text" name="liquidAdditionalCapacity"/>
+                            </li>
+                            <li>
+                                <label>液体用量：</label>
+                                <input type="text" name="liquidDosage"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:Shuini:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:Shuini:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:Shuini:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:Shuini:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:Shuini:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:Shuini:remove')}]];
+        var prefix = ctx + "system/Shuini";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "水泥浆",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'liquidNumber',
+                    title: '液体编号',
+                    visible: false
+                },
+                {
+                    field: 'liquidName',
+                    title: '液体名称'
+                },
+                {
+                    field: 'liquidDensity',
+                    title: '液体密度'
+                },
+                {
+                    field: 'liquidReturnDepth',
+                    title: '液体返深'
+                },
+                {
+                    field: 'liquidVolume',
+                    title: '液体容积'
+                },
+                {
+                    field: 'liquidAdditional',
+                    title: '液体附加'
+                },
+                {
+                    field: 'liquidAdditionalCapacity',
+                    title: '液体附加量'
+                },
+                {
+                    field: 'liquidDosage',
+                    title: '液体用量'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.liquidNumber + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.liquidNumber + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

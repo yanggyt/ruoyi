@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改流变参数')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-parameters-edit" th:object="${eheologicalParameters}">
+            <input name="rheologicalParameternumber" th:field="*{rheologicalParameternumber}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">流体名称：</label>
+                <div class="col-sm-8">
+                    <input name="rheologicalName" th:field="*{rheologicalName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">流体密度：</label>
+                <div class="col-sm-8">
+                    <input name="rheologicalDensity" th:field="*{rheologicalDensity}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">流变模式：</label>
+                <div class="col-sm-8">
+                    <input name="rheologicalModel" th:field="*{rheologicalModel}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">塑性粘度：</label>
+                <div class="col-sm-8">
+                    <input name="plasticViscosity" th:field="*{plasticViscosity}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">动切力：</label>
+                <div class="col-sm-8">
+                    <input name="dynamicShear" th:field="*{dynamicShear}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">稠度系数：</label>
+                <div class="col-sm-8">
+                    <input name="consistencyCoefficient" th:field="*{consistencyCoefficient}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">流性指数：</label>
+                <div class="col-sm-8">
+                    <input name="fluidityIndex" th:field="*{fluidityIndex}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">牛顿粘度：</label>
+                <div class="col-sm-8">
+                    <input name="newtonianViscosity" th:field="*{newtonianViscosity}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/parameters";
+        $("#form-parameters-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-parameters-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

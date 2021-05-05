@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('流变学设计数据列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>顶替排量设计：</label>
+                                <input type="text" name="displacementDisplacementDesign"/>
+                            </li>
+                            <li>
+                                <label>关注点：</label>
+                                <input type="text" name="focusOn3292Pressure"/>
+                            </li>
+                            <li>
+                                <label>关注点：</label>
+                                <input type="text" name="focusOn3342Pressure"/>
+                            </li>
+                            <li>
+                                <label>全井静液压差：</label>
+                                <input type="text" name="overallWellStatichydraulicdifference"/>
+                            </li>
+                            <li>
+                                <label>环空循环压耗：</label>
+                                <input type="text" name="annularCirculationpressureloss"/>
+                            </li>
+                            <li>
+                                <label>管内循环压耗：</label>
+                                <input type="text" name="circulatingPressurelossinthetube"/>
+                            </li>
+                            <li>
+                                <label>全井循环压耗：</label>
+                                <input type="text" name="circulatingPressurelossthroughoutthewell"/>
+                            </li>
+                            <li>
+                                <label>最终顶替泵压：</label>
+                                <input type="text" name="finalDisplacementpumppressure"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:design:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:design:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:design:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:design:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:design:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:design:remove')}]];
+        var prefix = ctx + "system/design";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "流变学设计数据",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'rheologicalDesignNumber',
+                    title: '流变学设计编号',
+                    visible: false
+                },
+                {
+                    field: 'displacementDisplacementDesign',
+                    title: '顶替排量设计'
+                },
+                {
+                    field: 'focusOn3292Pressure',
+                    title: '关注点'
+                },
+                {
+                    field: 'focusOn3342Pressure',
+                    title: '关注点'
+                },
+                {
+                    field: 'overallWellStatichydraulicdifference',
+                    title: '全井静液压差'
+                },
+                {
+                    field: 'annularCirculationpressureloss',
+                    title: '环空循环压耗'
+                },
+                {
+                    field: 'circulatingPressurelossinthetube',
+                    title: '管内循环压耗'
+                },
+                {
+                    field: 'circulatingPressurelossthroughoutthewell',
+                    title: '全井循环压耗'
+                },
+                {
+                    field: 'finalDisplacementpumppressure',
+                    title: '最终顶替泵压'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.rheologicalDesignNumber + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.rheologicalDesignNumber + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>
