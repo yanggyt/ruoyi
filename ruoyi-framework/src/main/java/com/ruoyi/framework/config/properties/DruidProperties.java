@@ -1,7 +1,13 @@
 package com.ruoyi.framework.config.properties;
 
+import java.sql.SQLException;
+
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+
 import com.alibaba.druid.pool.DruidDataSource;
 
 /**
@@ -44,7 +50,10 @@ public class DruidProperties
 
     @Value("${spring.datasource.druid.testOnReturn}")
     private boolean testOnReturn;
-
+    
+    @Resource
+    private Environment environment ;
+    
     public DruidDataSource dataSource(DruidDataSource datasource)
     {
         /** 配置初始化大小、最小、最大 */
@@ -72,6 +81,16 @@ public class DruidProperties
         datasource.setTestOnBorrow(testOnBorrow);
         /** 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 */
         datasource.setTestOnReturn(testOnReturn);
+        
+        String filters = environment.getProperty("spring.datasource.druid.filters");
+    	try {
+			datasource.setFilters(filters);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        String connectionProperties = environment.getProperty("spring.datasource.druid.connectionProperties");
+        datasource.setConnectionProperties(connectionProperties);
+        
         return datasource;
     }
 }
