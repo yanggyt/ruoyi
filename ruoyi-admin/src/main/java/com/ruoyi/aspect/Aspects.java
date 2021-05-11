@@ -38,9 +38,16 @@ public class Aspects {
      * @date 2021年5月10日 下午4:25:51
      */
 	@Around("pointCut()")
-	public void around(ProceedingJoinPoint point) throws Throwable {
+	public Object around(ProceedingJoinPoint point) throws Throwable {
 		System.out.println("========== 切面到l ======");
-		point.proceed();
+		try {
+			Object res = point.proceed();
+			return res ;
+		} catch (Exception e) {
+			return e; 
+		}finally {
+			System.out.println(" ====== 切面2over ===== ");
+		} 
 		
 	}
 }
