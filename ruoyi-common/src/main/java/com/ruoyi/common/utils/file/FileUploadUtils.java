@@ -131,10 +131,8 @@ public class FileUploadUtils
     {
         File desc = new File(uploadDir + File.separator + fileName);
 
-        if (!desc.exists())
-        {
-            if (!desc.getParentFile().exists())
-            {
+        if (!desc.exists()) {
+            if (!desc.getParentFile().exists()) {
                 desc.getParentFile().mkdirs();
             }
         }
