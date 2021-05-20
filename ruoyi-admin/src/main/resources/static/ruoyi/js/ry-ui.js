@@ -721,6 +721,9 @@ var table = {
                     title: "系统提示",
                     btn: ['确认'],
                     btnclass: ['btn btn-primary'],
+                    yes : function () {
+                        window.parent.location.reload()//刷新父页面
+                    }
                 });
             },
             // 消息提示并刷新父窗体
