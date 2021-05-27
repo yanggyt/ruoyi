@@ -13,7 +13,7 @@
 	<link th:href="@{/ajax/libs/bootstrap-table/bootstrap-table.min.css?v=20210202}" rel="stylesheet"/>
 	<link th:href="@{/css/animate.css}" rel="stylesheet"/>
 	<link th:href="@{/css/style.css?v=20200903}" rel="stylesheet"/>
-	<link th:href="@{/ruoyi/css/ry-ui.css?v=4.6.0}" rel="stylesheet"/>
+	<link th:href="@{/ruoyi/css/ry-ui.css?v=4.6.1}" rel="stylesheet"/>
 </head>
 
 <!-- 通用JS -->
@@ -31,14 +31,14 @@
 	<script th:src="@{/ajax/libs/validate/messages_zh.min.js}"></script>
 	<script th:src="@{/ajax/libs/validate/jquery.validate.extend.js}"></script>
 	<!-- jquery-validate 表单树插件 -->
-	<script th:src="@{/ajax/libs/bootstrap-treetable/bootstrap-treetable.js}"></script>
+	<script th:src="@{/ajax/libs/bootstrap-treetable/bootstrap-treetable.min.js?v=20210526}"></script>
 	<!-- 遮罩层 -->
 	<script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
     <script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
-	<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
-	<script th:src="@{/ajax/libs/layui/layui.js}"></script>
-	<script th:src="@{/ruoyi/js/common.js?v=4.6.0}"></script>
-	<script th:src="@{/ruoyi/js/ry-ui.js?v=4.6.0}"></script>
+	<script th:src="@{/ajax/libs/layer/layer.min.js?v=20210516}"></script>
+	<script th:src="@{/ajax/libs/layui/layui.js?v=20210516}"></script>
+	<script th:src="@{/ruoyi/js/common.js?v=4.6.1}"></script>
+	<script th:src="@{/ruoyi/js/ry-ui.js?v=4.6.1}"></script>
 </div>
 
 <!-- ztree树插件 -->
@@ -157,7 +157,7 @@
 
 <!-- ECharts百度统计图表插件 -->
 <div th:fragment="echarts-js">
-    <script th:src="@{/ajax/libs/report/echarts/echarts-all.js}"></script>
+    <script th:src="@{/ajax/libs/report/echarts/echarts-all.min.js}"></script>
 </div>
 
 <!-- peity图表组合插件 -->
@@ -170,10 +170,16 @@
     <script th:src="@{/ajax/libs/report/sparkline/jquery.sparkline.min.js}"></script>
 </div>
 
-<!-- 表格拖拽插件 -->
-<div th:fragment="bootstrap-table-reorder-js">
-	<script th:src="@{/ajax/libs/bootstrap-table/extensions/reorder/bootstrap-table-reorder.js}"></script>
-	<script th:src="@{/ajax/libs/bootstrap-table/extensions/reorder/jquery.tablednd.js}"></script>
+<!-- 表格行拖拽插件 -->
+<div th:fragment="bootstrap-table-reorder-row-js">
+	<script th:src="@{/ajax/libs/bootstrap-table/extensions/reorder-row/bootstrap-table-reorder.js}"></script>
+	<script th:src="@{/ajax/libs/bootstrap-table/extensions/reorder-row/jquery.tablednd.js}"></script>
+</div>
+
+<!-- 表格列拖拽插件 -->
+<div th:fragment="bootstrap-table-reorder-columns-js">
+	<script th:src="@{/ajax/libs/bootstrap-table/extensions/reorder-columns/jquery.dragtable.js}"></script>
+	<script th:src="@{/ajax/libs/bootstrap-table/extensions/reorder-columns/bootstrap-table-reorder.min.js?v=20210203}"></script>
 </div>
 
 <!-- 表格列宽拖动插件 -->
@@ -193,8 +199,8 @@
 
 <!-- 表格导出插件 -->
 <div th:fragment="bootstrap-table-export-js">
-	<script th:src="@{/ajax/libs/bootstrap-table/extensions/export/bootstrap-table-export.js}"></script>
-	<script th:src="@{/ajax/libs/bootstrap-table/extensions/export/tableExport.js}"></script>
+	<script th:src="@{/ajax/libs/bootstrap-table/extensions/export/bootstrap-table-export.min.js?v=20210523}"></script>
+	<script th:src="@{/ajax/libs/bootstrap-table/extensions/export/tableExport.min.js?v=20210523}"></script>
 </div>
 
 <!-- 表格冻结列插件 -->
