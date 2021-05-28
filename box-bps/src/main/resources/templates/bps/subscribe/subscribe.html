@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('快递订阅列表')" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label class="font-noraml">快递公司：</label>
+                                <select  class="form-control" name="company" th:with="type=${@dict.getType('express_company')}">
+                                    <option value="">---所有---</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>快递单号：</label>
+                                <input type="text" name="number"/>
+                            </li>
+                            <li>
+                                <label>收/寄件人电话：</label>
+                                <input type="text" name="phone"/>
+                            </li>
+                            <li>
+                                <label>订阅时间：</label>
+                                <input type="text" name="subscribeTime"/>
+                            </li>
+                            <li>
+                                <label>订阅结果：</label>
+                                <input type="text" name="result"/>
+                            </li>
+                            <li>
+                                <label>返回码：</label>
+                                <input type="text" name="returnCode"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="sendForm()"><i class="fa fa-check"></i>&nbsp;订阅</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="bps:subscribe:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="bps:subscribe:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="bps:subscribe:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="bps:subscribe:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+     <th:block th:include="include :: select2-js" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('bps:subscribe:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('bps:subscribe:remove')}]];
+        var companyDatas = [[${@dict.getType('express_company')}]];
+        var prefix = ctx + "bps/subscribe";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "快递订阅",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'sid',
+                    title: 'SID',
+                    visible: false
+                },
+                {
+                    field: 'company',
+                    title: '快递公司编码',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(companyDatas, value);
+                    }
+                },
+                {
+                    field: 'number',
+                    title: '快递单号'
+                },
+                {
+                    field: 'phone',
+                    title: '收/寄件人电话'
+                },
+                {
+                    field: 'salt',
+                    title: '盐'
+                },
+                {
+                    field: 'subscribeTime',
+                    title: '订阅时间'
+                },
+                {
+                    field: 'result',
+                    title: '订阅结果'
+                },
+                {
+                    field: 'returnCode',
+                    title: '返回码'
+                },
+                {
+                    field: 'message',
+                    title: '返回消息'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sid + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sid + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function sendForm() {
+            var formObject = {};
+            var formArray =$("#formId").serializeArray();
+            $.each(formArray,function(i,item){
+                formObject[item.name] = item.value;
+            });
+            $.ajax({
+                url:ctx+"/bps/subscribe/subscribe",
+                type:"POST",
+                contentType: "application/json",
+                data: JSON.stringify(formObject),
+                dataType: "json",
+                success:function(data){
+                    alert(JSON.stringify(data));
+                    $.table.search();
+                },
+                error:function(e){
+                    alert("错误！！");
+                }
+            });
+
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bps.mapper.ExpressInfoMapper">
+    
+    <resultMap type="ExpressInfo" id="ExpressInfoResult">
+        <result property="message"    column="message"    />
+        <result property="nu"    column="nu"    />
+        <result property="ischeck"    column="ischeck"    />
+        <result property="com"    column="com"    />
+        <result property="status"    column="status"    />
+        <result property="data"    column="data"    />
+        <result property="state"    column="state"    />
+        <result property="condition"    column="condition"    />
+        <result property="routeInfo"    column="routeInfo"    />
+        <result property="returnCode"    column="returnCode"    />
+        <result property="result"    column="result"    />
+        <result property="phone"    column="phone"    />
+    </resultMap>
+
+    <sql id="selectExpressInfoVo">
+        select message, nu, ischeck, com, status, data, state, condition, routeInfo, returnCode, result, phone from expressInfo
+    </sql>
+
+    <select id="selectExpressInfoList" parameterType="ExpressInfo" resultMap="ExpressInfoResult">
+        <include refid="selectExpressInfoVo"/>
+        <where>  
+            <if test="nu != null  and nu != ''"> and nu = #{nu}</if>
+            <if test="com != null  and com != ''"> and com = #{com}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+        </where>
+    </select>
+    
+    <select id="selectExpressInfoById" parameterType="String" resultMap="ExpressInfoResult">
+        <include refid="selectExpressInfoVo"/>
+        where message = #{message}
+    </select>
+        
+    <insert id="insertExpressInfo" parameterType="ExpressInfo">
+        insert into expressInfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="message != null">message,</if>
+            <if test="nu != null">nu,</if>
+            <if test="ischeck != null">ischeck,</if>
+            <if test="com != null">com,</if>
+            <if test="status != null">status,</if>
+            <if test="data != null">data,</if>
+            <if test="state != null">state,</if>
+            <if test="condition != null">condition,</if>
+            <if test="routeInfo != null">routeInfo,</if>
+            <if test="returnCode != null">returnCode,</if>
+            <if test="result != null">result,</if>
+            <if test="phone != null">phone,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="message != null">#{message},</if>
+            <if test="nu != null">#{nu},</if>
+            <if test="ischeck != null">#{ischeck},</if>
+            <if test="com != null">#{com},</if>
+            <if test="status != null">#{status},</if>
+            <if test="data != null">#{data},</if>
+            <if test="state != null">#{state},</if>
+            <if test="condition != null">#{condition},</if>
+            <if test="routeInfo != null">#{routeInfo},</if>
+            <if test="returnCode != null">#{returnCode},</if>
+            <if test="result != null">#{result},</if>
+            <if test="phone != null">#{phone},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExpressInfo" parameterType="ExpressInfo">
+        update expressInfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nu != null">nu = #{nu},</if>
+            <if test="ischeck != null">ischeck = #{ischeck},</if>
+            <if test="com != null">com = #{com},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="data != null">data = #{data},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="condition != null">condition = #{condition},</if>
+            <if test="routeInfo != null">routeInfo = #{routeInfo},</if>
+            <if test="returnCode != null">returnCode = #{returnCode},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="phone != null">phone = #{phone},</if>
+        </trim>
+        where message = #{message}
+    </update>
+
+    <delete id="deleteExpressInfoById" parameterType="String">
+        delete from expressInfo where message = #{message}
+    </delete>
+
+    <delete id="deleteExpressInfoByIds" parameterType="String">
+        delete from expressInfo where message in 
+        <foreach item="message" collection="array" open="(" separator="," close=")">
+            #{message}
+        </foreach>
+    </delete>
+
+</mapper>
