@@ -52,7 +52,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
     public SubscribeResp ExpressSubscribe(ExpSubscribe expSubscribe) {
         SubscribeParameters subscribeParameters = new SubscribeParameters();
         SubscribeResp subscribeResp = new SubscribeResp();
-        subscribeParameters.setCallbackurl("http://report.bpsemi.cn:8081/box-admin/anon/subscribeCallBackUrl");
+        subscribeParameters.setCallbackurl("http://report.bpsemi.cn:8081/it_war/anon/subscribeCallBackUrl");
         subscribeParameters.setPhone(expSubscribe.getPhone());
         subscribeParameters.setSalt("bpsemi");
         SubscribeParam subscribeParam = new SubscribeParam();
@@ -67,8 +67,8 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
 
         IBaseClient subscribe = new Subscribe();
         try{
-            System.out.println(subscribe.execute(subscribeReq));
             HttpResult httpResult= subscribe.execute(subscribeReq);
+            System.out.println(httpResult);
             subscribeResp= new Gson().fromJson(httpResult.getBody(),SubscribeResp.class);
         }catch (Exception e)
         {
