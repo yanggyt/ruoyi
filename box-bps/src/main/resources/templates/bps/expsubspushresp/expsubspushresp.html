@@ -10,15 +10,15 @@
                 <form id="formId">
                     <div class="select-list">
                         <ul>
-                            <li>
+                            <!--<li>
                                 <label>监控状态：</label>
                                 <select name="status">
                                     <option value="">所有</option>
                                     <option value="-1">代码生成请选择字典属性</option>
                                 </select>
-                            </li>
-                            <li>
-                                <label>当前快递单状态：</label>
+                            </li>-->
+                            <!--<li>
+                                <label>当前状态：</label>
                                 <input type="text" name="lastResultState"/>
                             </li>
                             <li>
@@ -28,12 +28,36 @@
                             <li>
                                 <label>快递公司编码：</label>
                                 <input type="text" name="lastResultCom"/>
+                                <label class="font-noraml">快递公司：</label>
+                            </li>-->
+
+                            <li>
+                                <label class="font-noraml">当前状态：</label>
+                                <select  class="form-control" name="lastResultState" th:with="type=${@dict.getType('express_stats')}">
+                                    <option value="">---所有---</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label class="font-noraml">是否签收：</label>
+                                <select  class="form-control" name="lastResultIsCheck">
+                                    <option value="">---所有---</option>
+                                    <option value="0">未签收</option>
+                                    <option value="1">已签收</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label class="font-noraml">快递公司：</label>
+                                <select  class="form-control" name="lastResultCom" th:with="type=${@dict.getType('express_company')}">
+                                    <option value="">---所有---</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
                             </li>
                             <li>
                                 <label>快递单号：</label>
                                 <input type="text" name="lastResultNu"/>
                             </li>
-                            <li>
+                            <!--<li>
                                 <label>目的国快递单状态：</label>
                                 <input type="text" name="destResultState"/>
                             </li>
@@ -48,7 +72,7 @@
                             <li>
                                 <label>目的国快递单号：</label>
                                 <input type="text" name="destResultNu"/>
-                            </li>
+                            </li>-->
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -81,6 +105,8 @@
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('bps:expsubspushresp:edit')}]];
         var removeFlag = [[${@permission.hasPermi('bps:expsubspushresp:remove')}]];
+        var companyDatas = [[${@dict.getType('express_company')}]];
+        var statsDatas = [[${@dict.getType('express_stats')}]];
         var prefix = ctx + "bps/expsubspushresp";
 
         $(function() {
@@ -99,7 +125,7 @@
                     title: 'SID',
                     visible: false
                 },
-                {
+                /*{
                     field: 'status',
                     title: '监控状态'
                 },
@@ -126,26 +152,32 @@
                 {
                     field: 'lastResultMessage',
                     title: '当前快递消息'
-                },
+                },*/
                 {
                     field: 'lastResultState',
-                    title: '当前快递单状态'
+                    title: '当前状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(statsDatas, value);
+                    }
                 },
                 {
                     field: 'lastResulStatus',
                     title: '通讯状态'
                 },
-                {
+                /*{
                     field: 'lastResultCondition',
                     title: '快递单明细状态'
-                },
+                },*/
                 {
                     field: 'lastResultIsCheck',
                     title: '是否签收'
                 },
                 {
                     field: 'lastResultCom',
-                    title: '快递公司编码'
+                    title: '快递公司',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(companyDatas, value);
+                    }
                 },
                 {
                     field: 'lastResultNu',
@@ -154,7 +186,7 @@
                 {
                     field: 'lastResultData',
                     title: '快递流转信息'
-                },
+                },/*
                 {
                     field: 'destResultMessage',
                     title: '目的国快递消息'
@@ -186,7 +218,7 @@
                 {
                     field: 'destResultData',
                     title: '目的国快递流转信息'
-                },
+                },*/
                 {
                     title: '操作',
                     align: 'center',

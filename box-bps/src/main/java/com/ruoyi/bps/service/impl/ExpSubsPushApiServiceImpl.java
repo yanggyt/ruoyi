@@ -213,14 +213,17 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         expSubsPushResp.setLastResultNu(subscribePushLastResult.getNu());
         expSubsPushResp.setLastResultData(SubscribePushDataToString(subscribePushLastResult.getData()));
 
-        expSubsPushResp.setDestResultMessage(subscribePushDestResult.getMessage());
-        expSubsPushResp.setDestResultState(subscribePushDestResult.getState());
-        expSubsPushResp.setDestResultStatus(subscribePushDestResult.getStatus());
-        expSubsPushResp.setDestResultCondition(subscribePushDestResult.getCondition());
-        expSubsPushResp.setDestResultIsCheck(subscribePushDestResult.getIscheck());
-        expSubsPushResp.setDestResultCom(subscribePushDestResult.getCom());
-        expSubsPushResp.setDestResultNu(subscribePushDestResult.getNu());
-        expSubsPushResp.setDestResultData(SubscribePushDataToString(subscribePushDestResult.getData()));
+        if(subscribePushDestResult != null) {
+            //只有邮政国外的快递推送才会有DestResult信息
+            expSubsPushResp.setDestResultMessage(subscribePushDestResult.getMessage());
+            expSubsPushResp.setDestResultState(subscribePushDestResult.getState());
+            expSubsPushResp.setDestResultStatus(subscribePushDestResult.getStatus());
+            expSubsPushResp.setDestResultCondition(subscribePushDestResult.getCondition());
+            expSubsPushResp.setDestResultIsCheck(subscribePushDestResult.getIscheck());
+            expSubsPushResp.setDestResultCom(subscribePushDestResult.getCom());
+            expSubsPushResp.setDestResultNu(subscribePushDestResult.getNu());
+            expSubsPushResp.setDestResultData(SubscribePushDataToString(subscribePushDestResult.getData()));
+        }
 
         return expSubsPushResp;
     }
@@ -234,9 +237,14 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         String str="";
         for(SubscribePushData subscribePushData:list){
             str+="【"+subscribePushData.getTime()+"】 ";
-            str+=subscribePushData.getAreaName()+"/"+subscribePushData.getContext();
+            if(StringUtils.isNotEmpty(subscribePushData.getAreaName()))
+            {
+                str+=subscribePushData.getAreaName()+"/";   //某些快递没有AreaName信息
+            }
+            str+=subscribePushData.getContext();
             if(list.size()-1>list.indexOf(subscribePushData)){
-                str+="\r";
+                //str+="\r\n";
+                str+="</br>";
             }
         }
         System.out.println(str);
