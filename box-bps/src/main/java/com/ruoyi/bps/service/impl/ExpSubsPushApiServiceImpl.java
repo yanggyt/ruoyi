@@ -87,7 +87,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         newExpSubscribe.setPhone(expSubscribe.getPhone());
         newExpSubscribe.setSalt("bpsemi");
         newExpSubscribe.setSubscribeTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
-        newExpSubscribe.setResult((subscribeResp.isResult())?"ture":"false");
+        newExpSubscribe.setResult((subscribeResp.isResult())?"true":"false");
         newExpSubscribe.setReturnCode(subscribeResp.getReturnCode());
         newExpSubscribe.setMessage(subscribeResp.getMessage());
 
@@ -243,8 +243,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
             }
             str+=subscribePushData.getContext();
             if(list.size()-1>list.indexOf(subscribePushData)){
-                //str+="\r\n";
-                str+="</br>";
+                str+="\r\n";
             }
         }
         System.out.println(str);

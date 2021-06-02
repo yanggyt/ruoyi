@@ -2,6 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <th:block th:include="include :: header('快递订阅推送信息列表')" />
+    <th:block th:include="include :: select2-css" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -10,30 +11,9 @@
                 <form id="formId">
                     <div class="select-list">
                         <ul>
-                            <!--<li>
-                                <label>监控状态：</label>
-                                <select name="status">
-                                    <option value="">所有</option>
-                                    <option value="-1">代码生成请选择字典属性</option>
-                                </select>
-                            </li>-->
-                            <!--<li>
-                                <label>当前状态：</label>
-                                <input type="text" name="lastResultState"/>
-                            </li>
-                            <li>
-                                <label>是否签收：</label>
-                                <input type="text" name="lastResultIsCheck"/>
-                            </li>
-                            <li>
-                                <label>快递公司编码：</label>
-                                <input type="text" name="lastResultCom"/>
-                                <label class="font-noraml">快递公司：</label>
-                            </li>-->
-
                             <li>
                                 <label class="font-noraml">当前状态：</label>
-                                <select  class="form-control" name="lastResultState" th:with="type=${@dict.getType('express_stats')}">
+                                <select  class="form-control select" name="lastResultState" th:with="type=${@dict.getType('express_stats')}">
                                     <option value="">---所有---</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -57,22 +37,6 @@
                                 <label>快递单号：</label>
                                 <input type="text" name="lastResultNu"/>
                             </li>
-                            <!--<li>
-                                <label>目的国快递单状态：</label>
-                                <input type="text" name="destResultState"/>
-                            </li>
-                            <li>
-                                <label>目的国是否签收：</label>
-                                <input type="text" name="destResultIsCheck"/>
-                            </li>
-                            <li>
-                                <label>目的国快递公司编码：</label>
-                                <input type="text" name="destResultCom"/>
-                            </li>
-                            <li>
-                                <label>目的国快递单号：</label>
-                                <input type="text" name="destResultNu"/>
-                            </li>-->
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -102,6 +66,7 @@
         </div>
     </div>
     <th:block th:include="include :: footer" />
+     <th:block th:include="include :: select2-js" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('bps:expsubspushresp:edit')}]];
         var removeFlag = [[${@permission.hasPermi('bps:expsubspushresp:remove')}]];
@@ -170,7 +135,12 @@
                 },*/
                 {
                     field: 'lastResultIsCheck',
-                    title: '是否签收'
+                    title: '是否签收',
+                    formatter: function(value, row, index) {
+                        if(value=="0"){return "未签收";}
+                        if(value=="1"){return "已签收";}
+                        return value;
+                    }
                 },
                 {
                     field: 'lastResultCom',
@@ -185,7 +155,10 @@
                 },
                 {
                     field: 'lastResultData',
-                    title: '快递流转信息'
+                    title: '运单详情',
+                    formatter:function (value,row,index){
+                        return value.replace(/(\r\n)|(\n)/g,'<br>');
+                    }
                 },/*
                 {
                     field: 'destResultMessage',

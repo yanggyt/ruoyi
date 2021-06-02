@@ -165,7 +165,7 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
             dataStr+="【"+queryTrackData.getTime()+"】 ";
             dataStr+=queryTrackData.getContext();
             if(queryTrackResp.getData().size()-1>queryTrackResp.getData().indexOf(queryTrackData)){
-                dataStr+="\r";
+                dataStr+="\r\n";
             }
         }
         ExpressInfo callbackExpressInfo=new ExpressInfo();
