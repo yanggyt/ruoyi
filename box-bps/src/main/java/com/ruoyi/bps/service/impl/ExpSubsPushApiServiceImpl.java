@@ -162,7 +162,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         }
         //快递单当前状态 （0在途，1揽收，2疑难，3签收，4退签，5派件，6退回，7转单，10待清关，11清关中，12已清关，13清关异常，14收件人拒签)
         String state = subscribePushResult.getState();
-        if(state.equals("3")){
+        //if(state.equals("3")){
             //处理签收逻辑
             //将快递流转状态存入数据库
             ExpSubsPushResp expSubsPushResp=new ExpSubsPushResp();
@@ -181,7 +181,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
                 //如果数据库中没有快递单号+快递公司编码，则更插入新记录
                 expSubsPushRespService.insertExpSubsPushResp(ToExpSubsPushResp(subscribePushParamResp));
             }
-        }
+       // }
 
         return subscribeResp;
     }
