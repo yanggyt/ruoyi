@@ -15,5 +15,20 @@ public enum DataSourceType
     /**
      * 从库
      */
-    SLAVE
+    SLAVE,
+
+    /**
+     * SQLSERVER数据库
+     */
+    SQLSVR,
+
+    /**
+     * TOPPROD_DS_REPORT数据库
+     */
+    TOPPRODDSREPORT,
+
+    /**
+     * TOPTEST_DS_REPORT数据库
+     */
+    TOPTESTDSREPORT
 }

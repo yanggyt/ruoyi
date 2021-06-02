@@ -49,6 +49,39 @@ public class DruidConfig
         return druidProperties.dataSource(dataSource);
     }
 
+    //add yangbo 新增SQLSERVER数据源　－－Begin
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.sqlsvr")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.sqlsvr", name = "enabled", havingValue = "true")
+    public DataSource sqlsvrDataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+    //add yangbo 新增SQLSERVER数据源　－－End
+
+    //add yangbo 新增topprod ds_report数据源　－－Begin
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.topproddsreport")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.topproddsreport", name = "enabled", havingValue = "true")
+    public DataSource topproddsreportDataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+    //add yangbo 新增topprod ds_report数据源　－－End
+
+    //add yangbo 新增toptest ds_report数据源　－－Begin
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.toptestdsreport")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.toptestdsreport", name = "enabled", havingValue = "true")
+    public DataSource toptestdsreportDataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+    //add yangbo 新增toptest ds_report数据源　－－End
+
     @Bean(name = "dynamicDataSource")
     @Primary
     public DynamicDataSource dataSource(DataSource masterDataSource)
@@ -56,6 +89,11 @@ public class DruidConfig
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(DataSourceType.MASTER.name(), masterDataSource);
         setDataSource(targetDataSources, DataSourceType.SLAVE.name(), "slaveDataSource");
+        //add yangbo 新增SQLSERVER、topproddsreport、toptestdsreport数据源 --Begin
+        setDataSource(targetDataSources, DataSourceType.SQLSVR.name(), "sqlsvrDataSource");
+        setDataSource(targetDataSources, DataSourceType.TOPPRODDSREPORT.name(), "topproddsreportDataSource");
+        setDataSource(targetDataSources, DataSourceType.TOPTESTDSREPORT.name(), "toptestdsreportDataSource");
+        //add yangbo 新增SQLSERVER、topproddsreport、toptestdsreport数据源　－－End
         return new DynamicDataSource(masterDataSource, targetDataSources);
     }
 
