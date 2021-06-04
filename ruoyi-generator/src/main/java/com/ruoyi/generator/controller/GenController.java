@@ -130,24 +130,7 @@ public class GenController extends BaseController
     public String edit(@PathVariable("tableId") Long tableId, ModelMap mmap)
     {
         GenTable table = genTableService.selectGenTableById(tableId);
-        List<GenTable> genTables = genTableService.selectGenTableAll();
-        List<CxSelect> cxSelect = new ArrayList<CxSelect>();
-        for (GenTable genTable : genTables)
-        {
-            if (!StringUtils.equals(table.getTableName(), genTable.getTableName()))
-            {
-                CxSelect cxTable = new CxSelect(genTable.getTableName(), genTable.getTableName() + '：' + genTable.getTableComment());
-                List<CxSelect> cxColumns = new ArrayList<CxSelect>();
-                for (GenTableColumn tableColumn : genTable.getColumns())
-                {
-                    cxColumns.add(new CxSelect(tableColumn.getColumnName(), tableColumn.getColumnName() + '：' + tableColumn.getColumnComment()));
-                }
-                cxTable.setS(cxColumns);
-                cxSelect.add(cxTable);
-            }
-        }
         mmap.put("table", table);
-        mmap.put("data", JSON.toJSON(cxSelect));
         return prefix + "/edit";
     }
 
