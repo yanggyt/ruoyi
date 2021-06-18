@@ -61,6 +61,7 @@ var table = {
                     showColumns: true,
                     showToggle: true,
                     showExport: false,
+                    showPrint: false,
                     exportDataType: 'all',
                     exportTypes: ['csv', 'txt', 'doc', 'excel'],
                     clickToSelect: false,
@@ -110,6 +111,7 @@ var table = {
                     showColumns: options.showColumns,                   // 是否显示隐藏某列下拉框
                     showToggle: options.showToggle,                     // 是否显示详细视图和列表视图的切换按钮
                     showExport: options.showExport,                     // 是否支持导出文件
+                    showPrint: options.showPrint,                       // 是否支持打印页面
                     showHeader: options.showHeader,                     // 是否显示表头
                     showFullscreen: options.showFullscreen,             // 是否显示全屏按钮
                     uniqueId: options.uniqueId,                         // 唯一的标识符
@@ -469,6 +471,11 @@ var table = {
                     pageNumber: pageNumber,
                     pageSize: pageSize
                 });
+            },
+            // 刷新options配置
+            refreshOptions: function(options, tableId) {
+                var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
+                $("#" + currentId).bootstrapTable('refreshOptions', options);
             },
             // 查询表格指定列值
             selectColumns: function(column) {
