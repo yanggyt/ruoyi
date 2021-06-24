@@ -72,6 +72,7 @@
         var removeFlag = [[${@permission.hasPermi('bps:expsubspushresp:remove')}]];
         var companyDatas = [[${@dict.getType('express_company')}]];
         var statsDatas = [[${@dict.getType('express_stats')}]];
+        var monitorStats=[[${@dict.getType('express_monitor_stats')}]];
         var prefix = ctx + "bps/expsubspushresp";
 
         $(function() {
@@ -90,19 +91,19 @@
                     title: 'SID',
                     visible: false
                 },
-                /*{
+                {
                     field: 'status',
-                    title: '监控状态'
+                    title: '监控状态',
+                    formatter: function(value, row, index) {
+                return $.table.selectDictLabel(monitorStats, value);
+                    }
                 },
                 {
                     field: 'billStatus',
-                    title: '状态'
+                    title: '状态',
+                    visible: false
                 },
-                {
-                    field: 'message',
-                    title: '监控状态消息'
-                },
-                {
+                /*{
                     field: 'autoCheck',
                     title: '快递公司编码是否出错'
                 },
@@ -159,7 +160,12 @@
                     formatter:function (value,row,index){
                         return value.replace(/(\r\n)|(\n)/g,'<br>');
                     }
-                },/*
+                },
+                    /*
+                {
+                    field: 'message',
+                    title: '监控状态消息'
+                },
                 {
                     field: 'destResultMessage',
                     title: '目的国快递消息'
