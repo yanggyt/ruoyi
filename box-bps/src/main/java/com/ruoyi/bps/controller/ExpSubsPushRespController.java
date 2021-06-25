@@ -120,4 +120,16 @@ public class ExpSubsPushRespController extends BaseController
     {
         return toAjax(expSubsPushRespService.deleteExpSubsPushRespByIds(ids));
     }
+
+    /**
+     * 快递订阅推送详细信息
+     */
+    @RequiresPermissions("bps:expsubspushresp:detail")
+    @GetMapping("/detail/{sid}")
+    public String detail(@PathVariable("sid") Long sid, ModelMap mmap)
+    {
+        ExpSubsPushResp expSubsPushResp = expSubsPushRespService.selectExpSubsPushRespById(sid);
+        mmap.put("expSubsPushResp", expSubsPushResp);
+        return prefix + "/detail";
+    }
 }
