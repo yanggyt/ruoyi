@@ -60,7 +60,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     /**
      * 查询部门管理树（排除下级）
      * 
-     * @param deptId 部门ID
+     * @param dept 部门
      * @return 所有部门信息
      */
     @Override
@@ -243,8 +243,10 @@ public class SysDeptServiceImpl implements ISysDeptService
     private void updateParentDeptStatusNormal(SysDept dept)
     {
         String ancestors = dept.getAncestors();
-        Long[] deptIds = Convert.toLongArray(ancestors);
-        deptMapper.updateDeptStatusNormal(deptIds);
+        if(org.apache.commons.lang3.StringUtils.isNotBlank(ancestors)) {
+            Long[] deptIds = Convert.toLongArray(ancestors);
+            deptMapper.updateDeptStatusNormal(deptIds);
+        }
     }
 
     /**

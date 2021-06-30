@@ -228,13 +228,11 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+	    <module>zklz-crm</module>
     </modules>
     <packaging>pom</packaging>
 
 
-    <dependencies>
-
-    </dependencies>
 
     <build>
         <plugins>
@@ -251,29 +249,12 @@
         </plugins>
     </build>
 
-    <repositories>
+    <distributionManagement>
         <repository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
+            <id>wendu-release</id>
+            <name>wendu-release</name>
+            <url>http://repo.wd.cn/repository/maven-releases/</url>
         </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+    </distributionManagement>
 
 </project>

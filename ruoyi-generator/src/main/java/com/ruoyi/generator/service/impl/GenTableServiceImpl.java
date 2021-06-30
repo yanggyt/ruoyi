@@ -257,8 +257,8 @@ public class GenTableServiceImpl implements IGenTableService
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
         for (String template : templates)
         {
-            if (!StringUtils.contains(template, "sql.vm"))
-            {
+//            if (!StringUtils.contains(template, "sql.vm"))
+//            {
                 // 渲染模板
                 StringWriter sw = new StringWriter();
                 Template tpl = Velocity.getTemplate(template, Constants.UTF8);
@@ -272,7 +272,7 @@ public class GenTableServiceImpl implements IGenTableService
                 {
                     throw new BusinessException("渲染模板失败，表名：" + table.getTableName());
                 }
-            }
+//            }
         }
     }
 
