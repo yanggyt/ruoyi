@@ -33,7 +33,7 @@
     <repository>
       <id>wendu-release</id>
       <name>wendu-release</name>
-      <url>http://repo.wendu.cn/repository/maven-releases/</url>
+      <url>http://repo.wd.cn/repository/maven-releases/</url>
     </repository>
   </distributionManagement>
 </project>
