@@ -67,6 +67,12 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>zklz-crm</artifactId>
+            <version>4.6.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

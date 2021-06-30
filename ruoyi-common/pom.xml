@@ -114,7 +114,7 @@
         <repository>
             <id>wendu-release</id>
             <name>wendu-release</name>
-            <url>http://repo.wendukeji.cn:6518/repository/maven-releases/</url>
+            <url>http://repo.wendu.cn/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 

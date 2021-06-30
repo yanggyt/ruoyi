@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.crm.mapper.CrmAgentMapper">
+    
+    <resultMap type="CrmAgent" id="CrmAgentResult">
+        <result property="id"    column="id"    />
+        <result property="agentName"    column="agent_name"    />
+        <result property="agentType"    column="agent_type"    />
+        <result property="agentLevel"    column="agent_level"    />
+        <result property="saleAddr"    column="sale_addr"    />
+        <result property="authStartTime"    column="auth_start_time"    />
+        <result property="authEndTime"    column="auth_end_time"    />
+        <result property="authStatus"    column="auth_status"    />
+        <result property="firstSale"    column="first_sale"    />
+        <result property="agentCode"    column="agent_code"    />
+        <result property="tycUri"    column="tyc_uri"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="capital"    column="capital"    />
+        <result property="memberNum"    column="member_num"    />
+        <result property="legalPerson"    column="legal_person"    />
+        <result property="contactName"    column="contact_name"    />
+        <result property="contactTel"    column="contact_tel"    />
+        <result property="contactName2"    column="contact_name2"    />
+        <result property="contactTel2"    column="contact_tel2"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectCrmAgentVo">
+        select id, agent_name, agent_type, agent_level, sale_addr, auth_start_time, auth_end_time, auth_status, first_sale, agent_code, tyc_uri, create_date, capital, member_num, legal_person, contact_name, contact_tel, contact_name2, contact_tel2, del_flag, create_by, create_time, update_by, update_time, remark from crm_agent
+    </sql>
+
+    <select id="selectCrmAgentList" parameterType="CrmAgent" resultMap="CrmAgentResult">
+        <include refid="selectCrmAgentVo"/>
+        <where>  
+            <if test="agentName != null  and agentName != ''"> and agent_name like concat('%', #{agentName}, '%')</if>
+            <if test="agentType != null  and agentType != ''"> and agent_type = #{agentType}</if>
+            <if test="agentLevel != null  and agentLevel != ''"> and agent_level = #{agentLevel}</if>
+            <if test="saleAddr != null  and saleAddr != ''"> and sale_addr = #{saleAddr}</if>
+            <if test="authStartTime != null "> and auth_start_time = #{authStartTime}</if>
+            <if test="authEndTime != null "> and auth_end_time = #{authEndTime}</if>
+            <if test="authStatus != null  and authStatus != ''"> and auth_status = #{authStatus}</if>
+            <if test="firstSale != null "> and first_sale = #{firstSale}</if>
+            <if test="agentCode != null  and agentCode != ''"> and agent_code = #{agentCode}</if>
+            <if test="tycUri != null  and tycUri != ''"> and tyc_uri = #{tycUri}</if>
+            <if test="createDate != null  and createDate != ''"> and create_date = #{createDate}</if>
+            <if test="capital != null "> and capital = #{capital}</if>
+            <if test="memberNum != null "> and member_num = #{memberNum}</if>
+            <if test="legalPerson != null  and legalPerson != ''"> and legal_person = #{legalPerson}</if>
+            <if test="contactName != null  and contactName != ''"> and contact_name like concat('%', #{contactName}, '%')</if>
+            <if test="contactTel != null  and contactTel != ''"> and contact_tel = #{contactTel}</if>
+            <if test="contactName2 != null  and contactName2 != ''"> and contact_name2 = #{contactName2}</if>
+            <if test="contactTel2 != null  and contactTel2 != ''"> and contact_tel2 = #{contactTel2}</if>
+        </where>
+    </select>
+    
+    <select id="selectCrmAgentById" parameterType="Long" resultMap="CrmAgentResult">
+        <include refid="selectCrmAgentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCrmAgent" parameterType="CrmAgent">
+        insert into crm_agent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="agentName != null and agentName != ''">agent_name,</if>
+            <if test="agentType != null and agentType != ''">agent_type,</if>
+            <if test="agentLevel != null">agent_level,</if>
+            <if test="saleAddr != null">sale_addr,</if>
+            <if test="authStartTime != null">auth_start_time,</if>
+            <if test="authEndTime != null">auth_end_time,</if>
+            <if test="authStatus != null">auth_status,</if>
+            <if test="firstSale != null">first_sale,</if>
+            <if test="agentCode != null">agent_code,</if>
+            <if test="tycUri != null">tyc_uri,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="capital != null">capital,</if>
+            <if test="memberNum != null">member_num,</if>
+            <if test="legalPerson != null">legal_person,</if>
+            <if test="contactName != null">contact_name,</if>
+            <if test="contactTel != null">contact_tel,</if>
+            <if test="contactName2 != null">contact_name2,</if>
+            <if test="contactTel2 != null">contact_tel2,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="agentName != null and agentName != ''">#{agentName},</if>
+            <if test="agentType != null and agentType != ''">#{agentType},</if>
+            <if test="agentLevel != null">#{agentLevel},</if>
+            <if test="saleAddr != null">#{saleAddr},</if>
+            <if test="authStartTime != null">#{authStartTime},</if>
+            <if test="authEndTime != null">#{authEndTime},</if>
+            <if test="authStatus != null">#{authStatus},</if>
+            <if test="firstSale != null">#{firstSale},</if>
+            <if test="agentCode != null">#{agentCode},</if>
+            <if test="tycUri != null">#{tycUri},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="capital != null">#{capital},</if>
+            <if test="memberNum != null">#{memberNum},</if>
+            <if test="legalPerson != null">#{legalPerson},</if>
+            <if test="contactName != null">#{contactName},</if>
+            <if test="contactTel != null">#{contactTel},</if>
+            <if test="contactName2 != null">#{contactName2},</if>
+            <if test="contactTel2 != null">#{contactTel2},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCrmAgent" parameterType="CrmAgent">
+        update crm_agent
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="agentName != null and agentName != ''">agent_name = #{agentName},</if>
+            <if test="agentType != null and agentType != ''">agent_type = #{agentType},</if>
+            <if test="agentLevel != null">agent_level = #{agentLevel},</if>
+            <if test="saleAddr != null">sale_addr = #{saleAddr},</if>
+            <if test="authStartTime != null">auth_start_time = #{authStartTime},</if>
+            <if test="authEndTime != null">auth_end_time = #{authEndTime},</if>
+            <if test="authStatus != null">auth_status = #{authStatus},</if>
+            <if test="firstSale != null">first_sale = #{firstSale},</if>
+            <if test="agentCode != null">agent_code = #{agentCode},</if>
+            <if test="tycUri != null">tyc_uri = #{tycUri},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="capital != null">capital = #{capital},</if>
+            <if test="memberNum != null">member_num = #{memberNum},</if>
+            <if test="legalPerson != null">legal_person = #{legalPerson},</if>
+            <if test="contactName != null">contact_name = #{contactName},</if>
+            <if test="contactTel != null">contact_tel = #{contactTel},</if>
+            <if test="contactName2 != null">contact_name2 = #{contactName2},</if>
+            <if test="contactTel2 != null">contact_tel2 = #{contactTel2},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCrmAgentById" parameterType="Long">
+        delete from crm_agent where id = #{id}
+    </delete>
+
+    <delete id="deleteCrmAgentByIds" parameterType="String">
+        delete from crm_agent where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

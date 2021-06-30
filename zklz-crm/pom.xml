@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>ruoyi</artifactId>
+    <groupId>com.ruoyi</groupId>
+    <version>4.6.1</version>
+  </parent>
+  <artifactId>zklz-crm</artifactId>
+  <dependencies>
+    <dependency>
+      <groupId>com.ruoyi</groupId>
+      <artifactId>ruoyi-common</artifactId>
+      <version>4.6.1</version>
+    </dependency>    <!-- 核心模块-->
+    <dependency>
+      <groupId>com.ruoyi</groupId>
+      <artifactId>ruoyi-framework</artifactId>
+      <version>4.6.1</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  <distributionManagement>
+    <repository>
+      <id>wendu-release</id>
+      <name>wendu-release</name>
+      <url>http://repo.wendu.cn/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
+</project>
