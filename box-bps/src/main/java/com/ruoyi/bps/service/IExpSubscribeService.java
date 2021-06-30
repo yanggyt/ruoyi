@@ -1,5 +1,6 @@
 package com.ruoyi.bps.service;
 
+import com.ruoyi.bps.domain.ExpSubsPushResp;
 import com.ruoyi.bps.domain.ExpSubscribe;
 
 import java.util.List;
@@ -59,4 +60,12 @@ public interface IExpSubscribeService
      * @return 结果
      */
     public int deleteExpSubscribeById(Long sid);
+
+    /**
+     * 根据快递单号查询快递订阅推送信息
+     *
+     * @param number 快递单号List
+     * @return 快递订阅推送信息
+     */
+    public List<ExpSubscribe> selectExpSubsPushRespByNumber(List<String> number);
 }

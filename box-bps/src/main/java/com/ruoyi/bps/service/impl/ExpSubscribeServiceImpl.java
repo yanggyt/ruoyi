@@ -1,5 +1,6 @@
 package com.ruoyi.bps.service.impl;
 
+import com.ruoyi.bps.domain.ExpSubsPushResp;
 import com.ruoyi.bps.domain.ExpSubscribe;
 import com.ruoyi.bps.mapper.ExpSubscribeMapper;
 import com.ruoyi.bps.service.IExpSubscribeService;
@@ -91,5 +92,17 @@ public class ExpSubscribeServiceImpl implements IExpSubscribeService
     public int deleteExpSubscribeById(Long sid)
     {
         return expSubscribeMapper.deleteExpSubscribeById(sid);
+    }
+
+
+    /**
+     * 根据快递单号查询快递订阅推送信息
+     *
+     * @param number 快递单号List
+     * @return 快递订阅推送信息
+     */
+    @Override
+    public List<ExpSubscribe> selectExpSubsPushRespByNumber(List<String> number){
+        return expSubscribeMapper.selectExpSubscribeByNumber(number);
     }
 }

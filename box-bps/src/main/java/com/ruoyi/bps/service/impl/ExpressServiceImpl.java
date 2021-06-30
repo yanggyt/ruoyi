@@ -1,16 +1,5 @@
 package com.ruoyi.bps.service.impl;
 
-//import com.ruoyi.bps.express.api.QueryTrack;
-//import com.ruoyi.bps.express.api.Subscribe;
-//import com.ruoyi.bps.express.contant.ApiInfoConstant;
-//import com.ruoyi.bps.express.contant.CompanyConstant;
-//import com.ruoyi.bps.express.core.IBaseClient;
-//import com.ruoyi.bps.express.pojo.HttpResult;
-//import com.ruoyi.bps.express.request.*;
-
-//import com.ruoyi.bps.express.response.QueryTrackResp;
-//import com.ruoyi.bps.express.utils.PropertiesReader;
-//import com.ruoyi.bps.express.utils.SignUtils;
 
 import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.QueryTrack;

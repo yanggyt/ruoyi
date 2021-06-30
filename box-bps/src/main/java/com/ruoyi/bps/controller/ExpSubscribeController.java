@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,7 +65,14 @@ public class ExpSubscribeController extends BaseController
     public TableDataInfo list(ExpSubscribe expSubscribe)
     {
         startPage();
-        List<ExpSubscribe> list = expSubscribeService.selectExpSubscribeList(expSubscribe);
+        List<ExpSubscribe> list = new ArrayList<>();
+        if(expSubscribe.getNumber().contains(",")){
+            List<String> number= Arrays.asList(expSubscribe.getNumber().split(","));
+            list=expSubscribeService.selectExpSubsPushRespByNumber(number);
+        }
+        else {
+            list = expSubscribeService.selectExpSubscribeList(expSubscribe);
+        }
         return getDataTable(list);
     }
 

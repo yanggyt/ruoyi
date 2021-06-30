@@ -1,5 +1,6 @@
 package com.ruoyi.bps.mapper;
 
+import com.ruoyi.bps.domain.ExpSubsPushResp;
 import com.ruoyi.bps.domain.ExpSubscribe;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -61,4 +62,12 @@ public interface ExpSubscribeMapper
      * @return 结果
      */
     public int deleteExpSubscribeByIds(String[] sids);
+
+    /**
+     * 根据快递单号查询快递订阅推送信息
+     *
+     * @param number 快递单号List
+     * @return 快递订阅推送信息
+     */
+    public List<ExpSubscribe> selectExpSubscribeByNumber(List<String> number);
 }
