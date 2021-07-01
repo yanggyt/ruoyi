@@ -281,6 +281,8 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/ruoyi/**", "anon");
         filterChainDefinitionMap.put("/captcha/captchaImage**", "anon");
+        filterChainDefinitionMap.put("/test/**", "anon"); //为防便测试，配置test路径可以匿名访问
+        filterChainDefinitionMap.put("/anon/**", "anon"); //为防便测试，配置anon路径可以匿名访问
         // 退出 logout地址，shiro去清除session
         filterChainDefinitionMap.put("/logout", "logout");
         // 不需要拦截的访问

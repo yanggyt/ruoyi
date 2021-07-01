@@ -2,20 +2,48 @@
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        driverClassName: com.mysql.cj.jdbc.Driver
+        #driverClassName: com.mysql.cj.jdbc.Driver
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://192.168.2.18:3306/bps?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
-                password: password
+                password: abc.123
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
-                enabled: false
-                url: 
-                username: 
-                password: 
+                enabled: true
+                url: jdbc:oracle:thin:@192.168.2.91:1521/toptest
+                username: ds7
+                password: ds7
+                driverClassName: oracle.jdbc.driver.OracleDriver
+            #SQlServer数据源
+            sqlsvr:
+                # 从数据源开关/默认关闭
+                enabled: true
+                url: jdbc:sqlserver://192.168.2.84:1433;SelectMethod=cursor;DatabaseName=ITDemo
+                username: sa
+                password: abc.123
+                driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+            # Topprod_ds_report
+            topproddsreport:
+                # 从数据源开关/默认关闭
+                enabled: true
+                url: jdbc:oracle:thin:@192.168.2.91:1521/topprod
+                username: ds_report
+                password: ds_report
+                driverClassName: oracle.jdbc.driver.OracleDriver
+
+            # Toptest_ds_report
+            toptestdsreport:
+                # 从数据源开关/默认关闭
+                enabled: true
+                url: jdbc:oracle:thin:@192.168.2.91:1521/toptest
+                username: ds_report
+                password: ds_report
+                driverClassName: oracle.jdbc.driver.OracleDriver
+
             # 初始连接数
             initialSize: 5
             # 最小连接池数量
@@ -43,8 +71,8 @@ spring:
                 allow:
                 url-pattern: /druid/*
                 # 控制台管理用户名和密码
-                login-username: ruoyi
-                login-password: 123456
+                login-username: admin
+                login-password: bps2019
             filter:
                 stat:
                     enabled: true
