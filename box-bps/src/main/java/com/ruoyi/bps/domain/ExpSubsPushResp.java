@@ -106,240 +106,229 @@ public class ExpSubsPushResp extends BaseEntity
     @Excel(name = "目的国快递流转信息")
     private String destResultData;
 
-    public void setSid(Long sid) 
-    {
+    /** 最后更新时间 */
+    @Excel(name = "最后更新时间")
+    private String lastResponseTime;
+
+    public Long getSid() {
+        return sid;
+    }
+
+    public void setSid(Long sid) {
         this.sid = sid;
     }
 
-    public Long getSid() 
-    {
-        return sid;
+    public String getStatus() {
+        return status;
     }
-    public void setStatus(String status) 
-    {
+
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getStatus() 
-    {
-        return status;
+    public String getBillStatus() {
+        return billStatus;
     }
-    public void setBillStatus(String billStatus) 
-    {
+
+    public void setBillStatus(String billStatus) {
         this.billStatus = billStatus;
     }
 
-    public String getBillStatus() 
-    {
-        return billStatus;
+    public String getMessage() {
+        return message;
     }
-    public void setMessage(String message) 
-    {
+
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public String getMessage() 
-    {
-        return message;
+    public String getAutoCheck() {
+        return autoCheck;
     }
-    public void setAutoCheck(String autoCheck) 
-    {
+
+    public void setAutoCheck(String autoCheck) {
         this.autoCheck = autoCheck;
     }
 
-    public String getAutoCheck() 
-    {
-        return autoCheck;
+    public String getComOld() {
+        return comOld;
     }
-    public void setComOld(String comOld) 
-    {
+
+    public void setComOld(String comOld) {
         this.comOld = comOld;
     }
 
-    public String getComOld() 
-    {
-        return comOld;
+    public String getComNew() {
+        return comNew;
     }
-    public void setComNew(String comNew) 
-    {
+
+    public void setComNew(String comNew) {
         this.comNew = comNew;
     }
 
-    public String getComNew() 
-    {
-        return comNew;
+    public String getLastResultMessage() {
+        return lastResultMessage;
     }
-    public void setLastResultMessage(String lastResultMessage) 
-    {
+
+    public void setLastResultMessage(String lastResultMessage) {
         this.lastResultMessage = lastResultMessage;
     }
 
-    public String getLastResultMessage() 
-    {
-        return lastResultMessage;
+    public String getLastResultState() {
+        return lastResultState;
     }
-    public void setLastResultState(String lastResultState) 
-    {
+
+    public void setLastResultState(String lastResultState) {
         this.lastResultState = lastResultState;
     }
 
-    public String getLastResultState() 
-    {
-        return lastResultState;
+    public String getLastResulStatus() {
+        return lastResulStatus;
     }
-    public void setLastResulStatus(String lastResulStatus) 
-    {
+
+    public void setLastResulStatus(String lastResulStatus) {
         this.lastResulStatus = lastResulStatus;
     }
 
-    public String getLastResulStatus() 
-    {
-        return lastResulStatus;
+    public String getLastResultCondition() {
+        return lastResultCondition;
     }
-    public void setLastResultCondition(String lastResultCondition) 
-    {
+
+    public void setLastResultCondition(String lastResultCondition) {
         this.lastResultCondition = lastResultCondition;
     }
 
-    public String getLastResultCondition() 
-    {
-        return lastResultCondition;
+    public String getLastResultIsCheck() {
+        return lastResultIsCheck;
     }
-    public void setLastResultIsCheck(String lastResultIsCheck) 
-    {
+
+    public void setLastResultIsCheck(String lastResultIsCheck) {
         this.lastResultIsCheck = lastResultIsCheck;
     }
 
-    public String getLastResultIsCheck() 
-    {
-        return lastResultIsCheck;
+    public String getLastResultCom() {
+        return lastResultCom;
     }
-    public void setLastResultCom(String lastResultCom) 
-    {
+
+    public void setLastResultCom(String lastResultCom) {
         this.lastResultCom = lastResultCom;
     }
 
-    public String getLastResultCom() 
-    {
-        return lastResultCom;
+    public String getLastResultNu() {
+        return lastResultNu;
     }
-    public void setLastResultNu(String lastResultNu) 
-    {
+
+    public void setLastResultNu(String lastResultNu) {
         this.lastResultNu = lastResultNu;
     }
 
-    public String getLastResultNu() 
-    {
-        return lastResultNu;
+    public String getLastResultData() {
+        return lastResultData;
     }
-    public void setLastResultData(String lastResultData) 
-    {
+
+    public void setLastResultData(String lastResultData) {
         this.lastResultData = lastResultData;
     }
 
-    public String getLastResultData() 
-    {
-        return lastResultData;
+    public String getDestResultMessage() {
+        return destResultMessage;
     }
-    public void setDestResultMessage(String destResultMessage) 
-    {
+
+    public void setDestResultMessage(String destResultMessage) {
         this.destResultMessage = destResultMessage;
     }
 
-    public String getDestResultMessage() 
-    {
-        return destResultMessage;
+    public String getDestResultState() {
+        return destResultState;
     }
-    public void setDestResultState(String destResultState) 
-    {
+
+    public void setDestResultState(String destResultState) {
         this.destResultState = destResultState;
     }
 
-    public String getDestResultState() 
-    {
-        return destResultState;
+    public String getDestResultStatus() {
+        return destResultStatus;
     }
-    public void setDestResultStatus(String destResultStatus) 
-    {
+
+    public void setDestResultStatus(String destResultStatus) {
         this.destResultStatus = destResultStatus;
     }
 
-    public String getDestResultStatus() 
-    {
-        return destResultStatus;
+    public String getDestResultCondition() {
+        return destResultCondition;
     }
-    public void setDestResultCondition(String destResultCondition) 
-    {
+
+    public void setDestResultCondition(String destResultCondition) {
         this.destResultCondition = destResultCondition;
     }
 
-    public String getDestResultCondition() 
-    {
-        return destResultCondition;
+    public String getDestResultIsCheck() {
+        return destResultIsCheck;
     }
-    public void setDestResultIsCheck(String destResultIsCheck) 
-    {
+
+    public void setDestResultIsCheck(String destResultIsCheck) {
         this.destResultIsCheck = destResultIsCheck;
     }
 
-    public String getDestResultIsCheck() 
-    {
-        return destResultIsCheck;
+    public String getDestResultCom() {
+        return destResultCom;
     }
-    public void setDestResultCom(String destResultCom) 
-    {
+
+    public void setDestResultCom(String destResultCom) {
         this.destResultCom = destResultCom;
     }
 
-    public String getDestResultCom() 
-    {
-        return destResultCom;
+    public String getDestResultNu() {
+        return destResultNu;
     }
-    public void setDestResultNu(String destResultNu) 
-    {
+
+    public void setDestResultNu(String destResultNu) {
         this.destResultNu = destResultNu;
     }
 
-    public String getDestResultNu() 
-    {
-        return destResultNu;
+    public String getDestResultData() {
+        return destResultData;
     }
-    public void setDestResultData(String destResultData) 
-    {
+
+    public void setDestResultData(String destResultData) {
         this.destResultData = destResultData;
     }
 
-    public String getDestResultData() 
-    {
-        return destResultData;
+    public String getLastResponseTime() {
+        return lastResponseTime;
+    }
+
+    public void setLastResponseTime(String lastResponseTime) {
+        this.lastResponseTime = lastResponseTime;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("sid", getSid())
-            .append("status", getStatus())
-            .append("billStatus", getBillStatus())
-            .append("message", getMessage())
-            .append("autoCheck", getAutoCheck())
-            .append("comOld", getComOld())
-            .append("comNew", getComNew())
-            .append("lastResultMessage", getLastResultMessage())
-            .append("lastResultState", getLastResultState())
-            .append("lastResulStatus", getLastResulStatus())
-            .append("lastResultCondition", getLastResultCondition())
-            .append("lastResultIsCheck", getLastResultIsCheck())
-            .append("lastResultCom", getLastResultCom())
-            .append("lastResultNu", getLastResultNu())
-            .append("lastResultData", getLastResultData())
-            .append("destResultMessage", getDestResultMessage())
-            .append("destResultState", getDestResultState())
-            .append("destResultStatus", getDestResultStatus())
-            .append("destResultCondition", getDestResultCondition())
-            .append("destResultIsCheck", getDestResultIsCheck())
-            .append("destResultCom", getDestResultCom())
-            .append("destResultNu", getDestResultNu())
-            .append("destResultData", getDestResultData())
-            .toString();
+        return "ExpSubsPushResp{" +
+                "sid=" + sid +
+                ", status='" + status + '\'' +
+                ", billStatus='" + billStatus + '\'' +
+                ", message='" + message + '\'' +
+                ", autoCheck='" + autoCheck + '\'' +
+                ", comOld='" + comOld + '\'' +
+                ", comNew='" + comNew + '\'' +
+                ", lastResultMessage='" + lastResultMessage + '\'' +
+                ", lastResultState='" + lastResultState + '\'' +
+                ", lastResulStatus='" + lastResulStatus + '\'' +
+                ", lastResultCondition='" + lastResultCondition + '\'' +
+                ", lastResultIsCheck='" + lastResultIsCheck + '\'' +
+                ", lastResultCom='" + lastResultCom + '\'' +
+                ", lastResultNu='" + lastResultNu + '\'' +
+                ", lastResultData='" + lastResultData + '\'' +
+                ", destResultMessage='" + destResultMessage + '\'' +
+                ", destResultState='" + destResultState + '\'' +
+                ", destResultStatus='" + destResultStatus + '\'' +
+                ", destResultCondition='" + destResultCondition + '\'' +
+                ", destResultIsCheck='" + destResultIsCheck + '\'' +
+                ", destResultCom='" + destResultCom + '\'' +
+                ", destResultNu='" + destResultNu + '\'' +
+                ", destResultData='" + destResultData + '\'' +
+                ", lastResponseTime='" + lastResponseTime + '\'' +
+                '}';
     }
 }

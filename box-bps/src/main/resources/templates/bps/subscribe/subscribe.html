@@ -33,12 +33,16 @@
                             </li>
                             <li>
                                 <label>订阅结果：</label>
-                                <input type="text" name="result"/>
+                                <select  class="form-control" name="result">
+                                    <option value="">---所有---</option>
+                                    <option value="true">成功</option>
+                                    <option value="false">失败</option>
+                                </select>
                             </li>
-                            <li>
+                          <!--  <li>
                                 <label>返回码：</label>
                                 <input type="text" name="returnCode"/>
-                            </li>
+                            </li>-->
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm"  onclick="$.table.search();"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -120,7 +124,14 @@
                 },
                 {
                     field: 'result',
-                    title: '订阅结果'
+                    title: '订阅结果',
+                    formatter: function(value, row, index) {
+                        if(value=="true")
+                        { return "成功";}
+                        if(value=="false")
+                        {return "失败";}
+                        return value;
+                    }
                 },
                 {
                     field: 'returnCode',

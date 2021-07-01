@@ -30,6 +30,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-3 control-label">最新推送时间：</label>
+                <div class="col-sm-8">
+                    <input name="lastResponseTime" th:field="*{lastResponseTime}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-3 control-label">快递单号：</label>
                 <div class="col-sm-8">
                     <input name="lastResultNu" th:field="*{lastResultNu}" class="form-control" type="text" readonly>

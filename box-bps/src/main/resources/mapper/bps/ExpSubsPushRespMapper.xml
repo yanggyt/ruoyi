@@ -28,10 +28,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="destResultCom"    column="destResultCom"    />
         <result property="destResultNu"    column="destResultNu"    />
         <result property="destResultData"    column="destResultData"    />
+        <result property="lastResponseTime"    column="lastResponseTime"    />
     </resultMap>
 
     <sql id="selectExpSubsPushRespVo">
-        select sid, status, billStatus, message, autoCheck, comOld, comNew, lastResultMessage, lastResultState, lastResulStatus, lastResultCondition, lastResultIsCheck, lastResultCom, lastResultNu, lastResultData, destResultMessage, destResultState, destResultStatus, destResultCondition, destResultIsCheck, destResultCom, destResultNu, destResultData from exp_subs_push_resp
+        select sid, status, billStatus, message, autoCheck, comOld, comNew, lastResultMessage, lastResultState, lastResulStatus, lastResultCondition, lastResultIsCheck, lastResultCom, lastResultNu, lastResultData, destResultMessage, destResultState, destResultStatus, destResultCondition, destResultIsCheck, destResultCom, destResultNu, destResultData, lastResponseTime from exp_subs_push_resp
     </sql>
 
     <select id="selectExpSubsPushRespList" parameterType="ExpSubsPushResp" resultMap="ExpSubsPushRespResult">
@@ -79,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="destResultCom != null">destResultCom,</if>
             <if test="destResultNu != null">destResultNu,</if>
             <if test="destResultData != null">destResultData,</if>
+            <if test="lastResponseTime != null">lastResponseTime,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="status != null">#{status},</if>
@@ -103,6 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="destResultCom != null">#{destResultCom},</if>
             <if test="destResultNu != null">#{destResultNu},</if>
             <if test="destResultData != null">#{destResultData},</if>
+            <if test="lastResponseTime != null">#{lastResponseTime},</if>
          </trim>
     </insert>
 
@@ -131,6 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="destResultCom != null">destResultCom = #{destResultCom},</if>
             <if test="destResultNu != null">destResultNu = #{destResultNu},</if>
             <if test="destResultData != null">destResultData = #{destResultData},</if>
+            <if test="lastResponseTime != null">lastResponseTime = #{lastResponseTime},</if>
         </trim>
         where sid = #{sid}
     </update>

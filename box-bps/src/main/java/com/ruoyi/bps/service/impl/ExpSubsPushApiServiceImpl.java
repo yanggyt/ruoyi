@@ -1,12 +1,5 @@
 package com.ruoyi.bps.service.impl;
 
-import com.ruoyi.bps.domain.ExpSubsPushResp;
-import com.ruoyi.bps.domain.ExpSubscribe;
-import com.ruoyi.bps.service.IExpSubsPushApiService;
-import com.ruoyi.bps.service.IExpSubsPushRespService;
-import com.ruoyi.bps.service.IExpSubscribeService;
-import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.Subscribe;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
@@ -21,6 +14,13 @@ import com.kuaidi100.sdk.response.SubscribePushResult;
 import com.kuaidi100.sdk.response.SubscribeResp;
 import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
+import com.ruoyi.bps.domain.ExpSubsPushResp;
+import com.ruoyi.bps.domain.ExpSubscribe;
+import com.ruoyi.bps.service.IExpSubsPushApiService;
+import com.ruoyi.bps.service.IExpSubsPushRespService;
+import com.ruoyi.bps.service.IExpSubscribeService;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -224,6 +224,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
             expSubsPushResp.setDestResultNu(subscribePushDestResult.getNu());
             expSubsPushResp.setDestResultData(SubscribePushDataToString(subscribePushDestResult.getData()));
         }
+        expSubsPushResp.setLastResponseTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
 
         return expSubsPushResp;
     }
