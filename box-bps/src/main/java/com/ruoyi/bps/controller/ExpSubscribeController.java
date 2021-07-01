@@ -65,7 +65,7 @@ public class ExpSubscribeController extends BaseController
     public TableDataInfo list(ExpSubscribe expSubscribe)
     {
         startPage();
-        List<ExpSubscribe> list = new ArrayList<>();
+        List<ExpSubscribe> list;
         if(expSubscribe.getNumber().contains(",")){
             List<String> number= Arrays.asList(expSubscribe.getNumber().split(","));
             list=expSubscribeService.selectExpSubsPushRespByNumber(number);

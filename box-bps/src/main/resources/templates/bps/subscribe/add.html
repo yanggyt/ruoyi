@@ -80,11 +80,12 @@
             $("#form-subscribe-add").serializeArray().map(function(val,key){formObject[val.name]=val.value;})
 
             $.ajax({
-                url:ctx+"/bps/subscribe/subscribe",
+                url:ctx+"bps/subscribe/subscribe",
                 type:"POST",
                 contentType: "application/json",
                 data: JSON.stringify(formObject),
                 dataType: "json",
+                async:false,  //如果不加async:false参数，ajax请求默认是异步的，会出现工程启动后第一次订阅，返回canceled，不执行success任务的问题
                 success:function(data){
                     alert(JSON.stringify(data));
                     parent.$("#number").val($("#number").val());
@@ -94,7 +95,6 @@
                     alert("错误！！");
                 }
             });
-
         };
     </script>
 </body>

@@ -75,6 +75,7 @@
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('bps:subscribe:edit')}]];
         var removeFlag = [[${@permission.hasPermi('bps:subscribe:remove')}]];
+        var stepToResp = [[${@permission.hasPermi('bps:expsubspushresp:list')}]];
         var companyDatas = [[${@dict.getType('express_company')}]];
         var prefix = ctx + "bps/subscribe";
 
@@ -134,6 +135,7 @@
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
+                        /*actions.push('<a class="btn btn-danger btn-xs ' + stepToResp + '" href="expsubspushresp/list/'+row.sid+'"><i class="fa fa-search"></i>信息跟踪</a>');*/
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sid + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sid + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
