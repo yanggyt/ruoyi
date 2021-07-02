@@ -1,6 +1,7 @@
-package com.ruoyi.bps.service;
+package com.ruoyi.bps.service.impl;
 
 import com.ruoyi.bps.mapper.TopgpDdlMapper;
+import com.ruoyi.bps.service.TopgpDdlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
