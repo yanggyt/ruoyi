@@ -82,7 +82,7 @@ public class SysPasswordService
             {
             return user.getPassword().equals(encryptPassword(user.getLoginName(), newPassword, user.getSalt()));
             }
-            return result;
+            return true;
     }
 
     public void clearLoginRecordCache(String loginName)
