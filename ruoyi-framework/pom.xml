@@ -77,6 +77,12 @@
             <artifactId>ruoyi-system</artifactId>
         </dependency>
 
+        <!--ldap-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-ldap</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -7,6 +7,8 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.ShiroConstants;
@@ -27,6 +29,9 @@ public class SysPasswordService
 {
     @Autowired
     private CacheManager cacheManager;
+
+    @Autowired
+    private LdapTemplate ldapTemplate;
 
     private Cache<String, AtomicInteger> loginRecordCache;
 
@@ -70,7 +75,14 @@ public class SysPasswordService
 
     public boolean matches(SysUser user, String newPassword)
     {
-        return user.getPassword().equals(encryptPassword(user.getLoginName(), newPassword, user.getSalt()));
+        //增加LDAP认证，如果LDAP认证不通过，则验证本地用户名密码 --yangbo 2021/7/7
+            EqualsFilter filter = new EqualsFilter("sAMAccountName", user.getLoginName());
+            Boolean result = ldapTemplate.authenticate("", filter.toString(), newPassword);
+            if(!result)
+            {
+            return user.getPassword().equals(encryptPassword(user.getLoginName(), newPassword, user.getSalt()));
+            }
+            return result;
     }
 
     public void clearLoginRecordCache(String loginName)
