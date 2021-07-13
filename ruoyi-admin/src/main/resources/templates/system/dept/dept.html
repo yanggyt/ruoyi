@@ -29,6 +29,9 @@
 			</div>
                 
             <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="syncDept()" shiro:hasPermission="system:dept:sync">
+					<i class="fa fa-plus"></i> 同步
+				</a>
 		        <a class="btn btn-success" onclick="$.operate.add(100)" shiro:hasPermission="system:dept:add">
                     <i class="fa fa-plus"></i> 新增
                 </a>
@@ -107,6 +110,20 @@
 		    };
 		    $.treeTable.init(options);
 		});
+
+		function syncDept() {
+			$.ajax({
+				type: 'POST',
+				url: ctx+"system/dept/syncDept",
+				data: JSON.stringify(""),  //beauty是字符串
+				contentType: "application/json",
+				dataType: "json",
+				success: function(message) {
+					//alert(JSON.stringify(message)); //将JSON对象转换为字符串
+				}
+			});
+		};
+
 	</script>
 </body>
 </html>
