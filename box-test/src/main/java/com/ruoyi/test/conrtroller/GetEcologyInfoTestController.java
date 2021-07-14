@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.EcologyDept;
 import com.ruoyi.system.mapper.SysDeptMapper;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +67,39 @@ public class GetEcologyInfoTestController extends BaseController {
         return map;
     }*/
 
+    public SysDept insertEcologyDept(EcologyDept ecologyDept){
+        SysDept dept=new SysDept();
+        dept.setDeptId(Long.parseLong(ecologyDept.getId()));
+        dept.setParentId(Long.parseLong(ecologyDept.getSupdepid()) == 0 ? 999999 : Long.parseLong(ecologyDept.getSupdepid()));
+        dept.setDeptName(ecologyDept.getDepartmentname());
+        //dept.setAncestors(pAncestors);
+        dept.setOrderNum("0");
+        dept.setStatus("0");
+        dept.setCreateBy("Admin");
+        deptMapper.insertDept(dept);
+        return dept;
+    }
+
+    public void updateAncestors(List<SysDept> sysDeptList)
+    {
+        if(sysDeptList.isEmpty())
+        {
+            return;
+        }
+        List<SysDept> list =new ArrayList<>();
+        for(SysDept dept:sysDeptList){
+            SysDept info = deptMapper.selectDeptById(dept.getParentId());
+            if(StringUtils.isNotEmpty(info.getAncestors())) {
+                dept.setAncestors(info.getAncestors()+","+dept.getParentId());
+                deptMapper.updateDept(dept);
+            }else{
+                list.add(dept);
+            }
+        }
+        updateAncestors(list);
+    }
+
+
 
     public String deptSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理
@@ -79,31 +114,26 @@ public class GetEcologyInfoTestController extends BaseController {
         Map<String,Object> o= (Map<String, Object>) map.get("data");
         JSONArray json = (JSONArray) o.get("dataList");
         List<EcologyDept> depts = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
-        //清空部门表
+
+        //清空部门表,并插入顶级部门
+        SysDept sysDept=deptMapper.selectDeptById(Long.parseLong("999999"));
         deptMapper.truncateDept();
-        //插入最顶层部门
-        SysDept dept  =new SysDept();
-        dept.setDeptId(Long.parseLong("999999"));
-        dept.setParentId(Long.parseLong("0"));
-        dept.setDeptName("BPS");
-        dept.setOrderNum("0");
-        dept.setStatus("0");
-        dept.setCreateBy("Admin");
-        deptMapper.insertDept(dept);
+        deptMapper.insertDept(sysDept);
+        List<SysDept> list=new ArrayList<>();
         //同步Ecology部门信息
-        for(EcologyDept ecologyDept:depts){
-            //System.out.println(ecologyDept.getDepartmentname());
-            //String subCompanyid=ecologyDept.getSubcompanyid1();
+       for(EcologyDept ecologyDept:depts){
             if(ecologyDept.getSubcompanyid1().equals("1")) { //只取分部ID为“1”的部门，排除代理商
-                dept.setDeptId(Long.parseLong(ecologyDept.getId()));
-                dept.setParentId(Long.parseLong(ecologyDept.getSupdepid()) == 0 ? 999999 : Long.parseLong(ecologyDept.getSupdepid()));
-                dept.setDeptName(ecologyDept.getDepartmentname());
-                dept.setOrderNum("0");
-                dept.setStatus("0");
-                dept.setCreateBy("Admin");
-                deptMapper.insertDept(dept);
+       /*         String pAncestors=null;
+                if(ecologyDept.getSupdepid().equals("0")){ //如果Ecology部门为一级部门，则设定ancestors="0,999999"
+                    pAncestors="0,999999";
+                }*/
+               SysDept dept= insertEcologyDept(ecologyDept);
+                list.add(dept);
             }
         }
+       //更新祖级信息
+        updateAncestors(list);
+
         return result;
     }
 
