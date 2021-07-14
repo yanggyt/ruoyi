@@ -287,9 +287,9 @@ public class SysUserController extends BaseController
     }
 
     /**
-     * Ecology部门信息同步
+     * Ecology人员信息同步
      */
-    @Log(title = "部门管理", businessType = BusinessType.UPDATE)
+    @Log(title = "人员同步", businessType = BusinessType.UPDATE)
     @RequiresPermissions("system:user:sync")
     @PostMapping("/syncUser")
     @ResponseBody
