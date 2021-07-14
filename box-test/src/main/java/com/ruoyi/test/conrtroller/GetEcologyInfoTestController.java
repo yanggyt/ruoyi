@@ -4,17 +4,16 @@ package com.ruoyi.test.conrtroller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysDept;
-import com.ruoyi.system.mapper.SysDeptMapper;
+import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.EcologyDept;
+import com.ruoyi.system.mapper.SysDeptMapper;
+import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,16 +21,30 @@ import java.util.Map;
 public class GetEcologyInfoTestController extends BaseController {
     @Autowired
     private SysDeptMapper deptMapper;
+    @Autowired
+    private ISysUserService userService;
 
     @RequestMapping("/anon/getEcologyDept")
     public String getEcologyDept() throws Exception {
         String url="http://192.168.2.85:90/api/hrm/resful/getHrmdepartmentWithPage";
         String params="{\"params\":{\"pagesize\":1000}}";
         //return  sendPost(url,params);
-        return deptSync(sendPostWithRest(url,params));
+        return deptSync(HttpUtils.sendPostWithRest(url,params));
+
     }
 
-    public Map<String,String> sendPostWithRest(String url,String params){
+    @RequestMapping("/anon/getEcologyUser")
+    public String getEcologyUser(){
+        String url="http://192.168.2.85:90/api/hrm/resful/getHrmUserInfoWithPage";
+        String params="{\"params\":{\"pagesize\":999999}}";
+        int result = userService.syncEcologyUser(url,params);
+        if(result==200){
+            return "同步成功";
+        }
+        return "同步失败";
+    }
+
+    /*public Map<String,String> sendPostWithRest(String url,String params){
         RestTemplate restTemplate=new RestTemplate();
         ResponseEntity<String> result=null;
         int statusCode=0;
@@ -50,7 +63,7 @@ public class GetEcologyInfoTestController extends BaseController {
         }
 
         return map;
-    }
+    }*/
 
 
     public String deptSync(Map<String,String> mapResult){

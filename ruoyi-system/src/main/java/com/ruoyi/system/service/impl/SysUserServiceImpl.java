@@ -1,12 +1,7 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysRole;
@@ -14,24 +9,31 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
+import com.ruoyi.system.domain.EcologyUser;
 import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.domain.SysUserPost;
 import com.ruoyi.system.domain.SysUserRole;
-import com.ruoyi.system.mapper.SysPostMapper;
-import com.ruoyi.system.mapper.SysRoleMapper;
-import com.ruoyi.system.mapper.SysUserMapper;
-import com.ruoyi.system.mapper.SysUserPostMapper;
-import com.ruoyi.system.mapper.SysUserRoleMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户 业务层处理
  * 
  * @author ruoyi
  */
-@Service
+@Service("sysUserServiceImpl")
 public class SysUserServiceImpl implements ISysUserService
 {
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
@@ -524,5 +526,52 @@ public class SysUserServiceImpl implements ISysUserService
     public int changeStatus(SysUser user)
     {
         return userMapper.updateUser(user);
+    }
+
+    /**
+     * Ecology人员信息同步
+     *
+     * @param url
+     * @param params
+     */
+    @Override
+    public int syncEcologyUser(String url, String params) {
+        int result= userSync(HttpUtils.sendPostWithRest(url,params));
+        return result;
+    }
+
+    public int userSync(Map<String,String> mapResult){
+        //如果接口返回状态码不为200，则不做同步处理
+        String statusCode=mapResult.get("statusCode");
+        String result= mapResult.get("result");
+        if(!statusCode.equals("200"))
+        {
+            return 0;
+        }
+        //取Ecology返回信息中的部门信息
+        Map<String,Object> map = (Map) JSON.parse(result);
+        Map<String,Object> o= (Map<String, Object>) map.get("data");
+        JSONArray json = (JSONArray) o.get("dataList");
+        List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);
+
+        userMapper.deleteEcologySyncUser();
+        SysUser user  = new SysUser();
+        //同步Ecology部门信息
+        for(EcologyUser ecologyuser:ecologyUserList){
+            if(ecologyuser.getSubcompanyid1().equals("1") &&  StringUtils.isNotEmpty(ecologyuser.getLoginid())) { //只取分部ID为“1”的员工
+                user.setUserId(Long.parseLong(ecologyuser.getId()));
+                user.setDeptId(Long.parseLong(ecologyuser.getDepartmentid()));
+                user.setLoginName(ecologyuser.getLoginid());
+                user.setUserName(ecologyuser.getLastname());
+                user.setUserType("02");
+                user.setEmail(ecologyuser.getEmail());
+                user.setSex(ecologyuser.getSex());
+                user.setPhonenumber(ecologyuser.getMobile());
+                user.setStatus(ecologyuser.getStatus().equals("5")?"1":"0");  //Ecology为离职状态5，则无效
+                user.setDelFlag("0");
+                userMapper.insertUser(user);
+            }
+        }
+        return 200;
     }
 }

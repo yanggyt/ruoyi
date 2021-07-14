@@ -223,5 +223,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			sysdate()
  		)
 	</insert>
+
+	<delete id="deleteEcologySyncUser" >
+		delete from sys_user where user_type ='02'
+	</delete>
 	
 </mapper> 

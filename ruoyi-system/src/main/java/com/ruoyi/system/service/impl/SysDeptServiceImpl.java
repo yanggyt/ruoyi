@@ -4,10 +4,12 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.EcologyDept;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.annotation.DataScope;
@@ -28,7 +30,7 @@ import org.springframework.web.client.RestTemplate;
  * 
  * @author ruoyi
  */
-@Service
+@Service("sysDeptServiceImpl")
 public class SysDeptServiceImpl implements ISysDeptService
 {
     @Autowired
@@ -319,11 +321,11 @@ public class SysDeptServiceImpl implements ISysDeptService
      */
     @Override
     public int syncEcologyDept(String url,String params) {
-       int result= deptSync(sendPostWithRest(url,params));
+       int result= deptSync(HttpUtils.sendPostWithRest(url,params));
        return result;
 
     }
-    public Map<String,String> sendPostWithRest(String url, String params){
+/*    public Map<String,String> sendPostWithRest(String url, String params){
         RestTemplate restTemplate=new RestTemplate();
         ResponseEntity<String> result=null;
         int statusCode=0;
@@ -342,8 +344,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         }
 
         return map;
-    }
-
+    }*/
 
     public int deptSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理

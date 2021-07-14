@@ -209,7 +209,7 @@ public class SysDeptController extends BaseController
      * Ecology部门信息同步
      */
     @Log(title = "部门管理", businessType = BusinessType.UPDATE)
-    @RequiresPermissions("system:dept:edit")
+    @RequiresPermissions("system:dept:sync")
     @PostMapping("/syncDept")
     @ResponseBody
     public AjaxResult syncDept()
@@ -218,8 +218,8 @@ public class SysDeptController extends BaseController
         String params="{\"params\":{\"pagesize\":1000}}";
         int result = deptService.syncEcologyDept(url,params);
         if(result==200){
-           return AjaxResult.success("部门同步成功，返回状态码："+result);
+           return AjaxResult.success("同步Ecology部门成功，返回状态码："+result);
         }
-        return AjaxResult.error("同步失败，返回状态码："+result);
+        return AjaxResult.error("同步Ecology部门失败，返回状态码："+result);
     }
 }

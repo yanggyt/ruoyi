@@ -121,4 +121,9 @@ public interface SysUserMapper
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+    /**
+     * 删除Ecology同步过来的用户
+     */
+    public void deleteEcologySyncUser();
 }
