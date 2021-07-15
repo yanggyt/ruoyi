@@ -4,6 +4,8 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.EcologyDept;
 import org.apache.commons.lang3.ArrayUtils;
@@ -333,17 +335,30 @@ public class SysDeptServiceImpl implements ISysDeptService
         {
             return 0;
         }
+
         //取Ecology返回信息中的部门信息
         Map<String,Object> map = (Map) JSON.parse(result);
-        Map<String,Object> o= (Map<String, Object>) map.get("data");
-        JSONArray json = (JSONArray) o.get("dataList");
-        List<EcologyDept> depts = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
-        //清空部门表,并插入顶级部门
-        SysDept sysDept=deptMapper.selectDeptById(Long.parseLong("999999"));
+        Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
+        //JSONArray json = (JSONArray) o.get("dataList");
+        //List<EcologyDept> depts = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
+        List<EcologyDept> depts= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyDept>>(){}.getType());
+
+        //清空部门表
         deptMapper.truncateDept();
-        deptMapper.insertDept(sysDept);
-        List<SysDept> list=new ArrayList<>();
+
+        //插入顶级部门
+        SysDept topDept= new SysDept();//deptMapper.selectDeptById(Long.parseLong("999999"));
+        topDept.setDeptId(Long.parseLong("999999"));
+        topDept.setParentId(Long.parseLong("0"));
+        topDept.setDeptName("BPS");
+        topDept.setAncestors("0");
+        topDept.setOrderNum("0");
+        topDept.setStatus("0");
+        topDept.setCreateBy("Admin");
+        deptMapper.insertDept(topDept);
+
         //同步Ecology部门信息
+        List<SysDept> list=new ArrayList<>();
         for(EcologyDept ecologyDept:depts){
             if(ecologyDept.getSubcompanyid1().equals("1")) { //只取分部ID为“1”的部门，排除代理商
                 SysDept dept= insertEcologyDept(ecologyDept);

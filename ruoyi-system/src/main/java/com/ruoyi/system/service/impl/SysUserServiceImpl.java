@@ -2,6 +2,8 @@ package com.ruoyi.system.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysRole;
@@ -11,10 +13,7 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
-import com.ruoyi.system.domain.EcologyUser;
-import com.ruoyi.system.domain.SysPost;
-import com.ruoyi.system.domain.SysUserPost;
-import com.ruoyi.system.domain.SysUserRole;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
@@ -550,9 +549,10 @@ public class SysUserServiceImpl implements ISysUserService
         }
         //取Ecology返回信息中的部门信息
         Map<String,Object> map = (Map) JSON.parse(result);
-        Map<String,Object> o= (Map<String, Object>) map.get("data");
-        JSONArray json = (JSONArray) o.get("dataList");
-        List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);
+        Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
+        /*JSONArray json = (JSONArray) dataMap.get("dataList");
+        List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);*/
+        List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
 
         userMapper.deleteEcologySyncUser();
         SysUser user  = new SysUser();

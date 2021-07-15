@@ -1,37 +1,30 @@
 package com.ruoyi.test.conrtroller;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysDept;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.http.HttpUtils;
-import com.ruoyi.system.domain.EcologyDept;
-import com.ruoyi.system.mapper.SysDeptMapper;
+import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 @RestController
 public class GetEcologyInfoTestController extends BaseController {
     @Autowired
-    private SysDeptMapper deptMapper;
+    private ISysDeptService deptService;
     @Autowired
     private ISysUserService userService;
 
     @RequestMapping("/anon/getEcologyDept")
     public String getEcologyDept() throws Exception {
         String url="http://192.168.2.85:90/api/hrm/resful/getHrmdepartmentWithPage";
-        String params="{\"params\":{\"pagesize\":1000}}";
+        String params="{\"params\":{\"pagesize\":999999}}";
         //return  sendPost(url,params);
-        return deptSync(HttpUtils.sendPostWithRest(url,params));
+        int result = deptService.syncEcologyDept(url,params);
+        if(result==200){
+            return "同步成功";
+        }
+        return "同步失败";
 
     }
 
@@ -46,7 +39,7 @@ public class GetEcologyInfoTestController extends BaseController {
         return "同步失败";
     }
 
-    /*public Map<String,String> sendPostWithRest(String url,String params){
+   /* *//*public Map<String,String> sendPostWithRest(String url,String params){
         RestTemplate restTemplate=new RestTemplate();
         ResponseEntity<String> result=null;
         int statusCode=0;
@@ -65,7 +58,7 @@ public class GetEcologyInfoTestController extends BaseController {
         }
 
         return map;
-    }*/
+    }*//*
 
     public SysDept insertEcologyDept(EcologyDept ecologyDept){
         SysDept dept=new SysDept();
@@ -123,10 +116,10 @@ public class GetEcologyInfoTestController extends BaseController {
         //同步Ecology部门信息
        for(EcologyDept ecologyDept:depts){
             if(ecologyDept.getSubcompanyid1().equals("1")) { //只取分部ID为“1”的部门，排除代理商
-       /*         String pAncestors=null;
+       *//*         String pAncestors=null;
                 if(ecologyDept.getSupdepid().equals("0")){ //如果Ecology部门为一级部门，则设定ancestors="0,999999"
                     pAncestors="0,999999";
-                }*/
+                }*//*
                SysDept dept= insertEcologyDept(ecologyDept);
                 list.add(dept);
             }
@@ -137,7 +130,7 @@ public class GetEcologyInfoTestController extends BaseController {
         return result;
     }
 
-   /* public String sendPost(String url,String params) throws Exception {
+   *//* public String sendPost(String url,String params) throws Exception {
         RestTemplate restTemplate=new RestTemplate();
         ResponseEntity<String> result = null;
         int statusCode = 0;
@@ -158,8 +151,8 @@ public class GetEcologyInfoTestController extends BaseController {
 
         return  result.getStatusCode().toString();
     }
+*//*
+
 */
-
-
 
 }
