@@ -559,13 +559,21 @@ public class SysUserServiceImpl implements ISysUserService
         //同步Ecology部门信息
         for(EcologyUser ecologyuser:ecologyUserList){
             if(ecologyuser.getSubcompanyid1().equals("1") &&  StringUtils.isNotEmpty(ecologyuser.getLoginid())) { //只取分部ID为“1”的员工
+                String sex=ecologyuser.getSex();
+                if(sex.equals("男")){
+                    sex="0";
+                }else if(sex.equals("女")){
+                    sex="1";
+                }else{
+                    sex="2";
+                };
                 user.setUserId(Long.parseLong(ecologyuser.getId()));
                 user.setDeptId(Long.parseLong(ecologyuser.getDepartmentid()));
                 user.setLoginName(ecologyuser.getLoginid());
                 user.setUserName(ecologyuser.getLastname());
                 user.setUserType("02");
                 user.setEmail(ecologyuser.getEmail());
-                user.setSex(ecologyuser.getSex());
+                user.setSex(sex);
                 user.setPhonenumber(ecologyuser.getMobile());
                 user.setStatus(ecologyuser.getStatus().equals("5")?"1":"0");  //Ecology为离职状态5，则无效
                 user.setDelFlag("0");
