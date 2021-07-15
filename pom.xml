@@ -232,6 +232,11 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>bps-kettle</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -244,6 +249,7 @@
         <module>ruoyi-common</module>
         <module>box-test</module>
         <module>box-bps</module>
+        <module>bps-kettle</module>
     </modules>
     <packaging>pom</packaging>
 
