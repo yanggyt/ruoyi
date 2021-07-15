@@ -13,14 +13,14 @@
                         <ul>
                             <li>
                                 <label class="font-noraml">当前状态：</label>
-                                <select  class="form-control select" name="lastResultState" th:with="type=${@dict.getType('express_stats')}">
+                                <select name="lastResultState" th:with="type=${@dict.getType('express_stats')}">
                                     <option value="">---所有---</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
                             </li>
                             <li>
                                 <label class="font-noraml">是否签收：</label>
-                                <select  class="form-control" name="lastResultIsCheck">
+                                <select name="lastResultIsCheck">
                                     <option value="">---所有---</option>
                                     <option value="0">未签收</option>
                                     <option value="1">已签收</option>
@@ -28,7 +28,7 @@
                             </li>
                             <li>
                                 <label class="font-noraml">快递公司：</label>
-                                <select  class="form-control" name="lastResultCom" th:with="type=${@dict.getType('express_company')}">
+                                <select name="lastResultCom" th:with="type=${@dict.getType('express_company')}">
                                     <option value="">---所有---</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
