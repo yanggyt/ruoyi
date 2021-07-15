@@ -107,4 +107,9 @@ public interface ISysDeptService
      * @return 结果
      */
     public String checkDeptNameUnique(SysDept dept);
+
+    /**
+     * Ecology部门信息同步
+     */
+    public int syncEcologyDept(String url,String params);
 }

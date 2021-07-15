@@ -204,4 +204,9 @@ public interface ISysUserService
      * @return 结果
      */
     public int changeStatus(SysUser user);
+
+    /**
+     * Ecology人员信息同步
+     */
+    public int syncEcologyUser(String url,String params);
 }

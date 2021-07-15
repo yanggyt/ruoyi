@@ -285,4 +285,22 @@ public class SysUserController extends BaseController
         userService.checkUserAllowed(user);
         return toAjax(userService.changeStatus(user));
     }
+
+    /**
+     * Ecology人员信息同步
+     */
+    @Log(title = "人员同步", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("system:user:sync")
+    @PostMapping("/syncUser")
+    @ResponseBody
+    public AjaxResult syncDept()
+    {
+        String url="http://192.168.2.85:90/api/hrm/resful/getHrmUserInfoWithPage";
+        String params="{\"params\":{\"pagesize\":999999}}";
+        int result = userService.syncEcologyUser(url,params);
+        if(result==200){
+            return AjaxResult.success("Ecology人员同步成功，返回状态码："+result);
+        }
+        return AjaxResult.error("Ecology人员同步失败，返回状态码："+result);
+    }
 }

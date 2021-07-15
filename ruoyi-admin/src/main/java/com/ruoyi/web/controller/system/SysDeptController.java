@@ -204,4 +204,22 @@ public class SysDeptController extends BaseController
         List<Ztree> ztrees = deptService.roleDeptTreeData(role);
         return ztrees;
     }
+
+    /**
+     * Ecology部门信息同步
+     */
+    @Log(title = "部门同步", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("system:dept:sync")
+    @PostMapping("/syncDept")
+    @ResponseBody
+    public AjaxResult syncDept()
+    {
+        String url="http://192.168.2.85:90/api/hrm/resful/getHrmdepartmentWithPage";
+        String params="{\"params\":{\"pagesize\":999999}}";
+        int result = deptService.syncEcologyDept(url,params);
+        if(result==200){
+           return AjaxResult.success("同步Ecology部门成功，返回状态码："+result);
+        }
+        return AjaxResult.error("同步Ecology部门失败，返回状态码："+result);
+    }
 }

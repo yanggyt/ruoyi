@@ -1,10 +1,15 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.ruoyi.common.utils.http.HttpUtils;
+import com.ruoyi.system.domain.EcologyDept;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.annotation.DataScope;
@@ -17,13 +22,15 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.mapper.SysDeptMapper;
 import com.ruoyi.system.service.ISysDeptService;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * 部门管理 服务实现
  * 
  * @author ruoyi
  */
-@Service
+@Service("sysDeptServiceImpl")
 public class SysDeptServiceImpl implements ISysDeptService
 {
     @Autowired
@@ -308,4 +315,80 @@ public class SysDeptServiceImpl implements ISysDeptService
         }
         return UserConstants.DEPT_NAME_UNIQUE;
     }
+
+    /**
+     * Ecology部门信息同步
+     */
+    @Override
+    public int syncEcologyDept(String url,String params) {
+       int result= deptSync(HttpUtils.sendPostWithRest(url,params));
+       return result;
+    }
+
+    public int deptSync(Map<String,String> mapResult){
+        //如果接口返回状态码不为200，则不做同步处理
+        String statusCode=mapResult.get("statusCode");
+        String result= mapResult.get("result");
+        if(!statusCode.equals("200"))
+        {
+            return 0;
+        }
+        //取Ecology返回信息中的部门信息
+        Map<String,Object> map = (Map) JSON.parse(result);
+        Map<String,Object> o= (Map<String, Object>) map.get("data");
+        JSONArray json = (JSONArray) o.get("dataList");
+        List<EcologyDept> depts = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
+        //清空部门表,并插入顶级部门
+        SysDept sysDept=deptMapper.selectDeptById(Long.parseLong("999999"));
+        deptMapper.truncateDept();
+        deptMapper.insertDept(sysDept);
+        List<SysDept> list=new ArrayList<>();
+        //同步Ecology部门信息
+        for(EcologyDept ecologyDept:depts){
+            if(ecologyDept.getSubcompanyid1().equals("1")) { //只取分部ID为“1”的部门，排除代理商
+                SysDept dept= insertEcologyDept(ecologyDept);
+                list.add(dept);
+            }
+        }
+        //更新祖级列表信息
+        updateAncestors(list);
+
+        return 200;
+    }
+
+    //将Ecology部门转化为系统部门，并更新到部门表sys_dept
+    public SysDept insertEcologyDept(EcologyDept ecologyDept){
+        SysDept dept=new SysDept();
+        dept.setDeptId(Long.parseLong(ecologyDept.getId()));
+        dept.setParentId(Long.parseLong(ecologyDept.getSupdepid()) == 0 ? 999999 : Long.parseLong(ecologyDept.getSupdepid()));
+        dept.setDeptName(ecologyDept.getDepartmentname());
+        dept.setOrderNum("0");
+        dept.setStatus("0");
+        dept.setCreateBy("Admin");
+        deptMapper.insertDept(dept);
+        return dept;
+    }
+
+    //更新祖级列表信息
+    public void updateAncestors(List<SysDept> sysDeptList)
+    {
+        if(sysDeptList.isEmpty())
+        {
+            return;
+        }
+        List<SysDept> list =new ArrayList<>();
+        for(SysDept dept:sysDeptList){
+            SysDept info = deptMapper.selectDeptById(dept.getParentId());
+            if(StringUtils.isNotEmpty(info.getAncestors())) {
+                dept.setAncestors(info.getAncestors()+","+dept.getParentId());
+                deptMapper.updateDept(dept);
+            }else{
+                list.add(dept);
+            }
+        }
+        updateAncestors(list);
+    }
+
+
+
 }

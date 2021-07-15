@@ -29,7 +29,10 @@
 			</div>
                 
             <div class="btn-group-sm" id="toolbar" role="group">
-		        <a class="btn btn-success" onclick="$.operate.add(100)" shiro:hasPermission="system:dept:add">
+				<a class="btn btn-success" onclick="syncDept()" shiro:hasPermission="system:dept:sync">
+					<i class="fa fa-plus"></i> 同步
+				</a>
+		        <a class="btn btn-success" onclick="addDept()" shiro:hasPermission="system:dept:add" >
                     <i class="fa fa-plus"></i> 新增
                 </a>
                 <a class="btn btn-primary" onclick="$.operate.edit()" shiro:hasPermission="system:dept:edit">
@@ -50,6 +53,7 @@
 		var editFlag = [[${@permission.hasPermi('system:dept:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:dept:remove')}]];
 		var datas = [[${@dict.getType('sys_normal_disable')}]];
+		var deptSyncType = [[${#strings.defaultString(@config.getKey('sys.dept.sync'), 0)}]];
 		var prefix = ctx + "system/dept"
 
 		$(function() {
@@ -107,6 +111,33 @@
 		    };
 		    $.treeTable.init(options);
 		});
+
+
+		function addDept(){
+
+			if(deptSyncType =="0") {
+				$.operate.add(999999);
+			}else {
+				alert("系统参数已启用同步Ecology部门信息，禁止手动新增部门！")
+			}
+		}
+		function syncDept() {
+			if(deptSyncType =="1") {
+				$.ajax({
+					type: 'POST',
+					url: ctx + "system/dept/syncDept",
+					data: JSON.stringify(""),  //beauty是字符串
+					contentType: "application/json",
+					dataType: "json",
+					success: function (message) {
+						alert(JSON.stringify(message)); //将JSON对象转换为字符串
+					}
+				});
+			}else {
+				alert("系统参数未启用同步Ecology部门！")
+			}
+		};
+
 	</script>
 </body>
 </html>
