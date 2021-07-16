@@ -1,7 +1,5 @@
 package com.ruoyi.system.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ruoyi.common.annotation.DataScope;
