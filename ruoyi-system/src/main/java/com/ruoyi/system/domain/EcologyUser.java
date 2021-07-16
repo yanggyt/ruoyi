@@ -10,7 +10,7 @@ public class EcologyUser {
     String mobile;
     String email;
     String sex;
-    String Status;
+    String status;
 
     public String getSubcompanyid1() {
         return subcompanyid1;
@@ -85,11 +85,11 @@ public class EcologyUser {
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class EcologyUser {
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
                 ", sex='" + sex + '\'' +
-                ", Status='" + Status + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
