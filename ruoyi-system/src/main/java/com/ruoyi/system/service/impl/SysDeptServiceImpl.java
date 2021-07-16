@@ -329,19 +329,17 @@ public class SysDeptServiceImpl implements ISysDeptService
 
     public int deptSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理
-        String statusCode=mapResult.get("statusCode");
-        String result= mapResult.get("result");
-        if(!statusCode.equals("200"))
+        if(!mapResult.get("statusCode").equals("200"))
         {
             return 0;
         }
 
         //取Ecology返回信息中的部门信息
-        Map<String,Object> map = (Map) JSON.parse(result);
+        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
         Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
-        //JSONArray json = (JSONArray) o.get("dataList");
-        //List<EcologyDept> depts = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
-        List<EcologyDept> depts= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyDept>>(){}.getType());
+        List<EcologyDept> deptList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyDept>>(){}.getType());
+        /*JSONArray json = (JSONArray) o.get("dataList");
+        List<EcologyDept> depts = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);*/
 
         //清空部门表
         deptMapper.truncateDept();
@@ -359,7 +357,7 @@ public class SysDeptServiceImpl implements ISysDeptService
 
         //同步Ecology部门信息
         List<SysDept> list=new ArrayList<>();
-        for(EcologyDept ecologyDept:depts){
+        for(EcologyDept ecologyDept:deptList){
             if(ecologyDept.getSubcompanyid1().equals("1")) { //只取分部ID为“1”的部门，排除代理商
                 SysDept dept= insertEcologyDept(ecologyDept);
                 list.add(dept);
@@ -403,7 +401,4 @@ public class SysDeptServiceImpl implements ISysDeptService
         }
         updateAncestors(list);
     }
-
-
-
 }

@@ -541,41 +541,41 @@ public class SysUserServiceImpl implements ISysUserService
 
     public int userSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理
-        String statusCode=mapResult.get("statusCode");
-        String result= mapResult.get("result");
-        if(!statusCode.equals("200"))
+        if(!mapResult.get("statusCode").equals("200"))
         {
             return 0;
         }
+
         //取Ecology返回信息中的部门信息
-        Map<String,Object> map = (Map) JSON.parse(result);
+        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
         Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
+        List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
         /*JSONArray json = (JSONArray) dataMap.get("dataList");
         List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);*/
-        List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
 
+        //删除从Ecology同步过来（用户类型为02）的用户
         userMapper.deleteEcologySyncUser();
-        SysUser user  = new SysUser();
+
         //同步Ecology部门信息
-        for(EcologyUser ecologyuser:ecologyUserList){
-            if(ecologyuser.getSubcompanyid1().equals("1") &&  StringUtils.isNotEmpty(ecologyuser.getLoginid())) { //只取分部ID为“1”的员工
-                String sex=ecologyuser.getSex();
-                if(sex.equals("男")){
+        SysUser user  = new SysUser();
+        for(EcologyUser ecologyUser:ecologyUserList){
+            if(ecologyUser.getSubcompanyid1().equals("1") &&  StringUtils.isNotEmpty(ecologyUser.getLoginid())) { //只取分部ID为“1”的员工
+                String sex="2";
+                if(ecologyUser.getSex().equals("男")){
                     sex="0";
-                }else if(sex.equals("女")){
+                }
+                if(ecologyUser.getSex().equals("女")){
                     sex="1";
-                }else{
-                    sex="2";
-                };
-                user.setUserId(Long.parseLong(ecologyuser.getId()));
-                user.setDeptId(Long.parseLong(ecologyuser.getDepartmentid()));
-                user.setLoginName(ecologyuser.getLoginid());
-                user.setUserName(ecologyuser.getLastname());
-                user.setUserType("02");
-                user.setEmail(ecologyuser.getEmail());
+                }
+                user.setUserId(Long.parseLong(ecologyUser.getId()));
+                user.setDeptId(Long.parseLong(ecologyUser.getDepartmentid()));
+                user.setLoginName(ecologyUser.getLoginid());
+                user.setUserName(ecologyUser.getLastname());
+                user.setUserType("02");   //设置从Ecology同步的用户类型为02
+                user.setEmail(ecologyUser.getEmail());
                 user.setSex(sex);
-                user.setPhonenumber(ecologyuser.getMobile());
-                user.setStatus(ecologyuser.getStatus().equals("5")?"1":"0");  //Ecology为离职状态5，则无效
+                user.setPhonenumber(ecologyUser.getMobile());
+                user.setStatus(ecologyUser.getStatus().equals("5")?"1":"0");  //Ecology为离职状态5，则无效
                 user.setDelFlag("0");
                 userMapper.insertUser(user);
             }
