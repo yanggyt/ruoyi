@@ -1,19 +1,7 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.*;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.ruoyi.common.utils.http.HttpUtils;
-import com.ruoyi.system.domain.EcologyDept;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
@@ -22,10 +10,16 @@ import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.http.HttpUtils;
+import com.ruoyi.system.domain.EcologyDept;
 import com.ruoyi.system.mapper.SysDeptMapper;
 import com.ruoyi.system.service.ISysDeptService;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 /**
  * 部门管理 服务实现
@@ -327,6 +321,7 @@ public class SysDeptServiceImpl implements ISysDeptService
        return result;
     }
 
+    @SuppressWarnings("unchecked")
     public int deptSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理
         if(!mapResult.get("statusCode").equals("200"))
@@ -335,11 +330,13 @@ public class SysDeptServiceImpl implements ISysDeptService
         }
 
         //取Ecology返回信息中的部门信息
-        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
+        /*Map<String,Object> mapTest = (Map) JSON.parse(mapResult.get("result"));
         Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
-        List<EcologyDept> deptList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyDept>>(){}.getType());
-        /*JSONArray json = (JSONArray) o.get("dataList");
-        List<EcologyDept> depts = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);*/
+        JSONArray json = (JSONArray) o.get("dataList");
+        List<EcologyDept> deptList = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);*/
+        Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
+        Map<String,Object> dataMap= new Gson().fromJson(new Gson().toJson(map.get("data")),HashMap.class);
+        List<EcologyDept> deptList= new Gson().fromJson(new Gson().toJson(dataMap.get("dataList")), new TypeToken<List<EcologyDept>>(){}.getType());
 
         //清空部门表
         deptMapper.truncateDept();

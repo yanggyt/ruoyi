@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -539,6 +540,7 @@ public class SysUserServiceImpl implements ISysUserService
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public int userSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理
         if(!mapResult.get("statusCode").equals("200"))
@@ -547,11 +549,14 @@ public class SysUserServiceImpl implements ISysUserService
         }
 
         //取Ecology返回信息中的部门信息
-        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
+        /*Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
         Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
-        List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
-        /*JSONArray json = (JSONArray) dataMap.get("dataList");
+        JSONArray json = (JSONArray) dataMap.get("dataList");
         List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);*/
+        Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
+        Map<String,Object> dataMap= new Gson().fromJson(new Gson().toJson(map.get("data")),HashMap.class);
+        List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
+
 
         //删除从Ecology同步过来（用户类型为02）的用户
         userMapper.deleteEcologySyncUser();
