@@ -34,7 +34,7 @@
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
         </dependency>
-        
+
         <!-- Shiro使用EhCache缓存框架 -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
@@ -99,6 +99,12 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.6.2</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
