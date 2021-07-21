@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ruoyi.common.annotation.DataScope;
@@ -547,14 +549,14 @@ public class SysUserServiceImpl implements ISysUserService
         }
 
         //取Ecology返回信息中的部门信息
-        /*Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
+        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
         Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
         JSONArray json = (JSONArray) dataMap.get("dataList");
-        List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);*/
-        Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
+        List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);
+        /*Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
         Map<String,Object> dataMap= new Gson().fromJson(new Gson().toJson(map.get("data")),HashMap.class);
         List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
-
+        */
 
         //删除从Ecology同步过来（用户类型为02）的用户
         userMapper.deleteEcologySyncUser();

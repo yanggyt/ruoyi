@@ -4,6 +4,8 @@ import com.ruoyi.bps.domain.ExpressInfo;
 import com.ruoyi.bps.mapper.ExpressInfoMapper;
 import com.ruoyi.bps.service.IExpressInfoService;
 import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.AutoNum;
@@ -109,10 +111,12 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
        String nu=expressInfo.getNu();  //快递单号
        String com=expressInfo.getCom(); //快递公司
        String phone=expressInfo.getPhone(); //收、寄件人电话号码
+       String deliveryNum= expressInfo.getDeliveryNum();
        ExpressInfo callbackExpressInfo=new ExpressInfo();
 
        callbackExpressInfo.setNu(nu);
        callbackExpressInfo.setPhone(phone);
+       callbackExpressInfo.setDeliveryNum(deliveryNum);
        //如果没有输入快递公司编号，则查询快递公司编号
         if(StringUtils.isEmpty(com)){
             if(AutoGetExpressCom(nu)==null){
@@ -159,6 +163,24 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
             return expressInfo;
         }
 
+        //获取签收时间
+        String signedTime=null;
+        if(queryTrackResp.getState().equals("3")) {
+            signedTime=queryTrackResp.getData().get(0).getFtime();
+        }
+
+        //获取最后更新时间
+        String lastUpdateTime=queryTrackResp.getData().get(0).getFtime();
+
+        //获取揽收时间
+        String collectTime= queryTrackResp.getData().get(queryTrackResp.getData().size()-1).getTime();
+
+        //获取查询时间
+        String queryTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
+
+        //获取查询人（登录用户）
+        String queryUser= ShiroUtils.getLoginName();
+
         //将快递信息中的Context转化为字符
         String dataStr="";
         for(QueryTrackData queryTrackData :queryTrackResp.getData()){
@@ -181,6 +203,12 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
         callbackExpressInfo.setReturnCode(queryTrackResp.getReturnCode());
         callbackExpressInfo.setResult(queryTrackResp.isResult()?"Y":"N");
         callbackExpressInfo.setPhone(expressInfo.getPhone());
+        callbackExpressInfo.setSingedTime(signedTime);
+        callbackExpressInfo.setCollectTime(collectTime);
+        callbackExpressInfo.setLastUpdateTime(lastUpdateTime);
+        callbackExpressInfo.setQueryTime(queryTime);
+        callbackExpressInfo.setQueryUser(queryUser);
+        callbackExpressInfo.setDeliveryNum(expressInfo.getDeliveryNum());
 
         return callbackExpressInfo;
     }

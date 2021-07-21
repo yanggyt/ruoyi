@@ -1,7 +1,7 @@
 package com.ruoyi.system.service.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
@@ -19,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 部门管理 服务实现
@@ -330,13 +333,13 @@ public class SysDeptServiceImpl implements ISysDeptService
         }
 
         //取Ecology返回信息中的部门信息
-        /*Map<String,Object> mapTest = (Map) JSON.parse(mapResult.get("result"));
+        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
         Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
-        JSONArray json = (JSONArray) o.get("dataList");
-        List<EcologyDept> deptList = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);*/
-        Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
+        JSONArray json = (JSONArray) dataMap.get("dataList");
+        List<EcologyDept> deptList = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
+        /*Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
         Map<String,Object> dataMap= new Gson().fromJson(new Gson().toJson(map.get("data")),HashMap.class);
-        List<EcologyDept> deptList= new Gson().fromJson(new Gson().toJson(dataMap.get("dataList")), new TypeToken<List<EcologyDept>>(){}.getType());
+        List<EcologyDept> deptList= new Gson().fromJson(new Gson().toJson(dataMap.get("dataList")), new TypeToken<List<EcologyDept>>(){}.getType());*/
 
         //清空部门表
         deptMapper.truncateDept();

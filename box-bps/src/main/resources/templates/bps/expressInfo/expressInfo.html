@@ -23,6 +23,10 @@
                                 <input type="text" name="phone"/>
                             </li>
                             <li>
+                                <label>出货单号：</label>
+                                <input type="text" name="deliveryNum"/>
+                            </li>
+                            <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
@@ -41,6 +45,9 @@
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="bps:expressInfo:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>-->
+                <a class="btn btn-info" onclick="$.table.importExcel()">
+                    <i class="fa fa-upload"></i> 导入
+                </a>
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="bps:expressInfo:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
@@ -66,6 +73,8 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+                importUrl: prefix + "/importData",
+                importTemplateUrl: prefix + "/importTemplate",
                 modalName: "快递信息",
                 columns: [{
                     checkbox: false
@@ -75,6 +84,10 @@
                     field: 'message',
                     title: '消息'
                 },*/
+                {
+                    field: 'deliveryNum',
+                    title: '出货单号'
+                },
                 {
                     field: 'nu',
                     title: '快递单号'
@@ -126,10 +139,32 @@
                     field: 'result',
                     title: '返回结果'
                 },*/
+
                 {
                     field: 'phone',
                     title: '电话号码'
-                }/*,
+                },
+                {
+                    field: 'singedTime',
+                    title: '签收时间'
+                },
+                {
+                    field: 'collectTime',
+                    title: '揽收时间'
+                },
+                {
+                    field: 'lastUpdateTime',
+                    title: '最后更新时间'
+                },
+                {
+                    field: 'queryTime',
+                    title: '查询时间'
+                },
+                {
+                    field: 'queryUser',
+                    title: '查询人'
+                }
+                    /*
                 {
                     title: '操作',
                     align: 'center',
@@ -144,5 +179,19 @@
             $.table.init(options);
         });
     </script>
+     <!-- 导入区域 -->
+     <script id="importTpl" type="text/template">
+         <form enctype="multipart/form-data" class="mt20 mb10">
+             <div class="col-xs-offset-1">
+                 <input type="file" id="file" name="file"/>
+                 <div class="mt10 pt5">
+                     <a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+                 </div>
+                 <span class="pull-left mt10" style="color: red; ">
+                     提示：仅允许导入“xls”或“xlsx”格式文件！
+                 </span>
+             </div>
+         </form>
+     </script>
 </body>
 </html>
