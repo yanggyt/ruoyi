@@ -1,17 +1,7 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.*;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.ruoyi.common.utils.http.HttpUtils;
-import com.ruoyi.system.domain.EcologyDept;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
@@ -20,10 +10,19 @@ import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.http.HttpUtils;
+import com.ruoyi.system.domain.EcologyDept;
 import com.ruoyi.system.mapper.SysDeptMapper;
 import com.ruoyi.system.service.ISysDeptService;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 部门管理 服务实现
@@ -325,26 +324,40 @@ public class SysDeptServiceImpl implements ISysDeptService
        return result;
     }
 
+    @SuppressWarnings("unchecked")
     public int deptSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理
-        String statusCode=mapResult.get("statusCode");
-        String result= mapResult.get("result");
-        if(!statusCode.equals("200"))
+        if(!mapResult.get("statusCode").equals("200"))
         {
             return 0;
         }
+
         //取Ecology返回信息中的部门信息
-        Map<String,Object> map = (Map) JSON.parse(result);
-        Map<String,Object> o= (Map<String, Object>) map.get("data");
-        JSONArray json = (JSONArray) o.get("dataList");
-        List<EcologyDept> depts = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
-        //清空部门表,并插入顶级部门
-        SysDept sysDept=deptMapper.selectDeptById(Long.parseLong("999999"));
+        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
+        Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
+        JSONArray json = (JSONArray) dataMap.get("dataList");
+        List<EcologyDept> deptList = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
+        /*Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
+        Map<String,Object> dataMap= new Gson().fromJson(new Gson().toJson(map.get("data")),HashMap.class);
+        List<EcologyDept> deptList= new Gson().fromJson(new Gson().toJson(dataMap.get("dataList")), new TypeToken<List<EcologyDept>>(){}.getType());*/
+
+        //清空部门表
         deptMapper.truncateDept();
-        deptMapper.insertDept(sysDept);
-        List<SysDept> list=new ArrayList<>();
+
+        //插入顶级部门
+        SysDept topDept= new SysDept();//deptMapper.selectDeptById(Long.parseLong("999999"));
+        topDept.setDeptId(Long.parseLong("999999"));
+        topDept.setParentId(Long.parseLong("0"));
+        topDept.setDeptName("BPS");
+        topDept.setAncestors("0");
+        topDept.setOrderNum("0");
+        topDept.setStatus("0");
+        topDept.setCreateBy("Admin");
+        deptMapper.insertDept(topDept);
+
         //同步Ecology部门信息
-        for(EcologyDept ecologyDept:depts){
+        List<SysDept> list=new ArrayList<>();
+        for(EcologyDept ecologyDept:deptList){
             if(ecologyDept.getSubcompanyid1().equals("1")) { //只取分部ID为“1”的部门，排除代理商
                 SysDept dept= insertEcologyDept(ecologyDept);
                 list.add(dept);
@@ -388,7 +401,4 @@ public class SysDeptServiceImpl implements ISysDeptService
         }
         updateAncestors(list);
     }
-
-
-
 }

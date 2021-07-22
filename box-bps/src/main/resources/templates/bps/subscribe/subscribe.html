@@ -13,8 +13,8 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label class="font-noraml">快递公司：</label>
-                                <select  class="form-control" name="company" th:with="type=${@dict.getType('express_company')}">
+                                快递公司：
+                                <select   name="company" th:with="type=${@dict.getType('express_company')}">
                                     <option value="">---所有---</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -33,7 +33,7 @@
                             </li>
                             <li>
                                 <label>订阅结果：</label>
-                                <select  class="form-control" name="result">
+                                <select name="result">
                                     <option value="">---所有---</option>
                                     <option value="true">成功</option>
                                     <option value="false">失败</option>

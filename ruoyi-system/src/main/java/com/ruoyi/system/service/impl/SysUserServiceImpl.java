@@ -2,6 +2,8 @@ package com.ruoyi.system.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysRole;
@@ -11,10 +13,7 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
-import com.ruoyi.system.domain.EcologyUser;
-import com.ruoyi.system.domain.SysPost;
-import com.ruoyi.system.domain.SysUserPost;
-import com.ruoyi.system.domain.SysUserRole;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -540,34 +540,47 @@ public class SysUserServiceImpl implements ISysUserService
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public int userSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理
-        String statusCode=mapResult.get("statusCode");
-        String result= mapResult.get("result");
-        if(!statusCode.equals("200"))
+        if(!mapResult.get("statusCode").equals("200"))
         {
             return 0;
         }
-        //取Ecology返回信息中的部门信息
-        Map<String,Object> map = (Map) JSON.parse(result);
-        Map<String,Object> o= (Map<String, Object>) map.get("data");
-        JSONArray json = (JSONArray) o.get("dataList");
-        List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);
 
+        //取Ecology返回信息中的部门信息
+        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
+        Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
+        JSONArray json = (JSONArray) dataMap.get("dataList");
+        List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);
+        /*Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
+        Map<String,Object> dataMap= new Gson().fromJson(new Gson().toJson(map.get("data")),HashMap.class);
+        List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
+        */
+
+        //删除从Ecology同步过来（用户类型为02）的用户
         userMapper.deleteEcologySyncUser();
-        SysUser user  = new SysUser();
+
         //同步Ecology部门信息
-        for(EcologyUser ecologyuser:ecologyUserList){
-            if(ecologyuser.getSubcompanyid1().equals("1") &&  StringUtils.isNotEmpty(ecologyuser.getLoginid())) { //只取分部ID为“1”的员工
-                user.setUserId(Long.parseLong(ecologyuser.getId()));
-                user.setDeptId(Long.parseLong(ecologyuser.getDepartmentid()));
-                user.setLoginName(ecologyuser.getLoginid());
-                user.setUserName(ecologyuser.getLastname());
-                user.setUserType("02");
-                user.setEmail(ecologyuser.getEmail());
-                user.setSex(ecologyuser.getSex());
-                user.setPhonenumber(ecologyuser.getMobile());
-                user.setStatus(ecologyuser.getStatus().equals("5")?"1":"0");  //Ecology为离职状态5，则无效
+        SysUser user  = new SysUser();
+        for(EcologyUser ecologyUser:ecologyUserList){
+            if(ecologyUser.getSubcompanyid1().equals("1") &&  StringUtils.isNotEmpty(ecologyUser.getLoginid())) { //只取分部ID为“1”的员工
+                String sex="2";
+                if(ecologyUser.getSex().equals("男")){
+                    sex="0";
+                }
+                if(ecologyUser.getSex().equals("女")){
+                    sex="1";
+                }
+                user.setUserId(Long.parseLong(ecologyUser.getId()));
+                user.setDeptId(Long.parseLong(ecologyUser.getDepartmentid()));
+                user.setLoginName(ecologyUser.getLoginid());
+                user.setUserName(ecologyUser.getLastname());
+                user.setUserType("02");   //设置从Ecology同步的用户类型为02
+                user.setEmail(ecologyUser.getEmail());
+                user.setSex(sex);
+                user.setPhonenumber(ecologyUser.getMobile());
+                user.setStatus(ecologyUser.getStatus().equals("5")?"1":"0");  //Ecology为离职状态5，则无效
                 user.setDelFlag("0");
                 userMapper.insertUser(user);
             }

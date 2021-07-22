@@ -7,6 +7,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.controller.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -120,5 +123,38 @@ public class ExpressInfoController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(expressInfoService.deleteExpressInfoByIds(ids));
+    }
+
+
+
+    @GetMapping ( "/importTemplate" )
+    @ResponseBody
+    public AjaxResult importTemplate ( ) {
+        ExcelUtil < ExpressInfo > util = new ExcelUtil<>(ExpressInfo.class);
+        return util.importTemplateExcel ( "快递查询导入模板" );
+    }
+
+    @PostMapping("/importData")
+    @ResponseBody
+    public TableDataInfo importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        /*ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
+        List<SysUser> userList = util.importExcel(file.getInputStream());
+        String operName = ShiroUtils.getSysUser().getLoginName();
+        String message = userService.importUser(userList, updateSupport, operName);
+        return AjaxResult.success(message);*/
+
+        ExcelUtil<ExpressInfo> util= new ExcelUtil<ExpressInfo>(ExpressInfo.class);
+        List<ExpressInfo> expressInfoList=util.importExcel(file.getInputStream());
+        List<ExpressInfo> list = new ArrayList<>();
+        for( ExpressInfo expressInfo:expressInfoList)
+        {
+            list.add(expressInfo);
+
+        }
+
+        //String message = expressInfoList.importUser(userList, updateSupport, operName);
+
+        return getDataTable(list);
     }
 }
