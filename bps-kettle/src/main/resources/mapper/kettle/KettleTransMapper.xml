@@ -54,7 +54,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectKettleTransVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectKettleTransByTransName" parameterType="String" resultType="int">
+       select count(*) from kettle_trans  where trans_name = #{transName}
+    </select>
+    <select id="checkQuartzExist" parameterType="String" resultType="Long">
+        select job_id from sys_job  where invoke_target = #{checkStr} and job_group='KETTLE'
+    </select>
+    <select id="queryTransLog" parameterType="String" resultType="String">
+        select log_field from kettle_trans_log where  transname=#{transName} order by id_batch asc
+    </select>
+<!--    <select id="selectKettleTransByTransName" parameterType="Long" resultMap="KettleTransResult">
+        <include refid="selectKettleTransVo"/>
+        where trans_name = #{id}
+    </select>-->
     <insert id="insertKettleTrans" parameterType="KettleTrans" useGeneratedKeys="true" keyProperty="id">
         insert into kettle_trans
         <trim prefix="(" suffix=")" suffixOverrides=",">

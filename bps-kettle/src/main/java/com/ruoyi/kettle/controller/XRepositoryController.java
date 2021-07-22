@@ -1,6 +1,10 @@
 package com.ruoyi.kettle.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.Ztree;
+import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.kettle.repo.RepoTree;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,7 +57,30 @@ public class XRepositoryController extends BaseController
         List<XRepository> list = xRepositoryService.selectXRepositoryList(xRepository);
         return getDataTable(list);
     }
-
+    @GetMapping(value = { "/selectRepositoryTree", "/selectRepositoryTree/{excludeId}" })
+    public String selectRepositoryTree( @PathVariable(value = "excludeId", required = false) String excludeId, ModelMap mmap)
+    {
+        XRepository r=new XRepository();
+        List<XRepository> repoTree = xRepositoryService.selectXRepositoryList(r);
+        XRepository repository=xRepositoryService.selectXRepositoryById(2L);
+        mmap.put("repository", repository);
+        mmap.put("repoTree", repoTree);
+        mmap.put("excludeId", excludeId);
+        return "kettle/common/repository_tree";
+    }
+    @GetMapping("/repositoryRoot")
+    @ResponseBody
+    public List<RepoTree> repositoryRoot()
+    {
+        List<RepoTree> ztrees = xRepositoryService.selectRepoRoot(new XRepository());
+        return ztrees;
+    }
+    @PostMapping("/qryRepoSubTree/{id}")
+    @ResponseBody
+    public List<RepoTree> qryRepoSubTree(@PathVariable("id") Long id, ModelMap mmapy) {
+        List<RepoTree> ztrees = xRepositoryService.selectRepoTree(id);
+        return ztrees;
+    }
     /**
      * 导出资源库列表
      */

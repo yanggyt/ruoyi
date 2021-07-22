@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.quartz.service.ISysJobService;
 import com.ruoyi.system.service.ISysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class KettleTransController extends BaseController
     private IKettleTransService kettleTransService;
     @Autowired
     private ISysRoleService roleService;
-
+    @Autowired
+    private ISysJobService jobService;
     @RequiresPermissions("kettle:trans:view")
     @GetMapping()
     public String trans()
@@ -94,7 +96,7 @@ public class KettleTransController extends BaseController
     @ResponseBody
     public AjaxResult addSave(KettleTrans kettleTrans)
     {
-        return toAjax(kettleTransService.insertKettleTrans(kettleTrans));
+        return  kettleTransService.insertKettleTrans(kettleTrans) ;
     }
 
     /**
@@ -139,4 +141,56 @@ public class KettleTransController extends BaseController
     {
         return toAjax(kettleTransService.deleteKettleTransByIds(ids));
     }
+
+    /**
+     * 转换执行得日志
+     */
+    @RequiresPermissions("kettle:trans:log")
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") Long id, ModelMap mmap)
+    {
+        KettleTrans kettleTrans = kettleTransService.selectKettleTransById(id);
+        List<String> transLog= kettleTransService.queryTransLog(kettleTrans);
+        mmap.put("kettleTrans", kettleTrans);
+        mmap.put("transLog",transLog);
+        return prefix + "/detail";
+    }
+    /**
+     * 转换立即执行一次
+     */
+    @Log(title = "立即执行转换", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("kettle:trans:run")
+    @PostMapping("/run")
+    @ResponseBody
+    public AjaxResult run(KettleTrans trans)
+    {
+        AjaxResult result = kettleTransService.run(trans);
+        return result;
+    }
+
+
+    /**
+     * 跳转到新增调度定时任务页面
+     */
+    @RequiresPermissions("kettle:trans:setquartz")
+    @GetMapping("/transQuartz/{id}")
+    public String transQuartz(@PathVariable("id") Long id,ModelMap mmap)
+    {
+        KettleTrans trans = kettleTransService.selectKettleTransById(id);
+        //kettleTransServiceImpl.runTransQuartz('12','text')
+        String checkStr="kettleTransServiceImpl.runTransQuartz('"+trans.getId()+"','"+trans.getTransName()+"')";
+        Long jobId = kettleTransService.checkQuartzExist(checkStr);
+        if(jobId != null){
+            mmap.put("job", jobService.selectJobById(Long.valueOf(jobId)));
+            return "kettle/quartz/editquartz";
+        }else{
+
+            mmap.put("invokeTarget", checkStr);
+            //mmap.put("trans", trans);
+            return "kettle/quartz/addquartz";
+        }
+    }
+
+
+
 }

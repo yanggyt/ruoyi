@@ -44,11 +44,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dbName != null  and dbName != ''"> and db_name like concat('%', #{dbName}, '%')</if>
             <if test="dbUsername != null  and dbUsername != ''"> and db_username like concat('%', #{dbUsername}, '%')</if>
             <if test="dbPassword != null  and dbPassword != ''"> and db_password = #{dbPassword}</if>
-            <if test="isDel != null  and isDel != ''"> and is_del = #{isDel}</if>
             <if test="createdTime != null "> and created_time = #{createdTime}</if>
             <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
             <if test="baseDir != null  and baseDir != ''"> and base_dir = #{baseDir}</if>
+              and  is_del != 1
         </where>
     </select>
     
@@ -125,7 +125,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         where id = #{id}
     </update>
-
+    <update id="updateIsDel" parameterType="Long" >
+        update kettle_repository set is_del=1 where id = #{id}
+    </update>
+    <update id="updateIsDelBatch" parameterType="String">
+        update kettle_repository set is_del=1 where id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
     <delete id="deleteXRepositoryById" parameterType="Long">
         delete from kettle_repository where id = #{id}
     </delete>

@@ -58,4 +58,20 @@ public interface XRepositoryMapper
      * @return 结果
      */
     public int deleteXRepositoryByIds(String[] ids);
+    /**
+     * @Description:软删除
+     * @Author: Kone.wang
+     * @Date:  14:07
+     * @param id:
+     * @return: int
+     **/
+    int updateIsDel(Long id);
+    /**
+     * @Description:批量软删除
+     * @Author: Kone.wang
+     * @Date: 2021/7/19 14:07
+     * @param ids:
+     * @return: int
+     **/
+    public int updateIsDelBatch(String[] ids);
 }

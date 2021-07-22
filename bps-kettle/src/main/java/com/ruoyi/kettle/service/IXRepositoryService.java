@@ -1,7 +1,11 @@
 package com.ruoyi.kettle.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.Ztree;
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.kettle.domain.XRepository;
+import com.ruoyi.kettle.repo.RepoTree;
 
 /**
  * 资源库Service接口
@@ -58,4 +62,8 @@ public interface IXRepositoryService
      * @return 结果
      */
     public int deleteXRepositoryById(Long id);
+
+    List<RepoTree> selectRepoTree(Long id);
+
+    List<RepoTree> selectRepoRoot(XRepository repository);
 }

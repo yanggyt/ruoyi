@@ -60,4 +60,10 @@ public interface KettleTransMapper
      * @return 结果
      */
     public int deleteKettleTransByIds(String[] ids);
+
+    int selectKettleTransByTransName(String transName);
+
+    List<String> queryTransLog(String transName);
+
+    Long checkQuartzExist(String checkStr);
 }
