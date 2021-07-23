@@ -1,1 +1,139 @@
-222
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('快递信息列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId" th:object="${expressInfo}">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>查询ID：</label>
+                            <input type="text" name="queryId" th:field="*{queryId}"/>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="bps:expressInfo:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('bps:expressInfo:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('bps:expressInfo:remove')}]];
+
+    var prefix = ctx + "bps/expressInfo";
+    var datas = [[${@dict.getType('express_company')}]];
+    var stats= [[${@dict.getType('express_stats')}]];
+
+    $(function() {
+        var options = {
+            url: prefix + "/localList",
+            exportUrl: prefix + "/exportDetail",
+            modalName: "快递信息",
+            columns: [{
+                checkbox: true
+            },
+                /*
+            {
+                field: 'message',
+                title: '消息'
+            },*/
+                {
+                    field: 'deliveryNum',
+                    title: '出货单号'
+                },
+                {
+                    field: 'nu',
+                    title: '快递单号'
+                },
+                /*
+            {
+                field: 'ischeck',
+                title: '签收状态'
+            },*/
+                {
+                    field: 'com',
+                    title: '快递公司',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
+                },
+                /*
+            {
+                field: 'status',
+                title: '通信状态'
+            },*/
+                {
+                    field: 'data',
+                    title: '运单详情',
+                    formatter:function (value,row,index){
+                        return value.replace(/(\r\n)|(\n)/g,'<br>');
+                    }
+                },
+                {
+                    field: 'state',
+                    title: '当前状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(stats, value);
+                    }
+                },/*
+                {
+                    field: 'condition',
+                    title: '状态标志'
+                },
+                {
+                    field: 'routeInfo',
+                    title: '路由信息'
+                },
+                {
+                    field: 'returnCode',
+                    title: '返回码'
+                },
+                {
+                    field: 'result',
+                    title: '返回结果'
+                },*/
+
+                {
+                    field: 'phone',
+                    title: '电话号码'
+                },
+                {
+                    field: 'singedTime',
+                    title: '签收时间'
+                },
+                {
+                    field: 'collectTime',
+                    title: '揽收时间'
+                },
+                {
+                    field: 'lastUpdateTime',
+                    title: '最后更新时间'
+                },
+                {
+                    field: 'queryTime',
+                    title: '查询时间'
+                },
+                {
+                    field: 'queryUserName',
+                    title: '查询人'
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

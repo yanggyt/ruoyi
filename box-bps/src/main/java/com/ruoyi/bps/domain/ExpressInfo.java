@@ -89,123 +89,117 @@ public class ExpressInfo extends BaseEntity
     private String queryUserName;
 
     /** 查询ID*/
-    private String queryID;
+    private String queryId;
 
     /** 查询类型*/
     private String queryType;
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
-    public void setMessage(String message) 
-    {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public String getMessage() 
-    {
-        return message;
+    public String getDeliveryNum() {
+        return deliveryNum;
     }
-    public void setNu(String nu) 
-    {
+
+    public void setDeliveryNum(String deliveryNum) {
+        this.deliveryNum = deliveryNum;
+    }
+
+    public String getNu() {
+        return nu;
+    }
+
+    public void setNu(String nu) {
         this.nu = nu;
     }
 
-    public String getNu() 
-    {
-        return nu;
+    public String getIscheck() {
+        return ischeck;
     }
-    public void setIscheck(String ischeck) 
-    {
+
+    public void setIscheck(String ischeck) {
         this.ischeck = ischeck;
     }
 
-    public String getIscheck() 
-    {
-        return ischeck;
+    public String getCom() {
+        return com;
     }
-    public void setCom(String com) 
-    {
+
+    public void setCom(String com) {
         this.com = com;
     }
 
-    public String getCom() 
-    {
-        return com;
+    public String getStatus() {
+        return status;
     }
-    public void setStatus(String status) 
-    {
+
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getStatus() 
-    {
-        return status;
+    public String getData() {
+        return data;
     }
-    public void setData(String data) 
-    {
+
+    public void setData(String data) {
         this.data = data;
     }
 
-    public String getData() 
-    {
-        return data;
+    public String getState() {
+        return state;
     }
-    public void setState(String state) 
-    {
+
+    public void setState(String state) {
         this.state = state;
     }
 
-    public String getState() 
-    {
-        return state;
+    public String getCondition() {
+        return condition;
     }
-    public void setCondition(String condition) 
-    {
+
+    public void setCondition(String condition) {
         this.condition = condition;
     }
 
-    public String getCondition() 
-    {
-        return condition;
+    public String getRouteInfo() {
+        return routeInfo;
     }
-    public void setRouteInfo(String routeInfo) 
-    {
+
+    public void setRouteInfo(String routeInfo) {
         this.routeInfo = routeInfo;
     }
 
-    public String getRouteInfo() 
-    {
-        return routeInfo;
+    public String getReturnCode() {
+        return returnCode;
     }
-    public void setReturnCode(String returnCode) 
-    {
+
+    public void setReturnCode(String returnCode) {
         this.returnCode = returnCode;
     }
 
-    public String getReturnCode() 
-    {
-        return returnCode;
+    public String getResult() {
+        return result;
     }
-    public void setResult(String result) 
-    {
+
+    public void setResult(String result) {
         this.result = result;
     }
 
-    public String getResult() 
-    {
-        return result;
-    }
-    public void setPhone(String phone) 
-    {
-        this.phone = phone;
-    }
-
-    public String getPhone() 
-    {
+    public String getPhone() {
         return phone;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getCollectTime() {
@@ -248,20 +242,12 @@ public class ExpressInfo extends BaseEntity
         this.queryUserName = queryUserName;
     }
 
-    public String getDeliveryNum() {
-        return deliveryNum;
+    public String getQueryId() {
+        return queryId;
     }
 
-    public void setDeliveryNum(String deliveryNum) {
-        this.deliveryNum = deliveryNum;
-    }
-
-    public String getQueryID() {
-        return queryID;
-    }
-
-    public void setQueryID(String queryID) {
-        this.queryID = queryID;
+    public void setQueryId(String queryId) {
+        this.queryId = queryId;
     }
 
     public String getQueryType() {
@@ -293,7 +279,7 @@ public class ExpressInfo extends BaseEntity
                 ", lastUpdateTime='" + lastUpdateTime + '\'' +
                 ", queryTime='" + queryTime + '\'' +
                 ", queryUserName='" + queryUserName + '\'' +
-                ", queryID='" + queryID + '\'' +
+                ", queryId='" + queryId + '\'' +
                 ", queryType='" + queryType + '\'' +
                 '}';
     }

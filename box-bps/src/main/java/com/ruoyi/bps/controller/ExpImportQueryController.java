@@ -3,6 +3,7 @@ package com.ruoyi.bps.controller;
 import com.ruoyi.bps.domain.ExpImportQuery;
 import com.ruoyi.bps.domain.ExpSubsPushResp;
 import com.ruoyi.bps.domain.ExpressInfo;
+import com.ruoyi.bps.mapper.ExpressInfoMapper;
 import com.ruoyi.bps.service.IExpImportQueryService;
 import com.ruoyi.bps.service.IExpressInfoService;
 import com.ruoyi.common.annotation.Log;
@@ -43,6 +44,9 @@ public class ExpImportQueryController extends BaseController
     @Autowired
     private IExpressInfoService expressInfoService;
 
+    @Autowired
+    private ExpressInfoMapper expressInfoMapper;
+
     @RequiresPermissions("bps:expImportQuery:view")
     @GetMapping()
     public String expImportQuery()
@@ -74,6 +78,21 @@ public class ExpImportQueryController extends BaseController
     {
         List<ExpImportQuery> list = expImportQueryService.selectExpImportQueryList(expImportQuery);
         ExcelUtil<ExpImportQuery> util = new ExcelUtil<ExpImportQuery>(ExpImportQuery.class);
+        return util.exportExcel(list, "Excel批量快递查询数据");
+    }
+
+
+    /**
+     * 导出Excel批量快递查询列表
+     */
+    @RequiresPermissions("bps:expImportQuery:export")
+    @Log(title = "详细快递信息导出", businessType = BusinessType.EXPORT)
+    @PostMapping("/exportDetail")
+    @ResponseBody
+    public AjaxResult exportDetail(ExpressInfo expressInfo)
+    {
+        List<ExpressInfo> list = expressInfoService.selectLocalExpressInfoList(expressInfo);
+        ExcelUtil<ExpressInfo> util = new ExcelUtil<ExpressInfo>(ExpressInfo.class);
         return util.exportExcel(list, "Excel批量快递查询数据");
     }
 
@@ -138,11 +157,16 @@ public class ExpImportQueryController extends BaseController
      * 快递查询明细信息
      */
     @RequiresPermissions("bps:expImportQuery:detail")
-    @GetMapping("/detail/{queryId}")
-    public String detail(@PathVariable("queryId") String queryId, ModelMap mmap)
+    @GetMapping("/detail/{sid}")
+    public String detail(@PathVariable("sid") Long sid, ModelMap mmap)
     {
-        /*ExpSubsPushResp expSubsPushResp = expSubsPushRespService.selectExpSubsPushRespById(sid);
-        mmap.put("expSubsPushResp", expSubsPushResp);*/
+        /*ExpImportQuery expImportQuery = expImportQueryService.selectExpImportQueryById(sid);
+        mmap.put("expImportQuery", expImportQuery);*/
+
+       String queryId = expImportQueryService.selectExpImportQueryById(sid).getQueryId();
+        ExpressInfo expressInfo= new ExpressInfo();
+        expressInfo.setQueryId(queryId);
+        mmap.put("expressInfo",expressInfo);
         return prefix + "/detail";
     }
 
@@ -160,14 +184,14 @@ public class ExpImportQueryController extends BaseController
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
         String queryTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
-        String queryID= LocalDateTime.now().toString();
+        String queryId= LocalDateTime.now().toString();
         ExcelUtil<ExpressInfo> util= new ExcelUtil<ExpressInfo>(ExpressInfo.class);
         List<ExpressInfo> expressInfoList=util.importExcel(file.getInputStream());
         ExpImportQuery expImportQuery=new ExpImportQuery();
        try{
                 for( ExpressInfo expressInfo:expressInfoList){
                 ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
-                ei.setQueryID(queryID);
+                ei.setQueryId(queryId);
                 ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
                 ei.setQueryType("excel");
                 ei.setQueryTime(queryTime);
@@ -181,7 +205,7 @@ public class ExpImportQueryController extends BaseController
                 expImportQuery.setQueryIp(ShiroUtils.getIp());
                 expImportQuery.setStatus("success");
                 expImportQuery.setQueryQty(String.valueOf(expressInfoList.size()));
-                expImportQuery.setQueryId(queryID);
+                expImportQuery.setQueryId(queryId);
                 expImportQueryService.insertExpImportQuery(expImportQuery);
 
             return AjaxResult.success("导入查询成功!");

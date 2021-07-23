@@ -73,6 +73,17 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
     }
 
     /**
+     * 查询本地快递信息列表
+     *
+     * @param expressInfo 快递信息
+     * @return 快递信息集合
+     */
+    @Override
+    public List<ExpressInfo> selectLocalExpressInfoList(ExpressInfo expressInfo) {
+        return expressInfoMapper.selectExpressInfoList(expressInfo);
+    }
+
+    /**
      * 查询快递信息列表
      * 
      * @param expressInfo 快递信息

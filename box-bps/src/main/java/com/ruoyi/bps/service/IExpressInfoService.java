@@ -21,8 +21,16 @@ public interface IExpressInfoService
     public ExpressInfo selectExpressInfoById(String message);
 
     /**
-     * 查询快递信息列表
+     * 查询本地快递信息列表
      * 
+     * @param expressInfo 快递信息
+     * @return 快递信息集合
+     */
+    public List<ExpressInfo> selectLocalExpressInfoList(ExpressInfo expressInfo);
+
+    /**
+     * 查询本地快递信息列表
+     *
      * @param expressInfo 快递信息
      * @return 快递信息集合
      */
