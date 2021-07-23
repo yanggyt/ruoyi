@@ -93,7 +93,10 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>box-bps</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>bps-kettle</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
