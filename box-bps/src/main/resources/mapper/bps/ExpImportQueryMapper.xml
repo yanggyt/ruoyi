@@ -6,8 +6,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="ExpImportQuery" id="ExpImportQueryResult">
         <result property="sid"    column="sid"    />
+        <result property="queryId"    column="queryId"    />
         <result property="queryTime"    column="queryTime"    />
-        <result property="queryUserId"    column="queryUserId"    />
+        <result property="queryLoginName"    column="queryLoginName"    />
         <result property="queryUserName"    column="queryUserName"    />
         <result property="queryIp"    column="queryIp"    />
         <result property="finishTime"    column="finishTime"    />
@@ -16,14 +17,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExpImportQueryVo">
-        select sid, queryTime, queryUserId, queryUserName, queryIp, finishTime, status, queryQty from exp_import_query
+        select sid, queryId, queryTime, queryLoginName, queryUserName, queryIp, finishTime, status, queryQty from exp_import_query
     </sql>
 
     <select id="selectExpImportQueryList" parameterType="ExpImportQuery" resultMap="ExpImportQueryResult">
         <include refid="selectExpImportQueryVo"/>
         <where>  
             <if test="queryTime != null  and queryTime != ''"> and queryTime like concat('%', #{queryTime}, '%')</if>
-            <if test="queryUserId != null  and queryUserId != ''"> and queryUserId = #{queryUserId}</if>
+            <if test="queryLoginName != null  and queryLoginName != ''"> and queryLoginName = #{queryLoginName}</if>
             <if test="queryUserName != null  and queryUserName != ''"> and queryUserName = #{queryUserName}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
         </where>
@@ -38,7 +39,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into exp_import_query
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="queryTime != null">queryTime,</if>
-            <if test="queryUserId != null">queryUserId,</if>
+            <if test="queryId != null">queryId,</if>
+            <if test="queryLoginName != null">queryLoginName,</if>
             <if test="queryUserName != null">queryUserName,</if>
             <if test="queryIp != null">queryIp,</if>
             <if test="finishTime != null">finishTime,</if>
@@ -47,7 +49,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="queryTime != null">#{queryTime},</if>
-            <if test="queryUserId != null">#{queryUserId},</if>
+            <if test="queryId != null">#{queryId},</if>
+            <if test="queryLoginName != null">#{queryLoginName},</if>
             <if test="queryUserName != null">#{queryUserName},</if>
             <if test="queryIp != null">#{queryIp},</if>
             <if test="finishTime != null">#{finishTime},</if>
@@ -60,7 +63,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update exp_import_query
         <trim prefix="SET" suffixOverrides=",">
             <if test="queryTime != null">queryTime = #{queryTime},</if>
-            <if test="queryUserId != null">queryUserId = #{queryUserId},</if>
+            <if test="queryId != null">queryId = #{queryId},</if>
+            <if test="queryLoginName != null">queryLoginName = #{queryLoginName},</if>
             <if test="queryUserName != null">queryUserName = #{queryUserName},</if>
             <if test="queryIp != null">queryIp = #{queryIp},</if>
             <if test="finishTime != null">finishTime = #{finishTime},</if>

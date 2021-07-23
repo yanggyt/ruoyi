@@ -107,7 +107,8 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
         //return expressInfoMapper.selectExpressInfoList(expressInfo);
     }
 
-    private ExpressInfo SelectExpressInfo(ExpressInfo expressInfo){
+    @Override
+    public ExpressInfo SelectExpressInfo(ExpressInfo expressInfo){
        String nu=expressInfo.getNu();  //快递单号
        String com=expressInfo.getCom(); //快递公司
        String phone=expressInfo.getPhone(); //收、寄件人电话号码
@@ -176,10 +177,10 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
         String collectTime= queryTrackResp.getData().get(queryTrackResp.getData().size()-1).getTime();
 
         //获取查询时间
-        String queryTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
+        String queryTime= StringUtils.isNotEmpty(expressInfo.getQueryTime())?expressInfo.getQueryTime():DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
 
         //获取查询人（登录用户）
-        String queryUser= ShiroUtils.getLoginName();
+        String queryUserName= ShiroUtils.getLoginName();
 
         //将快递信息中的Context转化为字符
         String dataStr="";
@@ -190,6 +191,7 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
                 dataStr+="\r\n";
             }
         }
+        String a= queryTrackResp.getCondition();
         ExpressInfo callbackExpressInfo=new ExpressInfo();
         callbackExpressInfo.setMessage(queryTrackResp.getMessage());
         callbackExpressInfo.setNu(queryTrackResp.getNu());
@@ -207,7 +209,7 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
         callbackExpressInfo.setCollectTime(collectTime);
         callbackExpressInfo.setLastUpdateTime(lastUpdateTime);
         callbackExpressInfo.setQueryTime(queryTime);
-        callbackExpressInfo.setQueryUser(queryUser);
+        callbackExpressInfo.setQueryUserName(queryUserName);
         callbackExpressInfo.setDeliveryNum(expressInfo.getDeliveryNum());
 
         return callbackExpressInfo;

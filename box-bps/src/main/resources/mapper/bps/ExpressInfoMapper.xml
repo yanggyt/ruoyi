@@ -17,10 +17,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="returnCode"    column="returnCode"    />
         <result property="result"    column="result"    />
         <result property="phone"    column="phone"    />
+        <result property="collectTime"    column="collectTime"    />
+        <result property="singedTime"    column="singedTime"    />
+        <result property="lastUpdateTime"    column="lastUpdateTime"    />
+        <result property="queryTime"    column="queryTime"    />
+        <result property="queryUserName"    column="queryUserName"    />
+        <result property="queryID"    column="queryID"    />
+        <result property="queryType"    column="queryType"    />
     </resultMap>
 
     <sql id="selectExpressInfoVo">
-        select message, nu, ischeck, com, status, data, state, condition, routeInfo, returnCode, result, phone from expressInfo
+        select message, nu, ischeck, com, status, `data`, `state`, `condition`, routeInfo, returnCode, `result`, phone,
+               collectTime, singedTime, lastUpdateTime, queryTime, queryUserName, queryID, queryType
+        from expressInfo
     </sql>
 
     <select id="selectExpressInfoList" parameterType="ExpressInfo" resultMap="ExpressInfoResult">
@@ -36,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectExpressInfoVo"/>
         where message = #{message}
     </select>
-        
+
     <insert id="insertExpressInfo" parameterType="ExpressInfo">
         insert into expressInfo
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -45,14 +54,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ischeck != null">ischeck,</if>
             <if test="com != null">com,</if>
             <if test="status != null">status,</if>
-            <if test="data != null">data,</if>
-            <if test="state != null">state,</if>
-            <if test="condition != null">condition,</if>
+            <if test="data != null">`data`,</if>
+            <if test="state != null">`state`,</if>
+            <if test="condition != null">`condition`,</if>
             <if test="routeInfo != null">routeInfo,</if>
             <if test="returnCode != null">returnCode,</if>
-            <if test="result != null">result,</if>
+            <if test="result != null">`result`,</if>
             <if test="phone != null">phone,</if>
-         </trim>
+            <if test="collectTime != null">collectTime,</if>
+            <if test="singedTime != null">singedTime,</if>
+            <if test="lastUpdateTime != null">lastUpdateTime,</if>
+            <if test="queryTime != null">queryTime,</if>
+            <if test="queryUserName != null">queryUserName,</if>
+            <if test="queryID != null">queryID,</if>
+            <if test="queryType != null">queryType,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="message != null">#{message},</if>
             <if test="nu != null">#{nu},</if>
@@ -66,6 +82,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="returnCode != null">#{returnCode},</if>
             <if test="result != null">#{result},</if>
             <if test="phone != null">#{phone},</if>
+            <if test="collectTime != null">#{collectTime},</if>
+            <if test="singedTime != null">#{singedTime},</if>
+            <if test="lastUpdateTime != null">#{lastUpdateTime},</if>
+            <if test="queryTime != null">#{queryTime},</if>
+            <if test="queryUserName != null">#{queryUserName},</if>
+            <if test="queryID != null">#{queryID},</if>
+            <if test="queryType != null">#{queryType},</if>
          </trim>
     </insert>
 
@@ -76,13 +99,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ischeck != null">ischeck = #{ischeck},</if>
             <if test="com != null">com = #{com},</if>
             <if test="status != null">status = #{status},</if>
-            <if test="data != null">data = #{data},</if>
-            <if test="state != null">state = #{state},</if>
-            <if test="condition != null">condition = #{condition},</if>
+            <if test="data != null">`data` = #{data},</if>
+            <if test="state != null">`state` = #{state},</if>
+            <if test="condition != null">`condition` = #{condition},</if>
             <if test="routeInfo != null">routeInfo = #{routeInfo},</if>
             <if test="returnCode != null">returnCode = #{returnCode},</if>
-            <if test="result != null">result = #{result},</if>
+            <if test="result != null">`result` = #{result},</if>
             <if test="phone != null">phone = #{phone},</if>
+            <if test="collectTime != null">collectTime = #{collectTime},</if>
+            <if test="singedTime != null">singedTime = #{singedTime},</if>
+            <if test="lastUpdateTime != null">lastUpdateTime = #{lastUpdateTime},</if>
+            <if test="queryTime != null">queryTime = #{queryTime},</if>
+            <if test="queryUserName != null">queryUserName = #{queryUserName},</if>
+            <if test="queryID != null">queryID = #{queryID},</if>
+            <if test="queryType != null">queryType = #{queryType},</if>
         </trim>
         where message = #{message}
     </update>

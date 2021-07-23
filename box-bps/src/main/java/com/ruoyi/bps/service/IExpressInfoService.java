@@ -59,4 +59,12 @@ public interface IExpressInfoService
      * @return 结果
      */
     public int deleteExpressInfoById(String message);
+
+    /**
+     * 查询快递信息
+     *
+     * @param expressInfo 快递信息
+     * @return 快递信息
+     */
+    public ExpressInfo SelectExpressInfo(ExpressInfo expressInfo);
 }

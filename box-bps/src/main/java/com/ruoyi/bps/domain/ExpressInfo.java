@@ -86,7 +86,13 @@ public class ExpressInfo extends BaseEntity
 
     /** 查询人*/
     @Excel(name = "查询人",type= Excel.Type.EXPORT)
-    private String queryUser;
+    private String queryUserName;
+
+    /** 查询ID*/
+    private String queryID;
+
+    /** 查询类型*/
+    private String queryType;
 
 
     public void setMessage(String message) 
@@ -234,12 +240,12 @@ public class ExpressInfo extends BaseEntity
         this.queryTime = queryTime;
     }
 
-    public String getQueryUser() {
-        return queryUser;
+    public String getQueryUserName() {
+        return queryUserName;
     }
 
-    public void setQueryUser(String queryUser) {
-        this.queryUser = queryUser;
+    public void setQueryUserName(String queryUserName) {
+        this.queryUserName = queryUserName;
     }
 
     public String getDeliveryNum() {
@@ -248,6 +254,22 @@ public class ExpressInfo extends BaseEntity
 
     public void setDeliveryNum(String deliveryNum) {
         this.deliveryNum = deliveryNum;
+    }
+
+    public String getQueryID() {
+        return queryID;
+    }
+
+    public void setQueryID(String queryID) {
+        this.queryID = queryID;
+    }
+
+    public String getQueryType() {
+        return queryType;
+    }
+
+    public void setQueryType(String queryType) {
+        this.queryType = queryType;
     }
 
     @Override
@@ -270,7 +292,9 @@ public class ExpressInfo extends BaseEntity
                 ", singedTime='" + singedTime + '\'' +
                 ", lastUpdateTime='" + lastUpdateTime + '\'' +
                 ", queryTime='" + queryTime + '\'' +
-                ", queryUser='" + queryUser + '\'' +
+                ", queryUserName='" + queryUserName + '\'' +
+                ", queryID='" + queryID + '\'' +
+                ", queryType='" + queryType + '\'' +
                 '}';
     }
 }
