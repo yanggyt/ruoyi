@@ -1,6 +1,6 @@
 package com.ruoyi.kettle.tools;
 
-import lombok.extern.slf4j.Slf4j;
+import com.ruoyi.common.config.datasource.DynamicDataSourceContextHolder;
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.database.DatabaseMeta;
 import org.pentaho.di.core.exception.KettleException;
@@ -15,14 +15,16 @@ import org.pentaho.di.repository.filerep.KettleFileRepository;
 import org.pentaho.di.repository.filerep.KettleFileRepositoryMeta;
 import org.pentaho.di.trans.Trans;
 import org.pentaho.di.trans.TransMeta;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.Map;
-@Slf4j
 @Component
 public class KettleUtil {
+    public static final Logger log = LoggerFactory.getLogger(KettleUtil.class);
 
 
     public  String KETTLE_LOG_LEVEL = "basic";

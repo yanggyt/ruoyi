@@ -1,8 +1,7 @@
 package com.ruoyi.kettle.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -13,11 +12,7 @@ import com.ruoyi.kettle.domain.XRepository;
 import com.ruoyi.kettle.mapper.XRepositoryMapper;
 import com.ruoyi.kettle.service.IKettleTransService;
 import com.ruoyi.kettle.tools.KettleUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.pentaho.di.repository.Repository;
-import org.pentaho.di.trans.Trans;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.ruoyi.kettle.mapper.KettleTransMapper;
 import com.ruoyi.kettle.domain.KettleTrans;
@@ -30,7 +25,6 @@ import com.ruoyi.common.core.text.Convert;
  * @date 2021-07-14
  */
 @Service("kettleTransServiceImpl")
-@Slf4j
 public class KettleTransServiceImpl implements IKettleTransService
 {
     @Autowired
@@ -62,7 +56,15 @@ public class KettleTransServiceImpl implements IKettleTransService
     @Override
     public List<KettleTrans> selectKettleTransList(KettleTrans kettleTrans)
     {
-       List<SysRole> roleList = (List<SysRole>) PermissionUtils.getPrincipalProperty("roles");
+        Object o=PermissionUtils.getPrincipalProperty("roles");
+        List<SysRole> roleList=new ArrayList<>();
+       // roleList= (List<SysRole>) PermissionUtils.getPrincipalProperty("roles");
+        if(o != null && o instanceof List<?>){
+            for(Object r:(List<?>)o){
+                roleList.add(SysRole.class.cast(r));
+            }
+        }
+
        //当前用户的roleKey
        List<String> roleKeys=roleList.stream().map(SysRole::getRoleKey).collect(Collectors.toList());
 
