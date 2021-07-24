@@ -1,5 +1,6 @@
 package com.ruoyi.kettle.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,8 +57,14 @@ public class KettleJobServiceImpl implements IKettleJobService
     @Override
     public List<KettleJob> selectKettleJobList(KettleJob kettleJob)
     {
-        List<SysRole> roleList = (List<SysRole>) PermissionUtils.getPrincipalProperty("roles");
-        //当前用户的roleKey
+        Object o=PermissionUtils.getPrincipalProperty("roles");
+        List<SysRole> roleList=new ArrayList<>();
+        // roleList= (List<SysRole>) PermissionUtils.getPrincipalProperty("roles");
+        if(o != null && o instanceof List<?>){
+            for(Object r:(List<?>)o){
+                roleList.add(SysRole.class.cast(r));
+            }
+        }        //当前用户的roleKey
         List<String> roleKeys=roleList.stream().map(SysRole::getRoleKey).collect(Collectors.toList());
         return kettleJobMapper.selectKettleJobList(kettleJob,roleKeys);
     }

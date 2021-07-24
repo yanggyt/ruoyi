@@ -135,7 +135,7 @@ public class Constant extends Const {
     }
 
     public static Map<String, String> getQuartzBasic(String name, String path) {
-        Map<String, String> quartzBasic = new HashMap();
+        Map<String, String> quartzBasic = new HashMap<String, String>();
         StringBuilder jobName = new StringBuilder();
         jobName.append("JOB").append("@").append(name).append("@").append(path);
         StringBuilder jobGroupName = new StringBuilder();

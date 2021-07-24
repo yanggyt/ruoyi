@@ -58,7 +58,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class KettleUtil_2 {
     private static final Logger log = LoggerFactory.getLogger(KettleUtil_2.class);
-    public static Map<String, Repository> holder = new ConcurrentHashMap();
+    public static Map<String, Repository> holder = new ConcurrentHashMap<String, Repository>();
 
     public static Map<String, Repository> getHolder() {
         return holder;
@@ -70,8 +70,34 @@ public class KettleUtil_2 {
 
     public KettleUtil_2() {
     }
+    public static Repository conFileRep(String repoId, String repoName, String baseDirectory) throws KettleException {
+        if (holder.containsKey(repoId)) {
+            return (Repository)holder.get(repoId);
+        } else {
+            XRepoManager.createFileRep(repoId, repoName, "文件资源库", baseDirectory);
+            Repository repository = connect(repoId);
+            if (null != repository) {
+                holder.put(repoId, repository);
+                return repository;
+            } else {
+                return null;
+            }
+        }
+    }
+    public static Repository connect(String repoId) throws KettleSecurityException, KettleException {
+        return connect(repoId, (String)null, (String)null);
+    }
 
-    public static Repository conByJndi(String repoId, String name, String db, String type, String kuser, String kpass) throws Exception {
+    public static Repository connect(String repoId, String username, String password) throws KettleSecurityException, KettleException {
+        Repository repository = (Repository)XRepoManager.repositoryCache.get(repoId);
+        if (!repository.isConnected()) {
+            repository.connect(username, password);
+            log.info(repository.getName() + "资源库已连接!");
+        }
+
+        return repository;
+    }
+    /*public static Repository conByJndi(String repoId, String name, String db, String type, String kuser, String kpass) throws Exception {
         testConnect(repoId);
         if (holder.containsKey(repoId)) {
             return (Repository)holder.get(repoId);
@@ -87,20 +113,7 @@ public class KettleUtil_2 {
         }
     }
 
-    public static Repository conFileRep(String repoId, String repoName, String baseDirectory) throws KettleException {
-        if (holder.containsKey(repoId)) {
-            return (Repository)holder.get(repoId);
-        } else {
-            XRepoManager.createFileRep(repoId, repoName, "文件资源库", baseDirectory);
-            Repository repository = connect(repoId);
-            if (null != repository) {
-                holder.put(repoId, repository);
-                return repository;
-            } else {
-                return null;
-            }
-        }
-    }
+
 
     public static Repository conByNative(String repoId, String repoName, String name, String type, String host, String port, String db, String user, String pass, String kuser, String kpass) throws KettleException {
         testConnect(repoId);
@@ -142,19 +155,7 @@ public class KettleUtil_2 {
         }
     }
 
-    public static Repository connect(String repoId) throws KettleSecurityException, KettleException {
-        return connect(repoId, (String)null, (String)null);
-    }
 
-    public static Repository connect(String repoId, String username, String password) throws KettleSecurityException, KettleException {
-        Repository repository = (Repository)XRepoManager.repositoryCache.get(repoId);
-        if (!repository.isConnected()) {
-            repository.connect(username, password);
-            log.info(repository.getName() + "资源库已连接!");
-        }
-
-        return repository;
-    }
 
     public static void setRepository(Repository repository) {
     }
@@ -731,5 +732,5 @@ public class KettleUtil_2 {
             }
         }
 
-    }
+    }*/
 }
