@@ -2,6 +2,8 @@ package com.ruoyi.bps.service;
 
 import java.util.List;
 import com.ruoyi.bps.domain.ExpImportQuery;
+import com.ruoyi.bps.domain.ExpressInfo;
+import com.ruoyi.common.core.domain.AjaxResult;
 
 /**
  * Excel批量快递查询Service接口
@@ -58,4 +60,13 @@ public interface IExpImportQueryService
      * @return 结果
      */
     public int deleteExpImportQueryById(Long sid);
+
+    /**
+     * 删除Excel批量快递查询信息
+     *
+     * @param expressInfoList Excel导入的快递列表
+     * @return 结果
+     */
+    public AjaxResult importData(List<ExpressInfo> expressInfoList);
+
 }

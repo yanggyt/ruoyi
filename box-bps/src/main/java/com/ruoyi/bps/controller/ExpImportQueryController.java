@@ -10,8 +10,6 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -164,8 +161,9 @@ public class ExpImportQueryController extends BaseController
         return prefix + "/detail";
     }
 
-
-
+    /**
+     * Excel导入查模板下载
+     */
     @GetMapping ( "/importTemplate" )
     @ResponseBody
     public AjaxResult importTemplate ( ) {
@@ -173,40 +171,16 @@ public class ExpImportQueryController extends BaseController
         return util.importTemplateExcel ( "快递查询导入模板" );
     }
 
+    /**
+     * Excel导入查询
+     */
     @PostMapping("/importData")
+    @Log(title = "Excel批量导入快递查询", businessType = BusinessType.IMPORT)
     @ResponseBody
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        String queryTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
-        String queryId= LocalDateTime.now().toString();
         ExcelUtil<ExpressInfo> util= new ExcelUtil<ExpressInfo>(ExpressInfo.class);
         List<ExpressInfo> expressInfoList=util.importExcel(file.getInputStream());
-        ExpImportQuery expImportQuery=new ExpImportQuery();
-       try{
-                for( ExpressInfo expressInfo:expressInfoList){
-                    ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
-                    ei.setQueryId(queryId);
-                    ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
-                    ei.setQueryType("excel");
-                    ei.setQueryTime(queryTime);
-                    expressInfoService.insertExpressInfo(ei);
-                }
-
-                expImportQuery.setQueryTime(queryTime);
-                expImportQuery.setQueryLoginName(ShiroUtils.getLoginName());
-                expImportQuery.setQueryUserName(ShiroUtils.getSysUser().getUserName());
-                expImportQuery.setFinishTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
-                expImportQuery.setQueryIp(ShiroUtils.getIp());
-                expImportQuery.setStatus("success");
-                expImportQuery.setQueryQty(String.valueOf(expressInfoList.size()));
-                expImportQuery.setQueryId(queryId);
-                expImportQueryService.insertExpImportQuery(expImportQuery);
-
-            return AjaxResult.success("导入查询成功!");
-       }catch (Exception e){
-           expImportQuery.setStatus("fail");
-           return AjaxResult.error(e.getMessage());
-       }
-
+        return expImportQueryService.importData(expressInfoList);
     }
 }

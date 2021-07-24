@@ -24,10 +24,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="queryUserName"    column="queryUserName"    />
         <result property="queryId"    column="queryId"    />
         <result property="queryType"    column="queryType"    />
+        <result property="deliveryNum"    column="deliveryNum"    />
+
     </resultMap>
 
     <sql id="selectExpressInfoVo">
-        select message, nu, ischeck, com, status, `data`, `state`, `condition`, routeInfo, returnCode, `result`, phone,
+        select message, nu, deliveryNum, ischeck, com, status, `data`, `state`, `condition`, routeInfo, returnCode, `result`, phone,
                collectTime, singedTime, lastUpdateTime, queryTime, queryUserName, queryId, queryType
         from expressInfo
     </sql>
@@ -39,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="com != null  and com != ''"> and com = #{com}</if>
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
             <if test="queryId != null  and queryId != ''"> and queryId = #{queryId}</if>
+            <if test="deliveryNum != null  and deliveryNum != ''"> and deliveryNum = #{deliveryNum}</if>
         </where>
     </select>
     
@@ -69,6 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="queryUserName != null">queryUserName,</if>
             <if test="queryId != null">queryId,</if>
             <if test="queryType != null">queryType,</if>
+            <if test="deliveryNum != null">deliveryNum,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="message != null">#{message},</if>
@@ -90,6 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="queryUserName != null">#{queryUserName},</if>
             <if test="queryId != null">#{queryId},</if>
             <if test="queryType != null">#{queryType},</if>
+            <if test="deliveryNum != null">#{deliveryNum},</if>
          </trim>
     </insert>
 
@@ -114,6 +119,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="queryUserName != null">queryUserName = #{queryUserName},</if>
             <if test="queryId != null">queryId = #{queryId},</if>
             <if test="queryType != null">queryType = #{queryType},</if>
+            <if test="deliveryNum != null">deliveryNum = #{deliveryNum},</if>
         </trim>
         where message = #{message}
     </update>

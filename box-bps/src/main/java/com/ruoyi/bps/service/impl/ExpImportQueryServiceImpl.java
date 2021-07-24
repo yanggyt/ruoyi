@@ -1,12 +1,19 @@
 package com.ruoyi.bps.service.impl;
 
-import java.util.List;
+import com.ruoyi.bps.domain.ExpImportQuery;
+import com.ruoyi.bps.domain.ExpressInfo;
+import com.ruoyi.bps.mapper.ExpImportQueryMapper;
+import com.ruoyi.bps.service.IExpImportQueryService;
+import com.ruoyi.bps.service.IExpressInfoService;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.bps.mapper.ExpImportQueryMapper;
-import com.ruoyi.bps.domain.ExpImportQuery;
-import com.ruoyi.bps.service.IExpImportQueryService;
-import com.ruoyi.common.core.text.Convert;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Excel批量快递查询Service业务层处理
@@ -19,6 +26,9 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
 {
     @Autowired
     private ExpImportQueryMapper expImportQueryMapper;
+
+    @Autowired
+    private IExpressInfoService expressInfoService;
 
     /**
      * 查询Excel批量快递查询
@@ -90,5 +100,44 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
     public int deleteExpImportQueryById(Long sid)
     {
         return expImportQueryMapper.deleteExpImportQueryById(sid);
+    }
+
+
+    /**
+     * 删除Excel批量快递查询信息
+     *
+     * @param expressInfoList Excel导入的快递列表
+     * @return 结果
+     */
+    @Override
+    public AjaxResult importData(List<ExpressInfo> expressInfoList) {
+        String queryTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
+        String queryId= LocalDateTime.now().toString();
+        ExpImportQuery expImportQuery=new ExpImportQuery();
+        try{
+            for( ExpressInfo expressInfo:expressInfoList){
+                ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
+                ei.setQueryId(queryId);
+                ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
+                ei.setQueryType("excel");
+                ei.setQueryTime(queryTime);
+                expressInfoService.insertExpressInfo(ei);
+            }
+
+            expImportQuery.setQueryTime(queryTime);
+            expImportQuery.setQueryLoginName(ShiroUtils.getLoginName());
+            expImportQuery.setQueryUserName(ShiroUtils.getSysUser().getUserName());
+            expImportQuery.setFinishTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
+            expImportQuery.setQueryIp(ShiroUtils.getIp());
+            expImportQuery.setStatus("success");
+            expImportQuery.setQueryQty(String.valueOf(expressInfoList.size()));
+            expImportQuery.setQueryId(queryId);
+            expImportQueryMapper.insertExpImportQuery(expImportQuery);
+
+            return AjaxResult.success("导入查询成功!");
+        }catch (Exception e){
+            expImportQuery.setStatus("fail");
+            return AjaxResult.error(e.getMessage());
+        }
     }
 }
