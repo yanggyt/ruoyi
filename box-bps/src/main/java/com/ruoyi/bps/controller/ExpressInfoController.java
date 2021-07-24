@@ -56,6 +56,20 @@ public class ExpressInfoController extends BaseController
     }
 
     /**
+     * 查询快递信息列表
+     */
+    @RequiresPermissions("bps:expressInfo:list")
+    @PostMapping("/localList")
+    @ResponseBody
+    public TableDataInfo localList(ExpressInfo expressInfo)
+    {
+        startPage();
+        List<ExpressInfo> list = expressInfoService.selectLocalExpressInfoList(expressInfo);
+
+        return getDataTable(list);
+    }
+
+    /**
      * 导出快递信息列表
      */
     @RequiresPermissions("bps:expressInfo:export")

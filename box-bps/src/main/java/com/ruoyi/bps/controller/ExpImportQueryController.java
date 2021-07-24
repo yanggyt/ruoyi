@@ -1,23 +1,31 @@
 package com.ruoyi.bps.controller;
 
-import java.util.List;
+import com.ruoyi.bps.domain.ExpImportQuery;
+import com.ruoyi.bps.domain.ExpSubsPushResp;
+import com.ruoyi.bps.domain.ExpressInfo;
+import com.ruoyi.bps.mapper.ExpressInfoMapper;
+import com.ruoyi.bps.service.IExpImportQueryService;
+import com.ruoyi.bps.service.IExpressInfoService;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.ExceptionUtil;
+import com.ruoyi.common.utils.ShiroUtils;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.bps.domain.ExpImportQuery;
-import com.ruoyi.bps.service.IExpImportQueryService;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Excel批量快递查询Controller
@@ -33,6 +41,12 @@ public class ExpImportQueryController extends BaseController
 
     @Autowired
     private IExpImportQueryService expImportQueryService;
+
+    @Autowired
+    private IExpressInfoService expressInfoService;
+
+    @Autowired
+    private ExpressInfoMapper expressInfoMapper;
 
     @RequiresPermissions("bps:expImportQuery:view")
     @GetMapping()
@@ -65,6 +79,21 @@ public class ExpImportQueryController extends BaseController
     {
         List<ExpImportQuery> list = expImportQueryService.selectExpImportQueryList(expImportQuery);
         ExcelUtil<ExpImportQuery> util = new ExcelUtil<ExpImportQuery>(ExpImportQuery.class);
+        return util.exportExcel(list, "Excel批量快递查询数据");
+    }
+
+
+    /**
+     * 导出Excel批量快递查询列表
+     */
+    @RequiresPermissions("bps:expressInfo:export")
+    @Log(title = "详细快递信息导出", businessType = BusinessType.EXPORT)
+    @PostMapping("/exportDetail")
+    @ResponseBody
+    public AjaxResult exportDetail(ExpressInfo expressInfo)
+    {
+        List<ExpressInfo> list = expressInfoService.selectLocalExpressInfoList(expressInfo);
+        ExcelUtil<ExpressInfo> util = new ExcelUtil<ExpressInfo>(ExpressInfo.class);
         return util.exportExcel(list, "Excel批量快递查询数据");
     }
 
@@ -122,5 +151,66 @@ public class ExpImportQueryController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(expImportQueryService.deleteExpImportQueryByIds(ids));
+    }
+
+
+    /**
+     * 快递查询明细信息
+     */
+    @RequiresPermissions("bps:expImportQuery:detail")
+    @GetMapping("/detail/{sid}")
+    public String detail(@PathVariable("sid") Long sid, ModelMap mmap)
+    {
+       String queryId = expImportQueryService.selectExpImportQueryById(sid).getQueryId();
+        ExpressInfo expressInfo= new ExpressInfo();
+        expressInfo.setQueryId(queryId);
+        mmap.put("expressInfo",expressInfo);
+        return prefix + "/detail";
+    }
+
+
+
+    @GetMapping ( "/importTemplate" )
+    @ResponseBody
+    public AjaxResult importTemplate ( ) {
+        ExcelUtil <ExpressInfo> util = new ExcelUtil<>(ExpressInfo.class);
+        return util.importTemplateExcel ( "快递查询导入模板" );
+    }
+
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        String queryTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
+        String queryId= LocalDateTime.now().toString();
+        ExcelUtil<ExpressInfo> util= new ExcelUtil<ExpressInfo>(ExpressInfo.class);
+        List<ExpressInfo> expressInfoList=util.importExcel(file.getInputStream());
+        ExpImportQuery expImportQuery=new ExpImportQuery();
+       try{
+                for( ExpressInfo expressInfo:expressInfoList){
+                    ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
+                    ei.setQueryId(queryId);
+                    ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
+                    ei.setQueryType("excel");
+                    ei.setQueryTime(queryTime);
+                    expressInfoService.insertExpressInfo(ei);
+                }
+
+                expImportQuery.setQueryTime(queryTime);
+                expImportQuery.setQueryLoginName(ShiroUtils.getLoginName());
+                expImportQuery.setQueryUserName(ShiroUtils.getSysUser().getUserName());
+                expImportQuery.setFinishTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
+                expImportQuery.setQueryIp(ShiroUtils.getIp());
+                expImportQuery.setStatus("success");
+                expImportQuery.setQueryQty(String.valueOf(expressInfoList.size()));
+                expImportQuery.setQueryId(queryId);
+                expImportQueryService.insertExpImportQuery(expImportQuery);
+
+            return AjaxResult.success("导入查询成功!");
+       }catch (Exception e){
+           expImportQuery.setStatus("fail");
+           return AjaxResult.error(e.getMessage());
+       }
+
     }
 }

@@ -18,13 +18,17 @@ public class ExpImportQuery extends BaseEntity
     /** sid */
     private Long sid;
 
+    /** 查询ID */
+    @Excel(name = "查询ID")
+    private String queryId;
+
     /** 查询时间 */
     @Excel(name = "查询时间")
     private String queryTime;
 
     /** 用户ID */
     @Excel(name = "用户ID")
-    private String queryUserId;
+    private String queryLoginName;
 
     /** 用户名 */
     @Excel(name = "用户名")
@@ -46,90 +50,94 @@ public class ExpImportQuery extends BaseEntity
     @Excel(name = "运单总量")
     private String queryQty;
 
-    public void setSid(Long sid) 
-    {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getSid() {
+        return sid;
+    }
+
+    public void setSid(Long sid) {
         this.sid = sid;
     }
 
-    public Long getSid() 
-    {
-        return sid;
+    public String getQueryId() {
+        return queryId;
     }
-    public void setQueryTime(String queryTime) 
-    {
+
+    public void setQueryId(String queryId) {
+        this.queryId = queryId;
+    }
+
+    public String getQueryTime() {
+        return queryTime;
+    }
+
+    public void setQueryTime(String queryTime) {
         this.queryTime = queryTime;
     }
 
-    public String getQueryTime() 
-    {
-        return queryTime;
-    }
-    public void setQueryUserId(String queryUserId) 
-    {
-        this.queryUserId = queryUserId;
+    public String getQueryLoginName() {
+        return queryLoginName;
     }
 
-    public String getQueryUserId() 
-    {
-        return queryUserId;
+    public void setQueryLoginName(String queryLoginName) {
+        this.queryLoginName = queryLoginName;
     }
-    public void setQueryUserName(String queryUserName) 
-    {
+
+    public String getQueryUserName() {
+        return queryUserName;
+    }
+
+    public void setQueryUserName(String queryUserName) {
         this.queryUserName = queryUserName;
     }
 
-    public String getQueryUserName() 
-    {
-        return queryUserName;
+    public String getQueryIp() {
+        return queryIp;
     }
-    public void setQueryIp(String queryIp) 
-    {
+
+    public void setQueryIp(String queryIp) {
         this.queryIp = queryIp;
     }
 
-    public String getQueryIp() 
-    {
-        return queryIp;
+    public String getFinishTime() {
+        return finishTime;
     }
-    public void setFinishTime(String finishTime) 
-    {
+
+    public void setFinishTime(String finishTime) {
         this.finishTime = finishTime;
     }
 
-    public String getFinishTime() 
-    {
-        return finishTime;
+    public String getStatus() {
+        return status;
     }
-    public void setStatus(String status) 
-    {
+
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getStatus() 
-    {
-        return status;
-    }
-    public void setQueryQty(String queryQty) 
-    {
-        this.queryQty = queryQty;
+    public String getQueryQty() {
+        return queryQty;
     }
 
-    public String getQueryQty() 
-    {
-        return queryQty;
+    public void setQueryQty(String queryQty) {
+        this.queryQty = queryQty;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("sid", getSid())
-            .append("queryTime", getQueryTime())
-            .append("queryUserId", getQueryUserId())
-            .append("queryUserName", getQueryUserName())
-            .append("queryIp", getQueryIp())
-            .append("finishTime", getFinishTime())
-            .append("status", getStatus())
-            .append("queryQty", getQueryQty())
-            .toString();
+        return "ExpImportQuery{" +
+                "sid=" + sid +
+                ", queryId='" + queryId + '\'' +
+                ", queryTime='" + queryTime + '\'' +
+                ", queryLoginName='" + queryLoginName + '\'' +
+                ", queryUserName='" + queryUserName + '\'' +
+                ", queryIp='" + queryIp + '\'' +
+                ", finishTime='" + finishTime + '\'' +
+                ", status='" + status + '\'' +
+                ", queryQty='" + queryQty + '\'' +
+                '}';
     }
 }

@@ -13,7 +13,7 @@
                         <ul>
                             <li>
                                 <label>当前状态：</label>
-                                <select name="lastResultState" th:with="type=${@dict.getType('express_stats')}">
+                                <select name="lastResultState" th:with="type=${@dict.getType('express_stats')}" class="form-control">
                                     <option value="">---所有---</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -28,7 +28,7 @@
                             </li>
                             <li>
                                 <label>快递公司：</label>
-                                <select name="lastResultCom" th:with="type=${@dict.getType('express_company')}">
+                                <select name="lastResultCom" th:with="type=${@dict.getType('express_company')}" class="form-control">
                                     <option value="">---所有---</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
@@ -39,7 +39,7 @@
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
                         </ul>
                     </div>
@@ -220,6 +220,11 @@
             };
             $.table.init(options);
         });
+
+        function reset(){
+            $('.form-control').val(null).trigger('change');
+            $.form.reset();
+        }
     </script>
 </body>
 </html>
