@@ -18,6 +18,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -85,7 +86,7 @@ public class ExpImportQueryController extends BaseController
     /**
      * 导出Excel批量快递查询列表
      */
-    @RequiresPermissions("bps:expImportQuery:export")
+    @RequiresPermissions("bps:expressInfo:export")
     @Log(title = "详细快递信息导出", businessType = BusinessType.EXPORT)
     @PostMapping("/exportDetail")
     @ResponseBody
@@ -160,9 +161,6 @@ public class ExpImportQueryController extends BaseController
     @GetMapping("/detail/{sid}")
     public String detail(@PathVariable("sid") Long sid, ModelMap mmap)
     {
-        /*ExpImportQuery expImportQuery = expImportQueryService.selectExpImportQueryById(sid);
-        mmap.put("expImportQuery", expImportQuery);*/
-
        String queryId = expImportQueryService.selectExpImportQueryById(sid).getQueryId();
         ExpressInfo expressInfo= new ExpressInfo();
         expressInfo.setQueryId(queryId);
@@ -190,12 +188,12 @@ public class ExpImportQueryController extends BaseController
         ExpImportQuery expImportQuery=new ExpImportQuery();
        try{
                 for( ExpressInfo expressInfo:expressInfoList){
-                ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
-                ei.setQueryId(queryId);
-                ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
-                ei.setQueryType("excel");
-                ei.setQueryTime(queryTime);
-                expressInfoService.insertExpressInfo(ei);
+                    ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
+                    ei.setQueryId(queryId);
+                    ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
+                    ei.setQueryType("excel");
+                    ei.setQueryTime(queryTime);
+                    expressInfoService.insertExpressInfo(ei);
                 }
 
                 expImportQuery.setQueryTime(queryTime);

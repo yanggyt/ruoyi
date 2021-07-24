@@ -20,7 +20,7 @@
         </div>
 
         <div class="btn-group-sm" id="toolbar" role="group">
-            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="bps:expressInfo:export">
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" >
                 <i class="fa fa-download"></i> 导出
             </a>
         </div>
@@ -41,7 +41,7 @@
     $(function() {
         var options = {
             url: prefix + "/localList",
-            exportUrl: prefix + "/exportDetail",
+            exportUrl: ctx+ "bps/expImportQuery/exportDetail",
             modalName: "快递信息",
             columns: [{
                 checkbox: true
