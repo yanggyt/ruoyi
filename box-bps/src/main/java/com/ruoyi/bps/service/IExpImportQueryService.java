@@ -67,6 +67,6 @@ public interface IExpImportQueryService
      * @param expressInfoList Excel导入的快递列表
      * @return 结果
      */
-    public AjaxResult importData(List<ExpressInfo> expressInfoList);
+    public AjaxResult importData(List<ExpressInfo> expressInfoList) throws Exception;
 
 }

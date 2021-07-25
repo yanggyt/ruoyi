@@ -13,6 +13,7 @@ import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -92,13 +93,15 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
      * @return 结果
      */
     @Override
+    @Transactional
     public int deleteExpImportQueryByIds(String ids)
     {
         for(String str:Arrays.asList(ids.split(",")))
         {
             expressInfoMapper.deleteExpressInfoByQueryId(str);
         }
-        return expImportQueryMapper.deleteExpImportQueryByIds(Convert.toStrArray(ids));
+        int message= expImportQueryMapper.deleteExpImportQueryByIds(Convert.toStrArray(ids));
+        return message;
     }
 
     /**
@@ -115,18 +118,19 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
 
 
     /**
-     * 删除Excel批量快递查询信息
+     * Excel批量快递查询信息
      *
      * @param expressInfoList Excel导入的快递列表
      * @return 结果
      */
     @Override
-    public AjaxResult importData(List<ExpressInfo> expressInfoList) {
+    @Transactional
+    public AjaxResult importData(List<ExpressInfo> expressInfoList) throws Exception {
         String queryTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
         String queryId= LocalDateTime.now().toString();
         ExpImportQuery expImportQuery=new ExpImportQuery();
         List<ExpressInfo> expressInfoListForInsert=new ArrayList<>();
-        try{
+       /* try{*/
             //将查询到的快递结果放到expressInfoListForInsert，并插入到数据库表expressInfo
             for( ExpressInfo expressInfo:expressInfoList){
                 ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
@@ -158,12 +162,13 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
             expImportQuery.setStatus("success");
             expImportQuery.setQueryQty(String.valueOf(expressInfoList.size()));
             expImportQuery.setQueryId(queryId);
-            expImportQueryMapper.insertExpImportQuery(expImportQuery);
+            int message=expImportQueryMapper.insertExpImportQuery(expImportQuery);
+            return AjaxResult.success(message);
 
-            return AjaxResult.success("导入查询成功!");
-        }catch (Exception e){
+
+        /*}catch (Exception e){
             expImportQuery.setStatus("fail");
             return AjaxResult.error(e.getMessage());
-        }
+        }*/
     }
 }
