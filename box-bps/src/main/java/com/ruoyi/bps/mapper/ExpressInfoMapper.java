@@ -48,7 +48,7 @@ public interface ExpressInfoMapper
 
     /**
      * 删除快递信息
-     * 
+     *
      * @param message 快递信息ID
      * @return 结果
      */
@@ -69,4 +69,14 @@ public interface ExpressInfoMapper
      * @return 结果
      */
     public int batchInsertExpressInfo(List<ExpressInfo> expressInfoList);
+
+
+    /**
+     * 删除快递信息
+     *
+     * @param queryId 快递信息queryId
+     * @return 结果
+     */
+    public int deleteExpressInfoByQueryId(String queryId);
+
 }

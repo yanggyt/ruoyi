@@ -130,8 +130,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteExpressInfoByIds" parameterType="String">
-        delete from expressInfo where message in 
-        <foreach item="message" collection="array" open="(" separator="," close=")">
+        delete from expressInfo where sid in
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
             #{sid}
         </foreach>
     </delete>
@@ -147,5 +147,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             )
         </foreach>
     </insert>
+
+    <delete id="deleteExpressInfoByQueryId" parameterType="String">
+        delete from expressInfo where queryId in (select queryId from exp_import_query where sid= #{sid})
+    </delete>
+
 
 </mapper>

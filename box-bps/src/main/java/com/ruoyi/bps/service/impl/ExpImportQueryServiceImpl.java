@@ -10,11 +10,13 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.ShiroUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -92,6 +94,10 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
     @Override
     public int deleteExpImportQueryByIds(String ids)
     {
+        for(String str:Arrays.asList(ids.split(",")))
+        {
+            expressInfoMapper.deleteExpressInfoByQueryId(str);
+        }
         return expImportQueryMapper.deleteExpImportQueryByIds(Convert.toStrArray(ids));
     }
 
@@ -130,8 +136,19 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
                 ei.setQueryTime(queryTime);
                 //expressInfoService.insertExpressInfo(ei);
                 expressInfoListForInsert.add(ei);
+               /* for(int i=1;i<1001;i++){ //测试批量插入效率用时打开Mark，产生5万条数据。
+                    expressInfoListForInsert.add(ei);
+                }*/
             }
-            expressInfoMapper.batchInsertExpressInfo(expressInfoListForInsert);
+            int size= expressInfoListForInsert.size();
+            List<ExpressInfo> expressInfos= new ArrayList<>();
+            for(int i=1;i<=size;i++){
+                expressInfos.add(expressInfoListForInsert.get(i-1));
+                if( (i%400==0 ) ||i== size) {
+                    expressInfoMapper.batchInsertExpressInfo(expressInfos);
+                    expressInfos.clear();
+                }
+            }
             //将本次excel导入查询记录到数据表exp_import_query
             expImportQuery.setQueryTime(queryTime);
             expImportQuery.setQueryLoginName(ShiroUtils.getLoginName());
