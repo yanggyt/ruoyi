@@ -61,4 +61,12 @@ public interface ExpressInfoMapper
      * @return 结果
      */
     public int deleteExpressInfoByIds(String[] messages);
+
+    /**
+     * 批量新增快递信息
+     *
+     * @param expressInfoList 角色菜单列表
+     * @return 结果
+     */
+    public int batchInsertExpressInfo(List<ExpressInfo> expressInfoList);
 }

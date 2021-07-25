@@ -16,6 +16,9 @@ public class ExpressInfo extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 消息 */
+    private String sid;
+
+    /** 消息 */
     @Excel(name = "消息",type= Excel.Type.EXPORT)
     private String message;
 
@@ -96,6 +99,14 @@ public class ExpressInfo extends BaseEntity
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 
     public String getMessage() {
@@ -261,7 +272,8 @@ public class ExpressInfo extends BaseEntity
     @Override
     public String toString() {
         return "ExpressInfo{" +
-                "message='" + message + '\'' +
+                "sid='" + sid + '\'' +
+                ", message='" + message + '\'' +
                 ", deliveryNum='" + deliveryNum + '\'' +
                 ", nu='" + nu + '\'' +
                 ", ischeck='" + ischeck + '\'' +

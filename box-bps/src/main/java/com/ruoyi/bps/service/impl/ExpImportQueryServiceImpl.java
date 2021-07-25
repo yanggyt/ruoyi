@@ -3,6 +3,7 @@ package com.ruoyi.bps.service.impl;
 import com.ruoyi.bps.domain.ExpImportQuery;
 import com.ruoyi.bps.domain.ExpressInfo;
 import com.ruoyi.bps.mapper.ExpImportQueryMapper;
+import com.ruoyi.bps.mapper.ExpressInfoMapper;
 import com.ruoyi.bps.service.IExpImportQueryService;
 import com.ruoyi.bps.service.IExpressInfoService;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +31,9 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
 
     @Autowired
     private IExpressInfoService expressInfoService;
+
+    @Autowired
+    private ExpressInfoMapper expressInfoMapper;
 
     /**
      * 查询Excel批量快递查询
@@ -114,16 +119,20 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
         String queryTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss");
         String queryId= LocalDateTime.now().toString();
         ExpImportQuery expImportQuery=new ExpImportQuery();
+        List<ExpressInfo> expressInfoListForInsert=new ArrayList<>();
         try{
+            //将查询到的快递结果放到expressInfoListForInsert，并插入到数据库表expressInfo
             for( ExpressInfo expressInfo:expressInfoList){
                 ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
                 ei.setQueryId(queryId);
                 ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
                 ei.setQueryType("excel");
                 ei.setQueryTime(queryTime);
-                expressInfoService.insertExpressInfo(ei);
+                //expressInfoService.insertExpressInfo(ei);
+                expressInfoListForInsert.add(ei);
             }
-
+            expressInfoMapper.batchInsertExpressInfo(expressInfoListForInsert);
+            //将本次excel导入查询记录到数据表exp_import_query
             expImportQuery.setQueryTime(queryTime);
             expImportQuery.setQueryLoginName(ShiroUtils.getLoginName());
             expImportQuery.setQueryUserName(ShiroUtils.getSysUser().getUserName());
