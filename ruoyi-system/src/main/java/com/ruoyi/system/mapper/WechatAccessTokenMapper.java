@@ -1,6 +1,6 @@
-package com.ruoyi.bps.mapper;
+package com.ruoyi.system.mapper;
 
-import com.ruoyi.bps.domain.WechatAccessToken;
+import com.ruoyi.system.domain.WechatAccessToken;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

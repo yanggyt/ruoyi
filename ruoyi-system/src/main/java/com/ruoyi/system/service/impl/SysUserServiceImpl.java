@@ -540,6 +540,17 @@ public class SysUserServiceImpl implements ISysUserService
         return result;
     }
 
+    /**
+     * 查询用户列表
+     *
+     * @param user 用户信息
+     * @return 用户信息集合信息
+     */
+    @Override
+    public List<SysUser> selectUserLists(SysUser user) {
+        return userMapper.selectUserLists(user);
+    }
+
     @SuppressWarnings("unchecked")
     public int userSync(Map<String,String> mapResult){
         //如果接口返回状态码不为200，则不做同步处理

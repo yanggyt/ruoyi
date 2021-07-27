@@ -1,4 +1,4 @@
-package com.ruoyi.bps.domain;
+package com.ruoyi.system.domain;
 
 import java.util.Date;
 
