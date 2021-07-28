@@ -2,6 +2,8 @@ package com.ruoyi.framework.shiro.realm;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.ruoyi.framework.shiro.util.CustToken;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -86,9 +88,12 @@ public class UserRealm extends AuthorizingRealm
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException
     {
-        UsernamePasswordToken upToken = (UsernamePasswordToken) token;
+       //UsernamePasswordToken upToken = (UsernamePasswordToken) token;
+        CustToken upToken= (CustToken) token;
+        String loginType = upToken.getLoginType();
         String username = upToken.getUsername();
         String password = "";
+
         if (upToken.getPassword() != null)
         {
             password = new String(upToken.getPassword());
@@ -97,7 +102,7 @@ public class UserRealm extends AuthorizingRealm
         SysUser user = null;
         try
         {
-            user = loginService.login(username, password);
+            user = loginService.login(username, password,loginType);
         }
         catch (CaptchaException e)
         {
