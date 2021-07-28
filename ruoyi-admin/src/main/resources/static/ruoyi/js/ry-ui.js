@@ -522,9 +522,16 @@ var table = {
             },
             // 回显数据字典
             selectDictLabel: function(datas, value) {
-            	if ($.common.isEmpty(datas) || $.common.isEmpty(value)) {
-            	    return '';
-            	}
+                if ($.common.isEmpty(value)) {
+                    return ''
+                }
+                if ($.common.isEmpty(datas)) {
+                    if($.common.isEmpty(value)){
+                        return ''
+                    }else{
+                        return value
+                    }
+                }
             	var actions = [];
                 $.each(datas, function(index, dict) {
                     if (dict.dictValue == ('' + value)) {
@@ -533,23 +540,38 @@ var table = {
                         return false;
                     }
                 });
+                if (actions.length === 0) {
+                    actions.push($.common.sprintf("<span class=''>%s</span>", value))
+                }
                 return actions.join('');
             },
             // 回显数据字典（字符串数组）
             selectDictLabels: function(datas, value, separator) {
-            	if ($.common.isEmpty(datas) || $.common.isEmpty(value)) {
-            	    return '';
-            	}
+                if ($.common.isEmpty(value)) {
+                    return ''
+                }
+                if ($.common.isEmpty(datas)) {
+                    if($.common.isEmpty(value)){
+                        return ''
+                    }else{
+                        return value
+                    }
+                }
             	var currentSeparator = $.common.isEmpty(separator) ? "," : separator;
             	var actions = [];
                 $.each(value.split(currentSeparator), function(i, val) {
+                    var match = false
                     $.each(datas, function(index, dict) {
                         if (dict.dictValue == ('' + val)) {
                             var listClass = $.common.equals("default", dict.listClass) || $.common.isEmpty(dict.listClass) ? "" : "badge badge-" + dict.listClass;
                             actions.push($.common.sprintf("<span class='%s'>%s </span>", listClass, dict.dictLabel));
+                            match = true
                             return false;
                         }
                     });
+                    if (!match) {
+                        actions.push($.common.sprintf("<span class=''>%s </span>", val));
+                    }
                 });
                 return actions.join('');
             },
