@@ -81,38 +81,5 @@
 <script src="../static/ajax/libs/blockUI/jquery.blockUI.js" th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
 <script src="../static/ruoyi/js/ry-ui.js" th:src="@{/ruoyi/js/ry-ui.js?v=4.6.2}"></script>
 <script src="../static/ruoyi/login.js" th:src="@{/ruoyi/login.js}"></script>
-<script th:inline="javascript">
-    var loginType = [[${loginType}]];
-    var username = [[${username}]];
-    var password = [[${password}]];
-    var validateCode = $("input[name='validateCode']").val();
-    var rememberMe = "true";
-
-    $(function () {
-        if (loginType == 'wechat') {
-            $.ajax({
-                type: "post",
-                url: ctx + "login",
-                data: {
-                    "username": username,
-                    "password": password,
-                    "validateCode": validateCode,
-                    "rememberMe": rememberMe,
-                    "loginType": loginType
-                },
-                success: function(r) {
-                    if (r.code == web_status.SUCCESS) {
-                        location.href = ctx + 'index';
-                    } else {
-                        $.modal.closeLoading();
-                        $('.imgcode').click();
-                        $(".code").val("");
-                        $.modal.msg(r.msg);
-                    }
-                }
-            });
-        }
-    });
-</script>
 </body>
 </html>

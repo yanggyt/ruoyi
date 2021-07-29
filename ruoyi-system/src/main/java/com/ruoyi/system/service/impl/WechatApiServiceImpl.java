@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -112,12 +113,13 @@ public class WechatApiServiceImpl implements IWechatApiService {
         //获取访问用户身份ID
         String url="https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
         String param = "access_token="+wechatApiService.GetAccessToken()+"&code="+code;
-        String userInfo = HttpUtils.sendGet(url,param);    //测试已能正常返回UserInfo Json,正式使用时打开
-        //String userInfo = "{\"UserId\":\"359\",\"DeviceId\":\"10000589102865WJ\",\"errcode\":0,\"errmsg\":\"ok\"}";  //为避免去微信获取code麻烦，开发调试时打开
+        //String userInfo = HttpUtils.sendGet(url,param);    //测试已能正常返回UserInfo Json,正式使用时打开
+        String userInfo = "{\"UserId\":\"359\",\"DeviceId\":\"10000589102865WJ\",\"errcode\":0,\"errmsg\":\"ok\"}";  //为避免去微信获取code麻烦，开发调试时打开
         JSONObject jsonObjectUserInfo = JSONObject.parseObject(userInfo);
-        //如果返回码不为0，则返回错误信息
+        //如果返回码不为0，则输出错误信息，并返回空值
         if ( Integer.parseInt(jsonObjectUserInfo.getString("errcode")) != 0){
-            return jsonObjectUserInfo.getString("errmsg");
+             System.out.println(jsonObjectUserInfo.getString("errmsg"));
+             return "";
         }
         String userId = jsonObjectUserInfo.getString("UserId");
 
@@ -129,7 +131,8 @@ public class WechatApiServiceImpl implements IWechatApiService {
         //如果返回码不为0，则返回错误信息
         if(Integer.parseInt(jsonObjectUserInfoDetail.getString("errcode")) != 0)
         {
-            return jsonObjectUserInfo.getString("errmsg");
+            System.out.println(jsonObjectUserInfo.getString("errmsg"));
+            return "";
         }
         String userEmail= jsonObjectUserInfoDetail.getString("email");
         String userName= jsonObjectUserInfoDetail.getString("name");

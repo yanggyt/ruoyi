@@ -1,24 +1,22 @@
 package com.ruoyi.web.controller.system;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.shiro.util.CustToken;
 import com.ruoyi.system.service.IWechatApiService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -40,13 +38,20 @@ public class SysLoginController extends BaseController
             String code= request.getParameter("code");
             //String state = request.getParameter("state");
             String username=wechatApiService.GetLoginNameWithWechatCode(code);
+            //如果没有获取到用户名，说明验证失败，跳转登录页
+            if(StringUtils.isEmpty(username)){
+               return "login";
+            }
+
             String password="";
             Boolean rememberMe=true;
             map.put("loginType","wechat");
             map.put("username",username);
             map.put("password",password);
 
-            return "login";
+            return "loginwechat";
+
+
         }
 
         // 如果是Ajax请求，返回Json字符串。
