@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增资源库')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-repository-add">
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">资源库名称：</label>
+                <div class="col-sm-8">
+                    <input name="repoName" class="form-control" type="text">
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-sm-3 control-label">当资源库类型是db时候的用户名：</label>
+                <div class="col-sm-8">
+                    <input name="repoUsername" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">当资源库类型是db时候的密码：</label>
+                <div class="col-sm-8">
+                    <input name="repoPassword" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">db类型：</label>
+                <div class="col-sm-8">
+                    <select name="repoType" class="form-control m-b">
+                        <option value="">所有</option>
+                    </select>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">当资源库类型是db时候的连接类型：</label>
+                <div class="col-sm-8">
+                    <input name="dbAccess" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">当资源库类型是db时候的ip：</label>
+                <div class="col-sm-8">
+                    <input name="dbHost" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">当资源库类型是db时候的端口：</label>
+                <div class="col-sm-8">
+                    <input name="dbPort" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">当资源库类型是db时候的db库名：</label>
+                <div class="col-sm-8">
+                    <input name="dbName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">当资源库类型是db时候的db用户名：</label>
+                <div class="col-sm-8">
+                    <input name="dbUsername" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">当资源库类型是db时候的db用户密码：</label>
+                <div class="col-sm-8">
+                    <input name="dbPassword" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">软删除：</label>
+                <div class="col-sm-8">
+                    <input name="isDel" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="createdTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">：</label>
+                <div class="col-sm-8">
+                    <input name="createdBy" class="form-control" type="text">
+                </div>
+            </div>-->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">资源库类型：</label>
+                <div class="col-sm-8">
+<!--                    <select name="type" class="form-control m-b">
+                        <option value="">所有</option>
+                    </select>-->
+                    <select  class="form-control" name="type" th:with="type=${@dict.getType('repository_type')}" disabled="disabled">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" ></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">基础路径：</label>
+                <div class="col-sm-8">
+                    <input name="baseDir" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "kettle/repository"
+        $("#form-repository-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-repository-add').serialize());
+            }
+        }
+
+        // $("input[name='createdTime']").datetimepicker({
+        //     format: "yyyy-mm-dd",
+        //     minView: "month",
+        //     autoclose: true
+        // });
+    </script>
+</body>
+</html>

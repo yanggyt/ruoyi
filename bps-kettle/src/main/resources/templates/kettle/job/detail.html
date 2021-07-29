@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('转换执行日志')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-expsubspushresp-detail" th:object="${kettleJob}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">
+<!--                <label class="col-sm-3 control-label">运行日志：</label>
+                <div class="col-sm-8">
+                        <span name="transName" id="transName" class="form-control" th:text="*{transName}" ></span>
+                </div>-->
+                    <textarea name="transLog"    class="textarea-inherit"   th:text="${jobLog}"  type="text" rows="30"></textarea>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "kettle/trans";
+        $(function (){
+        });
+
+    </script>
+
+</body>
+<style>
+    .textarea-inherit {
+        width: 100%;
+        height: auto;
+        overflow: auto;
+        word-break: break-all; //解决兼容问题
+    }
+</style>
+</html>
