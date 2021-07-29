@@ -32,9 +32,9 @@
 <script th:inline="javascript">
     var prefix = ctx + "kettle/repository"
     var deptId = [[${deptId}]];
-    var excludeId = [[${excludeId}]];
+    var type = [[${type}]];
     $(function() {
-        var url = $.common.isEmpty(excludeId) ? prefix + "/repositoryRoot": prefix + "/repositoryRoot/" + excludeId;
+        var url = prefix + "/repositoryRoot";
         var options = {
             url: url,
             expandLevel: 2,
@@ -70,8 +70,7 @@
     function qryRepoSubTree(treeId){
         $.ajax({
             type: 'POST',
-            url: prefix+ "/qryRepoSubTree/"+treeId,
-            //data: {"id":treeId},
+            url: prefix+ "/qryRepoSubTree/"+treeId+"/"+type,
             contentType: "application/json",
             dataType: "json",
             success: function (data) {

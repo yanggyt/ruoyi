@@ -26,15 +26,15 @@ public class XRepoManager {
 
     public XRepoManager() {
     }
-    public static List<RepositoryTree> getAllDirectoryTreeList(String repoId, Repository repository, String path, List<RepositoryTree> allRepositoryTreeList) throws KettleException {
-        List<RepositoryTree> repositoryTreeList = getJobAndTrans(repoId, repository, path);
+    public static List<RepositoryTree> getAllDirectoryTreeList(String repoId, Repository repository, String path, List<RepositoryTree> allRepositoryTreeList,String type) throws KettleException {
+        List<RepositoryTree> repositoryTreeList = getJobAndTrans(repoId, repository, path,type);
         if (repositoryTreeList.size() != 0) {
             Iterator var5 = repositoryTreeList.iterator();
 
             while(var5.hasNext()) {
                 RepositoryTree repositoryTree = (RepositoryTree)var5.next();
                 if (!repositoryTree.isLasted()) {
-                    getAllDirectoryTreeList(repoId, repository, repositoryTree.getPath(), allRepositoryTreeList);
+                    getAllDirectoryTreeList(repoId, repository, repositoryTree.getPath(), allRepositoryTreeList,type);
                     allRepositoryTreeList.add(repositoryTree);
                 } else {
                     allRepositoryTreeList.add(repositoryTree);
@@ -44,7 +44,7 @@ public class XRepoManager {
 
         return allRepositoryTreeList;
     }
-    public static List<RepositoryTree> getJobAndTrans(String repoId, Repository repository, String path) throws KettleException {
+    public static List<RepositoryTree> getJobAndTrans(String repoId, Repository repository, String path,String type) throws KettleException {
         RepositoryDirectoryInterface rDirectory = repository.loadRepositoryDirectoryTree().findDirectory(path);
         List<RepositoryTree> repositoryTreeList = getDirectory(repoId, repository, rDirectory);
         List<RepositoryElementMetaInterface> li = repository.getJobAndTransformationObjects(rDirectory.getObjectId(), false);
@@ -55,7 +55,7 @@ public class XRepoManager {
                 RepositoryElementMetaInterface repel = (RepositoryElementMetaInterface)var6.next();
                 RepositoryTree repositoryTree;
                 StringBuilder stringBuilder;
-                if ("job".equals(repel.getObjectType().toString())) {
+                if ("job".equals(repel.getObjectType().toString()) && type.equals("job")) {
                     repositoryTree = new RepositoryTree();
                     stringBuilder = new StringBuilder();
                     stringBuilder.append("job").append(rDirectory.getObjectId().toString()).append("@").append(repel.getObjectId().toString());
@@ -71,7 +71,7 @@ public class XRepoManager {
                     repositoryTree.setLasted(true);
                     repositoryTree.setPath(repel.getRepositoryDirectory().getPath());
                     repositoryTreeList.add(repositoryTree);
-                } else if ("transformation".equals(repel.getObjectType().toString())) {
+                } else if ("transformation".equals(repel.getObjectType().toString())&& type.equals("trans")) {
                     repositoryTree = new RepositoryTree();
                     stringBuilder = new StringBuilder();
                     stringBuilder.append("transformation").append(rDirectory.getObjectId().toString()).append("@").append(repel.getObjectId().toString());

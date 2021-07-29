@@ -57,15 +57,15 @@ public class XRepositoryController extends BaseController
         List<XRepository> list = xRepositoryService.selectXRepositoryList(xRepository);
         return getDataTable(list);
     }
-    @GetMapping(value = { "/selectRepositoryTree", "/selectRepositoryTree/{excludeId}" })
-    public String selectRepositoryTree( @PathVariable(value = "excludeId", required = false) String excludeId, ModelMap mmap)
+    @GetMapping(value = { "/selectRepositoryTree", "/selectRepositoryTree/{type}" })
+    public String selectRepositoryTree( @PathVariable(value = "type", required = false) String type, ModelMap mmap)
     {
         XRepository r=new XRepository();
         List<XRepository> repoTree = xRepositoryService.selectXRepositoryList(r);
-        XRepository repository=xRepositoryService.selectXRepositoryById(2L);
-        mmap.put("repository", repository);
+        //XRepository repository=xRepositoryService.selectXRepositoryById(2L);
+        //mmap.put("repository", repository);
         mmap.put("repoTree", repoTree);
-        mmap.put("excludeId", excludeId);
+        mmap.put("type", type);
         return "kettle/common/repository_tree";
     }
     @GetMapping("/repositoryRoot")
@@ -75,10 +75,10 @@ public class XRepositoryController extends BaseController
         List<RepoTree> ztrees = xRepositoryService.selectRepoRoot(new XRepository());
         return ztrees;
     }
-    @PostMapping("/qryRepoSubTree/{id}")
+    @PostMapping("/qryRepoSubTree/{id}/{type}")
     @ResponseBody
-    public List<RepoTree> qryRepoSubTree(@PathVariable("id") Long id, ModelMap mmapy) {
-        List<RepoTree> ztrees = xRepositoryService.selectRepoTree(id);
+    public List<RepoTree> qryRepoSubTree(@PathVariable("id") Long id,@PathVariable("type") String type, ModelMap mmapy) {
+        List<RepoTree> ztrees = xRepositoryService.selectRepoTree(id,type);
         return ztrees;
     }
     /**

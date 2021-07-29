@@ -83,8 +83,9 @@
         });
         function chooseJob(){
             var treeId = $("#treeId").val();
+            var type="job";
             //var repoid = $.common.isEmpty(treeId) ? "999999" : $("#treeId").val();
-            var url = ctx + "kettle/repository/selectRepositoryTree/"
+            var url = ctx + "kettle/repository/selectRepositoryTree/"+type
             var options = {
                 title: '选择资源库',
                 width: "380",

@@ -124,11 +124,10 @@ public class XRepositoryServiceImpl implements IXRepositoryService
     }
 
     @Override
-    public List<RepoTree> selectRepoTree(Long id) {
+    public List<RepoTree> selectRepoTree(Long id,String type) {
         XRepository xrs = xRepositoryMapper.selectXRepositoryById(id);
-        List<RepositoryTree> repositoryTrees = getRepoTress(xrs);
+        List<RepositoryTree> repositoryTrees = getRepoTress(xrs,type);
         List<RepositoryTree> subTrees = new ArrayList<>();
-        String type=null;
         String pId=String.valueOf(xrs.getId());
 //        try
 //        {
@@ -192,7 +191,7 @@ public class XRepositoryServiceImpl implements IXRepositoryService
         }
         return ztrees;
     }
-    private List<RepositoryTree> getRepoTress(XRepository xr) {
+    private List<RepositoryTree> getRepoTress(XRepository xr,String jobortrans) {
         List<RepositoryTree> repositoryTrees = new ArrayList<>();
         List<XRepository> xRepositoryList =xRepositoryMapper.selectXRepositoryList(xr);
 
@@ -208,7 +207,7 @@ public class XRepositoryServiceImpl implements IXRepositoryService
                     try {
                         KettleFileRepository repository = (KettleFileRepository) KettleUtil_2.
                                 conFileRep(String.valueOf(item.getId()), item.getRepoName(), baseDir);
-                        XRepoManager.getAllDirectoryTreeList(String.valueOf(item.getId()), repository, "/", tmpRepositoryList);
+                        XRepoManager.getAllDirectoryTreeList(String.valueOf(item.getId()), repository, "/", tmpRepositoryList,jobortrans);
                         if (tmpRepositoryList.size() > 0) {
                             RepositoryDirectoryInterface rDirectory = repository.loadRepositoryDirectoryTree().findDirectory("/");
                             RepositoryTree repositoryTree = new RepositoryTree();
