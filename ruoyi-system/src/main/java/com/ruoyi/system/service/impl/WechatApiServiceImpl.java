@@ -113,8 +113,8 @@ public class WechatApiServiceImpl implements IWechatApiService {
         //获取访问用户身份ID
         String url="https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
         String param = "access_token="+wechatApiService.GetAccessToken()+"&code="+code;
-        //String userInfo = HttpUtils.sendGet(url,param);    //测试已能正常返回UserInfo Json,正式使用时打开
-        String userInfo = "{\"UserId\":\"359\",\"DeviceId\":\"10000589102865WJ\",\"errcode\":0,\"errmsg\":\"ok\"}";  //为避免去微信获取code麻烦，开发调试时打开
+        String userInfo = HttpUtils.sendGet(url,param);    //测试已能正常返回UserInfo Json,正式使用时打开
+        //String userInfo = "{\"UserId\":\"359\",\"DeviceId\":\"10000589102865WJ\",\"errcode\":0,\"errmsg\":\"ok\"}";  //为避免去微信获取code麻烦，开发调试时打开
         JSONObject jsonObjectUserInfo = JSONObject.parseObject(userInfo);
         //如果返回码不为0，则输出错误信息，并返回空值
         if ( Integer.parseInt(jsonObjectUserInfo.getString("errcode")) != 0){
