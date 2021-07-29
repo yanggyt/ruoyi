@@ -117,7 +117,8 @@
         function chooseTrans(){
             var treeId = $("#treeId").val();
             //var repoid = $.common.isEmpty(treeId) ? "999999" : $("#treeId").val();
-            var url = ctx + "kettle/repository/selectRepositoryTree/"
+            var type="trans";
+            var url = ctx + "kettle/repository/selectRepositoryTree/"+type
             var options = {
                 title: '选择资源库',
                 width: "380",

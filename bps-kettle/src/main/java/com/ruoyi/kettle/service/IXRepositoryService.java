@@ -63,7 +63,7 @@ public interface IXRepositoryService
      */
     public int deleteXRepositoryById(Long id);
 
-    List<RepoTree> selectRepoTree(Long id);
+    List<RepoTree> selectRepoTree(Long id,String type);
 
     List<RepoTree> selectRepoRoot(XRepository repository);
 }

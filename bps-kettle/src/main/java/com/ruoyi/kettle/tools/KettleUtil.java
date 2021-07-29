@@ -43,9 +43,7 @@ public class KettleUtil {
     public void callTrans(String transPath, String transName, Map<String,String> namedParams, String[] clParams) throws Exception {
         KettleEnv.init();
         DatabaseMeta databaseMeta=new DatabaseMeta("kettle_trans_log", "mysql", "Native(JDBC)",
-                "192.168.2.18","bps?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8", "3306", "root", "abc.123");
-//        DatabaseMeta databaseMeta=new DatabaseMeta("kettle_trans_log", "mysql", "Native(JDBC)",
-//                "127.0.0.1","etl?useUniCode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=UTC","3306","root","2129");
+                "xxx.xxx.x.xx","bps?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8", "3306", "root", "password");
 
         String msg;
         KettleFileRepository repo = this.fileRepositoryCon();
@@ -100,7 +98,7 @@ public class KettleUtil {
         KettleEnv.init();
         String msg;
         DatabaseMeta databaseMeta=new DatabaseMeta("kettle_job_log", "mysql", "Native(JDBC)",
-                "192.168.2.18","bps?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8", "3306", "root", "abc.123");
+                "xxx.xxx.x.xx","bps?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8", "3306", "root", "password");
         KettleFileRepository repo = this.fileRepositoryCon();
         JobMeta jobMeta = this.loadJob(repo, jobPath, jobName);
         jobMeta.addDatabase(databaseMeta);
