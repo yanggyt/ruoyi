@@ -177,7 +177,13 @@ public class KettleTransServiceImpl implements IKettleTransService
 
         return AjaxResult.success("执行成功!");
     }
-
+    /**
+     * @Description:查询抓换执行日志
+     * @Author: Kone.wang
+     * @Date: 2021/7/28 16:24
+     * @param kettleTrans:
+     * @return: java.util.List<java.lang.String>
+     **/
     @Override
     public List<String> queryTransLog(KettleTrans kettleTrans)  {
         List<String> transLogs=kettleTransMapper.queryTransLog(kettleTrans.getTransName());
