@@ -16,7 +16,7 @@ spring:
                 url: jdbc:oracle:thin:@192.168.2.91:1521/toptest
                 username: ds7
                 password: ds7
-                driverClassName: oracle.jdbc.driver.OracleDriver
+                driverClassName: oracle.jdbc.OracleDriver
             #SQlServer数据源
             sqlsvr:
                 # 从数据源开关/默认关闭
@@ -33,7 +33,7 @@ spring:
                 url: jdbc:oracle:thin:@192.168.2.91:1521/topprod
                 username: ds_report
                 password: ds_report
-                driverClassName: oracle.jdbc.driver.OracleDriver
+                driverClassName: oracle.jdbc.OracleDriver
 
             # Toptest_ds_report
             toptestdsreport:
@@ -42,7 +42,7 @@ spring:
                 url: jdbc:oracle:thin:@192.168.2.91:1521/toptest
                 username: ds_report
                 password: ds_report
-                driverClassName: oracle.jdbc.driver.OracleDriver
+                driverClassName: oracle.jdbc.OracleDriver
 
             # 初始连接数
             initialSize: 5
