@@ -148,8 +148,8 @@ public class WechatApiServiceImpl implements IWechatApiService {
     public String GetUseridByWechatLogin(String code) {
         String url="https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
         String param = "access_token="+wechatApiService.GetAccessToken()+"&code="+code;
-        //String userInfo = HttpUtils.sendGet(url,param);    //测试已能正常返回UserInfo Json,正式使用时打开
-        String userInfo = "{\"UserId\":\"359\",\"DeviceId\":\"10000589102865WJ\",\"errcode\":0,\"errmsg\":\"ok\"}";  //为避免去微信获取code麻烦，开发调试时打开
+        String userInfo = HttpUtils.sendGet(url,param);    //测试已能正常返回UserInfo Json,正式使用时打开
+        //String userInfo = "{\"UserId\":\"359\",\"DeviceId\":\"10000589102865WJ\",\"errcode\":0,\"errmsg\":\"ok\"}";  //为避免去微信获取code麻烦，开发调试时打开
         JSONObject jsonObjectUserInfo = JSONObject.parseObject(userInfo);
         //如果返回码不为0，则输出错误信息，并返回空值
         if ( Integer.parseInt(jsonObjectUserInfo.getString("errcode")) != 0){
@@ -180,6 +180,7 @@ public class WechatApiServiceImpl implements IWechatApiService {
         return wechatUserInfo;
     }
 
+    //将List转换为企业微信人员格式，例[359|358]
     private String CovertListToWechatTouserFormat(List<String> toUserList){
         StringBuilder toUser = new StringBuilder();
         for(String user:toUserList){
