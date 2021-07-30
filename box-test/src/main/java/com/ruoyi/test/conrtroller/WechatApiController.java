@@ -2,6 +2,7 @@ package com.ruoyi.test.conrtroller;
 
 import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.system.service.IWechatApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,9 +47,13 @@ public class WechatApiController extends BaseController {
     @ResponseBody
     public Map<String, String> SendTextMessageToWechatUser() {
         List<String> userIdList = new ArrayList<>();
-        userIdList.add("2342343243");
-        userIdList.add("erqrqwe");
+        userIdList.add("2342343243");//错误userId示例
+        userIdList.add("erqrqwe");//错误userId示例
+        userIdList.add("");    //空UserId示例
         userIdList.add("359");
+        if(!ShiroUtils.getUserId().equals("359")){
+        userIdList.add(String.valueOf(ShiroUtils.getUserId()));
+        }
         Map<String, String> resultMap = wechatApiService.SendTextMessageToWechatUser(userIdList,"<a href=\"www.baidu.com\">哈哈哈！</a>");
         return resultMap;
     }
@@ -57,11 +62,15 @@ public class WechatApiController extends BaseController {
     @ResponseBody
     public Map<String, String> SendTextCardMessageToWechatUser() {
         List<String> userIdList = new ArrayList<>();
-        userIdList.add("23456667");
-        userIdList.add("355354354");
+        userIdList.add("23456667");   //错误userId示例
+        userIdList.add("355354354");  //错误userId示例
+        userIdList.add("");    //空UserId示例
         userIdList.add("359");
-        userIdList.add("454");
-        userIdList.add("408");
+        //userIdList.add("454");
+        //userIdList.add("408");
+        if(!ShiroUtils.getUserId().equals("359")){
+            userIdList.add(String.valueOf(ShiroUtils.getUserId()));
+        }
         String title="号外：特大优惠！限时抢购";
         String description="今年仅此一次，苹果手机1000元起！欢迎前来购买！走过路过，不要错过！";
         String dtailUrl="https://item.jd.com/100008348530.html";

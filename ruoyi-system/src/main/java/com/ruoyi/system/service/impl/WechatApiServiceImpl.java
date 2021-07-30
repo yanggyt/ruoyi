@@ -112,12 +112,19 @@ public class WechatApiServiceImpl implements IWechatApiService {
     @Override
     public String GetLoginNameWithWechatCode(String code)
     {
+        if(StringUtils.isEmpty(code)){
+            return "";
+        }
         //获取访问用户身份ID
         String userId= GetUseridByWechatLogin(code);
-
+        if(StringUtils.isEmpty(userId)){
+            return "";
+        }
         //获取用户邮箱与姓名
         WechatUserInfo wechatUserInfo = GetWechatUserInfoDetailByUserId(userId);
-
+        if (null==wechatUserInfo || null==wechatUserInfo.getName()){
+            return "";
+        }
         //根据用户id+邮箱名+用户名匹配本地用户对应的userId+邮箱名与用户名
         SysUser sysUserWechat=new SysUser();
         sysUserWechat.setUserId(Long.parseLong(wechatUserInfo.getUserid()));
@@ -131,7 +138,7 @@ public class WechatApiServiceImpl implements IWechatApiService {
             return ""; //系统里没有用户，没有从OA同步？ 处理逻辑待定
         }
         if(count > 1){
-            return ""; //本地数据库存在多个姓名与邮箱相同的记录，如何处理？？
+            return ""; //本地数据库存在多个姓名与邮箱相同的记录，如何处理？？--加上了sysUserWechat.setUserId(Long.parseLong(wechatUserInfo.getUserid()));，不存在这种情况了。
         }
         String loginName= userList.get(0).getLoginName();
       return loginName;

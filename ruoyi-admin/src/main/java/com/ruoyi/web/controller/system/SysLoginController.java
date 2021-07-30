@@ -38,17 +38,15 @@ public class SysLoginController extends BaseController
             String code= request.getParameter("code");
             //String state = request.getParameter("state");
             String username=wechatApiService.GetLoginNameWithWechatCode(code);
-            //如果没有获取到用户名，说明验证失败，跳转登录页
+            //如果没有获取到登录名，说明验证失败，跳转登录页
             if(StringUtils.isEmpty(username)){
                return "login";
             }
 
             String password="";
-            Boolean rememberMe=true;
             map.put("loginType","wechat");
             map.put("username",username);
             map.put("password",password);
-
             return "loginwechat";
 
 
