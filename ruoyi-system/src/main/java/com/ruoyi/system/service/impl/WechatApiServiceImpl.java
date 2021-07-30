@@ -8,15 +8,17 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.WechatAccessToken;
+import com.ruoyi.system.domain.WechatSendMessage;
+import com.ruoyi.system.domain.WechatUserInfo;
 import com.ruoyi.system.mapper.WechatAccessTokenMapper;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.system.service.IWechatApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class WechatApiServiceImpl implements IWechatApiService {
@@ -111,38 +113,19 @@ public class WechatApiServiceImpl implements IWechatApiService {
     public String GetLoginNameWithWechatCode(String code)
     {
         //获取访问用户身份ID
-        String url="https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
-        String param = "access_token="+wechatApiService.GetAccessToken()+"&code="+code;
-        String userInfo = HttpUtils.sendGet(url,param);    //测试已能正常返回UserInfo Json,正式使用时打开
-        //String userInfo = "{\"UserId\":\"359\",\"DeviceId\":\"10000589102865WJ\",\"errcode\":0,\"errmsg\":\"ok\"}";  //为避免去微信获取code麻烦，开发调试时打开
-        JSONObject jsonObjectUserInfo = JSONObject.parseObject(userInfo);
-        //如果返回码不为0，则输出错误信息，并返回空值
-        if ( Integer.parseInt(jsonObjectUserInfo.getString("errcode")) != 0){
-             System.out.println(jsonObjectUserInfo.getString("errmsg"));
-             return "";
-        }
-        String userId = jsonObjectUserInfo.getString("UserId");
+        String userId= GetUseridByWechatLogin(code);
 
         //获取用户邮箱与姓名
-        url="https://qyapi.weixin.qq.com/cgi-bin/user/get";
-        param="access_token="+wechatApiService.GetAccessToken()+"&userid="+userId;
-        String userInfoDetail=HttpUtils.sendGet(url,param); //获取成员信息
-        JSONObject jsonObjectUserInfoDetail=JSONObject.parseObject(userInfoDetail);
-        //如果返回码不为0，则返回错误信息
-        if(Integer.parseInt(jsonObjectUserInfoDetail.getString("errcode")) != 0)
-        {
-            System.out.println(jsonObjectUserInfo.getString("errmsg"));
-            return "";
-        }
-        String userEmail= jsonObjectUserInfoDetail.getString("email");
-        String userName= jsonObjectUserInfoDetail.getString("name");
+        WechatUserInfo wechatUserInfo = GetWechatUserInfoDetailByUserId(userId);
 
-        //根据邮箱名+用户名匹配本地用户对应的邮箱名与用户名
-        SysUser sysUser=new SysUser();
-        sysUser.setUserName(userName);
-        sysUser.setEmail(userEmail);
-        sysUser.setUserType("02"); //只获取从OA同步的用户，保持与企业微信一致。
-        List<SysUser> userList= userService.selectUserLists(sysUser);
+        //根据用户id+邮箱名+用户名匹配本地用户对应的userId+邮箱名与用户名
+        SysUser sysUserWechat=new SysUser();
+        sysUserWechat.setUserId(Long.parseLong(wechatUserInfo.getUserid()));
+        sysUserWechat.setUserName(wechatUserInfo.getName());
+        sysUserWechat.setEmail(wechatUserInfo.getEmail());
+        sysUserWechat.setUserType("02"); //只获取从OA同步的用户，保持与企业微信一致。
+
+        List<SysUser> userList= userService.selectUserLists(sysUserWechat);
         int count= userList.size();
         if(count <= 0){
             return ""; //系统里没有用户，没有从OA同步？ 处理逻辑待定
@@ -153,6 +136,116 @@ public class WechatApiServiceImpl implements IWechatApiService {
         String loginName= userList.get(0).getLoginName();
       return loginName;
 
+    }
+
+    /**
+     * 根据企业微信登录链接的code用户获取userid;
+     *
+     * @param code
+     * @return userid
+     */
+    @Override
+    public String GetUseridByWechatLogin(String code) {
+        String url="https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
+        String param = "access_token="+wechatApiService.GetAccessToken()+"&code="+code;
+        //String userInfo = HttpUtils.sendGet(url,param);    //测试已能正常返回UserInfo Json,正式使用时打开
+        String userInfo = "{\"UserId\":\"359\",\"DeviceId\":\"10000589102865WJ\",\"errcode\":0,\"errmsg\":\"ok\"}";  //为避免去微信获取code麻烦，开发调试时打开
+        JSONObject jsonObjectUserInfo = JSONObject.parseObject(userInfo);
+        //如果返回码不为0，则输出错误信息，并返回空值
+        if ( Integer.parseInt(jsonObjectUserInfo.getString("errcode")) != 0){
+            System.out.println(jsonObjectUserInfo.getString("errmsg"));
+            return "";
+        }
+        return jsonObjectUserInfo.getString("UserId");
+    }
+
+    /**
+     * 根据企业微信userid获取用户详细信息
+     *
+     * @param userId
+     * @return 用户详细信息
+     */
+    @Override
+    public WechatUserInfo GetWechatUserInfoDetailByUserId(String userId) {
+        String url="https://qyapi.weixin.qq.com/cgi-bin/user/get";
+        String param="access_token="+wechatApiService.GetAccessToken()+"&userid="+userId;
+        String userInfoDetail=HttpUtils.sendGet(url,param); //获取成员信息
+        WechatUserInfo wechatUserInfo = JSONObject.parseObject(userInfoDetail,WechatUserInfo.class);
+        //如果返回码不为0，则返回空，显示错误信息
+        if (wechatUserInfo.getErrcode() !=0)
+        {
+            System.out.println(wechatUserInfo.getErrmsg());
+            return null;
+        }
+        return wechatUserInfo;
+    }
+
+    private String CovertListToWechatTouserFormat(List<String> toUserList){
+        StringBuilder toUser = new StringBuilder();
+        for(String user:toUserList){
+            toUser.append(user);
+            if(toUserList.indexOf(user) < toUserList.size()-1){
+                toUser.append("|");
+            }
+        }
+        return toUser.toString();
+    }
+
+    /**
+     * 推送text消息到企业微信用户
+     * @param  toUserList 发送的用户列表
+     * @param  message 发送的消息内容
+     * @return 消息发送结果
+     */
+    @Override
+    public Map<String,String> SendTextMessageToWechatUser(List<String> toUserList,String message) {
+        Map<String,String> resultMap;
+        Map<String, Object> param = new HashMap<>(16);
+        param.put("touser", CovertListToWechatTouserFormat(toUserList));
+        param.put("msgtype", "text");
+        param.put("agentid", agentId);
+
+        Map<String, String> text = new HashMap<>(16);
+        text.put("content", message);
+        param.put("text", text);
+
+        String url="https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="+wechatApiService.GetAccessToken();
+
+        //param参数需要直接使用对象，而不能转换成json字符串，否则推送到企业微信中文消息乱码。
+        resultMap =HttpUtils.sendPostWithRest(url,param);
+        return resultMap;
+    }
+
+    /**
+     * 推送文本卡片消息到企业微信用户
+     * description参数说明：支持使用br标签或者空格来进行换行处理，也支持使用div标签来使用不同的字体颜色，目前内置了3种文字颜色：灰色(gray)、高亮(highlight)、默认黑色(normal)，将其作为div标签的class属性即可
+     * 示例："description" : "<div class=\"gray\">2016年9月26日</div> <div class=\"normal\">恭喜你抽中iPhone 7一台，领奖码：xxxx</div><div class=\"highlight\">请于2016年10月10日前联系行政同事领取</div>"
+     *
+     * @param toUserList  发送的用户列表
+     * @param title       标题
+     * @param description 内容描述
+     * @param detailUrl         点击详情的Url地址
+     * @return 消息发送结果
+     */
+    @Override
+    public Map<String, String> SendTextCardMessageToWechatUser(List<String> toUserList, String title, String description, String detailUrl) {
+        Map<String,String> resultMap;
+        Map<String, Object> param = new HashMap<>(16);
+        param.put("touser", CovertListToWechatTouserFormat(toUserList));
+        param.put("msgtype", "textcard");
+        param.put("agentid", agentId);
+
+        Map<String, Object> textcard=new HashMap<>();
+        textcard.put("title",title);
+        textcard.put("description",description);
+        textcard.put("url",detailUrl);
+        param.put("textcard",textcard);
+
+        String url="https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="+wechatApiService.GetAccessToken();
+
+        //param参数需要直接使用对象，而不能转换成json字符串，否则推送到企业微信中文消息乱码。
+        resultMap =HttpUtils.sendPostWithRest(url,param);
+        return resultMap;
     }
 
 }

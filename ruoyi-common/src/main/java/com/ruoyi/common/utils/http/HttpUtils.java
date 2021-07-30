@@ -272,7 +272,9 @@ public class HttpUtils
      * @param params 请求参数，请求参数为json的形式。例：params="{\"params\":{\"pagesize\":1000}}"
      * @return 返回Map， Key="statusCode",接口访问返回状态， key="result":接口返回接果
      */
-    public static Map<String,String> sendPostWithRest(String url, String params){
+    //public static Map<String,String> sendPostWithRest(String url, String params){
+    //如果参数为String类型，推送企业微信消息会乱码，因此改为Object类型，直接推送Map<Sring,Object> --yangbo 20210729
+    public static Map<String,String> sendPostWithRest(String url, Object params){
         RestTemplate restTemplate=new RestTemplate();
         ResponseEntity<String> result=null;
         int statusCode=0;

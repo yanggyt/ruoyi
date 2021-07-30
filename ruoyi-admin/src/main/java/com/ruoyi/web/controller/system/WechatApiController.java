@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.system;
 import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.shiro.util.CustToken;
 import com.ruoyi.system.service.IWechatApiService;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -77,5 +80,33 @@ public class WechatApiController extends BaseController {
         return params;
     }
 
+
+    @GetMapping("anon/SendTextMessageToWechatUser")
+    @ResponseBody
+    public Map<String, String> SendTextMessageToWechatUser() {
+        List<String> userIdList = new ArrayList<>();
+        userIdList.add("2342343243");
+        userIdList.add("erqrqwe");
+        userIdList.add("359");
+        Map<String, String> resultMap = wechatApiService.SendTextMessageToWechatUser(userIdList,"<a href=\"www.baidu.com\">哈哈哈！</a>");
+        return resultMap;
+    }
+
+    @GetMapping("anon/SendTextCardMessageToWechatUser")
+    @ResponseBody
+    public Map<String, String> SendTextCardMessageToWechatUser() {
+        List<String> userIdList = new ArrayList<>();
+        userIdList.add("23456667");
+        userIdList.add("355354354");
+        userIdList.add("359");
+        userIdList.add("454");
+        userIdList.add("408");
+        String title="号外：特大优惠！限时抢购";
+        String description="今年仅此一次，苹果手机1000元起！欢迎前来购买！走过路过，不要错过！";
+        String dtailUrl="https://item.jd.com/100008348530.html";
+
+        Map<String, String> resultMap = wechatApiService.SendTextCardMessageToWechatUser(userIdList,title,description,dtailUrl);
+        return resultMap;
+    }
 
 }
