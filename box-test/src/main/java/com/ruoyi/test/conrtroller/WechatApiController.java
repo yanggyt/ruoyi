@@ -7,6 +7,7 @@ import com.ruoyi.system.service.IWechatApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
@@ -24,13 +25,14 @@ public class WechatApiController extends BaseController {
     @Autowired
     IWechatApiService wechatApiService;
 
-   /* @RequestMapping("anon/getAccessToken")
+    @RequestMapping("anon/getAccessToken")
+    @ResponseBody
     public String getAccessToken() {
         return wechatApiService.GetAccessToken();
     }
-    */
+
     @GetMapping("anon/userInfo")
-    public Map<String, Object> getJSON(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public Map<String, Object> getJSON(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         BufferedReader streamReader = new BufferedReader( new InputStreamReader(request.getInputStream(), "UTF-8"));
         StringBuilder responseStrBuilder = new StringBuilder();
@@ -38,8 +40,8 @@ public class WechatApiController extends BaseController {
         while ((inputStr = streamReader.readLine()) != null) {
             responseStrBuilder.append(inputStr);
         }
-        Map<String, Object> params = JSON.parseObject(responseStrBuilder.toString(), Map.class);
-        return params;
+        return JSON.parseObject(responseStrBuilder.toString(), Map.class);
+
     }
 
 
@@ -51,7 +53,7 @@ public class WechatApiController extends BaseController {
         userIdList.add("erqrqwe");//错误userId示例
         userIdList.add("");    //空UserId示例
         userIdList.add("359");
-        if(!ShiroUtils.getUserId().equals("359")){
+        if(! String.valueOf(ShiroUtils.getUserId()).equals("359")){
         userIdList.add(String.valueOf(ShiroUtils.getUserId()));
         }
         Map<String, String> resultMap = wechatApiService.SendTextMessageToWechatUser(userIdList,"<a href=\"www.baidu.com\">哈哈哈！</a>");
@@ -68,7 +70,7 @@ public class WechatApiController extends BaseController {
         userIdList.add("359");
         //userIdList.add("454");
         //userIdList.add("408");
-        if(!ShiroUtils.getUserId().equals("359")){
+        if(!String.valueOf(ShiroUtils.getUserId()).equals("359")){
             userIdList.add(String.valueOf(ShiroUtils.getUserId()));
         }
         String title="号外：特大优惠！限时抢购";

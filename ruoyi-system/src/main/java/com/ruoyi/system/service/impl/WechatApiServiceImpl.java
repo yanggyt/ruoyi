@@ -2,23 +2,25 @@ package com.ruoyi.system.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.WechatAccessToken;
-import com.ruoyi.system.domain.WechatSendMessage;
 import com.ruoyi.system.domain.WechatUserInfo;
 import com.ruoyi.system.mapper.WechatAccessTokenMapper;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.system.service.IWechatApiService;
+import org.apache.shiro.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class WechatApiServiceImpl implements IWechatApiService {
@@ -45,6 +47,31 @@ public class WechatApiServiceImpl implements IWechatApiService {
      */
     @Override
     public String GetAccessToken() {
+        String cacheName = "wechatToke:" + corpId + "," + agentId;
+
+        //获取缓存中accessToken与缓存的时间信息
+        Cache<String, Object> cache = CacheUtils.getCache(cacheName);
+        String accessToken = (String) cache.get("accessToken");
+        Date getTokenTime = ObjectToDate(cache.get("getTokenTime"));
+        Integer expires_in = ObjectToInteger(cache.get("expires_in"));
+        //如果没有获取到cache或者accessToken为空或者cache即将过期，则重新获取并返回新的accessToken;
+        if (StringUtils.isEmpty(accessToken) || null == getTokenTime ? true : (differenceSecond(DateUtils.getNowDate(), getTokenTime) + 1000 > expires_in ? true : false)) {
+            //清空wechatAccessTokenCache
+            CacheUtils.removeAll(cacheName);
+            //从企业微信获取新的accessToken
+            WechatAccessToken wechatAccessToken = getAccessTokenFromWechat(corpId, secret, agentId);
+            //将Token写入缓存
+            CacheUtils.put(cacheName, "accessToken", wechatAccessToken.getAccess_token());
+            CacheUtils.put(cacheName, "expires_in", wechatAccessToken.getExpires_in());
+            CacheUtils.put(cacheName, "getTokenTime", DateUtils.getNowDate());
+            //返回token
+            return wechatAccessToken.getAccess_token();
+        }
+        return accessToken;
+    }
+
+        /*
+        public String GetAccessToken() {
         //获取本地数据库中的Token
         WechatAccessToken wat = new WechatAccessToken();
         wat.setCorpId(corpId);
@@ -55,6 +82,7 @@ public class WechatApiServiceImpl implements IWechatApiService {
         if(list.isEmpty() || list.size() <=0)
         {
             returnWat= getAccessTokenFromWechat(corpId,secret,agentId);
+            //将accessToken写入数据库
             wechatAccessTokenMapper.insertWechatAccessToken(returnWat);
             return returnWat.getAccess_token();
         }
@@ -83,6 +111,34 @@ public class WechatApiServiceImpl implements IWechatApiService {
         //如果以上情况皆不是，则返回本地数据库的token
         return list.get(0).getAccess_token();
 
+    }*/
+
+    //将对象转化为日期，如果无法转换则返回空值，避免抛出异常。
+    private Date ObjectToDate(Object obj){
+        try {
+            return (Date) obj;
+        }catch (Exception e){
+           return null;
+        }
+    }
+
+    //将对象转化为Integer,如果对象为空或无法转换返回0，
+    private Integer ObjectToInteger(Object obj){
+        //如果为空返回零
+        if(null==obj){
+            return  0;
+        }
+        try{
+            return Integer.parseInt(obj.toString());
+        }catch (Exception e){
+            //发生异常返回0
+            return 0;
+        }
+    }
+
+    //获取相两个日期相差秒数
+    private   int differenceSecond(Date minuendDate, Date subtractionDate ) {
+        return  (int)((minuendDate.getTime() - subtractionDate.getTime()) / 1000);
     }
 
     //根据corpId与corpSecret获取Token
@@ -96,12 +152,6 @@ public class WechatApiServiceImpl implements IWechatApiService {
         wechatAccessToken.setGetTokenTime(DateUtils.getNowDate());
         return wechatAccessToken;
     }
-
-    //获取相两个日期相差秒数
-    private   int differenceSecond(Date minuendDate, Date subtractionDate ) {
-        return  (int)((minuendDate.getTime() - subtractionDate.getTime()) / 1000);
-    }
-
 
     /**
      * 根据企业微信登录身份获取本地LoginName
@@ -201,6 +251,8 @@ public class WechatApiServiceImpl implements IWechatApiService {
 
     /**
      * 推送text消息到企业微信用户
+     * 其中text参数的content字段可以支持换行、以及A标签，即可打开自定义的网页
+     * 示例："content" : "你的快递已到，请携带工卡前往邮件中心领取。\n出发前可查看<a href=\"http://work.weixin.qq.com\">邮件中心视频实况</a>，聪明避开排队。"
      * @param  toUserList 发送的用户列表
      * @param  message 发送的消息内容
      * @return 消息发送结果
