@@ -4,16 +4,22 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.system.domain.EcologyDept;
 import com.ruoyi.system.mapper.SysDeptMapper;
+import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysDeptService;
+import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.service.IWechatApiService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +40,15 @@ public class SysDeptServiceImpl implements ISysDeptService
 {
     @Autowired
     private SysDeptMapper deptMapper;
+
+    @Autowired
+    private ISysConfigService sysconfig;
+
+    @Autowired
+    private IWechatApiService wechatApiService;
+
+    @Autowired
+    ISysUserService userService;
 
     /**
      * 查询部门管理数据
@@ -66,7 +81,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     /**
      * 查询部门管理树（排除下级）
      * 
-     * @param deptId 部门ID
+     * @param dept 部门
      * @return 所有部门信息
      */
     @Override
@@ -320,9 +335,24 @@ public class SysDeptServiceImpl implements ISysDeptService
      * Ecology部门信息同步
      */
     @Override
-    public int syncEcologyDept(String url,String params) {
-       int result= deptSync(HttpUtils.sendPostWithRest(url,params));
-       return result;
+    public AjaxResult syncEcologyDept(String url, String params) {
+        String msg="同步OA部门失败!";
+        List<String> userList=new ArrayList<>();
+        userList.add(ShiroUtils.getLoginName().equals("admin")?"359":String.valueOf(ShiroUtils.getUserId()));
+        if( ! sysconfig.selectConfigByKey("sys.dept.sync").equals("1")){
+               msg="OA部门同步失败！系统未开启OA部门同步!";
+              wechatApiService.SendTextMessageToWechatUser(userList,msg);
+              return AjaxResult.success(msg,"false");
+        }
+          int result =deptSync(HttpUtils.sendPostWithRest(url,params));
+          if( result==200)
+          {
+              return AjaxResult.success("OA部门同步成功!",result);
+          }
+
+        wechatApiService.SendTextMessageToWechatUser(userList,msg+"result:"+result);
+        return AjaxResult.error(msg,result);
+
     }
 
     @SuppressWarnings("unchecked")
