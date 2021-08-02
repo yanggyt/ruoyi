@@ -231,8 +231,11 @@
             });
             //如果用户状态为02（从OA同步），则将相关信息不能做变更
             if(userType=="02") {
-                $("#email,#userName,#treeName,#phonenumber").attr("readonly", "readonly")
-            }
+                $("#email,#userName,#treeName,#phonenumber").attr("readonly", "readonly");
+                $("#status").click(function(){
+                    this.checked = !this.checked;
+                });
+            };
         })
     </script>
 </body>
