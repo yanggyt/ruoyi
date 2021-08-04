@@ -145,6 +145,6 @@ swagger:
 wechat:
   corpId: ww4ed3771457e5f463
   agentId: 1000080
-  secret: drtHKYabI9_EgjJQ8aqDPTQkY1WUYeWUTMkYw7D_z64
+  secret: drtHKYabI9_EgjJQ8aqDPRpt3XiM4d1znaVODMCSdvc
   token: 111
   aesKey: 111
