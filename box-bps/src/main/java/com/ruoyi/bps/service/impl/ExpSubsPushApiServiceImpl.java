@@ -24,6 +24,7 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,14 +35,16 @@ import java.util.Map;
 
 @Service
 public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
-    String key = PropertiesReader.get("key");
+    /*String key = PropertiesReader.get("key");
     String customer = PropertiesReader.get("customer");
     String secret = PropertiesReader.get("secret");
     String siid = PropertiesReader.get("siid");
     String userid = PropertiesReader.get("userid");
     String tid = PropertiesReader.get("tid");
     String secret_key = PropertiesReader.get("secret_key");
-    String secret_secret = PropertiesReader.get("secret_secret");
+    String secret_secret = PropertiesReader.get("secret_secret"); */
+    @Value("${express.key}")
+    private String key;
 
     @Autowired
     private IExpSubsPushRespService expSubsPushRespService;
@@ -55,7 +58,9 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
      */
     @Override
     public SubscribeResp ExpressSubscribe(ExpSubscribe expSubscribe) {
-         String subscribeFrom= expSubscribe.getSalt().equals("topgp")?"topgp":"bpsemi";
+
+         String loginFrom= expSubscribe.getSalt();
+         String subscribeFrom= StringUtils.isNotEmpty(loginFrom)?loginFrom.equals("topgp")?"topgp":"localhost":"localhost";
 
         SubscribeParameters subscribeParameters = new SubscribeParameters();
         SubscribeResp subscribeResp = new SubscribeResp();
