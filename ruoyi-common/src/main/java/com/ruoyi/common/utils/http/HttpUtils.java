@@ -10,6 +10,8 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -19,6 +21,9 @@ import javax.net.ssl.X509TrustManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * 通用http发送方法
@@ -258,5 +263,35 @@ public class HttpUtils
         {
             return true;
         }
+    }
+
+    /**
+     * 向指定 Restful接口 发送POST方法的请求
+     *
+     * @param url 发送请求的 URL
+     * @param params 请求参数，请求参数为json的形式。例：params="{\"params\":{\"pagesize\":1000}}"
+     * @return 返回Map， Key="statusCode",接口访问返回状态， key="result":接口返回接果
+     */
+    //public static Map<String,String> sendPostWithRest(String url, String params){
+    //如果参数为String类型，推送企业微信消息会乱码，因此改为Object类型，直接推送Map<Sring,Object> --yangbo 20210729
+    public static Map<String,String> sendPostWithRest(String url, Object params){
+        RestTemplate restTemplate=new RestTemplate();
+        ResponseEntity<String> result=null;
+        int statusCode=0;
+        try{
+            result=restTemplate.postForEntity(url,params,String.class);
+            statusCode=result.getStatusCode().value();
+        }catch (RestClientException e){
+            System.out.println("POST Request uri: "+url+", params:"+params+" error:"+e.getMessage());
+        }
+        Map<String,String> map=new HashMap<>();
+        map.put("statusCode",String.valueOf(statusCode));
+        if(statusCode== 200){
+            map.put("result",result.getBody());
+        } else{
+            map.put("result",String.valueOf(statusCode));
+        }
+
+        return map;
     }
 }

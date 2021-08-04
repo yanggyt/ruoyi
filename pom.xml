@@ -161,8 +161,18 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.xmlbeans</groupId>
+                        <artifactId>xmlbeans</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.xmlbeans</groupId>
+                <artifactId>xmlbeans</artifactId>
+                <version>3.1.0</version>
+            </dependency>
             <!-- velocity代码生成使用模板 -->
             <dependency>
                 <groupId>org.apache.velocity</groupId>
@@ -218,6 +228,25 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- test模块-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>box-test</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <!-- bps模块-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>box-bps</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>bps-kettle</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -228,6 +257,9 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>box-test</module>
+        <module>box-bps</module>
+        <module>bps-kettle</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -246,6 +278,7 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
             </plugin>
         </plugins>

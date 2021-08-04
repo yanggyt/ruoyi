@@ -9,7 +9,7 @@ ruoyi:
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: D:/ruoyi/uploadPath
+  profile: C:/bps-it/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
@@ -19,7 +19,7 @@ server:
   port: 80
   servlet:
     # 应用的访问路径
-    context-path: /
+    context-path: /it_war
   tomcat:
     # tomcat的URI编码
     uri-encoding: UTF-8
@@ -69,6 +69,12 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  #ldap
+  ldap:
+    urls: ldap://192.168.2.10:389
+    base: OU=bp,DC=bpsemi,DC=com
+    username: administrator@bpsemi.com
+    password: Bps@2831!
 
 # MyBatis
 mybatis:
@@ -95,7 +101,7 @@ shiro:
     # 首页地址
     indexUrl: /index
     # 验证码开关
-    captchaEnabled: true
+    captchaEnabled: false
     # 验证码类型 math 数组计算 char 字符
     captchaType: math
   cookie:
@@ -134,3 +140,11 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+
+#企业微信
+wechat:
+  corpId: ww4ed3771457e5f463
+  agentId: 1000080
+  secret: drtHKYabI9_EgjJQ8aqDPTQkY1WUYeWUTMkYw7D_z64
+  token: 111
+  aesKey: 111

@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ruoyi.system.service.ISysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,6 +53,9 @@ public class SysUserController extends BaseController
 
     @Autowired
     private SysPasswordService passwordService;
+
+    @Autowired
+    private ISysConfigService configService;
 
     @RequiresPermissions("system:user:view")
     @GetMapping()
@@ -285,4 +290,18 @@ public class SysUserController extends BaseController
         userService.checkUserAllowed(user);
         return toAjax(userService.changeStatus(user));
     }
+
+    /**
+     * Ecology人员信息同步
+     */
+    @Log(title = "人员同步", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("system:user:sync")
+    @PostMapping("/syncUser")
+    @ResponseBody
+    public AjaxResult syncUser() {
+            String url = "http://192.168.2.85:90/api/hrm/resful/getHrmUserInfoWithPage";
+            String params = "{\"params\":{\"pagesize\":999999}}";
+            return userService.syncEcologyUser(url, params);
+    }
+
 }

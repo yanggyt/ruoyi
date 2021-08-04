@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+  <th:block th:include="include :: header('快递信息查询')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+  <div class="row">
+    <div class="col-sm-12 search-collapse">
+      <form id="formId">
+        <div class="select-list">
+          <ul>
+            <li>
+              <label> 快递单号：</label>
+              <input type="text" name="num"/>
+            </li>
+            <li>
+              <label> 快递公司：</label>
+              <input type="text" name="com"/>
+            </li>
+            <li>
+              <label>电话号码：</label>
+              <input type="text" name="phone"/>
+            </li>
+            <li>
+              <a class="btn btn-primary btn-rounded btn-sm" onclick="sendForm()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+              <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </div>
+    <div class="btn-group-sm" id="toolbar" role="group">
+      <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="bps:express:export">
+        <i class="fa fa-download"></i> 导出
+      </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+      <div id="testdiv"></div>
+      <table id="bootstrap-table"></table>
+      <div id="test"></div>
+    </div>
+  </div>
+</div>
+
+<th:block th:include="include :: footer" />
+
+
+<script th:inline="javascript">
+  var ctx = [[@{/}]];
+    function sendForm() {
+      var formObject = {};
+      var formArray =$("#formId").serializeArray();
+      $.each(formArray,function(i,item){
+        formObject[item.name] = item.value;
+      });
+      $.ajax({
+        url:ctx+"/bps/express/queryExpress/list1",
+        type:"POST",
+        contentType: "application/json",
+        data: JSON.stringify(formObject),
+        dataType: "json",
+        success:function(data){
+          //alert(data.msg);
+          alert(JSON.stringify(data));
+          //  document.getElementById("testdiv").innerHTML=JSON.stringify(data);
+          showData(data);
+        },
+        error:function(e){
+          alert("错误！！");
+        }
+      });
+
+    };
+
+  function showData(data){
+    var inf ="<table class='table'>";
+    inf += "<tr><th>快递单号</th><th>快递公司</th><th>快递状态</th><th>快递信息</th></tr>";
+    inf+="<tr><td>"+data.nu+"</td><td>"+data.com+"</td><td>"+getContext(data.info)+"</td><td>"+data.state+"</td></tr>";
+    inf += "</table>";
+    $("#test").html(inf);
+
+  };
+
+  function getContext(info){
+    var contextinfo="";
+    for(var i=0;i<info.length;i++){
+      contextinfo += "【"+info[i].time +"】 "+ info[i].context;
+      if(i != info.length-1)
+      {contextinfo+="<br/>";}
+    }
+    return contextinfo;
+  }
+</script>
+
+</body>
+</html>

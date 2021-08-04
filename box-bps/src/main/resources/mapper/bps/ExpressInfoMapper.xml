@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bps.mapper.ExpressInfoMapper">
+    
+    <resultMap type="ExpressInfo" id="ExpressInfoResult">
+        <result property="sid"    column="sid"    />
+        <result property="message"    column="message"    />
+        <result property="nu"    column="nu"    />
+        <result property="ischeck"    column="ischeck"    />
+        <result property="com"    column="com"    />
+        <result property="status"    column="status"    />
+        <result property="data"    column="data"    />
+        <result property="state"    column="state"    />
+        <result property="condition"    column="condition"    />
+        <result property="routeInfo"    column="routeInfo"    />
+        <result property="returnCode"    column="returnCode"    />
+        <result property="result"    column="result"    />
+        <result property="phone"    column="phone"    />
+        <result property="collectTime"    column="collectTime"    />
+        <result property="singedTime"    column="singedTime"    />
+        <result property="lastUpdateTime"    column="lastUpdateTime"    />
+        <result property="queryTime"    column="queryTime"    />
+        <result property="queryUserName"    column="queryUserName"    />
+        <result property="queryId"    column="queryId"    />
+        <result property="queryType"    column="queryType"    />
+        <result property="deliveryNum"    column="deliveryNum"    />
+
+    </resultMap>
+
+    <sql id="selectExpressInfoVo">
+        select sid, message, nu, deliveryNum, ischeck, com, status, `data`, `state`, `condition`, routeInfo, returnCode, `result`, phone,
+               collectTime, singedTime, lastUpdateTime, queryTime, queryUserName, queryId, queryType
+        from expressInfo
+    </sql>
+
+    <select id="selectExpressInfoList" parameterType="ExpressInfo" resultMap="ExpressInfoResult">
+        <include refid="selectExpressInfoVo"/>
+        <where>  
+            <if test="nu != null  and nu != ''"> and nu = #{nu}</if>
+            <if test="com != null  and com != ''"> and com = #{com}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="queryId != null  and queryId != ''"> and queryId = #{queryId}</if>
+            <if test="deliveryNum != null  and deliveryNum != ''"> and deliveryNum = #{deliveryNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectExpressInfoById" parameterType="String" resultMap="ExpressInfoResult">
+        <include refid="selectExpressInfoVo"/>
+        where sid = #{sid}
+    </select>
+
+    <insert id="insertExpressInfo" parameterType="ExpressInfo">
+        insert into expressInfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="message != null">message,</if>
+            <if test="nu != null">nu,</if>
+            <if test="ischeck != null">ischeck,</if>
+            <if test="com != null">com,</if>
+            <if test="status != null">status,</if>
+            <if test="data != null">`data`,</if>
+            <if test="state != null">`state`,</if>
+            <if test="condition != null">`condition`,</if>
+            <if test="routeInfo != null">routeInfo,</if>
+            <if test="returnCode != null">returnCode,</if>
+            <if test="result != null">`result`,</if>
+            <if test="phone != null">phone,</if>
+            <if test="collectTime != null">collectTime,</if>
+            <if test="singedTime != null">singedTime,</if>
+            <if test="lastUpdateTime != null">lastUpdateTime,</if>
+            <if test="queryTime != null">queryTime,</if>
+            <if test="queryUserName != null">queryUserName,</if>
+            <if test="queryId != null">queryId,</if>
+            <if test="queryType != null">queryType,</if>
+            <if test="deliveryNum != null">deliveryNum,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="message != null">#{message},</if>
+            <if test="nu != null">#{nu},</if>
+            <if test="ischeck != null">#{ischeck},</if>
+            <if test="com != null">#{com},</if>
+            <if test="status != null">#{status},</if>
+            <if test="data != null">#{data},</if>
+            <if test="state != null">#{state},</if>
+            <if test="condition != null">#{condition},</if>
+            <if test="routeInfo != null">#{routeInfo},</if>
+            <if test="returnCode != null">#{returnCode},</if>
+            <if test="result != null">#{result},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="collectTime != null">#{collectTime},</if>
+            <if test="singedTime != null">#{singedTime},</if>
+            <if test="lastUpdateTime != null">#{lastUpdateTime},</if>
+            <if test="queryTime != null">#{queryTime},</if>
+            <if test="queryUserName != null">#{queryUserName},</if>
+            <if test="queryId != null">#{queryId},</if>
+            <if test="queryType != null">#{queryType},</if>
+            <if test="deliveryNum != null">#{deliveryNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExpressInfo" parameterType="ExpressInfo">
+        update expressInfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nu != null">nu = #{nu},</if>
+            <if test="ischeck != null">ischeck = #{ischeck},</if>
+            <if test="com != null">com = #{com},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="data != null">`data` = #{data},</if>
+            <if test="state != null">`state` = #{state},</if>
+            <if test="condition != null">`condition` = #{condition},</if>
+            <if test="routeInfo != null">routeInfo = #{routeInfo},</if>
+            <if test="returnCode != null">returnCode = #{returnCode},</if>
+            <if test="result != null">`result` = #{result},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="collectTime != null">collectTime = #{collectTime},</if>
+            <if test="singedTime != null">singedTime = #{singedTime},</if>
+            <if test="lastUpdateTime != null">lastUpdateTime = #{lastUpdateTime},</if>
+            <if test="queryTime != null">queryTime = #{queryTime},</if>
+            <if test="queryUserName != null">queryUserName = #{queryUserName},</if>
+            <if test="queryId != null">queryId = #{queryId},</if>
+            <if test="queryType != null">queryType = #{queryType},</if>
+            <if test="deliveryNum != null">deliveryNum = #{deliveryNum},</if>
+        </trim>
+        where message = #{message}
+    </update>
+
+    <delete id="deleteExpressInfoById" parameterType="String">
+        delete from expressInfo where sid = #{sid}
+    </delete>
+
+    <delete id="deleteExpressInfoByIds" parameterType="String">
+        delete from expressInfo where sid in
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+    <insert id="batchInsertExpressInfo">
+        insert into expressInfo(message, nu, deliveryNum, ischeck, com, status, `data`, `state`, `condition`, routeInfo, returnCode, `result`, phone,
+        collectTime, singedTime, lastUpdateTime, queryTime, queryUserName, queryId, queryType) values
+        <foreach item="expressInfo" index="index" collection="list" separator=",">
+            ( #{expressInfo.message}, #{expressInfo.nu}, #{expressInfo.deliveryNum}, #{expressInfo.ischeck}, #{expressInfo.com}, #{expressInfo.status},
+             #{expressInfo.data}, #{expressInfo.state}, #{expressInfo.condition}, #{expressInfo.routeInfo}, #{expressInfo.returnCode},
+             #{expressInfo.result}, #{expressInfo.phone}, #{expressInfo.collectTime}, #{expressInfo.singedTime}, #{expressInfo.lastUpdateTime},
+             #{expressInfo.queryTime}, #{expressInfo.queryUserName}, #{expressInfo.queryId}, #{expressInfo.queryType}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteExpressInfoByQueryId" parameterType="String">
+        delete from expressInfo where queryId in (select queryId from exp_import_query where sid= #{sid})
+    </delete>
+
+
+</mapper>
