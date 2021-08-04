@@ -256,7 +256,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
                 str+="\r\n";
             }
         }
-        System.out.println(str);
+        //System.out.println(str);
        return str;
     }
 
@@ -287,7 +287,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
             //todo
 
             //返回错误信息
-            return map.toString();
+            return JSONObject.toJSONString(map);
 
         }
         //向快递100推送订阅请求
@@ -302,7 +302,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         Map map=JSONObject.parseObject(object.toString(), Map.class);
         map.put("deliveryNo",deliveryNo);
         map.put("expressNo",expressNo);
-        return map.toString();
+        return JSONObject.toJSONString(map);
     }
 
 

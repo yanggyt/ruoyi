@@ -7,34 +7,39 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.enums.DataSourceType;
 import com.ruoyi.common.utils.StringUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Api(tags = "TOPGP使用帆软报表接口")
 @RestController
 public class FrForCrTopgpController {
     @Autowired
     private TopgpDdlService topgpDdlService;
 
     //访问 ../anon/bps/frforcr/topprod时，使用topprod
+    @ApiOperation("TOPPROD正式区访问")
+    @ApiImplicitParam(name = "jsonString", value = "Json字符串", paramType = "body", dataType = "String", dataTypeClass = String.class)
     @CrossOrigin
     @Log(title = "CSFR412_CR报表_TOPPROD", businessType = BusinessType.DROP)
-    @RequestMapping("/anon/bps/frforcr/topprod")
+    @PostMapping("/anon/bps/frforcr/topprod")
     @DataSource(value = DataSourceType.TOPPRODDSREPORT)
     public AjaxResult frforcrtopprod(@RequestBody Map<String,Object> map){
         return frforcrtoppgp(map);
     }
 
     //访问../anon/bps/frforcr/topprod时，使用toptest实例
+    @ApiOperation("TOPTEST正式区访问")
+    @ApiImplicitParam(name = "jsonString", value = "Json字符串", paramType = "body", dataType = "String", dataTypeClass = String.class)
     @CrossOrigin
     @Log(title = "CSFR412_CR报表_TOPTEST", businessType = BusinessType.DROP)
-    @RequestMapping("/anon/bps/frforcr/toptest")
+    @PostMapping("/anon/bps/frforcr/toptest")
     @DataSource(value = DataSourceType.TOPTESTDSREPORT)
     public AjaxResult frforcrtoptest(@RequestBody Map<String,Object> map){
         return frforcrtoppgp(map);

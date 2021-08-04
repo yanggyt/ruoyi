@@ -1,22 +1,37 @@
 package com.ruoyi.web.controller.system;
 
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.utils.http.HttpUtils;
+import com.ruoyi.framework.jwt.service.IJwtTokenService;
 import com.ruoyi.framework.shiro.util.CustToken;
 import com.ruoyi.system.service.IWechatApiService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.enums.UserStatus;
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.jwt.utils.JwtUtils;
+import com.ruoyi.framework.shiro.service.SysPasswordService;
+import com.ruoyi.system.service.ISysUserService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -24,9 +39,13 @@ import java.util.Map;
  * 
  * @author ruoyi
  */
+@Api(tags = "生成AccessToken接口")
 @Controller
 public class SysLoginController extends BaseController
 {
+    @Autowired
+    private IJwtTokenService jwtTokenService;
+
     @Autowired
     private IWechatApiService wechatApiService;
 
@@ -81,6 +100,26 @@ public class SysLoginController extends BaseController
             }
             return error(msg);
         }
+    }
+
+    @ApiOperation("获取Json格式AccessToken")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名称", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "password", value = "用户密码", dataType = "String", dataTypeClass = String.class),
+    })
+    @PostMapping("/jwt/login")
+    @ResponseBody
+    public AjaxResult jwtLogin(String username, String password)
+    {
+       return jwtTokenService.AjaxResultJwtToken(username,password);
+    }
+
+    @ApiOperation("获取String格式AccessToken")
+    @PostMapping("/jwt/topgplogin")
+    @ResponseBody
+    public String topgpJwtLogin(String username, String password)
+    {
+         return JSONObject.toJSONString(jwtTokenService.AjaxResultJwtToken(username,password));
     }
 
     @GetMapping("/unauth")
