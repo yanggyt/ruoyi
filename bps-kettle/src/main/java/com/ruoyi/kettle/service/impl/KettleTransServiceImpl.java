@@ -12,6 +12,9 @@ import com.ruoyi.kettle.domain.XRepository;
 import com.ruoyi.kettle.mapper.XRepositoryMapper;
 import com.ruoyi.kettle.service.IKettleTransService;
 import com.ruoyi.kettle.tools.KettleUtil;
+import com.ruoyi.kettle.tools.RedisStreamUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.kettle.mapper.KettleTransMapper;
@@ -27,6 +30,8 @@ import com.ruoyi.common.core.text.Convert;
 @Service("kettleTransServiceImpl")
 public class KettleTransServiceImpl implements IKettleTransService
 {
+
+    private static final Logger log = LoggerFactory.getLogger(KettleTransServiceImpl.class);
     @Autowired
     private KettleTransMapper kettleTransMapper;
     @Autowired
@@ -34,6 +39,9 @@ public class KettleTransServiceImpl implements IKettleTransService
 
     @Autowired
     private KettleUtil kettleUtil;
+
+    @Autowired
+    private RedisStreamUtil redisStreamUtil;
 
     /**
      * 查询转换
@@ -86,10 +94,13 @@ public class KettleTransServiceImpl implements IKettleTransService
         }
         String userName = (String) PermissionUtils.getPrincipalProperty("userName");
         if(kettleTrans.getRoleKey()==null){
-            kettleTrans.setRoleKey("admin");
+            kettleTrans.setRoleKey("admin,bpsadmin");
         }else{
             if(!kettleTrans.getRoleKey().contains("admin")){
                 kettleTrans.setRoleKey(kettleTrans.getRoleKey().concat(",admin"));
+            }
+            if(!kettleTrans.getRoleKey().contains("bpsadmin")){
+                kettleTrans.setRoleKey(kettleTrans.getRoleKey().concat(",bpsadmin"));
             }
         }
         kettleTrans.setCreatedBy(userName);
@@ -112,10 +123,13 @@ public class KettleTransServiceImpl implements IKettleTransService
         kettleTrans.setUpdateTime(DateUtils.getNowDate());
         kettleTrans.setTransType("File");
         if(kettleTrans.getRoleKey()==null){
-            kettleTrans.setRoleKey("admin");
+            kettleTrans.setRoleKey("admin,bpsadmin");
         }else{
             if(!kettleTrans.getRoleKey().contains("admin")){
                 kettleTrans.setRoleKey(kettleTrans.getRoleKey().concat(",admin"));
+            }
+            if(!kettleTrans.getRoleKey().contains("bpsadmin")){
+                kettleTrans.setRoleKey(kettleTrans.getRoleKey().concat(",bpsadmin"));
             }
         }        return kettleTransMapper.updateKettleTrans(kettleTrans);
     }
@@ -146,23 +160,46 @@ public class KettleTransServiceImpl implements IKettleTransService
 
 
     /**
-     * @Description:立即执行一次转换
+     * @Description:立即执行一次转换,放到redis队列中
      * @Author: Kone.wang
      * @Date: 2021/7/15 14:31
      * @param trans :
      * @return: void
      **/
     @Override
-    public AjaxResult run(KettleTrans trans) {
+    public AjaxResult runToQueue(KettleTrans trans) {
         Long id = trans.getId();
         KettleTrans kettleTrans = kettleTransMapper.selectKettleTransById(id);
-        if(kettleTrans ==null){
+        if(kettleTrans ==null || kettleTrans.getId()==null){
             return AjaxResult.error("转换不存在!");
         }
         XRepository repository=repositoryMapper.selectXRepositoryById(kettleTrans.getTransRepositoryId());
         if(repository==null){
             return AjaxResult.error("资源库不存在!");
         }
+        //加入队列中,等待执行
+        redisStreamUtil.addKettleTrans(kettleTrans);
+        //更新一下状态
+        trans.setTransStatus("等待中");
+        kettleTransMapper.updateKettleTrans(trans);
+        return AjaxResult.success("已加入执行队列,请等待运行结果通知!");
+    }
+
+    @Override
+    public void runTransRightNow(Long id) {
+        KettleTrans kettleTrans = kettleTransMapper.selectKettleTransById(id);
+        if(kettleTrans ==null || kettleTrans.getId()==null){
+            log.error("转换不存在!:"+id);
+            return;
+        }
+        XRepository repository=repositoryMapper.selectXRepositoryById(kettleTrans.getTransRepositoryId());
+        if(repository==null){
+            log.error("资源库不存在!");
+            return;
+        }
+        //更新状态未运行中
+        kettleTrans.setTransStatus("运行中");
+        kettleTransMapper.updateKettleTrans(kettleTrans);
         String path = kettleTrans.getTransPath();
         try {
             kettleUtil.KETTLE_LOG_LEVEL=kettleTrans.getTransLogLevel();
@@ -170,12 +207,13 @@ public class KettleTransServiceImpl implements IKettleTransService
             kettleUtil.KETTLE_REPO_NAME=repository.getRepoName();
             kettleUtil.KETTLE_REPO_PATH=repository.getBaseDir();
             kettleUtil.callTrans(path,kettleTrans.getTransName(),null,null);
+            kettleTrans.setTransStatus("已结束");
+            kettleTransMapper.updateKettleTrans(kettleTrans);
         } catch (Exception e) {
-            e.printStackTrace();
+            kettleTrans.setTransStatus("异常");
+            kettleTransMapper.updateKettleTrans(kettleTrans);
+            log.error(id+"的trans执行失败:"+e.getMessage());
         }
-
-
-        return AjaxResult.success("执行成功!");
     }
     /**
      * @Description:查询抓换执行日志
@@ -200,7 +238,7 @@ public class KettleTransServiceImpl implements IKettleTransService
     @Override
     public AjaxResult runTransQuartz(String id, String transName) {
         KettleTrans kettleTrans = kettleTransMapper.selectKettleTransById(Long.valueOf(id));
-        return run(kettleTrans);
+        return runToQueue(kettleTrans);
     }
     /**
      * @Description:检查该转换是否设置了定时任务
@@ -214,4 +252,5 @@ public class KettleTransServiceImpl implements IKettleTransService
 
         return kettleTransMapper.checkQuartzExist(checkStr);
     }
+
 }

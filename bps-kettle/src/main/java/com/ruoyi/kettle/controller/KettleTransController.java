@@ -162,9 +162,9 @@ public class KettleTransController extends BaseController
     @RequiresPermissions("kettle:trans:run")
     @PostMapping("/run")
     @ResponseBody
-    public AjaxResult run(KettleTrans trans)
+    public AjaxResult runToQueue(KettleTrans trans)
     {
-        AjaxResult result = kettleTransService.run(trans);
+        AjaxResult result = kettleTransService.runToQueue(trans);
         return result;
     }
 

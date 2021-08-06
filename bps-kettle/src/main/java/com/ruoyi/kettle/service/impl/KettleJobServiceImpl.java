@@ -12,6 +12,9 @@ import com.ruoyi.kettle.domain.KettleTrans;
 import com.ruoyi.kettle.domain.XRepository;
 import com.ruoyi.kettle.mapper.XRepositoryMapper;
 import com.ruoyi.kettle.tools.KettleUtil;
+import com.ruoyi.kettle.tools.RedisStreamUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.kettle.mapper.KettleJobMapper;
@@ -28,6 +31,7 @@ import com.ruoyi.common.core.text.Convert;
 @Service("kettleJobServiceImpl")
 public class KettleJobServiceImpl implements IKettleJobService
 {
+    private static final Logger log = LoggerFactory.getLogger(KettleJobServiceImpl.class);
     @Autowired
     private KettleJobMapper kettleJobMapper;
     @Autowired
@@ -36,6 +40,9 @@ public class KettleJobServiceImpl implements IKettleJobService
 
     @Autowired
     private KettleUtil kettleUtil;
+
+    @Autowired
+    private RedisStreamUtil redisStreamUtil;
     /**
      * 查询作业调度
      * 
@@ -84,10 +91,13 @@ public class KettleJobServiceImpl implements IKettleJobService
         }
         String userName = (String) PermissionUtils.getPrincipalProperty("userName");
         if(kettleJob.getRoleKey()==null){
-            kettleJob.setRoleKey("admin");
+            kettleJob.setRoleKey("admin,bpsadmin");
         }else{
             if(!kettleJob.getRoleKey().contains("admin")){
                 kettleJob.setRoleKey(kettleJob.getRoleKey().concat(",admin"));
+            }
+            if(!kettleJob.getRoleKey().contains("bpsadmin")){
+                kettleJob.setRoleKey(kettleJob.getRoleKey().concat(",bpsadmin"));
             }
         }
         kettleJob.setCreatedBy(userName);
@@ -105,7 +115,21 @@ public class KettleJobServiceImpl implements IKettleJobService
     @Override
     public int updateKettleJob(KettleJob kettleJob)
     {
+        String userName = (String) PermissionUtils.getPrincipalProperty("userName");
+
         kettleJob.setUpdateTime(DateUtils.getNowDate());
+        kettleJob.setUpdateBy(userName);
+        kettleJob.setJobType("File");
+        if(kettleJob.getRoleKey()==null){
+            kettleJob.setRoleKey("admin,bpsadmin");
+        }else{
+            if(!kettleJob.getRoleKey().contains("admin")){
+                kettleJob.setRoleKey(kettleJob.getRoleKey().concat(",admin"));
+            }
+            if(!kettleJob.getRoleKey().contains("bpsadmin")){
+                kettleJob.setRoleKey(kettleJob.getRoleKey().concat(",bpsadmin"));
+            }
+        }
         return kettleJobMapper.updateKettleJob(kettleJob);
     }
 
@@ -144,6 +168,43 @@ public class KettleJobServiceImpl implements IKettleJobService
         if(repository==null){
             return AjaxResult.error("资源库不存在!");
         }
+        //加入队列中,等待执行
+        redisStreamUtil.addKettleJob(kettleJob);
+        //更新一下状态
+        kettleJob.setJobStatus("等待中");
+        kettleJobMapper.updateKettleJob(kettleJob);
+        return AjaxResult.success("已加入执行队列,请等待运行结果通知!");
+//        String path = kettleJob.getJobPath();
+//        try {
+//            kettleUtil.KETTLE_LOG_LEVEL=kettleJob.getJobLogLevel();
+//            kettleUtil.KETTLE_REPO_ID=String.valueOf(kettleJob.getJobRepositoryId());
+//            kettleUtil.KETTLE_REPO_NAME=repository.getRepoName();
+//            kettleUtil.KETTLE_REPO_PATH=repository.getBaseDir();
+//            kettleUtil.callJob(path,kettleJob.getJobName(),null,null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+
+    }
+
+    @Override
+    public void runJobRightNow(Long id) {
+        KettleJob kettleJob = kettleJobMapper.selectKettleJobById(id);
+        if(kettleJob ==null){
+            log.error("作业不存在!");
+            return;
+        }
+        XRepository repository=repositoryMapper.selectXRepositoryById(kettleJob.getJobRepositoryId());
+        if(repository==null){
+            log.error("资源库不存在!");
+            return;
+        }
+        //加入队列中,等待执行
+        redisStreamUtil.addKettleJob(kettleJob);
+        //更新一下状态
+        kettleJob.setJobStatus("运行中");
+        kettleJobMapper.updateKettleJob(kettleJob);
         String path = kettleJob.getJobPath();
         try {
             kettleUtil.KETTLE_LOG_LEVEL=kettleJob.getJobLogLevel();
@@ -151,13 +212,15 @@ public class KettleJobServiceImpl implements IKettleJobService
             kettleUtil.KETTLE_REPO_NAME=repository.getRepoName();
             kettleUtil.KETTLE_REPO_PATH=repository.getBaseDir();
             kettleUtil.callJob(path,kettleJob.getJobName(),null,null);
+            kettleJob.setJobStatus("已结束");
+            kettleJobMapper.updateKettleJob(kettleJob);
         } catch (Exception e) {
+            kettleJob.setJobStatus("异常");
+            kettleJobMapper.updateKettleJob(kettleJob);
             e.printStackTrace();
         }
 
-
-        return AjaxResult.success("执行成功!");    }
-
+    }
     @Override
     public List<String> queryJobLog(KettleJob kettleJob) {
         List<String> logs=kettleJobMapper.queryJobLog(kettleJob.getJobName());
@@ -173,4 +236,5 @@ public class KettleJobServiceImpl implements IKettleJobService
         KettleJob kettleJob = kettleJobMapper.selectKettleJobById(Long.valueOf(id));
         return run(kettleJob);
     }
+
 }

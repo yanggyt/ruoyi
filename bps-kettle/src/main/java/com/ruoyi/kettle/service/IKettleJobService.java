@@ -68,4 +68,6 @@ public interface IKettleJobService
     Long checkQuartzExist(String checkStr);
 
     public AjaxResult runJobQuartz(String id, String jobName);
+
+    void runJobRightNow(Long valueOf);
 }

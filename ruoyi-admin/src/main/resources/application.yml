@@ -75,7 +75,23 @@ spring:
     base: OU=bp,DC=bpsemi,DC=com
     username: administrator@bpsemi.com
     password: Bps@2831!
-
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: "2129"
+    timeout: 3600000
+    database: 2
+    lettuce:
+      pool:
+        max-active: 100
+        max-idle: 10
+        min-idle: 0
+        max-wait: 3600000
+      cluster:
+        refresh:
+          adaptive: true
+          #20秒自动刷新一次
+          period: 20
 # MyBatis
 mybatis:
     # 搜索指定包别名
