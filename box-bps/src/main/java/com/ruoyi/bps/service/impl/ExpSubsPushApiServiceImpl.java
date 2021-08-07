@@ -13,7 +13,6 @@ import com.kuaidi100.sdk.response.SubscribePushData;
 import com.kuaidi100.sdk.response.SubscribePushParamResp;
 import com.kuaidi100.sdk.response.SubscribePushResult;
 import com.kuaidi100.sdk.response.SubscribeResp;
-import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
 import com.ruoyi.bps.domain.ExpSubsPushResp;
 import com.ruoyi.bps.domain.ExpSubscribe;
@@ -282,10 +281,13 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         String phone = contentJson.getString("phone");
         //如果出货单号或者快递单号为空，则返回错误信息，并写入Logo
         if(StringUtils.isEmpty(deliveryNo) || StringUtils.isEmpty(expressNo)){
+            SubscribeResp subscribeResp=new SubscribeResp();
+            subscribeResp.setMessage("快递单号或出货单号为空");
+            subscribeResp.setResult(false);
+            subscribeResp.setReturnCode("700");
+
             Map<String,Object> map=new HashMap<>();
-            map.put("result",false);
-            map.put("returnCode",700);
-            map.put("message","快递单号或出货单号为空!");
+            map.put("subscribeResp",subscribeResp);
             map.put("deliveryNo",deliveryNo);
             map.put("expressNo",expressNo);
             //写入Logo
@@ -303,8 +305,10 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         expSubscribe.setSalt("topgp"); //偷懒，把请求来源记录到salt栏位，不再增加exp_subscribe字段了。。以后找时间改吧
         SubscribeResp subscribeResp= ExpressSubscribe(expSubscribe);
 
-        Object object = JSONObject.toJSON(subscribeResp);
-        Map map=JSONObject.parseObject(object.toString(), Map.class);
+        /*Object object = JSONObject.toJSON(subscribeResp);
+        Map map=JSONObject.parseObject(object.toString(), Map.class);*/
+        Map<String,Object> map= new HashMap<>();
+        map.put("expSubscribe",subscribeResp);
         map.put("deliveryNo",deliveryNo);
         map.put("expressNo",expressNo);
         return JSONObject.toJSONString(map);
