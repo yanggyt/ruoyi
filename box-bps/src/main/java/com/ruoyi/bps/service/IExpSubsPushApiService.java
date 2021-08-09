@@ -4,8 +4,15 @@ import com.ruoyi.bps.domain.ExpSubscribe;
 import com.kuaidi100.sdk.response.SubscribeResp;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 public interface IExpSubsPushApiService {
+
+    /**
+     * 向快递100推送订阅请求
+     * @param expSubscribe
+     * @return
+     */
     public SubscribeResp ExpressSubscribe(ExpSubscribe expSubscribe);
 
     /**
@@ -19,4 +26,11 @@ public interface IExpSubsPushApiService {
      *
      */
     public SubscribeResp ExpressSubscribeCallBackUrl(HttpServletRequest request);
+
+    /**
+     * 获取Topgp推送的快递信息，向快递100推送订阅请求
+     * @param request
+     * @return
+     */
+    public String ExpressSubscribeWithTopgp(HttpServletRequest request) throws IOException;
 }

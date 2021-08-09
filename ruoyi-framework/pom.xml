@@ -77,10 +77,17 @@
             <artifactId>ruoyi-system</artifactId>
         </dependency>
 
-        <!--ldap-->
+        <!--ldap 登录集成-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-ldap</artifactId>
+        </dependency>
+
+        <!-- jwt 集成-->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.4.0</version>
         </dependency>
 
     </dependencies>

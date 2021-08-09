@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -32,7 +31,8 @@ public class WechatApiController extends BaseController {
     }
 
     @GetMapping("anon/userInfo")
-    public Map<String, Object> getJSON(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @ResponseBody
+    public Object getJSON(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         BufferedReader streamReader = new BufferedReader( new InputStreamReader(request.getInputStream(), "UTF-8"));
         StringBuilder responseStrBuilder = new StringBuilder();
@@ -40,7 +40,8 @@ public class WechatApiController extends BaseController {
         while ((inputStr = streamReader.readLine()) != null) {
             responseStrBuilder.append(inputStr);
         }
-        return JSON.parseObject(responseStrBuilder.toString(), Map.class);
+        //return  JSON.parseObject(responseStrBuilder.toString(), Map.class);
+        return JSON.parse(responseStrBuilder.toString());
 
     }
 
