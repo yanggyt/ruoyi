@@ -2,6 +2,7 @@ package com.ruoyi.test.conrtroller;
 
 
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +17,20 @@ public class GetEcologyInfoTestController extends BaseController {
     private ISysUserService userService;
 
     @RequestMapping("/anon/getEcologyDept")
-    public String getEcologyDept() throws Exception {
+    public AjaxResult getEcologyDept() throws Exception {
         String url="http://192.168.2.85:90/api/hrm/resful/getHrmdepartmentWithPage";
         String params="{\"params\":{\"pagesize\":999999}}";
         //return  sendPost(url,params);
-        int result = deptService.syncEcologyDept(url,params);
-        if(result==200){
-            return "同步成功";
-        }
-        return "同步失败";
+         return deptService.syncEcologyDept(url,params);
+
 
     }
 
     @RequestMapping("/anon/getEcologyUser")
-    public String getEcologyUser(){
+    public AjaxResult getEcologyUser(){
         String url="http://192.168.2.85:90/api/hrm/resful/getHrmUserInfoWithPage";
         String params="{\"params\":{\"pagesize\":999999}}";
-        int result = userService.syncEcologyUser(url,params);
-        if(result==200){
-            return "同步成功";
-        }
-        return "同步失败";
+        return userService.syncEcologyUser(url,params);
     }
 
    /* *//*public Map<String,String> sendPostWithRest(String url,String params){
