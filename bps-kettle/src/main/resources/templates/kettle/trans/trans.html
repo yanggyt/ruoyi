@@ -109,17 +109,21 @@
                         return $.table.selectDictLabel(transStatus, value);
                     }
                 },
+                {
+                    field: 'lastSucceedTime',
+                    title: '最后成功时间',
+                },
                 // {
                 //     field: 'isDel',
                 //     title: '是否删除'
                 // },
-                {
-                    field: 'isMonitorEnabled',
-                    title: '是否启用',
-                    formatter: function(value, row, index) {
-                        return value==1?"是":"否";
-                    }
-                },
+                // {
+                //     field: 'isMonitorEnabled',
+                //     title: '是否启用',
+                //     formatter: function(value, row, index) {
+                //         return value==1?"是":"否";
+                //     }
+                // },
                 // {
                 //     field: 'tplKey',
                 //     title: '保留备用'

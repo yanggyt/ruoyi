@@ -68,6 +68,17 @@ public class KettleTrans extends BaseEntity
     @Excel(name = "可执行角色key")
     private String roleKey;
 
+    @Excel(name = "最后一次成功时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastSucceedTime;
+
+    public Date getLastSucceedTime() {
+        return lastSucceedTime;
+    }
+
+    public void setLastSucceedTime(Date lastSucceedTime) {
+        this.lastSucceedTime = lastSucceedTime;
+    }
     public void setId(Long id) 
     {
         this.id = id;
@@ -217,4 +228,5 @@ public class KettleTrans extends BaseEntity
             .append("remark", getRemark())
             .toString();
     }
+
 }

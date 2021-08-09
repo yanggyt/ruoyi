@@ -67,7 +67,8 @@
         var quartzFlag=[[${@permission.hasPermi('kettle:job:setquartz')}]];
 
         var prefix = ctx + "kettle/job";
-
+        var logLevel = [[${@dict.getType('kettle_log_level')}]];
+        var jobStatus = [[${@dict.getType('kettle_trans_status')}]];
         $(function() {
             var options = {
                 url: prefix + "/list",
@@ -110,11 +111,21 @@
                 },*/
                 {
                     field: 'jobLogLevel',
-                    title: '日志级别'
+                    title: '日志级别',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(logLevel, value);
+                    }
                 },
                 {
                     field: 'jobStatus',
-                    title: '状态'
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(jobStatus, value);
+                    }
+                },
+                {
+                    field: 'lastSucceedTime',
+                    title: '最后成功时间',
                 },
                /* {
                     field: 'isDel',

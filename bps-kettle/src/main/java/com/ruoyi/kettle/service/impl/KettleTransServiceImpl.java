@@ -207,7 +207,8 @@ public class KettleTransServiceImpl implements IKettleTransService
             kettleUtil.KETTLE_REPO_NAME=repository.getRepoName();
             kettleUtil.KETTLE_REPO_PATH=repository.getBaseDir();
             kettleUtil.callTrans(path,kettleTrans.getTransName(),null,null);
-            kettleTrans.setTransStatus("已结束");
+            kettleTrans.setTransStatus("成功");
+            kettleTrans.setLastSucceedTime(DateUtils.getNowDate());
             kettleTransMapper.updateKettleTrans(kettleTrans);
         } catch (Exception e) {
             kettleTrans.setTransStatus("异常");

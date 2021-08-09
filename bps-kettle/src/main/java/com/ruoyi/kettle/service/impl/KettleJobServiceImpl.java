@@ -200,8 +200,7 @@ public class KettleJobServiceImpl implements IKettleJobService
             log.error("资源库不存在!");
             return;
         }
-        //加入队列中,等待执行
-        redisStreamUtil.addKettleJob(kettleJob);
+
         //更新一下状态
         kettleJob.setJobStatus("运行中");
         kettleJobMapper.updateKettleJob(kettleJob);
@@ -212,7 +211,8 @@ public class KettleJobServiceImpl implements IKettleJobService
             kettleUtil.KETTLE_REPO_NAME=repository.getRepoName();
             kettleUtil.KETTLE_REPO_PATH=repository.getBaseDir();
             kettleUtil.callJob(path,kettleJob.getJobName(),null,null);
-            kettleJob.setJobStatus("已结束");
+            kettleJob.setJobStatus("成功");
+            kettleJob.setLastSucceedTime(DateUtils.getNowDate());
             kettleJobMapper.updateKettleJob(kettleJob);
         } catch (Exception e) {
             kettleJob.setJobStatus("异常");

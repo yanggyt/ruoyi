@@ -1,6 +1,5 @@
 package com.ruoyi.kettle.tools;
 
-import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.kettle.domain.KettleJob;
 import com.ruoyi.kettle.domain.KettleTrans;
 import com.ruoyi.kettle.service.IKettleJobService;
@@ -8,10 +7,7 @@ import com.ruoyi.kettle.service.IKettleTransService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.StreamEntry;
@@ -59,7 +55,7 @@ public class RedisStreamUtil {
         map.put("trans_"+trandId, transName);
         Jedis jedis = jedisPool.getResource();
 
-        jedis.xadd(koneStream, new StreamEntryID().NEW_ENTRY, map);
+        StreamEntryID id =jedis.xadd(koneStream, new StreamEntryID().NEW_ENTRY, map);
     }
 
     /**
