@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class XmlUtils {
+public class TopgpXmlUtils {
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
     /**
