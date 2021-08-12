@@ -69,5 +69,5 @@ public interface IKettleJobService
 
     public AjaxResult runJobQuartz(String id, String jobName);
 
-    void runJobRightNow(Long valueOf);
+    void runJobRightNow(Long valueOf, String userId);
 }

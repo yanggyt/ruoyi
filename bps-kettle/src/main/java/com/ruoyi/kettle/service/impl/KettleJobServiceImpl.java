@@ -2,17 +2,18 @@ package com.ruoyi.kettle.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.security.PermissionUtils;
-import com.ruoyi.kettle.domain.KettleTrans;
 import com.ruoyi.kettle.domain.XRepository;
 import com.ruoyi.kettle.mapper.XRepositoryMapper;
 import com.ruoyi.kettle.tools.KettleUtil;
 import com.ruoyi.kettle.tools.RedisStreamUtil;
+import com.ruoyi.system.service.IWechatApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class KettleJobServiceImpl implements IKettleJobService
 
     @Autowired
     private RedisStreamUtil redisStreamUtil;
+    @Autowired
+    IWechatApiService wechatApiService;
     /**
      * 查询作业调度
      * 
@@ -189,7 +192,7 @@ public class KettleJobServiceImpl implements IKettleJobService
     }
 
     @Override
-    public void runJobRightNow(Long id) {
+    public void runJobRightNow(Long id, String userId) {
         KettleJob kettleJob = kettleJobMapper.selectKettleJobById(id);
         if(kettleJob ==null){
             log.error("作业不存在!");
@@ -204,22 +207,26 @@ public class KettleJobServiceImpl implements IKettleJobService
         //更新一下状态
         kettleJob.setJobStatus("运行中");
         kettleJobMapper.updateKettleJob(kettleJob);
-        String path = kettleJob.getJobPath();
+        StringBuilder title = new StringBuilder(kettleJob.getJobName()).append(".kjb 执行结果:");
+        StringBuilder msg = new StringBuilder(kettleJob.getJobName()).append(".kjb 执行结果:");
         try {
-            kettleUtil.KETTLE_LOG_LEVEL=kettleJob.getJobLogLevel();
-            kettleUtil.KETTLE_REPO_ID=String.valueOf(kettleJob.getJobRepositoryId());
-            kettleUtil.KETTLE_REPO_NAME=repository.getRepoName();
-            kettleUtil.KETTLE_REPO_PATH=repository.getBaseDir();
-            kettleUtil.callJob(path,kettleJob.getJobName(),null,null);
+            kettleUtil.callJob(kettleJob,repository,null,null);
             kettleJob.setJobStatus("成功");
             kettleJob.setLastSucceedTime(DateUtils.getNowDate());
             kettleJobMapper.updateKettleJob(kettleJob);
+            title.append("成功!");
+            msg.append("成功!");
         } catch (Exception e) {
             kettleJob.setJobStatus("异常");
             kettleJobMapper.updateKettleJob(kettleJob);
+            title.append("异常!");
+            msg.append("异常!");
             e.printStackTrace();
         }
-
+        List<String> userIdList = new ArrayList<>();
+        userIdList.add(userId);
+        Map<String, String> resultMap =  wechatApiService.SendTextCardMessageToWechatUser(userIdList,title.toString(),msg.toString(),"http://report.bpsemi.cn:8081/it_war");
+        log.info("job微信消息发送结果"+resultMap);
     }
     @Override
     public List<String> queryJobLog(KettleJob kettleJob) {

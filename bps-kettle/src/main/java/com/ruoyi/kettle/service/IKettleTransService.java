@@ -82,5 +82,5 @@ public interface IKettleTransService
 
     Long checkQuartzExist(String checkStr);
 
-    void runTransRightNow(Long valueOf);
+    void runTransRightNow(Long valueOf, String userId);
 }

@@ -1,6 +1,9 @@
 package com.ruoyi.kettle.tools;
 
 import com.ruoyi.common.config.datasource.DynamicDataSourceContextHolder;
+import com.ruoyi.kettle.domain.KettleJob;
+import com.ruoyi.kettle.domain.KettleTrans;
+import com.ruoyi.kettle.domain.XRepository;
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.database.DatabaseMeta;
 import org.pentaho.di.core.exception.KettleException;
@@ -29,27 +32,21 @@ public class KettleUtil {
     public static final Logger log = LoggerFactory.getLogger(KettleUtil.class);
 
 
-    public  String KETTLE_LOG_LEVEL = "basic";
-    public  String KETTLE_REPO_ID = "2";
-    public  String KETTLE_REPO_NAME = "koneTest";
-    public  String KETTLE_REPO_DESC = "DESC";
-    public  String KETTLE_REPO_PATH = "D:\\etl";
+
 
     /**
      * 执行文件资源库转换
-     * @param transPath 转换路径（相对于资源库）
-     * @param transName 转换名称（不需要后缀）
      * @param namedParams 命名参数
      * @param clParams 命令行参数
      */
-    public void callTrans(String transPath, String transName, Map<String,String> namedParams, String[] clParams) throws Exception {
+    public void callTrans(KettleTrans kettleTrans, XRepository xrepository, Map<String, String> namedParams, String[] clParams) throws Exception {
         KettleEnv.init();
         DatabaseMeta databaseMeta=new DatabaseMeta("kettle_trans_log", "mysql", "Native(JDBC)",
                 "192.168.2.18","bps?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8", "3306", "root", "abc.123");
 
         String msg;
-        KettleFileRepository repo = this.fileRepositoryCon();
-        TransMeta transMeta = this.loadTrans(repo, transPath, transName);
+        KettleFileRepository repo = this.fileRepositoryCon(xrepository);
+        TransMeta transMeta = this.loadTrans(repo, kettleTrans.getTransPath(), kettleTrans.getTransName());
 
         transMeta.addDatabase(databaseMeta);
         VariableSpace space=new Variables();
@@ -71,7 +68,7 @@ public class KettleUtil {
                 trans.setParameterValue(entry.getKey(), entry.getValue());
             }
         }
-        trans.setLogLevel(this.getLogerLevel(KETTLE_LOG_LEVEL));
+        trans.setLogLevel(this.getLogerLevel(kettleTrans.getTransLogLevel()));
         //执行
         trans.execute(clParams);
         trans.waitUntilFinished();
@@ -94,16 +91,15 @@ public class KettleUtil {
 
     /**
      * 执行文件资源库job
-     * @param jobName
      * @throws Exception
      */
-    public boolean callJob(String jobPath, String jobName, Map<String,String> variables, String[] clParams) throws Exception {
+    public boolean callJob(KettleJob kettleJob,XRepository xRepository, Map<String,String> variables, String[] clParams) throws Exception {
         KettleEnv.init();
         String msg;
         DatabaseMeta databaseMeta=new DatabaseMeta("kettle_job_log", "mysql", "Native(JDBC)",
                 "192.168.2.18","bps?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8", "3306", "root", "abc.123");
-        KettleFileRepository repo = this.fileRepositoryCon();
-        JobMeta jobMeta = this.loadJob(repo, jobPath, jobName);
+        KettleFileRepository repo = this.fileRepositoryCon(xRepository);
+        JobMeta jobMeta = this.loadJob(repo, kettleJob.getJobPath(), kettleJob.getJobName());
         jobMeta.addDatabase(databaseMeta);
         VariableSpace space=new Variables();
         space.setVariable("test","fromDbName");
@@ -121,7 +117,7 @@ public class KettleUtil {
             }
         }
         //设置日志级别
-        job.setLogLevel(this.getLogerLevel(KETTLE_LOG_LEVEL));
+        job.setLogLevel(this.getLogerLevel(kettleJob.getJobLogLevel()));
         job.setArguments(clParams);
         job.start();
         job.waitUntilFinished();
@@ -208,9 +204,9 @@ public class KettleUtil {
      * @param jobName
      * @throws Exception
      */
-    public void callNativeJob(String jobName) throws Exception {
+/*    public void callNativeJob(String jobName) throws Exception {
         // 初始化
-        /*KettleEnvironment.init();*/
+        *//*KettleEnvironment.init();*//*
 
         JobMeta jobMeta = new JobMeta(jobName, null);
         Job job = new Job(null, jobMeta);
@@ -223,7 +219,7 @@ public class KettleUtil {
         if (job.getErrors() > 0) {
             throw new Exception("There are errors during job exception!(执行job发生异常)");
         }
-    }
+    }*/
 
     /**
      * 取得kettle的日志级别
@@ -253,14 +249,14 @@ public class KettleUtil {
     /**
      * 配置kettle文件库资源库环境
      **/
-    public KettleFileRepository fileRepositoryCon() throws KettleException {
+    public KettleFileRepository fileRepositoryCon(XRepository xRepository) throws KettleException {
         String msg;
         //初始化
     /*EnvUtil.environmentInit();
     KettleEnvironment.init();*/
 
         //资源库元对象
-        KettleFileRepositoryMeta fileRepositoryMeta = new KettleFileRepositoryMeta(this.KETTLE_REPO_ID, this.KETTLE_REPO_NAME, this.KETTLE_REPO_DESC, this.KETTLE_REPO_PATH);
+        KettleFileRepositoryMeta fileRepositoryMeta = new KettleFileRepositoryMeta(String.valueOf(xRepository.getId()), xRepository.getRepoName(), xRepository.getRemark(), xRepository.getBaseDir());
         // 文件形式的资源库
         KettleFileRepository repo = new KettleFileRepository();
         repo.init(fileRepositoryMeta);
@@ -268,11 +264,11 @@ public class KettleUtil {
         repo.connect("", "");//默认的连接资源库的用户名和密码
 
         if (repo.isConnected()) {
-            msg = "kettle文件库资源库【" + KETTLE_REPO_PATH + "】连接成功";
+            msg = "kettle文件库资源库【" + xRepository.getBaseDir() + "】连接成功";
             log.info(msg);
             return repo;
         } else {
-            msg = "kettle文件库资源库【" + KETTLE_REPO_PATH + "】连接失败";
+            msg = "kettle文件库资源库【" + xRepository.getBaseDir() + "】连接失败";
             log.error(msg);
             throw new KettleException(msg);
         }

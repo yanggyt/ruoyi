@@ -1102,7 +1102,7 @@ public class ExcelUtil<T>
             Cell cell = row.getCell(column);
             if (StringUtils.isNotNull(cell))
             {
-                if (cell.getCellTypeEnum() == CellType.NUMERIC || cell.getCellTypeEnum() == CellType.FORMULA)
+                if (cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA)
                 {
                     val = cell.getNumericCellValue();
                     if (DateUtil.isCellDateFormatted(cell))
@@ -1121,15 +1121,15 @@ public class ExcelUtil<T>
                         }
                     }
                 }
-                else if (cell.getCellTypeEnum() == CellType.STRING)
+                else if (cell.getCellType() == CellType.STRING)
                 {
                     val = cell.getStringCellValue();
                 }
-                else if (cell.getCellTypeEnum() == CellType.BOOLEAN)
+                else if (cell.getCellType() == CellType.BOOLEAN)
                 {
                     val = cell.getBooleanCellValue();
                 }
-                else if (cell.getCellTypeEnum() == CellType.ERROR)
+                else if (cell.getCellType() == CellType.ERROR)
                 {
                     val = cell.getErrorCellValue();
                 }
@@ -1158,7 +1158,7 @@ public class ExcelUtil<T>
         for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++)
         {
             Cell cell = row.getCell(i);
-            if (cell != null && cell.getCellTypeEnum() != CellType.BLANK)
+            if (cell != null && cell.getCellType() != CellType.BLANK)
             {
                 return false;
             }
