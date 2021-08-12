@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.ruoyi.framework.shiro.util.CustToken;
+import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -23,16 +24,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.enums.UserStatus;
 import com.ruoyi.common.exception.user.CaptchaException;
 import com.ruoyi.common.exception.user.RoleBlockedException;
 import com.ruoyi.common.exception.user.UserBlockedException;
+import com.ruoyi.common.exception.user.UserDeleteException;
 import com.ruoyi.common.exception.user.UserNotExistsException;
 import com.ruoyi.common.exception.user.UserPasswordNotMatchException;
 import com.ruoyi.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.ruoyi.common.utils.ShiroUtils;
+import com.ruoyi.framework.jwt.auth.JwtToken;
+import com.ruoyi.framework.jwt.utils.JwtUtils;
 import com.ruoyi.framework.shiro.service.SysLoginService;
 import com.ruoyi.system.service.ISysMenuService;
 import com.ruoyi.system.service.ISysRoleService;
+import com.ruoyi.system.service.ISysUserService;
 
 /**
  * 自定义Realm 处理登录 权限
@@ -51,6 +57,9 @@ public class UserRealm extends AuthorizingRealm
 
     @Autowired
     private SysLoginService loginService;
+
+    @Autowired
+    private ISysUserService userService;
 
     /**
      * 授权
@@ -86,55 +95,96 @@ public class UserRealm extends AuthorizingRealm
      * 登录认证
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
+            throws AuthenticationException
     {
-       //UsernamePasswordToken upToken = (UsernamePasswordToken) token;
-        CustToken upToken= (CustToken) token;
-        String loginType = upToken.getLoginType();
-        String username = upToken.getUsername();
-        String password = "";
+        if (authenticationToken instanceof JwtToken)
+        {
+            JwtToken jwtToken = (JwtToken) authenticationToken;
+            String token = jwtToken.getToken();
+            String username = JwtUtils.getUserName(token);
+            if (username == null)
+            {
+                throw new AccountException("token 验证失败");
+            }
+            SysUser user = userService.selectUserByLoginName(username);
+            if (user == null)
+            {
+                throw new AuthenticationException("用户数据不存在");
+            }
 
-        if (upToken.getPassword() != null)
-        {
-            password = new String(upToken.getPassword());
-        }
+            try
+            {
+                JwtUtils.verify(username, user.getPassword(), jwtToken.getToken());
 
-        SysUser user = null;
-        try
-        {
-            user = loginService.login(username, password,loginType);
+                if (UserStatus.DELETED.getCode().equals(user.getDelFlag()))
+                {
+                    throw new UserDeleteException();
+                }
+
+                if (UserStatus.DISABLE.getCode().equals(user.getStatus()))
+                {
+                    throw new UserBlockedException();
+                }
+            }
+            catch (Exception e)
+            {
+                log.info("对用户[" + username + "]进行jwt登录验证..验证未通过{}", e.getMessage());
+                throw new AuthenticationException(e.getMessage(), e);
+            }
+
+            return new SimpleAuthenticationInfo(user, null, getName());
         }
-        catch (CaptchaException e)
+        else
         {
-            throw new AuthenticationException(e.getMessage(), e);
+            //UsernamePasswordToken upToken = (UsernamePasswordToken) authenticationToken;
+            CustToken upToken= (CustToken) authenticationToken;
+            String loginType = upToken.getLoginType();
+            String username = upToken.getUsername();
+            String password = "";
+
+            if (upToken.getPassword() != null)
+            {
+                password = new String(upToken.getPassword());
+            }
+
+            SysUser user = null;
+            try
+            {
+                user = loginService.login(username, password,loginType);
+            }
+            catch (CaptchaException e)
+            {
+                throw new AuthenticationException(e.getMessage(), e);
+            }
+            catch (UserNotExistsException e)
+            {
+                throw new UnknownAccountException(e.getMessage(), e);
+            }
+            catch (UserPasswordNotMatchException e)
+            {
+                throw new IncorrectCredentialsException(e.getMessage(), e);
+            }
+            catch (UserPasswordRetryLimitExceedException e)
+            {
+                throw new ExcessiveAttemptsException(e.getMessage(), e);
+            }
+            catch (UserBlockedException e)
+            {
+                throw new LockedAccountException(e.getMessage(), e);
+            }
+            catch (RoleBlockedException e)
+            {
+                throw new LockedAccountException(e.getMessage(), e);
+            }
+            catch (Exception e)
+            {
+                log.info("对用户[" + username + "]进行登录验证..验证未通过{}", e.getMessage());
+                throw new AuthenticationException(e.getMessage(), e);
+            }
+            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
+            return info;
         }
-        catch (UserNotExistsException e)
-        {
-            throw new UnknownAccountException(e.getMessage(), e);
-        }
-        catch (UserPasswordNotMatchException e)
-        {
-            throw new IncorrectCredentialsException(e.getMessage(), e);
-        }
-        catch (UserPasswordRetryLimitExceedException e)
-        {
-            throw new ExcessiveAttemptsException(e.getMessage(), e);
-        }
-        catch (UserBlockedException e)
-        {
-            throw new LockedAccountException(e.getMessage(), e);
-        }
-        catch (RoleBlockedException e)
-        {
-            throw new LockedAccountException(e.getMessage(), e);
-        }
-        catch (Exception e)
-        {
-            log.info("对用户[" + username + "]进行登录验证..验证未通过{}", e.getMessage());
-            throw new AuthenticationException(e.getMessage(), e);
-        }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
-        return info;
     }
 
     /**

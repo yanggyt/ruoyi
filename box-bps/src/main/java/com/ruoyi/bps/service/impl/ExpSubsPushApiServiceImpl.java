@@ -1,5 +1,6 @@
 package com.ruoyi.bps.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.Subscribe;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
@@ -12,7 +13,6 @@ import com.kuaidi100.sdk.response.SubscribePushData;
 import com.kuaidi100.sdk.response.SubscribePushParamResp;
 import com.kuaidi100.sdk.response.SubscribePushResult;
 import com.kuaidi100.sdk.response.SubscribeResp;
-import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
 import com.ruoyi.bps.domain.ExpSubsPushResp;
 import com.ruoyi.bps.domain.ExpSubscribe;
@@ -20,23 +20,30 @@ import com.ruoyi.bps.service.IExpSubsPushApiService;
 import com.ruoyi.bps.service.IExpSubsPushRespService;
 import com.ruoyi.bps.service.IExpSubscribeService;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
-    String key = PropertiesReader.get("key");
+    /*String key = PropertiesReader.get("key");
     String customer = PropertiesReader.get("customer");
     String secret = PropertiesReader.get("secret");
     String siid = PropertiesReader.get("siid");
     String userid = PropertiesReader.get("userid");
     String tid = PropertiesReader.get("tid");
     String secret_key = PropertiesReader.get("secret_key");
-    String secret_secret = PropertiesReader.get("secret_secret");
+    String secret_secret = PropertiesReader.get("secret_secret"); */
+    @Value("${express.key}")
+    private String key;
 
     @Autowired
     private IExpSubsPushRespService expSubsPushRespService;
@@ -50,6 +57,10 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
      */
     @Override
     public SubscribeResp ExpressSubscribe(ExpSubscribe expSubscribe) {
+
+         String loginFrom= expSubscribe.getSalt();
+         String subscribeFrom= StringUtils.isNotEmpty(loginFrom)?loginFrom.equals("topgp")?"topgp":"localhost":"localhost";
+
         SubscribeParameters subscribeParameters = new SubscribeParameters();
         SubscribeResp subscribeResp = new SubscribeResp();
         subscribeParameters.setCallbackurl("http://report.bpsemi.cn:8081/it_war/anon/subscribeCallBackUrl");
@@ -68,7 +79,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         IBaseClient subscribe = new Subscribe();
         try{
             HttpResult httpResult= subscribe.execute(subscribeReq);
-            System.out.println(httpResult);
+            //System.out.println(httpResult);
             subscribeResp= new Gson().fromJson(httpResult.getBody(),SubscribeResp.class);
         }catch (Exception e)
         {
@@ -85,13 +96,13 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         newExpSubscribe.setCompany(expSubscribe.getCompany());
         newExpSubscribe.setNumber(expSubscribe.getNumber());
         newExpSubscribe.setPhone(expSubscribe.getPhone());
-        newExpSubscribe.setSalt("bpsemi");
+        newExpSubscribe.setSalt(subscribeFrom);  //偷懒，把请求来源记录到salt栏位，不再增加exp_subscribe字段了。。以后找时间改吧
         newExpSubscribe.setSubscribeTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
         newExpSubscribe.setResult((subscribeResp.isResult())?"true":"false");
         newExpSubscribe.setReturnCode(subscribeResp.getReturnCode());
         newExpSubscribe.setMessage(subscribeResp.getMessage());
 
-        ExpSubscribe queryExpSubscribe = new ExpSubscribe();
+        /*ExpSubscribe queryExpSubscribe = new ExpSubscribe();
         queryExpSubscribe.setCompany(expSubscribe.getCompany());
         queryExpSubscribe.setNumber(expSubscribe.getNumber());
         queryExpSubscribe.setResult(expSubscribe.getResult());
@@ -107,7 +118,9 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         }else {
             //如果数据库中没有快递单号+快递公司编码，则更插入新记录
             expSubscribeService.insertExpSubscribe(newExpSubscribe);
-        }
+        }*/
+        //20210802 无论系统里有没有记录，都会记录本次推送。
+        expSubscribeService.insertExpSubscribe(newExpSubscribe);
 
         //返回订阅结果
         return subscribeResp;
@@ -247,9 +260,60 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
                 str+="\r\n";
             }
         }
-        System.out.println(str);
+        //System.out.println(str);
        return str;
     }
+
+
+    /**
+     * 获取Topgp推送的快递信息，向快递100推送订阅请求
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public String ExpressSubscribeWithTopgp(HttpServletRequest request) throws IOException {
+        //获取httpServletRequest传过来的Json字符串，并进行解析
+        JSONObject contentJson= JSONObject.parseObject(ServletUtils.getRequestContent(request));
+        String deliveryNo= contentJson.getString("deliveryNo");
+        String expressNo = contentJson.getString("expressNo");
+        String company = contentJson.getString("company");
+        String phone = contentJson.getString("phone");
+        //如果出货单号或者快递单号为空，则返回错误信息，并写入Logo
+        if(StringUtils.isEmpty(deliveryNo) || StringUtils.isEmpty(expressNo)){
+            SubscribeResp subscribeResp=new SubscribeResp();
+            subscribeResp.setMessage("快递单号或出货单号为空");
+            subscribeResp.setResult(false);
+            subscribeResp.setReturnCode("700");
+
+            Map<String,Object> map=new HashMap<>();
+            map.put("subscribeResp",subscribeResp);
+            map.put("deliveryNo",deliveryNo);
+            map.put("expressNo",expressNo);
+            //写入Logo
+            //todo
+
+            //返回错误信息
+            return JSONObject.toJSONString(map);
+
+        }
+        //向快递100推送订阅请求
+        ExpSubscribe expSubscribe=new ExpSubscribe();
+        expSubscribe.setNumber(expressNo);
+        expSubscribe.setCompany(company);
+        expSubscribe.setPhone(phone);
+        expSubscribe.setSalt("topgp"); //偷懒，把请求来源记录到salt栏位，不再增加exp_subscribe字段了。。以后找时间改吧
+        SubscribeResp subscribeResp= ExpressSubscribe(expSubscribe);
+
+        /*Object object = JSONObject.toJSON(subscribeResp);
+        Map map=JSONObject.parseObject(object.toString(), Map.class);*/
+        Map<String,Object> map= new HashMap<>();
+        map.put("expSubscribe",subscribeResp);
+        map.put("deliveryNo",deliveryNo);
+        map.put("expressNo",expressNo);
+        return JSONObject.toJSONString(map);
+    }
+
 
 
 

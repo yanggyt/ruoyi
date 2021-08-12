@@ -6,10 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
@@ -17,6 +19,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.service.IWechatApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,9 @@ public class SysUserServiceImpl implements ISysUserService
 
     @Autowired
     private ISysConfigService configService;
+
+    @Autowired
+    private IWechatApiService wechatApiService;
 
     /**
      * 根据条件分页查询用户列表
@@ -535,9 +541,24 @@ public class SysUserServiceImpl implements ISysUserService
      * @param params
      */
     @Override
-    public int syncEcologyUser(String url, String params) {
+    public AjaxResult syncEcologyUser(String url, String params) {
+        String msg="OA人员同步失败！";
+        List<String> userList=new ArrayList<>();
+        userList.add(ShiroUtils.getLoginName().equals("admin")?"359":String.valueOf(ShiroUtils.getUserId()));
+        if( ! configService.selectConfigByKey("sys.user.sync").equals("1")){
+            msg="OA人员同步失败！系统未开启OA人员同步!";
+            wechatApiService.SendTextMessageToWechatUser(userList,msg);
+            return AjaxResult.success(msg,"false");
+        }
         int result= userSync(HttpUtils.sendPostWithRest(url,params));
-        return result;
+        if( result==200)
+        {
+            return AjaxResult.success("OA人员同步成功!",result);
+        }
+
+        wechatApiService.SendTextMessageToWechatUser(userList,msg+"result:"+result);
+        return AjaxResult.error(msg,result);
+
     }
 
     /**
@@ -569,10 +590,15 @@ public class SysUserServiceImpl implements ISysUserService
         List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
         */
 
+        //获取原同步的用户
+        SysUser oldSysUser=new SysUser();
+        oldSysUser.setUserType("02");
+        List<SysUser> oldSysUserList=userMapper.selectUserLists(oldSysUser);
+
         //删除从Ecology同步过来（用户类型为02）的用户
         userMapper.deleteEcologySyncUser();
 
-        //同步Ecology部门信息
+        //同步Ecology人员信息
         SysUser user  = new SysUser();
         for(EcologyUser ecologyUser:ecologyUserList){
             if(ecologyUser.getSubcompanyid1().equals("1") &&  StringUtils.isNotEmpty(ecologyUser.getLoginid())) { //只取分部ID为“1”的员工
@@ -593,6 +619,17 @@ public class SysUserServiceImpl implements ISysUserService
                 user.setPhonenumber(ecologyUser.getMobile());
                 user.setStatus(ecologyUser.getStatus().equals("5")?"1":"0");  //Ecology为离职状态5，则无效
                 user.setDelFlag("0");
+                for(SysUser oldUser:oldSysUserList){
+                    if(String.valueOf(oldUser.getUserId()).equals(ecologyUser.getId())){
+                        user.setAvatar(oldUser.getAvatar());
+                        user.setPassword(oldUser.getPassword());
+                        user.setSalt(oldUser.getSalt());
+                        user.setLoginDate(oldUser.getLoginDate());
+                        user.setLoginIp(oldUser.getLoginIp());
+                        user.setPwdUpdateDate(oldUser.getPwdUpdateDate());
+                        user.setRemark(oldUser.getRemark());
+                    }
+                }
                 userMapper.insertUser(user);
             }
         }

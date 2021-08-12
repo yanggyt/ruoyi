@@ -14,6 +14,7 @@ import com.kuaidi100.sdk.utils.SignUtils;
 import com.ruoyi.bps.service.IExpressService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,14 +28,21 @@ public class ExpressServiceImpl implements IExpressService {
     String secret = "8781ed9b35a7438499eb02fee915915a";
     String userid = "2a62da2192c24d17a943ff78ee64f8c6";
      */
-    String key = PropertiesReader.get("key");
+    /*String key = PropertiesReader.get("key");
     String customer = PropertiesReader.get("customer");
     String secret = PropertiesReader.get("secret");
     String siid = PropertiesReader.get("siid");
     String userid = PropertiesReader.get("userid");
     String tid = PropertiesReader.get("tid");
     String secret_key = PropertiesReader.get("secret_key");
-    String secret_secret = PropertiesReader.get("secret_secret");
+    String secret_secret = PropertiesReader.get("secret_secret");*/
+
+    @Value("${express.key}")
+    private String key;
+
+    @Value("${express.customer}")
+    private String customer;
+
     String msg="";
     @Autowired
     IExpressService expressService;

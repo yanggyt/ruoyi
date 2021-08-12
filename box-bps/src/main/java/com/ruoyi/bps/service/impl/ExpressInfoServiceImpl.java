@@ -21,6 +21,7 @@ import com.kuaidi100.sdk.response.QueryTrackResp;
 import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,13 +38,6 @@ import java.util.List;
 public class ExpressInfoServiceImpl implements IExpressInfoService
 {
     /*
-    String key = "Jydbrxsm2311";
-    String customer = "2DD48B3469B82F2B7700569093AB792B";
-    String secret = "8781ed9b35a7438499eb02fee915915a";
-    String userid = "2a62da2192c24d17a943ff78ee64f8c6";
-
-     */
-
     String key = PropertiesReader.get("key");
     String customer = PropertiesReader.get("customer");
     String secret = PropertiesReader.get("secret");
@@ -52,6 +46,13 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
     String tid = PropertiesReader.get("tid");
     String secret_key = PropertiesReader.get("secret_key");
     String secret_secret = PropertiesReader.get("secret_secret");
+     */
+    @Value("${express.key}")
+    private String key;
+
+    @Value("${express.customer}")
+    private String customer;
+
 
 
 
@@ -132,7 +133,7 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
        //如果没有输入快递公司编号，则查询快递公司编号
         if(StringUtils.isEmpty(com)){
             if(AutoGetExpressCom(nu)==null){
-                callbackExpressInfo.setData("根据快递单号查询不到快递公司，请确认快递单号是否正确！");
+                callbackExpressInfo.setData("请提供要查询的快递所属物流公司编号！");
                 return callbackExpressInfo;
             }
             com=AutoGetExpressCom(nu).getComCode();

@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.SysUserRole;
 
@@ -208,7 +210,7 @@ public interface ISysUserService
     /**
      * Ecology人员信息同步
      */
-    public int syncEcologyUser(String url,String params);
+    public AjaxResult syncEcologyUser(String url, String params);
 
     /**
      * 查询用户列表
