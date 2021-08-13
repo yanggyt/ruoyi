@@ -5,10 +5,11 @@ package com.ruoyi.bps.controller;
 //import com.ruoyi.bps.express.request.QueryTrackParam;
 //import com.ruoyi.bps.express.response.QueryTrackResp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.bps.service.IExpressService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 import com.kuaidi100.sdk.request.QueryTrackParam;
 import com.kuaidi100.sdk.response.QueryTrackResp;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -62,7 +63,8 @@ public class QueryExpressController extends BaseController {
             System.out.println("快递公司：" + queryTrackParam.getCom());
             System.out.println("电话：" + queryTrackParam.getPhone());
             String info=expressService.QueryTrackExpress(queryTrackParam);
-            QueryTrackResp queryTrackResp = new Gson().fromJson(info,QueryTrackResp.class);
+            //QueryTrackResp queryTrackResp = new Gson().fromJson(info,QueryTrackResp.class);
+            QueryTrackResp queryTrackResp= JSONObject.parseObject(info,QueryTrackResp.class);
             result = new HashMap<>();
             result.put("code", "1");
             result.put("msg", "ok");

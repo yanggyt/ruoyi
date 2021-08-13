@@ -1,5 +1,8 @@
 package com.ruoyi.bps.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.bps.domain.ExpressInfo;
 import com.ruoyi.bps.mapper.ExpressInfoMapper;
 import com.ruoyi.bps.service.IExpressInfoService;
@@ -7,7 +10,7 @@ import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.AutoNum;
 import com.kuaidi100.sdk.api.QueryTrack;
 import com.kuaidi100.sdk.core.IBaseClient;
@@ -131,12 +134,18 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
        callbackExpressInfo.setPhone(phone);
        callbackExpressInfo.setDeliveryNum(deliveryNum);
        //如果没有输入快递公司编号，则查询快递公司编号
-        if(StringUtils.isEmpty(com)){
-            if(AutoGetExpressCom(nu)==null){
-                callbackExpressInfo.setData("请提供要查询的快递所属物流公司编号！");
+       if(StringUtils.isEmpty(com)){
+           List<AutoNumResp> list= AutoGetExpressCom(nu);
+            if(null==list || list.size()<1){
+                callbackExpressInfo.setData("请提供要查询的快递所属物流公司编号！，且根据快递单号没有查询到物流公司编号！");
                 return callbackExpressInfo;
             }
-            com=AutoGetExpressCom(nu).getComCode();
+            if (list.size()>1)
+            {
+                callbackExpressInfo.setData("您没有提供要查询的快递所属物流公司编号，且根据快递单号查询到多个物流公司编号");
+                return callbackExpressInfo;
+            }
+            com=list.get(0).getComCode();
         }
         callbackExpressInfo.setCom(com);
 
@@ -152,7 +161,8 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
         queryTrackParam.setPhone(expressInfo.getPhone());
 
         //获取快递信息
-        String param = new Gson().toJson(queryTrackParam);
+        //String param = new Gson().toJson(queryTrackParam);
+        String param= JSONObject.toJSONString(queryTrackParam);
         QueryTrackReq queryTrackReq=new QueryTrackReq();
         queryTrackReq.setParam(param);
         queryTrackReq.setCustomer(customer);
@@ -168,7 +178,8 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
         }
 
         //将快递信息转化为QueryTrackResp对象
-        QueryTrackResp queryTrackResp = new Gson().fromJson(msg,QueryTrackResp.class);
+        //QueryTrackResp queryTrackResp = new Gson().fromJson(msg,QueryTrackResp.class);
+        QueryTrackResp queryTrackResp= JSONObject.parseObject(msg,QueryTrackResp.class);
 
         //如果没有查到物流信息，则返回错误信息
         if(StringUtils.isEmpty(queryTrackResp.getStatus()) || !queryTrackResp.getStatus().equals("200")){
@@ -233,21 +244,30 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
      * @return 快递公司编码
      */
 
-    private AutoNumResp AutoGetExpressCom(String num){
+    private List<AutoNumResp> AutoGetExpressCom(String num){
         AutoNumReq autoNumReq = new AutoNumReq();
         autoNumReq.setKey(key);
-        autoNumReq.setNum(num);
+        autoNumReq.setNum(num.trim());
 
         IBaseClient baseClient = new AutoNum();
-        AutoNumResp autoNumResp=new AutoNumResp();
+        //AutoNumResp autoNumResp=new AutoNumResp();
+        List<AutoNumResp> autoNumRespList=new ArrayList<>();
         try {
-            String str= baseClient.execute(autoNumReq).getBody().replace("[","").replace("]","");
-            autoNumResp = new Gson().fromJson(str,AutoNumResp.class);
+            JSONArray jsonArray= JSONArray.parseArray(baseClient.execute(autoNumReq).getBody());
+            if(StringUtils.isEmpty(jsonArray))
+            {
+                return null;
+            }
+            for (Object object:jsonArray)
+            {
+                autoNumRespList.add(JSONObject.parseObject(JSONObject.toJSONString(object),AutoNumResp.class));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return autoNumResp;
+        //return autoNumResp;
+        return autoNumRespList;
     }
 
     /**

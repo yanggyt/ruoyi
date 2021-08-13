@@ -6,6 +6,7 @@ import com.ruoyi.bps.service.IExpSubsPushApiService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.DateUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * 接受快递推送信息的API接口Controller
@@ -50,7 +53,7 @@ public class ExpSubsPushApiController extends BaseController {
     //接受topgp订阅，
     @Log(title = "快递订阅", businessType = BusinessType.OTHER)
     @CrossOrigin
-    @ApiOperation(value="topgp订阅快递",notes = "request body格式： {\"deliveryNo\":\"S301-2108020001\",\"expressNo\":\"300444235610\",\"company\":\"annengwuliu\",\"phone\":\"13800138000\"}")
+    @ApiOperation(value="topgp订阅快递",notes = "request body格式： {\"requestId\":\"1628584040740\",\"deliveryNo\":\"S301-2108020001\",\"expressNo\":\"300444235610\",\"company\":\"annengwuliu\",\"phone\":\"13800138000\"}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token", required = true, paramType = "header", dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "requestJson", value = "请求json",required = true, paramType = "body", dataType = "String", dataTypeClass = String.class)
@@ -58,7 +61,7 @@ public class ExpSubsPushApiController extends BaseController {
 
     @PostMapping("api/express/topgpSubscribe")
     public String topgpSubscribe(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        return expSubsPushApiService.ExpressSubscribeWithTopgp(request);
+        return expSubsPushApiService.ExpressSubscribeFromTopgp(request);
     }
 
 

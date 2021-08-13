@@ -1,7 +1,9 @@
 package com.ruoyi.bps.service.impl;
 
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+//import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.QueryTrack;
 import com.kuaidi100.sdk.api.Subscribe;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
@@ -12,7 +14,7 @@ import com.kuaidi100.sdk.response.QueryTrackResp;
 import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
 import com.ruoyi.bps.service.IExpressService;
-import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,20 +24,7 @@ import java.util.List;
 
 @Service
 public class ExpressServiceImpl implements IExpressService {
-    /*
-    String key = "Jydbrxsm2311";
-    String customer = "2DD48B3469B82F2B7700569093AB792B";
-    String secret = "8781ed9b35a7438499eb02fee915915a";
-    String userid = "2a62da2192c24d17a943ff78ee64f8c6";
-     */
-    /*String key = PropertiesReader.get("key");
-    String customer = PropertiesReader.get("customer");
-    String secret = PropertiesReader.get("secret");
-    String siid = PropertiesReader.get("siid");
-    String userid = PropertiesReader.get("userid");
-    String tid = PropertiesReader.get("tid");
-    String secret_key = PropertiesReader.get("secret_key");
-    String secret_secret = PropertiesReader.get("secret_secret");*/
+    /*String key = PropertiesReader.get("key");*/
 
     @Value("${express.key}")
     private String key;
@@ -53,7 +42,8 @@ public class ExpressServiceImpl implements IExpressService {
 
         for(QueryTrackParam queryTrackParam:list)
         {
-            QueryTrackResp queryTrackResp = new Gson().fromJson(expressService.QueryTrackExpress(queryTrackParam),QueryTrackResp.class);
+            //QueryTrackResp queryTrackResp = new Gson().fromJson(expressService.QueryTrackExpress(queryTrackParam),QueryTrackResp.class);
+            QueryTrackResp queryTrackResp= JSONObject.parseObject(expressService.QueryTrackExpress(queryTrackParam),QueryTrackResp.class);
             qtList.add(queryTrackResp);
         }
         return qtList;
@@ -78,7 +68,8 @@ public class ExpressServiceImpl implements IExpressService {
     public String QueryTrackExpress(QueryTrackParam queryTrackParam) {
         String str="";
         QueryTrackReq queryTrackReq = new QueryTrackReq();
-        String param = new Gson().toJson(queryTrackParam);
+        //String param = new Gson().toJson(queryTrackParam);
+        String param = JSONObject.toJSONString(queryTrackParam);
 
         queryTrackReq.setParam(param);
         queryTrackReq.setCustomer(customer);
@@ -93,24 +84,17 @@ public class ExpressServiceImpl implements IExpressService {
             msg=e.toString();
         }
 
-        JSONObject jsonObject = new JSONObject(msg);
-        if (jsonObject.has("returnCode")){
-            QueryTrackResp queryTrackResp=  new Gson().fromJson(msg,QueryTrackResp.class);
+        //JSONObject jsonObject = new JSONObject(msg);
+        JSONObject jsonObject = JSON.parseObject(msg);
+
+        if (jsonObject.containsKey("returnCode")){
+            //QueryTrackResp queryTrackResp=  new Gson().fromJson(msg,QueryTrackResp.class);
+            QueryTrackResp queryTrackResp= JSONObject.parseObject(msg,QueryTrackResp.class);
             queryTrackResp.setStatus(queryTrackResp.getReturnCode());
             queryTrackResp.setNu(queryTrackParam.getNum());
-            msg= new Gson().toJson(queryTrackResp);
+            //msg= new Gson().toJson(queryTrackResp);
+            msg= JSONObject.toJSONString(queryTrackResp);
         }
-       /* else {
-            QueryTrackResp queryTrackResp=new Gson().fromJson(msg,QueryTrackResp.class);
-            for(int i=0;i<queryTrackResp.getData().size();i++) {
-                QueryTrackData queryTrackData = queryTrackResp.getData().get(i);
-                str += "时间：" + queryTrackData.getTime();
-                str += "  物流信息:" + queryTrackData.getContext();
-                str += "  格式化后时间+" + queryTrackData.getFtime();
-            } *
-        }*/
-
-        // System.out.println(msg);
         return msg;
     }
 
@@ -130,7 +114,8 @@ public class ExpressServiceImpl implements IExpressService {
 
         SubscribeReq subscribeReq = new SubscribeReq();
         subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA); //返回的数据格式，必须
-        subscribeReq.setParam(new Gson().toJson(subscribeParam));
+        //subscribeReq.setParam(new Gson().toJson(subscribeParam));
+        subscribeReq.setParam(JSONObject.toJSONString(subscribeParam));
 
         IBaseClient subscribe = new Subscribe();
         try{

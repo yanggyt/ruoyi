@@ -32,5 +32,5 @@ public interface IExpSubsPushApiService {
      * @param request
      * @return
      */
-    public String ExpressSubscribeWithTopgp(HttpServletRequest request) throws IOException;
+    public String ExpressSubscribeFromTopgp(HttpServletRequest request) throws IOException;
 }

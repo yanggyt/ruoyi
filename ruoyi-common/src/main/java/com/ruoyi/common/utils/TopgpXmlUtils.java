@@ -1,7 +1,7 @@
 package com.ruoyi.common.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.utils.http.HttpUtils;
-import org.json.JSONObject;
 import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +34,9 @@ public class TopgpXmlUtils {
                 "                &lt;/Access>\n" +
                 "                &lt;RequestContent>\n" +
                 "                    &lt;Parameter>\n" +
-                "                        &lt;Record>\n" +
-                "                            &lt;Field name=");
+                "                        &lt;Record>\n");
         for(String key:mapInfo.keySet()){
-            stringBuffer.append("'"+key+"' value='" +mapInfo.get(key).toString().replaceAll("&","&amp")+"' />\n");
+            stringBuffer.append("&lt;Field name='"+key+"' value='" +mapInfo.get(key).toString().replaceAll("&","&amp")+"' />\n");
         }
         stringBuffer.append("                        &lt;/Record>\n" +
                 "                    &lt;/Parameter>\n" +
@@ -54,12 +53,11 @@ public class TopgpXmlUtils {
 
     /**
      * 将TOPGP返回的XML转化为Json,并提出返回Status
-     * @param  TopgpResonseXml 调用TOPGP的Webservice的方法名 如：express_testRequest
+     * @param  TopgpResponseXml 调用TOPGP的Webservice的方法名 如：express_testRequest
      * @return Status JsonObject
      */
-    public static JSONObject GetStatusFromTopgpResponse(String TopgpResonseXml) {
-        JSONObject jsonObject = XML.toJSONObject(TopgpResonseXml);
-
+    public static JSONObject GetStatusFromTopgpResponse(String TopgpResponseXml) {
+        JSONObject jsonObject = JSONObject.parseObject(XML.toJSONObject(TopgpResponseXml).toString());
         JSONObject envelope = jsonObject.getJSONObject("SOAP-ENV:Envelope");
         JSONObject body = envelope.getJSONObject("SOAP-ENV:Body");
         JSONObject express_testResponse = body.getJSONObject("fjs1:express_testResponse");
