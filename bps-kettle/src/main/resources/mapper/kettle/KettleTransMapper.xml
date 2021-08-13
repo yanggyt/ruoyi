@@ -22,10 +22,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="tplKey"    column="tpl_key"    />
         <result property="roleKey"    column="role_key"    />
         <result property="remark"    column="remark"    />
+        <result property="lastSucceedTime"    column="last_succeed_time"    />
     </resultMap>
 
     <sql id="selectKettleTransVo">
-        select id, trans_name, trans_description, created_time, update_time, created_by, update_by, trans_type, trans_path, trans_repository_id, trans_log_level, trans_status, is_del, is_monitor_enabled, tpl_key, role_key, remark from kettle_trans
+        select id, trans_name, trans_description, created_time, update_time, created_by, update_by, trans_type, trans_path, trans_repository_id, trans_log_level, trans_status, is_del, is_monitor_enabled, tpl_key, role_key, remark,last_succeed_time from kettle_trans
     </sql>
 
     <select id="selectKettleTransList" parameterType="KettleTrans"  resultMap="KettleTransResult">
@@ -126,6 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="tplKey != null">tpl_key = #{tplKey},</if>
             <if test="roleKey != null">role_key = #{roleKey},</if>
             <if test="remark != null">remark = #{remark},</if>
+            <if test="lastSucceedTime != null">last_succeed_time = #{lastSucceedTime},</if>
         </trim>
         where id = #{id}
     </update>

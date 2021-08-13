@@ -2,16 +2,20 @@ package com.ruoyi.kettle.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.security.PermissionUtils;
-import com.ruoyi.kettle.domain.KettleTrans;
 import com.ruoyi.kettle.domain.XRepository;
 import com.ruoyi.kettle.mapper.XRepositoryMapper;
 import com.ruoyi.kettle.tools.KettleUtil;
+import com.ruoyi.kettle.tools.RedisStreamUtil;
+import com.ruoyi.system.service.IWechatApiService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.kettle.mapper.KettleJobMapper;
@@ -28,6 +32,7 @@ import com.ruoyi.common.core.text.Convert;
 @Service("kettleJobServiceImpl")
 public class KettleJobServiceImpl implements IKettleJobService
 {
+    private static final Logger log = LoggerFactory.getLogger(KettleJobServiceImpl.class);
     @Autowired
     private KettleJobMapper kettleJobMapper;
     @Autowired
@@ -36,6 +41,11 @@ public class KettleJobServiceImpl implements IKettleJobService
 
     @Autowired
     private KettleUtil kettleUtil;
+
+    @Autowired
+    private RedisStreamUtil redisStreamUtil;
+    @Autowired
+    IWechatApiService wechatApiService;
     /**
      * 查询作业调度
      * 
@@ -84,10 +94,13 @@ public class KettleJobServiceImpl implements IKettleJobService
         }
         String userName = (String) PermissionUtils.getPrincipalProperty("userName");
         if(kettleJob.getRoleKey()==null){
-            kettleJob.setRoleKey("admin");
+            kettleJob.setRoleKey("admin,bpsadmin");
         }else{
             if(!kettleJob.getRoleKey().contains("admin")){
                 kettleJob.setRoleKey(kettleJob.getRoleKey().concat(",admin"));
+            }
+            if(!kettleJob.getRoleKey().contains("bpsadmin")){
+                kettleJob.setRoleKey(kettleJob.getRoleKey().concat(",bpsadmin"));
             }
         }
         kettleJob.setCreatedBy(userName);
@@ -105,7 +118,21 @@ public class KettleJobServiceImpl implements IKettleJobService
     @Override
     public int updateKettleJob(KettleJob kettleJob)
     {
+        String userName = (String) PermissionUtils.getPrincipalProperty("userName");
+
         kettleJob.setUpdateTime(DateUtils.getNowDate());
+        kettleJob.setUpdateBy(userName);
+        kettleJob.setJobType("File");
+        if(kettleJob.getRoleKey()==null){
+            kettleJob.setRoleKey("admin,bpsadmin");
+        }else{
+            if(!kettleJob.getRoleKey().contains("admin")){
+                kettleJob.setRoleKey(kettleJob.getRoleKey().concat(",admin"));
+            }
+            if(!kettleJob.getRoleKey().contains("bpsadmin")){
+                kettleJob.setRoleKey(kettleJob.getRoleKey().concat(",bpsadmin"));
+            }
+        }
         return kettleJobMapper.updateKettleJob(kettleJob);
     }
 
@@ -144,20 +171,63 @@ public class KettleJobServiceImpl implements IKettleJobService
         if(repository==null){
             return AjaxResult.error("资源库不存在!");
         }
-        String path = kettleJob.getJobPath();
-        try {
-            kettleUtil.KETTLE_LOG_LEVEL=kettleJob.getJobLogLevel();
-            kettleUtil.KETTLE_REPO_ID=String.valueOf(kettleJob.getJobRepositoryId());
-            kettleUtil.KETTLE_REPO_NAME=repository.getRepoName();
-            kettleUtil.KETTLE_REPO_PATH=repository.getBaseDir();
-            kettleUtil.callJob(path,kettleJob.getJobName(),null,null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        //加入队列中,等待执行
+        redisStreamUtil.addKettleJob(kettleJob);
+        //更新一下状态
+        kettleJob.setJobStatus("等待中");
+        kettleJobMapper.updateKettleJob(kettleJob);
+        return AjaxResult.success("已加入执行队列,请等待运行结果通知!");
+//        String path = kettleJob.getJobPath();
+//        try {
+//            kettleUtil.KETTLE_LOG_LEVEL=kettleJob.getJobLogLevel();
+//            kettleUtil.KETTLE_REPO_ID=String.valueOf(kettleJob.getJobRepositoryId());
+//            kettleUtil.KETTLE_REPO_NAME=repository.getRepoName();
+//            kettleUtil.KETTLE_REPO_PATH=repository.getBaseDir();
+//            kettleUtil.callJob(path,kettleJob.getJobName(),null,null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+
+    }
+
+    @Override
+    public void runJobRightNow(Long id, String userId) {
+        KettleJob kettleJob = kettleJobMapper.selectKettleJobById(id);
+        if(kettleJob ==null){
+            log.error("作业不存在!");
+            return;
+        }
+        XRepository repository=repositoryMapper.selectXRepositoryById(kettleJob.getJobRepositoryId());
+        if(repository==null){
+            log.error("资源库不存在!");
+            return;
         }
 
-
-        return AjaxResult.success("执行成功!");    }
-
+        //更新一下状态
+        kettleJob.setJobStatus("运行中");
+        kettleJobMapper.updateKettleJob(kettleJob);
+        StringBuilder title = new StringBuilder(kettleJob.getJobName()).append(".kjb 执行结果:");
+        StringBuilder msg = new StringBuilder(kettleJob.getJobName()).append(".kjb 执行结果:");
+        try {
+            kettleUtil.callJob(kettleJob,repository,null,null);
+            kettleJob.setJobStatus("成功");
+            kettleJob.setLastSucceedTime(DateUtils.getNowDate());
+            kettleJobMapper.updateKettleJob(kettleJob);
+            title.append("成功!");
+            msg.append("成功!");
+        } catch (Exception e) {
+            kettleJob.setJobStatus("异常");
+            kettleJobMapper.updateKettleJob(kettleJob);
+            title.append("异常!");
+            msg.append("异常!");
+            e.printStackTrace();
+        }
+        List<String> userIdList = new ArrayList<>();
+        userIdList.add(userId);
+        Map<String, String> resultMap =  wechatApiService.SendTextCardMessageToWechatUser(userIdList,title.toString(),msg.toString(),"http://report.bpsemi.cn:8081/it_war");
+        log.info("job微信消息发送结果"+resultMap);
+    }
     @Override
     public List<String> queryJobLog(KettleJob kettleJob) {
         List<String> logs=kettleJobMapper.queryJobLog(kettleJob.getJobName());
@@ -173,4 +243,5 @@ public class KettleJobServiceImpl implements IKettleJobService
         KettleJob kettleJob = kettleJobMapper.selectKettleJobById(Long.valueOf(id));
         return run(kettleJob);
     }
+
 }

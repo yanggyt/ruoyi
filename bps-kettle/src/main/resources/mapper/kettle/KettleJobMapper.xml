@@ -21,10 +21,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="isMonitorEnabled"    column="is_monitor_enabled"    />
         <result property="roleKey"    column="role_key"    />
         <result property="tplKey"    column="tpl_key"    />
+        <result property="lastSucceedTime"    column="last_succeed_time"    />
     </resultMap>
 
     <sql id="selectKettleJobVo">
-        select id, created_time, update_time, created_by, update_by, job_name, job_description, job_type, job_path, job_repository_id, job_log_level, job_status, is_del, is_monitor_enabled, role_key, tpl_key from kettle_job
+        select id, created_time, update_time, created_by, update_by, job_name, job_description, job_type, job_path, job_repository_id, job_log_level, job_status, is_del, is_monitor_enabled, role_key, tpl_key,last_succeed_time from kettle_job
     </sql>
 
     <select id="selectKettleJobList" parameterType="KettleJob" resultMap="KettleJobResult">
@@ -123,6 +124,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="isMonitorEnabled != null">is_monitor_enabled = #{isMonitorEnabled},</if>
             <if test="roleKey != null">role_key = #{roleKey},</if>
             <if test="tplKey != null">tpl_key = #{tplKey},</if>
+            <if test="lastSucceedTime != null">last_succeed_time = #{lastSucceedTime},</if>
         </trim>
         where id = #{id}
     </update>

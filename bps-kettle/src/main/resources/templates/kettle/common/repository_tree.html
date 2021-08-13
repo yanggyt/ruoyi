@@ -53,13 +53,27 @@
         $("#treeId").val(treeId);
         $("#treeName").val(treeName);
         $("#transPath").val(path);
+        var pNodeId = treeId;
         if(/^[0-9]+.?[0-9]*$/.test(treeId)){
             $("#transRepositoryId").val(treeId);
+
         }
 
-        console.log("pathpathpathpath::"+path);
+        console.log("pathpathpathpath::"+path+"_id:"+treeId);
         var treeObj = $.fn.zTree.getZTreeObj( "tree");
         var selectedNode = treeObj .getSelectedNodes();
+
+        var pNode = selectedNode[0].getParentNode();
+        while(!!pNode) {
+            var id = pNode.id;
+            pNode = pNode.getParentNode();
+            if(pNode == null){
+                pNodeId = id;
+            }
+        }
+
+
+        $("#transRepositoryId").val(pNodeId);
         if(/^[0-9]+.?[0-9]*$/.test(treeId) && !selectedNode[0].isParent){
             console.log("进来了");
             qryRepoSubTree(treeId);

@@ -67,7 +67,7 @@ public interface IKettleTransService
      * @param trans :
      * @return: void
      **/
-    AjaxResult run(KettleTrans trans);
+    AjaxResult runToQueue(KettleTrans trans);
 
     List<String> queryTransLog(KettleTrans trans)   ;
     /**
@@ -81,4 +81,6 @@ public interface IKettleTransService
     public  AjaxResult runTransQuartz(String id,String transName);
 
     Long checkQuartzExist(String checkStr);
+
+    void runTransRightNow(Long valueOf, String userId);
 }

@@ -72,10 +72,16 @@ public class KettleJob extends BaseEntity
     /**  */
     @Excel(name = "")
     private String tplKey;
+    @Excel(name = "最后一次成功时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastSucceedTime;
 
-    public void setId(Long id) 
-    {
-        this.id = id;
+    public Date getLastSucceedTime() {
+        return lastSucceedTime;
+    }
+
+    public void setLastSucceedTime(Date lastSucceedTime) {
+        this.lastSucceedTime = lastSucceedTime;
     }
 
     public Long getId() 
