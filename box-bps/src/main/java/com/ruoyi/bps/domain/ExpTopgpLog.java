@@ -1,100 +1,149 @@
 package com.ruoyi.bps.domain;
 
-public class ExpTopgpLog {
-    Long Sid;
-    Long requestId;
-    String requestType;
-    String expressNumber;
-    String deliveryNumber;
-    String requestStr;
-    String requestTime;
-    String responseCode;
-    String responseStr;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.BaseEntity;
 
-    public Long getSid() {
-        return Sid;
+/**
+ * ERP订阅推送日志对象 exp_topgp_log
+ * 
+ * @author Bo
+ * @date 2021-08-11
+ */
+public class ExpTopgpLog extends BaseEntity
+{
+    private static final long serialVersionUID = 1L;
+
+    /** SID */
+    private Long sid;
+
+    /** 请求ID */
+    @Excel(name = "请求ID")
+    private String requestId;
+
+    /** 请求类型（FromTopgp：ERP请求订阅、ToTopgp：Java推送签收指令) */
+    @Excel(name = "请求类型", readConverterExp = "请求类型（FromTopgp：ERP请求订阅、ToTopgp：Java推送签收指令)")
+    private String requestType;
+
+    /** 快递单 */
+    @Excel(name = "快递单")
+    private String expressNumber;
+
+    /** 出货单号 */
+    @Excel(name = "出货单号")
+    private String deliveryNumber;
+
+    /** 请求报文 */
+    @Excel(name = "请求报文")
+    private String requestStr;
+
+    /** 请求时间 */
+    @Excel(name = "请求时间")
+    private String requestTime;
+
+    /** 返回code */
+    @Excel(name = "返回code")
+    private String responseCode;
+
+    /** 返回报文 */
+    @Excel(name = "返回报文")
+    private String responseStr;
+
+    public void setSid(Long sid) 
+    {
+        this.sid = sid;
     }
 
-    public void setSid(Long sid) {
-        Sid = sid;
+    public Long getSid() 
+    {
+        return sid;
     }
-
-    public Long getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(Long requestId) {
+    public void setRequestId(String requestId) 
+    {
         this.requestId = requestId;
     }
 
-    public String getRequestType() {
-        return requestType;
+    public String getRequestId() 
+    {
+        return requestId;
     }
-
-    public void setRequestType(String requestType) {
+    public void setRequestType(String requestType) 
+    {
         this.requestType = requestType;
     }
 
-    public String getExpressNumber() {
-        return expressNumber;
+    public String getRequestType() 
+    {
+        return requestType;
     }
-
-    public void setExpressNumber(String expressNumber) {
+    public void setExpressNumber(String expressNumber) 
+    {
         this.expressNumber = expressNumber;
     }
 
-    public String getDeliveryNumber() {
-        return deliveryNumber;
+    public String getExpressNumber() 
+    {
+        return expressNumber;
     }
-
-    public void setDeliveryNumber(String deliveryNumber) {
+    public void setDeliveryNumber(String deliveryNumber) 
+    {
         this.deliveryNumber = deliveryNumber;
     }
 
-    public String getRequestStr() {
-        return requestStr;
+    public String getDeliveryNumber() 
+    {
+        return deliveryNumber;
     }
-
-    public void setRequestStr(String requestStr) {
+    public void setRequestStr(String requestStr) 
+    {
         this.requestStr = requestStr;
     }
 
-    public String getRequestTime() {
-        return requestTime;
+    public String getRequestStr() 
+    {
+        return requestStr;
     }
-
-    public void setRequestTime(String requestTime) {
+    public void setRequestTime(String requestTime) 
+    {
         this.requestTime = requestTime;
     }
 
-    public String getResponseCode() {
-        return responseCode;
+    public String getRequestTime() 
+    {
+        return requestTime;
     }
-
-    public void setResponseCode(String responseCode) {
+    public void setResponseCode(String responseCode) 
+    {
         this.responseCode = responseCode;
     }
 
-    public String getResponseStr() {
-        return responseStr;
+    public String getResponseCode() 
+    {
+        return responseCode;
+    }
+    public void setResponseStr(String responseStr) 
+    {
+        this.responseStr = responseStr;
     }
 
-    public void setResponseStr(String responseStr) {
-        this.responseStr = responseStr;
+    public String getResponseStr() 
+    {
+        return responseStr;
     }
 
     @Override
     public String toString() {
-        return "ExpSubscribeTopgpLog{" +
-                "Sid=" + Sid +
-                ", requestId='" + requestId + '\'' +
-                ", requestType='" + requestType + '\'' +
-                ", expressNumber='" + expressNumber + '\'' +
-                ", deliveryNumber='" + deliveryNumber + '\'' +
-                ", requestStr='" + requestStr + '\'' +
-                ", requestTime='" + requestTime + '\'' +
-                ", responseCode='" + responseCode + '\'' +
-                ", responseStr='" + responseStr + '\'' +
-                '}';
+        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("sid", getSid())
+            .append("requestId", getRequestId())
+            .append("requestType", getRequestType())
+            .append("expressNumber", getExpressNumber())
+            .append("deliveryNumber", getDeliveryNumber())
+            .append("requestStr", getRequestStr())
+            .append("requestTime", getRequestTime())
+            .append("responseCode", getResponseCode())
+            .append("responseStr", getResponseStr())
+            .toString();
     }
 }

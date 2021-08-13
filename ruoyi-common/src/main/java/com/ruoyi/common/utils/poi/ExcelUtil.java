@@ -315,7 +315,7 @@ public class ExcelUtil<T>
                         {
                             val = reverseByExp(Convert.toStr(val), attr.readConverterExp(), attr.separator());
                         }
-                        else if (StringUtils.isNotEmpty(attr.dictType()))
+                        else if (StringUtils.isNotEmpty(attr.dictType()) && StringUtils.isEmpty(attr.dictTypeExceptImport()))
                         {
                             val = reverseDictByExp(Convert.toStr(val), attr.dictType(), attr.separator());
                         }
@@ -694,7 +694,8 @@ public class ExcelUtil<T>
                 {
                     cell.setCellValue(convertByExp(Convert.toStr(value), readConverterExp, separator));
                 }
-                else if (StringUtils.isNotEmpty(dictType) && StringUtils.isNotNull(value))
+
+                else if (StringUtils.isNotEmpty(dictType) && StringUtils.isNotNull(value) && StringUtils.isEmpty(attr.dictTypeExceptExport()))
                 {
                     cell.setCellValue(convertDictByExp(Convert.toStr(value), dictType, separator));
                 }

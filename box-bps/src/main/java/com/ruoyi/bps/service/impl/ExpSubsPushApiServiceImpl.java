@@ -1,7 +1,7 @@
 package com.ruoyi.bps.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.Subscribe;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.core.IBaseClient;
@@ -20,6 +20,7 @@ import com.ruoyi.bps.domain.ExpTopgpLog;
 import com.ruoyi.bps.service.IExpSubsPushApiService;
 import com.ruoyi.bps.service.IExpSubsPushRespService;
 import com.ruoyi.bps.service.IExpSubscribeService;
+import com.ruoyi.bps.service.IExpTopgpLogService;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,9 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
     @Autowired
     IExpSubscribeService expSubscribeService;
 
+    @Autowired
+    IExpTopgpLogService expTopgpLogService;
+
     /**
      * 订阅快递
      * @throws Exception
@@ -68,22 +73,27 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
     public SubscribeResp ExpressSubscribe(ExpSubscribe expSubscribe) {
 
          //如果订阅来源是topgp，则来源为topgp,否则为local
-         String loginFrom= expSubscribe.getSalt();
-         String subscribeFrom= StringUtils.isNotEmpty(loginFrom)?loginFrom.equals("topgp")?"topgp":"local":"local";
+         /*String loginFrom= expSubscribe.getSalt();
+         String subscribeFrom= StringUtils.isNotEmpty(loginFrom)?loginFrom.equals("topgp")?"topgp":"local":"local";*/
+        if(StringUtils.isEmpty(expSubscribe.getRequestFrom())){
+            expSubscribe.setRequestFrom("local");
+        }
 
-         if( expSubscribe.getSid()==null || expSubscribe.getSid()==0) {
-             expSubscribe.setSid(System.currentTimeMillis());  //获取时间戳
+         if( StringUtils.isEmpty(expSubscribe.getRequestId())) {
+             //expSubscribe.setRequestId("local"+System.currentTimeMillis());  //获取时间戳,生成本地请求的requestId
+             expSubscribe.setRequestId("local"+ LocalDateTime.now());
          }
          if(StringUtils.isEmpty(expSubscribe.getSubscribeTime())){
              expSubscribe.setSubscribeTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
         }
+         String salt="bpsemi"; //定义salt字符串
 
          //组合订阅参数
          SubscribeParameters subscribeParameters = new SubscribeParameters();
         SubscribeResp subscribeResp = new SubscribeResp();
         subscribeParameters.setCallbackurl("http://report.bpsemi.cn:8081/it_war/anon/subscribeCallBackUrl");
         subscribeParameters.setPhone(expSubscribe.getPhone());
-        subscribeParameters.setSalt("bpsemi");
+        subscribeParameters.setSalt(salt);
         SubscribeParam subscribeParam = new SubscribeParam();
         subscribeParam.setParameters(subscribeParameters);
         subscribeParam.setCompany(expSubscribe.getCompany());
@@ -92,13 +102,15 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
 
         SubscribeReq subscribeReq = new SubscribeReq();
         subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA);
-        subscribeReq.setParam(new Gson().toJson(subscribeParam));
+        //subscribeReq.setParam(new Gson().toJson(subscribeParam));
+        subscribeReq.setParam(JSONObject.toJSONString(subscribeParam));
 
         IBaseClient subscribe = new Subscribe();
         try{
             //推送订阅，并获得快递100响应结果
             HttpResult httpResult= subscribe.execute(subscribeReq);
-            subscribeResp= new Gson().fromJson(httpResult.getBody(),SubscribeResp.class);
+            //subscribeResp= new Gson().fromJson(httpResult.getBody(),SubscribeResp.class);
+            subscribeResp = JSONObject.parseObject(httpResult.getBody(),SubscribeResp.class);
         }catch (Exception e)
         {
             return subscribeResp;
@@ -116,11 +128,13 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         newExpSubscribe.setCompany(expSubscribe.getCompany());
         newExpSubscribe.setNumber(expSubscribe.getNumber());
         newExpSubscribe.setPhone(expSubscribe.getPhone());
-        newExpSubscribe.setSalt(subscribeFrom);  //偷懒，把请求来源记录到salt栏位，不再增加exp_subscribe字段了。。以后找时间改吧
+        newExpSubscribe.setSalt(salt);
         newExpSubscribe.setSubscribeTime(expSubscribe.getSubscribeTime());
         newExpSubscribe.setResult((subscribeResp.isResult())?"true":"false");
         newExpSubscribe.setReturnCode(subscribeResp.getReturnCode());
         newExpSubscribe.setMessage(subscribeResp.getMessage());
+        newExpSubscribe.setRequestFrom(expSubscribe.getRequestFrom());
+        newExpSubscribe.setRequestId(expSubscribe.getRequestId());
 
         /*ExpSubscribe queryExpSubscribe = new ExpSubscribe();
         queryExpSubscribe.setCompany(expSubscribe.getCompany());
@@ -146,8 +160,91 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         return subscribeResp;
     }
 
+
     /**
-     * 获取从快递100订阅的快递推送信息，并返回响应结果
+     * 处理Topgp推送的快递订阅请求，向快递100推送订阅请求，并将结果返回给TOPGP
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public String ExpressSubscribeFromTopgp(HttpServletRequest request) throws IOException {
+        //定义Return变量
+        String retrunStr;
+
+        //获取httpServletRequest传过来的Json字符串，并进行解析
+        JSONObject contentJson= JSONObject.parseObject(ServletUtils.getRequestContent(request));
+        if(StringUtils.isEmpty(contentJson)){
+            return "貌似没有接受到任何参数！";
+        }
+        String requestId=contentJson.getString("requestId");     //TOPGP请求ID，年月日时分稍毫秒
+        String deliveryNo= contentJson.getString("deliveryNo"); //TOPGP出货单号
+        String expressNo = contentJson.getString("expressNo");   //TOPGP快递单号
+        String company = contentJson.getString("company");       //TOPGP物流公司编号
+        String phone = contentJson.getString("phone");           //TOPGP出货单号
+        //Long timeStamp = System.currentTimeMillis();  //获取时间戳
+        String subscribeTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"); //获取订阅时间
+        SubscribeResp subscribeResp=new SubscribeResp();
+        //如果请求ID、出货单号或者快递单号为空,则不向快递100请求订阅，自己组合返回信息。
+        if(StringUtils.isEmpty(deliveryNo) || StringUtils.isEmpty(expressNo) || StringUtils.isEmpty(requestId)){
+            subscribeResp.setMessage("请求ID、快递单号或出货单号不可为空");
+            subscribeResp.setResult(false);
+            subscribeResp.setReturnCode("700");
+        }else {
+            //组合向快递100推送订阅请求的参数
+            ExpSubscribe expSubscribe=new ExpSubscribe();
+            expSubscribe.setSid(Long.getLong(requestId));  //时间戳
+            expSubscribe.setNumber(expressNo);
+            expSubscribe.setCompany(company);
+            expSubscribe.setPhone(phone);
+            expSubscribe.setSubscribeTime(subscribeTime); //订阅时间
+            expSubscribe.setSalt("topgp"); //
+
+            //向快递100推送订阅请求，取得订阅返回结果
+            subscribeResp= ExpressSubscribe(expSubscribe);
+
+        }
+        //根据快递100的订阅返回结果，组合返回Topgp的JSON字符串
+        Map<String,Object> map= new HashMap<>();
+        map.put("requestId",requestId);         //从TOPGP传过来的requestId， 时间戳
+        map.put("deliveryNo",deliveryNo);       //出货单号
+        map.put("expressNo",expressNo);         //快递单号
+        map.put("responseStr",subscribeResp.getMessage());     //返回消息
+        map.put("responseCode",subscribeResp.getReturnCode()); //返回码
+        map.put("result",subscribeResp.isResult());   //订阅结果
+
+
+        //返回Json字符串给TOPGP
+        retrunStr= JSONObject.toJSONString(map);
+
+
+        //记录本次TOPGP订阅请求的Log
+        ExpTopgpLog expTopgpLog=new ExpTopgpLog();
+        expTopgpLog.setRequestId(requestId);
+        expTopgpLog.setRequestType("fromTopgp");
+        expTopgpLog.setExpressNumber(expressNo);
+        expTopgpLog.setDeliveryNumber(deliveryNo);
+        expTopgpLog.setRequestStr(contentJson.toString());
+        expTopgpLog.setRequestTime(subscribeTime);
+        expTopgpLog.setResponseCode(subscribeResp.getReturnCode());
+        expTopgpLog.setResponseStr(retrunStr);
+
+        expTopgpLogService.insertExpTopgpLog(expTopgpLog);
+
+        //返回TOPGP json字符串
+        return  retrunStr;
+    }
+
+    public JSONObject SendRequestToTopgp( String url,String tip,Map<String,Object> map) {
+        String param = TopgpXmlUtils.GetTopgpRequestXml(tip, map);
+        String returnXml = HttpUtils.sendXmlPost(url, param);
+        return  TopgpXmlUtils.GetStatusFromTopgpResponse(returnXml);
+    }
+
+
+
+    /**
+     * 处理快递100订阅的快递推送信息，并返回响应结果
      *
      * @param request 快递100推送的订阅信息
      * @return 结果
@@ -181,7 +278,8 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         //加密相等，继续处理业务逻辑
         subscribeResp.setMessage("接受成功!加密验证通过！【sign】"+sign+"【ourSign】"+ourSign);
 
-        SubscribePushParamResp subscribePushParamResp = new Gson().fromJson(param, SubscribePushParamResp.class);
+        //SubscribePushParamResp subscribePushParamResp = new Gson().fromJson(param, SubscribePushParamResp.class);
+        SubscribePushParamResp subscribePushParamResp=JSONObject.parseObject(param,SubscribePushParamResp.class);
         SubscribePushResult subscribePushResult = subscribePushParamResp.getLastResult();
         //快递单号
         String nu = subscribePushResult.getNu();
@@ -195,24 +293,42 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         }
         //快递单当前状态 （0在途，1揽收，2疑难，3签收，4退签，5派件，6退回，7转单，10待清关，11清关中，12已清关，13清关异常，14收件人拒签)
         String state = subscribePushResult.getState();
-        //if(state.equals("3")){
+
             //处理签收逻辑
-          //todo
+            //如果是快递100推送的快递单状态为签收（state=3）,并且TOPGP未反馈该快递单已被签收
           if(state.equals("3")) {
-              //如果该快递单号是由TOPGP订阅的话，则推送给TOPGP
-              ExpSubscribe expSubscribe=new ExpSubscribe();
-              expSubscribe.setCompany(subscribePushResult.getCom());
-              expSubscribe.setNumber(subscribePushResult.getNu());
-              expSubscribe.setSalt("topgp");
-              expSubscribeService.selectExpSubscribeList(expSubscribe);
-              Map<String, Object> requestMap = new HashMap<>();
-              requestMap.put("expressNum", subscribePushResult.getNu());
-              requestMap.put("expressCom", subscribePushResult.getCom());
-              requestMap.put("expressState", subscribePushResult.getState());
-              requestMap.put("requestTime", DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
-              //调用topgp Webservice接口
-              JSONObject jsonObject= SendRequestToTopgp(webserviceUrl, "express_testRequest",requestMap);
-              log.info(jsonObject.toJSONString());
+              //如果该快递信息没有推送给TOPGP且TOPGP已反馈生成签收单成功记录，则推送给TOPGP
+              ExpTopgpLog expTopgpLog=new ExpTopgpLog();
+              expTopgpLog.setExpressNumber(subscribePushResult.getNu());
+              expTopgpLog.setRequestType("toTopgp");
+              expTopgpLog.setResponseCode("200");
+              List<ExpTopgpLog> expTopgpLogList= expTopgpLogService.selectExpTopgpLogList(expTopgpLog);
+              if(null==expTopgpLogList || expTopgpLogList.size()<1){
+                  Map<String, Object> requestMap = new HashMap<>();
+                  requestMap.put("expressNum", subscribePushResult.getNu());
+                  requestMap.put("expressCom", subscribePushResult.getCom());
+                  requestMap.put("expressState", subscribePushResult.getState());
+
+                  //一个快递单号，对应多个出货单请求？
+
+
+                  //调用topgp Webservice接口
+                  //topgp返回的？
+                  JSONObject jsonObject= SendRequestToTopgp(webserviceUrl, "express_testRequest",requestMap);
+                  log.info(jsonObject.toJSONString());
+                  if(jsonObject.getString("returnCode").equals("200")){
+                      //一个快递单号对应多个出货单号怎么处理？如果有多个出货单号，部分已签收，部分未签收又怎么处理？  如果推送到ERP时，ERP已经人工生成签收单了，又该怎么处理？
+
+
+                  }
+
+              }
+
+
+
+
+
+
           }
 
             //将快递流转状态存入数据库
@@ -234,7 +350,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
                 //如果数据库中没有快递单号+快递公司编码，则更插入新记录
                 expSubsPushRespService.insertExpSubsPushResp(ToExpSubsPushResp(subscribePushParamResp));
             }*/
-       // }
+
 
         return subscribeResp;
     }
@@ -304,86 +420,6 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
        return str;
     }
 
-
-    /**
-     * 获取Topgp推送的快递信息，向快递100推送订阅请求
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public String ExpressSubscribeFromTopgp(HttpServletRequest request) throws IOException {
-        //定义Return变量
-        String retrunStr;
-
-        //获取httpServletRequest传过来的Json字符串，并进行解析
-        JSONObject contentJson= JSONObject.parseObject(ServletUtils.getRequestContent(request));
-        String requestId=contentJson.getString("requestID");     //TOPGP请求ID，年月日时分稍毫秒
-        String deliveryNo= contentJson.getString("deliveryNo"); //TOPGP出货单号
-        String expressNo = contentJson.getString("expressNo");   //TOPGP快递单号
-        String company = contentJson.getString("company");       //TOPGP物流公司编号
-        String phone = contentJson.getString("phone");           //TOPGP出货单号
-        Long timeStamp = System.currentTimeMillis();  //获取时间戳
-        String subscribeTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"); //获取订阅时间
-        String responseCode;  //返回给Topgp的返回码
-        //如果请求ID、出货单号或者快递单号为空的处理
-        if(StringUtils.isEmpty(deliveryNo) || StringUtils.isEmpty(expressNo) || StringUtils.isEmpty(requestId)){
-            SubscribeResp subscribeResp=new SubscribeResp();
-            subscribeResp.setMessage("快递单号或出货单号为空");
-            subscribeResp.setResult(false);
-            subscribeResp.setReturnCode("700");
-            responseCode="700";
-            Map<String,Object> map=new HashMap<>();
-            map.put("subscribeResp",subscribeResp);
-            map.put("deliveryNo",deliveryNo);
-            map.put("expressNo",expressNo);
-
-            //返回错误信息
-            retrunStr= JSONObject.toJSONString(map);
-        }else {
-        //组合向快递100推送订阅请求的参数
-        ExpSubscribe expSubscribe=new ExpSubscribe();
-        expSubscribe.setSid(timeStamp);  //时间戳
-        expSubscribe.setNumber(expressNo);
-        expSubscribe.setCompany(company);
-        expSubscribe.setPhone(phone);
-        expSubscribe.setSubscribeTime(subscribeTime); //订阅时间
-        expSubscribe.setSalt("topgp"); // 订阅来源。 偷懒，把请求来源记录到salt栏位，不再增加exp_subscribe字段了。。以后找时间改吧
-        //向快递100推送订阅请求，取得订阅返回结果
-        SubscribeResp subscribeResp= ExpressSubscribe(expSubscribe);
-        responseCode =subscribeResp.getReturnCode();
-
-        //根据快递100的订阅返回结果，组合返回Topgp的JSON字符串
-        Map<String,Object> map= new HashMap<>();
-        map.put("requestId",timeStamp);         //时间戳
-        map.put("expSubscribe",subscribeResp);  //快递100的返回结果报文
-        map.put("deliveryNo",deliveryNo);       //出货单号
-        map.put("expressNo",expressNo);         //快递单号
-        map.put("responseCode",subscribeResp.getReturnCode()); //返回码
-
-        //返回Json字符串给TOPGP
-        retrunStr= JSONObject.toJSONString(map);
-        }
-
-        //记录本次TOPGP订阅请求的Log
-        ExpTopgpLog expTopgpLog=new ExpTopgpLog();
-        expTopgpLog.setRequestId(timeStamp);
-        expTopgpLog.setRequestType("fromTopgp");
-        expTopgpLog.setExpressNumber(expressNo);
-        expTopgpLog.setDeliveryNumber(deliveryNo);
-        expTopgpLog.setRequestStr(contentJson.toString());
-        expTopgpLog.setRequestTime(subscribeTime);
-        expTopgpLog.setResponseCode(responseCode);
-
-        //返回TOPGP json字符串
-        return  retrunStr;
-    }
-
-    public JSONObject SendRequestToTopgp( String url,String tip,Map<String,Object> map) {
-        String param = TopgpXmlUtils.GetTopgpRequestXml(tip, map);
-        String returnXml = HttpUtils.sendXmlPost(url, param);
-       return  TopgpXmlUtils.GetStatusFromTopgpResponse(returnXml);
-    }
 
 
 

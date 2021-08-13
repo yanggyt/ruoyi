@@ -50,6 +50,14 @@ public class ExpSubscribe extends BaseEntity
     @Excel(name = "返回消息")
     private String message;
 
+    /** 返回消息 */
+    @Excel(name = "请求方")
+    private String requestFrom;
+
+    /** 返回消息 */
+    @Excel(name = "请求ID")
+    private String requestId;
+
     public void setSid(Long sid) 
     {
         this.sid = sid;
@@ -132,6 +140,26 @@ public class ExpSubscribe extends BaseEntity
         return message;
     }
 
+    public void setRequestFrom(String requestFrom)
+    {
+        this.requestFrom = requestFrom;
+    }
+
+    public String getRequestFrom()
+    {
+        return requestFrom;
+    }
+
+    public void setRequestId(String requestId)
+    {
+        this.requestId = requestId;
+    }
+
+    public String getRequestId()
+    {
+        return requestId;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -143,6 +171,8 @@ public class ExpSubscribe extends BaseEntity
             .append("subscribeTime", getSubscribeTime())
             .append("result", getResult())
             .append("returnCode", getReturnCode())
+            .append("message", getMessage())
+            .append("message", getMessage())
             .append("message", getMessage())
             .toString();
     }

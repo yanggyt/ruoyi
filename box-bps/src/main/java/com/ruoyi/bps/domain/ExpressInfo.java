@@ -36,7 +36,7 @@ public class ExpressInfo extends BaseEntity
     private String ischeck;
 
     /** 快递公司 */
-    @Excel(name = "快递公司",type= Excel.Type.EXPORT,dictType = "express_company")
+    @Excel(name = "快递公司",dictType= "express_company",dictTypeExceptImport = "true")
     private String com;
 
     /** 通信状态 */
@@ -44,7 +44,7 @@ public class ExpressInfo extends BaseEntity
     private String status;
 
     /** 运单详情 */
-    @Excel(name = "运单详情",type= Excel.Type.EXPORT)
+    @Excel(name = "运单详情",type= Excel.Type.EXPORT,align = Excel.Align.LEFT)
     private String data;
 
     /** 当前状态 */

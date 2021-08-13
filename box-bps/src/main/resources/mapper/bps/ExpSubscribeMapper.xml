@@ -14,10 +14,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="result"    column="result"    />
         <result property="returnCode"    column="returnCode"    />
         <result property="message"    column="message"    />
+        <result property="requestFrom"    column="requestFrom"    />
+        <result property="requestId"    column="requestId"    />
     </resultMap>
 
     <sql id="selectExpSubscribeVo">
-        select sid, company, number, phone, salt, subscribeTime, result, returnCode, message from exp_subscribe
+        select sid, company, number, phone, salt, subscribeTime, result, returnCode, message, requestFrom, requestId from exp_subscribe
     </sql>
 
     <select id="selectExpSubscribeList" parameterType="ExpSubscribe" resultMap="ExpSubscribeResult">
@@ -29,6 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="subscribeTime != null  and subscribeTime != ''"> and subscribeTime like concat('%', #{subscribeTime}, '%')</if>
             <if test="result != null  and result != ''"> and result = #{result}</if>
             <if test="returnCode != null  and returnCode != ''"> and returnCode = #{returnCode}</if>
+            <if test="requestFrom != null  and requestFrom != ''"> and requestFrom = #{requestFrom}</if>
+            <if test="requestId != null  and requestId != ''"> and requestId = #{requestId}</if>
         </where>
     </select>
     
@@ -48,6 +52,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="result != null">result,</if>
             <if test="returnCode != null">returnCode,</if>
             <if test="message != null">message,</if>
+            <if test="requestFrom != null">requestFrom,</if>
+            <if test="requestId != null">requestId,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="company != null">#{company},</if>
@@ -58,6 +64,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="result != null">#{result},</if>
             <if test="returnCode != null">#{returnCode},</if>
             <if test="message != null">#{message},</if>
+            <if test="requestFrom != null">#{requestFrom},</if>
+            <if test="requestId != null">#{requestId},</if>
          </trim>
     </insert>
 
@@ -72,6 +80,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="result != null">result = #{result},</if>
             <if test="returnCode != null">returnCode = #{returnCode},</if>
             <if test="message != null">message = #{message},</if>
+            <if test="requestFrom != null">requestFrom = #{requestFrom},</if>
+            <if test="requestId != null">requestId = #{requestId},</if>
         </trim>
         where sid = #{sid}
     </update>

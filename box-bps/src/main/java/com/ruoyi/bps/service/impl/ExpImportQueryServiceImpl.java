@@ -133,6 +133,8 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
        /* try{*/
             //将查询到的快递结果放到expressInfoListForInsert，并插入到数据库表expressInfo
             for( ExpressInfo expressInfo:expressInfoList){
+                //去除快递单号中的头尾空白符
+                expressInfo.setNu(expressInfo.getNu().trim());
                 ExpressInfo ei= expressInfoService.SelectExpressInfo(expressInfo);
                 ei.setQueryId(queryId);
                 ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
@@ -165,10 +167,5 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
             int message=expImportQueryMapper.insertExpImportQuery(expImportQuery);
             return AjaxResult.success(message);
 
-
-        /*}catch (Exception e){
-            expImportQuery.setStatus("fail");
-            return AjaxResult.error(e.getMessage());
-        }*/
     }
 }

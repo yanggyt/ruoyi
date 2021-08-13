@@ -53,7 +53,7 @@ public class ExpSubsPushApiController extends BaseController {
     //接受topgp订阅，
     @Log(title = "快递订阅", businessType = BusinessType.OTHER)
     @CrossOrigin
-    @ApiOperation(value="topgp订阅快递",notes = "request body格式： {\"deliveryNo\":\"S301-2108020001\",\"expressNo\":\"300444235610\",\"company\":\"annengwuliu\",\"phone\":\"13800138000\"}")
+    @ApiOperation(value="topgp订阅快递",notes = "request body格式： {\"requestId\":\"1628584040740\",\"deliveryNo\":\"S301-2108020001\",\"expressNo\":\"300444235610\",\"company\":\"annengwuliu\",\"phone\":\"13800138000\"}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token", required = true, paramType = "header", dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "requestJson", value = "请求json",required = true, paramType = "body", dataType = "String", dataTypeClass = String.class)
