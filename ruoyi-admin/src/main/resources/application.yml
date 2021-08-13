@@ -9,7 +9,7 @@ ruoyi:
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: D:/ruoyi/uploadPath
+  profile: C:/bps-it/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
@@ -19,7 +19,7 @@ server:
   port: 80
   servlet:
     # 应用的访问路径
-    context-path: /
+    context-path: /it_war
   tomcat:
     # tomcat的URI编码
     uri-encoding: UTF-8
@@ -69,6 +69,12 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  #ldap
+  ldap:
+    urls: ldap://192.168.2.10:389
+    base: OU=bp,DC=bpsemi,DC=com
+    username: administrator@bpsemi.com
+    password: Bps@2831!
 
 # MyBatis
 mybatis:
@@ -95,7 +101,7 @@ shiro:
     # 首页地址
     indexUrl: /index
     # 验证码开关
-    captchaEnabled: true
+    captchaEnabled: false
     # 验证码类型 math 数组计算 char 字符
     captchaType: math
   cookie:
@@ -137,3 +143,37 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+
+#企业微信
+wechat:
+  corpId: ww4ed3771457e5f463
+  agentId: 1000082
+  secret:  PqTYlveYQc54T13QS-cDyuAesDaGgyMSgpZLXBNJ-Uc
+  token: 111
+  aesKey: 111
+
+#快递100
+express:
+  #快递100的基础账号信息，可以在这里获取
+  # https://poll.kuaidi100.com/manager/page/myinfo/enterprise
+  key: kzuyKyAE3985
+  customer: 6774D6F41D773B17027EEBE5CC902C9E
+  secret: 4fc7633a027c4fe1a68b68237c236d6e
+  userid: bfc0389a986f45c4b36e27d9b18b7bd3
+  #电子面单快递公司账号信息（非必填）
+  partnerId:
+  partnerKey:
+  net:
+  siid:
+  #短信模板id（非必填）
+  tid:
+  #云平台相关（非必填）
+  #登录云平台 https://cloud.kuaidi100.com/buyer/user/info
+  secret_key:
+  secret_secret:
+
+#TOPGP Webservice
+topgp:
+  webservice:
+    topprod: http://192.168.2.81:85/web/ws/r/aws_ttsrv2
+    toptest: http://192.168.2.81:85/web/ws/r/aws_ttsrv2_toptest

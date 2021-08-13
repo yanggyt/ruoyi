@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WechatAccessTokenMapper">
+    
+    <resultMap type="WechatAccessToken" id="WechatAccessTokenResult">
+        <result property="sid"    column="sid"    />
+        <result property="corpId"    column="corp_id"    />
+        <result property="agentId"    column="agent_id"    />
+        <result property="secret"    column="secret"    />
+        <result property="errcode"    column="errcode"    />
+        <result property="errmsg"    column="errmsg"    />
+        <result property="access_token"    column="access_token"    />
+        <result property="expires_in"    column="expires_in"    />
+        <result property="getTokenTime"    column="get_token_time"    />
+        <result property="aesKey"    column="aes_key"    />
+    </resultMap>
+
+    <sql id="selectWechatAccessTokenVo">
+        select sid, corp_id, agent_id, secret, errcode, errmsg, access_token, expires_in, get_token_time, aes_key from wechat_access_token
+    </sql>
+
+    <select id="selectWechatAccessTokenList" parameterType="WechatAccessToken" resultMap="WechatAccessTokenResult">
+        <include refid="selectWechatAccessTokenVo"/>
+        <where>  
+            <if test="corpId != null  and corpId != ''"> and corp_id = #{corpId}</if>
+            <if test="agentId != null  and agentId != ''"> and agent_id = #{agentId}</if>
+            <if test="secret != null  and secret != ''"> and secret = #{secret}</if>
+            <if test="access_token != null  and access_token != ''"> and access_token = #{access_token}</if>
+        </where>
+    </select>
+    
+    <select id="selectWechatAccessTokenById" parameterType="Long" resultMap="WechatAccessTokenResult">
+        <include refid="selectWechatAccessTokenVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertWechatAccessToken" parameterType="WechatAccessToken" useGeneratedKeys="true" keyProperty="sid">
+        insert into wechat_access_token
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corpId != null">corp_id,</if>
+            <if test="agentId != null">agent_id,</if>
+            <if test="secret != null">secret,</if>
+            <if test="errcode != null">errcode,</if>
+            <if test="errmsg != null">errmsg,</if>
+            <if test="access_token != null">access_token,</if>
+            <if test="expires_in != null">expires_in,</if>
+            <if test="getTokenTime != null">getToken_time,</if>
+            <if test="aesKey != null">aes_key,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="corpId != null">#{corpId},</if>
+            <if test="agentId != null">#{agentId},</if>
+            <if test="secret != null">#{secret},</if>
+            <if test="errcode != null">#{errcode},</if>
+            <if test="errmsg != null">#{errmsg},</if>
+            <if test="access_token != null">#{access_token},</if>
+            <if test="expires_in != null">#{expires_in},</if>
+            <if test="getTokenTime != null">#{getTokenTime},</if>
+            <if test="aesKey != null">#{aesKey},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWechatAccessToken" parameterType="WechatAccessToken">
+        update wechat_access_token
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corpId != null">corp_id = #{corpId},</if>
+            <if test="agentId != null">agent_id = #{agentId},</if>
+            <if test="secret != null">secret = #{secret},</if>
+            <if test="errcode != null">errcode = #{errcode},</if>
+            <if test="errmsg != null">errmsg = #{errmsg},</if>
+            <if test="access_token != null">access_token = #{access_token},</if>
+            <if test="expires_in != null">expires_in = #{expires_in},</if>
+            <if test="getTokenTime != null">get_token_time = #{getTokenTime},</if>
+            <if test="aesKey != null">aes_key = #{aesKey},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteWechatAccessTokenById" parameterType="Long">
+        delete from wechat_access_token where sid = #{sid}
+    </delete>
+
+    <delete id="deleteWechatAccessTokenByIds" parameterType="String">
+        delete from wechat_access_token where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

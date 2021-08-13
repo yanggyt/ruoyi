@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.system.service.ISysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,9 @@ public class SysDeptController extends BaseController
 
     @Autowired
     private ISysDeptService deptService;
+
+    @Autowired
+    ISysConfigService configService;
 
     @RequiresPermissions("system:dept:view")
     @GetMapping()
@@ -156,7 +161,7 @@ public class SysDeptController extends BaseController
 
     /**
      * 选择部门树
-     * 
+     *
      * @param deptId 部门ID
      * @param excludeId 排除ID
      */
@@ -202,5 +207,18 @@ public class SysDeptController extends BaseController
     {
         List<Ztree> ztrees = deptService.roleDeptTreeData(role);
         return ztrees;
+    }
+
+    /**
+     * Ecology部门信息同步
+     */
+    @Log(title = "部门同步", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("system:dept:sync")
+    @PostMapping("/syncDept")
+    @ResponseBody
+    public AjaxResult syncDept() {
+        String url = "http://192.168.2.85:90/api/hrm/resful/getHrmdepartmentWithPage";
+        String params = "{\"params\":{\"pagesize\":999999}}";
+        return deptService.syncEcologyDept(url, params);
     }
 }

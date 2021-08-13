@@ -62,6 +62,9 @@
 				</div>
 				
 		        <div class="btn-group-sm" id="toolbar" role="group">
+					<a class="btn btn-success" onclick="syncUser()" shiro:hasPermission="system:user:sync">
+						<i class="fa fa-plus"></i> 同步
+					</a>
 		        	<a class="btn btn-success" onclick="$.operate.addTab()" shiro:hasPermission="system:user:add">
 		                <i class="fa fa-plus"></i> 新增
 		            </a>
@@ -93,6 +96,7 @@
 		var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
 		var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
+		var userSyncType = [[${#strings.defaultString(@config.getKey('sys.user.sync'), 0)}]];
 		var prefix = ctx + "system/user";
 
 		$(function() {
@@ -188,7 +192,7 @@
 		    };
 		    $.table.init(options);
 		}
-		
+
 		function queryDeptTree()
 		{
 			var url = ctx + "system/dept/treeData";
@@ -262,6 +266,23 @@
 				$.operate.post(prefix + "/changeStatus", { "userId": userId, "status": 0 });
 		    })
 		}
+
+		function syncUser() {
+			/*if(userSyncType=="1") {*/
+				$.ajax({
+					type: 'POST',
+					url: ctx + "system/user/syncUser",
+					data: JSON.stringify(""),
+					contentType: "application/json",
+					dataType: "json",
+					success: function (message) {
+						alert(JSON.stringify(message)); //将JSON对象转换为字符串
+					}
+				});
+			/*}else {
+				alert("系统未启用同步Ecology部门！");
+			}*/
+		};
 	</script>
 </body>
 <!-- 导入区域 -->

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bps.mapper.ExpImportQueryMapper">
+    
+    <resultMap type="ExpImportQuery" id="ExpImportQueryResult">
+        <result property="sid"    column="sid"    />
+        <result property="queryId"    column="queryId"    />
+        <result property="queryTime"    column="queryTime"    />
+        <result property="queryLoginName"    column="queryLoginName"    />
+        <result property="queryUserName"    column="queryUserName"    />
+        <result property="queryIp"    column="queryIp"    />
+        <result property="finishTime"    column="finishTime"    />
+        <result property="status"    column="status"    />
+        <result property="queryQty"    column="queryQty"    />
+    </resultMap>
+
+    <sql id="selectExpImportQueryVo">
+        select sid, queryId, queryTime, queryLoginName, queryUserName, queryIp, finishTime, status, queryQty from exp_import_query
+    </sql>
+
+    <select id="selectExpImportQueryList" parameterType="ExpImportQuery" resultMap="ExpImportQueryResult">
+        <include refid="selectExpImportQueryVo"/>
+        <where>  
+            <if test="queryTime != null  and queryTime != ''"> and queryTime like concat('%', #{queryTime}, '%')</if>
+            <if test="queryLoginName != null  and queryLoginName != ''"> and queryLoginName = #{queryLoginName}</if>
+            <if test="queryUserName != null  and queryUserName != ''"> and queryUserName = #{queryUserName}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectExpImportQueryById" parameterType="Long" resultMap="ExpImportQueryResult">
+        <include refid="selectExpImportQueryVo"/>
+        where sid = #{sid}
+    </select>
+        
+    <insert id="insertExpImportQuery" parameterType="ExpImportQuery" useGeneratedKeys="true" keyProperty="sid">
+        insert into exp_import_query
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="queryTime != null">queryTime,</if>
+            <if test="queryId != null">queryId,</if>
+            <if test="queryLoginName != null">queryLoginName,</if>
+            <if test="queryUserName != null">queryUserName,</if>
+            <if test="queryIp != null">queryIp,</if>
+            <if test="finishTime != null">finishTime,</if>
+            <if test="status != null">status,</if>
+            <if test="queryQty != null">queryQty,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="queryTime != null">#{queryTime},</if>
+            <if test="queryId != null">#{queryId},</if>
+            <if test="queryLoginName != null">#{queryLoginName},</if>
+            <if test="queryUserName != null">#{queryUserName},</if>
+            <if test="queryIp != null">#{queryIp},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="queryQty != null">#{queryQty},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExpImportQuery" parameterType="ExpImportQuery">
+        update exp_import_query
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="queryTime != null">queryTime = #{queryTime},</if>
+            <if test="queryId != null">queryId = #{queryId},</if>
+            <if test="queryLoginName != null">queryLoginName = #{queryLoginName},</if>
+            <if test="queryUserName != null">queryUserName = #{queryUserName},</if>
+            <if test="queryIp != null">queryIp = #{queryIp},</if>
+            <if test="finishTime != null">finishTime = #{finishTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="queryQty != null">queryQty = #{queryQty},</if>
+        </trim>
+        where sid = #{sid}
+    </update>
+
+    <delete id="deleteExpImportQueryById" parameterType="Long">
+        delete from exp_import_query where sid = #{sid}
+    </delete>
+
+    <delete id="deleteExpImportQueryByIds" parameterType="String">
+        delete from exp_import_query where sid in 
+        <foreach item="sid" collection="array" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+    </delete>
+
+</mapper>

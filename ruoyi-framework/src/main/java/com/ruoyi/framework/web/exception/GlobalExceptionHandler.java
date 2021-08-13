@@ -13,6 +13,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.exception.DemoModeException;
 import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.security.PermissionUtils;
 
 /**
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler
     public Object handleAuthorizationException(HttpServletRequest request, AuthorizationException e)
     {
         log.error(e.getMessage(), e);
-        if (ServletUtils.isAjaxRequest(request))
+        if (ServletUtils.isAjaxRequest(request) || StringUtils.isNotEmpty(request.getHeader("token")))
         {
             return AjaxResult.error(PermissionUtils.getMsg(e.getMessage()));
         }

@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+
+import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.utils.http.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -126,6 +129,14 @@ public class SysIndexController extends BaseController
     @GetMapping("/system/main")
     public String main(ModelMap mmap)
     {
+        JSONObject wordsJson = JSONObject.parseObject(HttpUtils.sendGet("https://v1.jinrishici.com/all.json",""));
+        JSONObject oneWordJson = JSONObject.parseObject(HttpUtils.sendGet("https://api.xygeng.cn/one",""));
+        JSONObject oneWordDataJson = JSONObject.parseObject(oneWordJson.getString("data"));
+        mmap.put("wordsContent",wordsJson.get("content"));
+        mmap.put("wordsAuthor",wordsJson.get("author"));
+        mmap.put("wordsOrigin",wordsJson.getString("origin"));
+        mmap.put("oneWordOrigin",oneWordDataJson.get("origin"));
+        mmap.put("oneWordContent",oneWordDataJson.get("content"));
         mmap.put("version", RuoYiConfig.getVersion());
         return "main";
     }
