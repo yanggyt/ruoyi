@@ -1246,7 +1246,9 @@ public class ExcelUtil<T>
                         XSSFPicture pic = (XSSFPicture) shape;
                         XSSFClientAnchor anchor = pic.getPreferredSize();
                         CTMarker ctMarker = anchor.getFrom();
-                        String picIndex = ctMarker.getRow() + "_" + ctMarker.getCol();
+                        //String picIndex = ctMarker.getRow() + "_" + ctMarker.getCol();
+                        //todo  此处有错误，暂时picIndex=""处理掉
+                        String picIndex="";
                         sheetIndexPicMap.put(picIndex, pic.getPictureData());
                     }
                 }
