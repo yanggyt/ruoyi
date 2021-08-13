@@ -19,6 +19,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +29,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.UserStatus;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.service.ConfigService;
 import com.ruoyi.framework.jwt.utils.JwtUtils;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.system.service.ISysUserService;
@@ -43,6 +45,15 @@ import java.util.Map;
 @Controller
 public class SysLoginController extends BaseController
 {
+    /**
+     * 是否开启记住我功能
+     */
+    @Value("${shiro.rememberMe.enabled: false}")
+    private boolean rememberMe;
+
+    @Autowired
+    private ConfigService configService;
+
     @Autowired
     private IJwtTokenService jwtTokenService;
 
@@ -50,7 +61,7 @@ public class SysLoginController extends BaseController
     private IWechatApiService wechatApiService;
 
     @GetMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response, Map<String,String> map)
+    public String login(HttpServletRequest request, HttpServletResponse response, ModelMap mmap)
     {
         String loginType= request.getParameter("loginType");
         if(StringUtils.isNotEmpty(loginType) && request.getParameter("loginType").equals("wechat")){
@@ -63,9 +74,9 @@ public class SysLoginController extends BaseController
             }
 
             String password="";
-            map.put("loginType","wechat");
-            map.put("username",username);
-            map.put("password",password);
+            mmap.put("loginType","wechat");
+            mmap.put("username",username);
+            mmap.put("password",password);
             return "loginwechat";
 
 
@@ -76,6 +87,10 @@ public class SysLoginController extends BaseController
         {
             return ServletUtils.renderString(response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}");
         }
+        // 是否开启记住我
+        mmap.put("isRemembered", rememberMe);
+        // 是否开启用户注册
+        mmap.put("isAllowRegister", configService.getKey("sys.account.registerUser"));
         return "login";
     }
 

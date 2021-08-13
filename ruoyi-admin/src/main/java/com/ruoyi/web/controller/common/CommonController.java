@@ -1,6 +1,6 @@
 package com.ruoyi.web.controller.common;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +17,6 @@ import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.config.ServerConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.FileInfo;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
@@ -34,6 +33,8 @@ public class CommonController
 
     @Autowired
     private ServerConfig serverConfig;
+
+    private static final String FILE_DELIMETER = ",";
 
     /**
      * 通用下载请求
@@ -103,15 +104,20 @@ public class CommonController
         {
             // 上传文件路径
             String filePath = RuoYiConfig.getUploadPath();
-            List<FileInfo> fileInfos = new LinkedList<FileInfo>();
+            List<String> fileNames = new ArrayList<String>();
+            List<String> urls = new ArrayList<String>();
             for (MultipartFile file : files)
             {
                 // 上传并返回新文件名称
                 String fileName = FileUploadUtils.upload(filePath, file);
                 String url = serverConfig.getUrl() + fileName;
-                fileInfos.add(new FileInfo(fileName, url));
+                fileNames.add(fileName);
+                urls.add(url);
             }
-            return AjaxResult.success(fileInfos);
+            AjaxResult ajax = AjaxResult.success();
+            ajax.put("fileNames", StringUtils.join(fileNames, FILE_DELIMETER));
+            ajax.put("urls", StringUtils.join(urls, FILE_DELIMETER));
+            return ajax;
         }
         catch (Exception e)
         {
