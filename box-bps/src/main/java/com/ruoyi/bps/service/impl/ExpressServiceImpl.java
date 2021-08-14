@@ -3,7 +3,6 @@ package com.ruoyi.bps.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-//import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.QueryTrack;
 import com.kuaidi100.sdk.api.Subscribe;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
@@ -42,7 +41,6 @@ public class ExpressServiceImpl implements IExpressService {
 
         for(QueryTrackParam queryTrackParam:list)
         {
-            //QueryTrackResp queryTrackResp = new Gson().fromJson(expressService.QueryTrackExpress(queryTrackParam),QueryTrackResp.class);
             QueryTrackResp queryTrackResp= JSONObject.parseObject(expressService.QueryTrackExpress(queryTrackParam),QueryTrackResp.class);
             qtList.add(queryTrackResp);
         }
@@ -68,7 +66,6 @@ public class ExpressServiceImpl implements IExpressService {
     public String QueryTrackExpress(QueryTrackParam queryTrackParam) {
         String str="";
         QueryTrackReq queryTrackReq = new QueryTrackReq();
-        //String param = new Gson().toJson(queryTrackParam);
         String param = JSONObject.toJSONString(queryTrackParam);
 
         queryTrackReq.setParam(param);
@@ -88,11 +85,9 @@ public class ExpressServiceImpl implements IExpressService {
         JSONObject jsonObject = JSON.parseObject(msg);
 
         if (jsonObject.containsKey("returnCode")){
-            //QueryTrackResp queryTrackResp=  new Gson().fromJson(msg,QueryTrackResp.class);
             QueryTrackResp queryTrackResp= JSONObject.parseObject(msg,QueryTrackResp.class);
             queryTrackResp.setStatus(queryTrackResp.getReturnCode());
             queryTrackResp.setNu(queryTrackParam.getNum());
-            //msg= new Gson().toJson(queryTrackResp);
             msg= JSONObject.toJSONString(queryTrackResp);
         }
         return msg;
@@ -114,7 +109,6 @@ public class ExpressServiceImpl implements IExpressService {
 
         SubscribeReq subscribeReq = new SubscribeReq();
         subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA); //返回的数据格式，必须
-        //subscribeReq.setParam(new Gson().toJson(subscribeParam));
         subscribeReq.setParam(JSONObject.toJSONString(subscribeParam));
 
         IBaseClient subscribe = new Subscribe();

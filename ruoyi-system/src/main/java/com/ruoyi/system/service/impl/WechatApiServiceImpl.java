@@ -1,7 +1,6 @@
 package com.ruoyi.system.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.common.utils.DateUtils;
@@ -145,7 +144,7 @@ public class WechatApiServiceImpl implements IWechatApiService {
     private WechatAccessToken  getAccessTokenFromWechat(String corpId,String secret, String agentId){
         String param ="corpid=" + corpId + "&corpsecret=" + secret;
         String url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken";
-        WechatAccessToken wechatAccessToken= new Gson().fromJson(HttpUtils.sendGet(url,param),WechatAccessToken.class);
+        WechatAccessToken wechatAccessToken =  JSONObject.parseObject(HttpUtils.sendGet(url,param),WechatAccessToken.class);
         wechatAccessToken.setCorpId(corpId);
         wechatAccessToken.setSecret(secret);
         wechatAccessToken.setAgentId(agentId);

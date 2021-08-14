@@ -1,7 +1,6 @@
 package com.ruoyi.bps.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-//import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.Subscribe;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.core.IBaseClient;
@@ -102,14 +101,12 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
 
         SubscribeReq subscribeReq = new SubscribeReq();
         subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA);
-        //subscribeReq.setParam(new Gson().toJson(subscribeParam));
         subscribeReq.setParam(JSONObject.toJSONString(subscribeParam));
 
         IBaseClient subscribe = new Subscribe();
         try{
             //推送订阅，并获得快递100响应结果
             HttpResult httpResult= subscribe.execute(subscribeReq);
-            //subscribeResp= new Gson().fromJson(httpResult.getBody(),SubscribeResp.class);
             subscribeResp = JSONObject.parseObject(httpResult.getBody(),SubscribeResp.class);
         }catch (Exception e)
         {
@@ -278,7 +275,6 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         //加密相等，继续处理业务逻辑
         subscribeResp.setMessage("接受成功!加密验证通过！【sign】"+sign+"【ourSign】"+ourSign);
 
-        //SubscribePushParamResp subscribePushParamResp = new Gson().fromJson(param, SubscribePushParamResp.class);
         SubscribePushParamResp subscribePushParamResp=JSONObject.parseObject(param,SubscribePushParamResp.class);
         SubscribePushResult subscribePushResult = subscribePushParamResp.getLastResult();
         //快递单号
