@@ -368,10 +368,6 @@ public class SysDeptServiceImpl implements ISysDeptService
         Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
         JSONArray json = (JSONArray) dataMap.get("dataList");
         List<EcologyDept> deptList = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
-        /*Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
-        Map<String,Object> dataMap= new Gson().fromJson(new Gson().toJson(map.get("data")),HashMap.class);
-        List<EcologyDept> deptList= new Gson().fromJson(new Gson().toJson(dataMap.get("dataList")), new TypeToken<List<EcologyDept>>(){}.getType());*/
-
         //清空部门表
         deptMapper.truncateDept();
 

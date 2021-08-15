@@ -8,8 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="sid"    column="sid"    />
         <result property="requestId"    column="requestId"    />
         <result property="requestType"    column="requestType"    />
-        <result property="expressNumber"    column="expressNumber"    />
-        <result property="deliveryNumber"    column="deliveryNumber"    />
+        <result property="expressNum"    column="expressNum"    />
+        <result property="deliveryNum"    column="deliveryNum"    />
         <result property="requestStr"    column="requestStr"    />
         <result property="requestTime"    column="requestTime"    />
         <result property="responseCode"    column="responseCode"    />
@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExpTopgpLogVo">
-        select sid, requestId, requestType, expressNumber, deliveryNumber, requestStr, requestTime, responseCode, responseStr from exp_topgp_log
+        select sid, requestId, requestType, expressNum, deliveryNum, requestStr, requestTime, responseCode, responseStr from exp_topgp_log
     </sql>
 
     <select id="selectExpTopgpLogList" parameterType="ExpTopgpLog" resultMap="ExpTopgpLogResult">
@@ -25,8 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="requestId != null  and requestId != ''"> and requestId = #{requestId}</if>
             <if test="requestType != null  and requestType != ''"> and requestType = #{requestType}</if>
-            <if test="expressNumber != null  and expressNumber != ''"> and expressNumber = #{expressNumber}</if>
-            <if test="deliveryNumber != null  and deliveryNumber != ''"> and deliveryNumber = #{deliveryNumber}</if>
+            <if test="expressNum != null  and expressNum != ''"> and expressNum = #{expressNum}</if>
+            <if test="deliveryNum != null  and deliveryNum != ''"> and deliveryNum = #{deliveryNum}</if>
             <if test="requestStr != null  and requestStr != ''"> and requestStr = #{requestStr}</if>
             <if test="requestTime != null  and requestTime != ''"> and requestTime = #{requestTime}</if>
             <if test="responseCode != null  and responseCode != ''"> and responseCode = #{responseCode}</if>
@@ -44,8 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="requestId != null">requestId,</if>
             <if test="requestType != null">requestType,</if>
-            <if test="expressNumber != null">expressNumber,</if>
-            <if test="deliveryNumber != null">deliveryNumber,</if>
+            <if test="expressNum != null">expressNum,</if>
+            <if test="deliveryNum != null">deliveryNum,</if>
             <if test="requestStr != null">requestStr,</if>
             <if test="requestTime != null">requestTime,</if>
             <if test="responseCode != null">responseCode,</if>
@@ -54,8 +54,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="requestId != null">#{requestId},</if>
             <if test="requestType != null">#{requestType},</if>
-            <if test="expressNumber != null">#{expressNumber},</if>
-            <if test="deliveryNumber != null">#{deliveryNumber},</if>
+            <if test="expressNum != null">#{expressNum},</if>
+            <if test="deliveryNum != null">#{deliveryNum},</if>
             <if test="requestStr != null">#{requestStr},</if>
             <if test="requestTime != null">#{requestTime},</if>
             <if test="responseCode != null">#{responseCode},</if>
@@ -68,8 +68,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="requestId != null">requestId = #{requestId},</if>
             <if test="requestType != null">requestType = #{requestType},</if>
-            <if test="expressNumber != null">expressNumber = #{expressNumber},</if>
-            <if test="deliveryNumber != null">deliveryNumber = #{deliveryNumber},</if>
+            <if test="expressNum != null">expressNum = #{expressNum},</if>
+            <if test="deliveryNum != null">deliveryNum = #{deliveryNum},</if>
             <if test="requestStr != null">requestStr = #{requestStr},</if>
             <if test="requestTime != null">requestTime = #{requestTime},</if>
             <if test="responseCode != null">responseCode = #{responseCode},</if>

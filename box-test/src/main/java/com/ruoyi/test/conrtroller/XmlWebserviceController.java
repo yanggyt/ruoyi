@@ -20,7 +20,7 @@ public class XmlWebserviceController {
         String param = TopgpXmlUtils.GetTopgpRequestXml("express_testRequest", map);
         String url = "http://192.168.2.81:85/web/ws/r/aws_ttsrv2_toptest";
         String returnXml = HttpUtils.sendXmlPost(url,param);
-        return TopgpXmlUtils.GetStatusFromTopgpResponse(returnXml).toString();
+        return TopgpXmlUtils.TopgpResponseXmlToJson(returnXml).toString();
 
     }
 }

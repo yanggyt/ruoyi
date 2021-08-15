@@ -2,8 +2,6 @@ package com.ruoyi.system.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -585,10 +583,6 @@ public class SysUserServiceImpl implements ISysUserService
         Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
         JSONArray json = (JSONArray) dataMap.get("dataList");
         List<EcologyUser> ecologyUserList = JSONArray.parseArray(json.toJSONString(), EcologyUser.class);
-        /*Map<String,Object> map = new Gson().fromJson(new Gson().toJson(mapResult.get("result")), HashMap.class);
-        Map<String,Object> dataMap= new Gson().fromJson(new Gson().toJson(map.get("data")),HashMap.class);
-        List<EcologyUser> ecologyUserList= new Gson().fromJson(dataMap.get("dataList").toString(), new TypeToken<List<EcologyUser>>(){}.getType());
-        */
 
         //获取原同步的用户
         SysUser oldSysUser=new SysUser();

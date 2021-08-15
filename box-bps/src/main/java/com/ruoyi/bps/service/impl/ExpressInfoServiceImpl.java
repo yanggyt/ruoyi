@@ -10,7 +10,6 @@ import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
-//import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.AutoNum;
 import com.kuaidi100.sdk.api.QueryTrack;
 import com.kuaidi100.sdk.core.IBaseClient;
@@ -161,7 +160,6 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
         queryTrackParam.setPhone(expressInfo.getPhone());
 
         //获取快递信息
-        //String param = new Gson().toJson(queryTrackParam);
         String param= JSONObject.toJSONString(queryTrackParam);
         QueryTrackReq queryTrackReq=new QueryTrackReq();
         queryTrackReq.setParam(param);
@@ -178,7 +176,6 @@ public class ExpressInfoServiceImpl implements IExpressInfoService
         }
 
         //将快递信息转化为QueryTrackResp对象
-        //QueryTrackResp queryTrackResp = new Gson().fromJson(msg,QueryTrackResp.class);
         QueryTrackResp queryTrackResp= JSONObject.parseObject(msg,QueryTrackResp.class);
 
         //如果没有查到物流信息，则返回错误信息
