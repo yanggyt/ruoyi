@@ -25,7 +25,7 @@ public interface IExpSubsPushApiService {
      * 成功结果返回例子： {"result":true,"returnCode":"200","message":"提交成功"}
      *
      */
-    public SubscribeResp ExpressSubscribeCallBackUrl(HttpServletRequest request);
+    public SubscribeResp ExpressSubscribeCallBackUrl(HttpServletRequest request,String salt);
 
     /**
      * 获取Topgp推送的快递信息，向快递100推送订阅请求
@@ -33,4 +33,11 @@ public interface IExpSubsPushApiService {
      * @return
      */
     public String ExpressSubscribeFromTopgp(HttpServletRequest request) throws IOException;
+
+    /**
+     * Topgp将出货单转为签收单后的信息推送处理
+     * @param request
+     * @return
+     */
+    public String TopgpDeliverySigned(HttpServletRequest request) throws IOException;
 }

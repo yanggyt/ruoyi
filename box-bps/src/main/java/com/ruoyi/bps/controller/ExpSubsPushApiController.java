@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,13 +36,14 @@ public class ExpSubsPushApiController extends BaseController {
     @Autowired
     IExpSubsPushApiService expSubsPushApiService;
 
-    //推送
+    //快递100推送
     @CrossOrigin
-    @PostMapping("anon/subscribeCallBackUrl")
+    @PostMapping("anon/subscribeCallBackUrl/{salt}")
     @ApiOperation("快递信息订阅推送接受")
-    public SubscribeResp SubscribeCallBackUrl(HttpServletRequest request) {
-        return expSubsPushApiService.ExpressSubscribeCallBackUrl(request);
+    public SubscribeResp SubscribeCallBackUrl(@PathVariable("salt") String salt, HttpServletRequest request) {
+        return expSubsPushApiService.ExpressSubscribeCallBackUrl(request,salt);
     }
+
 
     //订阅
     @CrossOrigin
@@ -58,11 +60,28 @@ public class ExpSubsPushApiController extends BaseController {
             @ApiImplicitParam(name = "token", value = "token", required = true, paramType = "header", dataType = "String", dataTypeClass = String.class),
             @ApiImplicitParam(name = "requestJson", value = "请求json",required = true, paramType = "body", dataType = "String", dataTypeClass = String.class)
     })
-
     @PostMapping("api/express/topgpSubscribe")
     public String topgpSubscribe(HttpServletRequest request, HttpServletResponse response) throws IOException {
         return expSubsPushApiService.ExpressSubscribeFromTopgp(request);
     }
+
+    //接受topgp转签收单完成后的消息推送
+    @Log(title = "TOPGP出货已转签收", businessType = BusinessType.OTHER)
+    @CrossOrigin
+    @ApiOperation(value="接受TOPGP已转签收消息推送",notes = "request body格式： {\"requestId\":\"topgpSign1628584040740\"," +
+                    "\"signedInfoList\":[{\"deliveryNo\":\"S301-2108020001\",\"signNo\":\"S501-2108020001\"},{\"deliveryNo\":\"S301-2108020002\",\"signNo\":\"S501-2108020002\"}]," +
+                    "\"expressNo\":\"300444235610\",\"company\":\"annengwuliu\",\"phone\":\"13800138000\",\"status\":\"0\"}"
+                )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "token", required = true, paramType = "header", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "requestJson", value = "请求json",required = true, paramType = "body", dataType = "String", dataTypeClass = String.class)
+    })
+    @PostMapping("api/express/topgpSigned")
+    public String topgpSigned(HttpServletRequest request, HttpServletResponse response) throws IOException {
+       // return expSubsPushApiService.ExpressSubscribeFromTopgp(request);
+        return expSubsPushApiService.TopgpDeliverySigned(request);
+    }
+
 
 
 }
