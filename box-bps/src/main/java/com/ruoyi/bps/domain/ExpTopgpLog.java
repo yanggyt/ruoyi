@@ -28,11 +28,11 @@ public class ExpTopgpLog extends BaseEntity
 
     /** 快递单 */
     @Excel(name = "快递单")
-    private String expressNumber;
+    private String expressNum;
 
     /** 出货单号 */
     @Excel(name = "出货单号")
-    private String deliveryNumber;
+    private String deliveryNum;
 
     /** 请求报文 */
     @Excel(name = "请求报文")
@@ -77,23 +77,23 @@ public class ExpTopgpLog extends BaseEntity
     {
         return requestType;
     }
-    public void setExpressNumber(String expressNumber) 
+    public void setExpressNum(String expressNum)
     {
-        this.expressNumber = expressNumber;
+        this.expressNum = expressNum;
     }
 
-    public String getExpressNumber() 
+    public String getExpressNum()
     {
-        return expressNumber;
+        return expressNum;
     }
-    public void setDeliveryNumber(String deliveryNumber) 
+    public void setDeliveryNum(String deliveryNum)
     {
-        this.deliveryNumber = deliveryNumber;
+        this.deliveryNum = deliveryNum;
     }
 
-    public String getDeliveryNumber() 
+    public String getDeliveryNum()
     {
-        return deliveryNumber;
+        return deliveryNum;
     }
     public void setRequestStr(String requestStr) 
     {
@@ -138,8 +138,8 @@ public class ExpTopgpLog extends BaseEntity
             .append("sid", getSid())
             .append("requestId", getRequestId())
             .append("requestType", getRequestType())
-            .append("expressNumber", getExpressNumber())
-            .append("deliveryNumber", getDeliveryNumber())
+            .append("expressNum", getExpressNum())
+            .append("deliveryNum", getDeliveryNum())
             .append("requestStr", getRequestStr())
             .append("requestTime", getRequestTime())
             .append("responseCode", getResponseCode())

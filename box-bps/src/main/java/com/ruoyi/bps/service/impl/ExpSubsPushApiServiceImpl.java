@@ -172,15 +172,15 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
             return "貌似没有接受到任何参数！";
         }
         String requestId=contentJson.getString("requestId");     //TOPGP请求ID，年月日时分稍毫秒
-        String deliveryNo= contentJson.getString("deliveryNo"); //TOPGP出货单号
-        String expressNo = contentJson.getString("expressNo");   //TOPGP快递单号
+        String deliveryNum= contentJson.getString("deliveryNum"); //TOPGP出货单号
+        String expressNum = contentJson.getString("expressNum");   //TOPGP快递单号
         String company = contentJson.getString("company");       //TOPGP物流公司编号
         String phone = contentJson.getString("phone");           //TOPGP出货单号
         //Long timeStamp = System.currentTimeMillis();  //获取时间戳
         String subscribeTime= DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"); //获取订阅时间
         SubscribeResp subscribeResp=new SubscribeResp();
         //如果请求ID、出货单号或者快递单号为空,则不向快递100请求订阅，自己组合返回信息。
-        if(StringUtils.isEmpty(deliveryNo) || StringUtils.isEmpty(expressNo) || StringUtils.isEmpty(requestId)){
+        if(StringUtils.isEmpty(deliveryNum) || StringUtils.isEmpty(expressNum) || StringUtils.isEmpty(requestId)){
             subscribeResp.setMessage("请求ID、快递单号或出货单号不可为空");
             subscribeResp.setResult(false);
             subscribeResp.setReturnCode("700");
@@ -188,7 +188,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
             //组合向快递100推送订阅请求的参数
             ExpSubscribe expSubscribe=new ExpSubscribe();
             expSubscribe.setSid(Long.getLong(requestId));  //时间戳
-            expSubscribe.setNumber(expressNo);
+            expSubscribe.setNumber(expressNum);
             expSubscribe.setCompany(company);
             expSubscribe.setPhone(phone);
             expSubscribe.setSubscribeTime(subscribeTime); //订阅时间
@@ -201,8 +201,8 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         //根据快递100的订阅返回结果，组合返回Topgp的JSON字符串
         Map<String,Object> map= new HashMap<>();
         map.put("requestId",requestId);         //从TOPGP传过来的requestId， 时间戳
-        map.put("deliveryNo",deliveryNo);       //出货单号
-        map.put("expressNo",expressNo);         //快递单号
+        map.put("deliveryNum",deliveryNum);       //出货单号
+        map.put("expressNum",expressNum);         //快递单号
         map.put("responseStr",subscribeResp.getMessage());     //返回消息
         map.put("responseCode",subscribeResp.getReturnCode()); //返回码
         map.put("result",subscribeResp.isResult());   //订阅结果
@@ -214,8 +214,8 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         ExpTopgpLog expTopgpLog=new ExpTopgpLog();
         expTopgpLog.setRequestId(requestId);
         expTopgpLog.setRequestType("fromTopgp");
-        expTopgpLog.setExpressNumber(expressNo);
-        expTopgpLog.setDeliveryNumber(deliveryNo);
+        expTopgpLog.setExpressNum(expressNum);
+        expTopgpLog.setDeliveryNum(deliveryNum);
         expTopgpLog.setRequestStr(contentJson.toString());
         expTopgpLog.setRequestTime(subscribeTime);
         expTopgpLog.setResponseCode(subscribeResp.getReturnCode());
@@ -257,9 +257,9 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         ExpTopgpLog expTopgpLog=new ExpTopgpLog();
         expTopgpLog.setRequestId(contentJson.getString("requestId"));
         expTopgpLog.setRequestType("topgpSigned");
-        expTopgpLog.setExpressNumber(contentJson.getString("expressNum"));
+        expTopgpLog.setExpressNum(contentJson.getString("expressNum"));
         expTopgpLog.setRequestStr(contentJson.toString());
-        expTopgpLog.setDeliveryNumber(deliveryNum);
+        expTopgpLog.setDeliveryNum(deliveryNum);
         expTopgpLog.setRequestTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
         expTopgpLog.setResponseCode("200");
         expTopgpLog.setResponseStr(returnStr);
@@ -357,7 +357,7 @@ public class ExpSubsPushApiServiceImpl implements IExpSubsPushApiService {
         ExpTopgpLog expTopgpLog=new ExpTopgpLog();
         expTopgpLog.setRequestId(requestMap.get("requestId").toString());
         expTopgpLog.setRequestType("toTopgp");
-        expTopgpLog.setExpressNumber(requestMap.get("expressNum").toString());
+        expTopgpLog.setExpressNum(requestMap.get("expressNum").toString());
         expTopgpLog.setRequestStr(JSONObject.toJSONString(requestMap));
         expTopgpLog.setRequestTime(DateUtils.dateTimeNow("yyyy-MM-dd HH:mm:ss"));
         JSONObject object = jsonObject.getJSONObject("execution");
