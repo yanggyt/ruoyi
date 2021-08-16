@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('ERP订阅推送日志列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>请求ID：</label>
+                                <input type="text" name="requestId"/>
+                            </li>
+                            <li>
+                                <label>请求类型：</label>
+                                <input type="text" name="requestType"/>
+                            </li>
+                            <li>
+                                <label>快递单：</label>
+                                <input type="text" name="expressNum"/>
+                            </li>
+                            <li>
+                                <label>出货单号：</label>
+                                <input type="text" name="deliveryNum"/>
+                            </li>
+                            <li>
+                                <label>请求时间：</label>
+                                <input type="text" name="requestTime"/>
+                            </li>
+                            <li>
+                                <label>返回code：</label>
+                                <input type="text" name="responseCode"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="bps:expTopgpLog:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="bps:expTopgpLog:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="bps:expTopgpLog:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="bps:expTopgpLog:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('bps:expTopgpLog:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('bps:expTopgpLog:remove')}]];
+        var prefix = ctx + "bps/expTopgpLog";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                sortName: "requesttime",  //不要用驼峰式变量requestTime，mybatis会转换成request_time
+                sortOrder: "desc",
+                modalName: "ERP订阅推送日志",
+                escape: true,
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'sid',
+                    title: 'SID',
+                    visible: false
+                },
+                {
+                    field: 'requestId',
+                    title: '请求ID'
+                },
+                {
+                    field: 'requestType',
+                    title: '请求类型'
+                },
+                {
+                    field: 'expressNum',
+                    title: '快递单'
+                },
+                {
+                    field: 'deliveryNum',
+                    title: '出货单号'
+                },
+                {
+                    field: 'requestStr',
+                    title: '请求报文'
+                },
+                {
+                    field: 'requestTime',
+                    title: '请求时间'
+                },
+                {
+                    field: 'responseCode',
+                    title: '返回code'
+                },
+                {
+                    field: 'responseStr',
+                    title: '返回报文'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sid + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sid + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

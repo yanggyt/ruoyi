@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>登录BPS后台管理系统</title>
+    <meta name="description" content="BPS后台管理框架">
+    <!-- 360浏览器急速模式 -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script>
+        if(window.top!==window.self){alert('未登录或登录超时。请重新登录');window.top.location=window.location};
+    </script>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #parent {
+            height: 100%;
+            margin: 0;
+            border: 0;
+        }
+        #child {
+            position: absolute;
+            top: 50%;
+            left: 60%;
+            right: 0;
+            bottom: 0;
+            transform: translate(-50%, -50%);
+            border: 0;
+        }
+    </style>
+</head>
+<body class="signin">
+
+    <div id="parent">
+        <div id="child"><h4> <strong>登录中...</strong></h4></div>
+    </div>
+
+<script th:inline="javascript">  </script>
+<!--[if lte IE 8]><script>window.location.href=ctx+'html/ie.html';</script><![endif]-->
+<!-- 全局js -->
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/ruoyi/js/ry-ui.js" th:src="@{/ruoyi/js/ry-ui.js?v=4.6.2}"></script>
+<script th:inline="javascript">
+    var ctx = [[@{/}]];
+    var loginType = [[${loginType}]];
+    var username = [[${username}]];
+    var password = [[${password}]];
+    var rememberMe = true;
+
+    $(function () {
+        if (loginType == 'wechat') {
+            $.ajax({
+                type: "post",
+                url: ctx + "login",
+                data: {
+                    "username": username,
+                    "password": password,
+                    "rememberMe": rememberMe,
+                    "loginType": loginType,
+                },
+                success: function(r) {
+                    if (r.code == web_status.SUCCESS) {
+                        location.href = ctx + 'index';
+                    } else {
+                        $.modal.closeLoading();
+                        $('.imgcode').click();
+                        $(".code").val("");
+                        $.modal.msg(r.msg);
+                    }
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

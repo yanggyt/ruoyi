@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>若依系统首页</title>
+    <title>BPS管理系统首页</title>
     <!-- 避免IE使用兼容模式 -->
  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link th:href="@{favicon.ico}" rel="shortcut icon"/>
@@ -26,7 +26,8 @@
         </div>
         <a th:href="@{/index}">
             <li class="logo hidden-xs">
-                <span class="logo-lg">RuoYi</span>
+                <!--<span class="logo-lg">BPS后台管理系统</span> -->
+				<span><img height="40" alt="[ BPS ]" src="../static/bps.png" th:src="@{/bps.png}"></span>
             </li>
          </a>
         <div class="sidebar-collapse">
@@ -71,7 +72,7 @@
 						</li>
 					</ul>
                 </li>
-                <li th:if="${demoEnabled}">
+                <li th:if="${demoEnabled} and ${user.loginName}=='admin'">
                     <a href="#"><i class="fa fa-desktop"></i><span class="nav-label">实例演示</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li> <a>表单<span class="fa arrow"></span></a>
@@ -249,7 +250,7 @@
         </div>
         
         <div th:if="${ignoreFooter}" class="footer">
-            <div class="pull-right">© [[${copyrightYear}]] RuoYi Copyright </div>
+            <div class="pull-right">© [[${copyrightYear}]] Bpsemi Copyright </div>
         </div>
     </div>
     <!--右侧部分结束-->

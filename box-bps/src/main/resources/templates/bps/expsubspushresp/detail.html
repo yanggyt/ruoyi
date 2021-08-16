@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('快递订阅推送详细信息')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-expsubspushresp-detail" th:object="${expSubsPushResp}">
+            <input name="sid" th:field="*{sid}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">监控状态：</label>
+                <!--<div class="col-sm-3" th:text="*{@dict.getLabel('express_monitor_stats',status)} " />-->
+                <div class="col-sm-4">
+                    <input name="autoCheck" th:field="*{status}" class="form-control" type="text" readonly>
+                </div>
+                <div class="col-sm-4">
+                    <input  name="autoCheckDictLabel" id="autoCheckDictLabel"  class="form-control" type="text" readonly>
+                        <!--<select name="status" class="form-control m-b" th:with="type=${@dict.getType('express_monitor_stats')}" disabled>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{status}"></option>
+                        </select>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">快递公司编码：</label>
+                <div class="col-sm-4">
+                    <input name="lastResultCom" th:field="*{lastResultCom}" class="form-control" type="text" readonly>
+                </div>
+                <div class="col-sm-4">
+                    <input name="lastResultComDictLabel" id="lastResultComDictLabel" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">最新推送时间：</label>
+                <div class="col-sm-8">
+                    <input name="lastResponseTime" th:field="*{lastResponseTime}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">快递单号：</label>
+                <div class="col-sm-8">
+                    <input name="lastResultNu" th:field="*{lastResultNu}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">快递流转信息：</label>
+                <div class="col-sm-8">
+                    <!--<textarea name="lastResultData" th:field="*{lastResultData}" class="form-control" type="text" th:multiple="true" readonly> </textarea>-->
+                    <textarea name="lastResultData" id="lastResultData" class="form-control" type="text" readonly></textarea>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">监控状态消息：</label>
+                <div class="col-sm-8">
+                    <textarea name="message"  th:field="*{message}" class="form-control" type="text" readonly></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">当前快递单状态：</label>
+                <div class="col-sm-4">
+                    <input name="lastResultState" th:field="*{lastResultState}" class="form-control" type="text" readonly>
+                </div>
+                <div class="col-sm-4">
+                    <input name="lastResultStateDictLabel" id="lastResultStateDictLabel" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">是否签收：</label>
+                <div class="col-sm-4">
+                    <input name="lastResultIsCheck" th:field="*{lastResultIsCheck}" class="form-control" type="text" readonly>
+                </div>
+                <div class="col-sm-4">
+                    <input name="lastResultIsCheckLabel" id="lastResultIsCheckLabel"  class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">状态：</label>
+                <div class="col-sm-8">
+                    <input name="autoCheck" th:field="*{billStatus}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">快递公司编码是否出错：</label>
+                <div class="col-sm-8">
+                    <input name="autoCheck" th:field="*{autoCheck}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">原始快递公司编码：</label>
+                <div class="col-sm-4">
+                    <input name="comOld" th:field="*{comOld}" class="form-control" type="text" readonly>
+                </div>
+                <div class="col-sm-4">
+                    <!--<select name="comOld1" class="form-control m-b" th:with="type=${@dict.getType('express_company')}" disabled>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{comOld}"></option>
+                    </select>-->
+                    <input name="comOldDictLabel" id="comOldDictLabel" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">修正快递公司编码：</label>
+                <div class="col-sm-4">
+                    <input name="comNew" th:field="*{comNew}" class="form-control" type="text" readonly>
+                </div>
+                <div class="col-sm-4">
+                    <input name="comNewDictLabel" id="comNewDictLabel" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">当前快递消息：</label>
+                <div class="col-sm-8">
+                    <input name="lastResultMessage" th:field="*{lastResultMessage}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">快递单明细状态：</label>
+                <div class="col-sm-8">
+                    <input name="lastResultCondition" th:field="*{lastResultCondition}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">通讯状态：</label>
+                <div class="col-sm-8">
+                    <input name="lastResulStatus" th:field="*{lastResulStatus}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的国快递消息：</label>
+                <div class="col-sm-8">
+                    <input name="destResultMessage" th:field="*{destResultMessage}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的国快递单状态：</label>
+                <div class="col-sm-8">
+                    <input name="destResultState" th:field="*{destResultState}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的国通讯状态：</label>
+                <div class="col-sm-8">
+                    <input name="destResultState" th:field="*{destResultStatus}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的国快递单明细状态：</label>
+                <div class="col-sm-8">
+                    <input name="destResultCondition" th:field="*{destResultCondition}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的国是否签收：</label>
+                <div class="col-sm-8">
+                    <input name="destResultIsCheck" th:field="*{destResultIsCheck}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的国快递公司编码：</label>
+                <div class="col-sm-8">
+                    <input name="destResultCom" th:field="*{destResultCom}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的国快递单号：</label>
+                <div class="col-sm-8">
+                    <input name="destResultNu" th:field="*{destResultNu}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的国快递流转信息：</label>
+                <div class="col-sm-8">
+                    <textarea name="destResultData" th:field="*{destResultData}" class="form-control" type="text" readonly></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "bps/expsubspushresp";
+        var lastResultData=[[${expSubsPushResp.lastResultData}]];
+        $(function (){
+            $("#autoCheckDictLabel").val([[${@dict.getLabel('express_monitor_stats',expSubsPushResp.status)}]]);
+            $("#comOldDictLabel").val([[${@dict.getLabel('express_company',expSubsPushResp.comOld)}]]);
+            $("#comNewDictLabel").val([[${@dict.getLabel('express_company',expSubsPushResp.comNew)}]]);
+            $("#lastResultStateDictLabel").val([[${@dict.getLabel('express_stats',expSubsPushResp.lastResultState)}]]);
+            $("#lastResultComDictLabel").val([[${@dict.getLabel('express_company',expSubsPushResp.lastResultCom)}]]);
+            if([[${expSubsPushResp.lastResultIsCheck}]]=="1"){
+                $("#lastResultIsCheckLabel").val("已签收");
+            }
+            else {
+                $("#lastResultIsCheckLabel").val("未签收");
+            }
+
+            $("#lastResultData").html(lastResultData.replace(/<br\s*\/?>/gi,"\r\n"));
+            $("#lastResultData,#message").txtaAutoHeight();
+           /* $("#message").txtaAutoHeight();*/
+        });
+
+        $("#form-expsubspushresp-detail").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-expsubspushresp-detail').serialize());
+            }
+        }
+
+        //jQuery实现textarea高度根据内容自适应
+        $.fn.extend({
+            txtaAutoHeight: function () {
+                return this.each(function () {
+                    var $this = $(this);
+                    if (!$this.attr('initAttrH')) {
+                        $this.attr('initAttrH', $this.outerHeight());
+                    }
+                    setAutoHeight(this).on('input', function () {
+                        setAutoHeight(this);
+                    });
+                });
+                function setAutoHeight(elem) {
+                    var $obj = $(elem);
+                    return $obj.css({ height: $obj.attr('initAttrH'), 'overflow-y': 'hidden' }).height(elem.scrollHeight);
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
