@@ -26,12 +26,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="queryId"    column="queryId"    />
         <result property="queryType"    column="queryType"    />
         <result property="deliveryNum"    column="deliveryNum"    />
+        <result property="csName"    column="csName"    />
+        <result property="customer"    column="customer"    />
 
     </resultMap>
 
     <sql id="selectExpressInfoVo">
         select sid, message, nu, deliveryNum, ischeck, com, status, `data`, `state`, `condition`, routeInfo, returnCode, `result`, phone,
-               collectTime, singedTime, lastUpdateTime, queryTime, queryUserName, queryId, queryType
+               collectTime, singedTime, lastUpdateTime, queryTime, queryUserName, queryId, queryType, csName, customer
         from expressInfo
     </sql>
 
@@ -43,6 +45,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
             <if test="queryId != null  and queryId != ''"> and queryId = #{queryId}</if>
             <if test="deliveryNum != null  and deliveryNum != ''"> and deliveryNum = #{deliveryNum}</if>
+            <if test="csName != null  and csName != ''"> and csName = #{csName}</if>
+            <if test="customer != null  and customer != ''"> and customer = #{customer}</if>
         </where>
     </select>
     
@@ -74,6 +78,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="queryId != null">queryId,</if>
             <if test="queryType != null">queryType,</if>
             <if test="deliveryNum != null">deliveryNum,</if>
+            <if test="csName != null">csName,</if>
+            <if test="customer != null">customer,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="message != null">#{message},</if>
@@ -96,6 +102,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="queryId != null">#{queryId},</if>
             <if test="queryType != null">#{queryType},</if>
             <if test="deliveryNum != null">#{deliveryNum},</if>
+            <if test="csName != null">#{csName},</if>
+            <if test="customer != null">#{customer},</if>
          </trim>
     </insert>
 
@@ -121,6 +129,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="queryId != null">queryId = #{queryId},</if>
             <if test="queryType != null">queryType = #{queryType},</if>
             <if test="deliveryNum != null">deliveryNum = #{deliveryNum},</if>
+            <if test="csName != null">csName = #{csName},</if>
+            <if test="customer != null">customer = #{customer},</if>
         </trim>
         where message = #{message}
     </update>
@@ -138,12 +148,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <insert id="batchInsertExpressInfo">
         insert into expressInfo(message, nu, deliveryNum, ischeck, com, status, `data`, `state`, `condition`, routeInfo, returnCode, `result`, phone,
-        collectTime, singedTime, lastUpdateTime, queryTime, queryUserName, queryId, queryType) values
+        collectTime, singedTime, lastUpdateTime, queryTime, queryUserName, queryId, queryType, csName, customer) values
         <foreach item="expressInfo" index="index" collection="list" separator=",">
             ( #{expressInfo.message}, #{expressInfo.nu}, #{expressInfo.deliveryNum}, #{expressInfo.ischeck}, #{expressInfo.com}, #{expressInfo.status},
              #{expressInfo.data}, #{expressInfo.state}, #{expressInfo.condition}, #{expressInfo.routeInfo}, #{expressInfo.returnCode},
              #{expressInfo.result}, #{expressInfo.phone}, #{expressInfo.collectTime}, #{expressInfo.singedTime}, #{expressInfo.lastUpdateTime},
-             #{expressInfo.queryTime}, #{expressInfo.queryUserName}, #{expressInfo.queryId}, #{expressInfo.queryType}
+             #{expressInfo.queryTime}, #{expressInfo.queryUserName}, #{expressInfo.queryId}, #{expressInfo.queryType}, #{expressInfo.csName}, #{expressInfo.customer}
             )
         </foreach>
     </insert>

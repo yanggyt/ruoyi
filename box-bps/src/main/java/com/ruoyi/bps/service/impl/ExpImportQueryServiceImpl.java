@@ -140,6 +140,8 @@ public class ExpImportQueryServiceImpl implements IExpImportQueryService
                 ei.setQueryUserName(ShiroUtils.getSysUser().getUserName());
                 ei.setQueryType("excel");
                 ei.setQueryTime(queryTime);
+                ei.setCustomer(expressInfo.getCustomer());  //送货客户
+                ei.setCsName(expressInfo.getCsName());      //客服人员
                 //expressInfoService.insertExpressInfo(ei);
                 expressInfoListForInsert.add(ei);
                /* for(int i=1;i<1001;i++){ //测试批量插入效率用时打开Mark，产生5万条数据。

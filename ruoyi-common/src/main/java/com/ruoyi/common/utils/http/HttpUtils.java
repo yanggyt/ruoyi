@@ -292,13 +292,13 @@ public class HttpUtils
             }
             log.info("recv - {}", result);
         } catch (ConnectException e) {
-            log.error("调用HttpUtils.sendPost ConnectException, url=" + url + ",param=" + param, e);
+            log.error("调用HttpUtils.sendXmlPost ConnectException, url=" + url + ",param=" + param, e);
         } catch (SocketTimeoutException e) {
-            log.error("调用HttpUtils.sendPost SocketTimeoutException, url=" + url + ",param=" + param, e);
+            log.error("调用HttpUtils.sendXmlPost SocketTimeoutException, url=" + url + ",param=" + param, e);
         } catch (IOException e) {
-            log.error("调用HttpUtils.sendPost IOException, url=" + url + ",param=" + param, e);
+            log.error("调用HttpUtils.sendXmlPost IOException, url=" + url + ",param=" + param, e);
         } catch (Exception e) {
-            log.error("调用HttpsUtil.sendPost Exception, url=" + url + ",param=" + param, e);
+            log.error("调用HttpsUtil.sendXmlPost Exception, url=" + url + ",param=" + param, e);
         } finally {
             try {
                 if (out != null) {
@@ -334,7 +334,7 @@ public class HttpUtils
             result=restTemplate.postForEntity(url,params,String.class);
             statusCode=result.getStatusCode().value();
         }catch (RestClientException e){
-            System.out.println("POST Request uri: "+url+", params:"+params+" error:"+e.getMessage());
+            log.error("POST Request uri: "+url+", params:"+params+" error:"+e.getMessage());
         }
         Map<String,String> map=new HashMap<>();
         map.put("statusCode",String.valueOf(statusCode));
@@ -343,7 +343,6 @@ public class HttpUtils
         } else{
             map.put("result",String.valueOf(statusCode));
         }
-
         return map;
     }
 }

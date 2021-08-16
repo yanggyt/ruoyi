@@ -22,10 +22,17 @@ public class ExpressInfo extends BaseEntity
     @Excel(name = "消息",type= Excel.Type.EXPORT)
     private String message;
 
-
     /** 出货单号 */
     @Excel(name = "出货单号")
     private String deliveryNum;
+
+    /** 送货客户*/
+    @Excel(name = "送货客户")
+    private String customer;
+
+    /** 客服人员*/
+    @Excel(name = "客服人员")
+    private String csName;
 
     /** 快递单号 */
     @Excel(name = "快递单号")
@@ -96,6 +103,7 @@ public class ExpressInfo extends BaseEntity
 
     /** 查询类型*/
     private String queryType;
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -269,6 +277,22 @@ public class ExpressInfo extends BaseEntity
         this.queryType = queryType;
     }
 
+    public String getCsName() {
+        return csName;
+    }
+
+    public void setCsName(String csName) {
+        this.csName = csName;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
+
     @Override
     public String toString() {
         return "ExpressInfo{" +
@@ -293,6 +317,8 @@ public class ExpressInfo extends BaseEntity
                 ", queryUserName='" + queryUserName + '\'' +
                 ", queryId='" + queryId + '\'' +
                 ", queryType='" + queryType + '\'' +
+                ", csName='" + csName + '\'' +
+                ", customer='" + customer + '\'' +
                 '}';
     }
 }
