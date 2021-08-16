@@ -81,7 +81,10 @@
                 },
                 {
                     field: 'transName',
-                    title: '转换名称'
+                    title: '转换名称',
+                    formatter: function(value, row, index) {
+                        return value+".ktr";
+                    }
                 },
                 {
                     field: 'transDescription',

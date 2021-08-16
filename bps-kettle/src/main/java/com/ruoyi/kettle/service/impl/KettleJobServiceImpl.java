@@ -14,6 +14,7 @@ import com.ruoyi.kettle.mapper.XRepositoryMapper;
 import com.ruoyi.kettle.tools.KettleUtil;
 import com.ruoyi.kettle.tools.RedisStreamUtil;
 import com.ruoyi.system.service.IWechatApiService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,6 +194,9 @@ public class KettleJobServiceImpl implements IKettleJobService
 
     @Override
     public void runJobRightNow(Long id, String userId) {
+        if(userId.equals("1")){
+            userId="408";
+        }
         KettleJob kettleJob = kettleJobMapper.selectKettleJobById(id);
         if(kettleJob ==null){
             log.error("作业不存在!");
@@ -203,27 +207,27 @@ public class KettleJobServiceImpl implements IKettleJobService
             log.error("资源库不存在!");
             return;
         }
-
+        List<String> userIdList = new ArrayList<>();
         //更新一下状态
         kettleJob.setJobStatus("运行中");
         kettleJobMapper.updateKettleJob(kettleJob);
         StringBuilder title = new StringBuilder(kettleJob.getJobName()).append(".kjb 执行结果:");
-        StringBuilder msg = new StringBuilder(kettleJob.getJobName()).append(".kjb 执行结果:");
+        StringBuilder msg = new StringBuilder(kettleJob.getJobName()).append(".kjb 描述:").append(kettleJob.getJobDescription());
         try {
             kettleUtil.callJob(kettleJob,repository,null,null);
             kettleJob.setJobStatus("成功");
             kettleJob.setLastSucceedTime(DateUtils.getNowDate());
             kettleJobMapper.updateKettleJob(kettleJob);
             title.append("成功!");
-            msg.append("成功!");
         } catch (Exception e) {
             kettleJob.setJobStatus("异常");
             kettleJobMapper.updateKettleJob(kettleJob);
             title.append("异常!");
-            msg.append("异常!");
-            e.printStackTrace();
+            log.error(id+"的job执行失败:"+e.getMessage());
+            if(!userId.equals("408")){
+                userIdList.add("408");
+            }
         }
-        List<String> userIdList = new ArrayList<>();
         userIdList.add(userId);
         Map<String, String> resultMap =  wechatApiService.SendTextCardMessageToWechatUser(userIdList,title.toString(),msg.toString(),"http://report.bpsemi.cn:8081/it_war");
         log.info("job微信消息发送结果"+resultMap);

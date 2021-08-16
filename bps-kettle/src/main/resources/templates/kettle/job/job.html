@@ -88,7 +88,10 @@
                 },
                 {
                     field: 'jobName',
-                    title: '作业名称'
+                    title: '作业名称',
+                    formatter: function(value, row, index) {
+                        return value+".kjb";
+                    }
                 },
                 {
                     field: 'jobDescription',

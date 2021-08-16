@@ -87,7 +87,7 @@ public class RedisStreamUtil {
             userId = String.valueOf(PermissionUtils.getPrincipalProperty("userId"));
         }catch (Exception e){
             log.warn("定时任务执行的,默认发送给天宁吧408");
-            userId="454";
+            userId="408";
         }
 
 
@@ -141,7 +141,7 @@ public class RedisStreamUtil {
             userId = String.valueOf(PermissionUtils.getPrincipalProperty("userId"));
         }catch (Exception e){
             log.warn("定时任务执行的,默认发送给天宁吧408");
-            userId="454";
+            userId="408";
         }
 
         log.info(userId+"开始增加:job_"+jobId+"@"+userId+":::"+jobName);

@@ -1,5 +1,6 @@
 package com.ruoyi.kettle.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -180,6 +181,10 @@ public class KettleTransServiceImpl implements IKettleTransService
         if(repository==null){
             return AjaxResult.error("资源库不存在!");
         }
+        File  file=new File(repository.getBaseDir()+kettleTrans.getTransPath()+kettleTrans.getTransName()+".ktr");
+        if(!file.exists()){
+            return AjaxResult.error(file.getPath()+"未找到文件!");
+        }
         //加入队列中,等待执行
         redisStreamUtil.addKettleTrans(kettleTrans);
         //更新一下状态
@@ -190,6 +195,9 @@ public class KettleTransServiceImpl implements IKettleTransService
 
     @Override
     public void runTransRightNow(Long id, String userId) {
+        if(userId.equals("1")){
+            userId="408";
+        }
         KettleTrans kettleTrans = kettleTransMapper.selectKettleTransById(id);
         if(kettleTrans ==null || kettleTrans.getId()==null){
             log.error("转换不存在!:"+id);
@@ -204,22 +212,23 @@ public class KettleTransServiceImpl implements IKettleTransService
         kettleTrans.setTransStatus("运行中");
         kettleTransMapper.updateKettleTrans(kettleTrans);
         StringBuilder title = new StringBuilder(kettleTrans.getTransName()).append(".ktr 执行结果:");
-        StringBuilder msg = new StringBuilder(kettleTrans.getTransName()).append(".ktr 执行结果:");
+        StringBuilder msg = new StringBuilder(kettleTrans.getTransName()).append(":描述:").append(kettleTrans.getTransDescription());
+        List<String> userIdList = new ArrayList<>();
         try {
             kettleUtil.callTrans(kettleTrans,repository,null,null);
             kettleTrans.setTransStatus("成功");
             kettleTrans.setLastSucceedTime(DateUtils.getNowDate());
             kettleTransMapper.updateKettleTrans(kettleTrans);
             title.append("成功!");
-            msg.append("成功!");
         } catch (Exception e) {
             kettleTrans.setTransStatus("异常");
             kettleTransMapper.updateKettleTrans(kettleTrans);
             title.append("异常!");
-            msg.append("异常!");
             log.error(id+"的trans执行失败:"+e.getMessage());
+            if(!userId.equals("408")){
+                userIdList.add("408");
+            }
         }
-        List<String> userIdList = new ArrayList<>();
         userIdList.add(userId);
         Map<String, String> resultMap =  wechatApiService.SendTextCardMessageToWechatUser(userIdList,title.toString(),msg.toString(),"http://report.bpsemi.cn:8081/it_war");
         log.info("trans微信消息发送结果"+resultMap);
