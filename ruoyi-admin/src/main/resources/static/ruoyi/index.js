@@ -293,8 +293,11 @@ $(function() {
                         }
                     });
                 }
-                if (isRefresh) {
+                if ($.common.equals(isRefresh, "0")) {
+                }else if($.common.equals(isRefresh, "1")){
                     refreshTab();
+                }else{
+                    refreshTable();
                 }
                 flag = false;
                 return false;
@@ -456,6 +459,22 @@ $(function() {
     	var target = $('.RuoYi_iframe[data-id="' + currentId + '"]');
         var url = target.attr('src');
     	target.attr('src', url).ready();
+    }
+
+    // 只刷新当前iframe下面的table和treetable，避免刷新整个tab页签造成检索条件或表单输入丢失
+    function refreshTable() {
+    	var currentId = $('.page-tabs-content').find('.active').attr('data-id');
+        var topWindow = $(window.document);
+        //var currentId = $('.page-tabs-content', topWindow).find('.active').attr('data-panel');
+        var $contentWindow = $('.RuoYi_iframe[data-id="' + currentId + '"]', topWindow)[0].contentWindow;
+        if($contentWindow.table == undefined){
+        }else{
+            if ($contentWindow.table.options.type == table_type.bootstrapTable) {
+                $contentWindow.$.table.refresh();
+            } else if ($contentWindow.table.options.type == table_type.bootstrapTreeTable) {
+                $contentWindow.$.treeTable.refresh();
+            }
+        }
     }
 
     // 页签全屏

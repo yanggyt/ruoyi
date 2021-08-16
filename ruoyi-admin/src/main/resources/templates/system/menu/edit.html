@@ -81,12 +81,16 @@
 				<label class="col-sm-2 control-label is-refresh" title="打开菜单选项卡是否刷新页面">是否刷新：<i class="fa fa-question-circle-o"></i></label>
 				<div class="col-sm-3 is-refresh">
 				    <div class="radio-box">
-						<input type="radio" id="refresh-no" name="isRefresh" value="1" th:field="*{isRefresh}">
-						<label for="refresh-no">否</label>
+						<input type="radio" id="refresh-no" name="isRefresh" value="0" th:field="*{isRefresh}">
+						<label for="refresh-no">不刷新</label>
 					</div>
 					<div class="radio-box">
-						<input type="radio" id="refresh-yes" name="isRefresh" value="0" th:field="*{isRefresh}">
-						<label for="refresh-yes">是</label>
+						<input type="radio" id="refresh-yes" name="isRefresh" value="1" th:field="*{isRefresh}">
+						<label for="refresh-yes">全局刷新</label>
+					</div>
+					<div class="radio-box">
+						<input type="radio" id="refresh-yes-onlyTable" name="isRefresh" value="2" th:field="*{isRefresh}">
+						<label for="refresh-yes">仅列表刷新</label>
 					</div>
 				</div>
 			</div>
