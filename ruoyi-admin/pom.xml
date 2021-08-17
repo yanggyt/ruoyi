@@ -158,7 +158,10 @@
                 </configuration>
             </plugin> -->
         </plugins>
+        <!--
         <finalName>${project.artifactId}</finalName>
+       -->
+        <finalName>it_war</finalName>
     </build>
 
 </project>
