@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.kettle.mapper.KettleTransMapper">
+    
+    <resultMap type="KettleTrans" id="KettleTransResult">
+        <result property="id"    column="id"    />
+        <result property="transName"    column="trans_name"    />
+        <result property="transDescription"    column="trans_description"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="transType"    column="trans_type"    />
+        <result property="transPath"    column="trans_path"    />
+        <result property="transRepositoryId"    column="trans_repository_id"    />
+        <result property="transLogLevel"    column="trans_log_level"    />
+        <result property="transStatus"    column="trans_status"    />
+        <result property="isDel"    column="is_del"    />
+        <result property="isMonitorEnabled"    column="is_monitor_enabled"    />
+        <result property="tplKey"    column="tpl_key"    />
+        <result property="roleKey"    column="role_key"    />
+        <result property="remark"    column="remark"    />
+        <result property="lastSucceedTime"    column="last_succeed_time"    />
+    </resultMap>
+
+    <sql id="selectKettleTransVo">
+        select id, trans_name, trans_description, created_time, update_time, created_by, update_by, trans_type, trans_path, trans_repository_id, trans_log_level, trans_status, is_del, is_monitor_enabled, tpl_key, role_key, remark,last_succeed_time from kettle_trans
+    </sql>
+
+    <select id="selectKettleTransList" parameterType="KettleTrans"  resultMap="KettleTransResult">
+        <include refid="selectKettleTransVo"/>
+        <where>  
+            <if test="KettleTrans.transName != null  and KettleTrans.transName != ''"> and trans_name like concat('%', #{KettleTrans.transName}, '%')</if>
+            <if test="KettleTrans.transDescription != null  and KettleTrans.transDescription != ''"> and trans_description = #{KettleTrans.transDescription}</if>
+            <if test="KettleTrans.transPath != null  and KettleTrans.transPath != ''"> and trans_path = #{KettleTrans.transPath}</if>
+            <if test="KettleTrans.transRepositoryId != null "> and trans_repository_id = #{KettleTrans.transRepositoryId}</if>
+            <if test="KettleTrans.transLogLevel != null  and KettleTrans.transLogLevel != ''"> and trans_log_level = #{KettleTrans.transLogLevel}</if>
+            <if test="KettleTrans.transStatus != null  and KettleTrans.transStatus != ''"> and trans_status = #{KettleTrans.transStatus}</if>
+            <if test="KettleTrans.isMonitorEnabled != null "> and is_monitor_enabled = #{KettleTrans.isMonitorEnabled}</if>
+            <if test="roleKey != null ">
+                and
+                <foreach collection="roleKey" item="item" open="(" close=")"  separator="  or  "   >
+                    role_key like  concat('%',#{item}, '%')
+                </foreach>
+
+            </if>
+
+               and is_del != 1
+        </where>
+    </select>
+    
+    <select id="selectKettleTransById" parameterType="Long" resultMap="KettleTransResult">
+        <include refid="selectKettleTransVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectKettleTransByTransName" parameterType="String" resultType="int">
+       select count(*) from kettle_trans  where trans_name = #{transName}
+    </select>
+    <select id="checkQuartzExist" parameterType="String" resultType="Long">
+        select job_id from sys_job  where invoke_target = #{checkStr} and job_group='KETTLE'
+    </select>
+    <select id="queryTransLog" parameterType="String" resultType="String">
+        select log_field from kettle_trans_log where  transname=#{transName} order by id_batch asc
+    </select>
+<!--    <select id="selectKettleTransByTransName" parameterType="Long" resultMap="KettleTransResult">
+        <include refid="selectKettleTransVo"/>
+        where trans_name = #{id}
+    </select>-->
+    <insert id="insertKettleTrans" parameterType="KettleTrans" useGeneratedKeys="true" keyProperty="id">
+        insert into kettle_trans
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="transName != null and transName != ''">trans_name,</if>
+            <if test="transDescription != null">trans_description,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="transType != null">trans_type,</if>
+            <if test="transPath != null">trans_path,</if>
+            <if test="transRepositoryId != null">trans_repository_id,</if>
+            <if test="transLogLevel != null">trans_log_level,</if>
+            <if test="transStatus != null">trans_status,</if>
+            <if test="isDel != null">is_del,</if>
+            <if test="isMonitorEnabled != null">is_monitor_enabled,</if>
+            <if test="tplKey != null">tpl_key,</if>
+            <if test="roleKey != null">role_key,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="transName != null and transName != ''">#{transName},</if>
+            <if test="transDescription != null">#{transDescription},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="transType != null">#{transType},</if>
+            <if test="transPath != null">#{transPath},</if>
+            <if test="transRepositoryId != null">#{transRepositoryId},</if>
+            <if test="transLogLevel != null">#{transLogLevel},</if>
+            <if test="transStatus != null">#{transStatus},</if>
+            <if test="isDel != null">#{isDel},</if>
+            <if test="isMonitorEnabled != null">#{isMonitorEnabled},</if>
+            <if test="tplKey != null">#{tplKey},</if>
+            <if test="roleKey != null">#{roleKey},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateKettleTrans" parameterType="KettleTrans">
+        update kettle_trans
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="transName != null and transName != ''">trans_name = #{transName},</if>
+            <if test="transDescription != null">trans_description = #{transDescription},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="transType != null">trans_type = #{transType},</if>
+            <if test="transPath != null">trans_path = #{transPath},</if>
+            <if test="transRepositoryId != null">trans_repository_id = #{transRepositoryId},</if>
+            <if test="transLogLevel != null">trans_log_level = #{transLogLevel},</if>
+            <if test="transStatus != null">trans_status = #{transStatus},</if>
+            <if test="isDel != null">is_del = #{isDel},</if>
+            <if test="isMonitorEnabled != null">is_monitor_enabled = #{isMonitorEnabled},</if>
+            <if test="tplKey != null">tpl_key = #{tplKey},</if>
+            <if test="roleKey != null">role_key = #{roleKey},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="lastSucceedTime != null">last_succeed_time = #{lastSucceedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteKettleTransById" parameterType="Long">
+        delete from kettle_trans where id = #{id}
+    </delete>
+
+    <delete id="deleteKettleTransByIds" parameterType="String">
+        delete from kettle_trans where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
