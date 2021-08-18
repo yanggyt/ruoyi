@@ -329,7 +329,7 @@ public class ExcelUtil<T>
                         {
                             val = reverseByExp(Convert.toStr(val), attr.readConverterExp(), attr.separator());
                         }
-                        else if (StringUtils.isNotEmpty(attr.dictType()))
+                        else if (StringUtils.isNotEmpty(attr.dictType()) && StringUtils.isEmpty(attr.dictTypeExceptImport()))
                         {
                             val = reverseDictByExp(Convert.toStr(val), attr.dictType(), attr.separator());
                         }
@@ -718,7 +718,8 @@ public class ExcelUtil<T>
                 {
                     cell.setCellValue(convertByExp(Convert.toStr(value), readConverterExp, separator));
                 }
-                else if (StringUtils.isNotEmpty(dictType) && StringUtils.isNotNull(value))
+
+                else if (StringUtils.isNotEmpty(dictType) && StringUtils.isNotNull(value) && StringUtils.isEmpty(attr.dictTypeExceptExport()))
                 {
                     cell.setCellValue(convertDictByExp(Convert.toStr(value), dictType, separator));
                 }
@@ -1245,7 +1246,9 @@ public class ExcelUtil<T>
                         XSSFPicture pic = (XSSFPicture) shape;
                         XSSFClientAnchor anchor = pic.getPreferredSize();
                         CTMarker ctMarker = anchor.getFrom();
-                        String picIndex = ctMarker.getRow() + "_" + ctMarker.getCol();
+                        //String picIndex = ctMarker.getRow() + "_" + ctMarker.getCol();
+                        //todo  此处有错误，暂时picIndex=""处理掉
+                        String picIndex="";
                         sheetIndexPicMap.put(picIndex, pic.getPictureData());
                     }
                 }

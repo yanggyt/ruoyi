@@ -1,24 +1,21 @@
 package com.ruoyi.common.utils.http;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import com.ruoyi.common.constant.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+
+import javax.net.ssl.*;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ruoyi.common.constant.Constants;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 通用http发送方法
@@ -258,5 +255,94 @@ public class HttpUtils
         {
             return true;
         }
+    }
+
+    /**
+     * 向指定 URL 发送xml POST方法的请求
+     *
+     * @param url 发送请求的 URL
+     * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @return 所代表远程资源的响应结果
+     *Author yangbo
+     */
+    public static String sendXmlPost(String url, String param) {
+        PrintWriter out = null;
+        BufferedReader in = null;
+        StringBuilder result = new StringBuilder();
+        try {
+            String urlNameString = url;
+            log.info("sendPost - {}", urlNameString);
+            URL realUrl = new URL(urlNameString);
+            URLConnection conn = realUrl.openConnection();
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("Accept-Charset", "utf-8");
+            conn.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");  //发送xml需加上此请求头
+            conn.addRequestProperty("SOAPAction", "\"\""); //向topgp发送xml必须加上该Name=“SOAPAction", Value="\"\"" ，否则会报415错误，不能识别XML.
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            out = new PrintWriter(conn.getOutputStream());
+            out.print(param);
+            out.flush();
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }
+            log.info("recv - {}", result);
+        } catch (ConnectException e) {
+            log.error("调用HttpUtils.sendXmlPost ConnectException, url=" + url + ",param=" + param, e);
+        } catch (SocketTimeoutException e) {
+            log.error("调用HttpUtils.sendXmlPost SocketTimeoutException, url=" + url + ",param=" + param, e);
+        } catch (IOException e) {
+            log.error("调用HttpUtils.sendXmlPost IOException, url=" + url + ",param=" + param, e);
+        } catch (Exception e) {
+            log.error("调用HttpsUtil.sendXmlPost Exception, url=" + url + ",param=" + param, e);
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                log.error("调用in.close Exception, url=" + url + ",param=" + param, ex);
+            }
+        }
+        return result.toString().replace("&lt;","<").replace("&gt;",">");
+    }
+
+
+    /**
+     * 向指定 Restful接口 发送POST方法的请求
+     *
+     * @param url 发送请求的 URL
+     * @param params 请求参数，请求参数为json的形式。例：params="{\"params\":{\"pagesize\":1000}}"
+     * @return 返回Map， Key="statusCode",接口访问返回状态， key="result":接口返回接果
+     *
+     * author yangbo
+     */
+    //public static Map<String,String> sendPostWithRest(String url, String params){
+    //如果参数为String类型，推送企业微信消息会乱码，因此改为Object类型，直接推送Map<Sring,Object> --yangbo 20210729
+    public static Map<String,String> sendPostWithRest(String url, Object params){
+        RestTemplate restTemplate=new RestTemplate();
+        ResponseEntity<String> result=null;
+        int statusCode=0;
+        try{
+            result=restTemplate.postForEntity(url,params,String.class);
+            statusCode=result.getStatusCode().value();
+        }catch (RestClientException e){
+            log.error("POST Request uri: "+url+", params:"+params+" error:"+e.getMessage());
+        }
+        Map<String,String> map=new HashMap<>();
+        map.put("statusCode",String.valueOf(statusCode));
+        if(statusCode== 200){
+            map.put("result",result.getBody());
+        } else{
+            map.put("result",String.valueOf(statusCode));
+        }
+        return map;
     }
 }

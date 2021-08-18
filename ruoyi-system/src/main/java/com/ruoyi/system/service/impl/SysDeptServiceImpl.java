@@ -1,33 +1,53 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.http.HttpUtils;
+import com.ruoyi.system.domain.EcologyDept;
 import com.ruoyi.system.mapper.SysDeptMapper;
+import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysDeptService;
+import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.service.IWechatApiService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 部门管理 服务实现
  * 
  * @author ruoyi
  */
-@Service
+@Service("sysDeptServiceImpl")
 public class SysDeptServiceImpl implements ISysDeptService
 {
     @Autowired
     private SysDeptMapper deptMapper;
+
+    @Autowired
+    private ISysConfigService sysconfig;
+
+    @Autowired
+    private IWechatApiService wechatApiService;
+
+    @Autowired
+    ISysUserService userService;
 
     /**
      * 查询部门管理数据
@@ -60,7 +80,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     /**
      * 查询部门管理树（排除下级）
      * 
-     * @param deptId 部门ID
+     * @param dept 部门
      * @return 所有部门信息
      */
     @Override
@@ -308,5 +328,103 @@ public class SysDeptServiceImpl implements ISysDeptService
             return UserConstants.DEPT_NAME_NOT_UNIQUE;
         }
         return UserConstants.DEPT_NAME_UNIQUE;
+    }
+
+    /**
+     * Ecology部门信息同步
+     */
+    @Override
+    public AjaxResult syncEcologyDept(String url, String params) {
+        String msg="同步OA部门失败!";
+        List<String> userList=new ArrayList<>();
+        userList.add(ShiroUtils.getLoginName().equals("admin")?"359":String.valueOf(ShiroUtils.getUserId()));
+        if( ! sysconfig.selectConfigByKey("sys.dept.sync").equals("1")){
+               msg="OA部门同步失败！系统未开启OA部门同步!";
+              wechatApiService.SendTextMessageToWechatUser(userList,msg);
+              return AjaxResult.success(msg,"false");
+        }
+          int result =deptSync(HttpUtils.sendPostWithRest(url,params));
+          if( result==200)
+          {
+              return AjaxResult.success("OA部门同步成功!",result);
+          }
+
+        wechatApiService.SendTextMessageToWechatUser(userList,msg+"result:"+result);
+        return AjaxResult.error(msg,result);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public int deptSync(Map<String,String> mapResult){
+        //如果接口返回状态码不为200，则不做同步处理
+        if(!mapResult.get("statusCode").equals("200"))
+        {
+            return 0;
+        }
+
+        //取Ecology返回信息中的部门信息
+        Map<String,Object> map = (Map) JSON.parse(mapResult.get("result"));
+        Map<String,Object> dataMap= (Map<String, Object>) map.get("data");
+        JSONArray json = (JSONArray) dataMap.get("dataList");
+        List<EcologyDept> deptList = JSONArray.parseArray(json.toJSONString(), EcologyDept.class);
+        //清空部门表
+        deptMapper.truncateDept();
+
+        //插入顶级部门
+        SysDept topDept= new SysDept();//deptMapper.selectDeptById(Long.parseLong("999999"));
+        topDept.setDeptId(Long.parseLong("999999"));
+        topDept.setParentId(Long.parseLong("0"));
+        topDept.setDeptName("BPS");
+        topDept.setAncestors("0");
+        topDept.setOrderNum("0");
+        topDept.setStatus("0");
+        topDept.setCreateBy("Admin");
+        deptMapper.insertDept(topDept);
+
+        //同步Ecology部门信息
+        List<SysDept> list=new ArrayList<>();
+        for(EcologyDept ecologyDept:deptList){
+            if(ecologyDept.getSubcompanyid1().equals("1")) { //只取分部ID为“1”的部门，排除代理商
+                SysDept dept= insertEcologyDept(ecologyDept);
+                list.add(dept);
+            }
+        }
+        //更新祖级列表信息
+        updateAncestors(list);
+
+        return 200;
+    }
+
+    //将Ecology部门转化为系统部门，并更新到部门表sys_dept
+    public SysDept insertEcologyDept(EcologyDept ecologyDept){
+        SysDept dept=new SysDept();
+        dept.setDeptId(Long.parseLong(ecologyDept.getId()));
+        dept.setParentId(Long.parseLong(ecologyDept.getSupdepid()) == 0 ? 999999 : Long.parseLong(ecologyDept.getSupdepid()));
+        dept.setDeptName(ecologyDept.getDepartmentname());
+        dept.setOrderNum("0");
+        dept.setStatus("0");
+        dept.setCreateBy("Admin");
+        deptMapper.insertDept(dept);
+        return dept;
+    }
+
+    //更新祖级列表信息
+    public void updateAncestors(List<SysDept> sysDeptList)
+    {
+        if(sysDeptList.isEmpty())
+        {
+            return;
+        }
+        List<SysDept> list =new ArrayList<>();
+        for(SysDept dept:sysDeptList){
+            SysDept info = deptMapper.selectDeptById(dept.getParentId());
+            if(StringUtils.isNotEmpty(info.getAncestors())) {
+                dept.setAncestors(info.getAncestors()+","+dept.getParentId());
+                deptMapper.updateDept(dept);
+            }else{
+                list.add(dept);
+            }
+        }
+        updateAncestors(list);
     }
 }

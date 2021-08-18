@@ -36,6 +36,16 @@ public @interface Excel
     public String dictType() default "";
 
     /**
+     * 如果使用字典转换，但不希望导入时转换，则dictTypeExceptImport="true";
+     */
+    public String dictTypeExceptImport() default "";
+
+    /**
+     * 如果使用字典转换，但不希望导出时转换，则dictTypeExceptExport="true"
+     */
+    public String dictTypeExceptExport() default "";
+
+    /**
      * 读取内容转表达式 (如: 0=男,1=女,2=未知)
      */
     public String readConverterExp() default "";

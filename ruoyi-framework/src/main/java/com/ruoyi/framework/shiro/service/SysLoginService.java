@@ -38,26 +38,26 @@ public class SysLoginService
     /**
      * 登录
      */
-    public SysUser login(String username, String password)
+    public SysUser login(String username, String password,String loginType)
     {
-        // 验证码校验
-        if (ShiroConstants.CAPTCHA_ERROR.equals(ServletUtils.getRequest().getAttribute(ShiroConstants.CURRENT_CAPTCHA)))
-        {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
-            throw new CaptchaException();
-        }
-        // 用户名或密码为空 错误
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
-        {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("not.null")));
-            throw new UserNotExistsException();
-        }
-        // 密码如果不在指定范围内 错误
-        if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
-                || password.length() > UserConstants.PASSWORD_MAX_LENGTH)
-        {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
-            throw new UserPasswordNotMatchException();
+        //如果是企业微信登录，则无需验证本密码规则
+        if(StringUtils.isEmpty(loginType) || !loginType.equals("wechat")) {
+            // 验证码校验
+            if (ShiroConstants.CAPTCHA_ERROR.equals(ServletUtils.getRequest().getAttribute(ShiroConstants.CURRENT_CAPTCHA))) {
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
+                throw new CaptchaException();
+            }
+            // 用户名或密码为空 错误
+            if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("not.null")));
+                throw new UserNotExistsException();
+            }
+            // 密码如果不在指定范围内 错误
+            if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
+                    || password.length() > UserConstants.PASSWORD_MAX_LENGTH) {
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+                throw new UserPasswordNotMatchException();
+            }
         }
 
         // 用户名不在指定范围内 错误
@@ -88,20 +88,22 @@ public class SysLoginService
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.not.exists")));
             throw new UserNotExistsException();
         }
-        
+
         if (UserStatus.DELETED.getCode().equals(user.getDelFlag()))
         {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.delete")));
             throw new UserDeleteException();
         }
-        
+
         if (UserStatus.DISABLE.getCode().equals(user.getStatus()))
         {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.blocked", user.getRemark())));
             throw new UserBlockedException();
         }
-
-        passwordService.validate(user, password);
+        //如果是企业微信登录，则无需本地验证密码
+        if(StringUtils.isEmpty(loginType) || !loginType.equals("wechat")){
+            passwordService.validate(user, password);
+        }
 
         AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         recordLoginInfo(user);

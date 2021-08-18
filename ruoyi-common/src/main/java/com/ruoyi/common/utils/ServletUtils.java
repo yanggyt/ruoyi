@@ -1,13 +1,15 @@
 package com.ruoyi.common.utils;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.ruoyi.common.core.text.Convert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import com.ruoyi.common.core.text.Convert;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 /**
  * 客户端工具类
@@ -160,5 +162,23 @@ public class ServletUtils
             }
         }
         return flag;
+    }
+
+    /**
+     * 从HttpServletRequest中获取post的json对象数据content-type=“text/plain”
+     * @param request
+     * @return content
+     * @throws IOException
+     */
+    public static String getRequestContent(HttpServletRequest request) throws IOException {
+        BufferedReader reader = request.getReader();
+        char[] buf = new char[request.getContentLength()];
+        int len = 0;
+        StringBuffer contentBuffer = new StringBuffer();
+        while ((len = reader.read(buf)) != -1) {
+            contentBuffer.append(buf, 0, len);
+        }
+        String content= contentBuffer.toString();
+        return  content;
     }
 }
