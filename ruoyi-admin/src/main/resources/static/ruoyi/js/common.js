@@ -436,7 +436,16 @@ var sub = {
     	        var textareaValue = $(columns[i]).find('textarea');
     	        var key = dataColumns[i].field;
     	        if ($.common.isNotEmpty(inputValue.val())) {
-    	            obj[key] = inputValue.val();
+                    var inputType = inputValue.attr("type");
+    	        	if(inputType === 'checkbox'){
+    	        		if(inputValue.is(':checked')) {
+        	        		obj[key] = inputValue.val();
+        	        	}else{
+        	        		obj[key] = '';
+        	        	}
+    	        	}else{
+    	        		obj[key] = inputValue.val();
+    	        	}
     	        } else if ($.common.isNotEmpty(selectValue.val())) {
     	            obj[key] = selectValue.val();
     	        } else if ($.common.isNotEmpty(textareaValue.val())) {
