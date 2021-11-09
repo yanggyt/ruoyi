@@ -1,6 +1,5 @@
 /**
  * 通用js方法封装处理
- * Copyright (c) 2019 ruoyi
  */
 
 // 当前table相关信息

@@ -33,16 +33,14 @@ insert into sys_dict_data values (57, 13, '铁色', '13', 'busi_color', '', '', 
 insert into sys_dict_data values (58, 14, '粉色', '14', 'busi_color', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 
 -- 一级菜单
-insert into sys_menu
-values ('5', '劳务生产管理', '0', '5', '#', '', 'M', '0', '1', '', 'fa fa-bars', 'admin', sysdate(), '', null, '劳务生产管理');
+
+insert into sys_menu values ('117', '生产信息', '0', '1', '#', '', 'M', '0', '1', '', 'fa fa-wrench', 'admin', sysdate(), '', null, '生产信息菜单');
+insert into sys_menu values ('118', '物料信息', '0', '2', '#', '', 'M', '0', '1', '', 'fa fa-cubes', 'admin', sysdate(), '', null, '物料信息菜单');
+insert into sys_menu values ('119', '订单信息', '0', '3', '#', '', 'M', '0', '1', '', 'fa fa-tasks', 'admin', sysdate(), '', null, '订单信息菜单');
+insert into sys_menu values ('120', '成品管理', '0', '4', '#', '', 'M', '0', '1', '', 'fa fa-male', 'admin', sysdate(), '', null, '成品管理菜单');
+insert into sys_menu values ('121', '客户管理', '0', '5', '#', '', 'M', '0', '1', '', 'fa fa-address-book-o', 'admin', sysdate(), '', null, '客户管理菜单');
+insert into sys_menu values ('122', '财务管理', '0', '6', '#', '', 'M', '0', '1', '', 'fa fa-cny', 'admin', sysdate(), '', null, '财务管理菜单');
 -- 二级菜单
-insert into sys_menu values ('117', '生产信息', '5', '1', '#', '', 'C', '0', '1', '', 'fa fa-bars', 'admin', sysdate(), '', null, '生产信息菜单');
-insert into sys_menu values ('118', '物料信息', '5', '2', '#', '', 'C', '0', '1', '', 'fa fa-bars', 'admin', sysdate(), '', null, '物料信息菜单');
-insert into sys_menu values ('119', '订单信息', '5', '3', '#', '', 'C', '0', '1', '', 'fa fa-bars', 'admin', sysdate(), '', null, '订单信息菜单');
-insert into sys_menu values ('120', '成品管理', '5', '4', '#', '', 'C', '0', '1', '', 'fa fa-bars', 'admin', sysdate(), '', null, '成品管理菜单');
-insert into sys_menu values ('121', '客户管理', '5', '5', '#', '', 'C', '0', '1', '', 'fa fa-bars', 'admin', sysdate(), '', null, '客户管理菜单');
-insert into sys_menu values ('122', '财务管理', '5', '6', '#', '', 'C', '0', '1', '', 'fa fa-bars', 'admin', sysdate(), '', null, '财务管理菜单');
--- 三级菜单
 insert into sys_menu values ('502', '生产经营总览', '117', '1', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '生产经营总览菜单');
 insert into sys_menu values ('503', '生产线总产值', '117', '2', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '生产经营总览菜单');
 insert into sys_menu values ('504', '布料管理', '118', '1', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '布料管理菜单');
