@@ -259,12 +259,21 @@ public class DemoTableController extends BaseController
     }
 
     /**
-     * 表格拖拽操作
+     * 表格行拖拽操作
      */
-    @GetMapping("/reorder")
-    public String reorder()
+    @GetMapping("/reorderRows")
+    public String reorderRows()
     {
-        return prefix + "/reorder";
+        return prefix + "/reorderRows";
+    }
+
+    /**
+     * 表格列拖拽操作
+     */
+    @GetMapping("/reorderColumns")
+    public String reorderColumns()
+    {
+        return prefix + "/reorderColumns";
     }
 
     /**
@@ -328,6 +337,15 @@ public class DemoTableController extends BaseController
     public String dynamicColumns()
     {
         return prefix + "/dynamicColumns";
+    }
+
+    /**
+     * 自定义视图分页
+     */
+    @GetMapping("/customView")
+    public String customView()
+    {
+        return prefix + "/customView";
     }
 
     /**

@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.security.CipherUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.framework.shiro.realm.UserRealm;
 import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
@@ -121,6 +122,12 @@ public class ShiroConfig
      */
     @Value("${shiro.user.unauthorizedUrl}")
     private String unauthorizedUrl;
+
+    /**
+     * 是否开启记住我功能
+     */
+    @Value("${shiro.rememberMe.enabled: false}")
+    private boolean rememberMe;
 
     /**
      * 缓存管理器 使用Ehcache实现
@@ -235,7 +242,7 @@ public class ShiroConfig
         // 设置realm.
         securityManager.setRealm(userRealm);
         // 记住我
-        securityManager.setRememberMeManager(rememberMeManager());
+        securityManager.setRememberMeManager(rememberMe ? rememberMeManager() : null);
         // 注入缓存管理器;
         securityManager.setCacheManager(getEhCacheManager());
         // session管理器
@@ -357,7 +364,14 @@ public class ShiroConfig
     {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         cookieRememberMeManager.setCookie(rememberMeCookie());
-        cookieRememberMeManager.setCipherKey(Base64.decode(cipherKey));
+        if (StringUtils.isNotEmpty(cipherKey))
+        {
+            cookieRememberMeManager.setCipherKey(Base64.decode(cipherKey));
+        }
+        else
+        {
+            cookieRememberMeManager.setCipherKey(CipherUtils.generateNewKey(128, "AES").getEncoded());
+        }
         return cookieRememberMeManager;
     }
 

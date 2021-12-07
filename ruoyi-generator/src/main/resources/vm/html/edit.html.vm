@@ -245,6 +245,7 @@
             $('.summernote').each(function(i) {
                 $('#' + this.id).summernote({
                     lang: 'zh-CN',
+                    dialogsInBody: true,
                     callbacks: {
                         onChange: function(contents, $edittable) {
                             $("input[name='" + this.id + "']").val(contents);
@@ -284,7 +285,7 @@
 #end
 #if($table.tree)
 
-        /*${functionName}-新增-选择父部门树*/
+        /*${functionName}-编辑-选择父${functionName}树*/
         function select${BusinessName}Tree() {
             var options = {
                 title: '${functionName}选择',
@@ -296,10 +297,10 @@
         }
 
         function doSubmit(index, layero){
-            var body = layer.getChildFrame('body', index);
-               $("#treeId").val(body.find('#treeId').val());
-               $("#treeName").val(body.find('#treeName').val());
-               layer.close(index);
+            var body = $.modal.getChildFrame(index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            $.modal.close(index);
         }
 #end
 #if($table.sub)
@@ -344,8 +345,9 @@
                         var name = $.common.sprintf("${subclassName}List[%s].${javaField}", index);
                         return $.common.dictToSelect(${javaField}Datas, value, name);
                     }
-                #if($velocityCount != $subTable.columns.size())},#end
-
+#if($foreach.count != $subTable.columns.size())
+                },
+#end
 #else
                 {
                     field: '${javaField}',
@@ -355,8 +357,9 @@
                         var html = $.common.sprintf("<input class='form-control' type='text' name='${subclassName}List[%s].${javaField}' value='%s'>", index, value);
                         return html;
                     }
-				#if($velocityCount != $subTable.columns.size())},#end
-
+#if($foreach.count != $subTable.columns.size())
+                },
+#end
 #end
 #end
                 }]
@@ -376,7 +379,7 @@
 #set($javaField=$column.javaField)
 #if($column.pk || $javaField == ${subTableFkclassName})
 #else
-                    ${javaField}: ""#if($velocityCount != $subTable.columns.size()),#end
+                    ${javaField}: ""#if($foreach.count != $subTable.columns.size()),#end
 
 #end
 #end

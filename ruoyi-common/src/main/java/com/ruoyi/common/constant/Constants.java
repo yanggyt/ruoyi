@@ -18,6 +18,16 @@ public class Constants
     public static final String GBK = "GBK";
 
     /**
+     * http请求
+     */
+    public static final String HTTP = "http://";
+
+    /**
+     * https请求
+     */
+    public static final String HTTPS = "https://";
+
+    /**
      * 通用成功标识
      */
     public static final String SUCCESS = "0";
@@ -66,7 +76,7 @@ public class Constants
      * 排序的方向 "desc" 或者 "asc".
      */
     public static final String IS_ASC = "isAsc";
-    
+
     /**
      * 系统用户授权缓存
      */
@@ -96,4 +106,20 @@ public class Constants
      * 资源映射路径 前缀
      */
     public static final String RESOURCE_PREFIX = "/profile";
+
+    /**
+     * RMI 远程方法调用
+     */
+    public static final String LOOKUP_RMI = "rmi://";
+
+    /**
+     * LDAP 远程方法调用
+     */
+    public static final String LOOKUP_LDAP = "ldap://";
+
+    /**
+     * 定时任务违规的字符
+     */
+    public static final String[] JOB_ERROR_STR = { "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
+            "org.springframework.jndi" };
 }
