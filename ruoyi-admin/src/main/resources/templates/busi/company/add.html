@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增客户公司')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-company-add">
+            <h4 class="form-header h4">客户公司信息</h4>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">公司名称：</label>
+                <div class="col-sm-8">
+                    <input name="coName" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公司地址：</label>
+                <div class="col-sm-8">
+                    <input name="addr" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">对公账号：</label>
+                <div class="col-sm-8">
+                    <input name="account" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">纳税号：</label>
+                <div class="col-sm-8">
+                    <input name="taxNumber" class="form-control" type="text">
+                </div>
+            </div>
+            <h4 class="form-header h4">客户公司人员信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "busi/company"
+        var sexDatas = [[${@dict.getType('sys_user_sex')}]];
+        var roleDatas = [[${@dict.getType('busi_role')}]];
+        $("#form-company-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-company-add').serialize());
+            }
+        }
+
+        $(function() {
+            var options = {
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'personName',
+                    align: 'center',
+                    title: '姓名',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiCustomerPersonList[%s].personName' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'sex',
+                    align: 'center',
+                    title: '性别',
+                    formatter: function(value, row, index) {
+                        var name = $.common.sprintf("busiCustomerPersonList[%s].sex", index);
+                        return $.common.dictToSelect(sexDatas, value, name);
+                    }
+                },
+                {
+                    field: 'phonenumber',
+                    align: 'center',
+                    title: '手机号码',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiCustomerPersonList[%s].phonenumber' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'email',
+                    align: 'center',
+                    title: '人员邮箱',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiCustomerPersonList[%s].email' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'role',
+                    align: 'center',
+                    title: '角色',
+                    formatter: function(value, row, index) {
+                        var name = $.common.sprintf("busiCustomerPersonList[%s].role", index);
+                        return $.common.dictToSelect(roleDatas, value, name);
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function addColumn() {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+        	
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    personName: "",
+                    sex: "",
+                    phonenumber: "",
+                    email: "",
+                    role: ""
+                }
+            });
+        }
+    </script>
+</body>
+</html>

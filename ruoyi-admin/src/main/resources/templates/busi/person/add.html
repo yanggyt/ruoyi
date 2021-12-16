@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增客户公司人员')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-person-add">
+            <input id="treeId" name="companyId"  type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">所属公司：</label>
+                <div class="col-sm-8">
+                    <input  id="treeName" name="companyName" readonly="true" onclick="selectCompany()"  class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">姓名：</label>
+                <div class="col-sm-8">
+                    <input name="personName" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">性别：</label>
+                <div class="col-sm-8">
+                    <select name="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">手机号码：</label>
+                <div class="col-sm-8">
+                    <input name="phonenumber" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">人员邮箱：</label>
+                <div class="col-sm-8">
+                    <input name="email" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">角色：</label>
+                <div class="col-sm-8">
+                    <select name="role" class="form-control m-b" th:with="type=${@dict.getType('busi_role')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "busi/person"
+        $("#form-person-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-person-add').serialize());
+            }
+        }
+        /*客户公司选择*/
+        function selectCompany() {
+            var options = {
+                title: '选择客户公司',
+                width: "380",
+                height: "400",
+                url: ctx + "busi/company/selectCompany/",
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+        function doSubmit(index, layero){
+            var body = $.modal.getChildFrame(index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            $.modal.close(index);
+        }
+    </script>
+</body>
+</html>

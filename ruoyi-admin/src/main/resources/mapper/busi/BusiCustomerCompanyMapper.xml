@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.busi.mapper.BusiCustomerCompanyMapper">
+    
+    <resultMap type="BusiCustomerCompany" id="BusiCustomerCompanyResult">
+        <result property="id"    column="id"    />
+        <result property="coName"    column="co_name"    />
+        <result property="addr"    column="addr"    />
+        <result property="account"    column="account"    />
+        <result property="taxNumber"    column="tax_number"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="BusiCustomerCompanyBusiCustomerPersonResult" type="BusiCustomerCompany" extends="BusiCustomerCompanyResult">
+        <collection property="busiCustomerPersonList" notNullColumn="sub_id" javaType="java.util.List" resultMap="BusiCustomerPersonResult" />
+    </resultMap>
+
+    <resultMap type="BusiCustomerPerson" id="BusiCustomerPersonResult">
+        <result property="id"    column="sub_id"    />
+        <result property="companyId"    column="sub_company_id"    />
+        <result property="personName"    column="sub_person_name"    />
+        <result property="sex"    column="sub_sex"    />
+        <result property="phonenumber"    column="sub_phonenumber"    />
+        <result property="email"    column="sub_email"    />
+        <result property="role"    column="sub_role"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+    </resultMap>
+
+    <sql id="selectBusiCustomerCompanyVo">
+        select id, co_name, addr, account, tax_number, create_by, create_time, update_by, update_time from busi_customer_company
+    </sql>
+
+    <select id="selectBusiCustomerCompanyList" parameterType="BusiCustomerCompany" resultMap="BusiCustomerCompanyResult">
+        <include refid="selectBusiCustomerCompanyVo"/>
+        <where>  
+            <if test="coName != null  and coName != ''"> and co_name like concat('%', #{coName}, '%')</if>
+            <if test="addr != null  and addr != ''"> and addr like concat('%', #{addr}, '%')</if>
+            <if test="account != null  and account != ''"> and account like concat('%', #{account}, '%')</if>
+            <if test="taxNumber != null  and taxNumber != ''"> and tax_number like concat('%', #{taxNumber}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiCustomerCompanyById" parameterType="String" resultMap="BusiCustomerCompanyBusiCustomerPersonResult">
+        select a.id, a.co_name, a.addr, a.account, a.tax_number, a.create_by, a.create_time, a.update_by, a.update_time,
+            b.id as sub_id, b.company_id as sub_company_id, b.person_name as sub_person_name, b.sex as sub_sex, b.phonenumber as sub_phonenumber, b.email as sub_email, b.role as sub_role, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time
+        from busi_customer_company a
+        left join busi_customer_person b on b.company_id = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertBusiCustomerCompany" parameterType="BusiCustomerCompany" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_customer_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coName != null and coName != ''">co_name,</if>
+            <if test="addr != null">addr,</if>
+            <if test="account != null">account,</if>
+            <if test="taxNumber != null">tax_number,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coName != null and coName != ''">#{coName},</if>
+            <if test="addr != null">#{addr},</if>
+            <if test="account != null">#{account},</if>
+            <if test="taxNumber != null">#{taxNumber},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiCustomerCompany" parameterType="BusiCustomerCompany">
+        update busi_customer_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coName != null and coName != ''">co_name = #{coName},</if>
+            <if test="addr != null">addr = #{addr},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="taxNumber != null">tax_number = #{taxNumber},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiCustomerCompanyById" parameterType="String">
+        delete from busi_customer_company where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiCustomerCompanyByIds" parameterType="String">
+        delete from busi_customer_company where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteBusiCustomerPersonByCompanyIds" parameterType="String">
+        delete from busi_customer_person where company_id in 
+        <foreach item="companyId" collection="array" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBusiCustomerPersonByCompanyId" parameterType="String">
+        delete from busi_customer_person where company_id = #{companyId}
+    </delete>
+
+    <insert id="batchBusiCustomerPerson">
+        insert into busi_customer_person( id, company_id, person_name, sex, phonenumber, email, role, create_by, create_time, update_by, update_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.companyId}, #{item.personName}, #{item.sex}, #{item.phonenumber}, #{item.email}, #{item.role}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+</mapper>

@@ -1,6 +1,8 @@
 insert into sys_dict_type values(11,  '尺码', 'busi_size',        '0', 'admin', sysdate(), '', null, '尺码列表');
 insert into sys_dict_type values(12,  '颜色', 'busi_color',        '0', 'admin', sysdate(), '', null, '颜色列表');
+insert into sys_dict_type values(13,  '客户角色', 'busi_role',        '0', 'admin', sysdate(), '', null, '客户角色列表');
 
+-- 尺码字典
 insert into sys_dict_data values (30, 1, 'XXXXXS', '1', 'busi_size', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (31, 2, 'XXXXS', '2', 'busi_size', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (32, 3, 'XXXS', '3', 'busi_size', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
@@ -16,7 +18,7 @@ insert into sys_dict_data values (41, 12, 'XXXXL', '12', 'busi_size', '', '', 'N
 insert into sys_dict_data values (42, 13, 'XXXXXL', '13', 'busi_size', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (43, 14, 'XXXXXXL', '14', 'busi_size', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (44, 15, '通码', '15', 'busi_size', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
-
+-- 颜色字典
 insert into sys_dict_data values (45, 1, '白色', '1', 'busi_color', '', '', 'Y', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (46, 2, '黑色', '2', 'busi_color', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (47, 3, '红色', '3', 'busi_color', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
@@ -32,8 +34,11 @@ insert into sys_dict_data values (56, 12, '默认', '12', 'busi_color', '', '', 
 insert into sys_dict_data values (57, 13, '铁色', '13', 'busi_color', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (58, 14, '粉色', '14', 'busi_color', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 
--- 一级菜单
+-- 客户角色字典
+insert into sys_dict_data values (59, 1, '负责人', '1', 'busi_role', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
+insert into sys_dict_data values (60, 2, '跟单人员', '2', 'busi_role', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 
+-- 一级菜单
 insert into sys_menu values ('117', '生产信息', '0', '1', '#', '', 'M', '0', '1', '', 'fa fa-wrench', 'admin', sysdate(), '', null, '生产信息菜单');
 insert into sys_menu values ('118', '物料信息', '0', '2', '#', '', 'M', '0', '1', '', 'fa fa-cubes', 'admin', sysdate(), '', null, '物料信息菜单');
 insert into sys_menu values ('119', '订单信息', '0', '3', '#', '', 'M', '0', '1', '', 'fa fa-tasks', 'admin', sysdate(), '', null, '订单信息菜单');
@@ -53,7 +58,4 @@ insert into sys_menu values ('510', '衔接订单', '119', '3', '/monitor/operlo
 insert into sys_menu values ('511', '出货管理', '120', '1', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '出货管理菜单');
 insert into sys_menu values ('512', '交货管理', '120', '2', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '交货管理菜单');
 insert into sys_menu values ('513', '返修管理', '120', '3', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '返修管理菜单');
-insert into sys_menu values ('514', '客户负责人信息', '121', '1', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '客户负责人信息菜单');
-insert into sys_menu values ('515', '跟单人员信息', '121', '2', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '跟单人员信息菜单');
-insert into sys_menu values ('516', '款号信息', '121', '3', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '款号信息菜单');
 insert into sys_menu values ('517', '客户税号', '122', '1', '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', sysdate(), '', null, '客户税号菜单');
