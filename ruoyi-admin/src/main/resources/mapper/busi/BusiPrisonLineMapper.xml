@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BusiPrisonLine" id="BusiPrisonLineResult">
         <result property="id"    column="id"    />
         <result property="pid"    column="pid"    />
+        <result property="pname"    column="pname"    />
         <result property="disname"    column="disname"    />
         <result property="leader"    column="leader"    />
         <result property="personNumber"    column="person_number"    />
@@ -20,15 +21,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBusiPrisonLineVo">
-        select id, pid, disname, leader, person_number, status, classify, create_by, create_time, update_by, update_time from busi_prison_line
+        select A.id, A.pid,b.disname as pname, A.disname, A.leader, A.person_number, A.status, A.classify, A.create_by, A.create_time, A.update_by, A.update_time from busi_prison_line A
+         LEFT JOIN busi_prison_line B on a.pid = b.id
     </sql>
 
     <select id="selectBusiPrisonLineList" parameterType="BusiPrisonLine" resultMap="BusiPrisonLineResult">
         <include refid="selectBusiPrisonLineVo"/>
         <where>  
-            <if test="disname != null  and disname != ''"> and disname like concat('%', #{disname}, '%')</if>
-            <if test="leader != null  and leader != ''"> and leader like concat('%', #{leader}, '%')</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="disname != null  and disname != ''"> and A.disname like concat('%', #{disname}, '%')</if>
+            <if test="leader != null  and leader != ''"> and A.leader like concat('%', #{leader}, '%')</if>
+            <if test="status != null  and status != ''"> and A.status = #{status}</if>
         </where>
         order by pid
     </select>

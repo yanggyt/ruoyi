@@ -19,8 +19,11 @@ public class BusiPrisonLine extends TreeEntity
     private Long id;
 
     /** 所属监区 */
-    @Excel(name = "所属监区")
     private Long pid;
+
+    /** 所属监区名称 */
+    @Excel(name = "所属监区")
+    private String pname;
 
     /** 名称 */
     @Excel(name = "名称")
@@ -106,11 +109,20 @@ public class BusiPrisonLine extends TreeEntity
         return classify;
     }
 
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("pid", getPid())
+            .append("pname", getPname())
             .append("disname", getDisname())
             .append("leader", getLeader())
             .append("personNumber", getPersonNumber())
