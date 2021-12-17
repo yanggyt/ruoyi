@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.busi.mapper.BusiPrisonLineMapper">
+    
+    <resultMap type="BusiPrisonLine" id="BusiPrisonLineResult">
+        <result property="id"    column="id"    />
+        <result property="pid"    column="pid"    />
+        <result property="disname"    column="disname"    />
+        <result property="leader"    column="leader"    />
+        <result property="personNumber"    column="person_number"    />
+        <result property="status"    column="status"    />
+        <result property="classify"    column="classify"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectBusiPrisonLineVo">
+        select id, pid, disname, leader, person_number, status, classify, create_by, create_time, update_by, update_time from busi_prison_line
+    </sql>
+
+    <select id="selectBusiPrisonLineList" parameterType="BusiPrisonLine" resultMap="BusiPrisonLineResult">
+        <include refid="selectBusiPrisonLineVo"/>
+        <where>  
+            <if test="disname != null  and disname != ''"> and disname like concat('%', #{disname}, '%')</if>
+            <if test="leader != null  and leader != ''"> and leader like concat('%', #{leader}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+        order by pid
+    </select>
+    
+    <select id="selectBusiPrisonLineById" parameterType="Long" resultMap="BusiPrisonLineResult">
+        select t.id, t.pid, t.disname, t.leader, t.person_number, t.status, t.classify, t.create_by, t.create_time, t.update_by, t.update_time, p.disname as parent_name
+        from busi_prison_line t
+        left join busi_prison_line p on p.id = t.pid
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertBusiPrisonLine" parameterType="BusiPrisonLine" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_prison_line
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pid != null">pid,</if>
+            <if test="disname != null and disname != ''">disname,</if>
+            <if test="leader != null">leader,</if>
+            <if test="personNumber != null">person_number,</if>
+            <if test="status != null">status,</if>
+            <if test="classify != null">classify,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pid != null">#{pid},</if>
+            <if test="disname != null and disname != ''">#{disname},</if>
+            <if test="leader != null">#{leader},</if>
+            <if test="personNumber != null">#{personNumber},</if>
+            <if test="status != null">#{status},</if>
+            <if test="classify != null">#{classify},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiPrisonLine" parameterType="BusiPrisonLine">
+        update busi_prison_line
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="disname != null and disname != ''">disname = #{disname},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="personNumber != null">person_number = #{personNumber},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="classify != null">classify = #{classify},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiPrisonLineById" parameterType="Long">
+        delete from busi_prison_line where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiPrisonLineByIds" parameterType="String">
+        delete from busi_prison_line where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
