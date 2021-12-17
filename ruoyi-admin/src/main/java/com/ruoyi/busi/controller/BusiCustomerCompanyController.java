@@ -86,6 +86,8 @@ public class BusiCustomerCompanyController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(BusiCustomerCompany busiCustomerCompany) {
+        busiCustomerCompany.setCreateBy(getLoginName());
+        busiCustomerCompany.getBusiCustomerPersonList().stream().forEach(person -> person.setCreateBy(getLoginName()));
         return toAjax(busiCustomerCompanyService.insertBusiCustomerCompany(busiCustomerCompany));
     }
 
@@ -107,6 +109,8 @@ public class BusiCustomerCompanyController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(BusiCustomerCompany busiCustomerCompany) {
+        busiCustomerCompany.setUpdateBy(getLoginName());
+        busiCustomerCompany.getBusiCustomerPersonList().stream().forEach(person -> person.setCreateBy(getLoginName()));
         return toAjax(busiCustomerCompanyService.updateBusiCustomerCompany(busiCustomerCompany));
     }
 

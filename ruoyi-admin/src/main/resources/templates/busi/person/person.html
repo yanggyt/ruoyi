@@ -12,8 +12,8 @@
                         <ul>
                             <li>
                                 <label>所属公司：</label>
-                                <input id="treeId" name="companyId" type="text" style="display: none;">
-                                <input id="treeName" name="companyName" type="text" readonly="true" onclick="selectCompany()" >
+                                <input id="treeId" name="companyId" th:value="${company.id}" type="text" style="display: none;">
+                                <input id="treeName" name="companyName" th:value="${company.coName}" type="text" readonly="true" onclick="selectCompany()" >
                             </li>
                             <li>
                                 <label>姓名：</label>
@@ -104,6 +104,11 @@
                     formatter: function(value, row, index) {
                        return $.table.selectDictLabel(roleDatas, value);
                     }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    sortable: true
                 },
                 {
                     title: '操作',

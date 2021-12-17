@@ -122,6 +122,7 @@ public class BusiCustomerCompanyServiceImpl implements IBusiCustomerCompanyServi
             List<BusiCustomerPerson> list = new ArrayList<BusiCustomerPerson>();
             for (BusiCustomerPerson busiCustomerPerson : busiCustomerPersonList)
             {
+                busiCustomerPerson.setCreateTime(DateUtils.getNowDate());
                 busiCustomerPerson.setCompanyId(id);
                 list.add(busiCustomerPerson);
             }

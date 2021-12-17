@@ -1,6 +1,9 @@
 package com.ruoyi.busi.controller;
 
 import java.util.List;
+
+import com.ruoyi.busi.domain.BusiCustomerCompany;
+import com.ruoyi.busi.service.IBusiCustomerCompanyService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,23 +24,26 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 客户公司人员Controller
- * 
+ *
  * @author WangCL
  * @date 2021-12-16
  */
 @Controller
 @RequestMapping("/busi/person")
-public class BusiCustomerPersonController extends BaseController
-{
+public class BusiCustomerPersonController extends BaseController {
     private String prefix = "busi/person";
 
     @Autowired
     private IBusiCustomerPersonService busiCustomerPersonService;
 
+    @Autowired
+    private IBusiCustomerCompanyService busiCustomerCompanyService;
+
     @RequiresPermissions("busi:person:view")
-    @GetMapping()
-    public String person()
-    {
+    @GetMapping("/{companyId}")
+    public String person(@PathVariable("companyId") String companyId, ModelMap mmap) {
+        BusiCustomerCompany busiCustomerCompany = busiCustomerCompanyService.selectBusiCustomerCompanyById(companyId);
+        mmap.put("company", busiCustomerCompany == null ? new BusiCustomerCompany() : busiCustomerCompany);
         return prefix + "/person";
     }
 
@@ -47,8 +53,7 @@ public class BusiCustomerPersonController extends BaseController
     @RequiresPermissions("busi:person:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(BusiCustomerPerson busiCustomerPerson)
-    {
+    public TableDataInfo list(BusiCustomerPerson busiCustomerPerson) {
         startPage();
         List<BusiCustomerPerson> list = busiCustomerPersonService.selectBusiCustomerPersonList(busiCustomerPerson);
         return getDataTable(list);
@@ -61,8 +66,7 @@ public class BusiCustomerPersonController extends BaseController
     @Log(title = "客户公司人员", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(BusiCustomerPerson busiCustomerPerson)
-    {
+    public AjaxResult export(BusiCustomerPerson busiCustomerPerson) {
         List<BusiCustomerPerson> list = busiCustomerPersonService.selectBusiCustomerPersonList(busiCustomerPerson);
         ExcelUtil<BusiCustomerPerson> util = new ExcelUtil<BusiCustomerPerson>(BusiCustomerPerson.class);
         return util.exportExcel(list, "客户公司人员数据");
@@ -72,8 +76,7 @@ public class BusiCustomerPersonController extends BaseController
      * 新增客户公司人员
      */
     @GetMapping("/add")
-    public String add()
-    {
+    public String add() {
         return prefix + "/add";
     }
 
@@ -84,8 +87,8 @@ public class BusiCustomerPersonController extends BaseController
     @Log(title = "客户公司人员", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(BusiCustomerPerson busiCustomerPerson)
-    {
+    public AjaxResult addSave(BusiCustomerPerson busiCustomerPerson) {
+        busiCustomerPerson.setCreateBy(getLoginName());
         return toAjax(busiCustomerPersonService.insertBusiCustomerPerson(busiCustomerPerson));
     }
 
@@ -93,8 +96,7 @@ public class BusiCustomerPersonController extends BaseController
      * 修改客户公司人员
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") String id, ModelMap mmap)
-    {
+    public String edit(@PathVariable("id") String id, ModelMap mmap) {
         BusiCustomerPerson busiCustomerPerson = busiCustomerPersonService.selectBusiCustomerPersonById(id);
         mmap.put("busiCustomerPerson", busiCustomerPerson);
         return prefix + "/edit";
@@ -107,8 +109,8 @@ public class BusiCustomerPersonController extends BaseController
     @Log(title = "客户公司人员", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(BusiCustomerPerson busiCustomerPerson)
-    {
+    public AjaxResult editSave(BusiCustomerPerson busiCustomerPerson) {
+        busiCustomerPerson.setUpdateBy(getLoginName());
         return toAjax(busiCustomerPersonService.updateBusiCustomerPerson(busiCustomerPerson));
     }
 
@@ -117,10 +119,9 @@ public class BusiCustomerPersonController extends BaseController
      */
     @RequiresPermissions("busi:person:remove")
     @Log(title = "客户公司人员", businessType = BusinessType.DELETE)
-    @PostMapping( "/remove")
+    @PostMapping("/remove")
     @ResponseBody
-    public AjaxResult remove(String ids)
-    {
+    public AjaxResult remove(String ids) {
         return toAjax(busiCustomerPersonService.deleteBusiCustomerPersonByIds(ids));
     }
 }
