@@ -94,3 +94,28 @@ values('订单删除', @parentId, '4',  '#',  'F', '0', 'busi:order:remove',    
 
 insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
 values('订单导出', @parentId, '5',  '#',  'F', '0', 'busi:order:export',       '#', 'admin', sysdate(), '', null, '');
+
+
+
+-- 菜单 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('产品需求', '119', '1', '/busi/productRequire', 'C', '0', 'busi:productRequire:view', '#', 'admin', sysdate(), '', null, '产品需求菜单');
+
+-- 按钮父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
+-- 按钮 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('产品需求查询', @parentId, '1',  '#',  'F', '0', 'busi:productRequire:list',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('产品需求新增', @parentId, '2',  '#',  'F', '0', 'busi:productRequire:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('产品需求修改', @parentId, '3',  '#',  'F', '0', 'busi:productRequire:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('产品需求删除', @parentId, '4',  '#',  'F', '0', 'busi:productRequire:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('产品需求导出', @parentId, '5',  '#',  'F', '0', 'busi:productRequire:export',       '#', 'admin', sysdate(), '', null, '');

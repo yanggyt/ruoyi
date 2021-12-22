@@ -119,7 +119,7 @@
                     title: '尺码',
                     formatter: function(value, row, index) {
                         var name = $.common.sprintf("busiProductRequireList[%s].size", index);
-                        return $.common.dictToSelect(sizeDatas, value, name);
+                        return $.common.dictToSelect(sizeDatas, value, name, true);
                     }
                 },
                 {
@@ -128,7 +128,7 @@
                     title: '颜色',
                     formatter: function(value, row, index) {
                         var name = $.common.sprintf("busiProductRequireList[%s].color", index);
-                        return $.common.dictToSelect(colorDatas, value, name);
+                        return $.common.dictToSelect(colorDatas, value, name, true);
                     }
                 },
                 {

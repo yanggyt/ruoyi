@@ -1,49 +1,42 @@
 package com.ruoyi.busi.domain;
 
-import java.util.List;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 产品需求对象 busi_product_require
+ * 物料需求对象 busi_material_require
  * 
  * @author WangCL
  * @date 2021-12-22
  */
-public class BusiProductRequire extends BaseEntity
+public class BusiMaterialRequire extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** ID主键 */
     private String id;
 
-    /** 订单名称 */
-    @Excel(name = "订单名称")
-    private String orderId;
+    /** 产品需求 */
+    @Excel(name = "产品需求")
+    private String productRequireId;
 
     /** 数量 */
     @Excel(name = "数量")
     private Long amount;
 
-    /** 尺码 */
-    @Excel(name = "尺码")
-    private String size;
+    /** 单位 */
+    @Excel(name = "单位")
+    private String unit;
 
     /** 颜色 */
     @Excel(name = "颜色")
     private String color;
 
-    /** 截止日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "截止日期", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date endDate;
-
-    /** 物料需求信息 */
-    private List<BusiMaterialRequire> busiMaterialRequireList;
+    /** 类型 */
+    @Excel(name = "类型")
+    private String classify;
 
     public void setId(String id) 
     {
@@ -54,14 +47,14 @@ public class BusiProductRequire extends BaseEntity
     {
         return id;
     }
-    public void setOrderId(String orderId) 
+    public void setProductRequireId(String productRequireId) 
     {
-        this.orderId = orderId;
+        this.productRequireId = productRequireId;
     }
 
-    public String getOrderId() 
+    public String getProductRequireId() 
     {
-        return orderId;
+        return productRequireId;
     }
     public void setAmount(Long amount) 
     {
@@ -72,14 +65,14 @@ public class BusiProductRequire extends BaseEntity
     {
         return amount;
     }
-    public void setSize(String size) 
+    public void setUnit(String unit) 
     {
-        this.size = size;
+        this.unit = unit;
     }
 
-    public String getSize() 
+    public String getUnit() 
     {
-        return size;
+        return unit;
     }
     public void setColor(String color) 
     {
@@ -90,40 +83,29 @@ public class BusiProductRequire extends BaseEntity
     {
         return color;
     }
-    public void setEndDate(Date endDate) 
+    public void setClassify(String classify) 
     {
-        this.endDate = endDate;
+        this.classify = classify;
     }
 
-    public Date getEndDate() 
+    public String getClassify() 
     {
-        return endDate;
-    }
-
-    public List<BusiMaterialRequire> getBusiMaterialRequireList()
-    {
-        return busiMaterialRequireList;
-    }
-
-    public void setBusiMaterialRequireList(List<BusiMaterialRequire> busiMaterialRequireList)
-    {
-        this.busiMaterialRequireList = busiMaterialRequireList;
+        return classify;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
-            .append("orderId", getOrderId())
+            .append("productRequireId", getProductRequireId())
             .append("amount", getAmount())
-            .append("size", getSize())
+            .append("unit", getUnit())
             .append("color", getColor())
+            .append("classify", getClassify())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
-            .append("endDate", getEndDate())
-            .append("busiMaterialRequireList", getBusiMaterialRequireList())
             .toString();
     }
 }

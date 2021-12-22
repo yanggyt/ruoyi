@@ -1,62 +1,51 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('新增订单')" />
+    <th:block th:include="include :: header('新增产品需求')" />
     <th:block th:include="include :: datetimepicker-css" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-order-add">
-            <input id="treeId" name="companyId"  type="hidden">
-            <h4 class="form-header h4">订单信息</h4>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">客户公司：</label>
-                <div class="col-sm-8">
-                    <input  id="treeName" name="companyName" readonly="true" onclick="selectCompany()"  class="form-control" type="text" required>
-                </div>
-            </div>
+        <form class="form-horizontal m" id="form-productRequire-add">
+            <h4 class="form-header h4">产品需求信息</h4>
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">订单名称：</label>
                 <div class="col-sm-8">
-                    <input name="orderName" class="form-control" type="text" required>
+                    <input name="orderId" class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">款号标识码：</label>
+                <label class="col-sm-3 control-label">数量：</label>
                 <div class="col-sm-8">
-                    <input name="identificationCode" class="form-control" type="text" required>
+                    <input name="amount" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required ">订单价格：</label>
+                <label class="col-sm-3 control-label is-required">尺码：</label>
                 <div class="col-sm-8">
-                    <input name="price" class="form-control number" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">类型：</label>
-                <div class="col-sm-8">
-                    <select name="classify" class="form-control m-b" th:with="type=${@dict.getType('busi_order_type')}" required>
+                    <select name="size" class="form-control m-b" th:with="type=${@dict.getType('busi_size')}" required>
                         <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                     </select>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required" title="分料时，布匹长度由米转换为件时使用">转换比例(米/件)：<i class="fa fa-question-circle-o"></i></label>
+                <label class="col-sm-3 control-label is-required">颜色：</label>
                 <div class="col-sm-8">
-                    <input name="ratio" class="form-control number" type="text" required>
+                    <select name="color" class="form-control m-b" th:with="type=${@dict.getType('busi_color')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
                 </div>
             </div>
-          <div class="form-group hidden">
-                <label class="col-sm-3 control-label">状态：</label>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">截止日期：</label>
                 <div class="col-sm-8">
-                    <div class="radio-box" th:each="dict : ${@dict.getType('busi_order_status')}">
-                        <input type="radio" th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${dict.default}">
-                        <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    <div class="input-group date">
+                        <input name="endDate" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
             </div>
-            <h4 class="form-header h4">产品需求信息</h4>
+            <h4 class="form-header h4">物料需求信息</h4>
             <div class="row">
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
@@ -71,20 +60,25 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <script th:inline="javascript">
-        var prefix = ctx + "busi/order"
-        var sizeDatas = [[${@dict.getType('busi_size')}]];
+        var prefix = ctx + "busi/productRequire"
+        var unitDatas = [[${@dict.getType('busi_material_unit')}]];
         var colorDatas = [[${@dict.getType('busi_color')}]];
-        $("#form-order-add").validate({
+        var classifyDatas = [[${@dict.getType('busi_material_type')}]];
+        $("#form-productRequire-add").validate({
             focusCleanup: true
         });
 
         function submitHandler() {
-            console.log($('#form-order-add').serialize());
-            // return;
             if ($.validate.form()) {
-                // $.operate.save(prefix + "/add", $('#form-order-add').serialize());
+                $.operate.save(prefix + "/add", $('#form-productRequire-add').serialize());
             }
         }
+
+        $("input[name='endDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
 
         $(function() {
             var options = {
@@ -111,17 +105,17 @@
                     align: 'center',
                     title: '数量',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control required digits' type='text' name='busiProductRequireList[%s].amount' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiMaterialRequireList[%s].amount' value='%s'>", index, value);
                         return html;
                     }
                 },
                 {
-                    field: 'size',
+                    field: 'unit',
                     align: 'center',
-                    title: '尺码',
+                    title: '单位',
                     formatter: function(value, row, index) {
-                        var name = $.common.sprintf("busiProductRequireList[%s].size", index);
-                        return $.common.dictToSelect(sizeDatas, value, name);
+                        var name = $.common.sprintf("busiMaterialRequireList[%s].unit", index);
+                        return $.common.dictToSelect(unitDatas, value, name);
                     }
                 },
                 {
@@ -129,19 +123,18 @@
                     align: 'center',
                     title: '颜色',
                     formatter: function(value, row, index) {
-                        var name = $.common.sprintf("busiProductRequireList[%s].color", index);
+                        var name = $.common.sprintf("busiMaterialRequireList[%s].color", index);
                         return $.common.dictToSelect(colorDatas, value, name);
                     }
                 },
                 {
-                    field: 'endDate',
+                    field: 'classify',
                     align: 'center',
-                    title: '截止日期',
+                    title: '类型',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control endDate required'  readonly type='text' name='busiProductRequireList[%s].endDate' value='%s'>", index, value);
-                        return html;
+                        var name = $.common.sprintf("busiMaterialRequireList[%s].classify", index);
+                        return $.common.dictToSelect(classifyDatas, value, name);
                     }
-                
                 }]
             };
             $.table.init(options);
@@ -156,35 +149,11 @@
                 row: {
                     index: $.table.serialNumber(count),
                     amount: "",
-                    size: "",
+                    unit: "",
                     color: "",
-                    endDate: ""
+                    classify: ""
                 }
             });
-            $(".endDate").datetimepicker({
-                format: "yyyy-mm-dd",
-                minView: "month",
-                startDate: new Date(),
-                autoclose: true
-            });
-        }
-
-        /*客户公司选择*/
-        function selectCompany() {
-            var options = {
-                title: '选择客户公司',
-                width: "380",
-                height: "400",
-                url: ctx + "busi/company/selectCompany/",
-                callBack: doSubmit
-            };
-            $.modal.openOptions(options);
-        }
-        function doSubmit(index, layero){
-            var body = $.modal.getChildFrame(index);
-            $("#treeId").val(body.find('#treeId').val());
-            $("#treeName").val(body.find('#treeName').val());
-            $.modal.close(index);
         }
     </script>
 </body>

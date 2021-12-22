@@ -1669,9 +1669,14 @@ var table = {
                 return json;
             },
             // 数据字典转下拉框
-            dictToSelect: function(datas, value, name) {
+            dictToSelect: function(datas, value, name, disabled) {
                 var actions = [];
-                actions.push($.common.sprintf("<select class='form-control' name='%s'>", name));
+                if(disabled){
+                    actions.push($.common.sprintf("<select class='form-control' disabled name='%s'>", name));
+                }else{
+                    actions.push($.common.sprintf("<select class='form-control' name='%s'>", name));
+                }
+
                 $.each(datas, function(index, dict) {
                     actions.push($.common.sprintf("<option value='%s'", dict.dictValue));
                     if (dict.dictValue == ('' + value)) {
