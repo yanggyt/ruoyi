@@ -69,3 +69,28 @@ values('监区产线删除', @parentId, '4',  '#',  'F', '0', 'busi:prisonLine:r
 
 insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
 values('监区产线导出', @parentId, '5',  '#',  'F', '0', 'busi:prisonLine:export',       '#', 'admin', sysdate(), '', null, '');
+
+
+
+-- 菜单 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单维护', '119', '1', '/busi/order', 'C', '0', 'busi:order:view', '#', 'admin', sysdate(), '', null, '订单菜单');
+
+-- 按钮父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
+-- 按钮 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单查询', @parentId, '1',  '#',  'F', '0', 'busi:order:list',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单新增', @parentId, '2',  '#',  'F', '0', 'busi:order:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单修改', @parentId, '3',  '#',  'F', '0', 'busi:order:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单删除', @parentId, '4',  '#',  'F', '0', 'busi:order:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('订单导出', @parentId, '5',  '#',  'F', '0', 'busi:order:export',       '#', 'admin', sysdate(), '', null, '');

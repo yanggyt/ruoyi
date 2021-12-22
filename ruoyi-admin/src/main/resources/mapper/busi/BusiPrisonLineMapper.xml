@@ -21,8 +21,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBusiPrisonLineVo">
-        select A.id, A.pid,b.disname as pname, A.disname, A.leader, A.person_number, A.status, A.classify, A.create_by, A.create_time, A.update_by, A.update_time from busi_prison_line A
-         LEFT JOIN busi_prison_line B on a.pid = b.id
+        select A.id, A.pid,B.disname as pname, A.disname, A.leader, A.person_number, A.status, A.classify, A.create_by, A.create_time, A.update_by, A.update_time from busi_prison_line A
+         LEFT JOIN busi_prison_line B on A.pid = B.id
     </sql>
 
     <select id="selectBusiPrisonLineList" parameterType="BusiPrisonLine" resultMap="BusiPrisonLineResult">

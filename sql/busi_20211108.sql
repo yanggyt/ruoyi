@@ -3,6 +3,11 @@ insert into sys_dict_type values(12,  '颜色', 'busi_color',        '0', 'admin
 insert into sys_dict_type values(13,  '客户角色', 'busi_role',        '0', 'admin', sysdate(), '', null, '客户角色列表');
 insert into sys_dict_type values(14,  '产线状态', 'busi_line_status',        '0', 'admin', sysdate(), '', null, '产线状态');
 insert into sys_dict_type values(15,  '类型', 'busi_line_type',        '0', 'admin', sysdate(), '', null, '监区产线类型');
+insert into sys_dict_type values(16,  '订单类型', 'busi_order_type',        '0', 'admin', sysdate(), '', null, '订单类型');
+insert into sys_dict_type values(17,  '订单状态', 'busi_order_status',        '0', 'admin', sysdate(), '', null, '订单状态');
+insert into sys_dict_type values(18,  '物料类型', 'busi_material_type',        '0', 'admin', sysdate(), '', null, '物料类型');
+insert into sys_dict_type values(19,  '物料单位', 'busi_material_unit',        '0', 'admin', sysdate(), '', null, '物料单位');
+
 
 -- 尺码字典
 insert into sys_dict_data values (30, 1, 'XXXXXS', '1', 'busi_size', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
@@ -37,7 +42,7 @@ insert into sys_dict_data values (57, 13, '铁色', '13', 'busi_color', '', '', 
 insert into sys_dict_data values (58, 14, '粉色', '14', 'busi_color', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 
 -- 客户角色字典
-insert into sys_dict_data values (59, 1, '负责人', '1', 'busi_role', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
+insert into sys_dict_data values (59, 1, '负责人', '1', 'busi_role', '', '', 'Y', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (60, 2, '跟单人员', '2', 'busi_role', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 
 -- 产线状态字典
@@ -47,6 +52,25 @@ insert into sys_dict_data values (62, 1, '生产中', '1', 'busi_line_status', '
 -- 产线类型字典
 insert into sys_dict_data values (63, 1, '监区', 'J', 'busi_line_type', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
 insert into sys_dict_data values (64, 2, '产线', 'C', 'busi_line_type', '', '', 'Y', '0', 'admin', sysdate(), '', null, '');
+
+-- 订单类型
+insert into sys_dict_data values (65, 1, '外套', '1', 'busi_order_type', '', '', 'Y', '0', 'admin', sysdate(), '', null, '');
+insert into sys_dict_data values (66, 2, '裤子', '2', 'busi_order_type', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
+
+-- 订单状态
+insert into sys_dict_data values (67, 1, '创建', '1', 'busi_order_status', '', '', 'Y', '0', 'admin', sysdate(), '', null, '');
+insert into sys_dict_data values (68, 2, '生产中', '2', 'busi_order_status', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
+insert into sys_dict_data values (69, 3, '完成', '3', 'busi_order_status', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
+
+-- 物料类型
+insert into sys_dict_data values (70, 1, '布', '1', 'busi_material_type', '', '', 'Y', '0', 'admin', sysdate(), '', null, '');
+insert into sys_dict_data values (71, 2, '拉链', '2', 'busi_material_type', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
+
+-- 物料单位
+insert into sys_dict_data values (72, 1, '米', '1', 'busi_material_unit', '', '', 'Y', '0', 'admin', sysdate(), '', null, '');
+insert into sys_dict_data values (73, 2, '件', '2', 'busi_material_unit', '', '', 'N', '0', 'admin', sysdate(), '', null, '');
+
+
 
 -- 一级菜单
 insert into sys_menu values ('117', '生产信息', '0', '1', '#', '', 'M', '0', '1', '', 'fa fa-wrench', 'admin', sysdate(), '', null, '生产信息菜单');

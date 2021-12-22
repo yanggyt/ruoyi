@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.busi.mapper.BusiOrderMapper">
+    
+    <resultMap type="BusiOrder" id="BusiOrderResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="orderName"    column="order_name"    />
+        <result property="identificationCode"    column="identification_code"    />
+        <result property="price"    column="price"    />
+        <result property="classify"    column="classify"    />
+        <result property="ratio"    column="ratio"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="BusiOrderBusiProductRequireResult" type="BusiOrder" extends="BusiOrderResult">
+        <collection property="busiProductRequireList" notNullColumn="sub_id" javaType="java.util.List" resultMap="BusiProductRequireResult" />
+    </resultMap>
+
+    <resultMap type="BusiProductRequire" id="BusiProductRequireResult">
+        <result property="id"    column="sub_id"    />
+        <result property="orderId"    column="sub_order_id"    />
+        <result property="amount"    column="sub_amount"    />
+        <result property="size"    column="sub_size"    />
+        <result property="color"    column="sub_color"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="endDate"    column="sub_end_date"    />
+    </resultMap>
+
+    <sql id="selectBusiOrderVo">
+        select A.id, A.company_id, B.co_name company_name, A.order_name, A.identification_code, A.price, A.classify, A.ratio, A.status, A.create_by, A.create_time, A.update_by, A.update_time
+        from busi_order A LEFT JOIN  busi_customer_company B on A.company_id = B.id
+    </sql>
+
+    <select id="selectBusiOrderList" parameterType="BusiOrder" resultMap="BusiOrderResult">
+        <include refid="selectBusiOrderVo"/>
+        <where>  
+            <if test="companyId != null  and companyId != ''"> and A.company_id = #{companyId}</if>
+            <if test="orderName != null  and orderName != ''"> and A.order_name like concat('%', #{orderName}, '%')</if>
+            <if test="identificationCode != null  and identificationCode != ''"> and A.identification_code like concat('%', #{identificationCode}, '%')</if>
+            <if test="classify != null  and classify != ''"> and A.classify = #{classify}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiOrderById" parameterType="String" resultMap="BusiOrderBusiProductRequireResult">
+        select a.id, a.company_id, c.co_name company_name, a.order_name, a.identification_code, a.price, a.classify, a.ratio, a.status, a.create_by, a.create_time, a.update_by, a.update_time,
+            b.id as sub_id, b.order_id as sub_order_id, b.amount as sub_amount, b.size as sub_size, b.color as sub_color, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.end_date as sub_end_date
+        from busi_order a
+        left join busi_product_require b on b.order_id = a.id
+        left join busi_customer_company c on a.company_id = c.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertBusiOrder" parameterType="BusiOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null and companyId != ''">company_id,</if>
+            <if test="orderName != null and orderName != ''">order_name,</if>
+            <if test="identificationCode != null and identificationCode != ''">identification_code,</if>
+            <if test="price != null">price,</if>
+            <if test="classify != null and classify != ''">classify,</if>
+            <if test="ratio != null">ratio,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null and companyId != ''">#{companyId},</if>
+            <if test="orderName != null and orderName != ''">#{orderName},</if>
+            <if test="identificationCode != null and identificationCode != ''">#{identificationCode},</if>
+            <if test="price != null">#{price},</if>
+            <if test="classify != null and classify != ''">#{classify},</if>
+            <if test="ratio != null">#{ratio},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiOrder" parameterType="BusiOrder">
+        update busi_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null and companyId != ''">company_id = #{companyId},</if>
+            <if test="orderName != null and orderName != ''">order_name = #{orderName},</if>
+            <if test="identificationCode != null and identificationCode != ''">identification_code = #{identificationCode},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="classify != null and classify != ''">classify = #{classify},</if>
+            <if test="ratio != null">ratio = #{ratio},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiOrderById" parameterType="String">
+        delete from busi_order where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiOrderByIds" parameterType="String">
+        delete from busi_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteBusiProductRequireByOrderIds" parameterType="String">
+        delete from busi_product_require where order_id in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBusiProductRequireByOrderId" parameterType="String">
+        delete from busi_product_require where order_id = #{orderId}
+    </delete>
+
+    <insert id="batchBusiProductRequire">
+        insert into busi_product_require( id, order_id, amount, size, color, create_by, create_time, update_by, update_time, end_date) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.orderId}, #{item.amount}, #{item.size}, #{item.color}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime}, #{item.endDate})
+        </foreach>
+    </insert>
+
+</mapper>
