@@ -1,15 +1,15 @@
 package com.ruoyi.busi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.ruoyi.common.core.domain.Ztree;
+import com.ruoyi.common.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.busi.domain.BusiOrder;
@@ -122,5 +122,52 @@ public class BusiOrderController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(busiOrderService.deleteBusiOrderByIds(ids));
+    }
+
+
+    /**
+     * 选择订单树
+     * @param mmap
+     * @return
+     */
+    @GetMapping(value = {"/selectOrder","/selectOrder/{status}"})
+    public String selectCompany(ModelMap mmap, @PathVariable(value = "status", required = false) String status) {
+        BusiOrder temp = new BusiOrder();
+        temp.setId("0");
+        temp.setOrderName("根节点");
+        mmap.put("order", temp);
+        mmap.put("orderStatus", StringUtils.isNotEmpty(status) ? status : "");
+        return prefix + "/tree";
+    }
+
+    /**
+     * 加载客户订单选择树
+     */
+    @GetMapping("/treeData")
+    @ResponseBody
+    public List<Ztree> treeData(@RequestParam(name = "status",required = false) String status) {
+        BusiOrder busiOrder = new BusiOrder();
+        busiOrder.setStatus(status); //查询状态
+        List<BusiOrder> list = busiOrderService.selectBusiOrderList(busiOrder);
+        return initZtree(list);
+    }
+
+    /**
+     * 初始化树列表
+     * @param list
+     * @return
+     */
+    public List<Ztree> initZtree(List<BusiOrder> list) {
+        List<Ztree> ztrees = new ArrayList<Ztree>();
+        for (BusiOrder temp : list) {
+            Ztree ztree = new Ztree();
+            ztree.setId(Long.valueOf(temp.getId()));
+            ztree.setpId(0l);
+            String name = String.format("%s(%s:%s)", temp.getOrderName(), temp.getCompanyName(), temp.getIdentificationCode());
+            ztree.setName(name);
+            ztree.setTitle(name);
+            ztrees.add(ztree);
+        }
+        return ztrees;
     }
 }

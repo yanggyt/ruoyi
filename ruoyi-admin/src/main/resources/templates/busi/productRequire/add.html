@@ -9,15 +9,16 @@
         <form class="form-horizontal m" id="form-productRequire-add">
             <h4 class="form-header h4">产品需求信息</h4>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">订单名称：</label>
+                <label class="col-sm-3 control-label is-required">所属订单：</label>
                 <div class="col-sm-8">
-                    <input name="orderId" class="form-control" type="text" required>
+<!--                    <input name="orderId" class="form-control" type="text" required>-->
+                    <input  id="treeName" name="orderName" readonly="true" onclick="selectOrder(1)"  class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">数量：</label>
+                <label class="col-sm-3 control-label is-required">数量：</label>
                 <div class="col-sm-8">
-                    <input name="amount" class="form-control" type="text">
+                    <input name="amount" class="form-control digits" type="text" required >
                 </div>
             </div>
             <div class="form-group">    
@@ -40,7 +41,7 @@
                 <label class="col-sm-3 control-label is-required">截止日期：</label>
                 <div class="col-sm-8">
                     <div class="input-group date">
-                        <input name="endDate" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
+                        <input name="endDate" class="form-control" readonly placeholder="yyyy-MM-dd" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -77,6 +78,7 @@
         $("input[name='endDate']").datetimepicker({
             format: "yyyy-mm-dd",
             minView: "month",
+            startDate: new Date(),
             autoclose: true
         });
 
@@ -154,6 +156,23 @@
                     classify: ""
                 }
             });
+        }
+
+        /*订单选择*/
+        function selectOrder(status) {
+            var options = {
+                title: '选择订单',
+                width: "380",
+                height: "400",
+                url: ctx + "busi/order/selectOrder/" + status,
+                callBack: function(index, layero){
+                    var body = $.modal.getChildFrame(index);
+                    $("#treeId").val(body.find('#treeId').val());
+                    $("#treeName").val(body.find('#treeName').val());
+                    $.modal.close(index);
+                }
+            };
+            $.modal.openOptions(options);
         }
     </script>
 </body>

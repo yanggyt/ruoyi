@@ -12,7 +12,8 @@
                         <ul>
                             <li>
                                 <label>订单名称：</label>
-                                <input type="text" name="orderId"/>
+                                <input id="treeId" name="orderId"   type="text" style="display: none;">
+                                <input id="treeName" name="orderName"  type="text" readonly="true" onclick="selectOrder()" >
                             </li>
                             <li>
                                 <label>尺码：</label>
@@ -119,6 +120,22 @@
             };
             $.table.init(options);
         });
+        /*客户公司选择*/
+        function selectOrder() {
+            var options = {
+                title: '选择订单',
+                width: "380",
+                height: "400",
+                url: ctx + "busi/order/selectOrder/" ,
+                callBack: function(index, layero){
+                    var body = $.modal.getChildFrame(index);
+                    $("#treeId").val(body.find('#treeId').val());
+                    $("#treeName").val(body.find('#treeName').val());
+                    $.modal.close(index);
+                }
+            };
+            $.modal.openOptions(options);
+        }
     </script>
 </body>
 </html>

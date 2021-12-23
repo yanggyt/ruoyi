@@ -49,6 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderName != null  and orderName != ''"> and A.order_name like concat('%', #{orderName}, '%')</if>
             <if test="identificationCode != null  and identificationCode != ''"> and A.identification_code like concat('%', #{identificationCode}, '%')</if>
             <if test="classify != null  and classify != ''"> and A.classify = #{classify}</if>
+            <if test="status != null  and status != ''"> and A.status = #{status}</if>
         </where>
     </select>
     
