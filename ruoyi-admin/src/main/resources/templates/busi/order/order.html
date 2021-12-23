@@ -130,6 +130,7 @@
                         var actions = [];
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a title="为订单增加产品需求" class="btn btn-info  btn-xs " href="javascript:void(0)" onclick="addProduct(\'' + row.id + '\',\'' + row.orderName+'\')"><i class="fa fa-plus"></i>新增</a> ');
                         return actions.join('');
                     }
                 }]
@@ -154,6 +155,11 @@
             $("#treeName").val(body.find('#treeName').val());
             $.modal.close(index);
             $.table.search();
+        }
+
+        function addProduct(id,name){
+            var addUrl = ctx + "busi/productRequire/add"
+            $.modal.open( name + ",添加产品需求", addUrl);
         }
     </script>
 </body>
