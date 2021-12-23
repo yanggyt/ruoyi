@@ -76,8 +76,9 @@ public class BusiOrderServiceImpl implements IBusiOrderService
     public int updateBusiOrder(BusiOrder busiOrder)
     {
         busiOrder.setUpdateTime(DateUtils.getNowDate());
-        busiOrderMapper.deleteBusiProductRequireByOrderId(busiOrder.getId());
-        insertBusiProductRequire(busiOrder);
+        // 更新时，由于会导致产品需求ID变更，所以这里不在更新产品需求。
+//        busiOrderMapper.deleteBusiProductRequireByOrderId(busiOrder.getId());
+//        insertBusiProductRequire(busiOrder);
         return busiOrderMapper.updateBusiOrder(busiOrder);
     }
 

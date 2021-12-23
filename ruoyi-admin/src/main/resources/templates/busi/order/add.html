@@ -79,11 +79,33 @@
         });
 
         function submitHandler() {
-            console.log($('#form-order-add').serialize());
-            // return;
-            if ($.validate.form()) {
-                // $.operate.save(prefix + "/add", $('#form-order-add').serialize());
+            if (sizeAndColorValidate() && $.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-order-add').serialize());
             }
+        }
+
+        function sizeAndColorValidate() {
+            var colors = $("select[name$='color']");
+            var sizes = $("select[name$='size']");
+            colors.removeClass("error");
+            sizes.removeClass("error");
+            var colorAndSize = [];
+            var result = true;
+            sizes.each(function (i, ele) {
+                var ele = colors[i].value + sizes[i].value;
+                var index = colorAndSize.indexOf(ele);
+                if ( index >= 0) {
+                    $(colors[i]).addClass("error");
+                    $(sizes[i]).addClass("error");
+                    $(colors[index]).addClass("error");
+                    $(sizes[index]).addClass("error");
+                    result = false;
+                    // return false;
+                } else {
+                    colorAndSize.push(ele);
+                }
+            });
+            return result;
         }
 
         $(function() {
