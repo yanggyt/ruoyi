@@ -21,9 +21,12 @@ public class BusiProductRequire extends BaseEntity
     /** ID主键 */
     private String id;
 
+    /** 订单ID */
+    private String orderId;
+
     /** 订单名称 */
     @Excel(name = "订单名称")
-    private String orderId;
+    private String orderName;
 
     /** 数量 */
     @Excel(name = "数量")
@@ -110,11 +113,20 @@ public class BusiProductRequire extends BaseEntity
         this.busiMaterialRequireList = busiMaterialRequireList;
     }
 
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("orderId", getOrderId())
+            .append("orderName", getOrderName())
             .append("amount", getAmount())
             .append("size", getSize())
             .append("color", getColor())

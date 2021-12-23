@@ -1,6 +1,9 @@
 package com.ruoyi.busi.controller;
 
+import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.collections4.ListUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -86,6 +89,15 @@ public class BusiProductRequireController extends BaseController
     @ResponseBody
     public AjaxResult addSave(BusiProductRequire busiProductRequire)
     {
+        BusiProductRequire query = new BusiProductRequire();
+        query.setOrderId(busiProductRequire.getOrderId());
+        query.setColor(busiProductRequire.getColor());
+        query.setSize(busiProductRequire.getSize());
+
+        List<BusiProductRequire> list = busiProductRequireService.selectBusiProductRequireList(query);
+        if(!list.isEmpty()){
+            return error("该订单已存在相同尺码颜色的产品");
+        }
         return toAjax(busiProductRequireService.insertBusiProductRequire(busiProductRequire));
     }
 

@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BusiProductRequire" id="BusiProductRequireResult">
         <result property="id"    column="id"    />
         <result property="orderId"    column="order_id"    />
+        <result property="orderName"    column="order_name"    />
         <result property="amount"    column="amount"    />
         <result property="size"    column="size"    />
         <result property="color"    column="color"    />
@@ -35,23 +36,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBusiProductRequireVo">
-        select id, order_id, amount, size, color, create_by, create_time, update_by, update_time, end_date from busi_product_require
+        select A.id, A.order_id,B.order_name, A.amount,A.size, A.color, A.create_by, A.create_time, A.update_by, A.update_time, A.end_date
+        from busi_product_require A LEFT JOIN busi_order B on A.order_id = B.id
     </sql>
 
     <select id="selectBusiProductRequireList" parameterType="BusiProductRequire" resultMap="BusiProductRequireResult">
         <include refid="selectBusiProductRequireVo"/>
         <where>  
-            <if test="orderId != null  and orderId != ''"> and order_id like concat('%', #{orderId}, '%')</if>
-            <if test="size != null  and size != ''"> and size = #{size}</if>
-            <if test="color != null  and color != ''"> and color = #{color}</if>
+            <if test="orderId != null  and orderId != ''"> and A.order_id = #{orderId}</if>
+            <if test="size != null  and size != ''"> and A.size = #{size}</if>
+            <if test="color != null  and color != ''"> and A.color = #{color}</if>
         </where>
+        order by A.update_time desc
     </select>
     
     <select id="selectBusiProductRequireById" parameterType="String" resultMap="BusiProductRequireBusiMaterialRequireResult">
-        select a.id, a.order_id, a.amount, a.size, a.color, a.create_by, a.create_time, a.update_by, a.update_time, a.end_date,
+        select a.id, a.order_id,c.order_name, a.amount, a.size, a.color, a.create_by, a.create_time, a.update_by, a.update_time, a.end_date,
             b.id as sub_id, b.product_require_id as sub_product_require_id, b.amount as sub_amount, b.unit as sub_unit, b.color as sub_color, b.classify as sub_classify, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time
         from busi_product_require a
         left join busi_material_require b on b.product_require_id = a.id
+        left join busi_order c on c.id = a.order_id
         where a.id = #{id}
     </select>
         
