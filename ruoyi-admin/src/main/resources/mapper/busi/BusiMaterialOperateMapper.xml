@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.busi.mapper.BusiMaterialOperateMapper">
+    
+    <resultMap type="BusiMaterialOperate" id="BusiMaterialOperateResult">
+        <result property="id"    column="id"    />
+        <result property="materialStockId"    column="material_stock_id"    />
+        <result property="amount"    column="amount"    />
+        <result property="oprateType"    column="oprate_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBusiMaterialOperateVo">
+        select id, material_stock_id, amount, oprate_type, create_by, create_time, remark from busi_material_operate
+    </sql>
+
+    <select id="selectBusiMaterialOperateList" parameterType="BusiMaterialOperate" resultMap="BusiMaterialOperateResult">
+        <include refid="selectBusiMaterialOperateVo"/>
+        <where>  
+            <if test="materialStockId != null  and materialStockId != ''"> and material_stock_id = #{materialStockId}</if>
+            <if test="oprateType != null  and oprateType != ''"> and oprate_type = #{oprateType}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMaterialOperateById" parameterType="Long" resultMap="BusiMaterialOperateResult">
+        <include refid="selectBusiMaterialOperateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMaterialOperate" parameterType="BusiMaterialOperate" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_material_operate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="materialStockId != null">material_stock_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="oprateType != null">oprate_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="materialStockId != null">#{materialStockId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="oprateType != null">#{oprateType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMaterialOperate" parameterType="BusiMaterialOperate">
+        update busi_material_operate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="materialStockId != null">material_stock_id = #{materialStockId},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="oprateType != null">oprate_type = #{oprateType},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMaterialOperateById" parameterType="Long">
+        delete from busi_material_operate where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMaterialOperateByIds" parameterType="String">
+        delete from busi_material_operate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
