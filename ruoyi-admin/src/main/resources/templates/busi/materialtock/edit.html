@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改物料库存')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-materialtock-edit" th:object="${busiMaterialStock}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">所属订单：</label>
+                <div class="col-sm-8">
+                    <input name="orderId" th:field="*{orderId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">进库量：</label>
+                <div class="col-sm-8">
+                    <input name="amountIn" th:field="*{amountIn}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出库量：</label>
+                <div class="col-sm-8">
+                    <input name="amountOut" th:field="*{amountOut}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">单位：</label>
+                <div class="col-sm-8">
+                    <input name="unit" th:field="*{unit}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">颜色：</label>
+                <div class="col-sm-8">
+                    <select name="color" class="form-control m-b" th:with="type=${@dict.getType('busi_color')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{color}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">类型：</label>
+                <div class="col-sm-8">
+                    <select name="classify" class="form-control m-b" th:with="type=${@dict.getType('busi_material_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{classify}"></option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "busi/materialtock";
+        $("#form-materialtock-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-materialtock-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

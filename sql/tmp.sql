@@ -146,3 +146,28 @@ values('物料操作流水删除', @parentId, '4',  '#',  'F', '0', 'busi:materi
 insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
 values('物料操作流水导出', @parentId, '5',  '#',  'F', '0', 'busi:materialperate:export',       '#', 'admin', sysdate(), '', null, '');
 
+
+
+
+-- 菜单 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('物料库存', '118', '1', '/busi/materialtock', 'C', '0', 'busi:materialtock:view', '#', 'admin', sysdate(), '', null, '物料库存菜单');
+
+-- 按钮父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
+-- 按钮 SQL
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('物料库存查询', @parentId, '1',  '#',  'F', '0', 'busi:materialtock:list',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('物料库存新增', @parentId, '2',  '#',  'F', '0', 'busi:materialtock:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('物料库存修改', @parentId, '3',  '#',  'F', '0', 'busi:materialtock:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('物料库存删除', @parentId, '4',  '#',  'F', '0', 'busi:materialtock:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
+values('物料库存导出', @parentId, '5',  '#',  'F', '0', 'busi:materialtock:export',       '#', 'admin', sysdate(), '', null, '');

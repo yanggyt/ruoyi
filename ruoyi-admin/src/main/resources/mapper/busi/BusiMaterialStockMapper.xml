@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.busi.mapper.BusiMaterialStockMapper">
+    
+    <resultMap type="BusiMaterialStock" id="BusiMaterialStockResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="amountIn"    column="amount_in"    />
+        <result property="amountOut"    column="amount_out"    />
+        <result property="unit"    column="unit"    />
+        <result property="color"    column="color"    />
+        <result property="classify"    column="classify"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBusiMaterialStockVo">
+        select id, order_id, amount_in, amount_out, unit, color, classify, create_by, create_time, update_by, update_time from busi_material_stock
+    </sql>
+
+    <select id="selectBusiMaterialStockList" parameterType="BusiMaterialStock" resultMap="BusiMaterialStockResult">
+        <include refid="selectBusiMaterialStockVo"/>
+        <where>  
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="color != null  and color != ''"> and color = #{color}</if>
+            <if test="classify != null  and classify != ''"> and classify = #{classify}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMaterialStockById" parameterType="String" resultMap="BusiMaterialStockResult">
+        <include refid="selectBusiMaterialStockVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMaterialStock" parameterType="BusiMaterialStock" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_material_stock
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="amountIn != null">amount_in,</if>
+            <if test="amountOut != null">amount_out,</if>
+            <if test="unit != null">unit,</if>
+            <if test="color != null">color,</if>
+            <if test="classify != null">classify,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="amountIn != null">#{amountIn},</if>
+            <if test="amountOut != null">#{amountOut},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="color != null">#{color},</if>
+            <if test="classify != null">#{classify},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMaterialStock" parameterType="BusiMaterialStock">
+        update busi_material_stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="amountIn != null">amount_in = #{amountIn},</if>
+            <if test="amountOut != null">amount_out = #{amountOut},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="color != null">color = #{color},</if>
+            <if test="classify != null">classify = #{classify},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMaterialStockById" parameterType="String">
+        delete from busi_material_stock where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMaterialStockByIds" parameterType="String">
+        delete from busi_material_stock where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
