@@ -1,18 +1,13 @@
 package com.ruoyi.busi.controller;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.collections4.ListUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.busi.domain.BusiProductRequire;
@@ -134,5 +129,17 @@ public class BusiProductRequireController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(busiProductRequireService.deleteBusiProductRequireByIds(ids));
+    }
+
+
+    /**
+     * 通过订单ID查询产品需求列表
+     */
+    @PostMapping("/listByOrderId")
+    @ResponseBody
+    public AjaxResult list(@RequestParam(name = "orderId",required = false) String orderId)
+    {
+        List<Map<String,String>> list = busiProductRequireService.selectMaterialRequireByOrderId(orderId);
+        return success(list);
     }
 }

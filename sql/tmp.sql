@@ -146,10 +146,3 @@ values('物料操作流水删除', @parentId, '4',  '#',  'F', '0', 'busi:materi
 insert into sys_menu (menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time, update_by, update_time, remark)
 values('物料操作流水导出', @parentId, '5',  '#',  'F', '0', 'busi:materialperate:export',       '#', 'admin', sysdate(), '', null, '');
 
-
-select max(A.classify),max(sdd.dict_label),max(sdd2.dict_label),max(A.color), sum(A.amount) from busi_material_require A
-                                                                                                     left join busi_product_require B on A.product_require_id = B.id
-                                                                                                     left join busi_order bo on B.order_id = bo.id
-                                                                                                     left join sys_dict_data sdd on sdd.dict_type='busi_color' and A.color = sdd.dict_value
-                                                                                                     left join sys_dict_data sdd2 on sdd2.dict_type='busi_material_type' and A.classify = sdd2.dict_value
-where order_id = 1 group by (A.color + A.classify)

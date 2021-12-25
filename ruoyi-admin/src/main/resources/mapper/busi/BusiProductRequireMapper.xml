@@ -130,4 +130,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+
+    <select id="selectMaterialRequireByOrderId" parameterType="String" resultType="java.util.Map">
+        select max(A.classify) classifyCode,max(sdd2.dict_label) classifyVal, max(A.color) colorCode, max(sdd.dict_label) colorVal,sum(A.amount) amount, MAX(sdd3.dict_label) unitVal
+          from busi_material_require A
+               left join busi_product_require B on A.product_require_id = B.id
+               left join busi_order bo on B.order_id = bo.id
+               left join sys_dict_data sdd on sdd.dict_type='busi_color' and A.color = sdd.dict_value
+               left join sys_dict_data sdd2 on sdd2.dict_type='busi_material_type' and A.classify = sdd2.dict_value
+               left join sys_dict_data sdd3 on sdd3.dict_type='busi_material_unit' and A.unit = sdd3.dict_value
+        where B.order_id = #{orderId} group by (A.color + A.classify)
+    </select>
 </mapper>

@@ -1,6 +1,8 @@
 package com.ruoyi.busi.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.busi.domain.BusiProductRequire;
 import com.ruoyi.busi.domain.BusiMaterialRequire;
 
@@ -84,4 +86,12 @@ public interface BusiProductRequireMapper
      * @return 结果
      */
     public int deleteBusiMaterialRequireByProductRequireId(String id);
+
+    /**
+     * 通过订单ID查询物料需求列表
+     *
+     * @param orderId 订单ID
+     * @return 结果
+     */
+    List<Map<String, String>> selectMaterialRequireByOrderId(String orderId);
 }

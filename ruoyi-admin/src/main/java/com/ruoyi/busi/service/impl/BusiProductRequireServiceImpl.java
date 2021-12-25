@@ -5,6 +5,8 @@ import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Map;
+
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.busi.domain.BusiMaterialRequire;
@@ -106,6 +108,11 @@ public class BusiProductRequireServiceImpl implements IBusiProductRequireService
     {
         busiProductRequireMapper.deleteBusiMaterialRequireByProductRequireId(id);
         return busiProductRequireMapper.deleteBusiProductRequireById(id);
+    }
+
+    @Override
+    public List<Map<String, String>> selectMaterialRequireByOrderId(String orderId) {
+        return busiProductRequireMapper.selectMaterialRequireByOrderId(orderId);
     }
 
     /**
