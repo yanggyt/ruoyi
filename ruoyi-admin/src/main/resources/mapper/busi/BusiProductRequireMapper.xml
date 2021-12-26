@@ -132,7 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     <select id="selectMaterialRequireByOrderId" parameterType="String" resultType="java.util.Map">
-        select max(A.classify) classifyCode,max(sdd2.dict_label) classifyVal, max(A.color) colorCode, max(sdd.dict_label) colorVal,sum(A.amount) amount, MAX(sdd3.dict_label) unitVal
+        select max(A.classify) classifyCode,max(sdd2.dict_label) classifyVal, max(A.color) colorCode, max(sdd.dict_label) colorVal,sum(A.amount) amount, MAX(sdd3.dict_label) unitVal, max(A.unit) as unitCode
           from busi_material_require A
                left join busi_product_require B on A.product_require_id = B.id
                left join busi_order bo on B.order_id = bo.id

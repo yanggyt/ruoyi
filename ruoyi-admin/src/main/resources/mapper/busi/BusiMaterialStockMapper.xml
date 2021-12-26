@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BusiMaterialStock" id="BusiMaterialStockResult">
         <result property="id"    column="id"    />
         <result property="orderId"    column="order_id"    />
+        <result property="orderName"    column="order_name"    />
         <result property="amountIn"    column="amount_in"    />
         <result property="amountOut"    column="amount_out"    />
         <result property="unit"    column="unit"    />
@@ -19,21 +20,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBusiMaterialStockVo">
-        select id, order_id, amount_in, amount_out, unit, color, classify, create_by, create_time, update_by, update_time from busi_material_stock
+        select bms.id, bms.order_id,bo.order_name, bms.amount_in, bms.amount_out, bms.unit, bms.color, bms.classify, bms.create_by, bms.create_time, bms.update_by, bms.update_time
+        from busi_material_stock bms LEFT JOIN busi_order bo on bo.id = bms.order_id
     </sql>
 
     <select id="selectBusiMaterialStockList" parameterType="BusiMaterialStock" resultMap="BusiMaterialStockResult">
         <include refid="selectBusiMaterialStockVo"/>
         <where>  
-            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
-            <if test="color != null  and color != ''"> and color = #{color}</if>
-            <if test="classify != null  and classify != ''"> and classify = #{classify}</if>
+            <if test="orderId != null  and orderId != ''"> and bms.order_id = #{orderId}</if>
+            <if test="color != null  and color != ''"> and bms.color = #{color}</if>
+            <if test="classify != null  and classify != ''"> and bms.classify = #{classify}</if>
         </where>
     </select>
     
     <select id="selectBusiMaterialStockById" parameterType="String" resultMap="BusiMaterialStockResult">
         <include refid="selectBusiMaterialStockVo"/>
-        where id = #{id}
+        where bms.id = #{id}
     </select>
         
     <insert id="insertBusiMaterialStock" parameterType="BusiMaterialStock" useGeneratedKeys="true" keyProperty="id">

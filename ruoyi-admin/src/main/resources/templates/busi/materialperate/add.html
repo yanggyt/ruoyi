@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label" title="若无对应的物料选项，请先在产品需求中添加物料需求">物料选择：<i class="fa fa-question-circle-o"></i></label>
                 <div class="col-sm-8">
-                    <select id="post" class="form-control required" >
+                    <select id="post" name="colorAndType" class="form-control required" >
                     </select>
                 </div>
 
@@ -91,7 +91,7 @@
                 $("#post").append("<option  value=''>请选择物料</option>");
                 if (result.code == web_status.SUCCESS) {
                     for (var i = 0; i < data.length; i++) {
-                        var val = data[i].colorCode + ';' + data[i].classifyCode;
+                        var val = data[i].colorCode + ';' + data[i].classifyCode + ';' + data[i].unitCode;
                         var text = data[i].colorVal + ',' + data[i].classifyVal;
                         var requireAmount = data[i].amount + data[i].unitVal;
                         $("#post").append("<option requireAmount='" + requireAmount + "' value='" + val + "'>" + text + "</option>");

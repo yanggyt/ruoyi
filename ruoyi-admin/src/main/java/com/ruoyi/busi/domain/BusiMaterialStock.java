@@ -19,16 +19,19 @@ public class BusiMaterialStock extends BaseEntity
     private String id;
 
     /** 所属订单 */
-    @Excel(name = "所属订单")
     private String orderId;
+
+    /** 所属订单名称 */
+    @Excel(name = "所属订单")
+    private String orderName;
 
     /** 进库量 */
     @Excel(name = "进库量")
-    private String amountIn;
+    private Long amountIn;
 
     /** 出库量 */
     @Excel(name = "出库量")
-    private String amountOut;
+    private Long amountOut;
 
     /** 单位 */
     @Excel(name = "单位")
@@ -60,24 +63,7 @@ public class BusiMaterialStock extends BaseEntity
     {
         return orderId;
     }
-    public void setAmountIn(String amountIn) 
-    {
-        this.amountIn = amountIn;
-    }
 
-    public String getAmountIn() 
-    {
-        return amountIn;
-    }
-    public void setAmountOut(String amountOut) 
-    {
-        this.amountOut = amountOut;
-    }
-
-    public String getAmountOut() 
-    {
-        return amountOut;
-    }
     public void setUnit(String unit) 
     {
         this.unit = unit;
@@ -104,6 +90,30 @@ public class BusiMaterialStock extends BaseEntity
     public String getClassify() 
     {
         return classify;
+    }
+
+    public Long getAmountIn() {
+        return amountIn;
+    }
+
+    public void setAmountIn(Long amountIn) {
+        this.amountIn = amountIn;
+    }
+
+    public Long getAmountOut() {
+        return amountOut;
+    }
+
+    public void setAmountOut(Long amountOut) {
+        this.amountOut = amountOut;
+    }
+
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
     }
 
     @Override

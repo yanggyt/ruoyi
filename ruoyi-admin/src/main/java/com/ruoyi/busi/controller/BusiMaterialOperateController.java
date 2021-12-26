@@ -1,6 +1,8 @@
 package com.ruoyi.busi.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -86,6 +88,9 @@ public class BusiMaterialOperateController extends BaseController
     @ResponseBody
     public AjaxResult addSave(BusiMaterialOperate busiMaterialOperate)
     {
+        busiMaterialOperate.setCreateBy(getLoginName());
+        busiMaterialOperate.setCreateTime(DateUtils.getNowDate());
+
         return toAjax(busiMaterialOperateService.insertBusiMaterialOperate(busiMaterialOperate));
     }
 

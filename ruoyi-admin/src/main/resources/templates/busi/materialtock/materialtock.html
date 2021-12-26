@@ -11,8 +11,9 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>所属订单：</label>
-                                <input type="text" name="orderId"/>
+                                <label>订单名称：</label>
+                                <input id="treeId" name="orderId"   type="text" style="display: none;">
+                                <input id="treeName" name="orderName"  type="text" readonly="true" onclick="selectOrder()" >
                             </li>
                             <li>
                                 <label>颜色：</label>
@@ -61,6 +62,7 @@
         var editFlag = [[${@permission.hasPermi('busi:materialtock:edit')}]];
         var removeFlag = [[${@permission.hasPermi('busi:materialtock:remove')}]];
         var colorDatas = [[${@dict.getType('busi_color')}]];
+        var unitDatas = [[${@dict.getType('busi_material_unit')}]];
         var classifyDatas = [[${@dict.getType('busi_material_type')}]];
         var prefix = ctx + "busi/materialtock";
 
@@ -81,20 +83,30 @@
                     visible: false
                 },
                 {
-                    field: 'orderId',
+                    field: 'orderName',
                     title: '所属订单'
                 },
+                // {
+                //     field: 'amountIn',
+                //     title: '进库量'
+                // },
+                // {
+                //     field: 'amountOut',
+                //     title: '出库量'
+                // },
                 {
-                    field: 'amountIn',
-                    title: '进库量'
-                },
-                {
-                    field: 'amountOut',
-                    title: '出库量'
+                    field: 'amount',
+                    title: '库存量',
+                    formatter: function(value, row, index) {
+                        return row.amountIn - row.amountOut;
+                    }
                 },
                 {
                     field: 'unit',
-                    title: '单位'
+                    title: '单位',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(unitDatas, value);
+                    }
                 },
                 {
                     field: 'color',
@@ -123,6 +135,23 @@
             };
             $.table.init(options);
         });
+
+        /*订单选择*/
+        function selectOrder() {
+            var options = {
+                title: '选择订单',
+                width: "380",
+                height: "400",
+                url: ctx + "busi/order/selectOrder/" ,
+                callBack: function(index, layero){
+                    var body = $.modal.getChildFrame(index);
+                    $("#treeId").val(body.find('#treeId').val());
+                    $("#treeName").val(body.find('#treeName').val());
+                    $.modal.close(index);
+                }
+            };
+            $.modal.openOptions(options);
+        }
     </script>
 </body>
 </html>
