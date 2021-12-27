@@ -1015,6 +1015,37 @@ var table = {
                 };
                 $.ajax(config)
             },
+            ajaxSubmit: function(url, type, dataType, data, callback) {
+                var config = {
+                    url: url,
+                    type: type,
+                    dataType: dataType,
+                    data: data,
+                    beforeSend: function () {
+                        $.modal.loading("正在处理中，请稍候...");
+                    },
+                    success: function(result) {
+                        if (result.code == web_status.SUCCESS) {
+                            if (typeof callback == "function") {
+                                callback(result);
+                            }
+                        } else if (result.code == web_status.WARNING) {
+                            $.modal.alertWarning(result.msg)
+                        }  else {
+                            $.modal.alertError(result.msg);
+                        }
+                        $.modal.closeLoading();
+                    }
+                };
+                $.ajax(config)
+            },
+            ajaxPost: function(url, data, callback) {
+                $.operate.ajaxSubmit(url, "post", "json", data, callback);
+            },
+            // get请求传输
+            ajaxGet: function(url, callback) {
+                $.operate.ajaxSubmit(url, "get", "json", "", callback);
+            },
             // post请求传输
             post: function(url, data, callback) {
                 $.operate.submit(url, "post", "json", data, callback);

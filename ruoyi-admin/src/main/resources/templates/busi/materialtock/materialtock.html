@@ -95,11 +95,8 @@
                 //     title: '出库量'
                 // },
                 {
-                    field: 'amount',
-                    title: '库存量',
-                    formatter: function(value, row, index) {
-                        return row.amountIn - row.amountOut;
-                    }
+                    field: 'stockAmount',
+                    title: '库存量'
                 },
                 {
                     field: 'unit',

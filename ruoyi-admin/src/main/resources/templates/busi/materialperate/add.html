@@ -28,12 +28,12 @@
                 </div>
                 <label class="control-label text-danger">库存量：<span id="requireAmount" class=""> -- </span></label>
             </div>
-            <div class="form-group">    
+            <div class="form-group" th:style="${operType==null}?'':'display:none'">
                 <label class="col-sm-3 control-label">操作类型：</label>
                 <div class="col-sm-8">
                     <select name="oprateType" class="form-control m-b">
-                        <option value="1" selected>入库</option>
-                        <option value="2">出库</option>
+                        <option value="1" th:selected="${operType ne '2'}">入库</option>
+                        <option value="2" th:selected="${operType eq '2'}">出库</option>
                     </select>
                 </div>
             </div>
@@ -43,6 +43,19 @@
                     <textarea name="remark" class="form-control"></textarea>
                 </div>
             </div>
+
+            <div class="form-group" th:if="${operType!=null}">
+                <div class="col-sm-5"></div>
+                <div class="col-sm-2">
+                    <a class="btn btn-success" onclick="submitHandler()" >
+                        保存
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <a class="btn btn-info" onclick="$.modal.closeTab()" >
+                        关闭
+                    </a>
+                </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />
@@ -80,26 +93,20 @@
             $.modal.openOptions(options);
         }
 
-        /*物料查询*/
+        /*物料需求查询*/
         function queryMetarial(orderId) {
             var url = ctx + "busi/productRequire/listByOrderId?orderId=" + orderId;
-            $.modal.loading("正在查询中，请稍候...");
-            $.post(url, {}, function (result) {
+            $.operate.ajaxPost(url, {}, function (result) {
                 var data = result.data;
                 $("#post").empty();
                 $("#post").append("<option  value=''>请选择物料</option>");
-                if (result.code == web_status.SUCCESS) {
-                    for (var i = 0; i < data.length; i++) {
-                        var val = data[i].colorCode + ';' + data[i].classifyCode + ';' + data[i].unitCode;
-                        var text = data[i].colorVal + ',' + data[i].classifyVal;
-                        var requireAmount = data[i].amount + data[i].unitVal;
-                        $("#post").append("<option requireAmount='" + requireAmount + "' value='" + val + "'>" + text + "</option>");
-                    }
-                } else {
-                    $.modal.alertError(result.msg);
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i].colorCode + ';' + data[i].classifyCode + ';' + data[i].unitCode;
+                    var text = data[i].colorVal + ',' + data[i].classifyVal;
+                    var requireAmount = data[i].amount + data[i].unitVal;
+                    $("#post").append("<option requireAmount='" + requireAmount + "' value='" + val + "'>" + text + "</option>");
                 }
-                $.modal.closeLoading();
-            });
+            })
         }
     </script>
 </body>
