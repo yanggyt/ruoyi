@@ -2,6 +2,7 @@ package com.ruoyi.busi.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class BusiMaterialOperateController extends BaseController
     @Log(title = "物料操作流水", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(BusiMaterialOperate busiMaterialOperate) throws Exception {
+    public AjaxResult addSave(BusiMaterialOperate busiMaterialOperate) throws ServiceException {
         busiMaterialOperate.setCreateBy(getLoginName());
         busiMaterialOperate.setCreateTime(DateUtils.getNowDate());
 

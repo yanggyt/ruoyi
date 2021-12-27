@@ -2,6 +2,7 @@ package com.ruoyi.busi.service;
 
 import java.util.List;
 import com.ruoyi.busi.domain.BusiMaterialOperate;
+import com.ruoyi.common.exception.ServiceException;
 
 /**
  * 物料操作流水Service接口
@@ -33,7 +34,7 @@ public interface IBusiMaterialOperateService
      * @param busiMaterialOperate 物料操作流水
      * @return 结果
      */
-    public int insertBusiMaterialOperate(BusiMaterialOperate busiMaterialOperate) throws Exception;
+    public int insertBusiMaterialOperate(BusiMaterialOperate busiMaterialOperate) throws ServiceException;
 
     /**
      * 修改物料操作流水

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ruoyi.busi.domain.BusiMaterialStock;
 import com.ruoyi.busi.mapper.BusiMaterialStockMapper;
-import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.busi.mapper.BusiMaterialOperateMapper;
@@ -58,7 +58,7 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insertBusiMaterialOperate(BusiMaterialOperate busiMaterialOperate) throws Exception {
+    public int insertBusiMaterialOperate(BusiMaterialOperate busiMaterialOperate) throws ServiceException {
         // 先查询库存
         List<BusiMaterialStock> busiMaterialStocks = queryBusiMaterialStocks(busiMaterialOperate);
         BusiMaterialStock busiMaterialStock;
@@ -70,7 +70,7 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
             } else {// 2为入库
                 long stockAmount = busiMaterialStock.getAmountIn() - busiMaterialStock.getAmountOut();
                 if(busiMaterialOperate.getAmount() > stockAmount){
-                    throw new Exception("出库超过库存");
+                    throw new ServiceException("出库超过库存");
                 }
                 busiMaterialStock.setAmountOut(busiMaterialOperate.getAmount() + busiMaterialStock.getAmountOut());
             }
@@ -87,7 +87,7 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
             if ("1".equals(busiMaterialOperate.getOprateType())) {
                 busiMaterialStock.setAmountIn(busiMaterialOperate.getAmount());
             } else {
-                throw new Exception("尚未建立库存，请先入库再出库");
+                throw new ServiceException("尚未建立库存，请先入库再出库");
             }
             busiMaterialStockMapper.insertBusiMaterialStock(busiMaterialStock);
         }
