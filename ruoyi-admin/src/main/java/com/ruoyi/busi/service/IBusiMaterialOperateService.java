@@ -33,7 +33,7 @@ public interface IBusiMaterialOperateService
      * @param busiMaterialOperate 物料操作流水
      * @return 结果
      */
-    public int insertBusiMaterialOperate(BusiMaterialOperate busiMaterialOperate);
+    public int insertBusiMaterialOperate(BusiMaterialOperate busiMaterialOperate) throws Exception;
 
     /**
      * 修改物料操作流水

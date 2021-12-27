@@ -11,8 +11,9 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>订单：</label>
-                                <input type="text" name="materialStockId"/>
+                                <label>订单名称：</label>
+                                <input id="treeId" name="orderId"   type="text" style="display: none;">
+                                <input id="treeName" name="orderName"  type="text" readonly="true" onclick="selectOrder()" >
                             </li>
                             <li>
                                 <label>操作类型：</label>
@@ -45,12 +46,12 @@
                 <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="busi:materialperate:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="busi:materialperate:edit">
-                    <i class="fa fa-edit"></i> 修改
-                </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="busi:materialperate:remove">
-                    <i class="fa fa-remove"></i> 删除
-                </a>
+<!--                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="busi:materialperate:edit">-->
+<!--                    <i class="fa fa-edit"></i> 修改-->
+<!--                </a>-->
+<!--                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="busi:materialperate:remove">-->
+<!--                    <i class="fa fa-remove"></i> 删除-->
+<!--                </a>-->
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="busi:materialperate:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
@@ -65,6 +66,10 @@
         var editFlag = [[${@permission.hasPermi('busi:materialperate:edit')}]];
         var removeFlag = [[${@permission.hasPermi('busi:materialperate:remove')}]];
         var prefix = ctx + "busi/materialperate";
+        var colorDatas = [[${@dict.getType('busi_color')}]];
+        var unitDatas = [[${@dict.getType('busi_material_unit')}]];
+        var classifyDatas = [[${@dict.getType('busi_material_type')}]];
+        var operateTypeDatas = [[${@dict.getType('busi_operate_type')}]];
 
         $(function() {
             var options = {
@@ -83,16 +88,46 @@
                     visible: false
                 },
                 {
-                    field: 'materialStockId',
-                    title: '订单'
+                    field: 'orderName',
+                    title: '所属订单'
                 },
                 {
                     field: 'amount',
                     title: '操作数量'
                 },
                 {
+                    field: 'unit',
+                    title: '单位',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(unitDatas, value);
+                    }
+                },
+                {
+                    field: 'color',
+                    title: '颜色',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(colorDatas, value);
+                    }
+                },
+                {
+                    field: 'classify',
+                    title: '类型',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(classifyDatas, value);
+                    }
+                },
+                {
                     field: 'oprateType',
-                    title: '操作类型'
+                    title: '操作类型',
+                    formatter: function(value, row, index) {
+                        if (value == "1") {
+                            return "<i class='fa fa-arrow-circle-down'>入库</i>";
+                        } else if (value == "2") {
+                            return "<i class='fa fa-arrow-circle-up'>出库</i>";
+                        } else {
+                            return "未知操作";
+                        }
+                    }
                 },
                 {
                     field: 'createBy',
@@ -102,19 +137,37 @@
                     field: 'createTime',
                     title: '操作时间'
                 },
-                {
-                    title: '操作',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        return actions.join('');
-                    }
-                }]
+                // {
+                //     title: '操作',
+                //     align: 'center',
+                //     formatter: function(value, row, index) {
+                //         var actions = [];
+                //         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                //         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                //         return actions.join('');
+                //     }
+                // }
+                ]
             };
             $.table.init(options);
         });
+
+        /*订单选择*/
+        function selectOrder() {
+            var options = {
+                title: '选择订单',
+                width: "380",
+                height: "400",
+                url: ctx + "busi/order/selectOrder/" ,
+                callBack: function(index, layero){
+                    var body = $.modal.getChildFrame(index);
+                    $("#treeId").val(body.find('#treeId').val());
+                    $("#treeName").val(body.find('#treeName').val());
+                    $.modal.close(index);
+                }
+            };
+            $.modal.openOptions(options);
+        }
     </script>
 </body>
 </html>

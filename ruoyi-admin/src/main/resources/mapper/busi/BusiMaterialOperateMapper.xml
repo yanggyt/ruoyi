@@ -7,6 +7,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BusiMaterialOperate" id="BusiMaterialOperateResult">
         <result property="id"    column="id"    />
         <result property="materialStockId"    column="material_stock_id"    />
+        <result property="orderName"    column="order_name"    />
+        <result property="unit"    column="unit"    />
+        <result property="color"    column="color"    />
+        <result property="classify"    column="classify"    />
         <result property="amount"    column="amount"    />
         <result property="oprateType"    column="oprate_type"    />
         <result property="createBy"    column="create_by"    />
@@ -15,22 +19,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBusiMaterialOperateVo">
-        select id, material_stock_id, amount, oprate_type, create_by, create_time, remark from busi_material_operate
+        select bmo.id, bmo.material_stock_id,bo.order_name, bms.unit, bms.color, bms.classify, bmo.amount, bmo.oprate_type, bmo.create_by, bmo.create_time, bmo.remark
+        from busi_material_operate bmo LEFT JOIN busi_material_stock bms on bmo.material_stock_id = bms.id LEFT JOIN busi_order bo on bo.id = bms.order_id
     </sql>
 
     <select id="selectBusiMaterialOperateList" parameterType="BusiMaterialOperate" resultMap="BusiMaterialOperateResult">
         <include refid="selectBusiMaterialOperateVo"/>
         <where>  
-            <if test="materialStockId != null  and materialStockId != ''"> and material_stock_id = #{materialStockId}</if>
-            <if test="oprateType != null  and oprateType != ''"> and oprate_type = #{oprateType}</if>
-            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="orderId != null  and orderId != ''"> and bo.id = #{orderId}</if>
+            <if test="oprateType != null  and oprateType != ''"> and bmo.oprate_type = #{oprateType}</if>
+            <if test="createBy != null  and createBy != ''"> and bmo.create_by = #{createBy}</if>
             <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
         </where>
+        order by create_time DESC
     </select>
     
     <select id="selectBusiMaterialOperateById" parameterType="Long" resultMap="BusiMaterialOperateResult">
         <include refid="selectBusiMaterialOperateVo"/>
-        where id = #{id}
+        where bmo.id = #{id}
     </select>
         
     <insert id="insertBusiMaterialOperate" parameterType="BusiMaterialOperate" useGeneratedKeys="true" keyProperty="id">

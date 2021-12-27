@@ -86,8 +86,7 @@ public class BusiMaterialOperateController extends BaseController
     @Log(title = "物料操作流水", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(BusiMaterialOperate busiMaterialOperate)
-    {
+    public AjaxResult addSave(BusiMaterialOperate busiMaterialOperate) throws Exception {
         busiMaterialOperate.setCreateBy(getLoginName());
         busiMaterialOperate.setCreateTime(DateUtils.getNowDate());
 

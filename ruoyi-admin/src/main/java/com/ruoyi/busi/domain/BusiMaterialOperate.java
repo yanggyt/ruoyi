@@ -22,9 +22,8 @@ public class BusiMaterialOperate extends BaseEntity {
     private Long id;
 
     /**
-     * 订单
+     * 物料库存ID
      */
-    @Excel(name = "订单")
     private String materialStockId;
 
     /**
@@ -44,32 +43,62 @@ public class BusiMaterialOperate extends BaseEntity {
      */
     private String colorAndType;
 
+    /**
+     * 订单ID
+     */
     private String orderId;
 
-    public String getColor() {
-        if (colorAndType != null) {
-            return colorAndType.split(";")[0];
-        } else {
-            return "";
-        }
+    /**
+     * 订单名称
+     */
+    @Excel(name = "订单")
+    private String orderName;
 
+    /**
+     * 类型
+     */
+    private String classify;
 
+    /**
+     * 颜色
+     */
+    private String color;
+
+    /**
+     * 单位
+     */
+    private String unit;
+
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
     }
 
     public String getClassify() {
-        if (colorAndType != null) {
-            return colorAndType.split(";")[1];
-        } else {
-            return "";
-        }
+        return classify;
+    }
+
+    public void setClassify(String classify) {
+        this.classify = classify;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getUnit() {
-        if (colorAndType != null) {
-            return colorAndType.split(";")[2];
-        } else {
-            return "";
-        }
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getOrderId() {
@@ -86,6 +115,10 @@ public class BusiMaterialOperate extends BaseEntity {
 
     public void setColorAndType(String colorAndType) {
         this.colorAndType = colorAndType;
+        this.color = colorAndType.split(";")[0];
+        this.classify = colorAndType.split(";")[1];
+        this.unit = colorAndType.split(";")[2];
+
     }
 
     public void setId(Long id) {

@@ -58,16 +58,20 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insertBusiMaterialOperate(BusiMaterialOperate busiMaterialOperate) {
+    public int insertBusiMaterialOperate(BusiMaterialOperate busiMaterialOperate) throws Exception {
         // 先查询库存
         List<BusiMaterialStock> busiMaterialStocks = queryBusiMaterialStocks(busiMaterialOperate);
         BusiMaterialStock busiMaterialStock;
 
         if (busiMaterialStocks.size() != 0) { // 已有库存，则更新
             busiMaterialStock = busiMaterialStocks.get(0);
-            if ("1".equals(busiMaterialOperate.getOprateType())) {
+            if ("1".equals(busiMaterialOperate.getOprateType())) { // 1为入库
                 busiMaterialStock.setAmountIn(busiMaterialOperate.getAmount() + busiMaterialStock.getAmountIn());
-            } else {
+            } else {// 2为入库
+                long stockAmount = busiMaterialStock.getAmountIn() - busiMaterialStock.getAmountOut();
+                if(busiMaterialOperate.getAmount() > stockAmount){
+                    throw new Exception("出库超过库存");
+                }
                 busiMaterialStock.setAmountOut(busiMaterialOperate.getAmount() + busiMaterialStock.getAmountOut());
             }
             busiMaterialStockMapper.updateBusiMaterialStock(busiMaterialStock);
@@ -83,7 +87,7 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
             if ("1".equals(busiMaterialOperate.getOprateType())) {
                 busiMaterialStock.setAmountIn(busiMaterialOperate.getAmount());
             } else {
-                busiMaterialStock.setAmountOut(busiMaterialOperate.getAmount());
+                throw new Exception("尚未建立库存，请先入库再出库");
             }
             busiMaterialStockMapper.insertBusiMaterialStock(busiMaterialStock);
         }

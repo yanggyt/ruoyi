@@ -15,24 +15,23 @@
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" title="若无对应的物料选项，请先在产品需求中添加物料需求">物料选择：<i class="fa fa-question-circle-o"></i></label>
-                <div class="col-sm-8">
+                <div class="col-sm-6">
                     <select id="post" name="colorAndType" class="form-control required" >
                     </select>
                 </div>
-
+                <label class="control-label text-danger">需求量：<span id="requireAmount" class=""> -- </span></label>
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">数量：</label>
                 <div class="col-sm-6">
                     <input name="amount" class="form-control" type="text" required>
                 </div>
-                <label class="control-label text-danger">需求量：<span id="requireAmount" class=""> -- </span></label>
+                <label class="control-label text-danger">库存量：<span id="requireAmount" class=""> -- </span></label>
             </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label">操作类型：</label>
                 <div class="col-sm-8">
                     <select name="oprateType" class="form-control m-b">
-                        <option value="">所有</option>
                         <option value="1" selected>入库</option>
                         <option value="2">出库</option>
                     </select>
