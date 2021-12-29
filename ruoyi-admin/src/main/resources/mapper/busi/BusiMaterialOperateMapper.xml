@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderId != null  and orderId != ''"> and bo.id = #{orderId}</if>
             <if test="oprateType != null  and oprateType != ''"> and bmo.oprate_type = #{oprateType}</if>
             <if test="createBy != null  and createBy != ''"> and bmo.create_by = #{createBy}</if>
-            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and bmo.create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
         </where>
         order by create_time DESC
     </select>

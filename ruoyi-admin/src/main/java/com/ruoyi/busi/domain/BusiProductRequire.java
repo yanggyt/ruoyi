@@ -30,7 +30,7 @@ public class BusiProductRequire extends BaseEntity
 
     /** 数量 */
     @Excel(name = "数量")
-    private Long amount;
+    private double amount;
 
     /** 尺码 */
     @Excel(name = "尺码")
@@ -66,16 +66,16 @@ public class BusiProductRequire extends BaseEntity
     {
         return orderId;
     }
-    public void setAmount(Long amount) 
-    {
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public Long getAmount() 
-    {
-        return amount;
-    }
-    public void setSize(String size) 
+    public void setSize(String size)
     {
         this.size = size;
     }

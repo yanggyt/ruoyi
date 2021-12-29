@@ -138,7 +138,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          where bpr.order_id = #{orderId}
     </select>
     <select id="selMaterialColorListByOrderIdAndType" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT DISTINCT bmr.color AS colorCode
+        SELECT DISTINCT bmr.color AS colorCode, bmr.unit
           FROM busi_material_require bmr
                    LEFT JOIN busi_product_require bpr
                    ON bmr.product_require_id = bpr.id
@@ -150,7 +150,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          WHERE bmr.product_require_id = #{productId}
     </select>
     <select id="selMaterialColorListByProductIdAndType" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT DISTINCT bmr.color AS colorCode
+        SELECT DISTINCT bmr.color AS colorCode, bmr.amount,  bmr.unit
           FROM busi_material_require bmr
          WHERE bmr.product_require_id = #{productId}  AND bmr.classify = #{classify}
     </select>

@@ -24,6 +24,8 @@
             <div class="col-sm-4">
                 <select id="color" name="color" class="form-control required" >
                 </select>
+
+                <input id="unit" name="unit" type="hidden">
             </div>
 <!--            <label class="control-label text-danger">需求量：<span id="requireAmount" class=""> &#45;&#45; </span></label>-->
         </div>
@@ -81,9 +83,18 @@
         queryColorList(orderId, classify);
     })
 
+
+
+    $("#color").change(function(){
+        var unit = $("#color :selected").attr("unit");
+        $("#unit").val(unit);
+    })
+
     function submitHandler() {
         if ($.validate.form()) {
-            $.operate.save(prefix + "/add", $('#form-materialperate-add').serialize());
+            $.operate.save(prefix + "/add", $('#form-materialperate-add').serialize(), {}, function(){
+                $.modal.alertSuccess("保存成功");
+            });
         }
     }
 
@@ -94,7 +105,7 @@
             width: "480",
             height: "500",
             url: ctx + "busi/order/selectOrder/" + status,
-            callBack: function(index, layero){
+            callBack: function(index){
                 var body = $.modal.getChildFrame(index);
                 $("#treeId").val(body.find('#treeId').val());
                 $("#treeName").val(body.find('#treeName').val());
@@ -131,8 +142,9 @@
             $("#color").empty().append("<option  value=''>请选择颜色</option>");
             for (var i = 0; i < data.length; i++) {
                 var val = data[i].colorCode;
-                var text = $.table.getDictText(colorDatas, val);;
-                $("#color").append("<option value='" + val + "'>" + text + "</option>");
+                var text = $.table.getDictText(colorDatas, val);
+                var unit = data[i].unit;
+                $("#color").append("<option unit='" + unit + "'value='" + val + "'>" + text + "</option>");
             }
         })
     }

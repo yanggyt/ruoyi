@@ -1217,7 +1217,7 @@ var table = {
                 return url;
             },
             // 保存信息 刷新表格
-            save: function(url, data, callback) {
+            save: function(url, data, callback, successCallback) {
                 var config = {
                     url: url,
                     type: "post",
@@ -1231,7 +1231,7 @@ var table = {
                         if (typeof callback == "function") {
                             callback(result);
                         }
-                        $.operate.successCallback(result);
+                        $.operate.successCallback(result, successCallback);
                     }
                 };
                 $.ajax(config)
@@ -1310,7 +1310,7 @@ var table = {
                 $.modal.closeLoading();
             },
             // 成功回调执行事件（父窗体静默更新）
-            successCallback: function(result) {
+            successCallback: function(result, callback) {
                 if (result.code == web_status.SUCCESS) {
                     var parent = activeWindow();
                     if($.common.isEmpty(parent.table)) {
@@ -1324,8 +1324,11 @@ var table = {
                         parent.$.modal.msgSuccess(result.msg);
                         parent.$.treeTable.refresh();
                     }
+                    if (typeof callback == "function") {
+                        callback();
+                    }
                 } else if (result.code == web_status.WARNING) {
-                    $.modal.alertWarning(result.msg)
+                    $.modal.alertWarning(result.msg);
                 }  else {
                     $.modal.alertError(result.msg);
                 }
