@@ -103,7 +103,7 @@
                 },
                 {
                     field: 'price',
-                    title: '订单价格'
+                    title: '单价'
                 },
                 {
                     field: 'classify',
@@ -111,10 +111,6 @@
                     formatter: function(value, row, index) {
                        return $.table.selectDictLabel(classifyDatas, value);
                     }
-                },
-                {
-                    field: 'ratio',
-                    title: '转换比例(米/件)'
                 },
                 {
                     field: 'status',
