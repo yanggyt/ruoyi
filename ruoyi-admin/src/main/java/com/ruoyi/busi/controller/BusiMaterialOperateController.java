@@ -68,20 +68,23 @@ public class BusiMaterialOperateController extends BaseController
     }
 
     /**
-     * 新增物料操作流水
+     * 新增来料和损耗
      */
     @GetMapping("/addIn")
-    public String addIn()
-    {
+    public String addIn(@RequestParam(name = "operType", required = false) String operType, @RequestParam(name = "inTab", required = false) String inTab, ModelMap mmap) {
+        mmap.put("operType",operType);
+        mmap.put("inTab",inTab);
+
         return prefix + "/addIn";
     }
 
     /**
-     * 新增物料操作流水
+     * 新增分料
      */
     @GetMapping("/addOut")
-    public String addOut()
-    {
+    public String addOut(@RequestParam(name = "operType", required = false) String operType, @RequestParam(name = "inTab", required = false) String inTab, ModelMap mmap) {
+        mmap.put("operType",operType);
+        mmap.put("inTab",inTab);
         return prefix + "/addOut";
     }
 

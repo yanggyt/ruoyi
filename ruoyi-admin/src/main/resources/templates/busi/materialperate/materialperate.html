@@ -21,6 +21,7 @@
                                     <option value="">所有</option>
                                     <option value="1">入库</option>
                                     <option value="2">出库</option>
+                                    <option value="3">损耗</option>
                                 </select>
                             </li>
                             <li>
@@ -44,10 +45,13 @@
 
             <div class="btn-group-sm" id="toolbar" role="group">
                 <a class="btn btn-success" onclick="addIn()" shiro:hasPermission="busi:materialperate:add">
-                    <i class="fa fa-plus"></i> 添加来料
+                     添加来料
                 </a>
                 <a class="btn btn-success" onclick="addOut()" shiro:hasPermission="busi:materialperate:add">
-                    <i class="fa fa-minus"></i> 添加分料
+                    添加分料
+                </a>
+                <a class="btn btn-success" onclick="addWastage()" shiro:hasPermission="busi:materialperate:add">
+                    添加损耗
                 </a>
 <!--                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="busi:materialperate:edit">-->
 <!--                    <i class="fa fa-edit"></i> 修改-->
@@ -128,7 +132,7 @@
                         } else if (value == "2") {
                             return "<i class='fa fa-arrow-circle-up'>出库</i>";
                         } else {
-                            return "未知操作";
+                            return "<i class='fa fa-trash-o'>损耗</i>";
                         }
                     }
                 },
@@ -174,11 +178,13 @@
         }
 
         function addIn(){
-            $.modal.open("添加来料", prefix + "/addIn");
+            $.modal.open("添加来料", prefix + "/addIn?operType=1");
         }
-
         function addOut(){
-            $.modal.open("添加分料", prefix + "/addOut");
+            $.modal.open("添加分料", prefix + "/addOut?operType=2");
+        }
+        function addWastage(){
+            $.modal.open("添加损耗", prefix + "/addIn?operType=3");
         }
     </script>
 </body>

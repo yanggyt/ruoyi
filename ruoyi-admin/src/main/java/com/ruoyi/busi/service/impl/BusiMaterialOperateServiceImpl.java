@@ -70,7 +70,7 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
             } else {// 2为入库
                 double stockAmount = busiMaterialStock.getAmountIn() - busiMaterialStock.getAmountOut();
                 if(busiMaterialOperate.getAmount() > stockAmount){
-                    throw new ServiceException("出库超过库存");
+                    throw new ServiceException("出库或损耗超过库存，库存值：" + stockAmount);
                 }
                 busiMaterialStock.setAmountOut(busiMaterialOperate.getAmount() + busiMaterialStock.getAmountOut());
             }
@@ -87,7 +87,7 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
             if ("1".equals(busiMaterialOperate.getOprateType())) {
                 busiMaterialStock.setAmountIn(busiMaterialOperate.getAmount());
             } else {
-                throw new ServiceException("尚未建立库存，请先入库再出库");
+                throw new ServiceException("尚未建立库存，请先操作物料入库");
             }
             busiMaterialStockMapper.insertBusiMaterialStock(busiMaterialStock);
         }
