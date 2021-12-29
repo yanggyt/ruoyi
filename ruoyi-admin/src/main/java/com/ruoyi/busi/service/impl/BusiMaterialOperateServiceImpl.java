@@ -68,7 +68,7 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
             if ("1".equals(busiMaterialOperate.getOprateType())) { // 1为入库
                 busiMaterialStock.setAmountIn(busiMaterialOperate.getAmount() + busiMaterialStock.getAmountIn());
             } else {// 2为入库
-                long stockAmount = busiMaterialStock.getAmountIn() - busiMaterialStock.getAmountOut();
+                double stockAmount = busiMaterialStock.getAmountIn() - busiMaterialStock.getAmountOut();
                 if(busiMaterialOperate.getAmount() > stockAmount){
                     throw new ServiceException("出库超过库存");
                 }

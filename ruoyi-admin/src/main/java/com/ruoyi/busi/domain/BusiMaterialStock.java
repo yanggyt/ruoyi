@@ -27,11 +27,11 @@ public class BusiMaterialStock extends BaseEntity
 
     /** 进库量 */
     @Excel(name = "进库量")
-    private Long amountIn = 0l;
+    private double amountIn = 0;
 
     /** 出库量 */
     @Excel(name = "出库量")
-    private Long amountOut = 0l;
+    private double amountOut = 0;
 
     /** 单位 */
     @Excel(name = "单位")
@@ -92,19 +92,19 @@ public class BusiMaterialStock extends BaseEntity
         return classify;
     }
 
-    public Long getAmountIn() {
+    public double getAmountIn() {
         return amountIn;
     }
 
-    public void setAmountIn(Long amountIn) {
+    public void setAmountIn(double amountIn) {
         this.amountIn = amountIn;
     }
 
-    public Long getAmountOut() {
+    public double getAmountOut() {
         return amountOut;
     }
 
-    public void setAmountOut(Long amountOut) {
+    public void setAmountOut(double amountOut) {
         this.amountOut = amountOut;
     }
 
@@ -116,7 +116,7 @@ public class BusiMaterialStock extends BaseEntity
         this.orderName = orderName;
     }
 
-    public Long getStockAmount(){
+    public double getStockAmount(){
         return this.amountIn - this.amountOut;
     }
 

@@ -5,8 +5,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
-import java.util.Optional;
-
 /**
  * 物料操作流水对象 busi_material_operate
  *
@@ -30,7 +28,7 @@ public class BusiMaterialOperate extends BaseEntity {
      * 操作数量
      */
     @Excel(name = "操作数量")
-    private Long amount;
+    private double amount;
 
     /**
      * 操作类型
@@ -137,12 +135,12 @@ public class BusiMaterialOperate extends BaseEntity {
         return materialStockId;
     }
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
+    public double getAmount() {
+        return amount;
     }
 
-    public Long getAmount() {
-        return amount;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public void setOprateType(String oprateType) {
