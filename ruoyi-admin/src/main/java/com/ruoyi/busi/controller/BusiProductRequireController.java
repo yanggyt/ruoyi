@@ -1,5 +1,6 @@
 package com.ruoyi.busi.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,15 +132,61 @@ public class BusiProductRequireController extends BaseController
         return toAjax(busiProductRequireService.deleteBusiProductRequireByIds(ids));
     }
 
+    ////////////////
+
+    /**
+     * 通过订单ID查询 物料类型列表
+     */
+    @PostMapping("/selMaterialTypeListByOrderId")
+    @ResponseBody
+    public AjaxResult selMaterialTypeListByOrderId(@RequestParam(name = "orderId",required = false) String orderId)
+    {
+        List<Map<String,String>> list = busiProductRequireService.selMaterialTypeListByOrderId(orderId);
+        return success(list);
+    }
+
+    /**
+     * 通过订单ID和物料类型查询 物料颜色列表
+     */
+    @PostMapping("/selMaterialColorListByOrderIdAndType")
+    @ResponseBody
+    public AjaxResult selMaterialColorListByOrderIdAndType(@RequestParam Map<String,String> queryMap)
+    {
+        List<Map<String,String>> list = busiProductRequireService.selMaterialColorListByOrderIdAndType(queryMap);
+        return success(list);
+    }
 
     /**
      * 通过订单ID查询产品需求列表
      */
     @PostMapping("/listByOrderId")
     @ResponseBody
-    public AjaxResult list(@RequestParam(name = "orderId",required = false) String orderId)
+    public AjaxResult listByOrderId(@RequestParam(name = "orderId", required = false) String orderId) {
+        BusiProductRequire query = new BusiProductRequire();
+        query.setOrderId(orderId);
+        List<BusiProductRequire> list = busiProductRequireService.selectBusiProductRequireList(query);
+        return success(list);
+    }
+
+    /**
+     * 通过产品ID查询 物料类型列表
+     */
+    @PostMapping("/selMaterialTypeListByProductId")
+    @ResponseBody
+    public AjaxResult selMaterialTypeListByProductId(@RequestParam(name = "productId",required = false) String productId)
     {
-        List<Map<String,String>> list = busiProductRequireService.selectMaterialRequireByOrderId(orderId);
+        List<Map<String,String>> list = busiProductRequireService.selMaterialTypeListByProductId(productId);
+        return success(list);
+    }
+
+    /**
+     * 通过产品ID和查询物料颜色查询物料类型需求列表
+     */
+    @PostMapping("/materialColorListByProductIdAndType")
+    @ResponseBody
+    public AjaxResult selMaterialColorListByProductIdAndType(@RequestParam Map<String,String> queryMap)
+    {
+        List<Map<String,String>> list = busiProductRequireService.selMaterialColorListByProductIdAndType(queryMap);
         return success(list);
     }
 }

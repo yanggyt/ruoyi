@@ -87,11 +87,11 @@ public interface BusiProductRequireMapper
      */
     public int deleteBusiMaterialRequireByProductRequireId(String id);
 
-    /**
-     * 通过订单ID查询物料需求列表
-     *
-     * @param orderId 订单ID
-     * @return 结果
-     */
-    List<Map<String, String>> selectMaterialRequireByOrderId(String orderId);
+    List<Map<String, String>> selMaterialTypeListByOrderId(String orderId);
+
+    List<Map<String, String>> selMaterialColorListByOrderIdAndType(Map<String, String> queryMap);
+
+    List<Map<String, String>> selMaterialTypeListByProductId(String productId);
+
+    List<Map<String, String>> selMaterialColorListByProductIdAndType(Map<String, String> queryMap);
 }

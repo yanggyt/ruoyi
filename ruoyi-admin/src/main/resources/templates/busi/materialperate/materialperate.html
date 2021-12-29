@@ -43,8 +43,11 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="busi:materialperate:add">
-                    <i class="fa fa-plus"></i> 添加
+                <a class="btn btn-success" onclick="addIn()" shiro:hasPermission="busi:materialperate:add">
+                    <i class="fa fa-plus"></i> 添加来料
+                </a>
+                <a class="btn btn-success" onclick="addOut()" shiro:hasPermission="busi:materialperate:add">
+                    <i class="fa fa-minus"></i> 添加分料
                 </a>
 <!--                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="busi:materialperate:edit">-->
 <!--                    <i class="fa fa-edit"></i> 修改-->
@@ -168,6 +171,14 @@
                 }
             };
             $.modal.openOptions(options);
+        }
+
+        function addIn(){
+            $.modal.open("添加来料", prefix + "/addIn");
+        }
+
+        function addOut(){
+            $.modal.open("添加分料", prefix + "/addOut");
         }
     </script>
 </body>

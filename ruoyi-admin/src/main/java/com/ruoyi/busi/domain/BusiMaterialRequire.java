@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.math.BigDecimal;
+
 /**
  * 物料需求对象 busi_material_require
  * 
@@ -24,7 +26,7 @@ public class BusiMaterialRequire extends BaseEntity
 
     /** 数量 */
     @Excel(name = "数量")
-    private Long amount;
+    private BigDecimal amount;
 
     /** 单位 */
     @Excel(name = "单位")
@@ -56,16 +58,16 @@ public class BusiMaterialRequire extends BaseEntity
     {
         return productRequireId;
     }
-    public void setAmount(Long amount) 
-    {
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
-    public Long getAmount() 
-    {
-        return amount;
-    }
-    public void setUnit(String unit) 
+    public void setUnit(String unit)
     {
         this.unit = unit;
     }

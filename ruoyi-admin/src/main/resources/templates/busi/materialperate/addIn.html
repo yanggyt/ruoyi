@@ -6,6 +6,8 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-materialperate-add">
+        <input name="oprateType" type="hidden" value="1">
+
         <div class="form-group">
             <label class="col-sm-3 control-label">订单：</label>
             <div class="col-sm-8">
@@ -32,15 +34,15 @@
             </div>
             <label class="control-label text-danger">当前库存量：<span id="requireAmount" class=""> -- </span></label>
         </div>
-        <div class="form-group" th:style="${operType==null}?'':'display:none'">
-            <label class="col-sm-3 control-label">操作类型：</label>
-            <div class="col-sm-8">
-                <select name="oprateType" class="form-control m-b">
-                    <option value="1" th:selected="${operType ne '2'}">入库</option>
-                    <option value="2" th:selected="${operType eq '2'}">出库</option>
-                </select>
-            </div>
-        </div>
+<!--        <div class="form-group" th:style="${operType==null}?'':'display:none'">-->
+<!--            <label class="col-sm-3 control-label">操作类型：</label>-->
+<!--            <div class="col-sm-8">-->
+<!--                <select name="oprateType" class="form-control m-b">-->
+<!--                    <option value="1" th:selected="${operType ne '2'}">入库</option>-->
+<!--                    <option value="2" th:selected="${operType eq '2'}">出库</option>-->
+<!--                </select>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="form-group">
             <label class="col-sm-3 control-label">备注信息：</label>
             <div class="col-sm-8">
@@ -64,7 +66,11 @@
 </div>
 <th:block th:include="include :: footer" />
 <script th:inline="javascript">
-    var prefix = ctx + "busi/materialperate"
+    var prefix = ctx + "busi/materialperate";
+    var colorDatas = [[${@dict.getType('busi_color')}]];
+    var sizeDatas = [[${@dict.getType('busi_size')}]];
+    var classifyDatas = [[${@dict.getType('busi_material_type')}]];
+
     $("#form-materialperate-add").validate({
         focusCleanup: true
     });
@@ -104,10 +110,11 @@
         var url = ctx + "busi/productRequire/selMaterialTypeListByOrderId?orderId=" + orderId;
         $.operate.ajaxPost(url, {}, function (result) {
             var data = result.data;
+            $("#color").empty();
             $("#classify").empty().append("<option  value=''>请选择物料</option>");
             for (var i = 0; i < data.length; i++) {
                 var val = data[i].classifyCode;
-                var text = data[i].classifyText;
+                var text = $.table.getDictText(classifyDatas, val);
                 $("#classify").append("<option value='" + val + "'>" + text + "</option>");
             }
         })
@@ -124,7 +131,7 @@
             $("#color").empty().append("<option  value=''>请选择颜色</option>");
             for (var i = 0; i < data.length; i++) {
                 var val = data[i].colorCode;
-                var text = data[i].colorText;
+                var text = $.table.getDictText(colorDatas, val);;
                 $("#color").append("<option value='" + val + "'>" + text + "</option>");
             }
         })

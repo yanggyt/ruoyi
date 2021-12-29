@@ -61,11 +61,11 @@ public interface IBusiProductRequireService
      */
     public int deleteBusiProductRequireById(String id);
 
-    /**
-     * 按订单查询物料需求
-     *
-     * @param id 产品需求主键
-     * @return 结果
-     */
-    public List<Map<String,String>> selectMaterialRequireByOrderId(String orderId);
+    List<Map<String, String>> selMaterialTypeListByOrderId(String orderId);
+
+    List<Map<String, String>> selMaterialColorListByOrderIdAndType(Map<String, String> queryMap);
+
+    List<Map<String, String>> selMaterialTypeListByProductId(String productId);
+
+    List<Map<String, String>> selMaterialColorListByProductIdAndType(Map<String, String> queryMap);
 }

@@ -111,8 +111,23 @@ public class BusiProductRequireServiceImpl implements IBusiProductRequireService
     }
 
     @Override
-    public List<Map<String, String>> selectMaterialRequireByOrderId(String orderId) {
-        return busiProductRequireMapper.selectMaterialRequireByOrderId(orderId);
+    public List<Map<String, String>> selMaterialTypeListByOrderId(String orderId) {
+        return busiProductRequireMapper.selMaterialTypeListByOrderId(orderId);
+    }
+
+    @Override
+    public List<Map<String, String>> selMaterialColorListByOrderIdAndType(Map<String, String> queryMap) {
+        return busiProductRequireMapper.selMaterialColorListByOrderIdAndType(queryMap);
+    }
+
+    @Override
+    public List<Map<String, String>> selMaterialTypeListByProductId(String productId) {
+        return busiProductRequireMapper.selMaterialTypeListByProductId(productId);
+    }
+
+    @Override
+    public List<Map<String, String>> selMaterialColorListByProductIdAndType(Map<String, String> queryMap) {
+        return busiProductRequireMapper.selMaterialColorListByProductIdAndType(queryMap);
     }
 
     /**

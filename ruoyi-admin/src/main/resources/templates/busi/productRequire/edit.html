@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <h4 class="form-header h4">物料需求信息</h4>
+            <h4 class="form-header h4">单件产品物料需求</h4>
             <div class="row">
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
@@ -132,7 +132,7 @@
                     align: 'center',
                     title: '数量',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control digits required' type='text' name='busiMaterialRequireList[%s].amount' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control number required' type='text' name='busiMaterialRequireList[%s].amount' value='%s'>", index, value);
                         return html;
                     }
 				},

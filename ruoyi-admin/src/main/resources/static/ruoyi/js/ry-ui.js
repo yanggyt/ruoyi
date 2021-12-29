@@ -525,6 +525,20 @@ var table = {
                 }
                 return distinct ? $.common.uniqueFn(rows) : rows;
             },
+            // 返回数据字典显示值
+            getDictText: function(datas, value) {
+                if ($.common.isEmpty(datas) || $.common.isEmpty(value)) {
+                    return '';
+                }
+                var actions = [];
+                $.each(datas, function(index, dict) {
+                    if (dict.dictValue == ('' + value)) {
+                        actions.push(dict.dictLabel);
+                        return false;
+                    }
+                });
+                return actions.join('');
+            },
             // 回显数据字典
             selectDictLabel: function(datas, value) {
                 if ($.common.isEmpty(datas) || $.common.isEmpty(value)) {

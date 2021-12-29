@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增分料')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-materialperate-add">
+            <input name="oprateType" type="hidden" value="1">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">订单：</label>
+                <div class="col-sm-8">
+                    <input id="treeId" name="orderId"  type="hidden">
+                    <input  id="treeName" name="orderName" readonly="true" onclick="selectOrder(1)"  class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">产品：</label>
+                <div class="col-sm-8">
+                    <select id="product" class="form-control" >
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" title="若无对应的物料选项，请先添加来料">物料选择：<i class="fa fa-question-circle-o"></i></label>
+                <div class="col-sm-4">
+                    <select id="classify" name="classify" class="form-control required" >
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <select id="color" name="color" class="form-control required" >
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">数量：</label>
+                <div class="col-sm-6">
+                    <input name="amount" class="form-control" type="text" required>
+                </div>
+                <label class="control-label text-danger">库存量：<span id="requireAmount" class=""> -- </span></label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">备注信息：</label>
+                <div class="col-sm-8">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group" th:if="${operType!=null}">
+                <div class="col-sm-5"></div>
+                <div class="col-sm-2">
+                    <a class="btn btn-success" onclick="submitHandler()" >
+                        保存
+                    </a>
+                </div>
+                <div class="col-sm-3">
+                    <a class="btn btn-info" onclick="$.modal.closeTab()" >
+                        关闭
+                    </a>
+                </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "busi/materialperate"
+        var colorDatas = [[${@dict.getType('busi_color')}]];
+        var sizeDatas = [[${@dict.getType('busi_size')}]];
+        var classifyDatas = [[${@dict.getType('busi_material_type')}]];
+
+        $("#form-materialperate-add").validate({
+            focusCleanup: true
+        });
+
+        $("#product").change(function(){
+            queryClassifyList($("#product").val());
+        })
+
+        $("#classify").change(function(){
+           queryColorList($("#product").val(), $("#classify").val());
+        })
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-materialperate-add').serialize());
+            }
+        }
+
+        /*订单选择*/
+        function selectOrder(status) {
+            var options = {
+                title: '选择订单',
+                width: "480",
+                height: "500",
+                url: ctx + "busi/order/selectOrder/" + status,
+                callBack: function(index, layero){
+                    var body = $.modal.getChildFrame(index);
+                    $("#treeId").val(body.find('#treeId').val());
+                    $("#treeName").val(body.find('#treeName').val());
+                    $.modal.close(index);
+                    queryProductList(body.find('#treeId').val());
+                }
+            };
+            $.modal.openOptions(options);
+        }
+
+        /*产品需求查询*/
+        function queryProductList(orderId) {
+            var url = ctx + "busi/productRequire/listByOrderId?orderId=" + orderId;
+            $.operate.ajaxPost(url, {}, function (result) {
+                var data = result.data;
+                $("#color,#classify").empty();
+                $("#product").empty().append("<option  value=''>请选择产品</option>");
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i].id;
+                    var text = $.table.getDictText(colorDatas, data[i].color) + "," + $.table.getDictText(sizeDatas, data[i].size);
+                    $("#product").append("<option value='" + val + "'>" + text + "</option>");
+                }
+            })
+        }
+
+        /*物料需求类型查询*/
+        function queryClassifyList(productId) {
+            var url = ctx + "busi/productRequire/selMaterialTypeListByProductId?productId=" + productId;
+            $.operate.ajaxPost(url, {}, function (result) {
+                var data = result.data;
+                $("#color").empty();
+                $("#classify").empty().append("<option  value=''>请选择物料</option>");
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i].classifyCode;
+                    var text = $.table.getDictText(classifyDatas, val);
+                    $("#classify").append("<option value='" + val + "'>" + text + "</option>");
+                }
+            })
+        }
+
+        /*物料需求颜色查询*/
+        function queryColorList(productId, classify) {
+            var url = ctx + "busi/productRequire/materialColorListByProductIdAndType";
+            $.operate.ajaxPost(url, {
+                productId:productId,
+                classify:classify
+            }, function (result) {
+                var data = result.data;
+                $("#color").empty().append("<option  value=''>请选择颜色</option>");
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i].colorCode;
+                    var text = $.table.getDictText(colorDatas, val);
+                    $("#color").append("<option value='" + val + "'>" + text + "</option>");
+                }
+            })
+        }
+    </script>
+</body>
+</html>
