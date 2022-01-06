@@ -156,11 +156,12 @@
             $.operate.ajaxPost(url, {}, function (result) {
                 $("#" + table.options.id).bootstrapTable('removeAll');
                 var datas = result.data;
+                var index = 0;
                 for (var i = 0; i < datas.length; i++) {
                     var data = datas[i];
                     if(data.requireAmount - (data.assignedAmount||0) > 0){
                         addColumn(data);
-                        addValidator(data, i);
+                        addValidator(data, index++);
                     }
                 }
             })

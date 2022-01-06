@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <select id="selectBusiTaskList" parameterType="BusiTask" resultMap="BusiTaskResult">
-        SELECT bo.order_name,bpl.disname line_name,bt.task_name,bst.target_amount,bst.completed_amount,bt.status FROM busi_task bt
+        SELECT bt.id,bo.order_name,bpl.disname line_name,bt.task_name,bst.target_amount,bst.completed_amount,bt.status FROM busi_task bt
         left join busi_order bo on bt.order_id = bo.id
         left join busi_prison_line bpl on bt.prison_line_id = bpl.id
         left join
