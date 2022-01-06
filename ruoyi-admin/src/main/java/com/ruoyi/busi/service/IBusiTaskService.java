@@ -1,6 +1,8 @@
 package com.ruoyi.busi.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.busi.domain.BusiTask;
 
 /**
@@ -58,4 +60,7 @@ public interface IBusiTaskService
      * @return 结果
      */
     public int deleteBusiTaskById(String id);
+
+
+    public List<Map> selectProductRequire(String orderId);
 }

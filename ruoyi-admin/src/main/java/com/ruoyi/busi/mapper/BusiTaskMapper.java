@@ -1,6 +1,8 @@
 package com.ruoyi.busi.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.busi.domain.BusiTask;
 import com.ruoyi.busi.domain.BusiSubTask;
 
@@ -84,4 +86,13 @@ public interface BusiTaskMapper
      * @return 结果
      */
     public int deleteBusiSubTaskByTaskId(String id);
+
+
+    /**
+     * 查询产品的需求和已分配数量信息
+     * @param orderId
+     * @return
+     */
+    public List<Map> selectProductRequire(String orderId);
+
 }

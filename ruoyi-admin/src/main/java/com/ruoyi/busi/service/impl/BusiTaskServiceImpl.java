@@ -5,6 +5,8 @@ import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Map;
+
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.busi.domain.BusiSubTask;
@@ -108,6 +110,11 @@ public class BusiTaskServiceImpl implements IBusiTaskService
         return busiTaskMapper.deleteBusiTaskById(id);
     }
 
+    @Override
+    public List<Map> selectProductRequire(String orderId) {
+        return busiTaskMapper.selectProductRequire(orderId);
+    }
+
     /**
      * 新增产品子任务信息
      * 
@@ -123,6 +130,8 @@ public class BusiTaskServiceImpl implements IBusiTaskService
             for (BusiSubTask busiSubTask : busiSubTaskList)
             {
                 busiSubTask.setTaskId(id);
+                busiSubTask.setStatus("1");
+                busiSubTask.setCompletedAmount(0l);
                 list.add(busiSubTask);
             }
             if (list.size() > 0)

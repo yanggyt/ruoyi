@@ -7,6 +7,12 @@
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-task-add">
             <h4 class="form-header h4">生产任务信息</h4>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">任务名称：</label>
+                <div class="col-sm-8">
+                    <input name="taskName" class="form-control" type="text">
+                </div>
+            </div>
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">产线选择：</label>
                 <div class="col-sm-8">
@@ -19,16 +25,10 @@
                 <label class="col-sm-3 control-label is-required">订单选择：</label>
                 <div class="col-sm-8">
                     <input id="treeId" name="orderId"  type="hidden">
-                    <input  id="treeName" name="orderName" readonly="true" onclick="selectOrder(1)"  class="form-control" type="text" required>
+                    <input  id="treeName" readonly="true" onclick="selectOrder(1)"  class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">任务名称：</label>
-                <div class="col-sm-8">
-                    <input name="taskName" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
+            <div class="form-group hidden">
                 <label class="col-sm-3 control-label is-required">任务状态：</label>
                 <div class="col-sm-8">
                     <select name="status" class="form-control m-b" th:with="type=${@dict.getType('busi_task_status')}" required>
@@ -36,11 +36,9 @@
                     </select>
                 </div>
             </div>
-            <h4 class="form-header h4">产品子任务信息</h4>
+            <h4 class="form-header h4">订单产品分配</h4>
             <div class="row">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
                     <div class="col-sm-12 select-table table-striped">
                         <table id="bootstrap-table"></table>
                     </div>
@@ -51,6 +49,8 @@
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
         var prefix = ctx + "busi/task"
+        var sizeDatas = [[${@dict.getType('busi_size')}]];
+        var colorDatas = [[${@dict.getType('busi_color')}]];
         $("#form-task-add").validate({
             focusCleanup: true
         });
@@ -73,69 +73,97 @@
                     checkbox: true
                 },
                 {
-                    field: 'index',
+                    field: 'productRequireId',
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='busiSubTaskList[%s].productRequireId' value='%s'>", index, value);
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
                 {
-                    field: 'productRequireId',
+                    field: 'size',
                     align: 'center',
-                    title: '产品需求ID',
+                    title: '尺码',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiSubTaskList[%s].productRequireId' value='%s'>", index, value);
+                        var html = $.table.selectDictLabel(sizeDatas, value);
                         return html;
                     }
+                },
+                {
+                    field: 'color',
+                    align: 'center',
+                    title: '颜色',
+                    formatter: function(value, row, index) {
+                        var html = $.table.selectDictLabel(colorDatas, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'requireAmount',
+                    align: 'center',
+                    title: '需求数量'
+                },
+                {
+                    field: 'unassignedAmount',
+                    align: 'center',
+                    title: '未分配数量'
                 },
                 {
                     field: 'targetAmount',
                     align: 'center',
                     title: '目标数量',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiSubTaskList[%s].targetAmount' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control digits' type='text' name='busiSubTaskList[%s].targetAmount' value='%s' required>", index, value);
                         return html;
                     }
-                },
-                {
-                    field: 'completedAmount',
-                    align: 'center',
-                    title: '完成数量',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiSubTaskList[%s].completedAmount' value='%s'>", index, value);
-                        return html;
-                    }
-                },
-                {
-                    field: 'status',
-                    align: 'center',
-                    title: '完成状态',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiSubTaskList[%s].status' value='%s'>", index, value);
-                        return html;
-                    }
-                
                 }]
             };
             $.table.init(options);
         });
 
-        function addColumn() {
+        function addColumn(data) {
+            var row = {
+                productRequireId: data.productRequireId,
+                size: data.size,
+                color: data.color,
+                requireAmount: data.requireAmount,
+                unassignedAmount: data.requireAmount - (data.assignedAmount||0),
+                targetAmount: ''
+            };
             var count = $("#" + table.options.id).bootstrapTable('getData').length;
-            sub.editColumn();
-        	
+            // sub.editColumn();
             $("#" + table.options.id).bootstrapTable('insertRow', {
                 index: count,
-                row: {
-                    index: $.table.serialNumber(count),
-                    productRequireId: "",
-                    targetAmount: "",
-                    completedAmount: "",
-                    status: ""
+                row: row
+            });
+        }
+
+        function addValidator(data, index){
+            var unassignedAmount = data.requireAmount - (data.assignedAmount||0);
+            $("[name='busiSubTaskList[" + index + "].targetAmount']").rules("add", {
+                min: 1,
+                max: unassignedAmount,
+                messages: {
+                    min: "分配数量必须大于0",
+                    max: "不能超过未分配数量"
                 }
             });
+        }
+
+        function queryProductRequire(orderId){
+            var url = prefix + "/selectProductRequire?orderId="+orderId;
+            $.operate.ajaxPost(url, {}, function (result) {
+                $("#" + table.options.id).bootstrapTable('removeAll');
+                var datas = result.data;
+                for (var i = 0; i < datas.length; i++) {
+                    var data = datas[i];
+                    if(data.requireAmount - (data.assignedAmount||0) > 0){
+                        addColumn(data);
+                        addValidator(data, i);
+                    }
+                }
+            })
         }
 
         /*订单选择*/
@@ -150,6 +178,7 @@
                     $("#treeId").val(body.find('#treeId').val());
                     $("#treeName").val(body.find('#treeName').val());
                     $.modal.close(index);
+                    queryProductRequire(body.find('#treeId').val());
                 }
             };
             $.modal.openOptions(options);

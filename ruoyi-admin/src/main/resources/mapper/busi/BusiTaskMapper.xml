@@ -126,4 +126,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+
+    <select id="selectProductRequire" parameterType="String" resultType="java.util.Map">
+        SELECT bpr.id productRequireId,bpr.size,bpr.color,bpr.amount requireAmount,bst.target_amount assignedAmount  FROM busi_product_require bpr
+        left join
+        (SELECT max(product_require_id) product_require_id,sum(target_amount) target_amount from busi_sub_task GROUP BY product_require_id) bst
+        on bst.product_require_id = bpr.id
+         WHERE bpr.order_id = #{orderId}
+    </select>
+
 </mapper>
