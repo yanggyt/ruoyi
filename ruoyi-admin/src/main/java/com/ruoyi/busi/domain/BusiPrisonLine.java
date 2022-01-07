@@ -16,10 +16,10 @@ public class BusiPrisonLine extends TreeEntity
     private static final long serialVersionUID = 1L;
 
     /** ID主键 */
-    private Long id;
+    private String id;
 
     /** 所属监区 */
-    private Long pid;
+    private String pid;
 
     /** 所属监区名称 */
     @Excel(name = "所属监区")
@@ -45,25 +45,23 @@ public class BusiPrisonLine extends TreeEntity
     @Excel(name = "类型")
     private String classify;
 
-    public void setId(Long id) 
-    {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getId() 
-    {
-        return id;
+    public String getPid() {
+        return pid;
     }
-    public void setPid(Long pid) 
-    {
+
+    public void setPid(String pid) {
         this.pid = pid;
     }
 
-    public Long getPid() 
-    {
-        return pid;
-    }
-    public void setDisname(String disname) 
+    public void setDisname(String disname)
     {
         this.disname = disname;
     }

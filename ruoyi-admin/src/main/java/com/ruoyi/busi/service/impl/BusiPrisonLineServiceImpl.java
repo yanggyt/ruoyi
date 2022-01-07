@@ -108,8 +108,8 @@ public class BusiPrisonLineServiceImpl implements IBusiPrisonLineService {
                 continue;
             }
             Ztree ztree = new Ztree();
-            ztree.setId(busiPrisonLine.getId());
-            ztree.setpId(busiPrisonLine.getPid());
+            ztree.setId(Long.valueOf(busiPrisonLine.getId()));
+            ztree.setpId(busiPrisonLine.getPid()==null?0:Long.valueOf(busiPrisonLine.getPid()));
             ztree.setName(busiPrisonLine.getDisname());
             ztree.setTitle(busiPrisonLine.getDisname());
             ztrees.add(ztree);

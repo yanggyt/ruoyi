@@ -1,6 +1,9 @@
 package com.ruoyi.busi.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.busi.domain.BusiPrisonLine;
+import com.ruoyi.busi.mapper.BusiPrisonLineMapper;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,9 @@ public class BusiTaskServiceImpl implements IBusiTaskService
 {
     @Autowired
     private BusiTaskMapper busiTaskMapper;
+
+    @Autowired
+    private BusiPrisonLineMapper busiPrisonLineMapper;
 
     /**
      * 查询生产任务
@@ -62,6 +68,12 @@ public class BusiTaskServiceImpl implements IBusiTaskService
     public int insertBusiTask(BusiTask busiTask)
     {
         busiTask.setCreateTime(DateUtils.getNowDate());
+
+        BusiPrisonLine busiPrisonLine = new BusiPrisonLine();
+        busiPrisonLine.setId(busiTask.getPrisonLineId());
+        busiPrisonLine.setStatus("1"); //生产中
+
+        busiPrisonLineMapper.updateBusiPrisonLine(busiPrisonLine);
         int rows = busiTaskMapper.insertBusiTask(busiTask);
         insertBusiSubTask(busiTask);
         return rows;
