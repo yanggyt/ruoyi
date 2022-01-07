@@ -67,5 +67,5 @@ public interface IBusiPrisonLineService
      *
      * @return 所有监区产线信息
      */
-    public List<Ztree> selectBusiPrisonLineTree(String JCOnly);
+    public List<Ztree> selectBusiPrisonLineTree(String JCOnly, String status);
 }

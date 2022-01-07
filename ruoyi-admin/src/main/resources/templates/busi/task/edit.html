@@ -26,19 +26,9 @@
                     <input name="taskName" th:field="*{taskName}" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">任务状态：</label>
-                <div class="col-sm-8">
-                    <select name="status" class="form-control m-b" th:with="type=${@dict.getType('busi_task_status')}" required>
-                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{status}"></option>
-                    </select>
-                </div>
-            </div>
-            <h4 class="form-header h4">产品子任务信息</h4>
+            <h4 class="form-header h4">订单产品分配信息</h4>
             <div class="row">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
                     <div class="col-sm-12 select-table table-striped">
                         <table id="bootstrap-table"></table>
                     </div>
@@ -108,24 +98,6 @@
                     }
 				},
                 {
-                    field: 'createBy',
-                    align: 'center',
-                    title: '创建者',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiSubTaskList[%s].createBy' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
-                    field: 'createTime',
-                    align: 'center',
-                    title: '创建时间',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='busiSubTaskList[%s].createTime' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
                     field: 'status',
                     align: 'center',
                     title: '完成状态',
@@ -142,7 +114,6 @@
         function addColumn() {
             var count = $("#" + table.options.id).bootstrapTable('getData').length;
             sub.editColumn();
-        	
             $("#" + table.options.id).bootstrapTable('insertRow', {
                 index: count,
                 row: {
@@ -150,8 +121,6 @@
                     productRequireId: "",
                     targetAmount: "",
                     completedAmount: "",
-                    createBy: "",
-                    createTime: "",
                     status: ""
         	    }
             });

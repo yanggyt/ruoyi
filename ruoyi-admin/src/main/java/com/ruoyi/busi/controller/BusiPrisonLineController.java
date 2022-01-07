@@ -128,13 +128,14 @@ public class BusiPrisonLineController extends BaseController
      * 选择监区产线树
      */
     @GetMapping(value = { "/selectPrisonLineTree/{id}", "/selectPrisonLineTree/" })
-    public String selectPrisonLineTree(@PathVariable(value = "id", required = false) Long id, @RequestParam(name = "JCOnly",required = false) String JCOnly, ModelMap mmap)
+    public String selectPrisonLineTree(@PathVariable(value = "id", required = false) Long id, @RequestParam(name = "JCOnly",required = false) String JCOnly, @RequestParam(name = "status",required = false) String status, ModelMap mmap)
     {
         if (StringUtils.isNotNull(id))
         {
             mmap.put("busiPrisonLine", busiPrisonLineService.selectBusiPrisonLineById(id));
         }
         mmap.put("JCOnly", JCOnly);
+        mmap.put("status", status);
         return prefix + "/tree";
     }
 
@@ -143,10 +144,9 @@ public class BusiPrisonLineController extends BaseController
      */
     @GetMapping("/treeData")
     @ResponseBody
-    public List<Ztree> treeData(@RequestParam(name = "JCOnly",required = false) String JCOnly)
+    public List<Ztree> treeData(@RequestParam(name = "JCOnly",required = false) String JCOnly, @RequestParam(name = "status",required = false) String status)
     {
-        System.out.println(JCOnly);
-        List<Ztree> ztrees = busiPrisonLineService.selectBusiPrisonLineTree(JCOnly);
+        List<Ztree> ztrees = busiPrisonLineService.selectBusiPrisonLineTree(JCOnly, status);
         return ztrees;
     }
 }

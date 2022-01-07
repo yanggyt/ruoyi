@@ -97,8 +97,10 @@ public class BusiPrisonLineServiceImpl implements IBusiPrisonLineService {
      * @return 所有监区产线信息
      */
     @Override
-    public List<Ztree> selectBusiPrisonLineTree(String JCOnly) {
-        List<BusiPrisonLine> busiPrisonLineList = busiPrisonLineMapper.selectBusiPrisonLineList(new BusiPrisonLine());
+    public List<Ztree> selectBusiPrisonLineTree(String JCOnly, String status) {
+        BusiPrisonLine query = new BusiPrisonLine();
+        query.setStatus(status);
+        List<BusiPrisonLine> busiPrisonLineList = busiPrisonLineMapper.selectBusiPrisonLineList(query);
         List<Ztree> ztrees = new ArrayList<Ztree>();
         for (BusiPrisonLine busiPrisonLine : busiPrisonLineList) {
             // 只查监区，只查查监区时过滤掉产线

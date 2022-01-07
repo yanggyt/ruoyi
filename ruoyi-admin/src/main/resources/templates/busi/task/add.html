@@ -190,7 +190,7 @@
             var options = {
                 title: '监区产线选择',
                 width: "380",
-                url: ctx + "busi/prisonLine/selectPrisonLineTree/" + $("#lineTreeId").val(),
+                url: ctx + "busi/prisonLine/selectPrisonLineTree/" + $("#lineTreeId").val()+"?status=0",
                 callBack: function(index, layer){
                     var body = $.modal.getChildFrame(index);
                     console.log(body);
