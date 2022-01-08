@@ -26,6 +26,9 @@ public class BusiSubTask extends BaseEntity
     @Excel(name = "产品需求ID")
     private String productRequireId;
 
+    private String size;
+    private String color;
+
     /** 目标数量 */
     @Excel(name = "目标数量")
     private Long targetAmount;
@@ -38,7 +41,24 @@ public class BusiSubTask extends BaseEntity
     @Excel(name = "完成状态")
     private String status;
 
-    public void setId(Long id) 
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

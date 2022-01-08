@@ -28,6 +28,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="sub_id"    />
         <result property="taskId"    column="sub_task_id"    />
         <result property="productRequireId"    column="sub_product_require_id"    />
+        <result property="size"    column="sub_size"    />
+        <result property="color"    column="sub_color"    />
         <result property="targetAmount"    column="sub_target_amount"    />
         <result property="completedAmount"    column="sub_completed_amount"    />
         <result property="createBy"    column="sub_create_by"    />
@@ -51,10 +53,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectBusiTaskById" parameterType="String" resultMap="BusiTaskBusiSubTaskResult">
-        select a.id, a.order_id, a.prison_line_id, a.task_name, a.create_by, a.create_time, a.update_by, a.update_time, a.status,
-            b.id as sub_id, b.task_id as sub_task_id, b.product_require_id as sub_product_require_id, b.target_amount as sub_target_amount, b.completed_amount as sub_completed_amount, b.create_by as sub_create_by, b.create_time as sub_create_time, b.status as sub_status
+        select a.id, a.order_id,bpl.disname line_name,bo.order_name, a.prison_line_id, a.task_name, a.create_by, a.create_time, a.update_by, a.update_time, a.status,
+            b.id as sub_id, b.task_id as sub_task_id, b.product_require_id as sub_product_require_id, b.target_amount as sub_target_amount, b.completed_amount as sub_completed_amount,
+               bpr.color as sub_color,bpr.size as sub_size,b.create_by as sub_create_by, b.create_time as sub_create_time, b.status as sub_status
         from busi_task a
+        LEFT JOIN busi_order bo on a.order_id = bo.id
+        LEFT JOIN busi_prison_line bpl on a.prison_line_id = bpl.id
         left join busi_sub_task b on b.task_id = a.id
+        LEFT JOIN busi_product_require bpr on bpr.id = b.product_require_id
         where a.id = #{id}
     </select>
         

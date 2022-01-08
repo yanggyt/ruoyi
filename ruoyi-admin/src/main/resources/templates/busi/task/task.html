@@ -12,11 +12,13 @@
                         <ul>
                             <li>
                                 <label>订单选择：</label>
-                                <input type="text" name="orderId"/>
+                                <input id="treeId" name="orderId"   type="text" style="display: none;">
+                                <input id="treeName" type="text"  onclick="selectOrder()" readonly>
                             </li>
                             <li>
                                 <label>产线选择：</label>
-                                <input type="text" name="prisonLineId"/>
+                                <input id="lineTreeId" name="prisonLineId" type="text" style="display: none;" />
+                                <input type="text" onclick="selectPrisonLineTree()" id="lineTreeName" readonly>
                             </li>
                             <li>
                                 <label>任务名称：</label>
@@ -120,6 +122,39 @@
             };
             $.table.init(options);
         });
+        /*订单选择*/
+        function selectOrder() {
+            var options = {
+                title: '选择订单',
+                width: "380",
+                height: "400",
+                url: ctx + "busi/order/selectOrder/" ,
+                callBack: function(index, layero){
+                    var body = $.modal.getChildFrame(index);
+                    $("#treeId").val(body.find('#treeId').val());
+                    $("#treeName").val(body.find('#treeName').val());
+                    $.modal.close(index);
+                }
+            };
+            $.modal.openOptions(options);
+        }
+
+        /*监区产线-新增-选择父监区产线树*/
+        function selectPrisonLineTree() {
+            var options = {
+                title: '监区产线选择',
+                width: "380",
+                url: ctx + "busi/prisonLine/selectPrisonLineTree/" + $("#lineTreeId").val(),
+                callBack: function(index, layer){
+                    var body = $.modal.getChildFrame(index);
+                    console.log(body);
+                    $("#lineTreeId").val(body.find('#treeId').val());
+                    $("#lineTreeName").val(body.find('#treeName').val());
+                    $.modal.close(index);
+                }
+            };
+            $.modal.openOptions(options);
+        }
     </script>
 </body>
 </html>
