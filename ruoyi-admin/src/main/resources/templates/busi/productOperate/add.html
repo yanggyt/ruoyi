@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增成品操作流水')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-productOperate-add">
+            <input type="hidden" name="oprateType" value="1" />
+            <input id="taskId" type="hidden" name="taskId" />
+            <input id="orderId" type="hidden" name="orderId"/>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">产线：</label>
+                <div class="col-sm-8">
+                    <input id="lineTreeId" name="prisonLineId" type="hidden" />
+                    <input class="form-control" type="text" onclick="selectPrisonLineTree()" id="lineTreeName" readonly="true"  required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label" title="产品选择源于任务，若无对应的选项，请在任务中添加">产品选择：<i class="fa fa-question-circle-o"></i></label>
+                <div class="col-sm-4">
+                    <select id="size" name="size" class="form-control required" >
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <select id="color" name="color" class="form-control required" >
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">操作数量：</label>
+                <div class="col-sm-8">
+                    <input name="amount" class="form-control digits" type="text" required>
+                </div>
+            </div>
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">价值：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="productValue" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">每包数量：</label>
+                <div class="col-sm-6">
+                    <input name="amountPerPackage" class="form-control digits" type="text">
+                </div>
+                <div class="col-sm-2">
+                    <a class="btn btn-info" >生成二维码</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">备注信息：</label>
+                <div class="col-sm-8">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "busi/productOperate"
+        var sizeDatas = [[${@dict.getType('busi_size')}]];
+        var colorDatas = [[${@dict.getType('busi_color')}]];
+        $("#form-productOperate-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-productOperate-add').serialize());
+            }
+        }
+
+        $("#size").change(function(){
+            var lineId = $("#lineTreeId").val();
+            var size = $("#size").val();
+            queryColorList(lineId, size);
+        })
+
+        $("#color").change(function(){
+            var orderId = $("#color :selected").attr("orderId");
+            var taskId = $("#color :selected").attr("taskId");
+            $("#orderId").val(orderId);
+            $("#taskId").val(taskId);
+        })
+        /*监区产线-新增-选择父监区产线树*/
+        function selectPrisonLineTree() {
+            var options = {
+                title: '产线选择',
+                width: "380",
+                url: ctx + "busi/prisonLine/selectPrisonLineTree/" + $("#lineTreeId").val()+"?status=1",
+                callBack: function(index, layer){
+                    var body = $.modal.getChildFrame(index);
+                    console.log(body);
+                    $("#lineTreeId").val(body.find('#treeId').val());
+                    $("#lineTreeName").val(body.find('#treeName').val());
+                    $.modal.close(index);
+                    querySizeList(body.find('#treeId').val());
+                }
+            };
+            $.modal.openOptions(options);
+        }
+
+        /*产品任务尺码查询*/
+        function querySizeList(lineId) {
+            var url = prefix + "/selProductSizeByLineId?lineId=" + lineId;
+            $.operate.ajaxPost(url, {}, function (result) {
+                var data = result.data;
+                $("#color").empty();
+                $("#size").empty().append("<option  value=''>请选择尺码</option>");
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i].size;
+                    var text = $.table.getDictText(sizeDatas, val);
+                    $("#size").append("<option value='" + val + "'>" + text + "</option>");
+                }
+            })
+        }
+
+        /*产品任务颜色查询*/
+        function queryColorList(lineId, size) {
+            var url = prefix + "/selProductColorByLineIdAndSize";
+            $.operate.ajaxPost(url, {
+                lineId:lineId,
+                size:size
+            }, function (result) {
+                var data = result.data;
+                $("#color").empty().append("<option  value=''>请选择颜色</option>");
+                for (var i = 0; i < data.length; i++) {
+                    var val = data[i].color;
+                    var text = $.table.getDictText(colorDatas, val);
+                    var orderId = data[i].orderId;
+                    var taskId = data[i].taskId;
+                    $("#color").append("<option orderId='" + orderId + "' taskId='" + taskId + "' 'value='" + val + "'>" + text + "</option>");
+                }
+            })
+        }
+    </script>
+</body>
+</html>
