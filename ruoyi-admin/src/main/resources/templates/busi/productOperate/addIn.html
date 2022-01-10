@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('新增成品操作流水')" />
+    <th:block th:include="include :: header('成品入库')" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
@@ -9,6 +9,7 @@
             <input type="hidden" name="oprateType" value="1" />
             <input id="taskId" type="hidden" name="taskId" />
             <input id="orderId" type="hidden" name="orderId"/>
+            <input id="subTaskId" type="hidden" name="subTaskId"/>
 
             <div class="form-group">    
                 <label class="col-sm-3 control-label is-required">产线：</label>
@@ -81,8 +82,10 @@
         $("#color").change(function(){
             var orderId = $("#color :selected").attr("orderId");
             var taskId = $("#color :selected").attr("taskId");
+            var subTaskId = $("#color :selected").attr("subTaskId");
             $("#orderId").val(orderId);
             $("#taskId").val(taskId);
+            $("#subTaskId").val(subTaskId);
         })
         /*监区产线-新增-选择父监区产线树*/
         function selectPrisonLineTree() {
@@ -131,7 +134,8 @@
                     var text = $.table.getDictText(colorDatas, val);
                     var orderId = data[i].orderId;
                     var taskId = data[i].taskId;
-                    $("#color").append("<option orderId='" + orderId + "' taskId='" + taskId + "' 'value='" + val + "'>" + text + "</option>");
+                    var subTaskId = data[i].subTaskId;
+                    $("#color").append("<option orderId='" + orderId + "' taskId='" + taskId + + "' subTaskId='" + subTaskId + " 'value='" + val + "'>" + text + "</option>");
                 }
             })
         }

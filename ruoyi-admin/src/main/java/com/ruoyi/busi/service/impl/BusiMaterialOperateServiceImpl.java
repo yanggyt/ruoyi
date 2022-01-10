@@ -70,31 +70,34 @@ public class BusiMaterialOperateServiceImpl implements IBusiMaterialOperateServi
             } else {// 2为入库
                 double stockAmount = busiMaterialStock.getAmountIn() - busiMaterialStock.getAmountOut();
                 if(busiMaterialOperate.getAmount() > stockAmount){
-                    throw new ServiceException("出库或损耗超过库存，库存值：" + stockAmount);
+                    throw new ServiceException("操作超过库存，库存值：" + stockAmount);
                 }
                 busiMaterialStock.setAmountOut(busiMaterialOperate.getAmount() + busiMaterialStock.getAmountOut());
             }
-            busiMaterialStockMapper.updateBusiMaterialStock(busiMaterialStock);
+            busiMaterialStockMapper.updateBusiMaterialStock(busiMaterialStock);// 更新库存
         } else {// 没有库存则新建
-            busiMaterialStock = new BusiMaterialStock();
-            busiMaterialStock.setColor(busiMaterialOperate.getColor());
-            busiMaterialStock.setClassify(busiMaterialOperate.getClassify());
-            busiMaterialStock.setOrderId(busiMaterialOperate.getOrderId());
-            busiMaterialStock.setUnit(busiMaterialOperate.getUnit());
-            busiMaterialStock.setCreateTime(new Date());
-            busiMaterialStock.setCreateBy("system");
-
+            busiMaterialStock = createBusiMaterialStock(busiMaterialOperate);
             if ("1".equals(busiMaterialOperate.getOprateType())) {
                 busiMaterialStock.setAmountIn(busiMaterialOperate.getAmount());
             } else {
                 throw new ServiceException("尚未建立库存，请先操作物料入库");
             }
-            busiMaterialStockMapper.insertBusiMaterialStock(busiMaterialStock);
+            busiMaterialStockMapper.insertBusiMaterialStock(busiMaterialStock); // 创建库存
         }
 
         busiMaterialOperate.setMaterialStockId(busiMaterialStock.getId());
-        // 插入操作流水
-        return busiMaterialOperateMapper.insertBusiMaterialOperate(busiMaterialOperate);
+        return busiMaterialOperateMapper.insertBusiMaterialOperate(busiMaterialOperate);// 插入操作
+    }
+
+    private BusiMaterialStock createBusiMaterialStock(BusiMaterialOperate busiMaterialOperate) {
+        BusiMaterialStock busiMaterialStock = new BusiMaterialStock();
+        busiMaterialStock.setColor(busiMaterialOperate.getColor());
+        busiMaterialStock.setClassify(busiMaterialOperate.getClassify());
+        busiMaterialStock.setOrderId(busiMaterialOperate.getOrderId());
+        busiMaterialStock.setUnit(busiMaterialOperate.getUnit());
+        busiMaterialStock.setCreateTime(new Date());
+        busiMaterialStock.setCreateBy("system");
+        return busiMaterialStock;
     }
 
 

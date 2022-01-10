@@ -8,6 +8,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="productStockId"    column="product_stock_id"    />
         <result property="taskId"    column="task_id"    />
+        <result property="orderName"    column="order_name"    />
+        <result property="size"    column="size"    />
+        <result property="color"    column="color"    />
+        <result property="lineName"    column="line_name"    />
         <result property="amount"    column="amount"    />
         <result property="productValue"    column="product_value"    />
         <result property="amountPerPackage"    column="amount_per_package"    />
@@ -18,21 +22,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBusiProductOperateVo">
-        select id, product_stock_id, task_id, amount, product_value, amount_per_package, oprate_type, create_by, create_time, remark from busi_product_operate
+        select bpo.id, bpo.product_stock_id, bpo.task_id, bps.size,bps.color,bo.order_name,bpl.disname line_name, bpo.amount, bpo.product_value, bpo.amount_per_package, bpo.oprate_type, bpo.create_by, bpo.create_time, bpo.remark
+          from busi_product_operate bpo
+           INNER JOIN busi_product_stock bps on bps.id = bpo.product_stock_id
+           LEFT JOIN busi_order bo on bps.order_id = bo.id
+           LEFT JOIN busi_task bt on bt.id = bpo.task_id
+           LEFT JOIN busi_prison_line bpl on bt.prison_line_id = bpl.id
     </sql>
 
     <select id="selectBusiProductOperateList" parameterType="BusiProductOperate" resultMap="BusiProductOperateResult">
         <include refid="selectBusiProductOperateVo"/>
         <where>  
-            <if test="productStockId != null  and productStockId != ''"> and product_stock_id = #{productStockId}</if>
-            <if test="taskId != null  and taskId != ''"> and task_id = #{taskId}</if>
-            <if test="oprateType != null  and oprateType != ''"> and oprate_type = #{oprateType}</if>
+            <if test="orderId != null  and orderId != ''"> and bps.order_id = #{orderId}</if>
+            <if test="lineId != null  and lineId != ''"> and bt.prison_line_id = #{lineId}</if>
+            <if test="color != null  and color != ''"> and bps.color = #{color}</if>
+            <if test="size != null  and size != ''"> and bps.size = #{size}</if>
+            <if test="oprateType != null  and oprateType != ''"> and bpo.oprate_type = #{oprateType}</if>
         </where>
     </select>
     
     <select id="selectBusiProductOperateById" parameterType="String" resultMap="BusiProductOperateResult">
         <include refid="selectBusiProductOperateVo"/>
-        where id = #{id}
+        where bpo.id = #{id}
     </select>
         
     <insert id="insertBusiProductOperate" parameterType="BusiProductOperate" useGeneratedKeys="true" keyProperty="id">

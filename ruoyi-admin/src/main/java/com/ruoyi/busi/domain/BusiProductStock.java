@@ -19,8 +19,11 @@ public class BusiProductStock extends BaseEntity
     private String id;
 
     /** 订单 */
-    @Excel(name = "订单")
     private String orderId;
+
+    /** 订单 */
+    @Excel(name = "订单")
+    private String orderName;
 
     /** 数量 */
     @Excel(name = "数量")
@@ -34,7 +37,15 @@ public class BusiProductStock extends BaseEntity
     @Excel(name = "颜色")
     private String color;
 
-    public void setId(String id) 
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
+    }
+
+    public void setId(String id)
     {
         this.id = id;
     }

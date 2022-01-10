@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BusiProductStock" id="BusiProductStockResult">
         <result property="id"    column="id"    />
         <result property="orderId"    column="order_id"    />
+        <result property="orderName"    column="order_name"    />
         <result property="amount"    column="amount"    />
         <result property="size"    column="size"    />
         <result property="color"    column="color"    />
@@ -17,21 +18,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBusiProductStockVo">
-        select id, order_id, amount, size, color, create_by, create_time, update_by, update_time from busi_product_stock
+        select bps.id, bps.order_id,bo.order_name, bps.amount, bps.size, bps.color, bps.create_by, bps.create_time, bps.update_by, bps.update_time
+        from busi_product_stock bps LEFT JOIN busi_order bo on bo.id = bps.order_id
     </sql>
 
     <select id="selectBusiProductStockList" parameterType="BusiProductStock" resultMap="BusiProductStockResult">
         <include refid="selectBusiProductStockVo"/>
         <where>  
-            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
-            <if test="size != null  and size != ''"> and size = #{size}</if>
-            <if test="color != null  and color != ''"> and color = #{color}</if>
+            <if test="orderId != null  and orderId != ''"> and bps.order_id = #{orderId}</if>
+            <if test="size != null  and size != ''"> and bps.size = #{size}</if>
+            <if test="color != null  and color != ''"> and bps.color = #{color}</if>
         </where>
     </select>
     
     <select id="selectBusiProductStockById" parameterType="String" resultMap="BusiProductStockResult">
         <include refid="selectBusiProductStockVo"/>
-        where id = #{id}
+        where bps.id = #{id}
     </select>
         
     <insert id="insertBusiProductStock" parameterType="BusiProductStock" useGeneratedKeys="true" keyProperty="id">

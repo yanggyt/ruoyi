@@ -37,7 +37,7 @@ public class BusiOrder extends BaseEntity
 
     /** 订单价格 */
     @Excel(name = "订单价格")
-    private BigDecimal price;
+    private double price;
 
     /** 类型 */
     @Excel(name = "类型")
@@ -90,15 +90,7 @@ public class BusiOrder extends BaseEntity
     {
         return identificationCode;
     }
-    public void setPrice(BigDecimal price) 
-    {
-        this.price = price;
-    }
 
-    public BigDecimal getPrice() 
-    {
-        return price;
-    }
     public void setClassify(String classify) 
     {
         this.classify = classify;
@@ -143,6 +135,14 @@ public class BusiOrder extends BaseEntity
     public void setBusiProductRequireList(List<BusiProductRequire> busiProductRequireList)
     {
         this.busiProductRequireList = busiProductRequireList;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     @Override
