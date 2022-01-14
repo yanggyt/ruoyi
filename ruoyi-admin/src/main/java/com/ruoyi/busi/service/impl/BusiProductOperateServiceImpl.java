@@ -76,6 +76,7 @@ public class BusiProductOperateServiceImpl implements IBusiProductOperateService
             if ("1".equals(busiProductOperate.getOprateType())) { //1为入库
                 busiProductStock.setAmount(busiProductStock.getAmount() + busiProductOperate.getAmount());
                 updateCompletedAmount(busiProductOperate.getSubTaskId(), busiProductOperate.getAmount()); // 更新子任务完成量
+
             } else {// 出库或退回
                 if (busiProductOperate.getAmount() > busiProductStock.getAmount()) {
                     throw new ServiceException("操作值超过库存，当前库存值：" + busiProductStock.getAmount());
@@ -85,6 +86,9 @@ public class BusiProductOperateServiceImpl implements IBusiProductOperateService
                     busiProductOperate.setAmount(-busiProductOperate.getAmount());
                     busiProductOperate.setProductValue(-busiProductOperate.getProductValue());
                     updateCompletedAmount(busiProductOperate.getSubTaskId(), -busiProductOperate.getAmount()); // 更新子任务完成量
+                }
+                if ("2".equals(busiProductOperate.getOprateType())) {//出库时，还要考虑下订单状态
+
                 }
             }
             busiProductStock.setUpdateTime(new Date());
@@ -108,6 +112,15 @@ public class BusiProductOperateServiceImpl implements IBusiProductOperateService
     private void updateCompletedAmount(String subTaskId, long operateAmount) {
         BusiSubTask busiSubTask = subTaskMapper.selectBusiSubTaskById(subTaskId);
         long completedAmount = busiSubTask.getCompletedAmount();
+        if (operateAmount > 0) {// 若果操作为入库
+            if(completedAmount > busiSubTask.getTargetAmount()){
+                busiSubTask.setStatus("2"); //子任务完成
+                //若子任务为完成，检查任务是否完成，任务若完成，则更新状态同时释放产线为空闲
+                //若任务完成，则同时要检查订单状态，若订单所有任务完成，更新订单状态为生产完成。
+            }
+        }
+
+
         busiSubTask.setCompletedAmount(completedAmount + operateAmount);
         subTaskMapper.updateBusiSubTask(busiSubTask); // 更新子任务完成量
     }
@@ -185,5 +198,15 @@ public class BusiProductOperateServiceImpl implements IBusiProductOperateService
     @Override
     public List<Map<String, String>> selProductColorByLineIdAndSize(Map<String, String> map) {
         return busiProductOperateMapper.selProductColorByLineIdAndSize(map);
+    }
+
+    @Override
+    public List<Map<String, String>> selProductSizeByOrderId(String orderId) {
+        return busiProductOperateMapper.selProductSizeByOrderId(orderId);
+    }
+
+    @Override
+    public List<Map<String, String>> selProductColorByOrderIdAndSize(Map<String, String> map) {
+        return busiProductOperateMapper.selProductColorByOrderIdAndSize(map);
     }
 }

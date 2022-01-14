@@ -63,12 +63,25 @@ public class BusiProductOperateController extends BaseController {
     }
 
     /**
-     * 新增成品操作流水
+     * 入库或退回
      */
-    @GetMapping("/add")
-    public String add() {
-        return prefix + "/add";
+    @GetMapping("/addIn")
+    public String addIn(@RequestParam(name = "operType", required = false) String operType, @RequestParam(name = "inTab", required = false) String inTab, ModelMap mmap) {
+        mmap.put("operType",operType);
+        mmap.put("inTab",inTab);
+        return prefix + "/addIn";
     }
+
+    /**
+     * 出库
+     */
+    @GetMapping("/addOut")
+    public String addOut(@RequestParam(name = "operType", required = false) String operType, @RequestParam(name = "inTab", required = false) String inTab, ModelMap mmap) {
+        mmap.put("operType",operType);
+        mmap.put("inTab",inTab);
+        return prefix + "/addOut";
+    }
+
 
     /**
      * 新增保存成品操作流水
@@ -130,6 +143,26 @@ public class BusiProductOperateController extends BaseController {
     @ResponseBody
     public AjaxResult selProductColorByLineIdAndSize(@RequestParam Map<String, String> queryMap) {
         List<Map<String, String>> list = busiProductOperateService.selProductColorByLineIdAndSize(queryMap);
+        return success(list);
+    }
+
+    /**
+     * 通过订单ID查询库存尺码列表
+     */
+    @PostMapping("/selProductSizeByOrderId")
+    @ResponseBody
+    public AjaxResult selProductSizeByOrderId(@RequestParam(name = "orderId", required = false) String orderId) {
+        List<Map<String, String>> list = busiProductOperateService.selProductSizeByOrderId(orderId);
+        return success(list);
+    }
+
+    /**
+     * 通过订单ID和产品尺码查询库存颜色列表
+     */
+    @PostMapping("/selProductColorByOrderIdAndSize")
+    @ResponseBody
+    public AjaxResult selProductColorByOrderIdAndSize(@RequestParam Map<String, String> queryMap) {
+        List<Map<String, String>> list = busiProductOperateService.selProductColorByOrderIdAndSize(queryMap);
         return success(list);
     }
 }

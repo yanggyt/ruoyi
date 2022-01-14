@@ -65,5 +65,9 @@ public interface BusiProductOperateMapper
 
     public List<Map<String, String>> selProductColorByLineIdAndSize(Map<String, String> map);
 
+    public List<Map<String, String>> selProductSizeByOrderId(String lineId);
+
+    public List<Map<String, String>> selProductColorByOrderIdAndSize(Map<String, String> map);
+
 
 }

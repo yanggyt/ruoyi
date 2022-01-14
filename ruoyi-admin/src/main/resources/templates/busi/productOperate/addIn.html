@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('成品入库')" />
+    <th:block th:include="include :: header('成品操作')" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-productOperate-add">
-            <input type="hidden" name="oprateType" value="1" />
+            <input type="hidden" name="oprateType" th:value="${operType}" />
             <input id="taskId" type="hidden" name="taskId" />
             <input id="orderId" type="hidden" name="orderId"/>
+            <input id="orderName" type="hidden" />
             <input id="subTaskId" type="hidden" name="subTaskId"/>
 
             <div class="form-group">    
@@ -41,13 +42,14 @@
 <!--                    <input name="productValue" class="form-control" type="text">-->
 <!--                </div>-->
 <!--            </div>-->
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">每包数量：</label>
+            <div class="form-group" th:if="${operType == '1'}">
+                <label class="col-sm-3 control-label is-required">每包数量：</label>
                 <div class="col-sm-6">
-                    <input name="amountPerPackage" class="form-control digits" type="text">
+                    <input name="amountPerPackage" id="amountPerPackage" class="form-control digits" type="text" required>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-info" >生成二维码</a>
+                    <a class="btn btn-info" id="printQrcode" >打印二维码</a>
+                    <span id="code" style="display: none" ></span>
                 </div>
             </div>
             <div class="form-group">
@@ -59,6 +61,8 @@
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: jquery-qrcode-js" />
+
     <script th:inline="javascript">
         var prefix = ctx + "busi/productOperate"
         var sizeDatas = [[${@dict.getType('busi_size')}]];
@@ -83,9 +87,11 @@
             var orderId = $("#color :selected").attr("orderId");
             var taskId = $("#color :selected").attr("taskId");
             var subTaskId = $("#color :selected").attr("subTaskId");
+            var orderName = $("#color :selected").attr("orderName");
             $("#orderId").val(orderId);
             $("#taskId").val(taskId);
             $("#subTaskId").val(subTaskId);
+            $("#orderName").val(orderName);
         })
         /*监区产线-新增-选择父监区产线树*/
         function selectPrisonLineTree() {
@@ -135,9 +141,94 @@
                     var orderId = data[i].orderId;
                     var taskId = data[i].taskId;
                     var subTaskId = data[i].subTaskId;
-                    $("#color").append("<option orderId='" + orderId + "' taskId='" + taskId + + "' subTaskId='" + subTaskId + " 'value='" + val + "'>" + text + "</option>");
+                    var orderName = data[i].orderName;
+                    var ss =  "<option orderId='%s' orderName='%s' taskId='%s' subTaskId='%s' value='%s'>%s</option>"
+                    var option = $.common.sprintf(ss,orderId,orderName,taskId,subTaskId,val,text)
+                    $("#color").append(option);
                 }
             })
+        }
+
+        $("#printQrcode").click(function(){
+            if (!$.validate.form()) {
+                return;
+            }
+            var lineName = $("#lineTreeName").val();
+            var orerName = $("#orderName").val();
+            var color = $("#color :selected").text();
+            var size = $("#size :selected").text();
+            var amount = $("#amountPerPackage").val();
+            var text = $.common.sprintf('%s|%s|%s|%s|%s', lineName, orerName, color, size, amount);
+            var width = 180;
+            var height = 180 * 0.8;
+            $("#code").qrcode({
+                render: "canvas",
+                width: width,
+                height: height,
+                text: toUtf8(text),
+                foreground: "#FE007F" //前景颜色
+            });
+            addText(text, height);
+            printInWindow();
+        });
+
+
+        function addText(text, canvassize = 150, fontsize = 12, padding = 1, divBackground = "#fff", fontColor = "#a50054") {
+            var canvases = document.getElementsByTagName('canvas');
+            var fontsizeH = fontsize + padding * 3;         //文字高度
+            var rectW = 0;                              //长方形背景宽度
+            var width = 0;
+            var centerx = canvassize / 2 - rectW / 2;       //居中的x
+            var centery = canvassize / 2 - fontsizeH / 2;   //居中的y
+            for (var i = 0; i < canvases.length; i++) {
+                var ctx = canvases[i].getContext("2d");
+                width = ctx.measureText(text).width; //文字长度,不知道为什么这里的width是中文字数的10倍，故需要乘上fontsize/10获取到真实的文字宽度
+                rectW = width * fontsize / 10 + padding * 2;      //长方形背景宽度，应左右留padding
+                centerx = canvassize / 2 - rectW / 2;         //长方形背景居中的x
+                centery = canvassize / 2 - fontsizeH / 2      //长方形背景居中的y
+                ctx.fillStyle = divBackground;              //长方形背景颜色
+                ctx.fillRect(centerx + 10, centery, rectW, fontsizeH);
+                ctx.font = fontsize + "px Calibri";         //设置文字大小
+                ctx.fillStyle = fontColor;
+                ctx.fillText(text, centerx + padding + 10, centery + fontsize + padding / 2)
+                //经测试，若参数y只填centery，则文字显示在长方形背景的上边，所以需要加上fontsize长方形背景才能包裹文字
+            }
+        }
+
+        function toUtf8(str) {
+            var out, i, len, c;
+            out = "";
+            len = str.length;
+            for (i = 0; i < len; i++) {
+                c = str.charCodeAt(i);
+                if ((c >= 0x0001) && (c <= 0x007F)) {
+                    out += str.charAt(i);
+                } else if (c > 0x07FF) {
+                    out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                    out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+                    out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+                } else {
+                    out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+                    out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+                }
+            }
+            return out;
+        }
+
+        function printInWindow() {
+            var canvas = document.getElementsByTagName("canvas")[0];  /// get canvas element
+            var imgSrc = canvas.toDataURL();
+            let oWin = window.open('', 'pringwindow', 'menubar=no,location=no,resizable=yes,scrollbars=no,status=no,width=800,height=600')
+            oWin.document.fn = function () {
+                if (oWin) {
+                    oWin.print()
+                    oWin.close()
+                }
+            }
+            let html = '<div style="height: 100%;width: 100%;">' + `<img src="${imgSrc}" onload="fn()" style="max-height:100%;max-width: 100%;" />` + '</div>'
+            oWin.document.open()
+            oWin.document.write(html)
+            oWin.document.close()
         }
     </script>
 </body>

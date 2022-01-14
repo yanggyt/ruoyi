@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('成品入库')" />
+    <th:block th:include="include :: header('成品出库')" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-productOperate-add">
-            <input type="hidden" name="oprateType" value="1" />
-            <input id="taskId" type="hidden" name="taskId" />
-            <input id="orderId" type="hidden" name="orderId"/>
-            <input id="subTaskId" type="hidden" name="subTaskId"/>
+            <input type="hidden" name="oprateType" th:value="${operType}" />
+            <input id="productStockId" type="hidden" name="productStockId"/>
 
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">产线：</label>
+                <label class="col-sm-3 control-label is-required">订单：</label>
                 <div class="col-sm-8">
-                    <input id="lineTreeId" name="prisonLineId" type="hidden" />
-                    <input class="form-control" type="text" onclick="selectPrisonLineTree()" id="lineTreeName" readonly="true"  required>
+                    <input id="treeId" name="orderId"   type="text" style="display: none;">
+                    <input class="form-control" id="treeName" name="orderName"  type="text" onclick="selectOrder()" readonly="true"  required>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label" title="产品选择源于任务，若无对应的选项，请在任务中添加">产品选择：<i class="fa fa-question-circle-o"></i></label>
+                <label class="col-sm-3 control-label" title="出库产品选择源于库存，若无对应的选项，请先进行入库操作">产品选择：<i class="fa fa-question-circle-o"></i></label>
                 <div class="col-sm-4">
                     <select id="size" name="size" class="form-control required" >
                     </select>
@@ -30,24 +28,9 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label is-required">操作数量：</label>
+                <label class="col-sm-3 control-label is-required">出库数量：</label>
                 <div class="col-sm-8">
                     <input name="amount" class="form-control digits" type="text" required>
-                </div>
-            </div>
-<!--            <div class="form-group">    -->
-<!--                <label class="col-sm-3 control-label">价值：</label>-->
-<!--                <div class="col-sm-8">-->
-<!--                    <input name="productValue" class="form-control" type="text">-->
-<!--                </div>-->
-<!--            </div>-->
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">每包数量：</label>
-                <div class="col-sm-6">
-                    <input name="amountPerPackage" class="form-control digits" type="text">
-                </div>
-                <div class="col-sm-2">
-                    <a class="btn btn-info" >生成二维码</a>
                 </div>
             </div>
             <div class="form-group">
@@ -74,30 +57,27 @@
         }
 
         $("#size").change(function(){
-            var lineId = $("#lineTreeId").val();
+            var orderId = $("#treeId").val();
             var size = $("#size").val();
-            queryColorList(lineId, size);
+            queryColorList(orderId, size);
         })
 
         $("#color").change(function(){
-            var orderId = $("#color :selected").attr("orderId");
-            var taskId = $("#color :selected").attr("taskId");
-            var subTaskId = $("#color :selected").attr("subTaskId");
-            $("#orderId").val(orderId);
-            $("#taskId").val(taskId);
-            $("#subTaskId").val(subTaskId);
+            var productStockId = $("#color :selected").attr("productStockId");
+            $("#productStockId").val(productStockId);
         })
-        /*监区产线-新增-选择父监区产线树*/
-        function selectPrisonLineTree() {
+
+        /*订单选择*/
+        function selectOrder() {
             var options = {
-                title: '产线选择',
+                title: '选择订单',
                 width: "380",
-                url: ctx + "busi/prisonLine/selectPrisonLineTree/" + $("#lineTreeId").val()+"?status=1",
-                callBack: function(index, layer){
+                height: "400",
+                url: ctx + "busi/order/selectOrder/" ,
+                callBack: function(index, layero){
                     var body = $.modal.getChildFrame(index);
-                    console.log(body);
-                    $("#lineTreeId").val(body.find('#treeId').val());
-                    $("#lineTreeName").val(body.find('#treeName').val());
+                    $("#treeId").val(body.find('#treeId').val());
+                    $("#treeName").val(body.find('#treeName').val());
                     $.modal.close(index);
                     querySizeList(body.find('#treeId').val());
                 }
@@ -105,9 +85,9 @@
             $.modal.openOptions(options);
         }
 
-        /*产品任务尺码查询*/
-        function querySizeList(lineId) {
-            var url = prefix + "/selProductSizeByLineId?lineId=" + lineId;
+        /*库存尺码查询*/
+        function querySizeList(orderId) {
+            var url = prefix + "/selProductSizeByOrderId?orderId=" + orderId;
             $.operate.ajaxPost(url, {}, function (result) {
                 var data = result.data;
                 $("#color").empty();
@@ -120,11 +100,11 @@
             })
         }
 
-        /*产品任务颜色查询*/
-        function queryColorList(lineId, size) {
-            var url = prefix + "/selProductColorByLineIdAndSize";
+        /*库存颜色查询*/
+        function queryColorList(orderId, size) {
+            var url = prefix + "/selProductColorByOrderIdAndSize";
             $.operate.ajaxPost(url, {
-                lineId:lineId,
+                orderId:orderId,
                 size:size
             }, function (result) {
                 var data = result.data;
@@ -132,10 +112,10 @@
                 for (var i = 0; i < data.length; i++) {
                     var val = data[i].color;
                     var text = $.table.getDictText(colorDatas, val);
-                    var orderId = data[i].orderId;
-                    var taskId = data[i].taskId;
-                    var subTaskId = data[i].subTaskId;
-                    $("#color").append("<option orderId='" + orderId + "' taskId='" + taskId + + "' subTaskId='" + subTaskId + " 'value='" + val + "'>" + text + "</option>");
+                    var productStockId = data[i].productStockId;
+                    var ss = "<option productStockId='%s' value='%s'>%s</option>";
+                    var option = $.common.sprintf(ss, productStockId, val, text);
+                    $("#color").append(option);
                 }
             })
         }

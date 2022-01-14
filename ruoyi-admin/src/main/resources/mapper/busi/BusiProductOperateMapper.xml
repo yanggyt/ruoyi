@@ -39,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="size != null  and size != ''"> and bps.size = #{size}</if>
             <if test="oprateType != null  and oprateType != ''"> and bpo.oprate_type = #{oprateType}</if>
         </where>
+        order by create_time DESC
     </select>
     
     <select id="selectBusiProductOperateById" parameterType="String" resultMap="BusiProductOperateResult">
@@ -107,10 +108,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selProductColorByLineIdAndSize" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT bpr.color,bpr.amount,bst.completed_amount completedAmount,bst.target_amount targetAmount,bt.order_id orderId,bst.id subTaskId,bst.task_id taskId from busi_sub_task bst
+        SELECT bpr.color,bpr.amount,bst.completed_amount completedAmount,bst.target_amount targetAmount,bt.order_id orderId,bo.identification_code orderName,bst.id subTaskId,bst.task_id taskId from busi_sub_task bst
               left JOIN busi_product_require bpr on bst.product_require_id = bpr.id
               left JOIN busi_task bt on bt.id = bst.task_id
+              left JOIN busi_order bo on bo.id = bt.order_id
          WHERE bt.prison_line_id = #{lineId} and bt.`status`=1 and bpr.size = #{size}
+    </select>
+
+    <select id="selProductSizeByOrderId" parameterType="String" resultType="java.util.Map">
+        SELECT bps.size from busi_product_stock bps
+         WHERE bps.order_id = #{orderId}
+    </select>
+
+    <select id="selProductColorByOrderIdAndSize" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT bps.color,bps.order_id orderId,bps.id productStockId from busi_product_stock bps
+         WHERE bps.order_id = #{orderId}  and bps.size = #{size}
     </select>
 
 
