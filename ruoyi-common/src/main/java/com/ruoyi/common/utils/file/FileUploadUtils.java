@@ -111,7 +111,7 @@ public class FileUploadUtils
         String fileName = extractFilename(file);
 
         File desc = getAbsoluteFile(baseDir, fileName);
-        file.transferTo(desc);
+        org.apache.commons.io.FileUtils.copyInputStreamToFile(file.getInputStream(), desc);
         String pathFileName = getPathFileName(baseDir, fileName);
         return pathFileName;
     }
