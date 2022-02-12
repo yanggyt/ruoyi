@@ -300,6 +300,7 @@ public class SysUserServiceImpl implements ISysUserService
      * @param userId 用户ID
      * @param roleIds 角色组
      */
+    @Override
     public void insertUserRole(Long userId, Long[] roleIds)
     {
         if (StringUtils.isNotNull(roleIds))
