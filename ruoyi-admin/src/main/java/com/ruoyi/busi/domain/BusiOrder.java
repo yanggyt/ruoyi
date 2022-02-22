@@ -37,7 +37,7 @@ public class BusiOrder extends BaseEntity
 
     /** 订单价格 */
     @Excel(name = "订单价格")
-    private double price;
+    private Double price;
 
     /** 类型 */
     @Excel(name = "类型")
@@ -137,11 +137,11 @@ public class BusiOrder extends BaseEntity
         this.busiProductRequireList = busiProductRequireList;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

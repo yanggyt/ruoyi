@@ -1,21 +1,18 @@
 package com.ruoyi.busi.service.impl;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.busi.domain.*;
-import com.ruoyi.busi.mapper.BusiOrderMapper;
-import com.ruoyi.busi.mapper.BusiProductStockMapper;
-import com.ruoyi.busi.mapper.BusiSubTaskMapper;
+import com.ruoyi.busi.mapper.*;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.busi.mapper.BusiProductOperateMapper;
 import com.ruoyi.busi.service.IBusiProductOperateService;
 import com.ruoyi.common.core.text.Convert;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 成品操作流水Service业务层处理
@@ -35,6 +32,12 @@ public class BusiProductOperateServiceImpl implements IBusiProductOperateService
 
     @Autowired
     private BusiSubTaskMapper subTaskMapper;
+
+    @Autowired
+    private BusiTaskMapper taskMapper;
+
+    @Autowired
+    private BusiPrisonLineMapper busiPrisonLineMapper;
 
     /**
      * 查询成品操作流水
@@ -59,12 +62,13 @@ public class BusiProductOperateServiceImpl implements IBusiProductOperateService
     }
 
     /**
-     * 新增成品操作流水
+     * 新增成品操作
      *
      * @param busiProductOperate 成品操作流水
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insertBusiProductOperate(BusiProductOperate busiProductOperate) {
         List<BusiProductStock> busiProductStocks = queryBusiProductStocks(busiProductOperate);
         busiProductOperate.setProductValue(cacuValue(busiProductOperate));
@@ -109,20 +113,64 @@ public class BusiProductOperateServiceImpl implements IBusiProductOperateService
         return busiProductOperateMapper.insertBusiProductOperate(busiProductOperate);
     }
 
+    /**
+     * 更新子任务完成量，并处理子任务状态
+     * @param subTaskId
+     * @param operateAmount
+     */
     private void updateCompletedAmount(String subTaskId, long operateAmount) {
         BusiSubTask busiSubTask = subTaskMapper.selectBusiSubTaskById(subTaskId);
         long completedAmount = busiSubTask.getCompletedAmount();
-        if (operateAmount > 0) {// 若果操作为入库
-            if(completedAmount > busiSubTask.getTargetAmount()){
-                busiSubTask.setStatus("2"); //子任务完成
-                //若子任务为完成，检查任务是否完成，任务若完成，则更新状态同时释放产线为空闲
-                //若任务完成，则同时要检查订单状态，若订单所有任务完成，更新订单状态为生产完成。
-            }
-        }
-
-
         busiSubTask.setCompletedAmount(completedAmount + operateAmount);
         subTaskMapper.updateBusiSubTask(busiSubTask); // 更新子任务完成量
+
+        if (operateAmount > 0) {// 若果操作为入库，还要处理完成状态
+            if (completedAmount > busiSubTask.getTargetAmount()) {// 若子任务为完成
+                busiSubTask.setStatus("2"); //子任务完成
+                subTaskMapper.updateBusiSubTask(busiSubTask);// 更新当前子任务状态
+                handleTaskStatus(busiSubTask);// 处理任务状态
+            }
+        }
+    }
+
+    /**
+     * 处理任务状态
+     * @param busiSubTask
+     */
+    private void handleTaskStatus(BusiSubTask busiSubTask) {
+        BusiSubTask subTaskQuery = new BusiSubTask();
+        subTaskQuery.setTaskId(busiSubTask.getTaskId());
+        subTaskQuery.setStatus("1"); // 查询任务下所有未完成的子任务
+        List<BusiSubTask> busiSubTasks = subTaskMapper.selectBusiSubTaskList(subTaskQuery);
+        if (busiSubTasks.size() == 0) {//检查任务是否完成（查全部子任务），任务若完成，则更新状态同时释放产线为空闲
+            BusiTask busiTask = taskMapper.selectBusiTaskById(busiSubTask.getTaskId());
+            busiTask.setStatus("2");
+            taskMapper.updateBusiTask(busiTask);// 任务更新为完成
+
+            BusiPrisonLine busiPrisonLine = new BusiPrisonLine();
+            busiPrisonLine.setId(busiTask.getPrisonLineId());
+            busiPrisonLine.setStatus("0");// 产线状态设置为空闲
+            busiPrisonLineMapper.updateBusiPrisonLine(busiPrisonLine);//产线更新
+
+            handleOrderStatus(busiTask);//处理订单状态
+        }
+    }
+
+    /**
+     * 处理订单状态
+     * @param busiTask
+     */
+    private void handleOrderStatus(BusiTask busiTask) {
+        BusiTask taskQuery = new BusiTask();
+        taskQuery.setOrderId(busiTask.getOrderId());
+        taskQuery.setStatus("1");// 未完成状态
+        List<BusiTask> busiTasks = taskMapper.selectBusiTaskList(taskQuery);
+        if (busiTasks.size() == 0) { //检查订单状态，若订单所有任务完成，更新订单状态为生产完成。
+            BusiOrder busiOrder = new BusiOrder();
+            busiOrder.setId(busiTask.getOrderId());
+            busiOrder.setStatus("3"); //完成
+            busiOrderMapper.updateBusiOrder(busiOrder);
+        }
     }
 
     /**

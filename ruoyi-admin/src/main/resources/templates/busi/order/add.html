@@ -133,7 +133,7 @@
                     align: 'center',
                     title: '数量',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control required digits' type='text' name='busiProductRequireList[%s].amount' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control required digits' type='text' name='busiProductRequireList[%s].amount' value='%s' required>", index, value);
                         return html;
                     }
                 },
@@ -160,7 +160,7 @@
                     align: 'center',
                     title: '截止日期',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control endDate required'  readonly type='text' name='busiProductRequireList[%s].endDate' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control endDate required'  readonly type='text' name='busiProductRequireList[%s].endDate' value='%s' required>", index, value);
                         return html;
                     }
                 

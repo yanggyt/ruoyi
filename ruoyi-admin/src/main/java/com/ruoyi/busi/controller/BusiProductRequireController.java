@@ -71,8 +71,11 @@ public class BusiProductRequireController extends BaseController
      * 新增产品需求
      */
     @GetMapping("/add")
-    public String add()
+    public String add(@RequestParam(name = "orderId", required = false)String orderId,
+                      @RequestParam(name = "orderName", required = false)String orderName, ModelMap mmap)
     {
+        mmap.put("orderId",orderId);
+        mmap.put("orderName",orderName);
         return prefix + "/add";
     }
 
