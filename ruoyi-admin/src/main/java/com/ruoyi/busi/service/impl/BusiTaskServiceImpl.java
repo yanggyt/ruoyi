@@ -72,6 +72,7 @@ public class BusiTaskServiceImpl implements IBusiTaskService
         BusiPrisonLine busiPrisonLine = new BusiPrisonLine();
         busiPrisonLine.setId(busiTask.getPrisonLineId());
         busiPrisonLine.setStatus("1"); //生产中
+        busiTask.setStatus("1");
 
         busiPrisonLineMapper.updateBusiPrisonLine(busiPrisonLine);
         int rows = busiTaskMapper.insertBusiTask(busiTask);
