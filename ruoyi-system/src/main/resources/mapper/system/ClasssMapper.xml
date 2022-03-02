@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ClasssMapper">
+    
+    <resultMap type="Classs" id="ClasssResult">
+        <result property="classNo"    column="class_no"    />
+        <result property="classId"    column="class_id"    />
+        <result property="catalogNo"    column="catalog_no"    />
+        <result property="seqNo"    column="seq_no"    />
+        <result property="descr"    column="descr"    />
+        <result property="stat"    column="stat"    />
+        <result property="approvalStatusNo"    column="approval_status_no"    />
+        <result property="parentClassNo"    column="parent_class_no"    />
+        <result property="drawDisciplineNo"    column="draw_discipline_no"    />
+        <result property="catEntityTypeNo"    column="cat_entity_type_no"    />
+        <result property="canInstantiate"    column="can_instantiate"    />
+        <result property="branchCode"    column="branch_code"    />
+        <result property="defScopeNo"    column="def_scope_no"    />
+        <result property="boltsRequired"    column="bolts_required"    />
+        <result property="boltAtSizeNo"    column="bolt_at_size_no"    />
+        <result property="specShortCodeNo"    column="spec_short_code_no"    />
+        <result property="compCategoryNo"    column="comp_category_no"    />
+        <result property="specCompGroupNo"    column="spec_comp_group_no"    />
+        <result property="unitId"    column="unit_id"    />
+        <result property="commodityCodePref"    column="commodity_code_pref"    />
+        <result property="uniqueness"    column="uniqueness"    />
+        <result property="allowSizeLess"    column="allow_size_less"    />
+        <result property="defApplNo"    column="def_appl_no"    />
+        <result property="defUsrId"    column="def_usr_id"    />
+        <result property="defDate"    column="def_date"    />
+        <result property="updApplNo"    column="upd_appl_no"    />
+        <result property="updUsrId"    column="upd_usr_id"    />
+        <result property="updDate"    column="upd_date"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectClasssVo">
+        select class_no, class_id, catalog_no, seq_no, descr, stat, approval_status_no, parent_class_no, draw_discipline_no, cat_entity_type_no, can_instantiate, branch_code, def_scope_no, bolts_required, bolt_at_size_no, spec_short_code_no, comp_category_no, spec_comp_group_no, unit_id, commodity_code_pref, uniqueness, allow_size_less, def_appl_no, def_usr_id, def_date, upd_appl_no, upd_usr_id, upd_date from class
+    </sql>
+
+    <select id="selectClasssList" parameterType="Classs" resultMap="ClasssResult">
+        <include refid="selectClasssVo"/>
+        <where>  
+            <if test="classId != null  and classId != ''"> and class_id = #{classId}</if>
+            <if test="catalogNo != null "> and catalog_no = #{catalogNo}</if>
+            <if test="seqNo != null "> and seq_no = #{seqNo}</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="stat != null  and stat != ''"> and stat = #{stat}</if>
+            <if test="approvalStatusNo != null "> and approval_status_no = #{approvalStatusNo}</if>
+            <if test="parentClassNo != null "> and parent_class_no = #{parentClassNo}</if>
+            <if test="drawDisciplineNo != null "> and draw_discipline_no = #{drawDisciplineNo}</if>
+            <if test="catEntityTypeNo != null "> and cat_entity_type_no = #{catEntityTypeNo}</if>
+            <if test="canInstantiate != null  and canInstantiate != ''"> and can_instantiate = #{canInstantiate}</if>
+            <if test="branchCode != null  and branchCode != ''"> and branch_code = #{branchCode}</if>
+            <if test="defScopeNo != null "> and def_scope_no = #{defScopeNo}</if>
+            <if test="boltsRequired != null  and boltsRequired != ''"> and bolts_required = #{boltsRequired}</if>
+            <if test="boltAtSizeNo != null "> and bolt_at_size_no = #{boltAtSizeNo}</if>
+            <if test="specShortCodeNo != null "> and spec_short_code_no = #{specShortCodeNo}</if>
+            <if test="compCategoryNo != null "> and comp_category_no = #{compCategoryNo}</if>
+            <if test="specCompGroupNo != null "> and spec_comp_group_no = #{specCompGroupNo}</if>
+            <if test="unitId != null  and unitId != ''"> and unit_id = #{unitId}</if>
+            <if test="commodityCodePref != null  and commodityCodePref != ''"> and commodity_code_pref = #{commodityCodePref}</if>
+            <if test="uniqueness != null "> and uniqueness = #{uniqueness}</if>
+            <if test="allowSizeLess != null  and allowSizeLess != ''"> and allow_size_less = #{allowSizeLess}</if>
+            <if test="defApplNo != null "> and def_appl_no = #{defApplNo}</if>
+            <if test="defUsrId != null  and defUsrId != ''"> and def_usr_id = #{defUsrId}</if>
+            <if test="defDate != null "> and def_date = #{defDate}</if>
+            <if test="updApplNo != null "> and upd_appl_no = #{updApplNo}</if>
+            <if test="updUsrId != null  and updUsrId != ''"> and upd_usr_id = #{updUsrId}</if>
+            <if test="updDate != null "> and upd_date = #{updDate}</if>
+        </where>
+        order by parent_class_no
+    </select>
+    
+    <select id="selectClasssByClassNo" parameterType="Long" resultMap="ClasssResult">
+        select t.class_no, t.class_id, t.catalog_no, t.seq_no, t.descr, t.stat, t.approval_status_no, t.parent_class_no, t.draw_discipline_no, t.cat_entity_type_no, t.can_instantiate, t.branch_code, t.def_scope_no, t.bolts_required, t.bolt_at_size_no, t.spec_short_code_no, t.comp_category_no, t.spec_comp_group_no, t.unit_id, t.commodity_code_pref, t.uniqueness, t.allow_size_less, t.def_appl_no, t.def_usr_id, t.def_date, t.upd_appl_no, t.upd_usr_id, t.upd_date, p.class_id as parent_name
+        from class t
+        left join class p on p.class_no = t.parent_class_no
+        where t.class_no = #{classNo}
+    </select>
+        
+    <insert id="insertClasss" parameterType="Classs">
+        <selectKey keyProperty="classNo" resultType="long" order="BEFORE">
+            SELECT seq_class.NEXTVAL as classNo FROM DUAL
+        </selectKey>
+        insert into class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classNo != null">class_no,</if>
+            <if test="classId != null and classId != ''">class_id,</if>
+            <if test="catalogNo != null">catalog_no,</if>
+            <if test="seqNo != null">seq_no,</if>
+            <if test="descr != null and descr != ''">descr,</if>
+            <if test="stat != null and stat != ''">stat,</if>
+            <if test="approvalStatusNo != null">approval_status_no,</if>
+            <if test="parentClassNo != null">parent_class_no,</if>
+            <if test="drawDisciplineNo != null">draw_discipline_no,</if>
+            <if test="catEntityTypeNo != null">cat_entity_type_no,</if>
+            <if test="canInstantiate != null and canInstantiate != ''">can_instantiate,</if>
+            <if test="branchCode != null">branch_code,</if>
+            <if test="defScopeNo != null">def_scope_no,</if>
+            <if test="boltsRequired != null and boltsRequired != ''">bolts_required,</if>
+            <if test="boltAtSizeNo != null">bolt_at_size_no,</if>
+            <if test="specShortCodeNo != null">spec_short_code_no,</if>
+            <if test="compCategoryNo != null">comp_category_no,</if>
+            <if test="specCompGroupNo != null">spec_comp_group_no,</if>
+            <if test="unitId != null">unit_id,</if>
+            <if test="commodityCodePref != null">commodity_code_pref,</if>
+            <if test="uniqueness != null">uniqueness,</if>
+            <if test="allowSizeLess != null and allowSizeLess != ''">allow_size_less,</if>
+            <if test="defApplNo != null">def_appl_no,</if>
+            <if test="defUsrId != null and defUsrId != ''">def_usr_id,</if>
+            <if test="defDate != null">def_date,</if>
+            <if test="updApplNo != null">upd_appl_no,</if>
+            <if test="updUsrId != null and updUsrId != ''">upd_usr_id,</if>
+            <if test="updDate != null">upd_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classNo != null">#{classNo},</if>
+            <if test="classId != null and classId != ''">#{classId},</if>
+            <if test="catalogNo != null">#{catalogNo},</if>
+            <if test="seqNo != null">#{seqNo},</if>
+            <if test="descr != null and descr != ''">#{descr},</if>
+            <if test="stat != null and stat != ''">#{stat},</if>
+            <if test="approvalStatusNo != null">#{approvalStatusNo},</if>
+            <if test="parentClassNo != null">#{parentClassNo},</if>
+            <if test="drawDisciplineNo != null">#{drawDisciplineNo},</if>
+            <if test="catEntityTypeNo != null">#{catEntityTypeNo},</if>
+            <if test="canInstantiate != null and canInstantiate != ''">#{canInstantiate},</if>
+            <if test="branchCode != null">#{branchCode},</if>
+            <if test="defScopeNo != null">#{defScopeNo},</if>
+            <if test="boltsRequired != null and boltsRequired != ''">#{boltsRequired},</if>
+            <if test="boltAtSizeNo != null">#{boltAtSizeNo},</if>
+            <if test="specShortCodeNo != null">#{specShortCodeNo},</if>
+            <if test="compCategoryNo != null">#{compCategoryNo},</if>
+            <if test="specCompGroupNo != null">#{specCompGroupNo},</if>
+            <if test="unitId != null">#{unitId},</if>
+            <if test="commodityCodePref != null">#{commodityCodePref},</if>
+            <if test="uniqueness != null">#{uniqueness},</if>
+            <if test="allowSizeLess != null and allowSizeLess != ''">#{allowSizeLess},</if>
+            <if test="defApplNo != null">#{defApplNo},</if>
+            <if test="defUsrId != null and defUsrId != ''">#{defUsrId},</if>
+            <if test="defDate != null">#{defDate},</if>
+            <if test="updApplNo != null">#{updApplNo},</if>
+            <if test="updUsrId != null and updUsrId != ''">#{updUsrId},</if>
+            <if test="updDate != null">#{updDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateClasss" parameterType="Classs">
+        update class
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classId != null and classId != ''">class_id = #{classId},</if>
+            <if test="catalogNo != null">catalog_no = #{catalogNo},</if>
+            <if test="seqNo != null">seq_no = #{seqNo},</if>
+            <if test="descr != null and descr != ''">descr = #{descr},</if>
+            <if test="stat != null and stat != ''">stat = #{stat},</if>
+            <if test="approvalStatusNo != null">approval_status_no = #{approvalStatusNo},</if>
+            <if test="parentClassNo != null">parent_class_no = #{parentClassNo},</if>
+            <if test="drawDisciplineNo != null">draw_discipline_no = #{drawDisciplineNo},</if>
+            <if test="catEntityTypeNo != null">cat_entity_type_no = #{catEntityTypeNo},</if>
+            <if test="canInstantiate != null and canInstantiate != ''">can_instantiate = #{canInstantiate},</if>
+            <if test="branchCode != null">branch_code = #{branchCode},</if>
+            <if test="defScopeNo != null">def_scope_no = #{defScopeNo},</if>
+            <if test="boltsRequired != null and boltsRequired != ''">bolts_required = #{boltsRequired},</if>
+            <if test="boltAtSizeNo != null">bolt_at_size_no = #{boltAtSizeNo},</if>
+            <if test="specShortCodeNo != null">spec_short_code_no = #{specShortCodeNo},</if>
+            <if test="compCategoryNo != null">comp_category_no = #{compCategoryNo},</if>
+            <if test="specCompGroupNo != null">spec_comp_group_no = #{specCompGroupNo},</if>
+            <if test="unitId != null">unit_id = #{unitId},</if>
+            <if test="commodityCodePref != null">commodity_code_pref = #{commodityCodePref},</if>
+            <if test="uniqueness != null">uniqueness = #{uniqueness},</if>
+            <if test="allowSizeLess != null and allowSizeLess != ''">allow_size_less = #{allowSizeLess},</if>
+            <if test="defApplNo != null">def_appl_no = #{defApplNo},</if>
+            <if test="defUsrId != null and defUsrId != ''">def_usr_id = #{defUsrId},</if>
+            <if test="defDate != null">def_date = #{defDate},</if>
+            <if test="updApplNo != null">upd_appl_no = #{updApplNo},</if>
+            <if test="updUsrId != null and updUsrId != ''">upd_usr_id = #{updUsrId},</if>
+            <if test="updDate != null">upd_date = #{updDate},</if>
+        </trim>
+        where class_no = #{classNo}
+    </update>
+
+    <delete id="deleteClasssByClassNo" parameterType="Long">
+        delete from class where class_no = #{classNo}
+    </delete>
+
+    <delete id="deleteClasssByClassNos" parameterType="String">
+        delete from class where class_no in 
+        <foreach item="classNo" collection="array" open="(" separator="," close=")">
+            #{classNo}
+        </foreach>
+    </delete>
+</mapper>

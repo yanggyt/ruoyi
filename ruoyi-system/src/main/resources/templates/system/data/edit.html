@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改编码申请数据')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-data-edit" th:object="${sysAppData}">
+            <input name="appDataId" th:field="*{appDataId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">CC或者ID：</label>
+                <div class="col-sm-8">
+                    <select name="type" class="form-control m-b">
+                        <option value="">所有</option>
+                    </select>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">CC代码或ID代码：</label>
+                <div class="col-sm-8">
+                    <input name="code" th:field="*{code}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">设计描述：</label>
+                <div class="col-sm-8">
+                    <input name="designDesc" th:field="*{designDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">中文公制短描述：</label>
+                <div class="col-sm-8">
+                    <input name="zhCnShortDesc" th:field="*{zhCnShortDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">中文公制长描述：</label>
+                <div class="col-sm-8">
+                    <input name="zhCnLongDesc" th:field="*{zhCnLongDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">中文英制短描述：</label>
+                <div class="col-sm-8">
+                    <input name="zhEnShortDesc" th:field="*{zhEnShortDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">中文英制长描述：</label>
+                <div class="col-sm-8">
+                    <input name="zhEnLongDesc" th:field="*{zhEnLongDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">俄文公制短描述：</label>
+                <div class="col-sm-8">
+                    <input name="ruCnShortDesc" th:field="*{ruCnShortDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">俄文公制长描述：</label>
+                <div class="col-sm-8">
+                    <input name="ruCnLongDesc" th:field="*{ruCnLongDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">俄文英制短描述：</label>
+                <div class="col-sm-8">
+                    <input name="ruEnShortDesc" th:field="*{ruEnShortDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">俄文英制长描述：</label>
+                <div class="col-sm-8">
+                    <input name="ruEnLongDesc" th:field="*{ruEnLongDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">英文公制短描述：</label>
+                <div class="col-sm-8">
+                    <input name="enCnShortDesc" th:field="*{enCnShortDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">英文公制长描述：</label>
+                <div class="col-sm-8">
+                    <input name="enCnLongDesc" th:field="*{enCnLongDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">英文英制短描述：</label>
+                <div class="col-sm-8">
+                    <input name="enEnShortDesc" th:field="*{enEnShortDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">英文英制长描述：</label>
+                <div class="col-sm-8">
+                    <input name="enEnLongDesc" th:field="*{enEnLongDesc}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <input name="remark" th:field="*{remark}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/data";
+        $("#form-data-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-data-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

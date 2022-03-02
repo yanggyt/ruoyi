@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('新增编码申请数据')" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: ztree-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-data-add">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">材料分类：</label>
+                <div class="col-sm-8">
+                    <select id="classs" name="type" class="form-control m-b classs"  th:onchange="selectAttribListByClasss(this)">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div  id ="attr" class="form-group">
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">CC代码：</label>
+                <div class="col-sm-8">
+                    <input id="code"name="code"  readonly="true" class="form-control" type="text">
+                </div>
+            </div>
+            <div id="formula" class="form-group">
+            </div>
+        </form>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-5 col-sm-10">
+            <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: layout-latest-js" />
+    <th:block th:include="include :: select2-js" />
+</body>
+<script th:inline="javascript">
+    var prefix = ctx + "system/data";
+    var prefix_attrib = ctx + "system/attrib";
+    var prefix_value = ctx + "system/value";
+    //加载材料分类
+    $.post(prefix + "/selectApprovalClasss","", function(result) {
+        for(var i=0;i<result.data.length;i++){
+            $("#classs").append($("<option/>").text(result.data[i].classId).attr("value",result.data[i].classNo).attr("code",result.data[i].commodityCodePref));
+        }
+    });
+    $("#form-data-add").validate({
+        focusCleanup: true
+    });
+    function selectAttribListByClasss(attr){
+        var classId = $("#classs").val();
+
+        let commodityCodePref =  $("#classs").find("option:selected").attr("code");
+        $("#code").val(commodityCodePref);
+        //获取分类对应CC属性
+        $.post(prefix_attrib + "/selectAttribListByClasss/"+classId,"", function(result) {
+            var str='';
+            for(var i = 0; i<result.data.length; i++){
+                str +=" <div class=\"form-group\">";
+                str +="                <label class=\"col-sm-3 control-label\">"+result.data[i].descr+"：</label>";
+                str +="                <div class=\"col-sm-8\">";
+                // var attrib_id=result.data[i].class_attrib_id;  key=\""+attrib_id+"\"
+                str +="                    <select id=\""+result.data[i].attribNo+"\" name=\""+result.data[i].attribNo+"\" onchange=\"selectFormul(this)\" class=\"form-control\">";
+                str +="                     <option ></option>";
+                str +="                    </select>";
+                str +="                </div>";
+                str +="            </div>";
+            }
+            document.getElementById('attr').innerHTML=str;
+            for(i = 0; i<result.data.length; i++) {//填充属性值
+                var attribNo = result.data[i].attribNo;
+                var attrib_id=result.data[i].class_attrib_id;
+                $.ajaxSettings.async = false;
+                $.post(prefix_value + "/selectByAttrib/" + attribNo, "", function (result1) {
+                    for ( j = 0; j < result1.data.length; j++) {
+                        var value=result1.data[j].VALUE;
+                        var ids=result1.data[j].IDS;
+                        $("#"+attribNo).append($("<option/>").text(value.split("@@@")[1].split("@")[1]).attr("value",ids).attr("values",value).attr("key",attrib_id));
+                    }
+                });
+                $.ajaxSettings.async = true;
+            }
+        });
+        setTimeout(function () {
+            $("select").select2()
+        },3000);
+        //获取描述规则
+        $.post(prefix_value + "/selectPropertyFormulaByTypeId/"+classId,"", function(result) {
+            var str='';
+            for(var i=0;i<result.data.length;i++){
+                //获取某一个描述规则
+                var FREE_TEXT=result.data[i].FREE_TEXT;
+                $.ajaxSettings.async = false;
+                $.post(prefix_value + "/selectPropertyFormulaByTypeAndProperty/"+classId+","+result.data[i].ENTITY_PROPERTY_NO,"", function(result2) {
+                    for (let j = 0; j < result2.data.length; j++) {
+                        var CLASS_ATTRIB_ID=result2.data[j].CLASS_ATTRIB_ID;
+                        var REPRESENT_TYPE_ID=result2.data[j].REPRESENT_TYPE_ID;
+                        var num=j+1;
+                        FREE_TEXT=FREE_TEXT.replaceAll("{"+num+"}",CLASS_ATTRIB_ID+"."+REPRESENT_TYPE_ID);
+                    }
+                });
+                $.ajaxSettings.async = true;
+                str +=" <div class=\"form-group\">";
+                str +="                <label class=\"col-sm-3 control-label\">"+result.data[i].DESCR+"：</label>";
+                str +="                <div class=\"col-sm-9\">";
+                str +="                   <span><!--描述规则：--></span> <span id=\"Formula"+result.data[i].ENTITY_PROPERTY_NO+"\" name=\"" ;
+                str +=""+result.data[i].ENTITY_PROPERTY_ID+"\" class=\"form-control\"readonly=\"true\" >";
+                 str +=FREE_TEXT;
+                str +="                    </span>";
+                str +="                </div>";
+                str +="            </div>";
+            }
+            document.getElementById('formula').innerHTML=str;
+        });
+    }
+    function selectFormul(res){
+        // console.log(res.options[res.selectedIndex].value); // 选中的值
+        // console.log(res.options[res.selectedIndex].text); // 选中的value
+        var shuxing=$("#"+res.id).find("option:selected").attr("key");
+        var values=$("#"+res.id).find("option:selected").attr("values");
+        // console.log(shuxing);
+        // console.log(values);
+        var arr=values.split("@@@");
+        for (let i = 0; i < arr.length; i++) {
+            if(arr[i].indexOf("ATTR_CODE")>-1){
+                $("#code").val($("#code").val()+arr[i].split("@")[1]);
+            }
+
+
+
+        }
+
+    }
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.saveTab(prefix + "/add", $('#form-data-add').serialize());
+        }
+    }
+</script>
+</html>
