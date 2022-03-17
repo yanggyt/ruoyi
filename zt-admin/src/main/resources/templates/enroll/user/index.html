@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('报名列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="post-form">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            报名用户编号：<input type="text" name="enrollUserNo"/>
+                        </li>
+                        <li>
+                            职务：<input type="text" name="postName"/>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="enroll:user:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+		var prefix = ctx + "enroll/user";
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+		        exportUrl: prefix + "/export",
+		        sortName: "enrollUserNo",
+		        modalName: "职务",
+		        columns: [{
+		            checkbox: true
+		        },
+		        {
+		            field: 'enrollUserNo',
+		            title: '报名用户编号'
+		        },
+		        {
+		            field: 'nickName',
+		            title: '昵称',
+		            sortable: true
+		        },
+		        {
+		            field: 'postName',
+		            title: '职务',
+		            sortable: true
+		        },
+		        {
+		            field: 'phoneNumber',
+		            title: '手机号码',
+		            sortable: true
+		        },
+		        {
+		            field: 'playbillAddress',
+		            title: '海报地址',
+		            sortable: true
+		        },
+		        {
+		            field: 'recommenderNo',
+		            title: '推荐人编号',
+		             sortable: true
+		        },
+		        {
+		            field: 'createTime',
+		            title: '报名时间',
+		            sortable: true
+		        }
+		       ]
+		    };
+		    $.table.init(options);
+		});
+
+
+
+</script>
+</body>
+</html>
