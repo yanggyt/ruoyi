@@ -1086,7 +1086,7 @@ table.rc-table-resizing thead > th > a {
 /** 气泡弹出框样式 **/
 .popover {
 	font-size: 13px;
-	max-width: unset;
+	max-width: 100%;
 }
 
 .popover-title {
