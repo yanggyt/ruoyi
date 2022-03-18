@@ -1,61 +1,68 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-	<th:block th:include="include :: header('活动列表')" />
+    <th:block th:include="include :: header('活动列表')"/>
 </head>
 <body class="gray-bg">
-	<div class="container-div">
-		<div class="row">
-			<div class="col-sm-12 search-collapse">
-				<form id="role-form">
-					<div class="select-list">
-						<ul>
-							<li>
-								活动标题：<input type="text" name="roleName"/>
-							</li>
-							<li>
-								互动状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
-									<option value="">所有</option>
-									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-								</select>
-							</li>
-							<li class="select-time">
-								<label>活动日期： </label>
-								<input type="text" class="time-input" id="activeStartDate" placeholder="开始时间" name="params[activeStartDate]"/>
-								<span>-</span>
-								<input type="text" class="time-input" id="activeEndDate" placeholder="结束时间" name="params[activeEndDate]"/>
-							</li>
-							<li>
-								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-							</li>
-						</ul>
-					</div>
-				</form>
-			</div>
-		
-			<div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="active:info:add">
-	                <i class="fa fa-plus"></i> 新增
-	            </a>
-	            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="active:info:edit">
-		            <i class="fa fa-edit"></i> 修改
-		        </a>
-				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="active:info:remove">
-		            <i class="fa fa-remove"></i> 删除
-		        </a>
-		        <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="active:info:export">
-		            <i class="fa fa-download"></i> 导出
-		        </a>
-	        </div>
-	        
-	        <div class="col-sm-12 select-table table-striped">
-			    <table id="bootstrap-table"></table>
-			</div>
-		</div>
-	</div>
-	<th:block th:include="include :: footer" />
-	<script th:inline="javascript">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            活动标题：<input type="text" name="roleName"/>
+                        </li>
+                        <li>
+                            活动状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
+                            <option value="">所有</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
+                        </select>
+                        </li>
+                        <li class="select-time">
+                            <label>活动日期： </label>
+                            <input type="text" class="time-input" id="activeStartDate" placeholder="开始时间"
+                                   name="params[activeStartDate]"/>
+                            <span>-</span>
+                            <input type="text" class="time-input" id="activeEndDate" placeholder="结束时间"
+                                   name="params[activeEndDate]"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="active:info:add">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
+               shiro:hasPermission="active:info:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="active:info:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="active:info:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('active:info:list')}]];
 		var removeFlag = [[${@permission.hasPermi('active:info:remove')}]];
 		var prefix = ctx + "active/info";
@@ -89,7 +96,16 @@
 		         {
 		            field: 'activeType',
 		            title: '活动类型',
-		            sortable: true
+		            sortable: true,
+                      formatter: function(value, item, index) {
+                        if (item.activeType == '1') {
+                            return '<span class="label label-success">智展</span>';
+                        }
+                        else if (item.activeType == '2') {
+                            return '<span class="label label-primary">智会</span>';
+                        }
+
+                    }
 		        },
 		        {
 		            field: 'activeStartDate',
@@ -159,6 +175,7 @@
 				$.operate.post(prefix + "/changeStatus", { "id": id, "status": 0 });
 		    })
 		}
-	</script>
+
+</script>
 </body>
 </html>
