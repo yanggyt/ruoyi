@@ -1,91 +1,85 @@
-//package com.wuzhen.web.controller.system;
-//
-//import com.wuzhen.common.annotation.Log;
-//import com.wuzhen.common.constant.UserConstants;
-//import com.wuzhen.common.core.controller.BaseController;
-//import com.wuzhen.common.core.domain.AjaxResult;
-//import com.wuzhen.common.core.domain.entity.SysRole;
-//import com.wuzhen.common.core.domain.entity.SysUser;
-//import com.wuzhen.common.core.page.TableDataInfo;
-//import com.wuzhen.common.enums.BusinessType;
-//import com.wuzhen.common.utils.poi.ExcelUtil;
-//import com.wuzhen.framework.shiro.util.AuthorizationUtils;
-//import com.wuzhen.system.domain.SysUserRole;
-//import com.wuzhen.system.service.ISysRoleService;
-//import com.wuzhen.system.service.ISysUserService;
-//import org.apache.shiro.authz.annotation.RequiresPermissions;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.ModelMap;
-//import org.springframework.validation.annotation.Validated;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-///**
-// * 角色信息
-// *
-// * @author zhengzheng
-// */
-//@Controller
-//@RequestMapping("/system/role")
-//public class ActiveInfoController extends BaseController
-//{
-//    private String prefix = "system/role";
-//
-//    @Autowired
-//    private ISysRoleService roleService;
-//
-//    @Autowired
-//    private ISysUserService userService;
-//
-//    @RequiresPermissions("system:role:view")
-//    @GetMapping()
-//    public String role()
-//    {
-//        return prefix + "/role";
-//    }
-//
-//    @RequiresPermissions("system:role:list")
-//    @PostMapping("/list")
-//    @ResponseBody
-//    public TableDataInfo list(SysRole role)
-//    {
-//        startPage();
-//        List<SysRole> list = roleService.selectRoleList(role);
-//        return getDataTable(list);
-//    }
-//
-//    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
-//    @RequiresPermissions("system:role:export")
-//    @PostMapping("/export")
-//    @ResponseBody
-//    public AjaxResult export(SysRole role)
-//    {
-//        List<SysRole> list = roleService.selectRoleList(role);
-//        ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
-//        return util.exportExcel(list, "角色数据");
-//    }
-//
-//    /**
-//     * 新增角色
-//     */
-//    @GetMapping("/add")
-//    public String add()
-//    {
-//        return prefix + "/add";
-//    }
-//
-//    /**
-//     * 新增保存角色
-//     */
-//    @RequiresPermissions("system:role:add")
-//    @Log(title = "角色管理", businessType = BusinessType.INSERT)
-//    @PostMapping("/add")
-//    @ResponseBody
-//    public AjaxResult addSave(@Validated SysRole role)
-//    {
-//        if (UserConstants.ROLE_NAME_NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
+package com.wuzhen.web.controller.busi;
+
+import com.wuzhen.common.annotation.Log;
+import com.wuzhen.common.core.controller.BaseController;
+import com.wuzhen.common.core.domain.AjaxResult;
+import com.wuzhen.common.core.page.TableDataInfo;
+import com.wuzhen.common.enums.BusinessType;
+import com.wuzhen.common.utils.poi.ExcelUtil;
+import com.wuzhen.framework.shiro.util.AuthorizationUtils;
+import com.wuzhen.system.domain.ActiveInfo;
+import com.wuzhen.system.service.IActiveInfoService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+/**
+ * 角色信息
+ *
+ * @author zhengzheng
+ */
+@Controller
+@RequestMapping("/active/info")
+public class ActiveInfoController extends BaseController
+{
+    private String prefix = "active/info";
+
+    @Autowired
+    private IActiveInfoService activeInfoService;
+
+
+
+    @RequiresPermissions("active:info:view")
+    @GetMapping()
+    public String role()
+    {
+        return prefix + "/index";
+    }
+
+    @RequiresPermissions("active:info:list")
+    @PostMapping("/list")
+    @ResponseBody
+    public TableDataInfo list(ActiveInfo activeInfo)
+    {
+        startPage();
+        List<ActiveInfo> list = activeInfoService.selectActiveList(activeInfo);
+        return getDataTable(list);
+    }
+
+    @Log(title = "活动信息导出", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("active:info:export")
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(ActiveInfo activeInfo)
+    {
+        List<ActiveInfo> list = activeInfoService.selectActiveList(activeInfo);
+        ExcelUtil<ActiveInfo> util = new ExcelUtil<ActiveInfo>(ActiveInfo.class);
+        return util.exportExcel(list, "活动信息");
+    }
+
+    /**
+     * 新增活动
+     */
+    @GetMapping("/add")
+    public String add()
+    {
+        return prefix + "/add";
+    }
+
+    /**
+     * 新增保存活动
+     */
+    @RequiresPermissions("active:info:add")
+    @Log(title = "活动管理", businessType = BusinessType.INSERT)
+    @PostMapping("/add")
+    @ResponseBody
+    public AjaxResult addSave(@Validated ActiveInfo activeInfo)
+    {
+//        if (UserConstants.ROLE_NAME_NOT_UNIQUE.equals(activeInfoService.checkNameUnique(role)))
 //        {
 //            return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
 //        }
@@ -93,33 +87,33 @@
 //        {
 //            return error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
 //        }
-//        role.setCreateBy(getLoginName());
-//        AuthorizationUtils.clearAllCachedAuthorizationInfo();
-//        return toAjax(roleService.insertRole(role));
-//
-//    }
-//
-//    /**
-//     * 修改角色
-//     */
-//    @RequiresPermissions("system:role:edit")
-//    @GetMapping("/edit/{roleId}")
-//    public String edit(@PathVariable("roleId") Long roleId, ModelMap mmap)
-//    {
+        activeInfo.setCreateBy(getLoginName());
+        AuthorizationUtils.clearAllCachedAuthorizationInfo();
+        return toAjax(activeInfoService.insertActive(activeInfo));
+
+    }
+
+    /**
+     * 修改活动
+     */
+    @RequiresPermissions("active:info:edit")
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    {
 //        roleService.checkRoleDataScope(roleId);
-//        mmap.put("role", roleService.selectRoleById(roleId));
-//        return prefix + "/edit";
-//    }
-//
-//    /**
-//     * 修改保存角色
-//     */
-//    @RequiresPermissions("system:role:edit")
-//    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-//    @PostMapping("/edit")
-//    @ResponseBody
-//    public AjaxResult editSave(@Validated SysRole role)
-//    {
+        mmap.put("active", activeInfoService.selectActiveById(id));
+        return prefix + "/edit";
+    }
+
+    /**
+     * 修改保存活动
+     */
+    @RequiresPermissions("active:info:edit")
+    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult editSave(@Validated ActiveInfo activeInfo)
+    {
 //        roleService.checkRoleAllowed(role);
 //        roleService.checkRoleDataScope(role.getRoleId());
 //        if (UserConstants.ROLE_NAME_NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
@@ -130,11 +124,11 @@
 //        {
 //            return error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
 //        }
-//        role.setUpdateBy(getLoginName());
-//        AuthorizationUtils.clearAllCachedAuthorizationInfo();
-//        return toAjax(roleService.updateRole(role));
-//    }
-//
+        activeInfo.setUpdateBy(getLoginName());
+        AuthorizationUtils.clearAllCachedAuthorizationInfo();
+        return toAjax(activeInfoService.updateActive(activeInfo));
+    }
+
 //    /**
 //     * 角色分配数据权限
 //     */
@@ -144,7 +138,7 @@
 //        mmap.put("role", roleService.selectRoleById(roleId));
 //        return prefix + "/dataScope";
 //    }
-//
+
 //    /**
 //     * 保存角色分配数据权限
 //     */
@@ -164,17 +158,17 @@
 //        }
 //        return error();
 //    }
-//
-//    @RequiresPermissions("system:role:remove")
-//    @Log(title = "角色管理", businessType = BusinessType.DELETE)
-//    @PostMapping("/remove")
-//    @ResponseBody
-//    public AjaxResult remove(String ids)
-//    {
-//        return toAjax(roleService.deleteRoleByIds(ids));
-//    }
-//
-//    /**
+
+    @RequiresPermissions("active:info:remove")
+    @Log(title = "活动管理", businessType = BusinessType.DELETE)
+    @PostMapping("/remove")
+    @ResponseBody
+    public AjaxResult remove(String ids)
+    {
+        return toAjax(activeInfoService.deleteActiveByIds(ids));
+    }
+
+    /**
 //     * 校验角色名称
 //     */
 //    @PostMapping("/checkRoleNameUnique")
@@ -202,7 +196,7 @@
 //    {
 //        return prefix + "/tree";
 //    }
-//
+
 //    /**
 //     * 角色状态修改
 //     */
@@ -216,7 +210,7 @@
 //        roleService.checkRoleDataScope(role.getRoleId());
 //        return toAjax(roleService.changeStatus(role));
 //    }
-//
+
 //    /**
 //     * 分配用户
 //     */
@@ -227,7 +221,7 @@
 //        mmap.put("role", roleService.selectRoleById(roleId));
 //        return prefix + "/authUser";
 //    }
-//
+
 //    /**
 //     * 查询已分配用户角色列表
 //     */
@@ -240,7 +234,7 @@
 //        List<SysUser> list = userService.selectAllocatedList(user);
 //        return getDataTable(list);
 //    }
-//
+
 //    /**
 //     * 取消授权
 //     */
@@ -252,10 +246,10 @@
 //    {
 //        return toAjax(roleService.deleteAuthUser(userRole));
 //    }
-//
-//    /**
-//     * 批量取消授权
-//     */
+
+    /**
+     * 批量取消授权
+     */
 //    @RequiresPermissions("system:role:edit")
 //    @Log(title = "角色管理", businessType = BusinessType.GRANT)
 //    @PostMapping("/authUser/cancelAll")
@@ -264,7 +258,7 @@
 //    {
 //        return toAjax(roleService.deleteAuthUsers(roleId, userIds));
 //    }
-//
+
 //    /**
 //     * 选择用户
 //     */
@@ -274,7 +268,7 @@
 //        mmap.put("role", roleService.selectRoleById(roleId));
 //        return prefix + "/selectUser";
 //    }
-//
+
 //    /**
 //     * 查询未分配用户角色列表
 //     */
@@ -287,7 +281,7 @@
 //        List<SysUser> list = userService.selectUnallocatedList(user);
 //        return getDataTable(list);
 //    }
-//
+
 //    /**
 //     * 批量选择用户授权
 //     */
@@ -300,4 +294,4 @@
 //        roleService.checkRoleDataScope(roleId);
 //        return toAjax(roleService.insertAuthUsers(roleId, userIds));
 //    }
-//}
+}

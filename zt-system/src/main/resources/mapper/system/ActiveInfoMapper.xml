@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuzhen.system.mapper.ActiveInfoMapper">
+
+	<resultMap type="ActiveInfo" id="ActiveInfoResult">
+		<id     property="id"       column="id"        />
+		<result property="activeTitle"     column="active_title"      />
+		<result property="activeDesc"      column="active_desc"       />
+		<result property="activeStartDate"     column="active_start_date"      />
+		<result property="activeEndDate"    column="active_end_date"     />
+		<result property="activeType"    column="active_type"     />
+		<result property="activePic"    column="active_pic"     />
+		<result property="status"       column="status"         />
+		<result property="delFlag"      column="del_flag"       />
+		<result property="createBy"     column="create_by"      />
+		<result property="createTime"   column="create_time"    />
+		<result property="updateBy"     column="update_by"      />
+		<result property="updateTime"   column="update_time"    />
+		<result property="remark"       column="remark"         />
+		<result property="delFlag"       column="del_flag"         />
+	</resultMap>
+
+    <sql id="selectActiveVo">
+		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic, r.active_type, r.status, r.del_flag, r.create_time, r.remark
+		from active_info r
+	</sql>
+	
+	<select id="selectActiveList" parameterType="ActiveInfo" resultMap="ActiveInfoResult">
+		<include refid="selectActiveVo"/>
+		where r.del_flag = '0'
+		<if test="id != null and id != 0">
+			AND r.id = #{id}
+		</if>
+		<if test="activeTitle != null and activeTitle != ''">
+			AND r.active_title like concat('%', #{activeTitle}, '%')
+		</if>
+		<if test="status != null and status != ''">
+			AND r.status = #{status}
+		</if>
+		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+		</if>
+		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+		</if>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+
+	<select id="selectActiveById" parameterType="Long" resultMap="ActiveInfoResult">
+		<include refid="selectActiveVo"/>
+		where r.del_flag = '0' and r.id = #{id}
+	</select>
+	
+	<select id="checkActiveNameUnique" parameterType="String" resultMap="ActiveInfoResult">
+		<include refid="selectActiveVo"/>
+		 where r.active_title=#{activeTitle} limit 1
+	</select>
+	
+	<select id="checkActiveKeyUnique" parameterType="String" resultMap="ActiveInfoResult">
+		<include refid="selectActiveVo"/>
+		 where r.id=#{id} limit 1
+	</select>
+	
+	<delete id="deleteActiveById" parameterType="Long">
+ 		update active_info set del_flag = '2' where id = #{id}
+ 	</delete>
+ 	
+ 	<delete id="deleteActiveByIds" parameterType="Long">
+ 	    update active_info set del_flag = '2' where id in
+ 		<foreach collection="array" item="id" open="(" separator="," close=")">
+ 			#{id}
+        </foreach> 
+ 	</delete>
+ 	
+ 	<update id="updateActive" parameterType="ActiveInfo">
+ 		update active_info
+ 		<set>
+ 			<if test="activeTitle != null and activeTitle != ''">active_title = #{activeTitle},</if>
+ 			<if test="activeDesc != null and activeDesc != ''">active_desc = #{activeDesc},</if>
+ 			<if test="activeStartDate != null and activeStartDate != ''">active_start_date = #{activeStartDate},</if>
+			<if test="activeEndDate != null and activeEndDate != ''">active_end_date = #{activeEndDate},</if>
+ 			<if test="status != null and status != ''">status = #{status},</if>
+			<if test="activePic != null and activePic != ''">active_pic = #{activePic},</if>
+			<if test="activeType != null and activeType != ''">active_type = #{activeType},</if>
+ 			<if test="remark != null">remark = #{remark},</if>
+ 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where id = #{id}
+	</update>
+ 	
+ 	<insert id="insertActive" parameterType="ActiveInfo" useGeneratedKeys="true" keyProperty="id">
+ 		insert into active_info(
+ 			<if test="activeTitle != null and activeTitle != ''">active_title,</if>
+ 			<if test="activeDesc != null and activeDesc != ''">active_desc,</if>
+ 			<if test="activeStartDate != null and activeStartDate != ''">active_start_date,</if>
+ 			<if test="activeEndDate != null and activeEndDate != ''">active_end_date,</if>
+ 			<if test="activeType != null and activeType != ''">active_type,</if>
+		    <if test="activePic != null and activePic != ''">active_pic,</if>
+ 			<if test="status != null and status != ''">status,</if>
+ 			<if test="remark != null and remark != ''">remark,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+ 			<if test="activeTitle != null and activeTitle !=''">#{activeTitle},</if>
+ 			<if test="activeDesc != null and activeDesc != ''">#{activeDesc},</if>
+ 			<if test="activeStartDate != null and activeStartDate != ''">#{activeStartDate},</if>
+ 			<if test="activeEndDate != null and activeEndDate != ''">#{activeEndDate},</if>
+ 			<if test="activeType != null and activeType != ''">#{activeType},</if>
+			<if test="activePic != null and activeType != ''">#{activePic},</if>
+ 			<if test="status != null and status != ''">#{status},</if>
+ 			<if test="remark != null and remark != ''">#{remark},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	
+</mapper> 
