@@ -1,6 +1,7 @@
 package com.wuzhen.web.controller.busi;
 
 import com.wuzhen.common.annotation.Log;
+import com.wuzhen.common.config.RuoYiConfig;
 import com.wuzhen.common.core.controller.BaseController;
 import com.wuzhen.common.core.domain.AjaxResult;
 import com.wuzhen.common.core.page.TableDataInfo;
@@ -15,6 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -79,14 +84,29 @@ public class ActiveInfoController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@Validated ActiveInfo activeInfo)
     {
-//        if (UserConstants.ROLE_NAME_NOT_UNIQUE.equals(activeInfoService.checkNameUnique(role)))
-//        {
-//            return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
-//        }
-//        else if (UserConstants.ROLE_KEY_NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role)))
-//        {
-//            return error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
-//        }
+        MultipartFile file = activeInfo.getActivePic();
+        // 获取上传文件名
+        String filename = file.getOriginalFilename();
+        if (!"".equals(filename)){
+
+            // 定义上传文件保存路径
+            String path = RuoYiConfig.getUploadPath();
+            // 新建文件
+            File filepath = new File(path, filename);
+            // 判断路径是否存在，如果不存在就创建一个
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }
+            String picUrl = path + File.separator + filename;
+            try {
+                // 写入文件
+                file.transferTo(new File(picUrl));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            activeInfo.setActivePicUrl(picUrl);
+        }
+
         activeInfo.setCreateBy(getLoginName());
         AuthorizationUtils.clearAllCachedAuthorizationInfo();
         return toAjax(activeInfoService.insertActive(activeInfo));

@@ -6,6 +6,7 @@ import com.wuzhen.common.annotation.Excel.ColumnType;
 import com.wuzhen.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 活动信息 active_info
@@ -59,7 +60,15 @@ public class ActiveInfo extends BaseEntity {
      * 活动图片
      */
     @Excel(name = "活动图片")
-    private String activePic;
+    private MultipartFile activePic;
+
+
+
+    /**
+     * 活动图片地址
+     */
+    @Excel(name = "活动图片地址")
+    private String activePicUrl;
 
     /**
      * 推荐人编号
@@ -126,11 +135,11 @@ public class ActiveInfo extends BaseEntity {
         this.activeType = activeType;
     }
 
-    public String getActivePic() {
+    public MultipartFile getActivePic() {
         return activePic;
     }
 
-    public void setActivePic(String activePic) {
+    public void setActivePic(MultipartFile activePic) {
         this.activePic = activePic;
     }
 
@@ -140,6 +149,15 @@ public class ActiveInfo extends BaseEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    public String getActivePicUrl() {
+        return activePicUrl;
+    }
+
+    public void setActivePicUrl(String activePicUrl) {
+        this.activePicUrl = activePicUrl;
     }
 
     @Override
