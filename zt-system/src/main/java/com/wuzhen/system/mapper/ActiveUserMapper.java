@@ -1,7 +1,7 @@
 package com.wuzhen.system.mapper;
 
+import com.wuzhen.system.domain.EnrollActiveUser;
 import com.wuzhen.system.domain.EnrollUser;
-import com.wuzhen.system.domain.SysPost;
 
 import java.util.List;
 
@@ -10,15 +10,15 @@ import java.util.List;
  * 
  * @author zhengzheng
  */
-public interface EnrollUserMapper
+public interface ActiveUserMapper
 {
     /**
      * 报名用户数据集合
      * 
-     * @param enrollUser 报名用户信息
+     * @param enrollActiveUser 报名用户信息
      * @return 报名用户集合
      */
-    public List<EnrollUser> selectEnrollUserList(EnrollUser enrollUser);
+    public List<EnrollActiveUser> selectActiveUserList(EnrollActiveUser enrollActiveUser);
 
 
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuzhen.system.mapper.ActiveUserMapper">
+
+    <resultMap type="EnrollActiveUser" id="EnrollActiveUserResult">
+        <id property="enrollUserNo" column="enroll_user_no"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="postName" column="post_name"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="playbillAddress" column="playbill_address"/>
+        <result property="recommenderNo" column="recommender_no"/>
+        <result property="activeTitle" column="active_title"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectActiveUserVo">
+        select e.enroll_user_no, e.nick_name, e.post_name, e.phone_number, e.playbill_address,e.recommender_no,e.create_by, e.create_time, e.remark,a.active_title
+        from enroll_user e inner join  active_info a ON e.active_no = a.id
+    </sql>
+
+
+    <select id="selectActiveUserList" parameterType="EnrollActiveUser" resultMap="EnrollActiveUserResult">
+        <include refid="selectActiveUserVo"/>
+        <where>
+            <if test="enrollUserNo != null and enrollUserNo != ''">
+                AND e.enroll_user_no like concat('%', #{enrollUserNo}, '%')
+            </if>
+            <if test="activeTitle != null and activeTitle != ''">
+                AND a.active_title like concat('%', #{activeTitle}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper> 
