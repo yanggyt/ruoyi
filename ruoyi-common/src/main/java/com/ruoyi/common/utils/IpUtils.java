@@ -40,7 +40,9 @@ public class IpUtils
             ip = request.getRemoteAddr();
         }
 
-        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
+        ip = "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
+        ip = ip.split(",")[0].trim();
+        return ip;
     }
 
     public static boolean internalIp(String ip)
