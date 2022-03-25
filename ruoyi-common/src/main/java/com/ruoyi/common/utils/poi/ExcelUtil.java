@@ -316,7 +316,7 @@ public class ExcelUtil<T>
                             String dateFormat = field.getAnnotation(Excel.class).dateFormat();
                             if (StringUtils.isNotEmpty(dateFormat))
                             {
-                                val = parseDateToStr(dateFormat, (Date) val);
+                                val = parseDateToStr(dateFormat, val);
                             }
                             else
                             {
@@ -328,7 +328,7 @@ public class ExcelUtil<T>
                     {
                         val = Convert.toInt(val);
                     }
-                    else if (Long.TYPE == fieldType || Long.class == fieldType)
+                    else if ((Long.TYPE == fieldType || Long.class == fieldType) && StringUtils.isNumeric(Convert.toStr(val)))
                     {
                         val = Convert.toLong(val);
                     }
@@ -823,7 +823,7 @@ public class ExcelUtil<T>
                 String dictType = attr.dictType();
                 if (StringUtils.isNotEmpty(dateFormat) && StringUtils.isNotNull(value))
                 {
-                    cell.setCellValue(parseDateToStr(dateFormat, (Date) value));
+                    cell.setCellValue(parseDateToStr(dateFormat, value));
                 }
                 else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value))
                 {
