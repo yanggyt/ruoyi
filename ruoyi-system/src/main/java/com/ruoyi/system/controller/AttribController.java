@@ -110,7 +110,7 @@ public class AttribController extends BaseController
     }
 
     /**
-     * 删除属性
+     * 删除属性1
      */
     @RequiresPermissions("system:attrib:remove")
     @Log(title = "属性", businessType = BusinessType.DELETE)
