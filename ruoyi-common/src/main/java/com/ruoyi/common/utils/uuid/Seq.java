@@ -58,7 +58,7 @@ public class Seq
      */
     public static String getId(AtomicInteger atomicInt, int length)
     {
-        String result = DateUtils.dateTimeNow();
+        String result = DateUtils.getDateTimeNow(DateUtils.YYYYMMDDHHMMSS);
         result += machineCode;
         result += getSeq(atomicInt, length);
         return result;
