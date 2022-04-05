@@ -119,6 +119,6 @@ public class RuoYiConfig
      */
     public static String getUploadPath()
     {
-        return getProfile() + "/upload";
+        return getProfile() + "/upload/fp";
     }
 }
