@@ -104,7 +104,7 @@ public class ActiveInfoController extends BaseController
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            activeInfo.setActivePicUrl(picUrl);
+            activeInfo.setActivePicUrl(filename);
         }
 
         activeInfo.setCreateBy(getLoginName());
