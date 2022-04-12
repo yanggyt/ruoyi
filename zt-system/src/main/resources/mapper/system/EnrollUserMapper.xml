@@ -5,7 +5,7 @@
 <mapper namespace="com.wuzhen.system.mapper.EnrollUserMapper">
 
     <resultMap type="EnrollUser" id="EnrollUserResult">
-        <id property="enrollUserNo" column="enroll_user_no"/>
+        <id property="id" column="id"/>
         <result property="nickName" column="nick_name"/>
         <result property="postName" column="post_name"/>
         <result property="phoneNumber" column="phone_number"/>
@@ -19,7 +19,7 @@
     </resultMap>
 
     <sql id="selectUserVo">
-        select enroll_user_no, nick_name, post_name, phone_number, playbill_address,recommender_no,create_by, create_time, remark
+        select id, nick_name, post_name, phone_number, playbill_address,recommender_no,create_by, create_time, remark
         from enroll_user
     </sql>
 
@@ -27,8 +27,8 @@
     <select id="selectEnrollUserList" parameterType="EnrollUser" resultMap="EnrollUserResult">
         <include refid="selectUserVo"/>
         <where>
-            <if test="enrollUserNo != null and enrollUserNo != ''">
-                AND enroll_user_no like concat('%', #{enrollUserNo}, '%')
+            <if test="id != null and id != ''">
+                AND id like concat('%', #{id}, '%')
             </if>
             <if test="postName != null and postName != ''">
                 AND post_name like concat('%', #{postName}, '%')

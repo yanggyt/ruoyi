@@ -14,11 +14,19 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class EnrollActiveUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     /**
      * 报名用户编号
      */
     @Excel(name = "报名用户编号", cellType = ColumnType.NUMERIC)
-    private Long enrollUserNo;
+    private Long id;
 
 
     /**
@@ -62,13 +70,7 @@ public class EnrollActiveUser extends BaseEntity {
 
 
 
-    public Long getEnrollUserNo() {
-        return enrollUserNo;
-    }
 
-    public void setEnrollUserNo(Long enrollUserNo) {
-        this.enrollUserNo = enrollUserNo;
-    }
 
     public String getNickName() {
         return nickName;
@@ -123,7 +125,7 @@ public class EnrollActiveUser extends BaseEntity {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("enrollUserNo", getEnrollUserNo())
+                .append("id", getId())
                 .append("nickName", getNickName())
                 .append("postName", getPostName())
                 .append("phoneNumber", getPhoneNumber())

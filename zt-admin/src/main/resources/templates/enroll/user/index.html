@@ -11,7 +11,7 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            报名用户编号：<input type="text" name="enrollUserNo"/>
+                            报名用户编号：<input type="text" name="id"/>
                         </li>
                         <li>
                             职务：<input type="text" name="postName"/>
@@ -46,13 +46,13 @@
 		    var options = {
 		        url: prefix + "/list",
 		        exportUrl: prefix + "/export",
-		        sortName: "enrollUserNo",
+		        sortName: "id",
 		        modalName: "职务",
 		        columns: [{
 		            checkbox: true
 		        },
 		        {
-		            field: 'enrollUserNo',
+		            field: 'id',
 		            title: '报名用户编号'
 		        },
 		        {

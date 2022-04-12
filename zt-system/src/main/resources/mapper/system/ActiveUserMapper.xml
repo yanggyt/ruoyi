@@ -5,7 +5,7 @@
 <mapper namespace="com.wuzhen.system.mapper.ActiveUserMapper">
 
     <resultMap type="EnrollActiveUser" id="EnrollActiveUserResult">
-        <id property="enrollUserNo" column="enroll_user_no"/>
+        <id property="id" column="id"/>
         <result property="nickName" column="nick_name"/>
         <result property="postName" column="post_name"/>
         <result property="phoneNumber" column="phone_number"/>
@@ -20,7 +20,7 @@
     </resultMap>
 
     <sql id="selectActiveUserVo">
-        select e.enroll_user_no, e.nick_name, e.post_name, e.phone_number, e.playbill_address,e.recommender_no,e.create_by, e.create_time, e.remark,a.active_title
+        select e.id, e.nick_name, e.post_name, e.phone_number, e.playbill_address,e.recommender_no,e.create_by, e.create_time, e.remark,a.active_title
         from enroll_user e inner join  active_info a ON e.active_no = a.id
     </sql>
 
@@ -28,8 +28,8 @@
     <select id="selectActiveUserList" parameterType="EnrollActiveUser" resultMap="EnrollActiveUserResult">
         <include refid="selectActiveUserVo"/>
         <where>
-            <if test="enrollUserNo != null and enrollUserNo != ''">
-                AND e.enroll_user_no like concat('%', #{enrollUserNo}, '%')
+            <if test="id != null and id != ''">
+                AND e.id like concat('%', #{id}, '%')
             </if>
             <if test="activeTitle != null and activeTitle != ''">
                 AND a.active_title like concat('%', #{activeTitle}, '%')
