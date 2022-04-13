@@ -430,6 +430,37 @@ public class ExcelUtil<T>
     }
 
     /**
+     * 对list数据源将其里面的数据根据字段分组导入到excel表单
+     *
+     * @param list      导出数据集合
+     * @param title     标题
+     * @param fieldName 字段名称
+     * @return 结果
+     */
+    public AjaxResult exportExcelGroupingByFieldName(List<T> list, String title, String fieldName) {
+        if (list == null) {
+            list = new ArrayList<T>();
+        }
+        this.list = list;
+        this.sheetName = title;
+        this.type = Type.EXPORT;
+        this.title = title;
+        createExcelField();
+        //使用stream将list中的数据按照fieldName进行分组
+        Map<String, List<T>> map = list.stream().collect(Collectors.groupingBy(t -> Convert.toStr(ReflectUtils.invokeGetter(t, fieldName))));
+        this.wb = new SXSSFWorkbook(500);
+        if (map.size() > 0) {
+            //map循环 设置多个不同的sheet
+            for (Map.Entry<String, List<T>> entry : map.entrySet()) {
+                this.sheet = wb.createSheet(entry.getKey());
+                this.styles = createStyles(wb);
+                createTitle();
+            }
+        }
+        return exportExcel();
+    }
+
+    /**
      * 对list数据源将其里面的数据导入到excel表单
      * 
      * @param response 返回数据
