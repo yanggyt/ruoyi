@@ -167,6 +167,7 @@ public class ActiveInfoController extends BaseController
                 e.printStackTrace();
             }
             activeInfo.setActiveFirstPicUrl(filename);
+            activeInfo.setIsFristPage("1");
         }
         activeInfo.setUpdateBy(getLoginName());
         AuthorizationUtils.clearAllCachedAuthorizationInfo();
