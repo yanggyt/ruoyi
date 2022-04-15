@@ -62,4 +62,13 @@ public interface ActiveInfoMapper
     public int insertActive(ActiveInfo activeInfo);
 
 
+    /**
+     * 保存首页图片
+     *
+     * @param activeInfo 角色信息
+     * @return 结果
+     */
+    public int saveFistPage(ActiveInfo activeInfo);
+
+
 }

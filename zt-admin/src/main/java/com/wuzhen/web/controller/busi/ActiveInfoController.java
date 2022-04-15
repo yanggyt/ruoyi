@@ -90,7 +90,7 @@ public class ActiveInfoController extends BaseController
         if (!"".equals(filename)){
 
             // 定义上传文件保存路径
-            String path = RuoYiConfig.getUploadPath();
+            String path = RuoYiConfig.getLPUploadPath();
             // 新建文件
             File filepath = new File(path, filename);
             // 判断路径是否存在，如果不存在就创建一个
@@ -126,6 +126,56 @@ public class ActiveInfoController extends BaseController
     }
 
     /**
+     * 修改活动
+     */
+    @RequiresPermissions("active:info:edit")
+    @GetMapping("/first/{id}")
+    public String first(@PathVariable("id") Long id, ModelMap mmap)
+    {
+        mmap.put("active", activeInfoService.selectActiveById(id));
+        return prefix + "/first";
+    }
+
+
+    /**
+     *保存首页
+     */
+    @RequiresPermissions("active:info:edit")
+    @Log(title = "保存首页", businessType = BusinessType.UPDATE)
+    @PostMapping("/firstSave")
+    @ResponseBody
+    public AjaxResult firstSave(@Validated ActiveInfo activeInfo)
+    {
+        MultipartFile file = activeInfo.getActiveFirstPic();
+        // 获取上传文件名
+        String filename = file.getOriginalFilename();
+        if (!"".equals(filename)){
+
+            // 定义上传文件保存路径
+            String path = RuoYiConfig.getFPUploadPath();
+            // 新建文件
+            File filepath = new File(path, filename);
+            // 判断路径是否存在，如果不存在就创建一个
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }
+            String picUrl = path + File.separator + filename;
+            try {
+                // 写入文件
+                file.transferTo(new File(picUrl));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            activeInfo.setActiveFirstPicUrl(filename);
+        }
+        activeInfo.setUpdateBy(getLoginName());
+        AuthorizationUtils.clearAllCachedAuthorizationInfo();
+        return toAjax(activeInfoService.saveFistPage(activeInfo));
+    }
+
+
+
+    /**
      * 修改保存活动
      */
     @RequiresPermissions("active:info:edit")
@@ -134,16 +184,7 @@ public class ActiveInfoController extends BaseController
     @ResponseBody
     public AjaxResult editSave(@Validated ActiveInfo activeInfo)
     {
-//        roleService.checkRoleAllowed(role);
-//        roleService.checkRoleDataScope(role.getRoleId());
-//        if (UserConstants.ROLE_NAME_NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
-//        {
-//            return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
-//        }
-//        else if (UserConstants.ROLE_KEY_NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role)))
-//        {
-//            return error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
-//        }
+
         activeInfo.setUpdateBy(getLoginName());
         AuthorizationUtils.clearAllCachedAuthorizationInfo();
         return toAjax(activeInfoService.updateActive(activeInfo));

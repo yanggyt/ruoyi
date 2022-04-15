@@ -115,10 +115,27 @@ public class RuoYiConfig
     }
 
     /**
-     * 获取上传路径
+     * 获取首页上传路径
+     */
+    public static String getFPUploadPath()
+    {
+        return getProfile() + "/upload/fp";
+    }
+
+
+    /**
+     * 获取列表上传路径
+     */
+    public static String getLPUploadPath()
+    {
+        return getProfile() + "/upload/fp";
+    }
+
+    /**
+     * 获取列表上传路径
      */
     public static String getUploadPath()
     {
-        return getProfile() + "/upload/fp";
+        return getProfile();
     }
 }

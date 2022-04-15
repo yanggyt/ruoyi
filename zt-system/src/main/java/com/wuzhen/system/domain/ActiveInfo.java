@@ -59,7 +59,6 @@ public class ActiveInfo extends BaseEntity {
     /**
      * 活动图片
      */
-    @Excel(name = "活动图片")
     private MultipartFile activePic;
 
 
@@ -69,6 +68,51 @@ public class ActiveInfo extends BaseEntity {
      */
     @Excel(name = "活动图片地址")
     private String activePicUrl;
+
+
+    /**
+     * 活动图片
+     */
+    private MultipartFile activeFirstPic;
+
+
+
+    /**
+     * 活动图片地址
+     */
+    @Excel(name = "活动首页图片地址")
+    private String activeFirstPicUrl;
+
+
+    /**
+     * 活动图片地址
+     */
+    private String isFristPage;
+
+
+    public MultipartFile getActiveFirstPic() {
+        return activeFirstPic;
+    }
+
+    public void setActiveFirstPic(MultipartFile activeFirstPic) {
+        this.activeFirstPic = activeFirstPic;
+    }
+
+    public String getActiveFirstPicUrl() {
+        return activeFirstPicUrl;
+    }
+
+    public void setActiveFirstPicUrl(String activeFirstPicUrl) {
+        this.activeFirstPicUrl = activeFirstPicUrl;
+    }
+
+    public String getIsFristPage() {
+        return isFristPage;
+    }
+
+    public void setIsFristPage(String isFristPage) {
+        this.isFristPage = isFristPage;
+    }
 
     /**
      * 推荐人编号

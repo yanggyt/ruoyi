@@ -69,4 +69,14 @@ public interface IActiveInfoService
     public int updateActive(ActiveInfo activeInfo);
 
 
+    /**
+     * 保存首页图片
+     *
+     * @param activeInfo 保存首页图片
+     * @return 结果
+     */
+    public int saveFistPage(ActiveInfo activeInfo);
+
+
+
 }

@@ -148,7 +148,6 @@ public class ActiveInfoServiceImpl implements IActiveInfoService {
     @Transactional
     public int insertActive(ActiveInfo activeInfo) {
         // 新增角色信息
-//        activeInfoMapper.insertActive(activeInfo);
         return activeInfoMapper.insertActive(activeInfo);
     }
 
@@ -162,9 +161,23 @@ public class ActiveInfoServiceImpl implements IActiveInfoService {
     @Transactional
     public int updateActive(ActiveInfo activeInfo) {
         // 修改角色信息
-        activeInfoMapper.updateActive(activeInfo);
         return activeInfoMapper.updateActive(activeInfo);
     }
+
+
+    /**
+     *保存首页图片
+     *
+     * @param activeInfo 活动信息
+     * @return 结果
+     */
+    @Override
+    @Transactional
+    public int saveFistPage(ActiveInfo activeInfo) {
+        // 修改角色信息
+        return activeInfoMapper.saveFistPage(activeInfo);
+    }
+
 
     /**
      * 修改数据权限信息

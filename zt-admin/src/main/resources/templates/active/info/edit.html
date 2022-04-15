@@ -63,12 +63,11 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">状态：</label>
+				<label class="col-sm-3 control-label is-required">状态：</label>
 				<div class="col-sm-8">
-					<label class="toggle-switch switch-solid">
-                        <input type="checkbox" id="status" th:checked="${active.status == '0' ? true : false}">
-                        <span></span>
-                    </label>
+					<select name="status" class="form-control m-b" th:with="type=${@dict.getType('sys_active_status')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  th:field="*{status}"></option>
+					</select>
 				</div>
 			</div>
 			<div class="form-group">
