@@ -96,7 +96,7 @@
 			var activeEndDate = $("input[name='activeEndDate']").val();
 			var activeType = $("select[name='activeType']").val();
 			var activePic = $("input[name='activePic']").val();
-			var status = $("input[id='status']").is(':checked') == true ? 0 : 1;
+			var status =  $("select[name='status']").val();
 			var remark = $("input[name='remark']").val();
 			$.ajax({
 				cache : true,

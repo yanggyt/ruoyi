@@ -109,7 +109,23 @@
                     }
 		        },
 		         {
-		            field: 'activeType',
+		            field: 'status',
+		            title: '活动状态',
+		            sortable: true,
+                      formatter: function(value, item, index) {
+                        if (item.status == '1') {
+                            return '进行中';
+                        }
+                        else if (item.status == '2') {
+                            return '报名中';
+                        } else if (item.status == '3') {
+                            return '已结束';
+                        }
+
+                    }
+		        },
+		         {
+		            field: 'isFristPage',
 		            title: '是否设置首页',
 		            sortable: true,
                       formatter: function(value, item, index) {
