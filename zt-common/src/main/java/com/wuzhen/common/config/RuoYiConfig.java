@@ -128,7 +128,7 @@ public class RuoYiConfig
      */
     public static String getLPUploadPath()
     {
-        return getProfile() + "/upload/fp";
+        return getProfile() + "/upload/lp";
     }
 
     /**
