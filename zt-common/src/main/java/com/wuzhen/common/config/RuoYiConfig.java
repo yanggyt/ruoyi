@@ -26,6 +26,24 @@ public class RuoYiConfig
 
     /** 上传路径 */
     private static String profile;
+    /** lp */
+    private static String lp;
+
+    public static String getLp() {
+        return lp;
+    }
+
+    /** fp */
+    private static String fp;
+
+    public static String getFp() {
+        return fp;
+    }
+
+
+
+
+
 
     /** 获取地址开关 */
     private static boolean addressEnabled;

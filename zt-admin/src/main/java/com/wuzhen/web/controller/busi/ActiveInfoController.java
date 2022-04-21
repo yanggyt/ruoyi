@@ -12,6 +12,7 @@ import com.wuzhen.system.domain.ActiveInfo;
 import com.wuzhen.system.service.IActiveInfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +36,12 @@ public class ActiveInfoController extends BaseController
 
     @Autowired
     private IActiveInfoService activeInfoService;
+
+    @Value("${wuzhen.fp}")
+    private String fp ;
+    @Value("${wuzhen.lp}")
+    private String lp ;
+
 
 
 
@@ -104,7 +111,7 @@ public class ActiveInfoController extends BaseController
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            activeInfo.setActivePicUrl(filename);
+            activeInfo.setActivePicUrl(lp+filename);
         }
 
         activeInfo.setCreateBy(getLoginName());
@@ -166,7 +173,7 @@ public class ActiveInfoController extends BaseController
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            activeInfo.setActiveFirstPicUrl(filename);
+            activeInfo.setActiveFirstPicUrl(fp+filename);
             activeInfo.setIsFristPage("1");
         }
         activeInfo.setUpdateBy(getLoginName());

@@ -10,6 +10,8 @@ wuzhen:
   demoEnabled: false
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: /www/wwwroot
+  fp: http://47.94.96.229:18001/fp/
+  lp: http://47.94.96.229:18001/lp/
   # 获取ip地址开关
   addressEnabled: false
 
