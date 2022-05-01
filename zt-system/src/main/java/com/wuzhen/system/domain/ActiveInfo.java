@@ -84,6 +84,21 @@ public class ActiveInfo extends BaseEntity {
     private String activeFirstPicUrl;
 
 
+
+    /**
+     * 活动图片地址
+     */
+    @Excel(name = "活动地址")
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     /**
      * 活动图片地址
      */
@@ -219,6 +234,7 @@ public class ActiveInfo extends BaseEntity {
                 .append("updateBy", getUpdateBy())
                 .append("updateTime", getUpdateTime())
                 .append("remark", getRemark())
+                .append("address", getAddress())
                 .toString();
     }
 

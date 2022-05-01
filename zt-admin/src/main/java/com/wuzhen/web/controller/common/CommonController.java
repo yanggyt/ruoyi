@@ -28,7 +28,7 @@ import com.wuzhen.common.utils.file.FileUtils;
  * @author zhengzheng
  */
 @Controller
-@RequestMapping("/common/upload")
+@RequestMapping("/common")
 public class CommonController
 {
     private static final Logger log = LoggerFactory.getLogger(CommonController.class);

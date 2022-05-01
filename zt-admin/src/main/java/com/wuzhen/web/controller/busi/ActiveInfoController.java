@@ -59,6 +59,11 @@ public class ActiveInfoController extends BaseController
     {
         startPage();
         List<ActiveInfo> list = activeInfoService.selectActiveList(activeInfo);
+        list.forEach(item->{
+            if (item!=null&&!"".equals(item.getActiveDesc())&&item.getActiveDesc().length()>6){
+                item.setActiveDesc(item.getActiveDesc().substring(0,6)+"...");
+            }
+        });
         return getDataTable(list);
     }
 

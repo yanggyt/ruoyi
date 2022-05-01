@@ -22,10 +22,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateTime"   column="update_time"    />
 		<result property="remark"       column="remark"         />
 		<result property="delFlag"       column="del_flag"         />
+		<result property="address"       column="address"         />
 	</resultMap>
 
     <sql id="selectActiveVo">
-		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark
+		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address
 		from active_info r
 	</sql>
 	
@@ -90,6 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="activeType != null and activeType != ''">active_type = #{activeType},</if>
  			<if test="remark != null">remark = #{remark},</if>
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			<if test="address != null and address != ''">address = #{address},</if>
  			update_time = sysdate()
  		</set>
  		where id = #{id}
@@ -118,6 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="status != null and status != ''">status,</if>
  			<if test="remark != null and remark != ''">remark,</if>
  			<if test="createBy != null and createBy != ''">create_by,</if>
+		    <if test="address != null and address != ''">address,</if>
  			create_time
  		)values(
  			<if test="activeTitle != null and activeTitle !=''">#{activeTitle},</if>
@@ -129,6 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="status != null and status != ''">#{status},</if>
  			<if test="remark != null and remark != ''">#{remark},</if>
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
+		    <if test="address != null and address != ''">#{address},</if>
  			sysdate()
  		)
 	</insert>
