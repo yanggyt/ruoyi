@@ -16,11 +16,12 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <result property="qrCode" column="qr_code"/>
         <result property="remark" column="remark"/>
     </resultMap>
 
     <sql id="selectActiveUserVo">
-        select e.id, e.nick_name, e.post_name, e.phone_number, e.playbill_address,e.recommender_no,e.create_by, e.create_time, e.remark,a.active_title
+        select e.id, e.nick_name, e.post_name, e.phone_number, e.playbill_address,e.recommender_no,e.create_by, e.create_time, e.remark,a.active_title,e.qr_code
         from enroll_user e inner join  active_info a ON e.active_no = a.id
     </sql>
 
@@ -31,8 +32,14 @@
             <if test="id != null and id != ''">
                 AND e.id like concat('%', #{id}, '%')
             </if>
+            <if test="qrCode != null and qrCode != ''">
+                AND e.qr_code like concat('%', #{qrCode}, '%')
+            </if>
             <if test="activeTitle != null and activeTitle != ''">
                 AND a.active_title like concat('%', #{activeTitle}, '%')
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                AND e.phone_number like concat('%', #{phoneNumber}, '%')
             </if>
         </where>
     </select>

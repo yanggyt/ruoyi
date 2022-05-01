@@ -15,11 +15,12 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <result property="qrCode" column="qr_code"/>
         <result property="remark" column="remark"/>
     </resultMap>
 
     <sql id="selectUserVo">
-        select id, nick_name, post_name, phone_number, playbill_address,recommender_no,create_by, create_time, remark
+        select id, nick_name, post_name, phone_number, playbill_address,recommender_no,create_by, create_time, remark,qr_code
         from enroll_user
     </sql>
 
@@ -30,8 +31,17 @@
             <if test="id != null and id != ''">
                 AND id like concat('%', #{id}, '%')
             </if>
+            <if test="qrCode != null and qrCode != ''">
+                AND qr_code like concat('%', #{qrCode}, '%')
+            </if>
+            <if test="nickName != null and nickName != ''">
+                AND nick_name like concat('%', #{nickName}, '%')
+            </if>
             <if test="postName != null and postName != ''">
                 AND post_name like concat('%', #{postName}, '%')
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                AND phone_number like concat('%', #{phoneNumber}, '%')
             </if>
         </where>
     </select>

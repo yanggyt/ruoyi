@@ -11,12 +11,17 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            报名用户编号：<input type="text" name="id"/>
+                            EPC号：<input type="text" name="qrCode"/>
+                        </li>
+                        <li>
+                            昵称：<input type="text" name="nickName"/>
                         </li>
                         <li>
                             职务：<input type="text" name="postName"/>
                         </li>
-
+                        <li>
+                            手机号码：<input type="text" name="phoneNumber"/>
+                        </li>
                         <li>
                             <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
                                     class="fa fa-search"></i>&nbsp;搜索</a>
@@ -52,8 +57,8 @@
 		            checkbox: true
 		        },
 		        {
-		            field: 'id',
-		            title: '报名用户编号'
+		            field: 'qrCode',
+		            title: 'EPC号'
 		        },
 		        {
 		            field: 'nickName',

@@ -29,6 +29,14 @@
 					</select>
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">报名要求：</label>
+				<div class="col-sm-8">
+					<select name="isEnroll" class="form-control m-b" th:with="type=${@dict.getType('sya_active_enroll')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
+				</div>
+			</div>
 
 			<div class="form-group">
 				<label class="col-sm-3 control-label is-required">活动图片：</label>

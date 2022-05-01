@@ -11,10 +11,10 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            活动标题：<input type="text" name="roleName"/>
+                            活动标题：<input type="text" name="activeTitle"/>
                         </li>
                         <li>
-                            活动状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
+                            活动状态：<select name="status" th:with="type=${@dict.getType('sys_active_status')}">
                             <option value="">所有</option>
                             <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
                                     th:value="${dict.dictValue}"></option>
@@ -118,13 +118,27 @@
 		            title: '活动状态',
 		            sortable: true,
                       formatter: function(value, item, index) {
-                        if (item.status == '1') {
-                            return '进行中';
+                        if (item.status == '0') {
+                            return '未开始';
                         }
-                        else if (item.status == '2') {
-                            return '报名中';
-                        } else if (item.status == '3') {
+                        else if (item.status == '1') {
+                            return '进行中';
+                        } else if (item.status == '2') {
                             return '已结束';
+                        }
+
+                    }
+		        },
+		         {
+		            field: 'status',
+		            title: '报名要求',
+		            sortable: true,
+                      formatter: function(value, item, index) {
+                        if (item.isEnroll == '0') {
+                            return '不需要报名';
+                        }
+                        else if (item.isEnroll == '1') {
+                            return '需要报名';
                         }
 
                     }
@@ -153,11 +167,11 @@
 		            sortable: true
 		        },
 
-		        {
-		            field: 'createTime',
-		            title: '创建时间',
-		            sortable: true
-		        },
+<!--		        {-->
+<!--		            field: 'createTime',-->
+<!--		            title: '创建时间',-->
+<!--		            sortable: true-->
+<!--		        },-->
 		        {
 		            title: '操作',
 		            align: 'center',
@@ -167,6 +181,10 @@
 		                    actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
 		                    actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
 		 		            actions.push('<a class="btn btn-info btn-xs ' + addFlag + '" href="javascript:void(0)" onclick="authFirstPage(\'' + row.id + '\')"><i class="fa fa-plus"></i>设为首页</a> ');
+		 		            var more = [];
+			                more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='online(" +row.id + ")'><i class='fa fa-check'></i>活动上线</a> ");
+			                more.push("<a class='btn btn-default btn-xs " + removeFlag + "' href='javascript:void(0)' onclick='Offline(" + row.id + ")'><i class='fa fa-close'></i>活动下线</a>");
+			                actions.push('<a tabindex="0" class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
 		 		            return actions.join('');
 		            	} else {
 		                    return "";
@@ -205,10 +223,17 @@
     		}
 		}
 		
-		/* 活动管理-停用 */
-		function disable(roleId) {
-			$.modal.confirm("确认要停用角色吗？", function() {
+		/* 活动管理-上线 */
+		function online(id) {
+			$.modal.confirm("确认要设置活动上线吗？", function() {
 				$.operate.post(prefix + "/changeStatus", { "id": id, "status": 1 });
+		    })
+		}
+
+			/* 活动管理-下线 */
+		function Offline(id) {
+			$.modal.confirm("确认要设置活动下线吗？", function() {
+				$.operate.post(prefix + "/changeStatus", { "id": id, "status": 2 });
 		    })
 		}
 

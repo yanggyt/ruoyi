@@ -68,9 +68,16 @@ public class EnrollActiveUser extends BaseEntity {
     @Excel(name = "活动标题")
     private String activeTitle;
 
+    @Excel(name = "EPC号")
+    private String qrCode;
 
+    public String getQrCode() {
+        return qrCode;
+    }
 
-
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
 
     public String getNickName() {
         return nickName;

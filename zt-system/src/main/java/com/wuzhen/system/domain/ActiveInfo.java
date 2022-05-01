@@ -91,6 +91,14 @@ public class ActiveInfo extends BaseEntity {
     @Excel(name = "活动地址")
     private String address;
 
+
+    /**
+     * 活动报名类型
+     */
+    @Excel(name = "活动报名类型")
+    private String isEnroll;
+
+
     public String getAddress() {
         return address;
     }
@@ -218,6 +226,17 @@ public class ActiveInfo extends BaseEntity {
     public void setActivePicUrl(String activePicUrl) {
         this.activePicUrl = activePicUrl;
     }
+
+
+
+    public String getIsEnroll() {
+        return isEnroll;
+    }
+
+    public void setIsEnroll(String isEnroll) {
+        this.isEnroll = isEnroll;
+    }
+
 
     @Override
     public String toString() {

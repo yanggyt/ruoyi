@@ -271,19 +271,17 @@ public class ActiveInfoController extends BaseController
 //        return prefix + "/tree";
 //    }
 
-//    /**
-//     * 角色状态修改
-//     */
-//    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-//    @RequiresPermissions("system:role:edit")
-//    @PostMapping("/changeStatus")
-//    @ResponseBody
-//    public AjaxResult changeStatus(SysRole role)
-//    {
-//        roleService.checkRoleAllowed(role);
-//        roleService.checkRoleDataScope(role.getRoleId());
-//        return toAjax(roleService.changeStatus(role));
-//    }
+    /**
+     * 状态修改
+     */
+    @Log(title = "活动上下线状态管理", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("active:info:edit")
+    @PostMapping("/changeStatus")
+    @ResponseBody
+    public AjaxResult changeStatus(@Validated ActiveInfo activeInfo)
+    {
+        return toAjax(activeInfoService.updateActive(activeInfo));
+    }
 
 //    /**
 //     * 分配用户
