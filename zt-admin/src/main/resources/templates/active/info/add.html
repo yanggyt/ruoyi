@@ -1,108 +1,137 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<th:block th:include="include :: header('新增活动')" />
-	<th:block th:include="include :: datetimepicker-css" />
-<!--	<th:block th:include="include :: ztree-css" />-->
+    <th:block th:include="include :: header('新增活动')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+    <!--	<th:block th:include="include :: ztree-css" />-->
 </head>
 <body class="white-bg">
-	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
-		<form class="form-horizontal m" id="form-role-add" enctype="multipart/form-data">
-			<div class="form-group">
-				<label class="col-sm-3 control-label is-required">活动标题：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="activeTitle" id="activeTitle" required>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label is-required">活动内容描述：</label>
-				<div class="col-sm-8">
-					<textarea name="activeDesc" maxlength="500" class="form-control" rows="3"></textarea>
-				</div>
-			</div>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-role-add" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">活动标题：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="activeTitle" id="activeTitle" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">活动内容描述：</label>
+            <div class="col-sm-8">
+                <textarea name="activeDesc" maxlength="500" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
 
-			<div class="form-group">
-				<label class="col-sm-3 control-label is-required">活动类型：</label>
-				<div class="col-sm-8">
-					<select name="activeType" class="form-control m-b" th:with="type=${@dict.getType('sys_active_type')}">
-						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label is-required">报名要求：</label>
-				<div class="col-sm-8">
-					<select name="isEnroll" class="form-control m-b" th:with="type=${@dict.getType('sya_active_enroll')}">
-						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-					</select>
-				</div>
-			</div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">活动类型：</label>
+            <div class="col-sm-8">
+                <select name="activeType" class="form-control m-b" th:with="type=${@dict.getType('sys_active_type')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">报名要求：</label>
+            <div class="col-sm-8">
+                <select name="isEnroll" class="form-control m-b" th:with="type=${@dict.getType('sya_active_enroll')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
 
-			<div class="form-group">
-				<label class="col-sm-3 control-label is-required">活动图片：</label>
-				<div class="col-sm-8">
-<!--					<label for="uploadFile">或者 上传本地文件</label>-->
-					<input type="file" class="form-control-file" id="activePic" name="activePic">
-<!--					<input class="form-control" type="text" name="activePic" id="activePic" required>-->
-				</div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">活动图片：</label>
+            <div class="col-sm-8">
+                <!--					<label for="uploadFile">或者 上传本地文件</label>-->
+                <input type="file" class="form-control-file" id="activePic" name="activePic" multiple>
 
-			</div>
+                <p id="url"><img src="" width=200></p>
+                <input type="button" id="button" value="上传">
+                <input type="button" id="t_button" value="取消上传">
+                <!--					<input class="form-control" type="text" name="activePic" id="activePic" required>-->
+            </div>
 
-			<div class="form-group draggable">
-				<label class="col-sm-3 control-label">活动开始日期：</label>
+            <div class="form-group form-inline" style="width:100%;padding-left: 60px;">
+                <div class="col-sm-8">
+                    <img id="showUserImg0"  width="30%" height="30%" />
+                    <img id="showUserImg1"  width="30%" height="30%" />
+                    <img id="showUserImg2"  width="30%" height="30%" />
+                    <img id="showUserImg3"  width="30%" height="30%" />
+                    <img id="showUserImg4"  width="30%" height="30%" />
+                </div>
+            </div>
 
-				<div class="col-sm-8">
-					<div class="input-group date">
-						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input class="form-control" type="text" name="activeStartDate" id="activeStartDate"  required>
-					</div>
-				</div>
-			</div>
+        </div>
 
-			<div class="form-group draggable">
-				<label class="col-sm-3 control-label">活动结束日期：</label>
+        <div class="form-group draggable">
+            <label class="col-sm-3 control-label">活动开始日期：</label>
 
-				<div class="col-sm-8">
-					<div class="input-group date">
-						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input class="form-control" type="text" name="activeEndDate" id="activeEndDate"  required>
-					</div>
-				</div>
-			</div>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control" type="text" name="activeStartDate" id="activeStartDate" required>
+                </div>
+            </div>
+        </div>
 
-			<div class="form-group">
-				<label class="col-sm-3 control-label is-required">活动状态：</label>
-				<div class="col-sm-8">
-					<select name="status" class="form-control m-b" th:with="type=${@dict.getType('sys_active_status')}">
-						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label is-required">活动地址：</label>
-				<div class="col-sm-8">
-					<textarea name="address" maxlength="500" class="form-control" rows="3"></textarea>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">备注：</label>
-				<div class="col-sm-8">
-					<input id="remark" name="remark" class="form-control" type="text">
-				</div>
-			</div>
+        <div class="form-group draggable">
+            <label class="col-sm-3 control-label">活动结束日期：</label>
 
-		</form>
-	</div>
-	<th:block th:include="include :: footer" />
-	<th:block th:include="include :: datetimepicker-js" />
-	<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
-	<th:block th:include="include :: datetimepicker-js" />
-	<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control" type="text" name="activeEndDate" id="activeEndDate" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">活动状态：</label>
+            <div class="col-sm-8">
+                <select name="status" class="form-control m-b" th:with="type=${@dict.getType('sys_active_status')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">活动地址：</label>
+            <div class="col-sm-8">
+                <textarea name="address" maxlength="500" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" class="form-control" type="text">
+            </div>
+        </div>
+
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<th:block th:include="include :: datetimepicker-js"/>
+<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
 <!--	<th:block th:include="include :: ztree-js" />-->
-	<script type="text/javascript">
+<script type="text/javascript">
        $(document).ready(function(){setup_draggable();$("#n-columns").on("change",function(){var v=$(this).val();if(v==="1"){var $col=$(".form-body .col-md-12").toggle(true);$(".form-body .col-md-6 .draggable").each(function(i,el){$(this).remove().appendTo($col)});$(".form-body .col-md-6").toggle(false)}else{var $col=$(".form-body .col-md-6").toggle(true);$(".form-body .col-md-12 .draggable").each(function(i,el){$(this).remove().appendTo(i%2?$col[1]:$col[0])});$(".form-body .col-md-12").toggle(false)}});$("#copy-to-clipboard").on("click",function(){var $copy=$(".form-body").clone().appendTo(document.body);$copy.find(".tools, :hidden").remove();$.each(["draggable","droppable","sortable","dropped","ui-sortable","ui-draggable","ui-droppable","form-body"],function(i,c){$copy.find("."+c).removeClass(c).removeAttr("style")});var html=html_beautify($copy.html());$copy.remove();$modal=get_modal(html).modal("show");$modal.find(".btn").remove();$modal.find(".modal-title").html("复制HTML代码");$modal.find(":input:first").select().focus();return false})});var setup_draggable=function(){$(".draggable").draggable({appendTo:"body",helper:"clone"});$(".droppable").droppable({accept:".draggable",helper:"clone",hoverClass:"droppable-active",drop:function(event,ui){$(".empty-form").remove();var $orig=$(ui.draggable);if(!$(ui.draggable).hasClass("dropped")){var $el=$orig.clone().addClass("dropped").css({"position":"static","left":null,"right":null}).appendTo(this);if($el.find("label").hasClass("radio-box")){$el=$el.html('<label class="col-sm-3 control-label">单选框：</label>'+'<div class="col-sm-9">'+'<label class="radio-box"><input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">选项1</label>'+'<label class="radio-box"><input type="radio" value="option2" id="optionsRadios2" name="optionsRadios">选项2</label>'+"</div>")}else{if($el.find("label").hasClass("check-box")){$el=$el.html('<label class="col-sm-3 control-label">复选框：</label>'+'<div class="col-sm-9">'+'<label class="check-box">'+'<input type="checkbox" value="option1" id="inlineCheckbox1">选项1</label>'+'<label class="check-box">'+'<input type="checkbox" value="option2" id="inlineCheckbox2">选项2</label>'+'<label class="check-box">'+'<input type="checkbox" value="option3" id="inlineCheckbox3">选项3</label>'+"</div>")}}var id=$orig.find(":input").attr("id");if(id){id=id.split("-").slice(0,-1).join("-")+"-"+(parseInt(id.split("-").slice(-1)[0])+1);$orig.find(":input").attr("id",id);$orig.find("label").attr("for",id)}$('<p class="tools col-sm-12 col-sm-offset-3">						<a class="edit-link">编辑HTML<a> | 						<a class="remove-link">移除</a></p>').appendTo($el)}else{if($(this)[0]!=$orig.parent()[0]){var $el=$orig.clone().css({"position":"static","left":null,"right":null}).appendTo(this);$orig.remove()}}}}).sortable()};var get_modal=function(content){var modal=$('<div class="modal" style="overflow: auto;" tabindex="-1">	<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a><h4 class="modal-title">编辑HTML</h4></div><div class="modal-body ui-front">	<textarea class="form-control textarea-show-src"  style="min-height: 200px; margin-bottom: 10px;font-family: Monaco, Fixed"></textarea><button class="btn btn-success">更新HTML</button></div></div></div></div>').appendTo(document.body);var doms=document.getElementsByClassName("textarea-show-src");for(var i=0;i<doms.length;i++){doms.item(i).innerHTML=content}return modal};$(document).on("click",".edit-link",function(ev){var $el=$(this).parent().parent();var $el_copy=$el.clone();var $edit_btn=$el_copy.find(".edit-link").parent().remove();var $modal=get_modal(html_beautify($el_copy.html())).modal("show");$modal.find(":input:first").focus();$modal.find(".btn-success").click(function(ev2){var html=$modal.find("textarea").val();if(!html){$el.remove()}else{$el.html(html);$edit_btn.appendTo($el)}$modal.modal("hide");return false})});$(document).on("click",".remove-link",function(ev){$(this).parent().parent().remove()});$(".input-group.date").datetimepicker({format:"yyyy-mm-dd",minView:"month",autoclose:true});
-    </script>
-	<script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+<script type="text/javascript">
 
 		function submitHandler() {
 	        add();
@@ -117,7 +146,7 @@
 <!--			var activeEndDate = $("input[name='activeEndDate']").val();-->
 <!--			var status = $("input[id='status']").is(':checked') == true ? 0 : 1;-->
 <!--			var remark = $("input[name='remark']").val();-->
-<!--			var activePic = $('#activePic')[0].files[0];-->
+			var activePic = $('#activePic')[0].files;
 			var formData = new FormData($("#form-role-add")[0])
 			formData.append('activePic', activePic);
 <!--			formData.append('activeDesc', activeDesc);-->
@@ -142,6 +171,74 @@
 				}
 			});
 		}
-	</script>
+
+      $(function () {
+            $("#button").click(function () {
+            var form = new FormData();
+            var files = document.getElementById("activePic").files;
+            if(files.length > 5) {
+                 alert("上传图片不能超过5张！");
+                 return 0;
+                     }
+
+             $.each(files, function (i, file) {
+                 form.append('myFile', file);   });
+
+           $.ajax({
+                url:  ctx + "active/info/upload",
+                data: form,
+                cache: false,
+                async: false,
+                type: "POST",
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data) {
+                        alert(data);
+                           var imgs = data.fileName;
+                             $.each(imgs, function (i, path) {
+
+                               var id = "#showUserImg"+i;
+                                 alert(id+path);
+                               $(id).attr("src", "/lp/"+path );
+                                     });
+
+
+<!--                        var pic="/lp/"+data.fileName;-->
+<!--                        alert(pic);-->
+<!--                        $("#url img").attr("src",pic);-->
+<!--                        $("#file1").val("/lp/"+data.fileName);-->
+                    } else {
+                        alert("失败");
+                    }
+                },
+                error: function (er) {
+                    alert(JSON.stringify(data));
+                }
+           });
+
+           });
+
+
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
 </body>
 </html>

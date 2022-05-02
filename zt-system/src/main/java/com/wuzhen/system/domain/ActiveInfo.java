@@ -59,7 +59,7 @@ public class ActiveInfo extends BaseEntity {
     /**
      * 活动图片
      */
-    private MultipartFile activePic;
+    private MultipartFile[] activePic;
 
 
 
@@ -202,11 +202,11 @@ public class ActiveInfo extends BaseEntity {
         this.activeType = activeType;
     }
 
-    public MultipartFile getActivePic() {
+    public MultipartFile[] getActivePic() {
         return activePic;
     }
 
-    public void setActivePic(MultipartFile activePic) {
+    public void setActivePic(MultipartFile[] activePic) {
         this.activePic = activePic;
     }
 

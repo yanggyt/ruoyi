@@ -9,7 +9,7 @@ wuzhen:
   # 实例演示开关
   demoEnabled: false
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: /www/wwwroot
+  profile: D:/images11
   fp: http://47.94.96.229:18001/fp/
   lp: http://47.94.96.229:18001/lp/
   # 获取ip地址开关
@@ -134,11 +134,12 @@ xss:
   # 过滤开关
   enabled: true
   # 排除链接（多个用逗号分隔）
-  excludes: /system/notice/*
+  excludes: /system/notice/*,/lp/*
   # 匹配链接
-  urlPatterns: /system/*,/monitor/*,/tool/*
+  urlPatterns: /system/*,/monitor/*,/tool/*,/lp/*
 
 # Swagger配置
 swagger:
   # 是否开启swagger
   enabled: true
+
