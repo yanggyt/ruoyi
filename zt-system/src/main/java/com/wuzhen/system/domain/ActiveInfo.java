@@ -56,10 +56,32 @@ public class ActiveInfo extends BaseEntity {
     @Excel(name = "活动类型")
     private String activeType;
 
+
+    public String getLpFilesName() {
+        return lpFilesName;
+    }
+
+    public void setLpFilesName(String lpFilesName) {
+        this.lpFilesName = lpFilesName;
+    }
+
     /**
-     * 活动图片
+     * 活动列表
      */
-    private MultipartFile[] activePic;
+    private String lpFilesName;
+
+    public String getFpFilesName() {
+        return fpFilesName;
+    }
+
+    public void setFpFilesName(String fpFilesName) {
+        this.fpFilesName = fpFilesName;
+    }
+
+    /**
+     * 首页列表
+     */
+    private String fpFilesName;
 
 
 
@@ -202,13 +224,13 @@ public class ActiveInfo extends BaseEntity {
         this.activeType = activeType;
     }
 
-    public MultipartFile[] getActivePic() {
-        return activePic;
-    }
-
-    public void setActivePic(MultipartFile[] activePic) {
-        this.activePic = activePic;
-    }
+//    public MultipartFile[] getActivePic() {
+//        return activePic;
+//    }
+//
+//    public void setActivePic(MultipartFile[] activePic) {
+//        this.activePic = activePic;
+//    }
 
     public String getStatus() {
         return status;
@@ -247,11 +269,13 @@ public class ActiveInfo extends BaseEntity {
                 .append("activeStartDate", getActiveStartDate())
                 .append("activeEndDate", getActiveEndDate())
                 .append("activeType", getActiveType())
-                .append("activePic", getActivePic())
                 .append("createBy", getCreateBy())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())
                 .append("updateTime", getUpdateTime())
+                .append("fpFilesName", getFpFilesName())
+                .append("lpFilesName", getLpFilesName())
+
                 .append("remark", getRemark())
                 .append("address", getAddress())
                 .toString();

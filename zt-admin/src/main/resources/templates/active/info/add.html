@@ -4,10 +4,13 @@
     <th:block th:include="include :: header('新增活动')"/>
     <th:block th:include="include :: datetimepicker-css"/>
     <!--	<th:block th:include="include :: ztree-css" />-->
+
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
 </head>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-role-add" enctype="multipart/form-data">
+        <input id="lpFilesName" name="lpFilesName" type="hidden"/>
         <div class="form-group">
             <label class="col-sm-3 control-label is-required">活动标题：</label>
             <div class="col-sm-8">
@@ -38,25 +41,13 @@
             </div>
         </div>
 
+
         <div class="form-group">
             <label class="col-sm-3 control-label is-required">活动图片：</label>
+
             <div class="col-sm-8">
-                <!--					<label for="uploadFile">或者 上传本地文件</label>-->
-                <input type="file" class="form-control-file" id="activePic" name="activePic" multiple>
-
-                <p id="url"><img src="" width=200></p>
-                <input type="button" id="button" value="上传">
-                <input type="button" id="t_button" value="取消上传">
-                <!--					<input class="form-control" type="text" name="activePic" id="activePic" required>-->
-            </div>
-
-            <div class="form-group form-inline" style="width:100%;padding-left: 60px;">
-                <div class="col-sm-8">
-                    <img id="showUserImg0"  width="30%" height="30%" />
-                    <img id="showUserImg1"  width="30%" height="30%" />
-                    <img id="showUserImg2"  width="30%" height="30%" />
-                    <img id="showUserImg3"  width="30%" height="30%" />
-                    <img id="showUserImg4"  width="30%" height="30%" />
+                <div class="file-loading">
+                    <input id="multipleFile" name="files" type="file" multiple>
                 </div>
             </div>
 
@@ -111,6 +102,7 @@
 <th:block th:include="include :: datetimepicker-js"/>
 <script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
 <th:block th:include="include :: datetimepicker-js"/>
+<th:block th:include="include :: bootstrap-fileinput-js"/>
 <script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
 <!--	<th:block th:include="include :: ztree-js" />-->
 <script type="text/javascript">
@@ -118,127 +110,111 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <script type="text/javascript">
 
-		function submitHandler() {
-	        add();
-	    }
-	
-		function add() {
+    function submitHandler() {
+        add();
+    }
 
-<!--			var activeTitle = $("input[name='activeTitle']").val();-->
-<!--			var activeDesc =$("textarea[name='activeDesc']").val();-->
-<!--			var activeType = $("select[name='activeType']").val();-->
-<!--			var activeStartDate = $("input[name='activeStartDate']").val();-->
-<!--			var activeEndDate = $("input[name='activeEndDate']").val();-->
-<!--			var status = $("input[id='status']").is(':checked') == true ? 0 : 1;-->
-<!--			var remark = $("input[name='remark']").val();-->
-			var activePic = $('#activePic')[0].files;
-			var formData = new FormData($("#form-role-add")[0])
-			formData.append('activePic', activePic);
-<!--			formData.append('activeDesc', activeDesc);-->
-<!--			formData.append('activeType', activeType);-->
-<!--			formData.append('activeStartDate', activeStartDate);-->
-<!--			formData.append('activeEndDate', activeEndDate);-->
-<!--			formData.append('status', status);-->
-<!--			formData.append('remark', remark);-->
-			$.ajax({
-				cache: false,
-        		contentType: false,
-        		processData: false,
-				type : "POST",
-				url : ctx + "active/info/add",
-				data : formData,
-				async : false,
-				error : function(request) {
-					$.modal.alertError("系统错误");
-				},
-				success : function(data) {
-					$.operate.successCallback(data);
-				}
-			});
-		}
+    function add() {
+        var formData = new FormData($("#form-role-add")[0])
+        $.ajax({
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: "POST",
+            url: ctx + "active/info/add",
+            data: formData,
+            async: false,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                $.operate.successCallback(data);
+            }
+        });
+    }
 
-      $(function () {
-            $("#button").click(function () {
-            var form = new FormData();
-            var files = document.getElementById("activePic").files;
-            if(files.length > 5) {
-                 alert("上传图片不能超过5张！");
-                 return 0;
-                     }
-
-             $.each(files, function (i, file) {
-                 form.append('myFile', file);   });
-
-           $.ajax({
-                url:  ctx + "active/info/upload",
-                data: form,
-                cache: false,
-                async: false,
-                type: "POST",
-                dataType: 'json',
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    if (data) {
-                        alert(data);
-                           var imgs = data.fileName;
-                             $.each(imgs, function (i, path) {
-
-                               var id = "#showUserImg"+i;
-                                 alert(id+path);
-                               $(id).attr("src", "/lp/"+path );
-                                     });
-
-
-<!--                        var pic="/lp/"+data.fileName;-->
-<!--                        alert(pic);-->
-<!--                        $("#url img").attr("src",pic);-->
-<!--                        $("#file1").val("/lp/"+data.fileName);-->
-                    } else {
-                        alert("失败");
-                    }
-                },
-                error: function (er) {
-                    alert(JSON.stringify(data));
+    $(function () {
+        // TODO: 上传
+        // 多图上传
+        $("#multipleFile").fileinput({
+            uploadUrl: ctx + 'common/uploadsLp',
+            uploadAsync: false
+        }).on('filebatchuploadsuccess', function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess', event, data, previewId, index);
+            var rsp = data.response;
+            var urls = rsp.newFileNames || '';
+            var value = $("#lpFilesName").val() || '';
+            var list = [];
+            if (value) {
+                var list = value.split(',');
+            }
+            list = list.concat(urls.split(','))
+            $("#lpFilesName").val(list.join(','));
+            var a = $("#lpFilesName").val();
+            alert(rsp.newFileNames);
+            alert(a);
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            console.log('fileuploaded', event, data, previewId, index);
+            var rsp = data.response;
+            var value = $("#lpFilesName").val() || '';
+            var list = [];
+            var res = [];
+            var r_val = rsp.newFileNames;
+            res.push(r_val);
+            var list = value.split(',');
+            list.forEach(function (item) {
+                if (item !== r_val) {
+                    res.push(item);
                 }
-           });
+            })
 
-           });
+            $("#lpFilesName").val(res.join(','));
+            var b = $("#lpFilesName").val();
+            alert(b);
 
+        }).on('fileremoved', function (event, id, index) {
 
-      });
+            alert('进入删除');
+            alert(id);
 
+            var value = $("#lpFilesName").val() || '';
+            var list = value.split(',');
+            var res = [];
+            list.forEach(function (item) {
+                if (item !== data) {
+                    res.push(item);
+                }
+            })
+            $("#lpFilesName").val(res.join(','));
+            var c = $("#lpFilesName").val();
+            alert(c);
+        }).on('filesuccessremove', function (event, data, previewId, index) {
 
+            alert('点击单个预览的删除按钮');
+            alert(data);
+            var value = $("#lpFilesName").val() || '';;
+            var list = value.split(',');
+            var res = [];
+            list.forEach(function (item) {
+                if (item !== data) {
+                    res.push(item);
+                }
+            })
+            $("#lpFilesName").val(res.join(','));
+        }).on('filecleared', function (event, data, msg) {
+            alert('全部删除');
+            alert(data);
+            $("#lpFilesName").val('');
+            var d = $("#lpFilesName").val();
+            alert(d);
+        })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    });
 
 </script>
+
 </body>
 </html>
