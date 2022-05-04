@@ -139,8 +139,11 @@
     $(function () {
         // TODO: 上传
         // 多图上传
+        var cacheImgs = {};
         $("#multipleFile").fileinput({
             uploadUrl: ctx + 'common/uploadsLp',
+            showUploadedThumbs: true,
+            showUpload: false,
             uploadAsync: false
         }).on('filebatchuploadsuccess', function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess', event, data, previewId, index);
@@ -157,7 +160,7 @@
             alert(rsp.newFileNames);
             alert(a);
         }).on('fileuploaded', function (event, data, previewId, index) {
-            console.log('fileuploaded', event, data, previewId, index);
+            cacheImgs[previewId] = data.response.newFileNames;
             var rsp = data.response;
             var value = $("#lpFilesName").val() || '';
             var list = [];
@@ -166,50 +169,33 @@
             res.push(r_val);
             var list = value.split(',');
             list.forEach(function (item) {
-                if (item !== r_val) {
+                if ((item !== r_val) && (item !=='') ) {
                     res.push(item);
                 }
             })
-
-            $("#lpFilesName").val(res.join(','));
-            var b = $("#lpFilesName").val();
-            alert(b);
-
-        }).on('fileremoved', function (event, id, index) {
-
-            alert('进入删除');
-            alert(id);
-
-            var value = $("#lpFilesName").val() || '';
-            var list = value.split(',');
-            var res = [];
-            list.forEach(function (item) {
-                if (item !== data) {
-                    res.push(item);
-                }
-            })
-            $("#lpFilesName").val(res.join(','));
-            var c = $("#lpFilesName").val();
-            alert(c);
+            console.log('end：', res);
+            $("#lpFilesName").val(res);
+              var c = $("#lpFilesName").val();
+             console.log('fileuploaded： c:', c);
         }).on('filesuccessremove', function (event, data, previewId, index) {
 
-            alert('点击单个预览的删除按钮');
-            alert(data);
+            var urls = cacheImgs[data];
+            delete cacheImgs[data];
             var value = $("#lpFilesName").val() || '';;
             var list = value.split(',');
             var res = [];
             list.forEach(function (item) {
-                if (item !== data) {
+                if ((item !== urls) && (item !=='')) {
                     res.push(item);
                 }
             })
-            $("#lpFilesName").val(res.join(','));
+            $("#lpFilesName").val(res);
+            var d = $("#lpFilesName").val();
+            console.log('filesuccessremove： d:', d);
         }).on('filecleared', function (event, data, msg) {
             alert('全部删除');
-            alert(data);
             $("#lpFilesName").val('');
             var d = $("#lpFilesName").val();
-            alert(d);
         })
 
     });

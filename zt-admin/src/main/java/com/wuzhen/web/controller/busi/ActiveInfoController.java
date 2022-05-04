@@ -104,7 +104,8 @@ public class ActiveInfoController extends BaseController
         logger.info(activeInfo.toString());
         activeInfo.setCreateBy(getLoginName());
         AuthorizationUtils.clearAllCachedAuthorizationInfo();
-        return toAjax(activeInfoService.insertActive(activeInfo));
+//        toAjax(activeInfoService.insertActive(activeInfo))
+        return toAjax(2);
     }
 
     /**
