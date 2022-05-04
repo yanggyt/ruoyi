@@ -73,6 +73,8 @@ public class ActiveInfo extends BaseEntity {
      */
     private String lpFilesName;
 
+    private String fpFilesName;
+
 
     public String getListLpNames() {
         return listLpNames;
@@ -84,6 +86,16 @@ public class ActiveInfo extends BaseEntity {
 
     private String listLpNames ;
 
+    public String getListFpNames() {
+        return listFpNames;
+    }
+
+    public void setListFpNames(String listFpNames) {
+        this.listFpNames = listFpNames;
+    }
+
+    private String listFpNames ;
+
 
     public String getFpFilesName() {
         return fpFilesName;
@@ -93,10 +105,7 @@ public class ActiveInfo extends BaseEntity {
         this.fpFilesName = fpFilesName;
     }
 
-    /**
-     * 首页列表
-     */
-    private String fpFilesName;
+
 
 
 

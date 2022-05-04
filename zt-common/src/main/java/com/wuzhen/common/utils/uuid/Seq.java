@@ -46,7 +46,7 @@ public class Seq
         {
             atomicInt = uploadSeq;
         }
-        return getId(atomicInt, 3);
+        return getId(atomicInt, 5);
     }
 
     /**

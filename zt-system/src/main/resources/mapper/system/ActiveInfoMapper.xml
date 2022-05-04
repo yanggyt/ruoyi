@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
     <sql id="selectActiveVo">
-		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address,r.is_enroll,lp_files_name
+		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address,r.is_enroll,lp_files_name,fp_files_name
 		from active_info r
 	</sql>
 	
@@ -95,6 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="remark != null">remark = #{remark},</if>
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
 			<if test="address != null and address != ''">address = #{address},</if>
+			<if test="lpFilesName != null ">lp_files_name = #{lpFilesName},</if>
 			<if test="isEnroll != null and isEnroll != ''">is_enroll = #{isEnroll},</if>
  			update_time = sysdate()
  		</set>
@@ -106,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update active_info
 		<set>
 			<if test="activeFirstPicUrl != null and activeFirstPicUrl != ''">active_frist_pic_url = #{activeFirstPicUrl},</if>
+			<if test="fpFilesName != null and fpFilesName != ''">fp_files_name = #{fpFilesName},</if>
 			<if test="isFristPage != null and isFristPage != ''">is_frist_page = #{isFristPage},</if>
 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
 			update_time = sysdate()

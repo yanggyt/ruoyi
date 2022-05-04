@@ -74,6 +74,9 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
 
 # MyBatis
 mybatis:
@@ -142,4 +145,5 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+
 

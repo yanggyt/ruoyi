@@ -7,6 +7,9 @@ import com.wuzhen.common.core.controller.BaseController;
 import com.wuzhen.common.core.domain.AjaxResult;
 import com.wuzhen.common.core.page.TableDataInfo;
 import com.wuzhen.common.enums.BusinessType;
+import com.wuzhen.common.utils.StringUtils;
+import com.wuzhen.common.utils.file.FileUploadUtils;
+import com.wuzhen.common.utils.file.FileUtils;
 import com.wuzhen.common.utils.poi.ExcelUtil;
 import com.wuzhen.framework.shiro.util.AuthorizationUtils;
 import com.wuzhen.system.domain.ActiveInfo;
@@ -106,8 +109,7 @@ public class ActiveInfoController extends BaseController
         logger.info(activeInfo.toString());
         activeInfo.setCreateBy(getLoginName());
         AuthorizationUtils.clearAllCachedAuthorizationInfo();
-//        toAjax(activeInfoService.insertActive(activeInfo))
-        return toAjax(2);
+        return toAjax(activeInfoService.insertActive(activeInfo));
     }
 
     /**
@@ -140,13 +142,17 @@ public class ActiveInfoController extends BaseController
     }
 
     /**
-     * 修改活动
+     * 修改首页
      */
     @RequiresPermissions("active:info:edit")
     @GetMapping("/first/{id}")
     public String first(@PathVariable("id") Long id, ModelMap mmap)
+
     {
-        mmap.put("active", activeInfoService.selectActiveById(id));
+        ActiveInfo activeInfo = activeInfoService.selectActiveById(id);
+
+        activeInfo.setListFpNames("http://localhost:18000/profile/upload/fp/"+activeInfo.getFpFilesName());
+        mmap.put("active", activeInfo);
         return prefix + "/first";
     }
 
@@ -160,29 +166,30 @@ public class ActiveInfoController extends BaseController
     @ResponseBody
     public AjaxResult firstSave(@Validated ActiveInfo activeInfo)
     {
-        MultipartFile file = activeInfo.getActiveFirstPic();
-        // 获取上传文件名
-        String filename = file.getOriginalFilename();
-        if (!"".equals(filename)){
-
-            // 定义上传文件保存路径
-            String path = RuoYiConfig.getFPUploadPath();
-            // 新建文件
-            File filepath = new File(path, filename);
-            // 判断路径是否存在，如果不存在就创建一个
-            if (!filepath.getParentFile().exists()) {
-                filepath.getParentFile().mkdirs();
-            }
-            String picUrl = path + File.separator + filename;
-            try {
-                // 写入文件
-                file.transferTo(new File(picUrl));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            activeInfo.setActiveFirstPicUrl(fp+filename);
-            activeInfo.setIsFristPage("1");
-        }
+//        MultipartFile file = activeInfo.getActiveFirstPic();
+//        // 获取上传文件名
+//        String filename = file.getOriginalFilename();
+//        if (!"".equals(filename)){
+//
+//            // 定义上传文件保存路径
+//            String path = RuoYiConfig.getFPUploadPath();
+//            // 新建文件
+//            File filepath = new File(path, filename);
+//            // 判断路径是否存在，如果不存在就创建一个
+//            if (!filepath.getParentFile().exists()) {
+//                filepath.getParentFile().mkdirs();
+//            }
+//            String picUrl = path + File.separator + filename;
+//            try {
+//                // 写入文件
+//                file.transferTo(new File(picUrl));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            activeInfo.setActiveFirstPicUrl(fp+filename);
+//            activeInfo.setIsFristPage("1");
+//        }
+        activeInfo.setIsFristPage("1");
         activeInfo.setUpdateBy(getLoginName());
         AuthorizationUtils.clearAllCachedAuthorizationInfo();
         return toAjax(activeInfoService.saveFistPage(activeInfo));
@@ -229,7 +236,6 @@ public class ActiveInfoController extends BaseController
     {
         return toAjax(activeInfoService.updateActive(activeInfo));
     }
-
 
 
 

@@ -166,13 +166,13 @@
             var list = [];
             var res = [];
             var r_val = rsp.newFileNames;
-            res.push(r_val);
             var list = value.split(',');
             list.forEach(function (item) {
                 if ((item !== r_val) && (item !=='') ) {
                     res.push(item);
                 }
             })
+            res.push(r_val);
             console.log('end：', res);
             $("#lpFilesName").val(res);
               var c = $("#lpFilesName").val();

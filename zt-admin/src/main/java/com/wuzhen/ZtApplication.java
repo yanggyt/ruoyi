@@ -4,8 +4,12 @@ import com.wuzhen.common.config.RuoYiConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.util.UrlPathHelper;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * 启动程序
@@ -43,5 +47,14 @@ public class ZtApplication  implements WebMvcConfigurer
         System.out.println( RuoYiConfig.getLPUploadPath()+"/");
 //        registry.addResourceHandler("/**").addResourceLocations("file:" + RuoYiConfig.getProfile());
     }
+
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        UrlPathHelper urlPathHelper=new UrlPathHelper();
+        urlPathHelper.setUrlDecode(false);
+        urlPathHelper.setDefaultEncoding(StandardCharsets.UTF_8.name());
+        configurer.setUrlPathHelper(urlPathHelper);
+    }
+
 
 }
