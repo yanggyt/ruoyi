@@ -4,11 +4,14 @@
 	<th:block th:include="include :: header('修改活动信息')" />
 	<th:block th:include="include :: ztree-css" />
 	<th:block th:include="include :: datetimepicker-css" />
+	<th:block th:include="include :: bootstrap-fileinput-css"/>
 </head>
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-role-edit" th:object="${active}">
 			<input id="roleId" name="id" type="hidden" th:field="*{id}"/>
+			<input id="lpFilesName" name="lpFilesName" type="hidden"/>
+			<input id="listLpNames" name="listLpNames" type="hidden" th:field="*{listLpNames}"/>
 			<div class="form-group">
 				<label class="col-sm-3 control-label is-required">活动标题：</label>
 				<div class="col-sm-8">
@@ -66,9 +69,13 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label is-required">活动图片：</label>
+
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="activePicUrl" id="activePicUrl" th:field="*{activePicUrl}" disabled required>
+					<div class="file-loading">
+						<input id="multipleFile" name="files" type="file" multiple>
+					</div>
 				</div>
+
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label is-required">活动状态：</label>
@@ -100,6 +107,7 @@
 	<th:block th:include="include :: datetimepicker-js" />
 	<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
 	<th:block th:include="include :: datetimepicker-js" />
+	<th:block th:include="include :: bootstrap-fileinput-js"/>
 	<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
 	<script type="text/javascript">
        $(document).ready(function(){setup_draggable();$("#n-columns").on("change",function(){var v=$(this).val();if(v==="1"){var $col=$(".form-body .col-md-12").toggle(true);$(".form-body .col-md-6 .draggable").each(function(i,el){$(this).remove().appendTo($col)});$(".form-body .col-md-6").toggle(false)}else{var $col=$(".form-body .col-md-6").toggle(true);$(".form-body .col-md-12 .draggable").each(function(i,el){$(this).remove().appendTo(i%2?$col[1]:$col[0])});$(".form-body .col-md-12").toggle(false)}});$("#copy-to-clipboard").on("click",function(){var $copy=$(".form-body").clone().appendTo(document.body);$copy.find(".tools, :hidden").remove();$.each(["draggable","droppable","sortable","dropped","ui-sortable","ui-draggable","ui-droppable","form-body"],function(i,c){$copy.find("."+c).removeClass(c).removeAttr("style")});var html=html_beautify($copy.html());$copy.remove();$modal=get_modal(html).modal("show");$modal.find(".btn").remove();$modal.find(".modal-title").html("复制HTML代码");$modal.find(":input:first").select().focus();return false})});var setup_draggable=function(){$(".draggable").draggable({appendTo:"body",helper:"clone"});$(".droppable").droppable({accept:".draggable",helper:"clone",hoverClass:"droppable-active",drop:function(event,ui){$(".empty-form").remove();var $orig=$(ui.draggable);if(!$(ui.draggable).hasClass("dropped")){var $el=$orig.clone().addClass("dropped").css({"position":"static","left":null,"right":null}).appendTo(this);if($el.find("label").hasClass("radio-box")){$el=$el.html('<label class="col-sm-3 control-label">单选框：</label>'+'<div class="col-sm-9">'+'<label class="radio-box"><input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">选项1</label>'+'<label class="radio-box"><input type="radio" value="option2" id="optionsRadios2" name="optionsRadios">选项2</label>'+"</div>")}else{if($el.find("label").hasClass("check-box")){$el=$el.html('<label class="col-sm-3 control-label">复选框：</label>'+'<div class="col-sm-9">'+'<label class="check-box">'+'<input type="checkbox" value="option1" id="inlineCheckbox1">选项1</label>'+'<label class="check-box">'+'<input type="checkbox" value="option2" id="inlineCheckbox2">选项2</label>'+'<label class="check-box">'+'<input type="checkbox" value="option3" id="inlineCheckbox3">选项3</label>'+"</div>")}}var id=$orig.find(":input").attr("id");if(id){id=id.split("-").slice(0,-1).join("-")+"-"+(parseInt(id.split("-").slice(-1)[0])+1);$orig.find(":input").attr("id",id);$orig.find("label").attr("for",id)}$('<p class="tools col-sm-12 col-sm-offset-3">						<a class="edit-link">编辑HTML<a> | 						<a class="remove-link">移除</a></p>').appendTo($el)}else{if($(this)[0]!=$orig.parent()[0]){var $el=$orig.clone().css({"position":"static","left":null,"right":null}).appendTo(this);$orig.remove()}}}}).sortable()};var get_modal=function(content){var modal=$('<div class="modal" style="overflow: auto;" tabindex="-1">	<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><a type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</a><h4 class="modal-title">编辑HTML</h4></div><div class="modal-body ui-front">	<textarea class="form-control textarea-show-src"  style="min-height: 200px; margin-bottom: 10px;font-family: Monaco, Fixed"></textarea><button class="btn btn-success">更新HTML</button></div></div></div></div>').appendTo(document.body);var doms=document.getElementsByClassName("textarea-show-src");for(var i=0;i<doms.length;i++){doms.item(i).innerHTML=content}return modal};$(document).on("click",".edit-link",function(ev){var $el=$(this).parent().parent();var $el_copy=$el.clone();var $edit_btn=$el_copy.find(".edit-link").parent().remove();var $modal=get_modal(html_beautify($el_copy.html())).modal("show");$modal.find(":input:first").focus();$modal.find(".btn-success").click(function(ev2){var html=$modal.find("textarea").val();if(!html){$el.remove()}else{$el.html(html);$edit_btn.appendTo($el)}$modal.modal("hide");return false})});$(document).on("click",".remove-link",function(ev){$(this).parent().parent().remove()});$(".input-group.date").datetimepicker({format:"yyyy-mm-dd",minView:"month",autoclose:true});
@@ -147,6 +155,118 @@
 		function submitHandler() {
 	        edit();
 	    }
+
+        function initIdCardFile() {
+        //测试图片回显
+        var initialList = $("input[name='listLpNames']").val();
+        console.log('initialList', initialList);
+
+            var initialList =[{"filename":"2_20220503230709A001.png","filepath":" http://localhost:18000/profile/upload/lp/2_20220503230709A001.png","id":0},{"filename":"3_20220503230709A002.png","filepath":" http://localhost:18000/profile/upload/lp/3_20220503230709A002.png","id":1}]
+<!--        var initialList = [{ "id": 123, "filename": "001.jpg", "filepath": "http://demo.ruoyi.vip/img/profile.jpg", "newfilename": "fdsa" },-->
+<!--        { "id": 124, "filename": "002.jpg", "filepath": "http://demo.ruoyi.vip/img/profile.jpg", "newfilename": "te12" }];-->
+        var previewJson = new Array();//回显文件数组
+        var initPreviewConfig = new Array();
+        if (initialList != null) {
+            for (var i = 0; i < initialList.length; i++) {
+                previewJson[i] = initialList[i].filepath;
+                //组装图片配置
+                var tjson = {
+                    type: getFileTypeFromUrl(initialList[i].filepath),
+                    caption: initialList[i].filename, // 展示的文件名
+                    url: 'idcardremove', // 删除url 必填，可以写一个空方法，不然无法删除初始化图片
+                    key: initialList[i].id, // 删除时Ajax向后台传递的参数
+                    /*  extra: function() {
+                         return {"id":id};
+                     } */ //这里也可以携带格外的参数
+                };
+                initPreviewConfig[i] = tjson;
+            }
+        }
+        // 多图上传
+        $("#multipleFile").fileinput({
+            uploadUrl: ctx + 'common/uploadsLp',//上传路径
+            fileActionSettings: {
+                uploadClass: 'hideBtn'
+            },
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            initialPreview: previewJson,
+            initialPreviewConfig: initPreviewConfig,
+            // uploadAsync:false, 需要使用异步
+            layoutTemplates: {
+                actionUpload: '',//去除上传预览缩略图中的上传图片
+            },
+            showPreview: true,//是否显示预览
+            showUpload: false,//不显示底部上传按钮
+            showRemove: false,//不显示底部清空按钮
+            showCaption: true,//显示底部上传按钮左侧文本(完全是为了美观)
+        }).on('filebatchuploadsuccess', function (event, data, previewId, index) {
+            var rsp = data.response;
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            var resultObj = data.response;
+            console.log(resultObj);
+            if (resultObj != null && resultObj.code == 0) {
+                $("#" + previewId).append("<span class='hidden_img hidden_img_upload' hidden >" + resultObj.fileNames + "</span>");
+                $.modal.msgSuccess("上传成功");
+            } else {
+                $.modal.msgError("上传失败");
+            }
+        }).on('filebatchselected', function (event, files) {
+            $(this).fileinput("upload");//这里会根据uploadAsync值自动去执行对应的回调函
+        }).on('filebatchuploaderror', function (event, data, msg) {
+            //批量上传失败提示
+            var _maxRequestSize = 10240;
+            _allFileSize = 0;
+            if (_allFileSize > _maxRequestSize) {
+                msg = "上传文件总大小（" + (_allFileSize / 1024).toFixed(2) + "MB）超出限制（" + (_maxRequestSize / 1024).toFixed(2) + "MB）";
+                $('#input-id').fileinput('clear');
+                $.modal.msgWarning(msg);
+            }
+        }).on('fileclear', function (event, previewId, extra) {
+            //拒绝移除  如果给移除上传控件所有内容的功能，则系统会重新初始化回显的文件，那么我的 initInputFileImg()函数完全不起作用了，所以，禁用它
+            return false;
+        }).on('fileerror', function (event, data, msg) {
+            console.log("--------------------fileerror--------------------");
+            console.log(data);
+            console.log(msg);
+            $.modal.msgError("上传失败");
+        }).on('filepreremove', function (event, key) {
+            $.modal.msgSuccess("移除成功-1");
+        }).on('filebeforedelete', function (event, key) {
+            $.modal.msgSuccess("移除成功-2");
+        }).on('filesuccessremove', function (event, data, previewId, index) {
+          $.modal.msgSuccess("移除成功-3");
+        });
+
+    }
+
+
+   $(document).ready(function () {
+        initIdCardFile(); //调用上面的初始化方法
+        initInputFileImg();
+
+    });
+    function getFileTypeFromUrl(url) {
+     console.log('getFileTypeFromUrl', url);
+        if (url.endsWith('gif') || url.endsWith('jpg') || url.endsWith('jpeg') || url.endsWith('png')) {
+            return 'image';
+        }
+        if (url.endsWith('mp4')) {
+            return 'video';
+        }
+    }
+
+    //回显文件 对应的div里追加 hidden_img
+    function initInputFileImg(){
+        $(".file-sortable").each(function(){
+            var tempFileName = $(this).find('.kv-file-content').find('.file-preview-image').attr("src");
+            $(this).find('.kv-file-content').eq(0).parent().append("<span class='hidden_img hidden_img_init' hidden >"+tempFileName+"</span>");
+        })
+    }
+
+
 	</script>
+
+
 </body>
 </html>

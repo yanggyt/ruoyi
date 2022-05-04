@@ -8,6 +8,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * 活动信息 active_info
  *
@@ -69,6 +72,18 @@ public class ActiveInfo extends BaseEntity {
      * 活动列表
      */
     private String lpFilesName;
+
+
+    public String getListLpNames() {
+        return listLpNames;
+    }
+
+    public void setListLpNames(String listLpNames) {
+        this.listLpNames = listLpNames;
+    }
+
+    private String listLpNames ;
+
 
     public String getFpFilesName() {
         return fpFilesName;

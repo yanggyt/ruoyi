@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -116,7 +118,24 @@ public class ActiveInfoController extends BaseController
     public String edit(@PathVariable("id") Long id, ModelMap mmap)
     {
 //        roleService.checkRoleDataScope(roleId);
-        mmap.put("active", activeInfoService.selectActiveById(id));
+        ActiveInfo activeInfo =   activeInfoService.selectActiveById(id);
+        String fileNames = activeInfo.getLpFilesName();
+        String[] fileNamesArray = null;
+        List list =new ArrayList();
+        if (fileNames !=null && !"".equals(fileNames)){
+            fileNamesArray =  fileNames.split(",");
+            for (int i = 0; i < fileNamesArray.length; i++) {
+                HashMap map = new HashMap();
+                map.put("id",i);
+                map.put("filename",fileNamesArray[i]);
+                map.put("filepath","http://localhost:18000/profile/upload/lp/"+fileNamesArray[i]);
+                list.add(map);
+            }
+        }
+
+        String json = JSONObject.toJSONString(list);
+        activeInfo.setListLpNames(json);
+        mmap.put("active", activeInfo);
         return prefix + "/edit";
     }
 

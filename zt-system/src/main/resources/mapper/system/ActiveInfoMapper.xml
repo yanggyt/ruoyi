@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
     <sql id="selectActiveVo">
-		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address,r.is_enroll
+		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address,r.is_enroll,lp_files_name
 		from active_info r
 	</sql>
 	
