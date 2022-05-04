@@ -158,15 +158,11 @@
 
         function initIdCardFile() {
         //测试图片回显
-        var initialList = $("input[name='listLpNames']").val();
-        console.log('initialList', initialList);
-
-            var initialList =[{"filename":"2_20220503230709A001.png","filepath":" http://localhost:18000/profile/upload/lp/2_20220503230709A001.png","id":0},{"filename":"3_20220503230709A002.png","filepath":" http://localhost:18000/profile/upload/lp/3_20220503230709A002.png","id":1}]
-<!--        var initialList = [{ "id": 123, "filename": "001.jpg", "filepath": "http://demo.ruoyi.vip/img/profile.jpg", "newfilename": "fdsa" },-->
-<!--        { "id": 124, "filename": "002.jpg", "filepath": "http://demo.ruoyi.vip/img/profile.jpg", "newfilename": "te12" }];-->
+        var a = $("input[name='listLpNames']").val();
+        var initialList =  eval("("+a+")");
         var previewJson = new Array();//回显文件数组
         var initPreviewConfig = new Array();
-        if (initialList != null) {
+        if (initialList != null && initialList.length) {
             for (var i = 0; i < initialList.length; i++) {
                 previewJson[i] = initialList[i].filepath;
                 //组装图片配置
