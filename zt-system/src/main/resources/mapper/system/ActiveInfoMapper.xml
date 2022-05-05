@@ -54,6 +54,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
+
+		order by r.create_time desc
 	</select>
 
 
