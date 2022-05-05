@@ -139,7 +139,9 @@ public class ActiveInfoController extends BaseController
         }
         String json = JSONObject.toJSONString(list);
         activeInfo.setListLpNames(json);
-        activeInfo.setListLsNames("http://"+this.getAdress()+":18000/profile/upload/ls/"+activeInfo.getLsFilesName());
+        if(activeInfo.getLsFilesName()!=null && !"".equals(activeInfo.getLsFilesName())){
+            activeInfo.setListLsNames("http://"+this.getAdress()+":18000/profile/upload/ls/"+activeInfo.getLsFilesName());
+        }
         mmap.put("active", activeInfo);
         return prefix + "/edit";
     }
@@ -153,8 +155,9 @@ public class ActiveInfoController extends BaseController
 
     {
         ActiveInfo activeInfo = activeInfoService.selectActiveById(id);
-
-        activeInfo.setListFpNames("http://"+this.getAdress()+":18000/profile/upload/fp/"+activeInfo.getFpFilesName());
+        if(activeInfo.getFpFilesName()!=null && !"".equals(activeInfo.getFpFilesName())){
+            activeInfo.setListFpNames("http://"+this.getAdress()+":18000/profile/upload/fp/"+activeInfo.getFpFilesName());
+        }
         mmap.put("active", activeInfo);
         return prefix + "/first";
     }
