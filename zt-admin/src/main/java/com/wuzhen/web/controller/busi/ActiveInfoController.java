@@ -2,14 +2,10 @@ package com.wuzhen.web.controller.busi;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wuzhen.common.annotation.Log;
-import com.wuzhen.common.config.RuoYiConfig;
 import com.wuzhen.common.core.controller.BaseController;
 import com.wuzhen.common.core.domain.AjaxResult;
 import com.wuzhen.common.core.page.TableDataInfo;
 import com.wuzhen.common.enums.BusinessType;
-import com.wuzhen.common.utils.StringUtils;
-import com.wuzhen.common.utils.file.FileUploadUtils;
-import com.wuzhen.common.utils.file.FileUtils;
 import com.wuzhen.common.utils.poi.ExcelUtil;
 import com.wuzhen.framework.shiro.util.AuthorizationUtils;
 import com.wuzhen.system.domain.ActiveInfo;
@@ -23,9 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +47,17 @@ public class ActiveInfoController extends BaseController
     private String fp ;
     @Value("${wuzhen.lp}")
     private String lp ;
+
+    static String ipaddr ;
+
+    static {
+        try {
+            InetAddress addr = InetAddress.getLocalHost();
+            ipaddr = addr.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -130,13 +137,13 @@ public class ActiveInfoController extends BaseController
                 HashMap map = new HashMap();
                 map.put("id",i);
                 map.put("filename",fileNamesArray[i]);
-                map.put("filepath","http://localhost:18000/profile/upload/lp/"+fileNamesArray[i]);
+                map.put("filepath","http://"+ipaddr+":18000/profile/upload/lp/"+fileNamesArray[i]);
                 list.add(map);
             }
         }
         String json = JSONObject.toJSONString(list);
         activeInfo.setListLpNames(json);
-        activeInfo.setListLsNames("http://localhost:18000/profile/upload/ls/"+activeInfo.getLsFilesName());
+        activeInfo.setListLsNames("http://"+ipaddr+":18000/profile/upload/ls/"+activeInfo.getLsFilesName());
         mmap.put("active", activeInfo);
         return prefix + "/edit";
     }
@@ -151,7 +158,7 @@ public class ActiveInfoController extends BaseController
     {
         ActiveInfo activeInfo = activeInfoService.selectActiveById(id);
 
-        activeInfo.setListFpNames("http://localhost:18000/profile/upload/fp/"+activeInfo.getFpFilesName());
+        activeInfo.setListFpNames("http://"+ipaddr+":18000/profile/upload/fp/"+activeInfo.getFpFilesName());
         mmap.put("active", activeInfo);
         return prefix + "/first";
     }
