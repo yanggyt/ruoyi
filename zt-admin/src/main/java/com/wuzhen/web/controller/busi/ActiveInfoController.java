@@ -134,9 +134,9 @@ public class ActiveInfoController extends BaseController
                 list.add(map);
             }
         }
-
         String json = JSONObject.toJSONString(list);
         activeInfo.setListLpNames(json);
+        activeInfo.setListLsNames("http://localhost:18000/profile/upload/ls/"+activeInfo.getLsFilesName());
         mmap.put("active", activeInfo);
         return prefix + "/edit";
     }

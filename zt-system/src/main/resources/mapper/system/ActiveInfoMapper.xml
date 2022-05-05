@@ -25,11 +25,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="address"       column="address"         />
 		<result property="lpFilesName"       column="lp_files_name"         />
 		<result property="fpFilesName"       column="fp_files_name"         />
+		<result property="lsFilesName"       column="ls_files_name"         />
 		<result property="isEnroll"       column="is_enroll"         />
 	</resultMap>
 
     <sql id="selectActiveVo">
-		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address,r.is_enroll,lp_files_name,fp_files_name
+		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address,r.is_enroll,lp_files_name,ls_files_name,fp_files_name
 		from active_info r
 	</sql>
 	
@@ -96,6 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
 			<if test="address != null and address != ''">address = #{address},</if>
 			<if test="lpFilesName != null ">lp_files_name = #{lpFilesName},</if>
+			<if test="lsFilesName != null ">ls_files_name = #{lsFilesName},</if>
 			<if test="isEnroll != null and isEnroll != ''">is_enroll = #{isEnroll},</if>
  			update_time = sysdate()
  		</set>
@@ -128,6 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="createBy != null and createBy != ''">create_by,</if>
 		    <if test="address != null and address != ''">address,</if>
 		    <if test="lpFilesName != null and lpFilesName != ''">lp_files_name,</if>
+		    <if test="lsFilesName != null and lsFilesName != ''">ls_files_name,</if>
 		    <if test="fpFilesName != null and fpFilesName != ''">fp_files_name,</if>
 		    <if test="isEnroll != null and isEnroll != ''">is_enroll,</if>
  			create_time
@@ -143,6 +146,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
 		    <if test="address != null and address != ''">#{address},</if>
 		    <if test="lpFilesName != null and lpFilesName != ''">#{lpFilesName},</if>
+		    <if test="lsFilesName != null and lsFilesName != ''">#{lsFilesName},</if>
 		    <if test="fpFilesName != null and fpFilesName != ''">#{fpFilesName},</if>
 		    <if test="isEnroll != null and isEnroll != ''">#{isEnroll},</if>
  			sysdate()

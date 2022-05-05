@@ -75,6 +75,17 @@ public class ActiveInfo extends BaseEntity {
 
     private String fpFilesName;
 
+    private String lsFilesName;
+
+
+    public String getLsFilesName() {
+        return lsFilesName;
+    }
+
+    public void setLsFilesName(String lsFilesName) {
+        this.lsFilesName = lsFilesName;
+    }
+
 
     public String getListLpNames() {
         return listLpNames;
@@ -105,7 +116,15 @@ public class ActiveInfo extends BaseEntity {
         this.fpFilesName = fpFilesName;
     }
 
+    private String listLsNames ;
 
+    public String getListLsNames() {
+        return listLsNames;
+    }
+
+    public void setListLsNames(String listLsNames) {
+        this.listLsNames = listLsNames;
+    }
 
 
 
@@ -120,7 +139,6 @@ public class ActiveInfo extends BaseEntity {
      * 活动图片
      */
     private MultipartFile activeFirstPic;
-
 
 
     /**
@@ -299,7 +317,7 @@ public class ActiveInfo extends BaseEntity {
                 .append("updateTime", getUpdateTime())
                 .append("fpFilesName", getFpFilesName())
                 .append("lpFilesName", getLpFilesName())
-
+                .append("lsFilesName", getLsFilesName())
                 .append("remark", getRemark())
                 .append("address", getAddress())
                 .toString();

@@ -144,6 +144,15 @@ public class RuoYiConfig
     /**
      * 获取列表上传路径
      */
+    public static String getLSUploadPath()
+    {
+        return getProfile() + "/upload/ls";
+    }
+
+
+    /**
+     * 获取列表上传路径
+     */
     public static String getLPUploadPath()
     {
         return getProfile() + "/upload/lp";
