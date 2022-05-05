@@ -48,16 +48,12 @@ public class ActiveInfoController extends BaseController
     @Value("${wuzhen.lp}")
     private String lp ;
 
-    static String ipaddr ;
+    @Value("${spring.profiles.active}")
+    private String active ;
 
-    static {
-        try {
-            InetAddress addr = InetAddress.getLocalHost();
-            ipaddr = addr.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
+
+
+
 
 
 
@@ -137,13 +133,13 @@ public class ActiveInfoController extends BaseController
                 HashMap map = new HashMap();
                 map.put("id",i);
                 map.put("filename",fileNamesArray[i]);
-                map.put("filepath","http://"+ipaddr+":18000/profile/upload/lp/"+fileNamesArray[i]);
+                map.put("filepath","http://"+this.getAdress()+":18000/profile/upload/lp/"+fileNamesArray[i]);
                 list.add(map);
             }
         }
         String json = JSONObject.toJSONString(list);
         activeInfo.setListLpNames(json);
-        activeInfo.setListLsNames("http://"+ipaddr+":18000/profile/upload/ls/"+activeInfo.getLsFilesName());
+        activeInfo.setListLsNames("http://"+this.getAdress()+":18000/profile/upload/ls/"+activeInfo.getLsFilesName());
         mmap.put("active", activeInfo);
         return prefix + "/edit";
     }
@@ -158,7 +154,7 @@ public class ActiveInfoController extends BaseController
     {
         ActiveInfo activeInfo = activeInfoService.selectActiveById(id);
 
-        activeInfo.setListFpNames("http://"+ipaddr+":18000/profile/upload/fp/"+activeInfo.getFpFilesName());
+        activeInfo.setListFpNames("http://"+this.getAdress()+":18000/profile/upload/fp/"+activeInfo.getFpFilesName());
         mmap.put("active", activeInfo);
         return prefix + "/first";
     }
@@ -245,5 +241,15 @@ public class ActiveInfoController extends BaseController
     }
 
 
+
+    private String getAdress(){
+        String ipaddr ="";
+        if (active.equals("druid")){
+            ipaddr = "localhost";
+        }else if(active.equals("prd")){
+            ipaddr="47.94.96.229";
+        }
+      return ipaddr;
+    }
 
 }
