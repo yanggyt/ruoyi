@@ -10,6 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="activeDesc"      column="active_desc"       />
 		<result property="activeStartDate"     column="active_start_date"      />
 		<result property="activeEndDate"    column="active_end_date"     />
+		<result property="enrollStartDate"     column="enroll_start_date"      />
+		<result property="enrollEndDate"    column="enroll_end_date"     />
 		<result property="activeType"    column="active_type"     />
 		<result property="activePicUrl"    column="active_pic_url"     />
 		<result property="activeFirstPicUrl"    column="active_frist_pic_url"     />
@@ -30,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
     <sql id="selectActiveVo">
-		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address,r.is_enroll,lp_files_name,ls_files_name,fp_files_name
+		select r.id, r.active_title, r.active_desc,r.active_start_date,r.active_end_date, r.enroll_start_date,r.enroll_end_date, r.active_pic_url, r.active_frist_pic_url,r.is_frist_page, r.active_type, r.status, r.del_flag, r.create_time, r.remark, r.address,r.is_enroll,lp_files_name,ls_files_name,fp_files_name
 		from active_info r
 	</sql>
 	
@@ -92,6 +94,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="activeDesc != null and activeDesc != ''">active_desc = #{activeDesc},</if>
  			<if test="activeStartDate != null and activeStartDate != ''">active_start_date = #{activeStartDate},</if>
 			<if test="activeEndDate != null and activeEndDate != ''">active_end_date = #{activeEndDate},</if>
+			<if test="enrollStartDate != null and enrollStartDate != ''">enroll_start_date = #{enrollStartDate},</if>
+			<if test="enrollEndDate != null and enrollEndDate != ''">enroll_end_date = #{enrollEndDate},</if>
  			<if test="status != null and status != ''">status = #{status},</if>
 			<if test="activePicUrl != null and activePicUrl != ''">active_pic_url = #{active_pic_url},</if>
 			<if test="activeType != null and activeType != ''">active_type = #{activeType},</if>
@@ -100,6 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="address != null and address != ''">address = #{address},</if>
 			<if test="lpFilesName != null ">lp_files_name = #{lpFilesName},</if>
 			<if test="lsFilesName != null ">ls_files_name = #{lsFilesName},</if>
+			<if test="fpFilesName != null ">fp_files_name = #{fpFilesName},</if>
 			<if test="isEnroll != null and isEnroll != ''">is_enroll = #{isEnroll},</if>
  			update_time = sysdate()
  		</set>
@@ -110,8 +115,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="saveFistPage" parameterType="ActiveInfo">
 		update active_info
 		<set>
-			<if test="activeFirstPicUrl != null and activeFirstPicUrl != ''">active_frist_pic_url = #{activeFirstPicUrl},</if>
-			<if test="fpFilesName != null and fpFilesName != ''">fp_files_name = #{fpFilesName},</if>
 			<if test="isFristPage != null and isFristPage != ''">is_frist_page = #{isFristPage},</if>
 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
 			update_time = sysdate()
@@ -125,6 +128,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="activeDesc != null and activeDesc != ''">active_desc,</if>
  			<if test="activeStartDate != null and activeStartDate != ''">active_start_date,</if>
  			<if test="activeEndDate != null and activeEndDate != ''">active_end_date,</if>
+		   <if test="enrollStartDate != null and enrollStartDate != ''">enroll_start_date,</if>
+		   <if test="enrollEndDate != null and enrollEndDate != ''">enroll_end_date,</if>
  			<if test="activeType != null and activeType != ''">active_type,</if>
 		    <if test="activePicUrl != null and activePicUrl != ''">active_pic_url,</if>
  			<if test="status != null and status != ''">status,</if>
@@ -141,6 +146,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="activeDesc != null and activeDesc != ''">#{activeDesc},</if>
  			<if test="activeStartDate != null and activeStartDate != ''">#{activeStartDate},</if>
  			<if test="activeEndDate != null and activeEndDate != ''">#{activeEndDate},</if>
+		    <if test="enrollStartDate != null and enrollStartDate != ''">#{enrollStartDate},</if>
+		    <if test="enrollEndDate != null and enrollEndDate != ''">#{enrollEndDate},</if>
  			<if test="activeType != null and activeType != ''">#{activeType},</if>
 			<if test="activePicUrl != null and activePicUrl != ''">#{activePicUrl},</if>
  			<if test="status != null and status != ''">#{status},</if>

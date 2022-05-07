@@ -39,6 +39,15 @@ public class ActiveInfo extends BaseEntity {
     @Excel(name = "活动内容描述")
     private String activeDesc;
 
+
+
+
+    /**
+     * 活动状态
+     */
+    private String actStatus;
+
+
     /**
      * 活动开始日期
      */
@@ -52,6 +61,38 @@ public class ActiveInfo extends BaseEntity {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "活动结束日期")
     private String activeEndDate;
+
+
+    /**
+     * 报名开始日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "报名开始日期")
+    private String enrollStartDate;
+
+    public String getEnrollStartDate() {
+        return enrollStartDate;
+    }
+
+    public void setEnrollStartDate(String enrollStartDate) {
+        this.enrollStartDate = enrollStartDate;
+    }
+
+    public String getEnrollEndDate() {
+        return enrollEndDate;
+    }
+
+    public void setEnrollEndDate(String enrollEndDate) {
+        this.enrollEndDate = enrollEndDate;
+    }
+
+    /**
+     * 报名结束日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "报名结束日期")
+    private String enrollEndDate;
+
 
     /**
      * 海报地址
@@ -266,6 +307,15 @@ public class ActiveInfo extends BaseEntity {
         this.activeType = activeType;
     }
 
+
+    public String getActStatus() {
+        return actStatus;
+    }
+
+    public void setActStatus(String actStatus) {
+        this.actStatus = actStatus;
+    }
+
 //    public MultipartFile[] getActivePic() {
 //        return activePic;
 //    }
@@ -301,26 +351,31 @@ public class ActiveInfo extends BaseEntity {
         this.isEnroll = isEnroll;
     }
 
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("activeTitle", getActiveTitle())
-                .append("activeDesc", getActiveDesc())
-                .append("activeStartDate", getActiveStartDate())
-                .append("activeEndDate", getActiveEndDate())
-                .append("activeType", getActiveType())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("fpFilesName", getFpFilesName())
-                .append("lpFilesName", getLpFilesName())
-                .append("lsFilesName", getLsFilesName())
-                .append("remark", getRemark())
-                .append("address", getAddress())
-                .toString();
+        return "ActiveInfo{" +
+                "id=" + id +
+                ", activeTitle='" + activeTitle + '\'' +
+                ", activeDesc='" + activeDesc + '\'' +
+                ", activeStartDate='" + activeStartDate + '\'' +
+                ", activeEndDate='" + activeEndDate + '\'' +
+                ", enrollStartDate='" + enrollStartDate + '\'' +
+                ", enrollEndDate='" + enrollEndDate + '\'' +
+                ", activeType='" + activeType + '\'' +
+                ", lpFilesName='" + lpFilesName + '\'' +
+                ", fpFilesName='" + fpFilesName + '\'' +
+                ", lsFilesName='" + lsFilesName + '\'' +
+                ", listLpNames='" + listLpNames + '\'' +
+                ", listFpNames='" + listFpNames + '\'' +
+                ", listLsNames='" + listLsNames + '\'' +
+                ", activePicUrl='" + activePicUrl + '\'' +
+                ", activeFirstPic=" + activeFirstPic +
+                ", activeFirstPicUrl='" + activeFirstPicUrl + '\'' +
+                ", address='" + address + '\'' +
+                ", isEnroll='" + isEnroll + '\'' +
+                ", isFristPage='" + isFristPage + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                '}';
     }
-
 }

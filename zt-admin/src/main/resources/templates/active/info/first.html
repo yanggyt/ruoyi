@@ -69,7 +69,12 @@
 
     $(document).ready(function () {
 
-        var a = $("input[name='listFpNames']").val();
+
+    });
+
+    function fpFilesName(){
+
+      var a = $("input[name='listFpNames']").val();
         var b= [];
         if (a.endsWith('null')){
            b= []
@@ -101,7 +106,9 @@
             $.modal.msgSuccess("移除成功-2");
 
         })
-    });
+
+    }
+
 
 	</script>
 </body>

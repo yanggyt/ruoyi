@@ -6,6 +6,7 @@ import com.wuzhen.common.core.controller.BaseController;
 import com.wuzhen.common.core.domain.AjaxResult;
 import com.wuzhen.common.core.page.TableDataInfo;
 import com.wuzhen.common.enums.BusinessType;
+import com.wuzhen.common.utils.StringUtils;
 import com.wuzhen.common.utils.poi.ExcelUtil;
 import com.wuzhen.framework.shiro.util.AuthorizationUtils;
 import com.wuzhen.system.domain.ActiveInfo;
@@ -20,11 +21,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 角色信息
@@ -54,10 +53,6 @@ public class ActiveInfoController extends BaseController
 
 
 
-
-
-
-
     @RequiresPermissions("active:info:view")
     @GetMapping()
     public String role()
@@ -71,11 +66,15 @@ public class ActiveInfoController extends BaseController
     public TableDataInfo list(ActiveInfo activeInfo)
     {
         startPage();
+
         List<ActiveInfo> list = activeInfoService.selectActiveList(activeInfo);
         list.forEach(item->{
             if (item!=null&&!"".equals(item.getActiveDesc())&&item.getActiveDesc().length()>6){
                 item.setActiveDesc(item.getActiveDesc().substring(0,6)+"...");
             }
+            String startdate = item.getActiveStartDate();
+            String enddate = item.getActiveEndDate();
+            item.setActStatus(this.judgeDate(startdate,enddate));
         });
         return getDataTable(list);
     }
@@ -142,6 +141,11 @@ public class ActiveInfoController extends BaseController
         if(activeInfo.getLsFilesName()!=null && !"".equals(activeInfo.getLsFilesName())){
             activeInfo.setListLsNames("http://"+this.getAdress()+":18000/profile/upload/ls/"+activeInfo.getLsFilesName());
         }
+
+        if(activeInfo.getFpFilesName()!=null && !"".equals(activeInfo.getFpFilesName())){
+            activeInfo.setListFpNames("http://"+this.getAdress()+":18000/profile/upload/fp/"+activeInfo.getFpFilesName());
+        }
+
         mmap.put("active", activeInfo);
         return prefix + "/edit";
     }
@@ -172,30 +176,6 @@ public class ActiveInfoController extends BaseController
     @ResponseBody
     public AjaxResult firstSave(@Validated ActiveInfo activeInfo)
     {
-//        MultipartFile file = activeInfo.getActiveFirstPic();
-//        // 获取上传文件名
-//        String filename = file.getOriginalFilename();
-//        if (!"".equals(filename)){
-//
-//            // 定义上传文件保存路径
-//            String path = RuoYiConfig.getFPUploadPath();
-//            // 新建文件
-//            File filepath = new File(path, filename);
-//            // 判断路径是否存在，如果不存在就创建一个
-//            if (!filepath.getParentFile().exists()) {
-//                filepath.getParentFile().mkdirs();
-//            }
-//            String picUrl = path + File.separator + filename;
-//            try {
-//                // 写入文件
-//                file.transferTo(new File(picUrl));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            activeInfo.setActiveFirstPicUrl(fp+filename);
-//            activeInfo.setIsFristPage("1");
-//        }
-        activeInfo.setIsFristPage("1");
         activeInfo.setUpdateBy(getLoginName());
         AuthorizationUtils.clearAllCachedAuthorizationInfo();
         return toAjax(activeInfoService.saveFistPage(activeInfo));
@@ -253,6 +233,51 @@ public class ActiveInfoController extends BaseController
             ipaddr="47.94.96.229";
         }
       return ipaddr;
+    }
+//	2022-05-04	2022-05-18
+    public static void main(String[] args) {
+        judgeDate("2022-05-04","2022-05-08");
+    }
+
+    private static String  judgeDate(String startdate,String enddate) {
+        String retStauts = "3";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        if (StringUtils.isNotEmpty(startdate) && StringUtils.isNotEmpty(enddate)) {
+            try {
+                Date dateStart = simpleDateFormat.parse(startdate);
+                Date dateEnd = simpleDateFormat.parse(enddate);
+                dateEnd = dateAddOne(dateEnd);
+                Date dateNow = new Date();
+
+                if (dateStart.after(dateNow)) {
+                    //未开始
+                    retStauts = "0";
+                } else if ((dateStart.before(dateNow) && dateEnd.after(dateNow)) || (dateStart.equals(dateNow)) || (dateEnd.equals(dateNow))) {
+                   //进行中
+                    retStauts = "1";
+                } else if (dateNow.after(dateEnd)) {
+                    //已结束
+                    retStauts = "2";
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+
+            }
+        }
+        return retStauts;
+    }
+
+
+    /*日期加+1天*/
+    public static Date dateAddOne(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        //把日期往后增加一天,整数  往后推,负数往前移动
+        calendar.add(calendar.DATE,1);
+        //这个时间就是日期往后推一天的结果
+        date=calendar.getTime();
+        return date;
+
     }
 
 }

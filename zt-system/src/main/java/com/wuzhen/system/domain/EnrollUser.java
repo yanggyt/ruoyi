@@ -51,7 +51,7 @@ public class EnrollUser extends BaseEntity {
     /**
      * 海报地址
      */
-    @Excel(name = "海报地址")
+    @Excel(name = "公司地址")
     private String playbillAddress;
 
     /**
