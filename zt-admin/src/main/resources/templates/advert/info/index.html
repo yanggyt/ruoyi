@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('广告列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+	<div class="row">
+		<div class="col-sm-12 search-collapse">
+			<form id="role-form">
+				<div class="select-list">
+					<ul>
+						<li>
+							广告标题：<input type="text" name="activeTitle"/>
+						</li>
+						<li>
+							广告类型：<select name="status" th:with="type=${@dict.getType('sys_banner_type')}">
+							<option value="">所有</option>
+							<option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+									th:value="${dict.dictValue}"></option>
+						</select>
+						</li>
+
+						<li>
+							<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+									class="fa fa-search"></i>&nbsp;搜索</a>
+							<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+									class="fa fa-refresh"></i>&nbsp;重置</a>
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+
+		<div class="btn-group-sm" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="active:info:add">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+			<a class="btn btn-primary single disabled" onclick="$.operate.edit()"
+			   shiro:hasPermission="active:info:edit">
+				<i class="fa fa-edit"></i> 修改
+			</a>
+			<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+			   shiro:hasPermission="active:info:remove">
+				<i class="fa fa-remove"></i> 删除
+			</a>
+			<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="active:info:export">
+				<i class="fa fa-download"></i> 导出
+			</a>
+		</div>
+
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table"></table>
+		</div>
+	</div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+		var editFlag = [[${@permission.hasPermi('advert:info:list')}]];
+		var removeFlag = [[${@permission.hasPermi('advert:info:remove')}]];
+		var addFlag = [[${@permission.hasPermi('advert:info:list')}]];
+		var prefix = ctx + "advert/info";
+
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+		        createUrl: prefix + "/add",
+		        updateUrl: prefix + "/edit/{id}",
+		        removeUrl: prefix + "/remove",
+		        exportUrl: prefix + "/export",
+		        modalName: "活动",
+		        columns: [{
+		            checkbox: true
+		        },
+		        {
+		            field: 'id',
+		            title: '广告编号'
+		        },
+		        {
+		            field: 'bannerTitle',
+		            title: '广告标题',
+		            sortable: true
+		        },
+		        {
+		            field: 'address',
+		            title: '广告跳转地址',
+		            sortable: true
+		        },
+		         {
+		            field: 'bannerType',
+		            title: '活动类型',
+		            sortable: true,
+                      formatter: function(value, item, index) {
+                        if (item.bannerType == '0') {
+                            return '<span class="label label-success">微信小程序</span>';
+                        }
+                        else if (item.bannerType == '1') {
+                            return '<span class="label label-primary">app</span>';
+                        }
+
+                    }
+		        },
+
+		        {
+		            field: 'createTime',
+		            title: '创建时间',
+		            sortable: true
+		        },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	if (row.roleId != 1) {
+		                    var actions = [];
+		                    actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+		                    actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+		 		            return actions.join('');
+		            	} else {
+		                    return "";
+		                }
+		            }
+		        }]
+		    };
+		    $.table.init(options);
+		});
+
+		/* 角色管理-分配数据权限 */
+		function authDataScope(roleId) {
+		    var url = prefix + '/authDataScope/' + roleId;
+		    $.modal.open("分配数据权限", url);
+		}
+
+
+		/* 设置首页 */
+		function authFirstPage(roleId) {
+		    var url = prefix + '/first/'+roleId;
+		    $.modal.open("增加首页", url);
+		}
+
+		/* 角色管理-分配用户 */
+		function authUser(roleId) {
+		    var url = prefix + '/authUser/' + roleId;
+		    $.modal.openTab("分配用户", url);
+		}
+
+		/* 设置首页 */
+		function statusTools(row) {
+		    if (row.isFristPage == '0') {
+    			return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.id + '\')"></i> ';
+    		} else{
+    			return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.id + '\')"></i> ';
+    		}
+		}
+
+		/* 活动管理-上线 */
+		function online(id) {
+			$.modal.confirm("确认要设置活动上线吗？", function() {
+				$.operate.post(prefix + "/changeStatus", { "id": id, "status": 1 });
+		    })
+		}
+
+			/* 活动管理-下线 */
+		function Offline(id) {
+			$.modal.confirm("确认要设置活动下线吗？", function() {
+				$.operate.post(prefix + "/changeStatus", { "id": id, "status": 2 });
+		    })
+		}
+
+		/* 设置为首页 */
+		function enable(id) {
+			$.modal.confirm("确认要设置海报图此为首页？", function() {
+				$.operate.post(prefix + "/firstSave", { "id": id, "isFristPage": '1' });
+		    })
+		}
+
+			/* 设置取消首页 */
+		function disable(id) {
+			$.modal.confirm("确认要取消此首页？", function() {
+				$.operate.post(prefix + "/firstSave", { "id": id, "isFristPage": '0' });
+		    })
+		}
+
+</script>
+</body>
+</html>

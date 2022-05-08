@@ -158,6 +158,16 @@ public class RuoYiConfig
         return getProfile() + "/upload/lp";
     }
 
+
+
+    /**
+     * 获取广告上传路径
+     */
+    public static String getBAUploadPath()
+    {
+        return getProfile() + "/upload/ba";
+    }
+
     /**
      * 获取列表上传路径
      */

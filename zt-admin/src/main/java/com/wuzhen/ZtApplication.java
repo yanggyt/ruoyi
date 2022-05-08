@@ -46,6 +46,7 @@ public class ZtApplication  implements WebMvcConfigurer
         registry.addResourceHandler("/lp/**").addResourceLocations("file:" +  RuoYiConfig.getLPUploadPath()+"/");
         registry.addResourceHandler("/ls/**").addResourceLocations("file:" +  RuoYiConfig.getLSUploadPath()+"/");
         registry.addResourceHandler("/fp/**").addResourceLocations("file:" +  RuoYiConfig.getFPUploadPath()+"/");
+        registry.addResourceHandler("/ba/**").addResourceLocations("file:" +  RuoYiConfig.getBAUploadPath()+"/");
 //        System.out.println( RuoYiConfig.getLPUploadPath()+"/");
 //        registry.addResourceHandler("/**").addResourceLocations("file:" + RuoYiConfig.getProfile());
     }

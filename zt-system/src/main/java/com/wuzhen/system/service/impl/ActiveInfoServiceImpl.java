@@ -123,18 +123,6 @@ public class ActiveInfoServiceImpl implements IActiveInfoService {
     @Transactional
     public int deleteActiveByIds(String ids) {
         Long[] ids_arr = Convert.toLongArray(ids);
-//        for (Long roleId : roleIds) {
-//            checkRoleAllowed(new SysRole(roleId));
-//            checkRoleDataScope(roleId);
-//            SysRole role = selectRoleById(roleId);
-//            if (countUserRoleByRoleId(roleId) > 0) {
-//                throw new ServiceException(String.format("%1$s已分配,不能删除", role.getRoleName()));
-//            }
-//        }
-//        // 删除角色与菜单关联
-//        roleMenuMapper.deleteRoleMenu(roleIds);
-//        // 删除角色与部门关联
-//        roleDeptMapper.deleteRoleDept(roleIds);
         return activeInfoMapper.deleteActiveByIds(ids_arr);
     }
 
