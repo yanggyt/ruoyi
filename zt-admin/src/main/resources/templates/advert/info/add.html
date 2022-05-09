@@ -87,7 +87,7 @@
                 var list = value.split(',');
             }
             list = list.concat(urls.split(','))
-            $("#lpFilesName").val(list.join(','));
+            $("#bannerPicUrl").val(list.join(','));
             var a = $("#bannerPicUrl").val();
             alert(rsp.newFileNames);
             alert(a);
@@ -106,7 +106,7 @@
             })
             res.push(r_val);
             console.log('end：', res);
-            $("#lpFilesName").val(res);
+            $("#bannerPicUrl").val(res);
               var c = $("#bannerPicUrl").val();
              console.log('fileuploaded： c:', c);
         }).on('filesuccessremove', function (event, data, previewId, index) {
@@ -121,7 +121,7 @@
                     res.push(item);
                 }
             })
-            $("#lpFilesName").val(res);
+            $("#bannerPicUrl").val(res);
             var d = $("#bannerPicUrl").val();
             console.log('filesuccessremove： d:', d);
         }).on('filecleared', function (event, data, msg) {

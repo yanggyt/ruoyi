@@ -47,6 +47,10 @@ public class AdvertInfo extends BaseEntity {
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
+
+
+    private String bannerBaNames;
+
     public Long getId() {
         return id;
     }
@@ -94,6 +98,15 @@ public class AdvertInfo extends BaseEntity {
     public void setBannerPicUrl(String bannerPicUrl) {
         this.bannerPicUrl = bannerPicUrl;
     }
+
+    public String getBannerBaNames() {
+        return bannerBaNames;
+    }
+
+    public void setBannerBaNames(String bannerBaNames) {
+        this.bannerBaNames = bannerBaNames;
+    }
+
 
     @Override
     public String toString() {

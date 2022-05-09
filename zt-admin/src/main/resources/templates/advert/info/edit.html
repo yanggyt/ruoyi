@@ -8,112 +8,31 @@
 </head>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-	<form class="form-horizontal m" id="form-role-edit" th:object="${active}">
-		<input id="roleId" name="id" type="hidden" th:field="*{id}" />
-		<input id="lpFilesName" name="lpFilesName" type="hidden" th:field="*{lpFilesName}"/>
-		<input id="listLpNames" name="listLpNames" type="hidden" th:field="*{listLpNames}"/>
+	<form class="form-horizontal m" id="form-role-edit" th:object="${advert}">
+		<input id="id" name="id" type="hidden" th:field="*{id}" />
+		<input id="bannerPicUrl" name="bannerPicUrl" type="hidden" th:field="*{bannerPicUrl}"/>
+		<input id="bannerBaNames" name="bannerBaNames" type="hidden" th:field="*{bannerBaNames}"/>
 
-		<input id="lsFilesName" name="lsFilesName" type="hidden" th:field="*{lsFilesName}"/>
-		<input id="listLsNames" name="listLsNames" type="hidden" th:field="*{listLsNames}"/>
-
-		<input id="fpFilesName" name="fpFilesName" type="hidden" th:field="*{fpFilesName}"/>
-		<input id="listFpNames" name="listFpNames" type="hidden" th:field="*{listFpNames}"/>
 
 		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">活动标题：</label>
+			<label class="col-sm-3 control-label is-required">广告标题：</label>
 			<div class="col-sm-8">
-				<input class="form-control" type="text" name="activeTitle" id="activeTitle" th:field="*{activeTitle}" required>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">活动内容描述：</label>
-
-			<div class="col-sm-8">
-				<textarea name="activeDesc" maxlength="500"  class="form-control" rows="3">[[*{activeDesc}]]</textarea>
-			</div>
-
-		</div>
-
-		<div class="form-group draggable">
-			<label class="col-sm-3 control-label">报名开始日期：</label>
-
-			<div class="col-sm-8">
-				<div class="input-group date">
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-					<input class="form-control" type="text" name="enrollStartDate" id="enrollStartDate" th:field="*{enrollStartDate}" required>
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group draggable">
-			<label class="col-sm-3 control-label">报名结束日期：</label>
-
-			<div class="col-sm-8">
-				<div class="input-group date">
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-					<input class="form-control" type="text" name="enrollEndDate" id="enrollEndDate" th:field="*{enrollEndDate}" required>
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group draggable">
-			<label class="col-sm-3 control-label">活动开始日期：</label>
-
-			<div class="col-sm-8">
-				<div class="input-group date">
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-					<input class="form-control" type="text" name="activeStartDate" id="activeStartDate" th:field="*{activeStartDate}" required>
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group draggable">
-			<label class="col-sm-3 control-label">活动结束日期：</label>
-
-			<div class="col-sm-8">
-				<div class="input-group date">
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-					<input class="form-control" type="text" name="activeEndDate" id="activeEndDate" th:field="*{activeEndDate}" required>
-				</div>
+				<input class="form-control" type="text" name="bannerTitle" id="bannerTitle" th:field="*{bannerTitle}" required>
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">活动类型：</label>
+			<label class="col-sm-3 control-label is-required">广告位类型：</label>
 			<div class="col-sm-8">
-				<select name="activeType" class="form-control m-b" th:with="type=${@dict.getType('sys_active_type')}">
-					<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  th:field="*{activeType}"></option>
+				<select name="bannerType" class="form-control m-b" th:with="type=${@dict.getType('sys_banner_type')}">
+					<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{bannerType}"></option>
 				</select>
 			</div>
 		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">海报图片上传：</label>
-			<div class="col-sm-8">
-				<div class="file-loading">
-					<input id="firstSingleFile" name="file" type="file">
-				</div>
-			</div>
 
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">活动列表图片上传：</label>
-			<div class="col-sm-8">
-				<div class="file-loading">
-					<input id="singleFile" name="file" type="file">
-				</div>
-			</div>
 
-		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">报名要求：</label>
-			<div class="col-sm-8">
-				<select name="isEnroll" class="form-control m-b" th:with="type=${@dict.getType('sya_active_enroll')}">
-					<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  th:field="*{isEnroll}"></option>
-				</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">活动明细图片：</label>
+			<label class="col-sm-3 control-label is-required">广告位图片：</label>
 
 			<div class="col-sm-8">
 				<div class="file-loading">
@@ -122,16 +41,9 @@
 			</div>
 
 		</div>
-		<!--			<div class="form-group">-->
-		<!--				<label class="col-sm-3 control-label is-required">活动状态：</label>-->
-		<!--				<div class="col-sm-8">-->
-		<!--					<select name="status" class="form-control m-b" th:with="type=${@dict.getType('sys_active_status')}">-->
-		<!--						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  th:field="*{status}"></option>-->
-		<!--					</select>-->
-		<!--				</div>-->
-		<!--			</div>-->
+
 		<div class="form-group">
-			<label class="col-sm-3 control-label is-required">活动地址：</label>
+			<label class="col-sm-3 control-label is-required">广告跳转地址：</label>
 
 			<div class="col-sm-8">
 				<textarea name="address" maxlength="500"  class="form-control" rows="3">[[*{address}]]</textarea>
@@ -160,37 +72,22 @@
 <script type="text/javascript">
 		function edit() {
 			var id = $("input[name='id']").val();
-			var activeTitle = $("input[name='activeTitle']").val();
-			var activeDesc =$("textarea[name='activeDesc']").val();
-		    var enrollStartDate = $("input[name='enrollStartDate']").val();
-			var enrollEndDate = $("input[name='enrollEndDate']").val();
-			var activeStartDate = $("input[name='activeStartDate']").val();
-			var activeEndDate = $("input[name='activeEndDate']").val();
-			var activeType = $("select[name='activeType']").val();
-			var isEnroll = $("select[name='isEnroll']").val();
-			var lpFilesName = $("input[name='lpFilesName']").val();
-			var lsFilesName = $("input[name='lsFilesName']").val();
-			var fpFilesName = $("input[name='fpFilesName']").val();
+			var bannerPicUrl = $("input[name='bannerPicUrl']").val();
+		    var bannerTitle = $("input[name='bannerTitle']").val();
+
+			var bannerType = $("select[name='bannerType']").val();
 			var remark = $("input[name='remark']").val();
 			var address =$("textarea[name='address']").val();
 			$.ajax({
 				cache : true,
 				type : "POST",
-				url : ctx + "active/info/edit",
+				url : ctx + "advert/info/edit",
 				data : {
 					"id": id,
-					"activeTitle": activeTitle,
-					"activeDesc": activeDesc,
+					"bannerPicUrl": bannerPicUrl,
+					"bannerTitle": bannerTitle,
 					"address": address,
-					"enrollStartDate": enrollStartDate,
-					"enrollEndDate": enrollEndDate,
-					"activeStartDate": activeStartDate,
-					"activeEndDate": activeEndDate,
-					"activeType": activeType,
-					"isEnroll": isEnroll,
-					"lpFilesName": lpFilesName,
-					"lsFilesName": lsFilesName,
-					"fpFilesName": fpFilesName,
+					"bannerType": bannerType,
 					"remark": remark
 				},
 				async : false,
@@ -204,15 +101,15 @@
 		}
 
 		function submitHandler() {
-		   var c = check_c();
-			if(c){
 			  edit();
-			}
 	    }
 
-        function initIdCardFile() {
+
+	    function initIdCardFile(){
+
         //测试图片回显
-        var a = $("input[name='listLpNames']").val();
+        var a = $("input[name='bannerBaNames']").val();
+        // alert(a);
         var initialList =  eval("("+a+")");
         var previewJson = new Array();//回显文件数组
         var initPreviewConfig = new Array();
@@ -235,10 +132,14 @@
         }
         // 多图上传
         var cacheImgs = {};
-        var g_value = $("#lpFilesName").val() || '';
+        var g_value = $("#bannerPicUrl").val() || '';
+        var g_list = g_value.split(',');
+	    // 多图上传
+        var cacheImgs = {};
+        var g_value = $("#bannerPicUrl").val() || '';
         var g_list = g_value.split(',');
         $("#multipleFile").fileinput({
-            uploadUrl: ctx + 'common/uploadsLp',//上传路径
+            uploadUrl: ctx + 'common/uploadsBanner',//上传路径
             fileActionSettings: {
                 uploadClass: 'hideBtn'
             },
@@ -260,7 +161,7 @@
 
             cacheImgs[previewId] = data.response.newFileNames;
             var rsp = data.response;
-            var value = $("#lpFilesName").val() || '';
+            var value = $("#bannerPicUrl").val() || '';
             var list = [];
             var res = [];
             var r_val = rsp.newFileNames;
@@ -272,8 +173,8 @@
             })
             res.push(r_val);
             console.log('end：', res);
-            $("#lpFilesName").val(res);
-            var c = $("#lpFilesName").val();
+            $("#bannerPicUrl").val(res);
+            var c = $("#bannerPicUrl").val();
             console.log('fileuploaded： c:', c);
 
         }).on('filebatchselected', function (event, files) {
@@ -300,7 +201,7 @@
         }).on('filebeforedelete', function (event, key) {
             $.modal.msgSuccess("移除成功-2");
             console.log('filebeforedelete',event,key);
-            var value = $("#lpFilesName").val() || '';
+            var value = $("#bannerPicUrl").val() || '';
             var list = value.split(',');
             var res = [];
             for (var i = 0; i < list.length; i++) {
@@ -308,14 +209,14 @@
         		 res.push(list[i]);
         		 }
     			}
-             $("#lpFilesName").val(res);
-            var f = $("#lpFilesName").val();
+             $("#bannerPicUrl").val(res);
+            var f = $("#bannerPicUrl").val();
             console.log('filesuccessremove： f:', f);
         }).on('filesuccessremove', function (event, data, previewId, index) {
           $.modal.msgSuccess("移除成功-3");
             var urls = cacheImgs[data];
             delete cacheImgs[data];
-            var value = $("#lpFilesName").val() || '';
+            var value = $("#bannerPicUrl").val() || '';
             var list = value.split(',');
             var res = [];
             list.forEach(function (item) {
@@ -323,57 +224,20 @@
                     res.push(item);
                 }
             })
-            $("#lpFilesName").val(res);
-            var d = $("#lpFilesName").val();
+            $("#bannerPicUrl").val(res);
+            var d = $("#bannerPicUrl").val();
             console.log('filesuccessremove： d:', d);
         });
 
-    }
+	    }
 
 
    $(document).ready(function () {
-
-        var a = $("input[name='listLsNames']").val();
-        var b= [];
-        if (a.endsWith('null')){
-           b= []
-        }else{
-         b= [a]
-        }
-        console.log('a：', a);
-    	// 单图上传
-    	$("#singleFile").fileinput({
-            uploadUrl: ctx + 'common/uploadsLs',
-            maxFileCount: 1,
-            initialPreviewAsData: true,
-            initialPreview: b,
-             layoutTemplates: {
-                footer: '',//隐藏全部小图标
-            },
-            showRemove: true, //不显示底部清空按钮
-            autoReplace: true
-        }).on('fileuploaded', function (event, data, previewId, index) {
-        	var rsp = data.response;
-        	$("#lsFilesName").val(rsp.newFileName);
-            log.info("return lsFilesName url：" + rsp.url)
-            log.info("reutrn lsFilesName fileName：" + rsp.fileName)
-            log.info("reutrn lsFilesName newFileName：" + rsp.newFileName)
-            log.info("return lsFilesName originalFilename：" + rsp.originalFilename)
-        }).on('fileremoved', function (event, id, index) {
-            $("input[name='" + event.currentTarget.id + "']").val('')
-        }).on('filebeforedelete', function (event, key) {
-            $.modal.msgSuccess("移除成功-2");
-
-        })
-
-
-
-
-        initIdCardFile(); //调用上面的初始化方法
+        //调用上面的初始化方法
+        initIdCardFile();
         initInputFileImg();
-        fpFilesName();
-
     });
+
     function getFileTypeFromUrl(url) {
         if (url.endsWith('gif') || url.endsWith('jpg') || url.endsWith('jpeg') || url.endsWith('png')) {
             return 'image';
@@ -391,82 +255,6 @@
         })
     }
 
-  function fpFilesName(){
-        var c = $("input[name='listFpNames']").val();
-        var d= [];
-        if (c.endsWith('null')){
-           d= []
-        }else{
-         d= [c]
-        }
-        console.log('c：', d);
-    	// 单图上传
-    	$("#firstSingleFile").fileinput({
-            uploadUrl: ctx + 'common/uploadsFp',
-            maxFileCount: 1,
-            initialPreviewAsData: true,
-            initialPreview: d,
-             layoutTemplates: {
-                footer: '',//隐藏全部小图标
-            },
-            showRemove: true, //不显示底部清空按钮
-            autoReplace: true
-        }).on('fileuploaded', function (event, data, previewId, index) {
-        	var rsp = data.response;
-        	$("#fpFilesName").val(rsp.newFileName);
-            log.info("return url：" + rsp.url)
-            log.info("reutrn fileName：" + rsp.fileName)
-            log.info("reutrn newFileName：" + rsp.newFileName)
-            log.info("return originalFilename：" + rsp.originalFilename)
-        }).on('fileremoved', function (event, id, index) {
-            $("input[name='" + event.currentTarget.id + "']").val('')
-        }).on('filebeforedelete', function (event, key) {
-            $.modal.msgSuccess("移除成功-2");
-        })
-
-    }
-
-     function check_c() {
-       var enrollStartDate = $("input[name='enrollStartDate']").val();
-	   var enrollEndDate = $("input[name='enrollEndDate']").val();
-	   var activeStartDate = $("input[name='activeStartDate']").val();
-	   var activeEndDate = $("input[name='activeEndDate']").val();
-	   if (enrollStartDate == null || enrollStartDate == "") {
-        //为空
-         $.modal.alertWarning("报名开始日期不能为空");
-          return false;
-       }
-       if (enrollEndDate == null || enrollEndDate == "") {
-        //为空
-         $.modal.alertWarning("报名结束日期不能为空");
-           return false;
-       }
-
-       if(enrollEndDate<enrollStartDate){
-         $.modal.alertWarning("报名结束日期不能早于报名开始日期");
-           return false;
-       }
-
-        if (activeStartDate == null || activeStartDate == "") {
-        //为空
-         $.modal.alertWarning("活动开始日期不能为空");
-           return false;
-       }
-        if (activeEndDate == null || activeEndDate == "") {
-        //为空
-         $.modal.alertWarning("活动结束日期不能为空");
-           return false;
-       }
-         if(activeEndDate<activeStartDate){
-          $.modal.alertWarning("活动结束日期不能早于活动开始日期");
-            return false;
-        }
-         if(enrollEndDate>activeEndDate){
-          $.modal.alertWarning("报名结束日期不能晚于活动结束日期");
-            return false;
-        }
-         return true;
-    }
 
 	</script>
 

@@ -1,5 +1,6 @@
 package com.wuzhen.web.controller.busi;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wuzhen.common.annotation.Log;
 import com.wuzhen.common.core.controller.BaseController;
 import com.wuzhen.common.core.domain.AjaxResult;
@@ -10,10 +11,14 @@ import com.wuzhen.system.domain.AdvertInfo;
 import com.wuzhen.system.service.AdvertDataService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,6 +31,10 @@ import java.util.List;
 public class AdvertDataController extends BaseController
 {
     private String prefix = "advert/info";
+
+    @Value("${spring.profiles.active}")
+    private String active ;
+
 
     @Autowired
     private AdvertDataService advertDataService;
@@ -87,7 +96,24 @@ public class AdvertDataController extends BaseController
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, ModelMap mmap)
     {
-        mmap.put("dict", advertDataService.selectAdvertDataById(id));
+
+        AdvertInfo advertInfo =  advertDataService.selectAdvertDataById(id);
+        String fileNames = advertInfo.getBannerPicUrl();
+        String[] fileNamesArray = null;
+        List list =new ArrayList();
+        if (fileNames !=null && !"".equals(fileNames)){
+            fileNamesArray =  fileNames.split(",");
+            for (int i = 0; i < fileNamesArray.length; i++) {
+                HashMap map = new HashMap();
+                map.put("id",i);
+                map.put("filename",fileNamesArray[i]);
+                map.put("filepath","http://"+this.getAdress()+":18000/profile/upload/ba/"+fileNamesArray[i]);
+                list.add(map);
+            }
+        }
+        String json = JSONObject.toJSONString(list);
+        advertInfo.setBannerBaNames(json);
+        mmap.put("advert", advertInfo);
         return prefix + "/edit";
     }
 
@@ -112,5 +138,16 @@ public class AdvertDataController extends BaseController
     {
         advertDataService.deleteAdvertDataByIds(ids);
         return success();
+    }
+
+
+    private String getAdress(){
+        String ipaddr ="";
+        if (active.equals("druid")){
+            ipaddr = "localhost";
+        }else if(active.equals("prd")){
+            ipaddr="47.94.96.229";
+        }
+        return ipaddr;
     }
 }
