@@ -16,18 +16,9 @@ import com.ruoyi.common.utils.StringUtils;
  * @author ruoyi
  */
 @Component
-public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware
+public final class SpringUtils implements ApplicationContextAware
 {
-    /** Spring应用上下文环境 */
-    private static ConfigurableListableBeanFactory beanFactory;
-
     private static ApplicationContext applicationContext;
-
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException
-    {
-        SpringUtils.beanFactory = beanFactory;
-    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
@@ -46,7 +37,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String name) throws BeansException
     {
-        return (T) beanFactory.getBean(name);
+        return (T) applicationContext.getBean(name);
     }
 
     /**
@@ -59,7 +50,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
      */
     public static <T> T getBean(Class<T> clz) throws BeansException
     {
-        T result = (T) beanFactory.getBean(clz);
+        T result = (T) applicationContext.getBean(clz);
         return result;
     }
 
@@ -71,7 +62,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
      */
     public static boolean containsBean(String name)
     {
-        return beanFactory.containsBean(name);
+        return applicationContext.containsBean(name);
     }
 
     /**
@@ -84,7 +75,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
      */
     public static boolean isSingleton(String name) throws NoSuchBeanDefinitionException
     {
-        return beanFactory.isSingleton(name);
+        return applicationContext.isSingleton(name);
     }
 
     /**
@@ -95,7 +86,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
      */
     public static Class<?> getType(String name) throws NoSuchBeanDefinitionException
     {
-        return beanFactory.getType(name);
+        return applicationContext.getType(name);
     }
 
     /**
@@ -108,7 +99,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
      */
     public static String[] getAliases(String name) throws NoSuchBeanDefinitionException
     {
-        return beanFactory.getAliases(name);
+        return applicationContext.getAliases(name);
     }
 
     /**
