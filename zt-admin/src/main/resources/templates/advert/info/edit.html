@@ -36,7 +36,7 @@
 
 			<div class="col-sm-8">
 				<div class="file-loading">
-					<input id="multipleFile" name="files" type="file" multiple>
+					<input id="singleFile" name="file" type="file">
 				</div>
 			</div>
 
@@ -105,155 +105,49 @@
 	    }
 
 
-	    function initIdCardFile(){
-
-        //测试图片回显
-        var a = $("input[name='bannerBaNames']").val();
-        // alert(a);
-        var initialList =  eval("("+a+")");
-        var previewJson = new Array();//回显文件数组
-        var initPreviewConfig = new Array();
-        if (initialList != null && initialList.length) {
-            for (var i = 0; i < initialList.length; i++) {
-                previewJson[i] = initialList[i].filepath;
-                //alert(initialList[i].filepath);
-                //组装图片配置
-                var tjson = {
-                    type: getFileTypeFromUrl(initialList[i].filepath),
-                    caption: initialList[i].filename, // 展示的文件名
-                    url: 'idcardremove', // 删除url 必填，可以写一个空方法，不然无法删除初始化图片
-                    key: initialList[i].id, // 删除时Ajax向后台传递的参数
-                    /*  extra: function() {
-                         return {"id":id};
-                     } */ //这里也可以携带格外的参数
-                };
-                initPreviewConfig[i] = tjson;
-            }
-        }
-        // 多图上传
-        var cacheImgs = {};
-        var g_value = $("#bannerPicUrl").val() || '';
-        var g_list = g_value.split(',');
-	    // 多图上传
-        var cacheImgs = {};
-        var g_value = $("#bannerPicUrl").val() || '';
-        var g_list = g_value.split(',');
-        $("#multipleFile").fileinput({
-            uploadUrl: ctx + 'common/uploadsBanner',//上传路径
-            fileActionSettings: {
-                uploadClass: 'hideBtn'
-            },
-            overwriteInitial: false,
-            initialPreviewAsData: true,
-            initialPreview: previewJson,
-            initialPreviewConfig: initPreviewConfig,
-            // uploadAsync:false, 需要使用异步
-            layoutTemplates: {
-                actionUpload: '',//去除上传预览缩略图中的上传图片
-            },
-            showPreview: true,//是否显示预览
-            showUpload: false,//不显示底部上传按钮
-            showRemove: false,//不显示底部清空按钮
-            showCaption: true,//显示底部上传按钮左侧文本(完全是为了美观)
-        }).on('filebatchuploadsuccess', function (event, data, previewId, index) {
-            var rsp = data.response;
-        }).on('fileuploaded', function (event, data, previewId, index) {
-
-            cacheImgs[previewId] = data.response.newFileNames;
-            var rsp = data.response;
-            var value = $("#bannerPicUrl").val() || '';
-            var list = [];
-            var res = [];
-            var r_val = rsp.newFileNames;
-            var list = value.split(',');
-            list.forEach(function (item) {
-                if ((item !== r_val) && (item !=='') ) {
-                    res.push(item);
-                }
-            })
-            res.push(r_val);
-            console.log('end：', res);
-            $("#bannerPicUrl").val(res);
-            var c = $("#bannerPicUrl").val();
-            console.log('fileuploaded： c:', c);
-
-        }).on('filebatchselected', function (event, files) {
-            $(this).fileinput("upload");//这里会根据uploadAsync值自动去执行对应的回调函
-        }).on('filebatchuploaderror', function (event, data, msg) {
-            //批量上传失败提示
-            var _maxRequestSize = 10240;
-            _allFileSize = 0;
-            if (_allFileSize > _maxRequestSize) {
-                msg = "上传文件总大小（" + (_allFileSize / 1024).toFixed(2) + "MB）超出限制（" + (_maxRequestSize / 1024).toFixed(2) + "MB）";
-                $('#input-id').fileinput('clear');
-                $.modal.msgWarning(msg);
-            }
-        }).on('fileclear', function (event, previewId, extra) {
-            //拒绝移除  如果给移除上传控件所有内容的功能，则系统会重新初始化回显的文件，那么我的 initInputFileImg()函数完全不起作用了，所以，禁用它
-            return false;
-        }).on('fileerror', function (event, data, msg) {
-            console.log("--------------------fileerror--------------------");
-            console.log(data);
-            console.log(msg);
-            $.modal.msgError("上传失败");
-        }).on('filepreremove', function (event, key) {
-            $.modal.msgSuccess("移除成功-1");
-        }).on('filebeforedelete', function (event, key) {
-            $.modal.msgSuccess("移除成功-2");
-            console.log('filebeforedelete',event,key);
-            var value = $("#bannerPicUrl").val() || '';
-            var list = value.split(',');
-            var res = [];
-            for (var i = 0; i < list.length; i++) {
-        		if(list[i]!==g_list[key]){
-        		 res.push(list[i]);
-        		 }
-    			}
-             $("#bannerPicUrl").val(res);
-            var f = $("#bannerPicUrl").val();
-            console.log('filesuccessremove： f:', f);
-        }).on('filesuccessremove', function (event, data, previewId, index) {
-          $.modal.msgSuccess("移除成功-3");
-            var urls = cacheImgs[data];
-            delete cacheImgs[data];
-            var value = $("#bannerPicUrl").val() || '';
-            var list = value.split(',');
-            var res = [];
-            list.forEach(function (item) {
-                if ((item !== urls) && (item !=='')) {
-                    res.push(item);
-                }
-            })
-            $("#bannerPicUrl").val(res);
-            var d = $("#bannerPicUrl").val();
-            console.log('filesuccessremove： d:', d);
-        });
-
-	    }
-
+	
 
    $(document).ready(function () {
         //调用上面的初始化方法
-        initIdCardFile();
-        initInputFileImg();
+
+        var a = $("input[name='bannerBaNames']").val();
+        var b= [];
+        if (a.endsWith('null')){
+           b= []
+        }else{
+         b= [a]
+        }
+        console.log('a：', a);
+    	// 单图上传
+    	$("#singleFile").fileinput({
+            uploadUrl: ctx + 'common/uploadsBanner',
+            maxFileCount: 1,
+            initialPreviewAsData: true,
+            initialPreview: b,
+             layoutTemplates: {
+                footer: '',//隐藏全部小图标
+            },
+            showRemove: true, //不显示底部清空按钮
+            autoReplace: true
+        }).on('fileuploaded', function (event, data, previewId, index) {
+        	var rsp = data.response;
+        	$("#bannerPicUrl").val(rsp.newFileName);
+            log.info("return bannerPicUrl url：" + rsp.url)
+            log.info("reutrn bannerPicUrl fileName：" + rsp.fileName)
+            log.info("reutrn bannerPicUrl newFileName：" + rsp.newFileName)
+            log.info("return bannerPicUrl originalFilename：" + rsp.originalFilename)
+        }).on('fileremoved', function (event, id, index) {
+            $("input[name='" + event.currentTarget.id + "']").val('');
+<!--            $("#bannerPicUrl").val('');-->
+        }).on('filebeforedelete', function (event, key) {
+            $.modal.msgSuccess("移除成功-2");
+
+        })
+       
+       
     });
 
-    function getFileTypeFromUrl(url) {
-        if (url.endsWith('gif') || url.endsWith('jpg') || url.endsWith('jpeg') || url.endsWith('png')) {
-            return 'image';
-        }
-        if (url.endsWith('mp4')) {
-            return 'video';
-        }
-    }
-
-    //回显文件 对应的div里追加 hidden_img
-    function initInputFileImg(){
-        $(".file-sortable").each(function(){
-            var tempFileName = $(this).find('.kv-file-content').find('.file-preview-image').attr("src");
-            $(this).find('.kv-file-content').eq(0).parent().append("<span class='hidden_img hidden_img_init' hidden >"+tempFileName+"</span>");
-        })
-    }
+   
 
 
 	</script>

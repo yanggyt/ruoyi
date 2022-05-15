@@ -99,20 +99,9 @@ public class AdvertDataController extends BaseController
 
         AdvertInfo advertInfo =  advertDataService.selectAdvertDataById(id);
         String fileNames = advertInfo.getBannerPicUrl();
-        String[] fileNamesArray = null;
-        List list =new ArrayList();
-        if (fileNames !=null && !"".equals(fileNames)){
-            fileNamesArray =  fileNames.split(",");
-            for (int i = 0; i < fileNamesArray.length; i++) {
-                HashMap map = new HashMap();
-                map.put("id",i);
-                map.put("filename",fileNamesArray[i]);
-                map.put("filepath","http://"+this.getAdress()+":18000/profile/upload/ba/"+fileNamesArray[i]);
-                list.add(map);
-            }
+        if(fileNames!=null && !"".equals(fileNames)){
+            advertInfo.setBannerBaNames("http://"+this.getAdress()+":18000/profile/upload/ba/"+fileNames);
         }
-        String json = JSONObject.toJSONString(list);
-        advertInfo.setBannerBaNames(json);
         mmap.put("advert", advertInfo);
         return prefix + "/edit";
     }

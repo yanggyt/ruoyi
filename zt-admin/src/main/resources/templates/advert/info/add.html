@@ -33,7 +33,7 @@
 
 				<div class="col-sm-8">
 					<div class="file-loading">
-						<input id="multipleFile" name="files" type="file" multiple>
+						<input id="singleFile" name="file" type="file">
 					</div>
 				</div>
 
@@ -68,67 +68,25 @@
 	    }
 
 	  $(function () {
-
-        // TODO: 上传
-        // 多图上传
-        var cacheImgs = {};
-        $("#multipleFile").fileinput({
+        // 广告位单图上传
+    	$("#singleFile").fileinput({
             uploadUrl: ctx + 'common/uploadsBanner',
-            showUploadedThumbs: true,
-            showUpload: false,
-            uploadAsync: false
-        }).on('filebatchuploadsuccess', function (event, data, previewId, index) {
-            console.log('filebatchuploadsuccess', event, data, previewId, index);
-            var rsp = data.response;
-            var urls = rsp.newFileNames || '';
-            var value = $("#bannerPicUrl").val() || '';
-            var list = [];
-            if (value) {
-                var list = value.split(',');
-            }
-            list = list.concat(urls.split(','))
-            $("#bannerPicUrl").val(list.join(','));
-            var a = $("#bannerPicUrl").val();
-            alert(rsp.newFileNames);
-            alert(a);
+            maxFileCount: 1,
+            layoutTemplates: {
+                footer: '',//隐藏全部小图标
+            },
+            autoReplace: true
         }).on('fileuploaded', function (event, data, previewId, index) {
-            cacheImgs[previewId] = data.response.newFileNames;
-            var rsp = data.response;
-            var value = $("#bannerPicUrl").val() || '';
-            var list = [];
-            var res = [];
-            var r_val = rsp.newFileNames;
-            var list = value.split(',');
-            list.forEach(function (item) {
-                if ((item !== r_val) && (item !=='') ) {
-                    res.push(item);
-                }
-            })
-            res.push(r_val);
-            console.log('end：', res);
-            $("#bannerPicUrl").val(res);
-              var c = $("#bannerPicUrl").val();
-             console.log('fileuploaded： c:', c);
-        }).on('filesuccessremove', function (event, data, previewId, index) {
-
-            var urls = cacheImgs[data];
-            delete cacheImgs[data];
-            var value = $("#bannerPicUrl").val() || '';;
-            var list = value.split(',');
-            var res = [];
-            list.forEach(function (item) {
-                if ((item !== urls) && (item !=='')) {
-                    res.push(item);
-                }
-            })
-            $("#bannerPicUrl").val(res);
-            var d = $("#bannerPicUrl").val();
-            console.log('filesuccessremove： d:', d);
-        }).on('filecleared', function (event, data, msg) {
-            alert('全部删除');
+        	var rsp = data.response;
+        	$("#bannerPicUrl").val(rsp.newFileName);
+            log.info("return url：" + rsp.url)
+            log.info("reutrn fileName：" + rsp.fileName)
+            log.info("reutrn newFileName：" + rsp.newFileName)
+            log.info("return originalFilename：" + rsp.originalFilename)
+        }).on('fileremoved', function (event, id, index) {
+            $("input[name='" + event.currentTarget.id + "']").val('')
             $("#bannerPicUrl").val('');
         })
-
     });
 	</script>
 </body>

@@ -141,31 +141,20 @@ public class CommonController
      */
     @PostMapping("/uploadsBanner")
     @ResponseBody
-    public AjaxResult uploadFilesBanner(List<MultipartFile> files) throws Exception
+    public AjaxResult uploadFilesBanner(MultipartFile file) throws Exception
     {
         try
         {
             // 上传文件路径
             String filePath = RuoYiConfig.getBAUploadPath();
-            List<String> urls = new ArrayList<String>();
-            List<String> fileNames = new ArrayList<String>();
-            List<String> newFileNames = new ArrayList<String>();
-            List<String> originalFilenames = new ArrayList<String>();
-            for (MultipartFile file : files)
-            {
-                // 上传并返回新文件名称
-                String fileName = FileUploadUtils.upload(filePath, file);
-                String url = serverConfig.getUrl() + fileName;
-                urls.add(url);
-                fileNames.add(fileName);
-                newFileNames.add(FileUtils.getName(fileName));
-                originalFilenames.add(file.getOriginalFilename());
-            }
+            // 上传并返回新文件名称
+            String fileName = FileUploadUtils.upload(filePath, file);
+            String url = serverConfig.getUrl() + fileName;
             AjaxResult ajax = AjaxResult.success();
-            ajax.put("urls", StringUtils.join(urls, FILE_DELIMETER));
-            ajax.put("fileNames", StringUtils.join(fileNames, FILE_DELIMETER));
-            ajax.put("newFileNames", StringUtils.join(newFileNames, FILE_DELIMETER));
-            ajax.put("originalFilenames", StringUtils.join(originalFilenames, FILE_DELIMETER));
+            ajax.put("url", url);
+            ajax.put("fileName", fileName);
+            ajax.put("newFileName", FileUtils.getName(fileName));
+            ajax.put("originalFilename", file.getOriginalFilename());
             return ajax;
         }
         catch (Exception e)
@@ -177,7 +166,7 @@ public class CommonController
 
 
     /**
-     * 通用上传请求（多个）
+     * 通用上传请求
      */
     @PostMapping("/uploadsFp")
     @ResponseBody

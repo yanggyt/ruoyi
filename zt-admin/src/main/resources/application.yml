@@ -3,13 +3,13 @@ wuzhen:
   # 名称
   name: 乌镇展厅小程序
   # 版本
-  version: 4.7.3
+  version: 1.0.3
   # 版权年份
   copyrightYear: 2022
   # 实例演示开关
   demoEnabled: false
   # 文件路径 示例（ Windows配置 D:/images11，Linux配置 /www/wwwroot）
-  profile: D:/images11
+  profile: /www/wwwroot
   fp: http://47.94.96.229:18001/fp/
   lp: http://47.94.96.229:18001/lp/
   # 获取ip地址开关
@@ -61,7 +61,7 @@ spring:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
   profiles: 
-    active: druid
+    active: prd
   # 文件上传
   servlet:
      multipart:
