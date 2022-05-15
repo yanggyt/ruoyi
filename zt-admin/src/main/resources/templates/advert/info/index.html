@@ -11,10 +11,10 @@
 				<div class="select-list">
 					<ul>
 						<li>
-							广告标题：<input type="text" name="activeTitle"/>
+							广告标题：<input type="text" name="bannerTitle"/>
 						</li>
 						<li>
-							广告类型：<select name="status" th:with="type=${@dict.getType('sys_banner_type')}">
+							广告类型：<select name="bannerType" th:with="type=${@dict.getType('sys_banner_type')}">
 							<option value="">所有</option>
 							<option th:each="dict : ${type}" th:text="${dict.dictLabel}"
 									th:value="${dict.dictValue}"></option>
