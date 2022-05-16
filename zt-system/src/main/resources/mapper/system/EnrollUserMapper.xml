@@ -20,7 +20,7 @@
     </resultMap>
 
     <sql id="selectUserVo">
-        select id, nick_name, post_name, phone_number, playbill_address,recommender_no,create_by, create_time, remark,qr_code
+        select id, nick_name, post_name, phone_number, playbill_address,recommender_no,create_by, create_time, remark,UPPER(qr_code) as qr_code
         from enroll_user
     </sql>
 

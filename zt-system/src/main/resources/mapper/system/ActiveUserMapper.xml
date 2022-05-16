@@ -21,7 +21,7 @@
     </resultMap>
 
     <sql id="selectActiveUserVo">
-        select e.id, e.nick_name, e.post_name, e.phone_number, e.playbill_address,e.recommender_no,e.create_by, e.create_time, e.remark,a.active_title,e.qr_code
+        select e.id, e.nick_name, e.post_name, e.phone_number, e.playbill_address,e.recommender_no,e.create_by, e.create_time, e.remark,a.active_title,UPPER(e.qr_code) as qr_code
         from enroll_user e inner join  active_info a ON e.active_no = a.id
     </sql>
 
