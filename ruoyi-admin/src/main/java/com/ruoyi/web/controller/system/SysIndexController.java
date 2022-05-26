@@ -75,7 +75,7 @@ public class SysIndexController extends BaseController
         Cookie[] cookies = ServletUtils.getRequest().getCookies();
         for (Cookie cookie : cookies)
         {
-            if (StringUtils.isNotEmpty(cookie.getName()) && "nav-style".equalsIgnoreCase(cookie.getName()))
+            if ("nav-style".equalsIgnoreCase(cookie.getName()))
             {
                 indexStyle = cookie.getValue();
                 break;
