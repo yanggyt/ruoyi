@@ -3,8 +3,7 @@
  * Copyright (c) 2019 ruoyi 
  */
 
-var startLayDate;
-var endLayDate;
+var startLayDate=[], endLayDate=[], iLayDate=0; //[chenshuixing]修复多组日期范围无效 2022-06-14
 $(function() {
 	
     //  layer扩展皮肤
@@ -47,47 +46,70 @@ $(function() {
         }
     });
 	 
-    // laydate 时间控件绑定
+    // laydate 时间控件绑定 [chenshuixing]修复多组日期范围无效 2022-06-14
     if ($(".select-time").length > 0) {
-       layui.use('laydate', function() {
-            var laydate = layui.laydate;
-            startLayDate = laydate.render({
-                elem: '#startTime',
-                max: $('#endTime').val(),
-                theme: 'molv',
-                type: $('#startTime').attr("data-type") || 'date',
-                trigger: 'click',
-                done: function(value, date) {
-                    // 结束时间大于开始时间
-                    if (value !== '') {
-                        endLayDate.config.min.year = date.year;
-                        endLayDate.config.min.month = date.month - 1;
-                        endLayDate.config.min.date = date.date;
-                    } else {
-                        endLayDate.config.min.year = '';
-                        endLayDate.config.min.month = '';
-                        endLayDate.config.min.date = '';
+        // 遍历
+        $('.select-time').each(function(){
+            
+            var mindate = new Date();
+                mindate.setMonth(mindate.getMonth()-6);
+                mindate = $.common.dateFormat(mindate,"yyyy-MM-dd");
+            var maxdate = new Date();
+                maxdate.setMonth(maxdate.getMonth()+6);
+                maxdate = $.common.dateFormat(maxdate,"yyyy-MM-dd");
+            
+            var startObj = $(this).find('input[id^=startTime]');
+            var endObj = $(this).find('input[id^=endTime]');
+            
+            layui.use('laydate', function() {
+                var laydate = layui.laydate;
+                
+                var bdObj = laydate.render({
+                    index: iLayDate,
+                    elem: '#'+startObj[0].id,
+                    min: mindate,
+                    max: endObj.val(),
+                    theme: 'molv',
+                    type: startObj.attr("data-type") || 'date',
+                    trigger: 'click',
+                    done: function(value, date) {
+                        // 结束时间大于开始时间
+                        if (value !== '') {
+                            endLayDate[this.index].config.min.year = date.year;
+                            endLayDate[this.index].config.min.month = date.month - 1;
+                            endLayDate[this.index].config.min.date = date.date;
+                        } else {
+                            endLayDate[this.index].config.min.year = '';
+                            endLayDate[this.index].config.min.month = '';
+                            endLayDate[this.index].config.min.date = '';
+                        }
                     }
-                }
-            });
-            endLayDate = laydate.render({
-                elem: '#endTime',
-                min: $('#startTime').val(),
-                theme: 'molv',
-                type: $('#endTime').attr("data-type") || 'date',
-                trigger: 'click',
-                done: function(value, date) {
-                    // 开始时间小于结束时间
-                    if (value !== '') {
-                        startLayDate.config.max.year = date.year;
-                        startLayDate.config.max.month = date.month - 1;
-                        startLayDate.config.max.date = date.date;
-                    } else {
-                        startLayDate.config.max.year = '2099';
-                        startLayDate.config.max.month = '12';
-                        startLayDate.config.max.date = '31';
+                });
+                var edObj = laydate.render({
+                    index: iLayDate,
+                    elem: '#'+endObj[0].id,
+                    min: startObj.val(),
+                    max: maxdate,
+                    theme: 'molv',
+                    type: endObj.attr("data-type") || 'date',
+                    trigger: 'click',
+                    done: function(value, date) {
+                        // 开始时间小于结束时间
+                        if (value !== '') {
+                            startLayDate[this.index].config.max.year = date.year;
+                            startLayDate[this.index].config.max.month = date.month - 1;
+                            startLayDate[this.index].config.max.date = date.date;
+                        } else {
+                            startLayDate[this.index].config.max.year = '2099';
+                            startLayDate[this.index].config.max.month = '12';
+                            startLayDate[this.index].config.max.date = '31';
+                        }
                     }
-                }
+                })
+                startLayDate.push(bdObj);
+                endLayDate.push(edObj);
+
+                iLayDate++;
             });
         });
     }
