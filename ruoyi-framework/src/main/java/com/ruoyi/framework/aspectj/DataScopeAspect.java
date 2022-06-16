@@ -138,11 +138,13 @@ public class DataScopeAspect
      */
     private void clearDataScope(final JoinPoint joinPoint)
     {
-        Object params = joinPoint.getArgs()[0];
-        if (StringUtils.isNotNull(params) && params instanceof BaseEntity)
-        {
-            BaseEntity baseEntity = (BaseEntity) params;
-            baseEntity.getParams().put(DATA_SCOPE, "");
+        Object[] args = joinPoint.getArgs();
+        if (args.length > 0) {
+            Object params = args[0];
+            if (StringUtils.isNotNull(params) && params instanceof BaseEntity) {
+                BaseEntity baseEntity = (BaseEntity) params;
+                baseEntity.getParams().put(DATA_SCOPE, "");
+            }
         }
     }
 }
