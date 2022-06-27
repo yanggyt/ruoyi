@@ -15,6 +15,8 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.security.PermissionUtils;
 
+import java.sql.SQLException;
+
 /**
  * 全局异常处理器
  * 
@@ -103,6 +105,14 @@ public class GlobalExceptionHandler
         log.error(e.getMessage(), e);
         String message = e.getAllErrors().get(0).getDefaultMessage();
         return AjaxResult.error(message);
+    }
+
+    /**
+     * 处理数据库连接异常，屏蔽数据库敏感信息。响应e.getMessage()会导致客户端看到SQL语句等。
+     */
+    @ExceptionHandler(SQLException.class)
+    public AjaxResult dbException(){
+        return AjaxResult.error("系统出现数据库异常！");
     }
 
     /**
