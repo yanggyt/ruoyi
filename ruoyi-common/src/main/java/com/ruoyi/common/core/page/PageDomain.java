@@ -30,7 +30,12 @@ public class PageDomain
         {
             return "";
         }
-        return StringUtils.toUnderScoreCase(orderByColumn) + " " + isAsc;
+        if("asc".equals(StringUtils.toUnderScoreCase(isAsc))||"desc".equals(StringUtils.toUnderScoreCase(isAsc))){
+            return StringUtils.toUnderScoreCase(orderByColumn) + " " + isAsc; 
+        }else{
+            return StringUtils.toUnderScoreCase(orderByColumn) + " asc";
+        }
+        
     }
 
     public Integer getPageNum()
