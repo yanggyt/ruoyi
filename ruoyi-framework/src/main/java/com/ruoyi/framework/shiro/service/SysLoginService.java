@@ -1,5 +1,6 @@
 package com.ruoyi.framework.shiro.service;
 
+import com.ruoyi.common.exception.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.constant.Constants;
@@ -7,11 +8,6 @@ import com.ruoyi.common.constant.ShiroConstants;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.enums.UserStatus;
-import com.ruoyi.common.exception.user.CaptchaException;
-import com.ruoyi.common.exception.user.UserBlockedException;
-import com.ruoyi.common.exception.user.UserDeleteException;
-import com.ruoyi.common.exception.user.UserNotExistsException;
-import com.ruoyi.common.exception.user.UserPasswordNotMatchException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.MessageUtils;
 import com.ruoyi.common.utils.ServletUtils;
@@ -40,6 +36,11 @@ public class SysLoginService
      */
     public SysUser login(String username, String password)
     {
+        //检查此次会话中的sessionid是否已经有用户绑定，防止session覆盖
+        SysUser existingUser = null;
+        if((existingUser = ShiroUtils.getSysUser()) != null && !existingUser.getLoginName().equals(username)){
+            throw new UserExistingException();
+        }
         // 验证码校验
         if (ShiroConstants.CAPTCHA_ERROR.equals(ServletUtils.getRequest().getAttribute(ShiroConstants.CURRENT_CAPTCHA)))
         {

@@ -2,6 +2,8 @@ package com.ruoyi.framework.shiro.realm;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.ruoyi.common.exception.user.*;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -21,12 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.exception.user.CaptchaException;
-import com.ruoyi.common.exception.user.RoleBlockedException;
-import com.ruoyi.common.exception.user.UserBlockedException;
-import com.ruoyi.common.exception.user.UserNotExistsException;
-import com.ruoyi.common.exception.user.UserPasswordNotMatchException;
-import com.ruoyi.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.framework.shiro.service.SysLoginService;
 import com.ruoyi.system.service.ISysMenuService;
@@ -98,6 +94,9 @@ public class UserRealm extends AuthorizingRealm
         try
         {
             user = loginService.login(username, password);
+        }
+        catch (UserExistingException e){
+            throw new UnknownAccountException(e.getMessage(), e);
         }
         catch (CaptchaException e)
         {
