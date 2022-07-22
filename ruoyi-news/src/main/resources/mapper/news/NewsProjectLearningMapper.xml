@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.news.mapper.NewsProjectLearningMapper">
+    
+    <resultMap type="NewsProjectLearning" id="NewsProjectLearningResult">
+        <result property="id"    column="id"    />
+        <result property="image"    column="image"    />
+        <result property="url"    column="url"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectNewsProjectLearningVo">
+        select id, image, url, status from news_project_learning
+    </sql>
+
+    <select id="selectNewsProjectLearningList" parameterType="NewsProjectLearning" resultMap="NewsProjectLearningResult">
+        <include refid="selectNewsProjectLearningVo"/>
+        <where>  
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectNewsProjectLearningById" parameterType="Long" resultMap="NewsProjectLearningResult">
+        <include refid="selectNewsProjectLearningVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNewsProjectLearning" parameterType="NewsProjectLearning" useGeneratedKeys="true" keyProperty="id">
+        insert into news_project_learning
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="image != null">image,</if>
+            <if test="url != null">url,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="image != null">#{image},</if>
+            <if test="url != null">#{url},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNewsProjectLearning" parameterType="NewsProjectLearning">
+        update news_project_learning
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="image != null">image = #{image},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNewsProjectLearningById" parameterType="Long">
+        delete from news_project_learning where id = #{id}
+    </delete>
+
+    <delete id="deleteNewsProjectLearningByIds" parameterType="String">
+        delete from news_project_learning where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

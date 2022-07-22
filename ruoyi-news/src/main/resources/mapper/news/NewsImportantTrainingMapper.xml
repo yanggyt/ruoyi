@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.news.mapper.NewsImportantTrainingMapper">
+    
+    <resultMap type="NewsImportantTraining" id="NewsImportantTrainingResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="contenu"    column="contenu"    />
+        <result property="image"    column="image"    />
+        <result property="auteurid"    column="auteurid"    />
+        <result property="auteur"    column="auteur"    />
+        <result property="corrigerid"    column="corrigerid"    />
+        <result property="source"    column="source"    />
+        <result property="clicks"    column="clicks"    />
+        <result property="type"    column="type"    />
+        <result property="date"    column="date"    />
+        <result property="classify"    column="classify"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectNewsImportantTrainingVo">
+        select id, title, contenu, image, auteurid, auteur, corrigerid, source, clicks, type, date, classify, status from news_important_training
+    </sql>
+
+    <select id="selectNewsImportantTrainingList" parameterType="NewsImportantTraining" resultMap="NewsImportantTrainingResult">
+        <include refid="selectNewsImportantTrainingVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="contenu != null  and contenu != ''"> and contenu = #{contenu}</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="auteurid != null "> and auteurid = #{auteurid}</if>
+            <if test="auteur != null  and auteur != ''"> and auteur = #{auteur}</if>
+            <if test="corrigerid != null "> and corrigerid = #{corrigerid}</if>
+            <if test="source != null  and source != ''"> and source = #{source}</if>
+            <if test="clicks != null "> and clicks = #{clicks}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="classify != null "> and classify = #{classify}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectNewsImportantTrainingById" parameterType="Long" resultMap="NewsImportantTrainingResult">
+        <include refid="selectNewsImportantTrainingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNewsImportantTraining" parameterType="NewsImportantTraining" useGeneratedKeys="true" keyProperty="id">
+        insert into news_important_training
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="contenu != null">contenu,</if>
+            <if test="image != null">image,</if>
+            <if test="auteurid != null">auteurid,</if>
+            <if test="auteur != null">auteur,</if>
+            <if test="corrigerid != null">corrigerid,</if>
+            <if test="source != null">source,</if>
+            <if test="clicks != null">clicks,</if>
+            <if test="type != null">type,</if>
+            <if test="date != null">date,</if>
+            <if test="classify != null">classify,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="contenu != null">#{contenu},</if>
+            <if test="image != null">#{image},</if>
+            <if test="auteurid != null">#{auteurid},</if>
+            <if test="auteur != null">#{auteur},</if>
+            <if test="corrigerid != null">#{corrigerid},</if>
+            <if test="source != null">#{source},</if>
+            <if test="clicks != null">#{clicks},</if>
+            <if test="type != null">#{type},</if>
+            <if test="date != null">#{date},</if>
+            <if test="classify != null">#{classify},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNewsImportantTraining" parameterType="NewsImportantTraining">
+        update news_important_training
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="contenu != null">contenu = #{contenu},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="auteurid != null">auteurid = #{auteurid},</if>
+            <if test="auteur != null">auteur = #{auteur},</if>
+            <if test="corrigerid != null">corrigerid = #{corrigerid},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="clicks != null">clicks = #{clicks},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="classify != null">classify = #{classify},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNewsImportantTrainingById" parameterType="Long">
+        delete from news_important_training where id = #{id}
+    </delete>
+
+    <delete id="deleteNewsImportantTrainingByIds" parameterType="String">
+        delete from news_important_training where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

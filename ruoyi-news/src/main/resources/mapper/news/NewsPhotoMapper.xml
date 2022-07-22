@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.news.mapper.NewsPhotoMapper">
+    
+    <resultMap type="NewsPhoto" id="NewsPhotoResult">
+        <result property="id"    column="id"    />
+        <result property="image"    column="image"    />
+        <result property="url"    column="url"    />
+        <result property="date"    column="date"    />
+    </resultMap>
+
+    <sql id="selectNewsPhotoVo">
+        select id, image, url, date from news_photo
+    </sql>
+
+    <select id="selectNewsPhotoList" parameterType="NewsPhoto" resultMap="NewsPhotoResult">
+        <include refid="selectNewsPhotoVo"/>
+        <where>  
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="date != null "> and date = #{date}</if>
+        </where>
+    </select>
+    
+    <select id="selectNewsPhotoById" parameterType="Long" resultMap="NewsPhotoResult">
+        <include refid="selectNewsPhotoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNewsPhoto" parameterType="NewsPhoto" useGeneratedKeys="true" keyProperty="id">
+        insert into news_photo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="image != null">image,</if>
+            <if test="url != null">url,</if>
+            <if test="date != null">date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="image != null">#{image},</if>
+            <if test="url != null">#{url},</if>
+            <if test="date != null">#{date},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNewsPhoto" parameterType="NewsPhoto">
+        update news_photo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="image != null">image = #{image},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="date != null">date = #{date},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNewsPhotoById" parameterType="Long">
+        delete from news_photo where id = #{id}
+    </delete>
+
+    <delete id="deleteNewsPhotoByIds" parameterType="String">
+        delete from news_photo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

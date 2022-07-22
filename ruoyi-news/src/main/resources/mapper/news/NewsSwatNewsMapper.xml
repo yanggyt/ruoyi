@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.news.mapper.NewsSwatNewsMapper">
+    
+    <resultMap type="NewsSwatNews" id="NewsSwatNewsResult">
+        <result property="id"    column="id"    />
+        <result property="idNumber"    column="id_number"    />
+        <result property="title"    column="title"    />
+        <result property="contenu"    column="contenu"    />
+        <result property="image"    column="image"    />
+        <result property="deptid"    column="deptid"    />
+        <result property="deptname"    column="deptname"    />
+        <result property="check"    column="check"    />
+        <result property="auteur"    column="auteur"    />
+        <result property="corrigerid"    column="corrigerid"    />
+        <result property="source"    column="source"    />
+        <result property="clicks"    column="clicks"    />
+        <result property="date"    column="date"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectNewsSwatNewsVo">
+        select id, id_number, title, contenu, image, deptid, deptname, check, auteur, corrigerid, source, clicks, date, status from news_swat_news
+    </sql>
+
+    <select id="selectNewsSwatNewsList" parameterType="NewsSwatNews" resultMap="NewsSwatNewsResult">
+        <include refid="selectNewsSwatNewsVo"/>
+        <where>  
+            <if test="idNumber != null "> and id_number = #{idNumber}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="contenu != null  and contenu != ''"> and contenu = #{contenu}</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="deptid != null "> and deptid = #{deptid}</if>
+            <if test="deptname != null  and deptname != ''"> and deptname like concat('%', #{deptname}, '%')</if>
+            <if test="check != null  and check != ''"> and check = #{check}</if>
+            <if test="auteur != null  and auteur != ''"> and auteur = #{auteur}</if>
+            <if test="corrigerid != null "> and corrigerid = #{corrigerid}</if>
+            <if test="source != null  and source != ''"> and source = #{source}</if>
+            <if test="clicks != null "> and clicks = #{clicks}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectNewsSwatNewsById" parameterType="Long" resultMap="NewsSwatNewsResult">
+        <include refid="selectNewsSwatNewsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNewsSwatNews" parameterType="NewsSwatNews" useGeneratedKeys="true" keyProperty="id">
+        insert into news_swat_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="idNumber != null">id_number,</if>
+            <if test="title != null">title,</if>
+            <if test="contenu != null">contenu,</if>
+            <if test="image != null">image,</if>
+            <if test="deptid != null">deptid,</if>
+            <if test="deptname != null">deptname,</if>
+            <if test="check != null">check,</if>
+            <if test="auteur != null">auteur,</if>
+            <if test="corrigerid != null">corrigerid,</if>
+            <if test="source != null">source,</if>
+            <if test="clicks != null">clicks,</if>
+            <if test="date != null">date,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="idNumber != null">#{idNumber},</if>
+            <if test="title != null">#{title},</if>
+            <if test="contenu != null">#{contenu},</if>
+            <if test="image != null">#{image},</if>
+            <if test="deptid != null">#{deptid},</if>
+            <if test="deptname != null">#{deptname},</if>
+            <if test="check != null">#{check},</if>
+            <if test="auteur != null">#{auteur},</if>
+            <if test="corrigerid != null">#{corrigerid},</if>
+            <if test="source != null">#{source},</if>
+            <if test="clicks != null">#{clicks},</if>
+            <if test="date != null">#{date},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNewsSwatNews" parameterType="NewsSwatNews">
+        update news_swat_news
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="idNumber != null">id_number = #{idNumber},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="contenu != null">contenu = #{contenu},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="deptid != null">deptid = #{deptid},</if>
+            <if test="deptname != null">deptname = #{deptname},</if>
+            <if test="check != null">check = #{check},</if>
+            <if test="auteur != null">auteur = #{auteur},</if>
+            <if test="corrigerid != null">corrigerid = #{corrigerid},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="clicks != null">clicks = #{clicks},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNewsSwatNewsById" parameterType="Long">
+        delete from news_swat_news where id = #{id}
+    </delete>
+
+    <delete id="deleteNewsSwatNewsByIds" parameterType="String">
+        delete from news_swat_news where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
