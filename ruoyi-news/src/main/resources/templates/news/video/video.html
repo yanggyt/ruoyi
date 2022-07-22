@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('【请填写功能名称】列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>标题：</label>
+                                <input type="text" name="title"/>
+                            </li>
+                            <li>
+                                <label>封面：</label>
+                                <input type="text" name="image"/>
+                            </li>
+                            <li>
+                                <label>视频：</label>
+                                <input type="text" name="video"/>
+                            </li>
+                            <li>
+                                <label>创建人ID：</label>
+                                <input type="text" name="auteurid"/>
+                            </li>
+                            <li>
+                                <label>作者：</label>
+                                <input type="text" name="auteur"/>
+                            </li>
+                            <li>
+                                <label>修改人ID：</label>
+                                <input type="text" name="corrigerid"/>
+                            </li>
+                            <li>
+                                <label>来源：</label>
+                                <input type="text" name="source"/>
+                            </li>
+                            <li>
+                                <label>点击数量：</label>
+                                <input type="text" name="clicks"/>
+                            </li>
+                            <li>
+                                <label>更新日期：</label>
+                                <input type="text" class="time-input" placeholder="请选择更新日期" name="date"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="news:video:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="news:video:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="news:video:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="news:video:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('news:video:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('news:video:remove')}]];
+        var prefix = ctx + "news/video";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "【请填写功能名称】",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '编号',
+                    visible: false
+                },
+                {
+                    field: 'title',
+                    title: '标题'
+                },
+                {
+                    field: 'contenu',
+                    title: '内容'
+                },
+                {
+                    field: 'image',
+                    title: '封面'
+                },
+                {
+                    field: 'video',
+                    title: '视频'
+                },
+                {
+                    field: 'auteurid',
+                    title: '创建人ID'
+                },
+                {
+                    field: 'auteur',
+                    title: '作者'
+                },
+                {
+                    field: 'corrigerid',
+                    title: '修改人ID'
+                },
+                {
+                    field: 'source',
+                    title: '来源'
+                },
+                {
+                    field: 'clicks',
+                    title: '点击数量'
+                },
+                {
+                    field: 'type',
+                    title: '类型'
+                },
+                {
+                    field: 'date',
+                    title: '更新日期'
+                },
+                {
+                    field: 'status',
+                    title: '状态'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

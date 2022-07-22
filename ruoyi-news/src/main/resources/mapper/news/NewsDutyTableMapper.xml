@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.news.mapper.NewsDutyTableMapper">
+    
+    <resultMap type="NewsDutyTable" id="NewsDutyTableResult">
+        <result property="id"    column="id"    />
+        <result property="diriger"    column="diriger"    />
+        <result property="cadre"    column="cadre"    />
+        <result property="date"    column="date"    />
+    </resultMap>
+
+    <sql id="selectNewsDutyTableVo">
+        select id, diriger, cadre, date from news_duty_table
+    </sql>
+
+    <select id="selectNewsDutyTableList" parameterType="NewsDutyTable" resultMap="NewsDutyTableResult">
+        <include refid="selectNewsDutyTableVo"/>
+        <where>  
+            <if test="diriger != null  and diriger != ''"> and diriger = #{diriger}</if>
+            <if test="cadre != null  and cadre != ''"> and cadre = #{cadre}</if>
+            <if test="date != null "> and date = #{date}</if>
+        </where>
+    </select>
+    
+    <select id="selectNewsDutyTableById" parameterType="Long" resultMap="NewsDutyTableResult">
+        <include refid="selectNewsDutyTableVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNewsDutyTable" parameterType="NewsDutyTable" useGeneratedKeys="true" keyProperty="id">
+        insert into news_duty_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="diriger != null">diriger,</if>
+            <if test="cadre != null">cadre,</if>
+            <if test="date != null">date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="diriger != null">#{diriger},</if>
+            <if test="cadre != null">#{cadre},</if>
+            <if test="date != null">#{date},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNewsDutyTable" parameterType="NewsDutyTable">
+        update news_duty_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="diriger != null">diriger = #{diriger},</if>
+            <if test="cadre != null">cadre = #{cadre},</if>
+            <if test="date != null">date = #{date},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNewsDutyTableById" parameterType="Long">
+        delete from news_duty_table where id = #{id}
+    </delete>
+
+    <delete id="deleteNewsDutyTableByIds" parameterType="String">
+        delete from news_duty_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
