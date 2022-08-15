@@ -12,8 +12,9 @@ public class SqlUtil
 {
     /**
      * 定义常用的 sql关键字
+     * 删除管道符 "|"左边的空格，空格会导致sql注入
      */
-    public static String SQL_REGEX = "select |insert |delete |update |drop |count |exec |chr |mid |master |truncate |char |and |declare ";
+    public static String SQL_REGEX = "select|insert|delete|update|drop|count|exec|chr|mid|master|truncate|char|and|declare";
 
     /**
      * 仅支持字母、数字、下划线、空格、逗号、小数点（支持多个字段排序）
