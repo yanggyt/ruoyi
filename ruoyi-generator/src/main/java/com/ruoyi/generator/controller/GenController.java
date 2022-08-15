@@ -207,6 +207,8 @@ public class GenController extends BaseController
                 if (sqlStatement instanceof MySqlCreateTableStatement)
                 {
                     MySqlCreateTableStatement createTableStatement = (MySqlCreateTableStatement) sqlStatement;
+                    //检查sql是否存在关键字
+                    SqlUtil.filterKeyword(createTableStatement.toString());
                     if (genTableService.createTable(createTableStatement.toString()))
                     {
                         String tableName = createTableStatement.getTableName().replaceAll("`", "");
