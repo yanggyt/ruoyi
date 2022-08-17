@@ -67,6 +67,16 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!-- 简报模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-news</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-news</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
