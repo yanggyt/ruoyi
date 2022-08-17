@@ -870,7 +870,7 @@ var table = {
                 }
                 top.layer.open({
                     type: 2,
-                    area: [width + 'px', height + 'px'],
+                    area: ['1200' + 'px', height + 'px'],
                     fix: false,
                     //不固定
                     maxmin: true,
