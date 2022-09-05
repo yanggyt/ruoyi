@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CommodityMapper">
+    
+    <resultMap type="Commodity" id="CommodityResult">
+        <result property="commodityNo"    column="commodity_no"    />
+        <result property="commodityId"    column="commodity_id"    />
+        <result property="fakeUnique"    column="fake_unique"    />
+        <result property="catalogNo"    column="catalog_no"    />
+        <result property="commodityClassNo"    column="commodity_class_no"    />
+        <result property="defMethodNo"    column="def_method_no"    />
+        <result property="datasheetReqd"    column="datasheet_reqd"    />
+        <result property="prntPartNo"    column="prnt_part_no"    />
+        <result property="unitId"    column="unit_id"    />
+        <result property="commodityCodeOrig"    column="commodity_code_orig"    />
+        <result property="approvalStatusNo"    column="approval_status_no"    />
+        <result property="stat"    column="stat"    />
+        <result property="defUsrId"    column="def_usr_id"    />
+        <result property="defDate"    column="def_date"    />
+        <result property="updUsrId"    column="upd_usr_id"    />
+        <result property="updDate"    column="upd_date"    />
+        <result property="specEntryNo"    column="spec_entry_no"    />
+    </resultMap>
+
+    <sql id="selectCommodityVo">
+        select commodity_no, commodity_id, fake_unique, catalog_no, commodity_class_no, def_method_no, datasheet_reqd, prnt_part_no, unit_id, commodity_code_orig, approval_status_no, stat, def_usr_id, def_date, upd_usr_id, upd_date, spec_entry_no from commodity
+    </sql>
+
+    <select id="selectCommodityList" parameterType="Commodity" resultMap="CommodityResult">
+        <include refid="selectCommodityVo"/>
+        <where>  
+            <if test="commodityId != null  and commodityId != ''"> and commodity_id = #{commodityId}</if>
+            <if test="fakeUnique != null "> and fake_unique = #{fakeUnique}</if>
+            <if test="catalogNo != null "> and catalog_no = #{catalogNo}</if>
+            <if test="commodityClassNo != null "> and commodity_class_no = #{commodityClassNo}</if>
+            <if test="defMethodNo != null "> and def_method_no = #{defMethodNo}</if>
+            <if test="datasheetReqd != null  and datasheetReqd != ''"> and datasheet_reqd = #{datasheetReqd}</if>
+            <if test="prntPartNo != null  and prntPartNo != ''"> and prnt_part_no = #{prntPartNo}</if>
+            <if test="unitId != null  and unitId != ''"> and unit_id = #{unitId}</if>
+            <if test="commodityCodeOrig != null  and commodityCodeOrig != ''"> and commodity_code_orig = #{commodityCodeOrig}</if>
+            <if test="approvalStatusNo != null "> and approval_status_no = #{approvalStatusNo}</if>
+            <if test="stat != null  and stat != ''"> and stat = #{stat}</if>
+            <if test="defUsrId != null  and defUsrId != ''"> and def_usr_id = #{defUsrId}</if>
+            <if test="defDate != null "> and def_date = #{defDate}</if>
+            <if test="updUsrId != null  and updUsrId != ''"> and upd_usr_id = #{updUsrId}</if>
+            <if test="updDate != null "> and upd_date = #{updDate}</if>
+            <if test="specEntryNo != null "> and spec_entry_no = #{specEntryNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectCommodityByCommodityNo" parameterType="Long" resultMap="CommodityResult">
+        <include refid="selectCommodityVo"/>
+        where commodity_no = #{commodityNo}
+    </select>
+        
+    <insert id="insertCommodity" parameterType="Commodity">
+        <selectKey keyProperty="commodityNo" resultType="long" order="BEFORE">
+            SELECT seq_commodity.NEXTVAL as commodityNo FROM DUAL
+        </selectKey>
+        insert into commodity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commodityNo != null">commodity_no,</if>
+            <if test="commodityId != null and commodityId != ''">commodity_id,</if>
+            <if test="fakeUnique != null">fake_unique,</if>
+            <if test="catalogNo != null">catalog_no,</if>
+            <if test="commodityClassNo != null">commodity_class_no,</if>
+            <if test="defMethodNo != null">def_method_no,</if>
+            <if test="datasheetReqd != null and datasheetReqd != ''">datasheet_reqd,</if>
+            <if test="prntPartNo != null and prntPartNo != ''">prnt_part_no,</if>
+            <if test="unitId != null and unitId != ''">unit_id,</if>
+            <if test="commodityCodeOrig != null">commodity_code_orig,</if>
+            <if test="approvalStatusNo != null">approval_status_no,</if>
+            <if test="stat != null and stat != ''">stat,</if>
+            <if test="defUsrId != null and defUsrId != ''">def_usr_id,</if>
+            <if test="defDate != null">def_date,</if>
+            <if test="updUsrId != null and updUsrId != ''">upd_usr_id,</if>
+            <if test="updDate != null">upd_date,</if>
+            <if test="specEntryNo != null">spec_entry_no,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commodityNo != null">#{commodityNo},</if>
+            <if test="commodityId != null and commodityId != ''">#{commodityId},</if>
+            <if test="fakeUnique != null">#{fakeUnique},</if>
+            <if test="catalogNo != null">#{catalogNo},</if>
+            <if test="commodityClassNo != null">#{commodityClassNo},</if>
+            <if test="defMethodNo != null">#{defMethodNo},</if>
+            <if test="datasheetReqd != null and datasheetReqd != ''">#{datasheetReqd},</if>
+            <if test="prntPartNo != null and prntPartNo != ''">#{prntPartNo},</if>
+            <if test="unitId != null and unitId != ''">#{unitId},</if>
+            <if test="commodityCodeOrig != null">#{commodityCodeOrig},</if>
+            <if test="approvalStatusNo != null">#{approvalStatusNo},</if>
+            <if test="stat != null and stat != ''">#{stat},</if>
+            <if test="defUsrId != null and defUsrId != ''">#{defUsrId},</if>
+            <if test="defDate != null">#{defDate},</if>
+            <if test="updUsrId != null and updUsrId != ''">#{updUsrId},</if>
+            <if test="updDate != null">#{updDate},</if>
+            <if test="specEntryNo != null">#{specEntryNo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCommodity" parameterType="Commodity">
+        update commodity
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="commodityId != null and commodityId != ''">commodity_id = #{commodityId},</if>
+            <if test="fakeUnique != null">fake_unique = #{fakeUnique},</if>
+            <if test="catalogNo != null">catalog_no = #{catalogNo},</if>
+            <if test="commodityClassNo != null">commodity_class_no = #{commodityClassNo},</if>
+            <if test="defMethodNo != null">def_method_no = #{defMethodNo},</if>
+            <if test="datasheetReqd != null and datasheetReqd != ''">datasheet_reqd = #{datasheetReqd},</if>
+            <if test="prntPartNo != null and prntPartNo != ''">prnt_part_no = #{prntPartNo},</if>
+            <if test="unitId != null and unitId != ''">unit_id = #{unitId},</if>
+            <if test="commodityCodeOrig != null">commodity_code_orig = #{commodityCodeOrig},</if>
+            <if test="approvalStatusNo != null">approval_status_no = #{approvalStatusNo},</if>
+            <if test="stat != null and stat != ''">stat = #{stat},</if>
+            <if test="defUsrId != null and defUsrId != ''">def_usr_id = #{defUsrId},</if>
+            <if test="defDate != null">def_date = #{defDate},</if>
+            <if test="updUsrId != null and updUsrId != ''">upd_usr_id = #{updUsrId},</if>
+            <if test="updDate != null">upd_date = #{updDate},</if>
+            <if test="specEntryNo != null">spec_entry_no = #{specEntryNo},</if>
+        </trim>
+        where commodity_no = #{commodityNo}
+    </update>
+
+    <delete id="deleteCommodityByCommodityNo" parameterType="Long">
+        delete from commodity where commodity_no = #{commodityNo}
+    </delete>
+
+    <delete id="deleteCommodityByCommodityNos" parameterType="String">
+        delete from commodity where commodity_no in 
+        <foreach item="commodityNo" collection="array" open="(" separator="," close=")">
+            #{commodityNo}
+        </foreach>
+    </delete>
+</mapper>

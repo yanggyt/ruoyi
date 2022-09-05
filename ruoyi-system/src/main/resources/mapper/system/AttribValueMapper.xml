@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AttribValueMapper">
+    
+    <resultMap type="AttribValue" id="AttribValueResult">
+        <result property="attribValueNo"    column="attrib_value_no"    />
+        <result property="valueText"    column="value_text"    />
+        <result property="catalogNo"    column="catalog_no"    />
+        <result property="attribEquivSetNo"    column="attrib_equiv_set_no"    />
+        <result property="attribRepresentNo"    column="attrib_represent_no"    />
+        <result property="defUsrId"    column="def_usr_id"    />
+        <result property="defDate"    column="def_date"    />
+        <result property="updUsrId"    column="upd_usr_id"    />
+        <result property="updDate"    column="upd_date"    />
+    </resultMap>
+
+    <sql id="selectAttribValueVo">
+        select attrib_value_no, value_text, catalog_no, attrib_equiv_set_no, attrib_represent_no, def_usr_id, def_date, upd_usr_id, upd_date from attrib_value
+    </sql>
+
+    <select id="selectAttribValueList" parameterType="AttribValue" resultMap="AttribValueResult">
+        <include refid="selectAttribValueVo"/>
+        <where>  
+            <if test="valueText != null  and valueText != ''"> and value_text = #{valueText}</if>
+            <if test="catalogNo != null "> and catalog_no = #{catalogNo}</if>
+            <if test="attribEquivSetNo != null "> and attrib_equiv_set_no = #{attribEquivSetNo}</if>
+            <if test="attribRepresentNo != null "> and attrib_represent_no = #{attribRepresentNo}</if>
+            <if test="defUsrId != null  and defUsrId != ''"> and def_usr_id = #{defUsrId}</if>
+            <if test="defDate != null "> and def_date = #{defDate}</if>
+            <if test="updUsrId != null  and updUsrId != ''"> and upd_usr_id = #{updUsrId}</if>
+            <if test="updDate != null "> and upd_date = #{updDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectAttribValueByAttribValueNo" parameterType="Long" resultMap="AttribValueResult">
+        <include refid="selectAttribValueVo"/>
+        where attrib_value_no = #{attribValueNo}
+    </select>
+    <select id="selectByAttrib" resultType="map">
+       <!-- select    t.attrib_no,av.attrib_value_no,av.value_text,av.attrib_equiv_set_no,av.attrib_represent_no
+        from ATTRIB_VALUE av
+        join attrib_represent t
+        on av.attrib_represent_no = t.attrib_represent_no
+        join represent_type r
+        on r.represent_type_no = t.represent_type_no
+        where
+        <if test="attrib_no != null">t.attrib_no = #{attrib_no}</if>
+        &lt;!&ndash;and t.attrib_represent_no=133&ndash;&gt;
+        &lt;!&ndash;属性值默认取中文长描述ATTR_LONG_TEXT_CN&ndash;&gt;
+        and r.represent_type_id='ATTR_LONG_TEXT_CN'
+        order by ATTRIB_EQUIV_SET_NO,t.ATTRIB_REPRESENT_NO-->
+        select   to_char(listagg(av.attrib_value_no,'@@@')) ids, to_char(listagg(r.represent_type_id||'@'||av.value_text,'@@@')) value,av.attrib_equiv_set_no
+        from ATTRIB_VALUE av
+        join attrib_represent t
+        on av.attrib_represent_no = t.attrib_represent_no
+        join represent_type r
+        on r.represent_type_no = t.represent_type_no
+        where
+        <if test="attrib_no != null">t.attrib_no = #{attrib_no}</if>
+        group by av.attrib_equiv_set_no
+        order by ATTRIB_EQUIV_SET_NO
+
+    </select>
+    <select id="selectPropertyFormulaByTypeId" resultType="map">
+        select distinct  p.free_text,e.seq_no, e.entity_property_no, e.entity_property_id, e.descr
+        from ENTITY_PROPERTY e
+        join property_formula_detail t
+        on e.entity_property_no = t.entity_property_no
+        join  property_formula p on t.property_formula_no=p.property_formula_no
+        <if test="class_no != null">where t.class_no = #{class_no}</if>
+        order by  e.seq_no
+    </select>
+    <select id="selectPropertyFormulaByTypeAndProperty" resultType="map">
+        select q.free_text,
+        e.entity_property_no,
+        e.entity_property_id,
+        e.descr,
+        a.attrib_no,
+        a.class_attrib_id,
+        type.represent_type_id,
+        t.seq_no,
+        a.descr,
+        a.seq_no,
+        a.attrib_equiv_set_no
+        from property_formula q
+        join property_formula_detail t
+        on q.property_formula_no = t.property_formula_no
+        join attrib_represent ar
+        on ar.attrib_represent_no = t.attrib_represent_no
+        join represent_type type
+        on type.represent_type_no = ar.represent_type_no
+        join ENTITY_PROPERTY e
+        on e.entity_property_no = t.entity_property_no
+        join class_attrib a
+        on t.class_attrib_no = a.class_attrib_no
+        <if test="class_no != null">where t.class_no = #{class_no}</if>
+        <if test="entity_property_no != null">and e.entity_property_no = #{entity_property_no}</if>
+        order by q.entity_property_no, t.seq_no
+    </select>
+
+    <insert id="insertAttribValue" parameterType="AttribValue">
+        <selectKey keyProperty="attribValueNo" resultType="long" order="BEFORE">
+            SELECT seq_attrib_value.NEXTVAL as attribValueNo FROM DUAL
+        </selectKey>
+        insert into attrib_value
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="attribValueNo != null">attrib_value_no,</if>
+            <if test="valueText != null">value_text,</if>
+            <if test="catalogNo != null">catalog_no,</if>
+            <if test="attribEquivSetNo != null">attrib_equiv_set_no,</if>
+            <if test="attribRepresentNo != null">attrib_represent_no,</if>
+            <if test="defUsrId != null and defUsrId != ''">def_usr_id,</if>
+            <if test="defDate != null">def_date,</if>
+            <if test="updUsrId != null and updUsrId != ''">upd_usr_id,</if>
+            <if test="updDate != null">upd_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="attribValueNo != null">#{attribValueNo},</if>
+            <if test="valueText != null">#{valueText},</if>
+            <if test="catalogNo != null">#{catalogNo},</if>
+            <if test="attribEquivSetNo != null">#{attribEquivSetNo},</if>
+            <if test="attribRepresentNo != null">#{attribRepresentNo},</if>
+            <if test="defUsrId != null and defUsrId != ''">#{defUsrId},</if>
+            <if test="defDate != null">#{defDate},</if>
+            <if test="updUsrId != null and updUsrId != ''">#{updUsrId},</if>
+            <if test="updDate != null">#{updDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAttribValue" parameterType="AttribValue">
+        update attrib_value
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="valueText != null">value_text = #{valueText},</if>
+            <if test="catalogNo != null">catalog_no = #{catalogNo},</if>
+            <if test="attribEquivSetNo != null">attrib_equiv_set_no = #{attribEquivSetNo},</if>
+            <if test="attribRepresentNo != null">attrib_represent_no = #{attribRepresentNo},</if>
+            <if test="defUsrId != null and defUsrId != ''">def_usr_id = #{defUsrId},</if>
+            <if test="defDate != null">def_date = #{defDate},</if>
+            <if test="updUsrId != null and updUsrId != ''">upd_usr_id = #{updUsrId},</if>
+            <if test="updDate != null">upd_date = #{updDate},</if>
+        </trim>
+        where attrib_value_no = #{attribValueNo}
+    </update>
+
+    <delete id="deleteAttribValueByAttribValueNo" parameterType="Long">
+        delete from attrib_value where attrib_value_no = #{attribValueNo}
+    </delete>
+
+    <delete id="deleteAttribValueByAttribValueNos" parameterType="String">
+        delete from attrib_value where attrib_value_no in 
+        <foreach item="attribValueNo" collection="array" open="(" separator="," close=")">
+            #{attribValueNo}
+        </foreach>
+    </delete>
+</mapper>

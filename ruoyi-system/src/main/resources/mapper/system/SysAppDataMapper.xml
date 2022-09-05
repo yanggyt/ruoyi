@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysAppDataMapper">
+    
+    <resultMap type="SysAppData" id="SysAppDataResult">
+        <result property="appDataId"    column="app_data_id"    />
+        <result property="appId"    column="app_id"    />
+        <result property="type"    column="type"    />
+        <result property="code"    column="code"    />
+        <result property="designDesc"    column="design_desc"    />
+        <result property="zhCnShortDesc"    column="zh_cn_short_desc"    />
+        <result property="zhCnLongDesc"    column="zh_cn_long_desc"    />
+        <result property="zhEnShortDesc"    column="zh_en_short_desc"    />
+        <result property="zhEnLongDesc"    column="zh_en_long_desc"    />
+        <result property="ruCnShortDesc"    column="ru_cn_short_desc"    />
+        <result property="ruCnLongDesc"    column="ru_cn_long_desc"    />
+        <result property="ruEnShortDesc"    column="ru_en_short_desc"    />
+        <result property="ruEnLongDesc"    column="ru_en_long_desc"    />
+        <result property="enCnShortDesc"    column="en_cn_short_desc"    />
+        <result property="enCnLongDesc"    column="en_cn_long_desc"    />
+        <result property="enEnShortDesc"    column="en_en_short_desc"    />
+        <result property="enEnLongDesc"    column="en_en_long_desc"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysAppDataVo">
+        select app_data_id, app_id, type, code, design_desc, zh_cn_short_desc, zh_cn_long_desc, zh_en_short_desc, zh_en_long_desc, ru_cn_short_desc, ru_cn_long_desc, ru_en_short_desc, ru_en_long_desc, en_cn_short_desc, en_cn_long_desc, en_en_short_desc, en_en_long_desc, status, create_by, create_time, update_by, update_time, remark from sys_app_data
+    </sql>
+
+    <select id="selectSysAppDataList" parameterType="SysAppData" resultMap="SysAppDataResult">
+        <include refid="selectSysAppDataVo"/>
+        <where>  
+            <if test="appId != null "> and app_id = #{appId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="designDesc != null  and designDesc != ''"> and design_desc like concat(concat('%', #{designDesc}), '%')</if>
+            <if test="zhCnShortDesc != null  and zhCnShortDesc != ''"> and zh_cn_short_desc like concat(concat('%', #{zhCnShortDesc}), '%')</if>
+            <if test="zhCnLongDesc != null  and zhCnLongDesc != ''"> and zh_cn_long_desc like concat(concat('%', #{zhCnLongDesc}), '%')</if>
+            <if test="zhEnShortDesc != null  and zhEnShortDesc != ''"> and zh_en_short_desc like concat(concat('%', #{zhEnShortDesc}), '%')</if>
+            <if test="zhEnLongDesc != null  and zhEnLongDesc != ''"> and zh_en_long_desc like concat(concat('%', #{zhEnLongDesc}), '%')</if>
+            <if test="ruCnShortDesc != null  and ruCnShortDesc != ''"> and ru_cn_short_desc like concat(concat('%', #{ruCnShortDesc}), '%')</if>
+            <if test="ruCnLongDesc != null  and ruCnLongDesc != ''"> and ru_cn_long_desc like concat(concat('%', #{ruCnLongDesc}), '%')</if>
+            <if test="ruEnShortDesc != null  and ruEnShortDesc != ''"> and ru_en_short_desc like concat(concat('%', #{ruEnShortDesc}), '%')</if>
+            <if test="ruEnLongDesc != null  and ruEnLongDesc != ''"> and ru_en_long_desc like concat(concat('%', #{ruEnLongDesc}), '%')</if>
+            <if test="enCnShortDesc != null  and enCnShortDesc != ''"> and en_cn_short_desc like concat(concat('%', #{enCnShortDesc}), '%')</if>
+            <if test="enCnLongDesc != null  and enCnLongDesc != ''"> and en_cn_long_desc like concat(concat('%', #{enCnLongDesc}), '%')</if>
+            <if test="enEnShortDesc != null  and enEnShortDesc != ''"> and en_en_short_desc like concat(concat('%', #{enEnShortDesc}), '%')</if>
+            <if test="enEnLongDesc != null  and enEnLongDesc != ''"> and en_en_long_desc like concat(concat('%', #{enEnLongDesc}), '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysAppDataByAppDataId" parameterType="Long" resultMap="SysAppDataResult">
+        <include refid="selectSysAppDataVo"/>
+        where app_data_id = #{appDataId}
+    </select>
+        
+    <insert id="insertSysAppData" parameterType="SysAppData">
+        insert into sys_app_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appDataId != null">app_data_id,</if>
+            <if test="appId != null">app_id,</if>
+            <if test="type != null">type,</if>
+            <if test="code != null">code,</if>
+            <if test="designDesc != null">design_desc,</if>
+            <if test="zhCnShortDesc != null">zh_cn_short_desc,</if>
+            <if test="zhCnLongDesc != null">zh_cn_long_desc,</if>
+            <if test="zhEnShortDesc != null">zh_en_short_desc,</if>
+            <if test="zhEnLongDesc != null">zh_en_long_desc,</if>
+            <if test="ruCnShortDesc != null">ru_cn_short_desc,</if>
+            <if test="ruCnLongDesc != null">ru_cn_long_desc,</if>
+            <if test="ruEnShortDesc != null">ru_en_short_desc,</if>
+            <if test="ruEnLongDesc != null">ru_en_long_desc,</if>
+            <if test="enCnShortDesc != null">en_cn_short_desc,</if>
+            <if test="enCnLongDesc != null">en_cn_long_desc,</if>
+            <if test="enEnShortDesc != null">en_en_short_desc,</if>
+            <if test="enEnLongDesc != null">en_en_long_desc,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appDataId != null">#{appDataId},</if>
+            <if test="appId != null">#{appId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="code != null">#{code},</if>
+            <if test="designDesc != null">#{designDesc},</if>
+            <if test="zhCnShortDesc != null">#{zhCnShortDesc},</if>
+            <if test="zhCnLongDesc != null">#{zhCnLongDesc},</if>
+            <if test="zhEnShortDesc != null">#{zhEnShortDesc},</if>
+            <if test="zhEnLongDesc != null">#{zhEnLongDesc},</if>
+            <if test="ruCnShortDesc != null">#{ruCnShortDesc},</if>
+            <if test="ruCnLongDesc != null">#{ruCnLongDesc},</if>
+            <if test="ruEnShortDesc != null">#{ruEnShortDesc},</if>
+            <if test="ruEnLongDesc != null">#{ruEnLongDesc},</if>
+            <if test="enCnShortDesc != null">#{enCnShortDesc},</if>
+            <if test="enCnLongDesc != null">#{enCnLongDesc},</if>
+            <if test="enEnShortDesc != null">#{enEnShortDesc},</if>
+            <if test="enEnLongDesc != null">#{enEnLongDesc},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysAppData" parameterType="SysAppData">
+        update sys_app_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="designDesc != null">design_desc = #{designDesc},</if>
+            <if test="zhCnShortDesc != null">zh_cn_short_desc = #{zhCnShortDesc},</if>
+            <if test="zhCnLongDesc != null">zh_cn_long_desc = #{zhCnLongDesc},</if>
+            <if test="zhEnShortDesc != null">zh_en_short_desc = #{zhEnShortDesc},</if>
+            <if test="zhEnLongDesc != null">zh_en_long_desc = #{zhEnLongDesc},</if>
+            <if test="ruCnShortDesc != null">ru_cn_short_desc = #{ruCnShortDesc},</if>
+            <if test="ruCnLongDesc != null">ru_cn_long_desc = #{ruCnLongDesc},</if>
+            <if test="ruEnShortDesc != null">ru_en_short_desc = #{ruEnShortDesc},</if>
+            <if test="ruEnLongDesc != null">ru_en_long_desc = #{ruEnLongDesc},</if>
+            <if test="enCnShortDesc != null">en_cn_short_desc = #{enCnShortDesc},</if>
+            <if test="enCnLongDesc != null">en_cn_long_desc = #{enCnLongDesc},</if>
+            <if test="enEnShortDesc != null">en_en_short_desc = #{enEnShortDesc},</if>
+            <if test="enEnLongDesc != null">en_en_long_desc = #{enEnLongDesc},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where app_data_id = #{appDataId}
+    </update>
+
+    <delete id="deleteSysAppDataByAppDataId" parameterType="Long">
+        delete from sys_app_data where app_data_id = #{appDataId}
+    </delete>
+
+    <delete id="deleteSysAppDataByAppDataIds" parameterType="String">
+        delete from sys_app_data where app_data_id in 
+        <foreach item="appDataId" collection="array" open="(" separator="," close=")">
+            #{appDataId}
+        </foreach>
+    </delete>
+</mapper>

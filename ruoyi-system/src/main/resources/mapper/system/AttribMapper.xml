@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AttribMapper">
+    
+    <resultMap type="Attrib" id="AttribResult">
+        <result property="attribNo"    column="attrib_no"    />
+        <result property="attribId"    column="attrib_id"    />
+        <result property="catalogNo"    column="catalog_no"    />
+        <result property="calcParam"    column="calc_param"    />
+        <result property="physicalValueType"    column="physical_value_type"    />
+        <result property="physicalValueUnitId"    column="physical_value_unit_id"    />
+        <result property="descr"    column="descr"    />
+        <result property="commodityLevel"    column="commodity_level"    />
+        <result property="sizeRefLevel"    column="size_ref_level"    />
+        <result property="partLevel"    column="part_level"    />
+        <result property="modellerLevel"    column="modeller_level"    />
+        <result property="defScope"    column="def_scope"    />
+        <result property="stat"    column="stat"    />
+        <result property="attribCategoryNo"    column="attrib_category_no"    />
+        <result property="drawDisciplineNo"    column="draw_discipline_no"    />
+        <result property="defUsrId"    column="def_usr_id"    />
+        <result property="defDate"    column="def_date"    />
+        <result property="defApplNo"    column="def_appl_no"    />
+        <result property="updUsrId"    column="upd_usr_id"    />
+        <result property="updDate"    column="upd_date"    />
+        <result property="updApplNo"    column="upd_appl_no"    />
+        <result property="matchWeightingNo"    column="match_weighting_no"    />
+        <result property="isSystem"    column="is_system"    />
+        <result property="class_attrib_id"    column="class_attrib_id"    />
+    </resultMap>
+
+    <sql id="selectAttribVo">
+        select attrib_no, attrib_id, catalog_no, calc_param, physical_value_type, physical_value_unit_id, descr, commodity_level, size_ref_level, part_level, modeller_level, def_scope, stat, attrib_category_no, draw_discipline_no, def_usr_id, def_date, def_appl_no, upd_usr_id, upd_date, upd_appl_no, match_weighting_no, is_system from attrib
+    </sql>
+
+    <select id="selectAttribListByClasss" parameterType="Long" resultMap="AttribResult">
+        select t.* from CLASS_ATTRIB t
+        <where>
+            <if test="classsNo != null  and classsNo != ''"> and t.class_no = #{classsNo}</if>
+        </where>
+
+        and t.cat_entity_type_no = 1
+        order by t.seq_no
+    </select>
+    <select id="selectAttribList" parameterType="Attrib" resultMap="AttribResult">
+        <include refid="selectAttribVo"/>
+        <where>
+            <if test="attribId != null  and attribId != ''"> and attrib_id = #{attribId}</if>
+            <if test="catalogNo != null "> and catalog_no = #{catalogNo}</if>
+            <if test="calcParam != null  and calcParam != ''"> and calc_param = #{calcParam}</if>
+            <if test="physicalValueType != null  and physicalValueType != ''"> and physical_value_type = #{physicalValueType}</if>
+            <if test="physicalValueUnitId != null  and physicalValueUnitId != ''"> and physical_value_unit_id = #{physicalValueUnitId}</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="commodityLevel != null  and commodityLevel != ''"> and commodity_level = #{commodityLevel}</if>
+            <if test="sizeRefLevel != null  and sizeRefLevel != ''"> and size_ref_level = #{sizeRefLevel}</if>
+            <if test="partLevel != null  and partLevel != ''"> and part_level = #{partLevel}</if>
+            <if test="modellerLevel != null  and modellerLevel != ''"> and modeller_level = #{modellerLevel}</if>
+            <if test="defScope != null "> and def_scope = #{defScope}</if>
+            <if test="stat != null  and stat != ''"> and stat = #{stat}</if>
+            <if test="attribCategoryNo != null "> and attrib_category_no = #{attribCategoryNo}</if>
+            <if test="drawDisciplineNo != null "> and draw_discipline_no = #{drawDisciplineNo}</if>
+            <if test="defUsrId != null  and defUsrId != ''"> and def_usr_id = #{defUsrId}</if>
+            <if test="defDate != null "> and def_date = #{defDate}</if>
+            <if test="defApplNo != null "> and def_appl_no = #{defApplNo}</if>
+            <if test="updUsrId != null  and updUsrId != ''"> and upd_usr_id = #{updUsrId}</if>
+            <if test="updDate != null "> and upd_date = #{updDate}</if>
+            <if test="updApplNo != null "> and upd_appl_no = #{updApplNo}</if>
+            <if test="matchWeightingNo != null "> and match_weighting_no = #{matchWeightingNo}</if>
+            <if test="isSystem != null  and isSystem != ''"> and is_system = #{isSystem}</if>
+            <if test="class_attrib_id != null  and class_attrib_id != ''"> and class_attrib_id = #{class_attrib_id}</if>
+        </where>
+    </select>
+    
+    <select id="selectAttribByAttribNo" parameterType="Long" resultMap="AttribResult">
+        <include refid="selectAttribVo"/>
+        where attrib_no = #{attribNo}
+    </select>
+        
+    <insert id="insertAttrib" parameterType="Attrib">
+        <selectKey keyProperty="attribNo" resultType="long" order="BEFORE">
+            SELECT seq_attrib.NEXTVAL as attribNo FROM DUAL
+        </selectKey>
+        insert into attrib
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="attribNo != null">attrib_no,</if>
+            <if test="attribId != null and attribId != ''">attrib_id,</if>
+            <if test="catalogNo != null">catalog_no,</if>
+            <if test="calcParam != null">calc_param,</if>
+            <if test="physicalValueType != null">physical_value_type,</if>
+            <if test="physicalValueUnitId != null">physical_value_unit_id,</if>
+            <if test="descr != null and descr != ''">descr,</if>
+            <if test="commodityLevel != null and commodityLevel != ''">commodity_level,</if>
+            <if test="sizeRefLevel != null and sizeRefLevel != ''">size_ref_level,</if>
+            <if test="partLevel != null and partLevel != ''">part_level,</if>
+            <if test="modellerLevel != null and modellerLevel != ''">modeller_level,</if>
+            <if test="defScope != null">def_scope,</if>
+            <if test="stat != null and stat != ''">stat,</if>
+            <if test="attribCategoryNo != null">attrib_category_no,</if>
+            <if test="drawDisciplineNo != null">draw_discipline_no,</if>
+            <if test="defUsrId != null and defUsrId != ''">def_usr_id,</if>
+            <if test="defDate != null">def_date,</if>
+            <if test="defApplNo != null">def_appl_no,</if>
+            <if test="updUsrId != null and updUsrId != ''">upd_usr_id,</if>
+            <if test="updDate != null">upd_date,</if>
+            <if test="updApplNo != null">upd_appl_no,</if>
+            <if test="matchWeightingNo != null">match_weighting_no,</if>
+            <if test="isSystem != null and isSystem != ''">is_system,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="attribNo != null">#{attribNo},</if>
+            <if test="attribId != null and attribId != ''">#{attribId},</if>
+            <if test="catalogNo != null">#{catalogNo},</if>
+            <if test="calcParam != null">#{calcParam},</if>
+            <if test="physicalValueType != null">#{physicalValueType},</if>
+            <if test="physicalValueUnitId != null">#{physicalValueUnitId},</if>
+            <if test="descr != null and descr != ''">#{descr},</if>
+            <if test="commodityLevel != null and commodityLevel != ''">#{commodityLevel},</if>
+            <if test="sizeRefLevel != null and sizeRefLevel != ''">#{sizeRefLevel},</if>
+            <if test="partLevel != null and partLevel != ''">#{partLevel},</if>
+            <if test="modellerLevel != null and modellerLevel != ''">#{modellerLevel},</if>
+            <if test="defScope != null">#{defScope},</if>
+            <if test="stat != null and stat != ''">#{stat},</if>
+            <if test="attribCategoryNo != null">#{attribCategoryNo},</if>
+            <if test="drawDisciplineNo != null">#{drawDisciplineNo},</if>
+            <if test="defUsrId != null and defUsrId != ''">#{defUsrId},</if>
+            <if test="defDate != null">#{defDate},</if>
+            <if test="defApplNo != null">#{defApplNo},</if>
+            <if test="updUsrId != null and updUsrId != ''">#{updUsrId},</if>
+            <if test="updDate != null">#{updDate},</if>
+            <if test="updApplNo != null">#{updApplNo},</if>
+            <if test="matchWeightingNo != null">#{matchWeightingNo},</if>
+            <if test="isSystem != null and isSystem != ''">#{isSystem},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAttrib" parameterType="Attrib">
+        update attrib
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="attribId != null and attribId != ''">attrib_id = #{attribId},</if>
+            <if test="catalogNo != null">catalog_no = #{catalogNo},</if>
+            <if test="calcParam != null">calc_param = #{calcParam},</if>
+            <if test="physicalValueType != null">physical_value_type = #{physicalValueType},</if>
+            <if test="physicalValueUnitId != null">physical_value_unit_id = #{physicalValueUnitId},</if>
+            <if test="descr != null and descr != ''">descr = #{descr},</if>
+            <if test="commodityLevel != null and commodityLevel != ''">commodity_level = #{commodityLevel},</if>
+            <if test="sizeRefLevel != null and sizeRefLevel != ''">size_ref_level = #{sizeRefLevel},</if>
+            <if test="partLevel != null and partLevel != ''">part_level = #{partLevel},</if>
+            <if test="modellerLevel != null and modellerLevel != ''">modeller_level = #{modellerLevel},</if>
+            <if test="defScope != null">def_scope = #{defScope},</if>
+            <if test="stat != null and stat != ''">stat = #{stat},</if>
+            <if test="attribCategoryNo != null">attrib_category_no = #{attribCategoryNo},</if>
+            <if test="drawDisciplineNo != null">draw_discipline_no = #{drawDisciplineNo},</if>
+            <if test="defUsrId != null and defUsrId != ''">def_usr_id = #{defUsrId},</if>
+            <if test="defDate != null">def_date = #{defDate},</if>
+            <if test="defApplNo != null">def_appl_no = #{defApplNo},</if>
+            <if test="updUsrId != null and updUsrId != ''">upd_usr_id = #{updUsrId},</if>
+            <if test="updDate != null">upd_date = #{updDate},</if>
+            <if test="updApplNo != null">upd_appl_no = #{updApplNo},</if>
+            <if test="matchWeightingNo != null">match_weighting_no = #{matchWeightingNo},</if>
+            <if test="isSystem != null and isSystem != ''">is_system = #{isSystem},</if>
+        </trim>
+        where attrib_no = #{attribNo}
+    </update>
+
+    <delete id="deleteAttribByAttribNo" parameterType="Long">
+        delete from attrib where attrib_no = #{attribNo}
+    </delete>
+
+    <delete id="deleteAttribByAttribNos" parameterType="String">
+        delete from attrib where attrib_no in 
+        <foreach item="attribNo" collection="array" open="(" separator="," close=")">
+            #{attribNo}
+        </foreach>
+    </delete>
+</mapper>
