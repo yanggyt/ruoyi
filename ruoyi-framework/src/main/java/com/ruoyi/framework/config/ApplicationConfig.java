@@ -1,6 +1,8 @@
 package com.ruoyi.framework.config;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
@@ -16,5 +18,21 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @MapperScan("com.ruoyi.**.mapper")
 public class ApplicationConfig
 {
+    /** 服务器的HTTP端口 */
+    @Value("${server.port}")
+    public String port;
 
+    /** 应用的访问路径 */
+    @Value("${server.servlet.context-path}")
+    public String path;
+
+    /**
+     * 设置系统配置
+     */
+    @Bean
+    public void setSystemProperty()
+    {
+        System.setProperty("server.port", port);
+        System.setProperty("server.servlet.context-path", path);
+    }
 }
