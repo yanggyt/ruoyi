@@ -51,6 +51,10 @@
 演示地址：http://ruoyi.vip  
 文档地址：http://doc.ruoyi.vip
 
+## 在 Cloud IDE 中查看代码
+
+[https://idegitee.com/y_project/RuoYi](https://idegitee.com/y_project/RuoYi)
+
 ## 演示图
 
 <table>
