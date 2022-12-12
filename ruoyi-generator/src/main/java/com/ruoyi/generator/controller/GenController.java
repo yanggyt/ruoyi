@@ -199,7 +199,6 @@ public class GenController extends BaseController
     {
         try
         {
-            SqlUtil.filterKeyword(sql);
             List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, DbType.mysql);
             List<String> tableNames = new ArrayList<>();
             for (SQLStatement sqlStatement : sqlStatements)
@@ -207,6 +206,8 @@ public class GenController extends BaseController
                 if (sqlStatement instanceof MySqlCreateTableStatement)
                 {
                     MySqlCreateTableStatement createTableStatement = (MySqlCreateTableStatement) sqlStatement;
+                    // 关键字过滤
+                    SqlUtil.filterKeyword(createTableStatement.toString());
                     if (genTableService.createTable(createTableStatement.toString()))
                     {
                         String tableName = createTableStatement.getTableName().replaceAll("`", "");
