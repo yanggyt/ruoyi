@@ -157,7 +157,6 @@
 		        {
 		        	visible: editFlag == 'hidden' ? false : true,
 		        	title: '用户状态',
-		        	align: 'center',
 		        	formatter: function (value, row, index) {
 		        		return statusTools(row);
 		        	}
@@ -169,7 +168,6 @@
 		        },
 		        {
 		            title: '操作',
-		            align: 'center',
 		            formatter: function(value, row, index) {
 		                if (row.userId != 1) {
 		                	var actions = [];
