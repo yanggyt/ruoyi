@@ -687,7 +687,8 @@ public class ExcelUtil<T>
     {
         int startNo = index * sheetSize;
         int endNo = Math.min(startNo + sheetSize, list.size());
-        int rowNo = (1 + rownum) - startNo;
+        int tempNum = (index == 0) ? 2 : 1;
+        int rowNo = (tempNum + rownum) - rownum ;
         for (int i = startNo; i < endNo; i++)
         {
             rowNo = isSubList() ? (i > 1 ? rowNo + 1 : rowNo + i) : i + 1 + rownum - startNo;
