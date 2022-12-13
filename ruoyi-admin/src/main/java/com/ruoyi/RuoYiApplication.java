@@ -4,6 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  * 启动程序
  * 
@@ -12,7 +15,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 public class RuoYiApplication
 {
-    public static void main(String[] args)
+    public static void main(String[] args) throws UnknownHostException
     {
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(RuoYiApplication.class, args);
@@ -26,5 +29,12 @@ public class RuoYiApplication
                 " |  | \\ `'   /|   `-'  /           \n" +
                 " |  |  \\    /  \\      /           \n" +
                 " ''-'   `'-'    `-..-'              ");
+        String ip = InetAddress.getLocalHost().getHostAddress();
+        String port = System.getProperty("server.port");
+        String path = System.getProperty("server.servlet.context-path");
+        String url = "http://" + ip + ":" + port + path;
+        String swaggerPrefix = path.endsWith("/") ? "" : "/";
+        System.out.println("后台管理地址：" + url);
+        System.out.println("Swagger地址(需登录)：" + url + swaggerPrefix + "swagger-ui/index.html");
     }
 }
