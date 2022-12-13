@@ -111,6 +111,11 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public int updateConfig(SysConfig config)
     {
+        SysConfig search = new SysConfig();
+        search.setConfigId(config.getConfigId());
+        search = configMapper.selectConfig(search);
+        CacheUtils.remove(getCacheName(), getCacheKey(search.getConfigKey()));
+
         int row = configMapper.updateConfig(config);
         if (row > 0)
         {
