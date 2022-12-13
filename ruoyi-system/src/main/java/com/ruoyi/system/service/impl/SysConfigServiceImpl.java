@@ -103,6 +103,11 @@ public class SysConfigServiceImpl implements ISysConfigService
     }
 
     /**
+     * @date 2022/10/17
+     * @description 更新sys config的时候把缓存里面的数据也整理一下
+     * @author Midya
+     *
+     *
      * 修改参数配置
      * 
      * @param config 参数配置信息
@@ -111,6 +116,13 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public int updateConfig(SysConfig config)
     {
+        // 整理缓存
+        SysConfig temp = new SysConfig();
+        temp.setConfigId(config.getConfigId());
+        String configKey = configMapper.selectConfig(temp).getConfigKey();
+        CacheUtils.remove(getCacheName(),getCacheKey(configKey));
+
+        //
         int row = configMapper.updateConfig(config);
         if (row > 0)
         {

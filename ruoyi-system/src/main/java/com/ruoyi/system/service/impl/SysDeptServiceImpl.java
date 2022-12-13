@@ -146,7 +146,7 @@ public class SysDeptServiceImpl implements ISysDeptService
     }
 
     /**
-     * 查询部门人数
+     * 根据parentId查询子部门个数
      * 
      * @param parentId 部门ID
      * @return 结果
