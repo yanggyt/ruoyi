@@ -1,8 +1,16 @@
 /*this is basic form validation using for validation person's basic information author:Clara Guo data:2017/07/20*/
 $(document).ready(function(){
 	$.validator.setDefaults({       
-		  submitHandler: function(form) {    
-		 		form.submit();    
+        focusInvalid:true,
+		onfocusout: false,
+	    invalidHandler: function(form, validator) {
+	        var errors = validator.numberOfInvalids();
+	        if (errors) {                    
+	            validator.errorList[0].element.focus();
+	        }
+	    },
+		submitHandler: function(form) {    
+		 	form.submit();    
 		}       
 	});  
 	//手机号码验证身份证正则合并：(^\d{15}$)|(^\d{17}([0-9]|X)$)
