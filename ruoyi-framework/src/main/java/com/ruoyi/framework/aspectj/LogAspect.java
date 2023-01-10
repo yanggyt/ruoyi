@@ -2,8 +2,12 @@ package com.ruoyi.framework.aspectj;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.annotation.IgnoreTarget;
+import com.ruoyi.common.utils.IgnoreFieldsUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -182,27 +186,29 @@ public class LogAspect
     /**
      * 参数拼装
      */
-    private String argsArrayToString(Object[] paramsArray)
-    {
-        String params = "";
-        if (paramsArray != null && paramsArray.length > 0)
-        {
-            for (Object o : paramsArray)
-            {
-                if (StringUtils.isNotNull(o) && !isFilterObject(o))
-                {
-                    try
-                    {
-                        Object jsonObj = JSONObject.toJSONString(o, excludePropertyPreFilter());
-                        params += jsonObj.toString() + " ";
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
+    private String argsArrayToString(Object[] paramsArray) {
+        StringBuffer sb = new StringBuffer();
+        if (Objects.isNull(paramsArray) || paramsArray.length <= 0) {
+            return StringUtils.EMPTY;
+        }
+
+        for (Object o : paramsArray) {
+            if (Objects.isNull(o) || isFilterObject(o)) {
+                continue;
+            }
+
+            try {
+                PropertyPreFilters.MySimplePropertyPreFilter filter = excludePropertyPreFilter();
+
+                // 过滤注解需要忽略的字段
+                filter.addExcludes(IgnoreFieldsUtils.getIgnoreFields(o, "LogAspect"));
+                sb.append(JSONObject.toJSONString(o, filter));
+            } catch (Exception e) {
+                //TODO something
             }
         }
-        return params.trim();
+
+        return sb.toString().trim();
     }
 
     /**
@@ -236,7 +242,8 @@ public class LogAspect
                 return entry.getValue() instanceof MultipartFile;
             }
         }
+
         return o instanceof MultipartFile || o instanceof HttpServletRequest || o instanceof HttpServletResponse
-                || o instanceof BindingResult;
+                || o instanceof BindingResult || clazz.isAnnotationPresent(IgnoreTarget.class);
     }
 }
