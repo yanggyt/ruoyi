@@ -4,13 +4,14 @@ import com.ruoyi.common.annotation.IgnoreTarget;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * 类描述
  *
- * @author nengyuan
+ * @author ruoyi
  */
 public class IgnoreFieldsUtils {
     public static String[] getIgnoreFields(Object o, String target) {
@@ -28,11 +29,8 @@ public class IgnoreFieldsUtils {
                     list.add(field.getName());
                 }
 
-                for (String str : t) {
-                    if (StringUtils.equals(str, target)) {
-                        list.add(field.getName());
-                        break;
-                    }
+                if (Arrays.asList(t).contains(target)) {
+                    list.add(field.getName());
                 }
             }
         }
