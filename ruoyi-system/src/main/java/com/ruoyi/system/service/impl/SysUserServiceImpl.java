@@ -1,9 +1,13 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Validator;
+
+import com.ruoyi.common.core.domain.entity.SysDept;
+import com.ruoyi.system.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +28,6 @@ import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.domain.SysUserPost;
 import com.ruoyi.system.domain.SysUserRole;
-import com.ruoyi.system.mapper.SysPostMapper;
-import com.ruoyi.system.mapper.SysRoleMapper;
-import com.ruoyi.system.mapper.SysUserMapper;
-import com.ruoyi.system.mapper.SysUserPostMapper;
-import com.ruoyi.system.mapper.SysUserRoleMapper;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
 
@@ -61,6 +60,9 @@ public class SysUserServiceImpl implements ISysUserService
     private ISysConfigService configService;
 
     @Autowired
+    private SysDeptMapper deptMapper;
+
+    @Autowired
     protected Validator validator;
 
     /**
@@ -70,7 +72,7 @@ public class SysUserServiceImpl implements ISysUserService
      * @return 用户信息集合信息
      */
     @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
+//    @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserList(SysUser user)
     {
         return userMapper.selectUserList(user);
@@ -100,6 +102,16 @@ public class SysUserServiceImpl implements ISysUserService
     public List<SysUser> selectUnallocatedList(SysUser user)
     {
         return userMapper.selectUnallocatedList(user);
+    }
+
+    /**
+     * 根据用户code查询用户
+     * @param userCode
+     * @return
+     */
+    @Override
+    public SysUser selectUserByUserCode(String userCode){
+        return userMapper.selectUserByUserCode(userCode);
     }
 
     /**
@@ -347,17 +359,16 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
-     * 校验用户名称是否唯一
+     * 校验登录名称是否唯一
      * 
-     * @param user 用户信息
-     * @return 结果
+     * @param loginName 用户名
+     * @return
      */
     @Override
-    public String checkLoginNameUnique(SysUser user)
+    public String checkLoginNameUnique(String loginName)
     {
-        Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkLoginNameUnique(user.getLoginName());
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
+        int count = userMapper.checkLoginNameUnique(loginName);
+        if (count > 0)
         {
             return UserConstants.USER_NAME_NOT_UNIQUE;
         }
@@ -490,13 +501,39 @@ public class SysUserServiceImpl implements ISysUserService
         String password = configService.selectConfigByKey("sys.user.initPassword");
         for (SysUser user : userList)
         {
+
+            user.setLoginName(user.getLoginName().trim());
+            //密码为空设置密码为证件号后六位, 不为空用传过来的密码(后期可删除)
+            String cardNum = user.getUserCardNum();
+            if (StringUtils.isNotEmpty(cardNum) && cardNum.length() > 6) {
+                password = cardNum.trim().substring(cardNum.length() - 6);
+            }
+            user.setRoleIds(new Long[] {2L});
+            SysDept dept = new SysDept();
+            dept.setDeptName(user.getDeptname());
+            List<SysDept> deptList = deptMapper.selectDeptList(dept);
+            //部分人员没有设置部门
+            if (StringUtils.isNotEmpty(deptList)){
+                user.setDeptId(deptList.get(0).getDeptId());
+            } else {
+                //不存在就新增部门
+                SysDept dept1 = new SysDept();
+                dept1.setDeptName(user.getDeptname());
+                dept1.setAncestors("0,100");
+                dept1.setParentId(100L);
+                dept1.setOrderNum(1);
+                dept1.setCreateBy("admin");
+                dept1.setCreateTime(new Date());
+                deptMapper.insertDept(dept1);
+                user.setDeptId(dept1.getDeptId());
+            }
             try
             {
                 // 验证是否存在这个用户
                 SysUser u = userMapper.selectUserByLoginName(user.getLoginName());
                 if (StringUtils.isNull(u))
                 {
-                    BeanValidators.validateWithException(validator, user);
+//                    BeanValidators.validateWithException(validator, user);
                     user.setPassword(Md5Utils.hash(user.getLoginName() + password));
                     user.setCreateBy(operName);
                     this.insertUser(user);
@@ -506,8 +543,6 @@ public class SysUserServiceImpl implements ISysUserService
                 else if (isUpdateSupport)
                 {
                     BeanValidators.validateWithException(validator, user);
-                    checkUserAllowed(user);
-                    checkUserDataScope(user.getUserId());
                     user.setUpdateBy(operName);
                     this.updateUser(user);
                     successNum++;
@@ -549,5 +584,18 @@ public class SysUserServiceImpl implements ISysUserService
     public int changeStatus(SysUser user)
     {
         return userMapper.updateUser(user);
+    }
+
+    /**
+     * 查询所有在职用户
+     *
+     * @return 结果
+     */
+    @Override
+    public List<SysUser> selectAllUserList(){
+        SysUser user = new SysUser();
+        user.setStatus("0");
+        user.setUserCode("S0");
+        return userMapper.selectAllUserList(user);
     }
 }

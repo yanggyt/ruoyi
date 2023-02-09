@@ -1,5 +1,6 @@
 package com.ruoyi.common.core.domain.entity;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.*;
@@ -23,11 +24,39 @@ public class SysUser extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
-    @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
+    @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户序号")
     private Long userId;
+
+    /** 用户CODE */
+    @Excel(name = "用户编号", prompt = "用户编号")
+    private String userCode;
+
+    /** 证件号码 */
+    @Excel(name = "证件号码",type = Type.IMPORT)
+    private String userCardNum;
+
+    /** 主管ID */
+    @Excel(name = "主管ID")
+    private String zgsid;
+
+    /** 请款/电子签呈主管ID */
+    @Excel(name = "请款/电子签呈主管ID")
+    private String purchasesid;
+
+    /** 请购主管ID */
+    @Excel(name = "请购主管ID")
+    private String requisitionsid;
+
+    /** 工作地点 */
+    @Excel(name = "工作地点")
+    private String offices;
 
     /** 部门ID */
     @Excel(name = "部门编号", type = Type.IMPORT)
+    private String deptname;
+
+    /** 部门ID */
+//    @Excel(name = "部门编号", type = Type.IMPORT)
     private Long deptId;
 
     /** 部门父ID */
@@ -93,6 +122,8 @@ public class SysUser extends BaseEntity
     })
     private SysDept dept;
 
+    private String departmentCode;
+
     private List<SysRole> roles;
 
     /** 角色组 */
@@ -100,6 +131,15 @@ public class SysUser extends BaseEntity
 
     /** 岗位组 */
     private Long[] postIds;
+
+    /** 职位等级 */
+    private String jobCode;
+
+    /** 银行名称 */
+    private String bankName;
+
+    /** 银行卡号 */
+    private String bankNumber;
 
     public SysUser()
     {
@@ -354,31 +394,130 @@ public class SysUser extends BaseEntity
         this.postIds = postIds;
     }
 
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getUserCardNum() {
+        return userCardNum;
+    }
+
+    public void setUserCardNum(String userCardNum) {
+        this.userCardNum = userCardNum;
+    }
+
+    public String getZgsid() {
+        return zgsid;
+    }
+
+    public void setZgsid(String zgsid) {
+        this.zgsid = zgsid;
+    }
+
+    public String getPurchasesid() {
+        return purchasesid;
+    }
+
+    public void setPurchasesid(String purchasesid) {
+        this.purchasesid = purchasesid;
+    }
+
+    public String getRequisitionsid() {
+        return requisitionsid;
+    }
+
+    public void setRequisitionsid(String requisitionsid) {
+        this.requisitionsid = requisitionsid;
+    }
+
+    public String getOffices() {
+        return offices;
+    }
+
+    public void setOffices(String offices) {
+        this.offices = offices;
+    }
+
+    public String getDeptname() {
+        return deptname;
+    }
+
+    public void setDeptname(String deptname) {
+        this.deptname = deptname;
+    }
+
+    public String getJobCode() {
+        return jobCode;
+    }
+
+    public void setJobCode(String jobCode) {
+        this.jobCode = jobCode;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankNumber() {
+        return bankNumber;
+    }
+
+    public void setBankNumber(String bankNumber) {
+        this.bankNumber = bankNumber;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("userId", getUserId())
-            .append("deptId", getDeptId())
-            .append("loginName", getLoginName())
-            .append("userName", getUserName())
-            .append("userType", getUserType())
-            .append("email", getEmail())
-            .append("phonenumber", getPhonenumber())
-            .append("sex", getSex())
-            .append("avatar", getAvatar())
-            .append("password", getPassword())
-            .append("salt", getSalt())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("loginIp", getLoginIp())
-            .append("loginDate", getLoginDate())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .append("dept", getDept())
-			.append("roles", getRoles())
-            .toString();
+        return "SysUser{" +
+                "userId=" + userId +
+                ", userCode='" + userCode + '\'' +
+                ", userCardNum='" + userCardNum + '\'' +
+                ", zgsid='" + zgsid + '\'' +
+                ", purchasesid='" + purchasesid + '\'' +
+                ", requisitionsid='" + requisitionsid + '\'' +
+                ", offices='" + offices + '\'' +
+                ", deptname='" + deptname + '\'' +
+                ", deptId=" + deptId +
+                ", parentId=" + parentId +
+                ", roleId=" + roleId +
+                ", loginName='" + loginName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userType='" + userType + '\'' +
+                ", email='" + email + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", sex='" + sex + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", loginIp='" + loginIp + '\'' +
+                ", loginDate=" + loginDate +
+                ", pwdUpdateDate=" + pwdUpdateDate +
+                ", dept=" + dept +
+                ", roles=" + roles +
+                ", roleIds=" + Arrays.toString(roleIds) +
+                ", postIds=" + Arrays.toString(postIds) +
+                ", jobCode='" + jobCode + '\'' +
+                ", bankName='" + bankName + '\'' +
+                ", bankNumber='" + bankNumber + '\'' +
+                ", departmentCode='" + departmentCode + '\'' +
+                '}';
     }
 }

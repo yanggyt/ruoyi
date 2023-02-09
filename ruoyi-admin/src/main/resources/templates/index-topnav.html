@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>若依系统首页</title>
+    <title>矽力杰工作流审批系统</title>
     <!-- 避免IE使用兼容模式 -->
  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link th:href="@{favicon.ico}" rel="shortcut icon"/>
@@ -14,8 +14,8 @@
     <link th:href="@{/css/animate.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/style.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/skins.css?v=20200902}" rel="stylesheet"/>
-    <link th:href="@{/ruoyi/css/ry-ui.css?v=4.7.6}" rel="stylesheet"/>
-    <style type="text/css">.fixed-sidebar .nav:not(.navbar-toolbar)>li.active{border-left:0px!important;}</style>
+    <link th:href="@{/ruoyi/css/ry-ui.css?v=4.7.5}" rel="stylesheet"/>
+	<style type="text/css">.fixed-sidebar .nav:not(.navbar-toolbar)>li.active{border-left:0px!important;}</style>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" th:classappend="${isMobile} ? 'canvas-menu'" style="overflow: hidden">
 <div id="wrapper">
@@ -27,7 +27,7 @@
         </div>
         <a th:href="@{/index}">
             <li class="logo hidden-xs">
-                <span class="logo-lg">RuoYi</span>
+                <span class="logo-lg">Silergy</span>
             </li>
          </a>
         <div class="sidebar-collapse tab-content" id="side-menu">
@@ -318,8 +318,8 @@
 <script th:src="@{/js/jquery.contextMenu.min.js}"></script>
 <script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
 <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
-<script th:src="@{/ruoyi/js/ry-ui.js?v=4.7.6}"></script>
-<script th:src="@{/ruoyi/js/common.js?v=4.7.6}"></script>
+<script th:src="@{/ruoyi/js/ry-ui.js?v=4.7.5}"></script>
+<script th:src="@{/ruoyi/js/common.js?v=4.7.5}"></script>
 <script th:src="@{/ruoyi/index.js?v=20201208}"></script>
 <script th:src="@{/ajax/libs/fullscreen/jquery.fullscreen.js}"></script>
 <script th:src="@{/js/resize-tabs.js}"></script>
@@ -411,6 +411,37 @@ $(function() {
 	    	$(".navbar-toolbar li a").eq(0).click();
 	    }
 	}
+
+	if (getCookie("name") != null && getCookie("name") != "/") {
+		var url = getCookie("name");
+		var panelUrl;
+		var title;
+		if (url.search("system/paymentRequest/review") != -1) {
+			panelUrl = "/system/paymentRequest/todo";
+			title = "审核";
+		} else if (url.search("system/paymentRequest/detail") != -1) {
+			panelUrl = "/system/paymentRequest/create";
+			title = "详情";
+		} else if (url.search("system/requisition/review") != -1) {
+			panelUrl = "/system/requisition/todo";
+			title = "审核";
+		} else if (url.search("system/requisition/detail") != -1) {
+			panelUrl = "/system/requisition/create";
+			title = "详情";
+		} else if (url.search("/system/petition/audit") != -1) {
+			panelUrl = "/system/petition/todo";
+			title = "审核";
+		} else if (url.search("/system/petition/detail") != -1) {
+			panelUrl = "/system/petition/create";
+			title = "详情";
+		} else if (url.search("system/petition/addaudit") != -1) {
+			panelUrl = "/system/petition/todo";
+			title = "审核";
+		}
+		applyPath(panelUrl);
+		createMenuItem1(panelUrl, url, title);
+		delCookie("name");
+	}
 	
 	/* 初始密码提示 */
 	if([[${isDefaultModifyPwd}]]) {
@@ -440,6 +471,7 @@ $(function() {
 	
 	$("[data-toggle='tooltip']").tooltip();
 });
+
 </script>
 </body>
 </html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('批量审批')" />
+    <th:block th:include="include :: layout-latest-css" />
+</head>
+<body class="gray-bg" style="background-color: white">
+<div style="background-color: white;margin: 6% 6% 0 6%;width: 89%;height: 100%;border-radius: 5px;border: 1px solid white">
+    <form id="form">
+            <table class="text-center" style="width: 92%;border-bottom: 0px !important;">
+                <tr>
+                    <td class="text-center" style="width: 5%">
+                        <p class="text-success">审核</p>
+                    </td>
+                    <td style="width: 15%">
+                        <select class="form-control text-center noselect2" id="auditResult" required="true">
+                            <option value="1">同意</option>
+                            <option value="2">否决</option>
+                            <option value="3">退回重送</option>
+                            <option value="4">保留</option>
+                            <!--                    <option value="5">加签</option>-->
+                        </select>
+                    </td>
+                </tr>
+                <tr style="border-top: 10px solid white">
+                    <td colspan="2">
+                        <div>
+                            <input type="hidden" id="ids" th:value="${ids}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 5%">
+                        <p class="text-success">备注</p>
+                    </td>
+                    <td style="width: 15%">
+                        <textarea class="form-control" type="text" id="auditRemark"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2" style="width: 5%">
+                        <p class="text-warning" style="margin-left: 13%;margin-top: 7%">tips：保存未提交和撤回状态的单子不支持批量审核！</p>
+                    </td>
+                </tr>
+            </table>
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer" />
+<script type="text/javascript">
+    var prefix = ctx + "system/paymentRequest";
+
+    $("#form-customer-case-cancel").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var auditResults = {};
+            auditResults.ids = $("#ids").val();//ids
+            auditResults.result = $("#auditResult").val();//auditResult
+            auditResults.remark = $("#auditRemark").val();//auditRemark
+            $.ajax({
+                url: prefix + "/batchReview",
+                type: 'post',
+                data: JSON.stringify(auditResults),
+                dataType: "json",//预期服务器返回的数据类型
+                contentType: "application/json; charset=utf-8",
+                timeout: 30000,
+                beforeSend: function () {
+                    $.modal.loading("正在提交,请稍等......");
+                },
+                success: function (result) {
+                    $.operate.successCallback(result);
+                },
+                error: function (result) {
+                    $.modal.alertError(result.msg);
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

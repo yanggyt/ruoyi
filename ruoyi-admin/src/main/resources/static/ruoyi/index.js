@@ -277,6 +277,7 @@ $(function() {
             $(this).parent("li").addClass("selected");
         }
         setIframeUrl(dataUrl);
+        storage.set(menuName, dataUrl);
         if (dataUrl == undefined || $.trim(dataUrl).length == 0) return false;
 
         // 选项卡菜单已存在
@@ -338,6 +339,8 @@ $(function() {
         var closeTabId = $(this).parents('.menuTab').data('id');
         var currentWidth = $(this).parents('.menuTab').width();
         var panelUrl = $(this).parents('.menuTab').data('panel');
+        var closeName = $.trim($(this).parents('.menuTab').text());
+        storage.remove(closeName);
         // 当前元素处于活动状态
         if ($(this).parents('.menuTab').hasClass('active')) {
 
@@ -440,7 +443,7 @@ $(function() {
             $('.mainContent .RuoYi_iframe').each(function() {
                 if ($(this).data('id') == currentId) {
                     $(this).show().siblings('.RuoYi_iframe').hide();
-                    isRefresh = $.common.nullToDefault($(this).data('refresh'), false);
+                    isRefresh = $(this).data('refresh');
                     return false;
                 }
             });

@@ -63,7 +63,11 @@ public class SysProfileController extends BaseController
     public boolean checkPassword(String password)
     {
         SysUser user = getSysUser();
-        return passwordService.matches(user, password);
+        if (passwordService.matches(user, password))
+        {
+            return true;
+        }
+        return false;
     }
 
     @GetMapping("/resetPwd")

@@ -4,32 +4,34 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
-    <version>4.7.6</version>
+    <artifactId>WorkOrder</artifactId>
+    <version>4.7.5</version>
 
-    <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <name>NJ_WorkOrder</name>
+<!--    <url>http://www.ruoyi.vip</url>-->
+    <description>NJ_WorkOrder</description>
     
     <properties>
-        <ruoyi.version>4.7.6</ruoyi.version>
+        <ruoyi.version>4.7.5</ruoyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-        <shiro.version>1.10.1</shiro.version>
+        <shiro.version>1.9.1</shiro.version>
         <thymeleaf.extras.shiro.version>2.1.0</thymeleaf.extras.shiro.version>
-        <druid.version>1.2.15</druid.version>
+        <druid.version>1.2.11</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
-        <kaptcha.version>2.3.3</kaptcha.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
         <swagger.version>3.0.0</swagger.version>
-        <pagehelper.boot.version>1.4.6</pagehelper.boot.version>
+        <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
+        <pagehelper.boot.version>1.4.3</pagehelper.boot.version>
         <fastjson.version>1.2.83</fastjson.version>
-        <oshi.version>6.4.0</oshi.version>
+        <oshi.version>6.2.2</oshi.version>
         <commons.io.version>2.11.0</commons.io.version>
         <commons.fileupload.version>1.4</commons.fileupload.version>
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
+        <mail.version>1.6.2</mail.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -54,7 +56,7 @@
             
             <!-- 验证码 -->
             <dependency>
-                <groupId>pro.fessional</groupId>
+                <groupId>com.github.penggle</groupId>
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
             </dependency>
@@ -92,6 +94,13 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${bitwalker.version}</version>
+            </dependency>
+
+            <!-- SpringBoot集成mybatis框架 -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot.version}</version>
             </dependency>
 
             <!-- pagehelper 分页插件 -->

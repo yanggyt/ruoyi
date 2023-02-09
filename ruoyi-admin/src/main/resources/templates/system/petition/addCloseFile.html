@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('日期和时间')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="gray-bg">
+<form id="form-customer-case-cancel">
+    <div class="col-md-12">
+        <div class="form-group">
+            <p class="text-center">请选择文件：</p>
+            <input type="hidden" id="petitionId" th:value="*{petitionId}">
+            <div class="col-sm-9">
+                <input type="file" id="file" class="form-control" placeholder="请选择相关文件" required="true">
+            </div>
+        </div>
+    </div>
+</form>
+<th:block th:include="include :: footer" />
+<script type="text/javascript">
+    var prefix = ctx + "system/petition";
+
+    $("#form-customer-case-cancel").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            submitForm();
+        }
+    }
+
+    function submitForm() {
+        var formData = new FormData();
+        formData.append('file', $('#file')[0].files[0]);
+        formData.append('fileName', $('#file')[0].files[0].name);
+        formData.append('petitionId', $('#petitionId').val());
+        $.ajax({
+            url: prefix + "/addCloseFile/save",
+            type: 'post',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function () {
+                $.modal.loading("正在提交,请稍等......");
+            },
+            success: function(result) {
+                if (result.code == 0) {
+                    $.modal.reload();
+                };
+            }
+        });
+    }
+</script>
+</body>
+</html>

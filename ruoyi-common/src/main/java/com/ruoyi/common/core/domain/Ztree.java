@@ -1,5 +1,8 @@
 package com.ruoyi.common.core.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.io.Serializable;
 
 /**
@@ -100,5 +103,16 @@ public class Ztree implements Serializable
     public void setNocheck(boolean nocheck)
     {
         this.nocheck = nocheck;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
+                .append("pId", getpId())
+                .append("name", getName())
+                .append("title", getTitle())
+                .toString();
     }
 }

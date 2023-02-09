@@ -71,8 +71,8 @@ public class DataScopeAspect
             if (!currentUser.isAdmin())
             {
                 String permission = StringUtils.defaultIfEmpty(controllerDataScope.permission(), PermissionContextHolder.getContext());
-                dataScopeFilter(joinPoint, currentUser, controllerDataScope.deptAlias(),
-                        controllerDataScope.userAlias(), permission);
+                dataScopeFilter(joinPoint, currentUser, controllerDataScope.deptAlias(),                        controllerDataScope.userAlias(), permission);
+
             }
         }
     }

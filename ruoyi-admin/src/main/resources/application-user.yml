@@ -1,0 +1,427 @@
+#请款单相关审核信息
+PaymentRequest:
+    MAX_A4: 10000
+    #B非生成性支出(持续性)-经理最大金额
+    MAX_B4: 5000
+    #C非生成性支出(非持续性)-经理最大金额
+    MAX_C4: 2000
+    #D差旅费-经理最大金额
+    MAX_D4: 600
+    #E交际费-经理最大金额
+    MAX_E4: 600
+
+    #A生成性支出-总监最大金额
+    MAX_A3: 50000
+    #B非生成性支出(持续性)-总监最大金额
+    MAX_B3: 20000
+    #C非生成性支出(非持续性)-总监最大金额
+    MAX_C3: 10000
+    #D差旅费-总监最大金额
+    MAX_D3: 1000
+    #E交际费-总监最大金额
+    MAX_E3: 1000
+
+    #A生成性支出-执行总监最大金额
+    MAX_A2: 100000
+    #B非生成性支出(持续性)-执行总监最大金额
+    MAX_B2: 50000
+    #C非生成性支出(非持续性)-执行总监最大金额
+    MAX_C2: 20000
+    #D差旅费-执行总监最大金额
+    MAX_D2: 2000
+    #E交际费-执行总监最大金额
+    MAX_E2: 2000
+
+    #A生成性支出-总经理最大金额
+    MAX_A1: 100000000000
+    #B非生成性支出(持续性)-总经理最大金额
+    MAX_B1: 100000000000
+    #C非生成性支出(非持续性)-总经理最大金额
+    MAX_C1: 100000000000
+    #D差旅费-总经理最大金额
+    MAX_D1: 100000000000
+    #E交际费-总经理最大金额
+    MAX_E1: 100000000000
+
+    #陈总，核决主管
+    RULING1: S00001
+    RULINGNAME1: 陈总
+
+    #游总，核决主管
+    RULING2: S00002
+    RULINGNAME2: 游总
+
+    #杭州会计
+    HZ_ACCOUNTING: S01880,S01209,S01127
+    HZ_ACCOUNTING_NAME: 施航\项俏俊\赵莹莹
+
+    #开曼\矽望 会计
+    KM_ACCOUNTING: S01034,S01132
+    KM_ACCOUNTING_NAME: 施梅李\胡芳洁
+
+    #南京会计
+    NJ_ACCOUNTING: S01707
+    NJ_ACCOUNTING_NAME: 梅艳
+
+    #成都会计
+    CD_ACCOUNTING: S00379
+    CD_ACCOUNTING_NAME: 马海云
+
+    #西安会计
+    XA_ACCOUNTING: S01522,S00379
+    XA_ACCOUNTING_NAME: 阎雨馨\马海云
+
+    #上海\上海矽力杰微电子 会计
+    SH_ACCOUNTING: S00610
+    SH_ACCOUNTING_NAME: 付婷
+
+    #南京香港会计
+    NJXG_ACCOUNTING: S01296
+    NJXG_ACCOUNTING_NAME: 王晶
+
+    #台湾矽力杰会计
+    TW_ACCOUNTING: S00671,S00356
+    TW_ACCOUNTING_NAME: 黃雅鈴\韓詩蕙
+
+    #香港\萨摩亚 会计
+    XG_ACCOUNTING: S01123
+    XG_ACCOUNTING_NAME: 林佳怡
+
+    #南京香港会计
+    HF_ACCOUNTING: S01682
+    HF_ACCOUNTING_NAME: 高甜
+
+    #澳门会计
+    AM_ACCOUNTING: S00748
+    AM_ACCOUNTING_NAME: 江奕萱
+
+    #杭州总账
+    HZ_GENERAL_LEDGER: S00152
+    HZ_GENERAL_LEDGER_NAME: 王娜
+
+    #开曼\矽望 总账
+    KM_GENERAL_LEDGER: S00600
+    KM_GENERAL_LEDGER_NAME: 叶小仙
+
+    #南京总账
+    NJ_GENERAL_LEDGER: S00467
+    NJ_GENERAL_LEDGER_NAME: 张玲
+
+    #成都总账
+    CD_GENERAL_LEDGER: S01175
+    CD_GENERAL_LEDGER_NAME: 庞杭艳
+
+    #西安总账
+    XA_GENERAL_LEDGER: S00969
+    XA_GENERAL_LEDGER_NAME: 畅佩华
+
+    #上海总账
+    SH_GENERAL_LEDGER: S01175
+    SH_GENERAL_LEDGER_NAME: 庞杭艳
+
+    #上海矽力杰微电子 总账
+    SHW_GENERAL_LEDGER: S01296
+    SHW_GENERAL_LEDGER_NAME: 王晶
+
+    #南京香港 总账
+    NJXG_GENERAL_LEDGER: S01141
+    NJXG_GENERAL_LEDGER_NAME: 陈京晶
+
+    #台湾总账
+    TW_GENERAL_LEDGER: S00356
+    TW_GENERAL_LEDGER_NAME: 韓詩蕙
+
+    #台湾总账(特殊处理)
+    TW_GENERAL_LEDGER1: S01175
+    TW_GENERAL_LEDGER1_NAME: 庞杭艳
+
+    #香港\萨摩亚 总账
+    XG_GENERAL_LEDGER: S01175
+    XG_GENERAL_LEDGER_NAME: 庞杭艳
+
+    #合肥总账
+    HF_GENERAL_LEDGER: S01175
+    HF_GENERAL_LEDGER_NAME: 庞杭艳
+
+    #澳门总账
+    AM_GENERAL_LEDGER: S01175
+    AM_GENERAL_LEDGER_NAME: 庞杭艳
+
+
+#请购单相关审核信息
+Requisition:
+    #经理最大金额
+    MAX_4: 2000
+    #总监最大金额
+    MAX_3: 10000
+    #执行总监最大金额
+    MAX_2: 20000
+    #总经理最大金额
+    MAX_1: 100000000000
+
+    #杭州
+    hzBoss: S00002
+    hzBossName: 游总
+
+    #南京 南京香港 上海矽力杰微电子
+    shBoss: S00001
+    shBossName: 陈总
+
+    #hr 选了345的3个选项就要到这汇总审批
+    hrPrincipal: S00038
+    hrPrincipalName: 周婕
+
+    #杭州 办公设备 办公家具类 叶双双
+    deptDevice: S00245
+    deptDeviceName: 叶双双
+
+    #杭州 实验室固资类
+    laboratoryDevice: S00058
+    laboratoryDeviceName: 韦凌华
+
+    #杭州 耗材类 王燕
+    costDevice: S01194
+    costDeviceName: 王燕
+
+    #杭州 新员工入职hr叶丽丽进行签核(叶丽丽休假,改为安晓娟)
+    hrAssets: S01716
+    hrAssetsName: 安晓娟
+
+
+    #------------------ 台湾资产管理员/采购代表 ------------------#
+    #it桌面个人电脑 罗青松
+    itTwDevice: S00349
+    itTwDeviceName: 羅青松
+
+
+    #------------------ 南京资产管理员 ------------------#
+    #it桌面个人电脑
+    itNjDevice: S01183
+    itNjDeviceName: 赵晶
+
+    #测试设备\元器件 陈伏勇
+    testNJDevice: S00154
+    testNJDeviceName: 陈伏勇
+
+    #办公家具类\实验室固资类\耗材 彭芳
+    deptNJDevice: S01182
+    deptNJDeviceName: 彭芳
+
+    #工程 戎玲
+    engineeringNJ: S00269
+    engineeringNJName: 戎玲
+
+
+    #------------------ 西安资产管理员 ------------------#
+    #it桌面个人电脑
+    itXaDevice: S01425
+    itXaDeviceName: 刘旭林
+
+
+    #------------------ 合肥资产管理员 ------------------#
+    hfDevice: S01861
+    hfDeviceName: 赵莹
+
+
+    #------------------ 杭州采购经理 ------------------#
+    hzZhangLi: S01679
+    hzZhangLiName: 张丽
+
+
+    #------------------ 澳门采购经理 ------------------#
+    amFinanceAssets: S01737
+    amFinanceAssetsName: 李冬梅
+
+
+    #------------------ 预算管理人员 ------------------#
+    financeAssets: budget
+    financeAssetsName: 王晶
+
+
+    #------------------ 财务预算经理 ------------------#
+    budgetManager: budget_manager
+    budgetManagerName: 陈京晶
+
+
+    #------------------ 各地区总账 ------------------#
+    #杭州总账
+    hzZg: S00152
+    hzZgName: 王娜
+    #corp总账
+    corpZg: S00600
+    corpZgName: 叶小仙
+    #西安总账
+    xaZg: S00969
+    xaZgName: 畅佩华
+    #成都总账
+    cdZg: S00379
+    cdZgName: 马海云
+    #/上海总账
+    shZg: S00610
+    shZgName: 付婷
+    #韩国总账
+    hgZg: S00748
+    hgZgName: 江奕萱
+    #美国总账
+    mgZg: S01123
+    mgZgName: 林佳怡
+    #萨摩亚总账
+    smyZg: S01123
+    smyZgName: 林佳怡
+    #印度总账
+    ydZg: S01123
+    ydZgName: 林佳怡
+    #日本总账
+    rbZg: S01123
+    rbZgName: 林佳怡
+    #香港总账
+    xgZg: S01123
+    xgZgName: 林佳怡
+    #台湾矽力杰总账
+    twZg: S00356
+    twZgName: 韩诗蕙
+    #南京总账
+    njZg: S00467
+    njZgName: 张玲
+    #芃xi总账
+    pxZg: S00467
+    pxZgName: 张玲
+    #南京香港总账
+    njXgZg: S01296
+    njXgZgName: 王晶
+    #xi望总账
+    xwZg: S00107
+    xwZgName: 徐莉娟
+    #合肥总账
+    hfZg: S01682
+    hfZgName: 高甜
+    #澳门总账
+    amZg: S00748
+    amZgName: 江奕萱
+
+
+    #------------------ 各地区财务经理 ------------------#
+    #杭州 合肥 澳门 庞杭艳
+    hzJL: S01175
+    hzJlName: 庞杭艳
+    #南京经理 陈京晶
+    njJl: S01141
+    njJlName: 陈京晶
+
+#用户账号权限申请单
+itUserAuthorizationFrom:
+    #硬件
+    HZit: S00262,S01110
+    NJit: S01183
+    TWit: S00349
+    #软件
+    itEAS: S00110,S00248,S00623
+
+#系统功能需求单
+function:
+    # itmanager的code
+    itManagerCode: S00110
+    # it总监
+    itDirectorCode: S01686
+    # 总经理
+    generalManager: S00002
+
+#电子签呈
+petition:
+    #HR沈科如
+    hrSKR: S00774
+    #HR叶双双
+    hrYSS: S00245
+    #HR叶丽丽
+    hrYLL: S00137
+    #HR韦凌华
+    hrWLH: S00058
+    #周婕
+    hrZJ : S00038
+    #HR王燕
+    hrWY:  S01194
+    #黃奕晨
+    sealHYC: S00308
+    #戎玲
+    sealRL: S00269
+    #白永江
+    sealBYJ: S00111
+    #王卓亚
+    sealWZY: S00112
+    #马海云
+    sealMHY: S00379
+    #陈君
+    sealCJ: S00025
+    #宁卓
+    sealNZ: S01181
+    #王颖(罗梅姣休假)
+    fwLMJ: S01423
+    #fwLMJ: S00716
+    #财务经理庞杭燕
+    cwPHY: S01175
+    #财务经理陈京晶
+    cwCJJ: S01141
+    #财务王娜
+    cwWN: S00152
+    #财务徐丽娟
+    cwXLJ: S00107
+    #财务畅佩华
+    cwCPH: S00969
+    #财务尹言
+    cwYY: S00176
+    #财务林佳怡
+    cwLJY: S01123
+    #财务韓詩蕙
+    cwHSH: S00356
+    #财务张玲
+    cwZL: S00467
+    #财务夏晶
+    cwXJ: S01164
+    #corp潘冠呈
+    cwPGC: S00108
+    #corp 陈绍伟
+    cwCSW: S01151
+    #上海王菲
+    cwWF: S01109
+    #上海付婷
+    cwFT: S00610
+    #叶小仙
+    cwYXX: S00600
+    #王晶
+    cwWJ: S01296
+    #高甜
+    cwGT: S01682
+    #李冬梅
+    cwLDM: S01737
+
+
+
+
+money:
+    # 请购单需要核决的金额
+    purchase: 10000
+    #it设备晓琪哥
+    itDevice: S00262
+    #测试社保朱冰威
+    testDevice: S00099
+    #hr负责人，选了345的3个选项就要到这汇总审批
+    hrPrincipal: S00038
+    #办公设备叶双双 办公家具类
+    deptDevice: S00245
+    #办公设备韦凌华 实验室固资类
+    laboratoryDevice: S00058
+    #办公设备沈科如 耗材类
+    costDevice: S00774
+    #财务资产管理人员
+    financeAssets: S01192
+    #新员工入职hr叶丽丽进行签核
+    hrAssets: S00137
+    #工程是黄钺
+    engineering: S00386
+    #杭州boss
+    hzBoss: S00002
+
+
+errMsg:
+    email1: kailun.shi@silergycorp.com
+    email2: shiyang.zhuo@silergycorp.com,sensen.li@silergycorp.com

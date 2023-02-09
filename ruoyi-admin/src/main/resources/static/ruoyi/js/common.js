@@ -253,6 +253,7 @@ var closeItem = function(dataId){
 
 /** 创建选项卡 */
 function createMenuItem(dataUrl, menuName, isRefresh) {
+    storage.set(menuName, dataUrl);
     var panelUrl = window.frameElement.getAttribute('data-id'),
     dataIndex = $.common.random(1, 100),
     flag = true;
@@ -465,10 +466,9 @@ var sub = {
         }
         $("#" + table.options.id).bootstrapTable('remove', { field: subColumn, values: ids });
     },
-    delRowByIndex: function(value, tableId) {
-    	var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
+    delRowByIndex: function(value) {
     	sub.editRow();
-        $("#" + currentId).bootstrapTable('remove', { field: "index", values: [value] });
+        $("#" + table.options.id).bootstrapTable('remove', { field: "index", values: [value] });
         sub.editRow();
     },
     addRow: function(row, tableId) {
@@ -551,3 +551,57 @@ $.ajaxSetup({
         }
     }
 });
+
+/** 设置cookie */
+function setCookie(name,value)
+{
+    //设置自定义过期时间cookie
+    var min = 30;
+    var exp = new Date();
+    exp.setTime(exp.getTime() + min*24*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+
+/** 获取cookie */
+function getCookie(name)
+{
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)"); //正则匹配
+    if (arr = document.cookie.match(reg)) {
+        return unescape(arr[2]);
+    } else {
+        return null;
+    }
+}
+
+/** 清除cookie */
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval = getCookie(name);
+    if (cval != null) {
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+    }
+}
+/** 创建邮件跳转选项卡 */
+function createMenuItem1(panelUrl, dataUrl, menuName) {
+    var dataIndex = $.common.random(1,100);
+    if (dataUrl == undefined || $.trim(dataUrl).length == 0) return false;
+    var topWindow = $(window.parent.document);
+    storage.set(menuName, dataUrl);
+    // 选项卡菜单不存在
+    var str = '<a href="javascript:;" class="active menuTab noactive" data-id="' + dataUrl + '" data-panel="' + panelUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
+    $('.menuTab', topWindow).removeClass('active');
+
+    // 添加选项卡对应的iframe
+    var str1 = '<iframe class="RuoYi_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" data-panel="' + panelUrl + '" seamless></iframe>';
+    $('.mainContent', topWindow).find('iframe.RuoYi_iframe').hide().parents('.mainContent').append(str1);
+
+    window.parent.$.modal.loading("数据加载中，请稍候...");
+    $('.mainContent iframe:visible', topWindow).on('load', function() {
+        window.parent.$.modal.closeLoading();
+    });
+    // 添加选项卡
+    $('.menuTabs .page-tabs-content', topWindow).append(str);
+    // scrollToTab($('.menuTab.active', topWindow));
+}

@@ -43,6 +43,22 @@ public interface SysUserMapper
     public SysUser selectUserByLoginName(String userName);
 
     /**
+     * 通过用户姓名查询用户
+     *
+     * @param username 用户名
+     * @return 用户对象信息
+     */
+    public SysUser selectUserByUserName(String username);
+
+    /**
+     * 通过用户编号查询用户
+     *
+     * @param userCode 用户编号
+     * @return 用户对象信息
+     */
+    public SysUser selectUserByUserCode(String userCode);
+
+    /**
      * 通过手机号码查询用户
      * 
      * @param phoneNumber 手机号码
@@ -104,7 +120,7 @@ public interface SysUserMapper
      * @param loginName 登录名称
      * @return 结果
      */
-    public SysUser checkLoginNameUnique(String loginName);
+    public int checkLoginNameUnique(String loginName);
 
     /**
      * 校验手机号码是否唯一
@@ -121,4 +137,11 @@ public interface SysUserMapper
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+    /**
+     * 查询所有在职用户
+     *
+     * @return 结果
+     */
+    public List<SysUser> selectAllUserList(SysUser user);
 }

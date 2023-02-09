@@ -6,16 +6,33 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                # SKaiL测试库
+#                url: jdbc:mysql://10.0.7.57:3306/nj_workorder?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#                username: root
+#                password: root
+                # 正式库
+                url: jdbc:mysql://192.168.13.216:3306/workorder?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
                 username: root
-                password: password
+                password: Silergy1897
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
-                enabled: false
-                url: 
-                username: 
-                password: 
+                enabled: true
+                url: jdbc:mysql://192.168.5.31:3306/insidesales?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: optionapi
+                password: apiq1w2e3
+            slave2:
+                # 从数据源开关/默认关闭 # 项目编号
+                enabled: true
+                url: jdbc:mysql://192.168.5.16:3306/develop?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: develop
+                password: HSYSeLqxRQ7zwHDG
+            slave3:
+                # 从数据源开关/默认关闭 # 单点登录
+                enabled: true
+                url: jdbc:mysql://192.168.5.16:3306/onlinelogin?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: onlinelogin
+                password: onlineloginq1w2
             # 初始连接数
             initialSize: 5
             # 最小连接池数量
@@ -24,10 +41,6 @@ spring:
             maxActive: 20
             # 配置获取连接等待超时的时间
             maxWait: 60000
-            # 配置连接超时时间
-            connectTimeout: 30000
-            # 配置网络超时时间
-            socketTimeout: 60000
             # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
             timeBetweenEvictionRunsMillis: 60000
             # 配置一个连接在池中最小生存的时间，单位是毫秒

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('日期和时间')" />
+	<th:block th:include="include :: datetimepicker-css" />
+</head>
+
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="role-form">
+					<input type="hidden" id="orderId" name="orderId" th:value="${id}">
+					<div class="select-list">
+						<ul>
+							<li>
+								处理人：<input type="text" name="createBy"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+
+	        <div class="col-sm-12 select-table table-striped">
+			    <table id="bootstrap-table"></table>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+		var prefix = ctx + "system/requisition";
+
+		$(function() {
+			var options = {
+		        url: prefix + "/listHistory",
+		        queryParams: queryParams,
+		        modalName: "审批历史",
+		        columns: [
+				{
+					field: 'createBy',
+					title: '处理人'
+				}, 
+				{
+					field: 'auditResult',
+					title: '处理结果',
+					formatter: function (value, row, index) {
+						return statusTools(row);
+					}
+				},
+				{
+					field: 'remark',
+					title: '审批意见'
+				},
+				{
+					field: 'endorsementName',
+					title: '加签人员'
+				},	
+				{
+					field: 'createTime',
+					title: '处理时间'
+				}]
+		    };
+		    $.table.init(options);
+		});
+
+		function queryParams(params) {
+			var search = $.table.queryParams(params);
+			search.orderId = $("#orderId").val();
+			return search;
+		}
+
+		/* 添加用户-选择用户-提交 */
+		function submitHandler() {
+			$.modal.close();
+		}
+
+
+		/* 状态显示 */
+		function statusTools(row) {
+			if (row.auditResult == 1) {
+				return '同意';
+			} else if (row.auditResult == 2) {
+				return '否决';
+			} else if (row.auditResult == 3) {
+				return '退回重送';
+			} else if (row.auditResult == 4) {
+				return '保留';
+			} else if (row.auditResult == 5) {
+				return '加签';
+			}
+		}
+	</script>
+</body>
+</html>

@@ -36,6 +36,13 @@ public interface ISysUserService
     public List<SysUser> selectUnallocatedList(SysUser user);
 
     /**
+     * 根据用户code查询用户
+     * @param userCode
+     * @return
+     */
+    public SysUser selectUserByUserCode(String userCode);
+
+    /**
      * 通过用户名查询用户
      * 
      * @param userName 用户名
@@ -143,10 +150,10 @@ public interface ISysUserService
     /**
      * 校验用户名称是否唯一
      * 
-     * @param user 用户信息
+     * @param loginName 登录名称
      * @return 结果
      */
-    public String checkLoginNameUnique(SysUser user);
+    public String checkLoginNameUnique(String loginName);
 
     /**
      * 校验手机号码是否唯一
@@ -211,4 +218,11 @@ public interface ISysUserService
      * @return 结果
      */
     public int changeStatus(SysUser user);
+
+    /**
+     * 查询所有在职用户
+     *
+     * @return 结果
+     */
+    public List<SysUser> selectAllUserList();
 }

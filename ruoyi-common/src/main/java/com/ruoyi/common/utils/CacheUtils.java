@@ -2,6 +2,8 @@ package com.ruoyi.common.utils;
 
 import java.util.Iterator;
 import java.util.Set;
+
+import com.ruoyi.common.constant.Constants;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -193,5 +195,27 @@ public class CacheUtils
     public static String[] getCacheNames()
     {
         return ((EhCacheManager) cacheManager).getCacheManager().getCacheNames();
+    }
+
+
+    /**
+     * 设置cache key
+     *
+     * @param configKey 参数键
+     * @return 缓存键key
+     */
+    public static String getCacheKey(String cacheKey,String configKey)
+    {
+        return cacheKey + configKey;
+    }
+
+    /**
+     * 获取cache name
+     *
+     * @return 缓存名
+     */
+    public static String getCacheName(String cacheName)
+    {
+        return cacheName;
     }
 }

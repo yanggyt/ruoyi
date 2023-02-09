@@ -1,0 +1,1433 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html ;charset=utf-8"/>
+<head>
+    <th:block th:include="include :: header('日期和时间')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+</head>
+<link th:href="@{/ajax/libs/bootstrap-select/bootstrap-select.min.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <div class="container text-left">
+        <div class="row">
+            <div class="col-xs-3">
+                <img src="../static/img/silergy.jpg" th:src="@{/img/silergy.jpg}">
+            </div>
+            <div class="col-xs-7">
+                <h2 class="my-h2">
+                    矽力杰半导体技术（杭州）有限公司
+                </h2>
+                <ul class="list-inline">
+                    <li>
+                        <h2 class="my-h3">请购单</h2>
+                    </li>
+                    <li>
+                        <p class="my-div">
+                            <button type="button" class="btn btn-primary show-help">提示</button>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <form action="none" id="form-nonSaleRequisitionAdd-add">
+        <table class="my-table2" boder="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td colspan="6" style="width: 75%">
+
+                </td>
+                <td class="text-center" style="width: 10%">
+                    申购单号 NO：
+                </td>
+                <td style="width: 15%">
+                    <input type="text" style="border:none;background-color:transparent;"
+                           th:field="*{requisition.requisitionNo}"  class="form-control " disabled="true">
+                    <input type="hidden" id="is-close" th:value="${isClose}">
+                    <input type="hidden" id="requisitionId" th:value="${requisition.id}">
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="id" th:field="*{requisition.id}">
+        <input type="hidden" name="status" th:field="*{requisition.status}">
+        <div id="for-boder">
+            <table class="my-table">
+                <tbody style="text-align:right;background-color: #EEEEEE">
+                <!--////////////////            表头-->
+
+                <tr>
+                    <td class="text-center" style="width: 10%;">选择公司</td>
+                    <td style="width: 15%;">
+                        <select class="form-control change-h2" id="company" name="company" disabled="true">
+                            <option th:selected="${requisition.company == 5}" value="5">杭州</option>
+                            <option th:selected="${requisition.company == 6}" value="6">南京</option>
+                            <option th:selected="${requisition.company == 17}" value="17">成都</option>
+                            <option th:selected="${requisition.company == 7}" value="7">西安</option>
+                            <option th:selected="${requisition.company == 14}" value="14">上海矽力杰微电子</option>
+                            <option th:selected="${requisition.company == 1}" value="1">开曼</option>
+                            <option th:selected="${requisition.company == 19}" value="19">上海</option>
+                            <option th:selected="${requisition.company == 3}" value="3">韩国</option>
+                            <option th:selected="${requisition.company == 4}" value="4">美国</option>
+                            <option th:selected="${requisition.company == 9}" value="9">萨摩亚</option>
+                            <option th:selected="${requisition.company == 16}" value="16">印度</option>
+                            <option th:selected="${requisition.company == 15}" value="15">日本</option>
+                            <option th:selected="${requisition.company == 13}" value="13">香港</option>
+                            <option th:selected="${requisition.company == 12}" value="12">台湾矽力杰</option>
+                            <option th:selected="${requisition.company == 20}" value="20">南京香港</option>
+                            <option th:selected="${requisition.company == 21}" value="21">矽望</option>
+                            <option th:selected="${requisition.company == 23}" value="23">合肥</option>
+                            <option th:selected="${requisition.company == 24}" value="24">澳门</option>
+                        </select>
+                    </td>
+                    <td class="text-center" style="width: 10%;">员工编号<br></td>
+                    <td style="width: 15%;"><input id="employeeNo" name="employeeNo" class="form-control employeeNo"
+                                                   type="text" th:field="*{requisition.employeeNo}" required="true"
+                                                   disabled="true">
+                    </td>
+                    <td class="text-center" style="width: 10%;">员工姓名</td>
+                    <td style="width: 15%;"><input id="userName" name="userName" class="form-control"
+                                                   th:field="*{requisition.userName}" type="text" required="true" disabled="true"></td>
+                    <td class="text-center" style="width: 10%;">部门</td>
+                    <td style="width: 15%;"><input name="userDepartment" onclick="selectDeptTree()" id="treeName"
+                                                   class="form-control" th:field="*{requisition.userDepartment}"
+                                                   type="text" maxlength="200" required="true" disabled="true"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">申请类别</td>
+                    <td>
+                        <select class="form-control select-change-category select-change" name="typeOfApplication"
+                                required="true" disabled="true">
+                            <option value="">请选择</option>
+                            <option th:selected="${requisition.typeOfApplication == 1}" value="1">非销售性请购</option>
+                            <option th:selected="${requisition.typeOfApplication == 2}" value="2">固定资产</option>
+                        </select>
+                    </td>
+                    <td class="text-center">所属类别</td>
+                    <td>
+                        <select th:if="${requisition.typeOfApplication == 2}" class="form-control" name="category"
+                                id="category" required="true" disabled="true">
+                            <option th:selected="${requisition.category == 1}" value="1">预算内</option>
+                            <option th:selected="${requisition.category == 2}" value="2">预算外</option>
+                        </select>
+                        <select th:if="${requisition.typeOfApplication == 1}" class="form-control" name="category"
+                                id="category" required="true" disabled="true">
+                            <option th:selected="${requisition.category == 3}" value="1">新产品开发</option>
+                            <option th:selected="${requisition.category == 4}" value="2">其他</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        资产管理类别
+                    </td>
+                    <td>
+                        <select th:if="${requisition.typeOfApplication == 1}"
+                                class="form-control select-asset-management" name="assetManagement" required="true"
+                                id="assetManagement" disabled="true">
+                            <option value="">请选择</option>
+                            <option th:selected="${requisition.assetManagement == 5}" value="5">无</option>
+                            <option th:selected="${requisition.assetManagement == 6}" value="6">元器件</option>
+                            <option th:selected="${requisition.assetManagement == 7}" value="7">办公家具</option>
+                            <option th:selected="${requisition.assetManagement == 8}" value="8">办公用品类</option>
+                            <option th:selected="${requisition.assetManagement == 9}" value="9">工程维修改造</option>
+                        </select>
+                        <select th:if="${requisition.typeOfApplication == 2}"
+                                class="form-control select-asset-management" name="assetManagement" required="true"
+                                id="assetManagement" disabled="true">
+                            <option value="">请选择</option>
+                            <option th:selected="${requisition.assetManagement == 1}" value="1">测试设备类</option>
+                            <option th:selected="${requisition.assetManagement == 2}" value="2">IT桌面类</option>
+                            <option th:selected="${requisition.assetManagement == 3}" value="3">办公家具类</option>
+                            <option th:selected="${requisition.assetManagement == 4}" value="4">实验室桌椅</option>
+                            <option th:selected="${requisition.assetManagement == 10}" value="10">工程维修改造</option>
+                            <option th:selected="${requisition.assetManagement == 12}" value="12">个人电脑</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        办公室
+                    </td>
+                    <td>
+                        <input type="text" class="form-control office" th:field="*{requisition.office}" name="office"
+                               required="true" disabled="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 10%;">需求日期</td>
+                    <td style="width: 15%;">
+                        <div class="input-group date">
+                            <span class="input-group-addon" style="background-color: #eeeeee"><i class="fa fa-calendar"></i></span>
+                            <input type="text" name="userDate" class="form-control"
+                                   th:value="${#dates.format(requisition.userDate, 'yyyy-MM-dd')}"
+                                   placeholder="yyyy-mm-dd" required="true" disabled="true">
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        地区部门编号
+                    </td>
+                    <td>
+                        <input class="form-control departmentCode" id="departmentCode"
+                               th:field="*{requisition.departmentCode}" name="departmentCode" required="true" disabled="true">
+                    </td>
+                    <td class="text-center">
+                        是否新员工入职
+                    </td>
+                    <td>
+                        <select th:if="${requisition.assetManagement != 2}" id="newStaff" class="form-control"
+                                name="newStaff" required="true" disabled="true">
+                            <option value="">请选择</option>
+                            <option th:selected="${requisition.newStaff == 1}" value="1">是新员工入职</option>
+                            <option th:selected="${requisition.newStaff == 2}" value="2">不是新员工入职</option>
+                        </select>
+                        <select th:if="${requisition.assetManagement == 2}" id="newStaff" class="form-control"
+                                name="newStaff" required="true" disabled="true">
+                            <option value="">请选择</option>
+                            <option th:selected="${requisition.newStaff == 1}" value="1">是新员工入职</option>
+                            <option th:selected="${requisition.newStaff == 2}" value="2">不是新员工入职</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        新员工入职hr
+                    </td>
+                    <td>
+                        <input type="text" name="hrSign" th:field="*{requisition.hrSign}" class="form-control hrSign"
+                               disabled="true">
+                    </td>
+                </tr>
+                <tr id="element">
+                    <td class="text-center">
+                        产品线类别
+                    </td>
+                    <td class="text-center">
+                        <select class="type form-control select-change-product-line" id="productLine" name="productLine" disabled>
+                            <option value="">请选择</option>
+                            <option th:value="${requisition.productLine}" th:text="${requisition.productLine}" selected="true"></option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        产品线详细
+                    </td>
+                    <td class="text-center">
+                        <select class="router form-control" id="productLine1" name="productLine1" disabled>
+                            <option value="">请选择</option>
+                            <option th:value="${requisition.productLine1}" th:text="${requisition.productLine1}" selected="true"></option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <input th:field="*{requisition.productLineOther}" class="form-control productLineOther" id="productLineOther" name="productLineOther" disabled="true">
+                    </td>
+                    <td class="text-center">
+                        档案上传 <br>Upload File
+                    </td>
+                    <td class="text-center" style="background-color: white">
+                        <button type="button" th:onclick="fileList([[${requisition.id}]])">文件列表</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 10%;">
+                        请购原因
+                    </td>
+                    <td colspan="7">
+                        <textarea type="text" autoHeight="true" th:field="*{requisition.reasonForPurchase}"
+                                  name="reasonForPurchase" class="form-control" placeholder="请输入200字以内" disabled="true"></textarea>
+                    </td>
+                </tr>
+                <tr style="background-color: white">
+                    <td class="text-center">是否须比议价<br></td>
+                    <td>
+                        <select class="form-control select-change" id="priceComparison" name="priceComparison" required="true">
+                            <option value="">请选择</option>
+                            <option th:selected="${requisition.priceComparison == 1}" value="1">是</option>
+                            <option th:selected="${requisition.priceComparison == 2}" value="2">否</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        特殊原因说明
+                    </td>
+                    <td colspan="5">
+                        <div class="input-group" style="width: 96%">
+                            <textarea type="text" th:if="${#strings.isEmpty(requisition.priceComparison)}"
+                                      id="specialReason" name="specialReason" class="form-control" required="true"
+                                      disabled="true"></textarea>
+                            <textarea type="text" th:if="${requisition.priceComparison == 1}" id="specialReason"
+                                      name="specialReason" class="form-control" required="true" disabled="true"></textarea>
+                            <textarea type="text" th:if="${requisition.priceComparison == 2}" id="specialReason"
+                                      th:field="*{requisition.specialReason}" name="specialReason" class="form-control"
+                                      required="true"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="border" style="height: 34px;padding-top: 7px;padding-left: 5px">
+                <div class="col-md-6">
+                    <strong>购买产品说明</strong><span class="text-danger">&nbsp;（Tips：不完整的项目说明将不会被保存）</span>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button type="button" onclick="add1()"><i class="fa fa-plus-square"></i>添加一行</button>&nbsp;
+                    <!--                    <button type="button" onclick="del1()"><i class="fa fa-minus-square-o"></i>删除</button>-->
+                </div>
+            </div>
+            <table class="my-table operate-table1">
+                <thead>
+                <tr>
+                    <td style="width: 2.5%"></td>
+                    <td class="text-center" style="width: 12%">
+                        项目编号
+                    </td>
+                    <td class="text-center" style="width: 22.5%">
+                        购买产品名称
+                    </td>
+                    <td class="text-center" style="width: 35%">
+                        规格说明
+                    </td>
+                    <td class="text-center" style="width: 8%">
+                        购买数量
+                    </td>
+                    <td class="text-center" style="width: 10%">
+                        单价
+                    </td>
+                    <td class="text-center" style="width: 10%">
+                        金额
+                    </td>
+                </tr>
+                </thead>
+                <tbody style="text-align:right;" id="addColumn11">
+
+                <tr id="addColumn1" class="material1" th:each="requisitionDt1:${requisition.requisitionDt1List}">
+
+                    <td class="text-center"><a href="javascript:void(0)" class="operate-tr1"><i
+                            class="fa fa-minus-square-o"></i></a>
+                    </td>
+                    <td class="logo-error text-center">
+                        <select id="projectCode" class="form-control selectpicker projectCode" name="projectCode" data-live-search="true">
+                            <option value="">请选择</option>
+                            <option th:each="code:${projectCode}" th:value="${code}" th:text="${code}"
+                                    th:selected="${requisitionDt1.projectCode==code}"></option>
+                        </select>
+                    </td>
+                    <td><input class="form-control project-input text-center" id="projectName" type="text"
+                               th:value="${requisitionDt1.projectName}">
+                    </td>
+                    <td><textarea class="form-control text-center" autoHeight="true" type="text" id="specifications"
+                                  th:text="${requisitionDt1.specifications}"></textarea>
+                    </td>
+                    <td><input class="form-control text-center" type="text" onkeyup='checkInt(this)' id="quantity"
+                               th:value="${requisitionDt1.quantity}">
+                    </td>
+                    <td><input class="form-control text-center amount" type="text" id="unitPrice"
+                               th:value="${requisitionDt1.unitPrice}">
+                    </td>
+                    <td><input class="form-control text-center amount" type="text" id="amount"
+                               th:value="${requisitionDt1.amount}">
+                    </td>
+                </tr>
+                </tbody>
+                <tr>
+                    <td class="text-right" colspan="6">
+                        <b>合计金额：</b>
+                    </td>
+                    <td>
+                        <input id="sum" class="form-control text-center amount" th:value="${requisition.totalAmount}" name="sum">
+                    </td>
+                </tr>
+            </table>
+
+            <div class="border" style="height: 34px;padding-top: 7px;padding-left: 5px">
+                <div class="col-md-6">
+                    <strong>厂商比议价说明</strong><span class="text-danger">（Tips：不完整的厂商信息将不会被保存）</span>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button type="button" onclick="add2()"><i class="fa fa-plus-square"></i>添加一行</button>&nbsp;
+                    <!--                    <button type="button" onclick="del2()"><i class="fa fa-minus-square-o"></i>删除</button>&nbsp;-->
+                </div>
+            </div>
+            <table class="my-table operate-table2">
+                <thead>
+                <tr>
+                    <td style="width: 1%">
+
+                    </td>
+                    <td class="text-center" style="width: 2%">
+                        选中
+                    </td>
+                    <td class="text-center" style="width: 4%">
+                        供应商编号
+                    </td>
+                    <td class="text-center" style="width: 10%">
+                        供应商名称
+                    </td>
+                    <td class="text-center" style="width: 4%">
+                        交易币别
+                    </td>
+                    <td class="text-center" style="width: 5%">
+                        未税金额
+                    </td>
+                    <td class="text-center" style="width: 4%">
+                        税率
+                    </td>
+                    <td class="text-center" style="width: 5%">
+                        含税金额
+                    </td>
+                    <td class="text-center" style="width: 10%">
+                        备注
+                    </td>
+                </tr>
+                </thead>
+                <tbody style="text-align:right;" id="addColumn22">
+
+                <tr th:if="${#lists.isEmpty(requisition.requisitionDt2List)}" id="addColumn2" class="material2">
+                    <td class="text-center"><a href="javascript:void(0)" class="operate-tr2"><i
+                            class="fa fa-minus-square-o"></i></a></td>
+                    <td class="text-center">
+                        <input class="checkbox check" id="suppliers" value="1" type="checkbox"/>
+                    </td>
+                    <td class="hide">
+
+                    </td>
+                    <td>
+                        <input class="form-control text-center select-codeName-tree" id="suppliersCode" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control text-center" id="suppliersName" type="text">
+                    </td>
+                    <td>
+                        <select class="form-control" id="coin">
+                            <option value="">请选择</option>
+                            <option value="1">RMB</option>
+                            <option value="2">USD</option>
+                            <option value="3">TWD</option>
+                            <option value="4">HKD</option>
+                            <option value="5">KRW</option>
+                            <option value="6">MOP</option>
+                        </select>
+                    </td>
+                    <td><input class="form-control totalAmount text-right blur-amount" id="untaxedUnitPrice"
+                               type="text"></td>
+                    <td>
+                        <select class="form-control tax-rate-change" id="taxRate">
+                            <option value="">请选择</option>
+                            <option value="0">0%</option>
+                            <option value="1">1%</option>
+                            <option value="3">3%</option>
+                            <option value="5">5%</option>
+                            <option value="6">6%</option>
+                            <option value="9">9%</option>
+                            <option value="13">13%</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount text-right blur-amount" id="totalAmount" type="text">
+                    </td>
+                    <td><textarea class="form-control text-center" id="remark" type="text"></textarea></td>
+                </tr>
+
+                <tr th:if="${not #lists.isEmpty(requisition.requisitionDt2List)}" id="addColumn2" class="material2"
+                    th:each="requisitionDt2:${requisition.requisitionDt2List}">
+                    <td class="text-center"><a href="javascript:void(0)" class="operate-tr2"><i
+                            class="fa fa-minus-square-o"></i></a></td>
+                    <td class="text-center">
+                        <input th:if="${not #strings.isEmpty(requisitionDt2.suppliers)}" class="checkbox check"
+                               id="suppliers" style="text-align: center" value="1" type="checkbox" checked/>
+                        <input th:if="${#strings.isEmpty(requisitionDt2.suppliers)}" class="checkbox check"
+                               id="suppliers" style="text-align: center" value="1" type="checkbox"/>
+                    </td>
+                    <td class="hide">
+
+                    </td>
+                    <td>
+                        <input class="form-control text-center select-codeName-tree"
+                               th:value="${requisitionDt2.suppliersCode}" id="suppliersCode" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control text-center" th:value="${requisitionDt2.suppliersName}"
+                               id="suppliersName" type="text">
+                    </td>
+                    <td>
+                        <select class="form-control" id="coin">
+                            <option value="">请选择</option>
+                            <option th:selected="${requisitionDt2.coin == 1}" value="1">RMB</option>
+                            <option th:selected="${requisitionDt2.coin == 2}" value="2">USD</option>
+                            <option th:selected="${requisitionDt2.coin == 3}" value="3">TWD</option>
+                            <option th:selected="${requisitionDt2.coin == 4}" value="4">HKD</option>
+                            <option th:selected="${requisitionDt2.coin == 5}" value="5">KRW</option>
+                            <option th:selected="${requisitionDt2.coin == 6}" value="6">MOP</option>
+                        </select>
+                    </td>
+                    <td><input class="form-control amount text-center totalAmount blur-amount"
+                               th:value="${requisitionDt2.untaxedUnitPrice}" id="untaxedUnitPrice" type="text"></td>
+                    <td>
+                        <select class="form-control text-center tax-rate-change" id="taxRate">
+                            <option value="">请选择</option>
+                            <option th:selected="${requisitionDt2.taxRate == 0}" value="0">0%</option>
+                            <option th:selected="${requisitionDt2.taxRate == 1}" value="1">1%</option>
+                            <option th:selected="${requisitionDt2.taxRate == 3}" value="3">3%</option>
+                            <option th:selected="${requisitionDt2.taxRate == 5}" value="5">5%</option>
+                            <option th:selected="${requisitionDt2.taxRate == 6}" value="6">6%</option>
+                            <option th:selected="${requisitionDt2.taxRate == 9}" value="9">9%</option>
+                            <option th:selected="${requisitionDt2.taxRate == 13}" value="13">13%</option>
+                        </select>
+                    </td>
+                    <td><input class="form-control amount text-center totalAmount blur-amount"
+                               th:value="${requisitionDt2.totalAmount}" id="totalAmount" type="text"></td>
+                    <td><textarea class="form-control text-center" autoHeight="true" id="remark"
+                                  th:text="${requisitionDt2.remark}" type="text"></textarea></td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="my-table1">
+                <tr>
+                    <td class="text-center" style="width: 5%">
+                        <p class="text-success">审核</p>
+                    </td>
+                    <td style="width: 8%">
+                        <select class="form-control" id="auditResult" name="auditResult" required="true">
+                            <option value="">请选择</option>
+                            <option value="1">同意</option>
+                            <option value="2">否决</option>
+                            <option value="3">退回重送</option>
+                            <option value="4">保留</option>
+                            <option value="5">加签</option>
+                        </select>
+                    </td>
+                    <td class="text-center" style="width: 5%">
+                        <p class="text-success">备注</p>
+                    </td>
+                    <td style="width: 15%">
+                        <textarea class="form-control" type="text" id="auditRemark"></textarea>
+                    </td>
+                    <td class="text-center" style="width: 8%">
+                        <p class="text-success">加签类型</p>
+                    </td>
+                    <td style="width: 10%">
+                        <div class="input-group" style="width: 96%">
+                            <select class="form-control" id="endorsementType" name="endorsementType"
+                                    disabled="disabled">
+                                <option value="">请选择</option>
+                                <option value="1">前加签</option>
+                                <option value="2">后加签</option>
+                                <!--                            <option value="3">平行加签</option>-->
+                            </select>
+                        </div>
+                    </td>
+                    <td class="text-center" style="width: 8%">
+                        <p class="text-success">加签人员</p>
+                    </td>
+                    <td style="width: 12%">
+                        <select id="endorsement" class="form-control endorsement" name="endorsement"
+                                data-live-search="true" disabled="disabled">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div th:if="${not #lists.isEmpty(lists)}" class="row border"
+                 style="width: 1008px;height: 34px;padding-top: 7px;margin-left: 0%;background-color: #EEEEEE">
+                <div class="col-md-4">
+                    <strong>审批进度</strong>
+                </div>
+                <div class="col-md-8 text-right" th:if="${not #strings.isEmpty(requisition.closeFile)}">
+                    <a class="btn btn-primary btn-xs" th:onclick="downloadFaReport([[${requisition.closeFile}]], [[${requisition.closeFileName}]])">
+                        线下签核截图下载
+                    </a>
+                </div>
+            </div>
+            <div style="border-left: 1px solid #1a2226;border-right: 1px solid #1a2226;">
+                <div class="progress" style="margin-bottom: 0px">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="100" style="width: 1%;">
+                        [[${requisition.progressRate}]]%
+                    </div>
+                </div>
+            </div>
+            <table class="my-table">
+                <thead>
+                <tr style="height: 34px;background-color: #EEEEEE">
+                    <td class="text-center" style="width: 4%">
+                        角色:
+                    </td>
+                    <td class="text-center" style="width: 4%">
+                        处理人:
+                    </td>
+                    <td class="text-center" style="width: 4%">
+                        处理结果:
+                    </td>
+                    <td class="text-center" style="width: 23%">
+                        备注:
+                    </td>
+                    <td class="text-center" style="width: 4%">
+                        加签人员:
+                    </td>
+                    <td class="text-center" style="width: 6.5%">
+                        处理时间:
+                    </td>
+                </tr>
+                </thead>
+                <tr th:each="processFlow:${lists}" style="background-color: #EEEEEE">
+                    <td class="text-center">
+                        <p th:switch="${processFlow.status}" class="text-center">
+                            <span th:case="'1'">创建者</span>
+                            <span th:case="'2'">主管</span>
+                            <span th:case="'23'">经理</span>
+                            <span th:case="'24'">总监</span>
+                            <span th:case="'25'">执行总监</span>
+                            <span th:case="'13'">资产管理员</span>
+                            <span th:case="'20'">采购代表</span>
+                            <span th:case="'16'">新员工入职HR</span>
+                            <span th:case="'19'">HR审核</span>
+                            <span th:case="'14'">预算管理员</span>
+                            <span th:case="'27'">财务预算经理</span>
+                            <span th:case="'3'">总账</span>
+                            <span th:case="'11'">财务经理</span>
+                            <span th:case="'4'">总经理</span>
+                            <span th:case="'18'">前加签</span>
+                            <span th:case="'26'">后加签</span>
+                        </p>
+                    </td>
+                    <td>
+                        <input th:value="${processFlow.createBy}" class="form-control text-center" type="text"
+                               disabled="true"/>
+                    </td>
+                    <td class="text-center">
+                        <p class="text-center" th:switch="${processFlow.auditResult}">
+                            <span class="text-center title_content" th:case="'0'">用户提交</span>
+                            <span class="text-center title_content" th:case="'1'">同意</span>
+                            <span class="text-center title_content" th:case="'2'">否决</span>
+                            <span class="text-center title_content" th:case="'3'">退回重送</span>
+                            <span class="text-center title_content" th:case="'4'">保留</span>
+                            <span class="text-center title_content" th:case="'5'">加签</span>
+                        </p>
+                    </td>
+                    <td>
+                        <textarea type="text" autoHeight="true" th:text="${processFlow.remark}"
+                                  class="form-control text-center show-dateil" disabled="true"> </textarea>
+                    </td>
+                    <td>
+                        <input th:if="${not #strings.isEmpty(processFlow.endorsementName)}"
+                               th:value="${processFlow.endorsementName}" class="form-control text-center" type="text" disabled="true"/>
+                        <input th:if="${#strings.isEmpty(processFlow.endorsementName) && not #strings.isEmpty(processFlow.auditResult)}"
+                               value="无" class="form-control text-center" type="text" disabled="true"/>
+                        <input th:if="${#strings.isEmpty(processFlow.endorsementName) && #strings.isEmpty(processFlow.auditResult)}"
+                               value="" class="form-control text-center" type="text" disabled="true"/>
+                    </td>
+                    <td>
+                        <input th:value="${#dates.format(processFlow.createTime, 'yyyy-MM-dd HH:mm')}"
+                               class="form-control text-center" type="text" disabled="true"/>
+                    </td>
+                </tr>
+            </table>
+
+            <div th:if="${not #lists.isEmpty(listFile)}" class="row"
+                 style="height: 34px;padding-left: 40px;padding-top: 7px">
+                <div class="col-md-4">
+                    <strong>附件</strong>
+                </div>
+            </div>
+            <table th:if="${not #lists.isEmpty(listFile)}" class="my-table" style="width: 100%">
+                <thead>
+                <tr style="height: 34px">
+                    <td style="width: 0.1%">
+                    </td>
+                    <td class="text-center" style="width: 80%">
+                        文件名:
+                    </td>
+                    <td class="text-center" style="width: 20%">
+                        操作:
+                    </td>
+                </tr>
+                </thead>
+                <tr th:each="RequisitionFile:${listFile}">
+                    <td>
+                        <input id="value" th:value="${RequisitionFile.filePath}" class="form-control text-center"
+                               type="hidden" disabled="true"/>
+                    </td>
+                    <td class="text-center">
+                        <input id="fileName" th:value="${RequisitionFile.fileName}" class="form-control text-center"
+                               type="text" disabled="true"/>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-info btn-sm"
+                                th:onclick="downloadFaReport([[${RequisitionFile.filePath}]],[[${RequisitionFile.fileName}]])">download
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-2 bottom">
+                <button type="button" class="btn btn-sm btn-warning text-left" onclick="downloadReport()"><i
+                        class="fa fa-cloud-download"></i>使用说明
+                </button>
+            </div>
+            <div class="col-sm-2 bottom">
+                <button type="button" class="btn btn-sm btn-info text-left" onclick="downloadExcel()"><i
+                        class="fa fa-cloud-download"></i>附件下载
+                </button>
+            </div>
+            <div class="col-sm-5 bottom">
+                <button style="margin-left: 16%" type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i
+                        class="fa fa-send"></i>提交
+                </button>
+                <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i
+                        class="fa fa-reply-all"></i>关闭
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<script th:src="@{/ajax/libs/cxselect/jquery.cxselect.js}"></script>
+<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+<script th:src="@{/ajax/libs//datapicker/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+<!--<script th:src="@{/ajax/libs/typeahead/bootstrap3-typeahead.min.js}"></script>-->
+<script th:src="@{/ajax/libs/bootstrap-select/bootstrap-select.min.js}"></script>
+<script type="text/javascript">
+
+    var prefix = ctx + "system/requisition"
+
+    $(function () {
+        // 去掉所有input的autocomplete, 显示指定的除外
+        $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr('autocomplete', 'off');
+    });
+
+    $(function () {
+        $.fn.autoHeight = function () {
+            function autoHeight(elem) {
+                elem.style.height = 'auto';
+                elem.scrollTop = 0; //防抖动
+                elem.style.height = elem.scrollHeight + 'px';
+            }
+
+            this.each(function () {
+                autoHeight(this);
+                $(this).on('keyup', function () {
+                    autoHeight(this);
+                });
+            });
+        }
+        $('textarea[autoHeight]').autoHeight();
+    })
+
+    //初始化将数字修改
+    $(document).ready(function () {
+        judgmentCompany();
+        projectCode();
+        $(".amount").each(function () {
+            this.value = this.value.replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,');
+        });
+
+        //审批进度
+        $('.progress-bar').attr("aria-valuenow", [[${requisition.progressRate}]] == 0 ? 1 : [[${requisition.progressRate}]]);
+        $('.progress-bar').attr("style", "width:" + ([[${requisition.progressRate}]] == 0 ? 2 : [[${requisition.progressRate}]]) + "%");
+    });
+
+    //根据部门代码判断项目编号是否可填
+    function projectCode(){
+        var code = $("#departmentCode").val();
+        if ((code.substring(2,3) == "2" && code.substring(2,5) != "250") || code.substring(2,5) == "400"
+            || code.substring(2,5) == "420" || code.substring(2,5) == "430"){
+            $(".projectCode").selectpicker('show');
+            $(".projectCode").attr("required", "required");
+        }else {
+            $(".projectCode").removeAttr("required");
+            $(".projectCode").selectpicker('hide');
+            $(".projectCode").selectpicker('val','');
+        }
+    }
+
+    //设置公司抬头
+    function judgmentCompany(){
+
+        var value = $(".change-h2").val();
+        if (value == "5") {
+            $(".my-h2").html("矽力杰半导体技术（杭州）有限公司");
+        } else if (value == "6") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp南京矽力微电子技术有限公司");
+        } else if (value == "17") {
+            $(".my-h2").html("&nbsp &nbsp成都矽力杰半导体技术有限公司");
+        } else if (value == "7") {
+            $(".my-h2").html("&nbsp &nbsp西安矽力杰半导体技术有限公司");
+        } else if (value == "14") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp上海矽力杰微电子技术有限公司");
+        } else if (value == "1") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Silergy Corp");
+        } else if (value == "19") {
+            $(".my-h2").html("&nbsp &nbsp 上海矽力杰半导体技术有限公司");
+        } else if (value == "3") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp &nbsp &nbspSilergy Korea Limited");
+        } else if (value == "4") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspSilergy Technology");
+        } else if (value == "9") {
+            $(".my-h2").html("&nbsp Silergy Semiconductor (Samoa) Limited");
+        } else if (value == "16") {
+            $(".my-h2").html("&nbsp &nbsp Silergy Technologies Private Limited");
+        } else if (value == "15") {
+            $(".my-h2").html("&nbsp &nbsp Silergy Semiconductor Samoa Limited");
+        } else if (value == "13") {
+            $(".my-h2").html("Silergy Semiconductor (Hong Kong) Limited 矽力杰半導體(香港)有限公司");
+        } else if (value == "12") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp台湾矽力杰科技股份有限公司");
+        } else if (value == "20") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp南京矽力微電子(香港)有限公司");
+        } else if (value == "21") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp矽望投资有限公司");
+        } else if (value == "23") {
+            $(".my-h2").html("&nbsp &nbsp合肥矽力杰半导体技术有限公司");
+        } else if (value == "24"){
+            $(".my-h2").html("&nbsp &nbsp 矽力杰半導體(澳門)一人有限公司");
+        }
+    }
+
+    //添加一行
+    function add1() {
+        $('.projectCode').selectpicker('destroy');
+        var i = ($("#addColumn11").children("tr").length)++; //获取tr个数
+        var $td = $("#addColumn1").clone();       //增加一行,克隆第一个对象
+        //id一样会导致必填选项重叠
+        $td.find("select").attr("id", "projectCode" + i)
+        //name不一样require才会生效
+        $td.find("select").attr("name", "projectCode" + i)
+        $td.find("input[id='projectName']").attr("name", "projectName" + i)
+        $td.find("textarea[id='specifications']").attr("name", "specifications" + i)
+        $td.find("input[id='quantity']").attr("name", "quantity" + i)
+        $td.find("input[id='unitPrice']").attr("name", "unitPrice" + i)
+        $td.find("input[id='amount']").attr("name", "amount" + i)
+        $td.find(":input").val('');
+        $td.find("select").val('');
+        $("#addColumn11").append($td);
+        $('.projectCode').selectpicker();
+        projectCode();
+    }
+
+    //删除一行
+    $(document).on("click", ".operate-tr1", function () {
+
+        var n = $(this).parents("tr").index();  // 获取checkbox所在行的顺序
+        var total = $("#addColumn11").children("tr").length; //获取tr个数
+        if (total < 2) {
+            $.modal.alertError("必须保留一行！");
+        } else {
+            $(".operate-table1").find("tr:eq(" + (n + 1) + ")").remove();
+        }
+    })
+
+    //添加一行
+    function add2() {
+        var $td = $("#addColumn2").clone();       //增加一行,克隆第一个对象
+        $(".operate-table2").append($td);
+        $(".operate-table2 tr:last").find(".form-control").val('');
+        $(".operate-table2 tr:last").find(".check").removeAttr("checked");
+        if ($(".operate-table2 tr:last").find(":input[name='operate-tr2']:checked")) {
+            $(".operate-table2 tr:last").find(":input[name='operate-tr2']:checked").removeAttr("checked");
+        }
+    }
+
+    //删除一行
+    $(document).on("click", ".operate-tr2", function () {
+        var n = $(this).parents("tr").index();  // 获取checkbox所在行的顺序
+        var total = $("#addColumn22").children("tr").length; //获取tr个数
+        if (total < 2) {
+            $.modal.alertError("必须保留一行！");
+        } else {
+            $(".operate-table2").find("tr:eq(" + (n + 1) + ")").remove();
+        }
+    })
+
+    function StringCoventLong(aString) {
+        //将字符转换乘100
+        var a = aString.replace(/,/g, "");
+        var b = (parseFloat(a) * 100).toFixed(0);
+        return b;
+    }
+
+    /* 替换逗号 */
+    function replaceComma(str){
+        return str.replace(/,/g, "");
+    }
+
+    //数量变化检测
+    $(document).on("blur", "#quantity", function () {
+        var m = $(this).parent().index();//获取当前节点的序号
+        var n = $(this).parent().index() + 1;//获取下一个节点的序号
+        //数量
+        var quantity = $(this).parent().parent().children('td').eq(m).find("input").val();//数量
+        var unitPrice = $(this).parent().parent().children('td').eq(n).find("input").val();//单价
+        unitPrice = unitPrice.replace(/,/g,"");
+        var total = quantity * unitPrice;
+        $(this).parent().parent().children('td').eq(n + 1).find("input").val(total);
+        $(this).parent().parent().children('td').eq(n + 1).find("input").trigger("blur");
+    })
+
+    //单价变化检测
+    $(document).on("blur", "#unitPrice", function () {
+        var m = $(this).parent().index() - 1;//获取前一个节点的序号
+        var n = $(this).parent().index() + 1;//获取下一个节点的序号
+        //数量
+        var quantity = $(this).parent().parent().children('td').eq(m).find("input").val();//数量
+        var unitPrice = $(this).val();//单价
+        unitPrice = unitPrice.replace(/,/g,"");
+        var total = quantity * unitPrice;
+        $(this).parent().parent().children('td').eq(n).find("input").val(total);
+        $(this).parent().parent().children('td').eq(n).find("input").trigger("blur");
+    })
+
+    //计算总金额
+    $(document).on("blur", "#amount", function () {
+        var allAmount = 0;
+        $(".material1").each(function (i, li) {
+            var am1 = $(li).find("#amount").val();//字符串
+            if (am1 == "") {
+                return true;
+            }
+            var am2 = StringCoventLong(am1)//转数字
+            allAmount = parseInt(allAmount) + parseInt(am2);
+        });
+        $('#sum').val((allAmount / 100).toFixed(2));
+        $('#sum').trigger("blur");
+    })
+
+    $(document).on("change", ".select-change", function(){
+
+        if($(this).val() == "2"){
+            var n = $(this).parent().index() + 2;//获取下一个节点的序号
+            $(this).parent().parent().children('td').eq(n).find("#specialReason").val("");
+            $(this).parent().parent().children('td').eq(n).find("#specialReason").attr("disabled",false);
+        }else{
+            var n = $(this).parent().index() + 2;//获取下一个节点的序号
+            $(this).parent().parent().children('td').eq(n).find("#specialReason").val("");
+            $(this).parent().parent().children('td').eq(n).find("#specialReason").attr("disabled",true);
+        }
+    })
+
+    $(document).on("blur", ".totalAmount", function () {
+
+        // 预防页面复用(比方说新增/编辑的时候用一套页面)先将value的分隔号清除掉, 如果value值不是字符串必须先转字符串
+        var value = $(this).val().replace(/,/gi, "");
+        // 先判断输入框输入的是否是符合规格的数字(包括特殊符号,大小写字母,空格等),不符合则清空输入框
+        var reg = /^\d+(\.\d+)?$/;
+        if (reg.test(value) == true) {
+            //将输入的值进行四舍五入转换成整数
+            var vals = Math.round(value * 100) / 100;
+            //将输入的值转换为字符串
+            var valse = vals.toString();
+            //检索输入的值有没有输入小数位 比如 99.99
+            var valsex = valse.indexOf(".");
+            //如果没有输入小数位则自动补充".00"
+            if (valsex < 0) {
+                valse += ".00";
+            }
+            //如果只输入一位小数则进行补充后面的一位 比方说输入"99.8" 会转化成"99.80"
+            while (valse.length <= valsex + 2) {
+                valse += "0";
+            }
+            //上面的保留两位小数的过程  下面是给输入的值增加千位符
+            var re = /\d{1,3}(?=(\d{3})+$)/g;
+            //如果超过三位数增加千位符
+            var n1 = valse.replace(/^(\d+)((\.\d+)?)$/, function (s, s1, s2) {
+                return s1.replace(re, "$&,") + s2;
+            });
+            //这是我v-model的值
+            $(this).val(n1);
+        } else {
+            //不符合规格则清空输入框(这是我v-model的值)
+            $(this).val("");
+        }
+    })
+
+    //获取供应商信息
+    $(document).on("click", ".select-codeName-tree", function() {
+        var index = $(this).parent().parent()[0].rowIndex;
+        var options = {
+            title: '选择供应商',
+            width: "400",
+            url: ctx + "system/requisition/forCodeNamePage/" + index,
+            callBack: doCodeNameSubmit
+        };
+        $.modal.openOptions(options);
+    })
+
+    function doCodeNameSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = top.layer.getChildFrame('body', index);
+            var index1 = body.find('#index').val();
+            var treeTitle =  body.find('#treeTitle').val();
+            var treeName = body.find('#treeName').val()
+            $(".operate-table2 tr").eq(index1).find("td").eq(3).find("#suppliersCode").val(treeTitle);
+            $(".operate-table2 tr").eq(index1).find("td").eq(4).find("#suppliersName").val(treeName);
+            top.layer.close(index);
+        }
+    }
+
+    var prefix = ctx + "system/requisition"
+    $("#form-nonSaleRequisitionAdd-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    //选择加签时,才能选择加签类型
+    $(document).on("change", "#auditResult", function () {
+        if ($(this).val() == "5") {
+            $("#endorsementType").attr("disabled", false);
+            $("#endorsement").attr("disabled", false);
+            $("#endorsementType").attr("required", true);
+            $("#endorsement").attr("required", true);
+            //获取员工
+            getUser();
+        } else {
+            $("#endorsementType").val("");
+            $("#endorsement").val("");
+            $("#endorsement").attr("disabled", true);
+            $("#endorsementType").attr("disabled", true);
+        }
+    })
+
+    //选择后加签时,才能选择加签位置
+    $(document).on("change", "#endorsementType", function () {
+        $("#endorsement").val("");
+        if ($(this).val() == "2") {
+            $.modal.alert("选择后加签默认同意此次请求，<br>请谨慎选择！", "warning");
+        }
+
+    })
+
+    function getUser(){
+        var url = ctx + "system/user/allUserList";
+        $.ajax({
+            type: "POST",//方法类型
+            url: url,//url
+            data: null,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",//预期服务器返回的数据类型
+            success: function (result) {
+                if (result.code == web_status.SUCCESS){
+                    var rows = result.rows;
+                    rows.forEach(user => {
+                        $("#endorsement").append($("<option></option>").html(user.userName).val(user.userCode));
+                    });
+                    //刷新
+                    $("#endorsement").selectpicker("refresh");
+                }
+            }
+        });
+    }
+
+    $(document).on("change", "#auditResult", function () {
+        //否决或者退回去掉必填
+        if ($('#auditResult').val() != 1 || ($('#auditResult').val() == 5 && $('#endorsementType').val() != 2)) {
+            $('.select-change').removeAttr("required");
+            $('#specialReason').removeAttr("required");
+        }
+    })
+
+    //文件列表
+    function fileList(id) {
+        var status = [[${requisition.status}]];
+        var flag = false;
+        if (status == 1 || status == 7 || status == 13 || status == 20) {
+            flag = true;
+        }
+        var url = prefix + '/filePage/' + id + '/' + 2 + '/' + flag;
+        $.modal.openFileList("File列表", url, null, null);
+    }
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var formObject = {};
+            var formArray = $("#form-nonSaleRequisitionAdd-add").serializeArray();
+            $.each(formArray, function (i, item) {
+                formObject[item.name] = item.value;
+            });
+
+            //封装主表
+            var requisition = {};
+            requisition.id = formObject.id;//id
+            requisition.company = $('#company').val();//company
+            requisition.assetManagement = $('#assetManagement').val();//assetManagement
+            requisition.priceComparison = formObject.priceComparison//priceComparison
+            requisition.specialReason = formObject.specialReason//specialReason
+            requisition.totalAmount = replaceComma(formObject.sum)//totalAmount
+            //封装的明细行
+            var requisitionDt1 = [];
+            var i = 0;
+            var dt1ErrRow = "";
+            $(".material1").each(function (i, li) {
+                i++;
+                var sku1 = {};
+                var projectCode = $(li).find("select").val();//projectCode
+                var projectName = $(li).find("input[id='projectName']").val();//projectName
+                var specifications = $(li).find("textarea[id='specifications']").val();//suppliersName
+                var quantity = $(li).find("input[id='quantity']").val();//quantity
+                var unitPrice = replaceComma($(li).find("input[id='unitPrice']").val());//unitPrice
+                var amount = replaceComma($(li).find("input[id='amount']").val());//amount
+                sku1.requisitionId = requisition.id;
+                sku1.projectCode = projectCode;
+                sku1.projectName = projectName;
+                sku1.specifications = specifications;
+                sku1.quantity = quantity;
+                sku1.unitPrice = unitPrice;
+                sku1.amount = amount;
+                if ($.common.isNotEmpty(projectName) && $.common.isNotEmpty(specifications)
+                    && $.common.isNotEmpty(quantity) && $.common.isNotEmpty(unitPrice) && $.common.isNotEmpty(amount)){
+                    requisitionDt1.push(sku1);
+                }else {
+                    if ($.common.isNotEmpty(dt1ErrRow)){
+                        dt1ErrRow += "、" + i;
+                    }else {
+                        dt1ErrRow += i;
+                    }
+                }
+            });
+            var requisitionDt2 = [];
+            //是否选中供应商
+            var checkedFlag = false;
+            var checkedQty = 0;
+            var j = 0;
+            var dt2ErrRow = "";
+            $(".material2").each(function (i, li) {
+                j++;
+                var sku2 = {};
+                var suppliers = $(li).find("input[id='suppliers']:checked").val();//suppliers
+                var suppliersName = $(li).find("input[id='suppliersName']").val();//suppliersName
+                var suppliersCode = $(li).find("input[id='suppliersCode']").val();//suppliersCode
+                var coin = $(li).find("select[id='coin']").val();//coin
+                var untaxedUnitPrice = replaceComma($(li).find("input[id='untaxedUnitPrice']").val());//untaxedUnitPrice
+                var taxRate = $(li).find("select[id='taxRate']").val();//taxRate
+                var totalAmount = replaceComma($(li).find("input[id='totalAmount']").val());//totalAmount
+                var remark = $(li).find("textarea[id='remark']").val();//remark
+                sku2.requisitionId = requisition.id;
+                sku2.suppliers = suppliers;
+                sku2.suppliersName = suppliersName;
+                sku2.suppliersCode = suppliersCode;
+                sku2.coin = coin;
+                sku2.untaxedUnitPrice = untaxedUnitPrice;
+                sku2.taxRate = taxRate;
+                sku2.totalAmount = totalAmount;
+                sku2.remark = remark;
+                if ($.common.isNotEmpty(suppliersName) && $.common.isNotEmpty(coin) &&
+                    $.common.isNotEmpty(taxRate) && untaxedUnitPrice != 'NaN' && totalAmount != 'NaN'){
+                    requisitionDt2.push(sku2);
+                    if (suppliers == 1){
+                        checkedFlag = true;
+                        checkedQty += 1;
+                    }
+                }else {
+                    if ($.common.isNotEmpty(dt2ErrRow)){
+                        dt2ErrRow += "、" + j;
+                    }else {
+                        dt2ErrRow += j;
+                    }
+                }
+            });
+
+            if (requisitionDt1.length < 1){
+                $.modal.alertWarning("至少填写1个完整的产品说明！");
+                return false;
+            }
+
+            requisition.requisitionDt1List = requisitionDt1;
+            //数据为空字符串会导致SQL报错,直接不添加
+            if ($('#auditResult').val() == 1 || ($('#auditResult').val() == 5 && $('#endorsementType').val() == 2)) {
+                var val = $('#priceComparison').val();
+                if (val == 1){
+                    if (requisitionDt2.length < 2){
+                        $.modal.alertWarning("您选择了比议价需要填写2个以上完整的供应商信息，并选中其中一个！");
+                        return false;
+                    }
+                }else if (val == 2){
+                    if (requisitionDt2.length < 1){
+                        $.modal.alertWarning("至少填写1个完整的供应商信息，并选中！");
+                        return false;
+                    }
+                }
+                if ((requisitionDt2.length > 0 && !checkedFlag) || checkedQty > 1){
+                    $.modal.alertWarning("请选中1个供应商！");
+                    return false;
+                }
+                requisition.requisitionDt2List = requisitionDt2;
+            }
+            //发送后台对象 审核信息
+            var auditResults = {};
+            auditResults.requisitionId = $("#id").val();//id
+            auditResults.result = $("#auditResult").val();//auditResult
+            auditResults.remark = $("#auditRemark").val();//auditRemark
+            auditResults.endorsementType = $("#endorsementType").val();//endorsementType
+            var endorsement = $("#endorsement").val();//endorsement
+            if ($("#endorsementType").val() != "") {
+                auditResults.endorsement = endorsement.toString();
+            }
+            auditResults.requisition = requisition;
+
+
+            var errMsg = "";
+            if ($.common.isNotEmpty(dt1ErrRow)){
+                errMsg = "第" + dt1ErrRow + "行项目说明未填写完整，将不会被保存，请确认。<br>"
+            }
+            if ($.common.isNotEmpty(dt2ErrRow)){
+                errMsg += "第" + dt2ErrRow + "行厂商信息未填写完整，将不会被保存，请确认。"
+            }
+
+            if ($.common.isNotEmpty(dt1ErrRow) || $.common.isNotEmpty(dt2ErrRow)){
+                $.modal.loading("正在保存,请稍等......");
+                layer.confirm(errMsg, {
+                    icon: 3,
+                    title: "Tip",
+                    btn: ['OK', 'Cancel'],
+                    btnclass: ['btn btn-primary', 'btn btn-danger'],
+                    yes: function(index){
+                        save(auditResults);
+                    },
+                    btn2: function (index) {
+                        $.modal.closeLoading();
+                        layer.close(index);
+                    },
+                    cancel: function(index){
+                        $.modal.closeLoading();
+                        layer.close(index);
+                    }
+                })
+            }else {
+                save(auditResults);
+            }
+        }
+    }
+
+    //object:表单数据
+    function save(object) {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            url: prefix + "/auditSubmit",//url
+            data: JSON.stringify(object),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",//预期服务器返回的数据类型
+            // timeout: 60000,
+            beforeSend: function () {
+                $.modal.loading("正在提交,请稍等......");
+            },
+            success: function (result) {
+                if (result.code == web_status.SUCCESS){
+                    $.operate.successTabCallback(result);
+                }else {
+                    $.modal.closeLoading();
+                    $.modal.alertError(result.msg);
+                }
+            }
+        });
+    }
+
+
+    //下载文件
+    function downloadReport() {
+        window.open("/pdf/web/viewer.html?file=/system/requisition/downloadFileDescription");
+    }
+
+    //下载文件
+    function downloadExcel() {
+        window.location.href = prefix + "/downloadFileDescriptionExcel";
+    }
+
+    // 下载文件
+    function downloadFaReport(filePath, fileName) {
+        window.location.href = ctx + "common/download/resources?resource=" + encodeURIComponent(filePath) + "&fileName=" + encodeURIComponent(fileName);
+    }
+
+    $(document).on("click", ".show-help", function (e) {
+
+        var remark = "1. 请购金额 < 10K RMB，不需要比议价 <br>" +
+            "2.元器件采购，单价 >= 3K RMB，需要请购";
+        layer.alert(remark, {
+            title: "系统提示",
+            btn: ['确认'],
+            btnclass: ['btn btn-primary'],
+            area: ['300px', '300px']
+        });
+        return false;
+    })
+
+    //未税金额
+    $(document).on("change", "#untaxedUnitPrice", function () {
+        var t = $(this).parent().index() + 1;
+        var taxRate = $(this).parent().parent().children('td').eq(t).find("#taxRate").val();
+        var i = $(this).parent().index();
+        var j = $(this).parent().index() + 2;
+        var untaxedUnitPrice = (StringCoventLong($(this).parent().parent().children('td').eq(i).find("#untaxedUnitPrice").val()) / 100).toFixed(2);
+        if (untaxedUnitPrice == "NaN") {
+            untaxedUnitPrice = 0;
+        }
+        var totalAmount = (untaxedUnitPrice * (1 + (taxRate / 100))).toFixed(2);
+        $(this).parent().parent().children('td').eq(j).find("#totalAmount").val(totalAmount);
+        $(this).parent().parent().children('td').eq(j).find("#totalAmount").blur();
+    })
+
+    //税率
+    $(document).on("change", ".tax-rate-change", function () {
+        var taxRate = $(this).val();
+        var i = $(this).parent().index() - 1;
+        var j = $(this).parent().index() + 1;
+        var untaxedUnitPrice = (StringCoventLong($(this).parent().parent().children('td').eq(i).find("#untaxedUnitPrice").val()) / 100).toFixed(2);
+        if (untaxedUnitPrice == "NaN") {
+            untaxedUnitPrice = 0;
+        }
+        var totalAmount = (untaxedUnitPrice * (1 + (taxRate / 100))).toFixed(2);
+        $(this).parent().parent().children('td').eq(j).find("#totalAmount").val(totalAmount);
+        $(this).parent().parent().children('td').eq(j).find("#totalAmount").blur();
+    })
+
+    $(document).on("change", ".blur-amount", function () {
+        var amount = (StringCoventLong($(this).val()) / 100).toFixed(2);
+        if ($(this).parent().index() == "7") {
+            //说明是税前金额,往后找税率
+            var before = $(this).parent().index() + 1;
+            var taxRate = $(this).parent().parent().children('td').eq(before).find("#taxRate").val();
+            if (taxRate == "") {
+                taxRate = 0;
+            }
+            var totalAmount = (amount * (1 + (taxRate / 100))).toFixed(2);
+            $(this).parent().parent().children('td').eq($(this).parent().index() + 2).find("#totalAmount").val(totalAmount);
+            $(this).parent().parent().children('td').eq($(this).parent().index() + 2).find("#totalAmount").blur();
+        } else {
+            //说明是税后金额，往前找税率
+            var left = $(this).parent().index() - 1;
+            var taxRate = $(this).parent().parent().children('td').eq(left).find("#taxRate").val();
+            if (taxRate == "") {
+                taxRate = 0;
+            }
+            var totalAmount = (amount / (1 + (taxRate / 100))).toFixed(2);
+            $(this).parent().parent().children('td').eq($(this).parent().index() - 2).find("#untaxedUnitPrice").val(totalAmount);
+            $(this).parent().parent().children('td').eq($(this).parent().index() - 2).find("#untaxedUnitPrice").blur();
+        }
+    })
+
+
+</script>
+<script th:if="${#strings.isEmpty(requisition.productLine)}">
+    //初始化之后disable
+    $(document).ready(function () {
+        $(".select-change-product-line").attr("disabled", true);
+    });
+</script>
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        line-height: 1 !important;
+    }
+
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        padding: 3px 0 3px 4px !important;
+
+    }
+
+    body{
+        overflow: scroll;
+    }
+
+    .wrapper {
+        /*text-align: center; !*让div内部文字居中*!*/
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 1050px;
+        /*border:1px solid #000*/
+    }
+
+    .my-table {
+        margin-left: auto;
+        margin-right: auto;
+        /*margin-top: 1px;*/
+        /*margin-bottom: 1px;*/
+    }
+
+    .my-table2 tr td {
+        border: none;
+    }
+
+    .my-table1 {
+        border: 1px #000 solid;
+        border-top: 0;
+    }
+
+    .bottom {
+        margin-top: 10px;
+    }
+
+    .form-control {
+        /*border: 0;*/
+        webkit-box-shadow: none;
+        box-shadow: none;
+        width: 96%;
+        margin-left: 2%;
+    }
+
+    .form-control:focus, .single-line:focus {
+        border-color: #3C8DBC !important;
+    }
+
+    table td {
+        border: 1px solid #000;
+    }
+
+    .my-h2 {
+        padding-top: 10px;
+        margin-bottom: 1px;
+    }
+
+    .my-h3 {
+        margin-left: 160px;
+    }
+
+    #for-boder {
+        border: 1px solid #000
+    }
+
+    .checkbox {
+        display: inline;
+    }
+
+    .my-div {
+        margin-left: 340px;
+    }
+
+    input[readonly], .form-control[readonly] {
+        background-color: #FFFFFF;
+    }
+
+    /*.form-control:disabled{*/
+    /*    background-color: transparent;*/
+    /*}*/
+    p {
+        margin: 0 0 0px;
+    }
+
+    textarea.form-control {
+        height: 45px;
+    }
+
+    .border{
+        /*border: 1px solid #1a2226;*/
+        border-left: 1px solid #1a2226;
+        border-right: 1px solid #1a2226;
+        border-bottom: 1px solid #1a2226;
+    }
+
+    .bs-placeholder{
+        color: #676a6c;
+    }
+
+    .btn-default, .btn-default:hover{
+        color: #676a6c;
+        background-color: #ffffff;
+        border-color: #e5e6e7;
+    }
+</style>
+</body>
+</html>

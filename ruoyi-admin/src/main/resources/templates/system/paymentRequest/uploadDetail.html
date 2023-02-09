@@ -1,0 +1,330 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head >
+    <th:block th:include="include :: header('')" />
+    <th:block th:include="include :: layout-latest-css" />
+</head>
+<link th:href="@{/ajax/libs/jasny/jasny-bootstrap.min.css?v=3.1.3}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/bootstrap-select/bootstrap-select.min.css}" rel="stylesheet"/>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 btn btn-primary fileinput-exists">
+            <div class="text-center" style="margin-top: 3px">
+                <b>内容预览如下表格</b>
+            </div>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <div id="file" class="fileinput fileinput-new" data-provides="fileinput">
+                <span class="btn btn-white btn-file">
+                    <span class="fileinput-new fileinput-no">
+                        <i class="fa fa-upload"></i> 选择文件
+                    </span>
+                    <span class="fileinput-exists">更改</span>
+<!--                    <input id="files" type="file" name="...">-->
+                </span>
+                <span class="fileinput-filename"></span>
+            </div>
+            <a href="#" class="close fileinput-exists" hidden data-dismiss="fileinput" style="float: none">&times;</a>
+            <a onclick="$.table.importTemplate()" class="btn btn-default btn-xs fileinput-no">
+                <i class="fa fa-file-excel-o"></i> 下载模板
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <p class="fileinput-exists" style="color: red;display: inline-block" id="ps">PS：标红位置代表数据有误，请核实后重新上传文件</p>
+        </div>
+        <input type="hidden" id="flag">
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:src="@{/ajax/libs/jasny/jasny-bootstrap.min.js?v=3.1.3}"></script>
+<script th:src="@{/ajax/libs/bootstrap-select/bootstrap-select.min.js}"></script>
+<script th:inline="javascript">
+
+    var prefix = ctx + "system/paymentRequest"
+
+    function query(data) {
+        var options = {
+            data, data,
+            importTemplateUrl: prefix + "/importUploadDetailTemplate",
+            pageSize: 50,
+            showSearch: false,
+            showRefresh: false,
+            showToggle: false,
+            // showColumns: false,
+            sidePagination: "client",
+            columns: [{
+                    field: 'projectCode',
+                    title: '项目编号',
+                    align: 'center',
+                    width: '8%',
+                    formatter: function (value, row, index) {
+                        if (!row.projectCodeFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'content',
+                    title: '摘要说明',
+                    align: 'center',
+                    width: '25%',
+                    formatter: function(value, row, index) {
+                        return $.table.tooltip(value,20);
+                    }
+                },
+                {
+                    field: 'unit',
+                    title: '单位',
+                    align: 'center',
+                    width: '8%',
+                    formatter: function (value, row, index) {
+                        if (!row.unitFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'quantity',
+                    title: '数量',
+                    align: 'center',
+                    width: '8%',
+                    formatter: function (value, row, index) {
+                        if (!row.quantityFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'unitPrice',
+                    title: '单价',
+                    align: 'center',
+                    width: '10%',
+                    formatter: function (value, row, index) {
+                        if (!row.unitPriceFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'totalAmount',
+                    title: '总金额',
+                    align: 'center',
+                    width: '12%',
+                    formatter: function (value, row, index) {
+                        if (!row.totalAmountFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'currency',
+                    title: '币别',
+                    align: 'center',
+                    width: '6%',
+                    formatter: function (value, row, index) {
+                        if (!row.currencyFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + currency(value) + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return currency(value);
+                    }
+                },
+                {
+                    field: 'remark',
+                    title: '备注',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return $.table.tooltip(value,18);
+                    }
+                }]
+        };
+        $.table.init(options);
+    }
+
+    function currency(val) {
+        if (val == 1) {
+            return "RMB";
+        } else if (val == 2) {
+            return "USD";
+        } else if (val == 3) {
+            return "TWD";
+        } else if (val == 4) {
+            return "HKD";
+        } else if (val == 5) {
+            return "KRW";
+        } else if (val == 6) {
+            return "MOP";
+        } else {
+            return val;
+        }
+    }
+
+    var $parent = $(window.parent.document.getElementById("form-nonSaleRequisitionAdd-add"));
+
+    var data;
+    var totalAmount;
+
+    function submitHandler() {
+        if ($('#flag').val() == 'false'){
+            $.modal.alertError("数据有误，请核实后再试。");
+            return false;
+        }
+        var operate = $parent.find(".operate-tr1");
+        for (let i = 1; i < operate.length; i++) {
+            operate.parent().parent()[i].remove();
+        }
+        var table = $parent.find("#addColumn");
+        for (let i = 1; i < data.length; i++) {
+            var tr = table.find("#addColumn1").clone();
+            $(tr).find("input").val('');//将元素克隆来的保存的值清空
+            $(tr).find("textarea").text('');//将元素克隆来的保存的值清空
+            $(tr).find("select").val('');//将元素克隆来的保存的值清空
+            table.append(tr);
+        }
+        $parent.find(".material1").each(function (i, li) {
+            $(li).find("select[id='projectCode']").val(data[i].projectCode);
+            $(li).find("textarea[id='content']").text(data[i].content);
+            $(li).find("input[id='unit']").val(data[i].unit);
+            $(li).find("input[id='quantity']").val(data[i].quantity);
+            $(li).find("input[id='unitPrice']").val(data[i].unitPrice);
+            $(li).find("input[id='totalAmount']").val(data[i].totalAmount);
+            $(li).find("select[id='currency']").val(data[i].currency);
+            $(li).find("textarea[id='remark']").text(data[i].remark);
+        })
+        $parent.find("#paymentAmount").val(totalAmount);
+        $.modal.close();
+    }
+
+    function cancel() {
+        $parent.find("#uploadDetailFile").val("");
+    }
+
+    //调用文件框
+    $('#file').on("click", function () {
+        $parent.find("#uploadDetailFile").click();
+    });
+
+    //取消选择文件
+    $(".close").on("click", function () {
+        closeFile();
+    });
+
+    function closeFile(){
+        $parent.find("#uploadDetailFile").val("");
+        $parent.find("#uploadDetailFile").change();
+    }
+
+    $parent.find("#uploadDetailFile").on('change', function () {
+        // 处理自己的业务
+        var file = this.files[0];
+        if ($.common.isNotEmpty(this) && file != undefined) {
+            $('.fileinput-exists').show();
+            $('.fileinput-no').hide();
+            $('.fileinput-filename').text(file.name)
+            analyseFile(file);
+        } else {
+            $('.fileinput-no').show();
+            $('.fileinput-exists').hide();
+            $('.fileinput-filename').text("");
+            $.table.destroy()
+            query();
+        }
+    })
+
+    function analyseFile(file) {
+        var formData = new FormData;
+
+        if ($parent.find('#payment-on-behalf-of').val()==1){
+            formData.append("deptCode", $parent.find('.actualDeptCode').val());
+        }else{
+            formData.append("deptCode", $parent.find('.deptCode').val());
+        }
+        formData.append("file", file);
+        $.ajax({
+            data: formData,
+            url: prefix + "/uploadDetailTable",
+            type: 'post',
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    $('#flag').val(result.flag);
+                    if (result.flag != false){
+                        $('#ps').hide();
+                    }else {
+                        $parent.find("#uploadDetailFile").val("");
+                    }
+                    data=result.data;
+                    totalAmount = result.paymentAmount;
+                    $.table.destroy();
+                    query(result.data);
+                } else {
+                    $.modal.alertError(result.msg);
+                    closeFile();
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $parent.find("#uploadDetailFile").change();
+    })
+</script>
+<style>
+    .error{
+        width: 100%;
+        height: 100%;
+        display: inline-table;
+        background-color: #ec4758;
+        border-color: #ec4758;
+        color: #FFFFFF;
+    }
+</style>
+</body>
+</html>

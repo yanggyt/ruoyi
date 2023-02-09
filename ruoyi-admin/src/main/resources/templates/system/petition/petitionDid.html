@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head>
+	<th:block th:include="include :: header('电子签呈列表')" />
+</head>
+<body class="gray-bg">
+    
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<!--<li>
+								类型：<input type="text" placeholder="1(用印签呈) 2 (请采购) 3 (其他)"  name="typeType"/>
+							</li>
+
+							<li>
+								表单编号：<input type="text" name="comNo"/>
+							</li>
+							<li>
+								申请日期：<input type="text" placeholder="YYYY-MM-dd" name="applydate"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>-->
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+<!--	        <div class="btn-group-sm" id="toolbar" role="group">-->
+<!--				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:petition:remove">-->
+<!--					<i class="fa fa-remove"></i> 删除-->
+<!--				</a>-->
+<!--			</div>-->
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:petition:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:petition:remove')}]];
+		var detailFlag = [[${@permission.hasPermi('system:petition:detail')}]];
+
+        var prefix = ctx + "system/petition";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list/Did",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "签呈审批",
+		        showExport: true,
+                columns: [
+				{
+					field : 'id', 
+					title : 'id',
+					visible: true
+				},
+				{
+					field : 'typeType',
+					title : '类型',
+                    formatter: function (value) {
+                        return typeType(value);
+                    }
+				},
+				{
+					field : 'company',
+					title : '公司',
+					formatter: function (value) {
+						return companyTools(value);
+					}
+				},
+				{
+					field : 'comNo', 
+					title : '表单编号',
+					sortable: true
+				},
+				{
+					field : 'applyname', 
+					title : '申请人',
+					sortable: true
+				},
+				{
+					field : 'applydate', 
+					title : '申请日期',
+					sortable: true
+				},
+				{
+					title:'附件',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-info btn-xs " href="javascript:void(0)" onclick="fileList(\'' + row.id + '\')"><i class="fa fa-list-ul"></i>列表</a>');
+                        return actions.join('');
+                    }
+				},
+				{
+					field : 'status', 
+					title : '状态',
+                    formatter: function (value) {
+                        return statusTools(value);
+                    }
+				},
+				{
+					field: 'searchValue',
+					title: '待签核人员',
+				},
+		        {
+		            title: '操作',
+		            // align: 'center',
+		            formatter: function(value, row) {
+		            	var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="detail(\'' + row.id + '\')"><i class="fa fa-search"></i> 详情</a> ');
+						if (row.status != 1) {
+							actions.push('<a class="btn btn-primary btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="audithistory(\'' + row.id + '\')"><i class="fa fa-edit"></i> 审批历史</a> ');
+						}
+                        return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+
+        function typeType(value){
+            if (value==1){
+                return 'A用印签呈'
+            } else if (value==2){
+                return 'B请采购签呈'
+            }else if (value==3){
+                return 'C其他'
+            }
+        };
+
+        function statusTools(value){
+            if (value==1){
+                return '保存未提交'
+            } else if (value==2){
+                return '待主管审核'
+            }else if (value==3){
+                return '待印鉴保管人审核'
+            }else if (value==4){
+                return '待财务总账审核'
+            }else if (value==5){
+                return '待财务经理审核'
+            }else if (value==6){
+                return '待核准人审核'
+            }else if (value==7){
+                return '撤回'
+            }else if (value==8){
+                return '完成'
+            }else if (value==9){
+                return '待法务审核'
+            }else if (value==11){
+                return '待新增核准人审核'
+            }else if (value==0){
+                return '加签状态'
+            }else if (value==12){
+                return '待审核人审核'
+            }else if (value==13){
+				return '待新增会审人审核'
+			}else if (value==14){
+				return '否决'
+			}
+        };
+
+		function companyTools(value) {
+			if (value == 5) {
+				return '杭州'
+			} else if (value == 7) {
+				return '西安'
+			} else if (value == 17) {
+				return '成都'
+			} else if (value == 19) {
+				return '上海'
+			} else if (value == 3) {
+				return '韩国'
+			} else if (value == 16) {
+				return '印度'
+			} else if (value == 15) {
+				return '日本'
+			} else if (value == 12) {
+				return '台湾矽力杰'
+			} else if (value == 6) {
+				return '南京'
+			} else if (value == 13) {
+				return '香港'
+			} else if (value == 14) {
+				return '上海矽力杰微电子'
+			} else if (value == 20) {
+				return '南京香港'
+			} else if (value == 4) {
+				return '美国'
+			} else if (value == 9) {
+				return '萨摩亚'
+			} else if (value == 1) {
+				return 'corp'
+			} else if (value == 21) {
+				return '矽望'
+			} else if (value == 0) {
+				return '其他'
+			} else if (value == 20) {
+				return '南京香港'
+			} else if (value == 4) {
+				return '美国'
+			} else if (value == 22) {
+				return '合肥'
+			}else if (value == 23) {
+				return '澳门'
+			}
+		}
+
+        function detail(id) {
+            debugger
+            var url = prefix+'/detail/' + id + '/' + 1;
+            createMenuItem(url,"详情");
+        };
+
+
+        function fileList(id) {
+            var url = prefix + '/filePage/' + id;
+            $.modal.open("File列表", url);
+        };
+
+        //日志
+        function audithistory(id) {
+            var url = prefix+'/audithistory/' + id;
+            $.modal.open("查看审批历史", url, null, null, null, true);
+        };
+        function exportPDF(id) {
+         window.location.href=prefix+'/exportPDF/'+id;
+        };
+
+        // 删除文件
+        function removeLogic(id) {
+            debugger
+            $.modal.confirm("确定删除该文件吗？", function() {
+                $.ajax({
+                    //几个参数需要注意一下
+                    type: "POST",//方法类型
+                    url: prefix + "/removeLogic?id=" + id,//url
+                    dataType: "json",//预期服务器返回的数据类型
+                    timeout:20000,
+                    success: function (result) {
+                        $.operate.successTabCallback(result);
+                    },
+                    error : function() {
+                        alert("error！");
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

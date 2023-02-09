@@ -130,9 +130,9 @@ public class GenTableServiceImpl implements IGenTableService
         int row = genTableMapper.updateGenTable(genTable);
         if (row > 0)
         {
-            for (GenTableColumn genTableColumn : genTable.getColumns())
+            for (GenTableColumn cenTableColumn : genTable.getColumns())
             {
-                genTableColumnMapper.updateGenTableColumn(genTableColumn);
+                genTableColumnMapper.updateGenTableColumn(cenTableColumn);
             }
         }
     }

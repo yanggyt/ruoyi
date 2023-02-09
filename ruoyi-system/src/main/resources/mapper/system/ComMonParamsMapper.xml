@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ComMonParamsMapper">
+
+    <select id="getProjectCode1" resultType="java.lang.String">
+        select distinct marcomproject from zt_wgcprorelease where status not like '%kill%' order by marcomproject asc
+    </select>
+
+    <select id="getProjectCode2" resultType="java.lang.String">
+        select project from zt_projecttoproline
+    </select>
+
+    <select id="exchangeRateQuery" resultType="map">
+        select currency, rate from (select currency, rate from zt_ortt where dbname = 2 order by ratedate desc) as a group by currency
+    </select>
+
+</mapper>

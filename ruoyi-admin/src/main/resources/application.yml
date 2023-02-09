@@ -1,22 +1,22 @@
 # 项目相关配置
 ruoyi:
   # 名称
-  name: RuoYi
+  name: WorkOrder
   # 版本
-  version: 4.7.6
+  version: 4.7.5
   # 版权年份
-  copyrightYear: 2023
+  copyrightYear: 2022
   # 实例演示开关
-  demoEnabled: true
+  demoEnabled: false
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: D:/ruoyi/uploadPath
+  profile: /opt/java/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 80
+  port: 8060
   servlet:
     # 应用的访问路径
     context-path: /
@@ -59,7 +59,7 @@ spring:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
   profiles: 
-    active: druid
+    active: druid,user
   # 文件上传
   servlet:
      multipart:
@@ -72,6 +72,25 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  # 邮件模块
+  mail:
+    host: mailhz.silergycorp.com
+    username:  webmaster
+    password:  QQ!!rat18971897
+    default-encoding: UTF-8
+    port:  465
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust:  mailhz.silergycorp.com
+          socketFactory:
+            class:  javax.net.ssl.SSLSocketFactory
+            port:  465
+          auth:  true
+          starttls:
+            enable:  true
+            required:  true
 
 # MyBatis
 mybatis:
@@ -98,7 +117,7 @@ shiro:
     # 首页地址
     indexUrl: /index
     # 验证码开关
-    captchaEnabled: true
+    captchaEnabled: false
     # 验证码类型 math 数组计算 char 字符
     captchaType: math
   cookie:

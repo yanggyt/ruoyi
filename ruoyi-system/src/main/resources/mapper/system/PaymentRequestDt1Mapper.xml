@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.paymentRequest.PaymentRequestDt1Mapper">
+    
+    <resultMap type="PaymentRequestDt1" id="PaymentRequestDt1Result">
+        <result property="id"    column="id"    />
+        <result property="requestId"    column="request_id"    />
+        <result property="projectCode"    column="project_code"    />
+        <result property="content"    column="content"    />
+        <result property="unit"    column="unit"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="currency"    column="currency"    />
+        <result property="ratio"    column="ratio"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectPaymentRequestDt1Vo">
+        select id, request_id, project_code, content, unit, quantity, unit_price, total_amount, currency, ratio, remark, create_time, update_time, del_flag from sys_payment_request_dt1
+    </sql>
+	
+    <select id="selectPaymentRequestDt1List" parameterType="PaymentRequestDt1" resultMap="PaymentRequestDt1Result">
+        <include refid="selectPaymentRequestDt1Vo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="requestId != null "> and request_id = #{requestId}</if>
+             <if test="projectCode != null "> and project_code = #{projectCode}</if>
+             <if test="content != null  and content != '' "> and content = #{content}</if>
+             <if test="unit != null  and unit != '' "> and unit = #{unit}</if>
+             <if test="quantity != null "> and quantity = #{quantity}</if>
+             <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+             <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+             <if test="currency != null "> and currency = #{currency}</if>
+             <if test="ratio != null "> and ratio = #{ratio}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            and del_flag = '0'
+         </where>
+    </select>
+    
+    <select id="selectPaymentRequestDt1ById" parameterType="Long" resultMap="PaymentRequestDt1Result">
+        <include refid="selectPaymentRequestDt1Vo"/>
+        where id = #{id} and del_flag = '0'
+    </select>
+        
+    <insert id="insertPaymentRequestDt1" parameterType="PaymentRequestDt1" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_payment_request_dt1
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="requestId != null  ">request_id,</if>
+			<if test="projectCode != null  ">project_code,</if>
+			<if test="content != null  and content != ''  ">content,</if>
+			<if test="unit != null  and unit != ''  ">unit,</if>
+			<if test="quantity != null  ">quantity,</if>
+			<if test="unitPrice != null  ">unit_price,</if>
+			<if test="totalAmount != null  ">total_amount,</if>
+			<if test="currency != null  ">currency,</if>
+			<if test="ratio != null  ">ratio,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="delFlag != null  ">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="requestId != null  ">#{requestId},</if>
+			<if test="projectCode != null  ">#{projectCode},</if>
+			<if test="content != null  and content != ''  ">#{content},</if>
+			<if test="unit != null  and unit != ''  ">#{unit},</if>
+			<if test="quantity != null  ">#{quantity},</if>
+			<if test="unitPrice != null  ">#{unitPrice},</if>
+			<if test="totalAmount != null  ">#{totalAmount},</if>
+			<if test="currency != null  ">#{currency},</if>
+			<if test="ratio != null  ">#{ratio},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="delFlag != null  ">#{delFlag},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updatePaymentRequestDt1" parameterType="PaymentRequestDt1">
+        update sys_payment_request_dt1
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="requestId != null  ">request_id = #{requestId},</if>
+            <if test="projectCode != null  ">project_code = #{projectCode},</if>
+            <if test="content != null  and content != ''  ">content = #{content},</if>
+            <if test="unit != null  and unit != ''  ">unit = #{unit},</if>
+            <if test="quantity != null  ">quantity = #{quantity},</if>
+            <if test="unitPrice != null  ">unit_price = #{unitPrice},</if>
+            <if test="totalAmount != null  ">total_amount = #{totalAmount},</if>
+            <if test="currency != null  ">currency = #{currency},</if>
+            <if test="ratio != null  ">ratio = #{ratio},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="delFlag != null  ">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deletePaymentRequestDt1ById1" parameterType="Long">
+        delete from sys_payment_request_dt1 where id = #{id}
+    </delete>
+	
+    <delete id="deletePaymentRequestDt1ByIds1" parameterType="String">
+        delete from sys_payment_request_dt1 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 批量逻辑删除-->
+    <update id="deletePaymentRequestDt1ByIds" parameterType="String">
+        update sys_payment_request_dt1 set del_flag='1' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--逻辑删除-->
+    <update id="deletePaymentRequestDt1ById" parameterType="Long">
+        update sys_payment_request_dt1 set del_flag='1' where id = #{id}
+    </update>
+
+    <!--逻辑删除-->
+    <update id="deletePaymentRequestDt1ByRequestId" parameterType="Long">
+        update sys_payment_request_dt1 set del_flag='1' where request_id = #{requestId}
+    </update>
+</mapper>

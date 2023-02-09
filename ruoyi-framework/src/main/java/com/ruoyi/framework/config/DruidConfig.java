@@ -49,16 +49,38 @@ public class DruidConfig
         return druidProperties.dataSource(dataSource);
     }
 
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.slave2")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.slave2", name = "enabled", havingValue = "true")
+    public DataSource slave2DataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.slave3")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.slave3", name = "enabled", havingValue = "true")
+    public DataSource slave3DataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+
+
+
     @Bean(name = "dynamicDataSource")
     @Primary
-    public DynamicDataSource dataSource(DataSource masterDataSource)
+    public DynamicDataSource dataSource(DataSource masterDataSource, DataSource slaveDataSource,
+                                        DataSource slave2DataSource, DataSource slave3DataSource)
     {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(DataSourceType.MASTER.name(), masterDataSource);
-        setDataSource(targetDataSources, DataSourceType.SLAVE.name(), "slaveDataSource");
+        targetDataSources.put(DataSourceType.SLAVE.name(), slaveDataSource);
+        targetDataSources.put(DataSourceType.SLAVE2.name(), slave2DataSource);
+        targetDataSources.put(DataSourceType.SLAVE3.name(), slave3DataSource);
         return new DynamicDataSource(masterDataSource, targetDataSources);
     }
-
     /**
      * 设置数据源
      * 

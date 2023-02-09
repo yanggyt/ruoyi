@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.FormFileMapper">
+
+    <resultMap type="FormFile" id="FormFileResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectFormFileVo">
+        select id, parent_id, file_type, file_path, file_name, create_by, create_time from sys_form_file
+    </sql>
+
+    <select id="selectFormFileList" parameterType="FormFile" resultMap="FormFileResult">
+        <include refid="selectFormFileVo"/>
+        <where>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="fileType != null "> and file_type = #{fileType}</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like lower(concat('%', #{fileName}, '%'))</if>
+        </where>
+    </select>
+
+    <select id="selectFormFileById" parameterType="Long" resultMap="FormFileResult">
+        <include refid="selectFormFileVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFormFile" parameterType="FormFile" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_form_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="fileType != null">file_type,</if>
+            <if test="filePath != null">file_path,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="fileType != null">#{fileType},</if>
+            <if test="filePath != null">#{filePath},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFormFile" parameterType="FormFile">
+        update sys_form_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+            <if test="filePath != null">file_path = #{filePath},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFormFileById" parameterType="Long">
+        delete from sys_form_file where id = #{id}
+    </delete>
+
+    <delete id="deleteFormFileByIds" parameterType="String">
+        delete from sys_form_file where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="batchFormFile">
+        insert into sys_form_file( id, parent_id, file_type, file_path, file_name, create_by, create_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.parentId}, #{item.fileType}, #{item.filePath}, #{item.fileName}, #{item.createBy}, #{item.createTime})
+        </foreach>
+    </insert>
+
+    <select id="getProjectCode1" resultType="java.lang.String">
+        select distinct marcomproject from zt_wgcprorelease where status not like '%kill%' order by marcomproject asc
+    </select>
+
+    <select id="getProjectCode2" resultType="java.lang.String">
+        select project from zt_projecttoproline
+    </select>
+
+</mapper>

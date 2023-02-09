@@ -68,6 +68,18 @@ public class AjaxResult extends HashMap<String, Object>
     /**
      * 初始化一个新创建的 AjaxResult 对象
      *
+     * @param code 状态码
+     * @param msg 返回内容
+     */
+    public AjaxResult(Integer code, String msg)
+    {
+        super.put(CODE_TAG, code);
+        super.put(MSG_TAG, msg);
+    }
+
+    /**
+     * 初始化一个新创建的 AjaxResult 对象
+     *
      * @param type 状态类型
      * @param msg 返回内容
      * @param data 数据对象

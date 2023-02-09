@@ -1,0 +1,1277 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html ;charset=utf-8" />
+<head>
+    <th:block th:include="include :: header('日期和时间')" />
+</head>
+<link th:href="@{/ajax/libs/datapicker/bootstrap-datetimepicker.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <img src="../static/img/silergy.jpg" th:src="@{/img/silergy.jpg}">
+            </div>
+            <div class="col-xs-5">
+                <h2 class="my-h2">
+                    南京矽力微电子技术有限公司
+                </h2>
+
+                <ul class="list-inline">
+                    <li>
+                        <h2 class="my-h3">签   呈 Petition</h2>
+                        <br>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <form action="none" id="form-petition-add" th:object="${petition}">
+        <input id="id" name="id" th:field="*{id}"  type="hidden">
+        <div id="for-boder1">
+            <table class="my-table1" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td colspan="6" style="width: 40%" class="text-left" >类别:
+                        <select style="border: black" name="typeType" id="type" required disabled="true">
+                            <option value="">请选择</option>
+                            <option th:selected="${petition.typeType==1}"  value="1">A: 用印签呈</option>
+                            <option th:selected="${petition.typeType==2}"  value="2">B: 请采购签呈</option>
+                            <option th:selected="${petition.typeType==3}"  value="3">C: 其他</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="for-boder">
+            <table class="my-table" width="100%">
+                <tr id="topic1">
+                    <td class="text-left" colspan="9"><h4>主题  Topic：</h4></td>
+                </tr>
+                <tr id="topic2">
+                    <td class="text-left" colspan="9">
+                        <textarea  type="text" id="topic" style="resize:none;" rows="3" class="form-control" th:field="*{topicObj}" name="topicObj" placeholder="请输入250内的文字内容"  ></textarea>
+                    </td>
+                </tr>
+                <tr id="exp1">
+                    <td class="text-left" colspan="9"><h4>说明  Explanation：</h4></td>
+                </tr>
+                <tr id="exp2">
+                    <td class="text-center" colspan="9">
+                        <textarea  style="resize:none; "type="text"  rows="6" name="explanation" class="form-control"th:field="*{explanation}" placeholder="请输入一千字以内的文字内容" ></textarea>
+                    </td>
+                </tr>
+                <tr id="curr">
+<!--                    <td colspan="9" class="text-left"><b>币别: </b>-->
+<!--                        <input type="text" name="curr" th:field="*{curr}" style="border:none; " placeholder="例:美元/人民币/台币" />-->
+<!--                   </td>-->
+                    <td colspan="9" class="text-left" style="position: relative;"><b>币别: </b>
+                        <input th:checked="${petition.curr == '美元'}" name="curr" type="radio" value="美元" style="border:none;" required/>美元
+                        <input th:checked="${petition.curr == '人民币'}" name="curr" type="radio" value="人民币"  style="border:none;" required />人民币
+                        <input th:checked="${petition.curr == '台币'}" name="curr" type="radio" value="台币"  style="border:none;" required />台币
+                    </td>
+                </tr>
+                <tr id="monery"  >
+                    <td  colspan="9" class="text-left"><b>金额:</b><label><input class="form-control" name="moneyM" th:field="*{moneyM}"id="moneyM" type="text" style="border:none;border-bottom:1px solid #000;" placeholder="例如2000"></label>元</td>
+                </tr>
+                <tr id="sealtype" >
+                    <td colspan="9" rowspan="1" class="text-left" width="100%"><h4>使用印鉴:
+                        <label class="checkbox-inline" id="1" th:if="${typeMaps.type1} eq 1">
+                            <input type="radio" value="1" checked name="sealType" required/> 公章
+                        </label>
+                        <label class="checkbox-inline" id="1" th:if="${typeMaps.type1} eq 0">
+                            <input type="radio" value="1"  name="sealType" required/> 公章
+                        </label>
+                        <label class="checkbox-inline"  id="2" th:if="${typeMaps.type2} eq 1">
+                            <input type="radio" value="2" checked   name="sealType"/> 法人章
+                        </label>
+                        <label class="checkbox-inline"  id="2" th:if="${typeMaps.type2} eq 0">
+                            <input type="radio" value="2"  name="sealType"/> 法人章
+                        </label>
+                        <label class="checkbox-inline" id="3" th:if="${typeMaps.type3} eq 1">
+                            <input type="radio" value="3" checked  name="sealType"/> 财务章
+                        </label>
+                        <label class="checkbox-inline" id="3" th:if="${typeMaps.type3} eq 0">
+                            <input type="radio" value="3"  name="sealType"/> 财务章
+                        </label>
+                        <label class="checkbox-inline" id="4" th:if="${typeMaps.type4} eq 1">
+                            <input type="radio" value="4" checked  name="sealType"/> 合同章
+                        </label>
+                        <label class="checkbox-inline" id="4" th:if="${typeMaps.type4} eq 0">
+                            <input type="radio" value="4"  name="sealType"/> 合同章
+                        </label>
+                        <label class="checkbox-inline" id="5" th:if="${typeMaps.type5} eq 1">
+                            <input type="radio" value="5" checked  name="sealType"/> 法人章(经济部小章)
+                        </label>
+                        <label class="checkbox-inline" id="5" th:if="${typeMaps.type5} eq 0">
+                            <input type="radio" value="5" name="sealType"/> 法人章(经济部小章)
+                        </label>
+                        <label class="checkbox-inline" id="6" th:if="${typeMaps.type6} eq 1">
+                            <input type="radio" value="6" checked  name="sealType"/> 法人章(经济部大章)
+                        </label>
+                        <label class="checkbox-inline" id="6" th:if="${typeMaps.type6} eq 0">
+                            <input type="radio" value="6" name="sealType"/> 法人章(经济部大章)
+                        </label>
+                        <label class="checkbox-inline" id="7" th:if="${typeMaps.type7} eq 1">
+                            <input type="radio" value="7" checked  name="sealType"/> 印鉴大章
+                        </label>
+                        <label class="checkbox-inline" id="7" th:if="${typeMaps.type7} eq 0">
+                            <input type="radio" value="7" checked   name="sealType"/> 印鉴大章
+                        </label>
+                        <label class="checkbox-inline"  id="8" th:if="${typeMaps.type8} eq 1">
+                            <input type="radio" value="8" checked  name="sealType"/> 印鉴小章
+                        </label>
+                        <label class="checkbox-inline"  id="8" th:if="${typeMaps.type8} eq 0">
+                            <input type="radio" value="8"  name="sealType"/> 印鉴小章
+                        </label>
+                        <label class="checkbox-inline" id="9" th:if="${typeMaps.type9} eq 1">
+                            <input type="radio" value="9" checked name="sealType"/> 其他
+                            <input type="text" name="seal" th:field="*{seal}" style="border:none;border-bottom:1px solid #000;"/>
+                        </label>
+                        <label class="checkbox-inline" id="9" th:if="${typeMaps.type9} eq 0">
+                            <input type="radio" value="9" name="sealType"/> 其他
+                            <input type="text" name="seal" th:field="*{seal}" style="border:none;border-bottom:1px solid #000;"/>
+                        </label>
+                    </h4>
+                    </td>
+                </tr>
+                <tr id="seal3">
+                    <td colspan="9" class="text-left"><h4>印鉴使用说明:
+                        <label class="checkbox-inline">
+                            <input type="radio" value="1" th:field="*{sealExplain}" name="sealExplain" required/> 直接用印:
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio"  value="2" th:field="*{sealExplain}" name="sealExplain"/> 外借:
+                        </label>
+                        <input type="text"  name="sealDate" th:value="${#dates.format(petition.sealDate,'yyyy-MM-dd')}"class="datetimepicker-yyyy-mm-dd"  style="border:none; " placeholder="选择日期" >
+                    </h4></td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="text-left">
+                        <textarea type="text" name="moreExplain" class="form-control" rows="2"  th:field="*{moreExplain}"  style="resize:none;" placeholder="补充内容"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"class="text-center" width="20%">公司</td>
+                    <td class="text-center" colspan="3">
+                        <select style="border: black" name="company"class="form-control" id="company" th:field="*{company}"  required>
+                            <option value="">请选择</option>
+<!--                            <option th:selected="${petition.typeType==5}" value="5">杭州</option>-->
+<!--                            <option th:selected="${petition.typeType==7}" value="7">西安</option>-->
+<!--                            <option th:selected="${petition.typeType==17}"  value="17">成都</option>-->
+<!--                            <option th:selected="${petition.typeType==19}"  value="19">上海</option>-->
+<!--                            <option th:selected="${petition.typeType==3}"  value="3">韩国</option>-->
+<!--                            <option th:selected="${petition.typeType==16}"  value="16">印度</option>-->
+<!--                            <option th:selected="${petition.typeType==15}"  value="15">日本</option>-->
+<!--                            <option th:selected="${petition.typeType==12}"  value="12">台湾矽力杰</option>-->
+                            <option th:selected="${petition.typeType==6}"  value="6">南京</option>
+<!--                            <option th:selected="${petition.typeType==13}"  value="13">香港</option>-->
+                            <option th:selected="${petition.typeType==14}"  value="14">上海矽力杰微电子</option>
+                            <option th:selected="${petition.typeType==20}"  value="20">南京香港</option>
+<!--                            <option th:selected="${petition.typeType==4}"  value="4">美国</option>-->
+<!--                            <option th:selected="${petition.typeType==9}"  value="9">萨摩亚</option>-->
+<!--                            <option th:selected="${petition.typeType==1}"  value="1">corp</option>-->
+<!--                            <option th:selected="${petition.typeType==21}"  value="21">矽望</option>-->
+<!--                            <option th:selected="${petition.typeType==22}"  value="22">合肥</option>-->
+<!--                            <option th:selected="${petition.typeType==23}"  value="23">澳门</option>-->
+                            <!--                            <option th:selected="${petition.typeType==0}"  value="0">其他</option>-->
+                        </select>
+                    </td>
+                    <td  colspan="2" class="text-center">部门</td>
+                    <td colspan="2" class="text-center">
+                        <input id="dept" name="dept" class="form-control" th:field="*{dept}"  type="text" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2">工号</td>
+                    <td colspan="3">
+                        <input class="form-control" name="sid" id="sid" th:field="*{sid}"  type="text" required>
+                    </td>
+                    <td colspan="2"></td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2">申请人</td>
+                    <td colspan="3">
+                        <input id="applyname" name="applyname" class="form-control"  th:field="*{applyname}" type="text" required>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input   type="text" name="applydate" class="form-control  datetimepicker-yyyy-mm-dd" th:value="${#dates.format(petition.applydate,'yyyy-MM-dd')}" placeholder="申请日期" required="true">
+                  </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr id="law1">
+                    <td colspan="9" class="text-left">
+                        <h4>凡用印内容涉及到条款，请先请法务审核。</h4>
+                    </td>
+                </tr>
+                <tr id="law2">
+                    <td class="text-center" colspan="2" width="15%">法务审核</td>
+                    <td colspan="2">
+                        <select  class="form-control" name="law" id="lawv" disabled="disabled">
+                            <option value="">请选择是否法务审核</option>
+                            <option th:selected="${petition.law=='2'}" value="2">不需要</option>
+                            <option th:selected="${petition.law=='1'}" value="1">王颖</option>
+                            <option th:selected="${petition.law=='3'}" value="3">罗梅姣</option>
+                        </select>
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select  class="form-control" name="lawSta" disabled="true">
+                            <option value="">审核意见</option>
+                            <option th:selected="${petition.lawSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.lawSta==2}" value="2">不同意</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${lawIdea}" name="lawIdea" class="form-control"  disabled="true" placeholder="备注"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input  type="text" name="lawDate"  th:field="*{lawDate}"  class="form-control datetimepicker-yyyy-mm-dd" placeholder="审核日期" disabled="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2" width="15%">直接部门主管</td>
+                    <td colspan="2">
+                        <input  class="form-control" name="deptmanager" th:field="*{deptmanager}"  disabled>
+                    </td>
+                    <td colspan="1" class="text-center" width="20%">
+                        <select  class="form-control" name="deptmanagerSta" th:field="*{deptmanagerSta}"  disabled="true">
+                            <option  value="">审核意见</option>
+                            <option th:selected="${petition.deptmanagerSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.deptmanagerSta==2}" value="2">不同意</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${deptmanagerIdea}" name="deptmanagerIdea" class="form-control"  disabled="true" placeholder="备注"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input  type="text" name="deptmanageDate"  th:value="${#dates.format(petition.deptmanageDate,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="审核日期" disabled="true">
+                    </td>
+                </tr>
+                <tr id="acoffer" >
+                    <td  colspan="2"class="text-center">核准人:</td>
+                    <td colspan="2" class="text-center">
+                        <input class="form-control name-data" placeholder="请输入核准人姓名" th:field="*{acOfficer}" name="acOfficer" id="acOfficer" onclick="nameData()" disabled="disabled">
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select name="acOfficerSta" class="form-control"  th:field="*{acOfficerSta}"  disabled="true">
+                            <option  value="">审核意见</option>
+                            <option th:selected="${petition.acOfficerSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.acOfficerSta==2}" value="2">不同意</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${acOfficerIdea}" name="acOfficerIdea" class="form-control"  disabled="true" placeholder="备注"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="text" name="acOfficerDate"  th:value="${#dates.format(petition.acOfficerDate,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+                </tr>
+<!--               <tr id="fcManager" >-->
+<!--                    <td colspan="2" class="text-center">核准人:财务总账</td>-->
+<!--                    <td colspan="2" class="text-center">-->
+<!--                        <select name="fcManager" class="form-control"  id="fc" th:field="*{fcManager}" disabled="disabled" >-->
+<!--                            <option value="">请选择财务总账</option>-->
+<!--                            <option th:selected="${petition.fcManager==1}" value="1">王娜</option>-->
+<!--                            <option th:selected="${petition.fcManager==2}" value="2">畅佩华</option>-->
+<!--                            <option th:selected="${petition.fcManager==3}" value="3">马海云</option>-->
+<!--                            <option th:selected="${petition.fcManager==4}" value="4">林佳怡</option>-->
+<!--                            <option th:selected="${petition.fcManager==5}" value="5">韓詩蕙</option>-->
+<!--                            <option th:selected="${petition.fcManager==6}" value="6">张玲</option>-->
+<!--                            <option th:selected="${petition.fcManager==7}" value="7">夏晶</option>-->
+<!--                            <option th:selected="${petition.fcManager==8}" value="8">叶小仙</option>-->
+<!--                            <option th:selected="${petition.fcManager==9}" value="9">庞杭艳</option>-->
+<!--                            <option th:selected="${petition.fcManager==10}" value="10">王晶</option>-->
+<!--                            <option th:selected="${petition.fcManager==11}" value="11">高甜</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                   <td colspan="1" class="text-center">-->
+<!--                       <select  name="fcManagerSta" class="form-control"  disabled="true"  th:field="*{fcManagerSta}" >-->
+<!--                           <option value="">审核意见</option>-->
+<!--                           <option th:selected="${petition.fcManagerSta==2}" value="1">同意</option>-->
+<!--                           <option th:selected="${petition.fcManagerSta==2}" value="2">不同意</option>-->
+<!--                       </select>-->
+<!--                   </td>-->
+<!--                   <td colspan="2">-->
+<!--                       <textarea type="text" autoHeight="true" th:text="${fcManagerIdea}" name="fcManagerIdea" class="form-control"  disabled="true" placeholder="备注"></textarea>-->
+<!--                   </td>-->
+<!--                    <td colspan="2">-->
+<!--                        <input type="text" name="fcManagerDate"th:value="${#dates.format(petition.fcManagerDate,'yyyy-MM-dd')}"  class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">-->
+<!--                    </td>-->
+
+<!--                </tr>-->
+
+<!--                <tr id="cfcoManager" >-->
+<!--                    <td  colspan="2" class="text-center"  width="10%">核准人:财务经理</td>-->
+<!--                    <td colspan="2" class="text-center" >-->
+<!--                        <select  name="cfcoManager" class="form-control"  id="cfco" th:field="*{cfcoManager}"  disabled="true">-->
+<!--                            <option  th:selected="${petition.cfcoManager==2}" value="2">Bight(庞杭艳)</option>-->
+<!--                            <option  th:selected="${petition.cfcoManager==3}" value="3">陈京晶</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                    <td colspan="1" class="text-center">-->
+<!--                        <select name="cfcoManagerSta" class="form-control"  th:field="*{cfcoManagerSta}"  disabled="true">-->
+<!--                            <option value="">审核意见</option>-->
+<!--                            <option th:selected="${petition.cfcoManagerSta==2}" value="1">同意</option>-->
+<!--                            <option th:selected="${petition.cfcoManagerSta==2}" value="2">不同意</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                    <td colspan="2">-->
+<!--                        <textarea type="text" autoHeight="true" th:text="${cfcoManagerIdea}" name="cfcoManagerIdea" class="form-control"  disabled="true" placeholder="备注"></textarea>-->
+<!--                    </td>-->
+<!--                    <td colspan="2">-->
+<!--                        <input type="text" name="cfcoManagerDate" th:value="${#dates.format(petition.cfcoManagerDate,'yyyy-MM-dd')}"  class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期" disabled="true">-->
+<!--                    </td>-->
+
+<!--                </tr>-->
+                <tr id="gmSta" >
+                    <td  colspan="2"class="text-center">核准人:</td>
+                    <td colspan="2" class="text-center">
+                        <input class="form-control name-data" th:field="*{gm}" id="gm" name="gm" placeholder="可选" onclick="nameData()" disabled="disabled">
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select name="gmSta" class="form-control"   th:field="*{gmSta}"  disabled="true">
+                            <option value="">审核意见</option>
+                            <option th:selected="${petition.gmSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.gmSta==2}" value="2">不同意</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${gmIdea}" name="gmIdea" class="form-control"  disabled="true" placeholder="备注"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="text" name="gmDate"  th:value="${#dates.format(petition.gmDate,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+
+                </tr>
+                <tr th:each="petitionSign:${petitionSigns}" id="addColumn1">
+                    <td class="text-center"  colspan="2" width="15%">新增核准人:</td>
+                    <td class="text-center" colspan="2" >
+                        <input class="form-control" name="addSignsName" id="addSignsname" disabled th:value="${petitionSign.addName}" >
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select  class="form-control"  name="result" disabled="true">
+                            <option value="">审核意见</option>
+                            <option th:selected="${petitionSign.result==1}" value="1">同意</option>
+                            <option th:selected="${petitionSign.result==2}" value="2">不同意</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${petitionSign.remark}" name="remark" class="form-control"  disabled="true"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="text" name="auditDate"  th:value="${#dates.format(petitionSign.addTime,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+                </tr>
+                <tr th:each="petitionTrialList:${petitionTrialList}" id="addtrial">
+                    <td class="text-center"  colspan="2" width="15%">新增会审人:</td>
+                    <td class="text-center" colspan="2" >
+                        <input class="form-control" name="addtrialName" id="addtrialname" disabled th:value="${petitionTrialList.addName}" >
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select  class="form-control"  name="result" disabled="true">
+                            <option value="">审核意见</option>
+                            <option th:selected="${petitionTrialList.result==1}" value="1">同意</option>
+                            <option th:selected="${petitionTrialList.result==2}" value="2">不同意</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${petitionTrialList.remark}" name="remark" class="form-control"  disabled="true"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="text" name="auditDate"  th:value="${#dates.format(petitionTrialList.addTime,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+                </tr>
+                <tr id="hr">
+                    <td colspan="2" class="text-center" >印鉴保管人审核</td>
+                    <td colspan="2" class="text-center">
+                        <select  class="form-control" name="hr" id="hr1" th:field="*{hr}" disabled="disabled" >
+                            <option value="" >请选择保管人</option>
+                            <option th:selected="${petition.hr==1}" value="1">周婕</option>
+                            <option  th:selected="${petition.hr==2}" value="2">沈科如</option>
+                            <option  th:selected="${petition.hr==3}" value="3">王娜</option>
+                            <option  th:selected="${petition.hr==4}" value="4">黃奕晨</option>
+                            <option  th:selected="${petition.hr==5}" value="5">韓詩蕙</option>
+                            <option  th:selected="${petition.hr==6}" value="6">戎玲</option>
+                            <option  th:selected="${petition.hr==7}" value="7">畅佩华</option>
+                            <option  th:selected="${petition.hr==8}" value="8">陈京晶</option>
+                            <option th:selected="${petition.hr==9}"  value="9">张玲</option>
+                            <option  th:selected="${petition.hr==10}" value="10">白永江</option>
+                            <option  th:selected="${petition.hr==11}" value="11">王卓亚</option>
+                            <option  th:selected="${petition.hr==12}" value="12">马海云</option>
+                            <option  th:selected="${petition.hr==13}" value="13">陈君</option>
+                            <option  th:selected="${petition.hr==14}" value="14">宁卓</option>
+                            <option  th:selected="${petition.hr==15}" value="15">潘冠呈</option>
+                            <option  th:selected="${petition.hr==16}" value="16">陳紹偉</option>
+                            <option  th:selected="${petition.hr==19}" value="19">沈科如</option>
+                            <option  th:selected="${petition.hr==17}" value="17">付婷</option>
+                            <option  th:selected="${petition.hr==18}" value="18">王菲</option>
+                            <option  th:selected="${petition.hr==20}" value="20">周婕</option>
+                            <option  th:selected="${petition.hr==21}" value="21">高甜</option>
+                            <option  th:selected="${petition.hr==22}" value="22">李冬梅</option>
+                        </select>
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select name="hrSta" class="form-control"  disabled="true"  th:field="*{hrSta}" >
+                            <option value="">审核意见</option>
+                            <option th:selected="${petition.hrSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.hrSta==2}" value="2">不同意</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${hrIdea}" name="hrIdea" class="form-control"  disabled="true" placeholder="备注"></textarea>
+                    </td>
+                    <td colspan="2">
+                        <input type="text" name="hrStaDate"th:value="${#dates.format(petition.hrStaDate,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期" disabled="true">
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-offset-5 col-sm-10 bottom">
+            <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-save"></i>保存</button>
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关闭</button>
+        </div>
+
+    </form>
+
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+<script th:src="@{/ajax/libs//datapicker/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+<script th:src="@{/ajax/libs/typeahead/bootstrap3-typeahead.min.js}"></script>
+<script type="text/javascript">
+
+    $(function(){
+        $(".datetimepicker-yyyy-mm-dd").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    });
+    $(function () {
+        debugger
+        var type=$('#type').val();
+        if (type=="1"){
+            $("#hr").show();
+            $("#topic1").hide();
+            $("#topic2").hide();
+            $("#exp1").show();
+            $("#exp2").show();
+            $("#seal3").show();
+            $("#law1").show();
+            $("#law2").show();
+            $("#sealtype").show();
+            $("#monery").hide();
+            $("#curr").hide();
+            $("#fcManager").hide();
+            $("#cfcoManager").hide();
+            $("#gmSta").show();
+            $("#acoffer").hide();
+
+        }else if (type=="2"){
+            $("#hr").hide();
+            $("#seal3").hide();
+            $("#law1").hide();
+            $("#law2").hide();
+            $("#sealtype").hide();
+            $("#monery").show();
+            $("#curr").show();
+            $("#fcManager").show();
+            $("#cfcoManager").show();
+            $("#gmSta").show();
+            $("#acoffer").hide();
+
+        }else if (type=="3"){
+            $("#monery").hide();
+            $("#curr").hide();
+            $("#hr").hide();
+            $("#seal3").hide();
+            $("#law1").hide();
+            $("#law2").hide();
+            $("#sealtype").hide();
+            $("#fcManager").hide();
+            $("#cfcoManager").hide();
+            $("#gmSta").show();
+            $("#acoffer").show();
+        }else {
+            $.modal.alertWarning("请选择签呈类型");
+        }
+    });
+    $('#sid').on('blur',function () {
+        debugger
+        var sid=$(this).val();
+        $.ajax({
+            type: "GET",
+            url: prefix + "/getMessage/"+sid,
+            dataType: 'json',
+            success: function(result) {
+                if (result.code == 0) {
+                    $('#dept').val(result.data.dept);
+                    $("#applyname").val(result.data.applyname);
+                    //$("#company").val(result.data.company);
+                    var com=result.data.company;
+                    //自动带出公司
+                    if (com=="杭州") {
+                        $("#company").val("5");
+                    }else if (com=="西安"||com=="西安，驻厂") {
+                        $("#company").val("7");
+                    }else if (com=="成都") {
+                        $("#company").val("17");
+                    }else if (com=="上海"||com=="浦东"||com=="浦西") {
+                        $("#company").val("19");
+                    }else if (com=="韩国") {
+                        $("#company").val("3");
+                    }else if (com=="印度") {
+                        $("#company").val("16");
+                    }else if (com=="日本") {
+                        $("#company").val("15");
+                    }else if (com=="台湾"||com=="台北"||com=="高雄"||com=="新竹") {
+                        $("#company").val("12");
+                    }else if (com=="南京"||com=="无锡"||com=="武汉"||com=="江阴"||com=="苏州"||com=="长沙") {
+                        $("#company").val("6");
+                    }else if (com=="香港") {
+                        $("#company").val("13");
+                    }else if (com=="上海矽力杰微电子") {
+                        $("#company").val("14");
+                    } else if (com=="南京香港") {
+                        $("#company").val("20");
+                    }else if (com=="US-CA IRVINE"||com=="US-CA Sunnyvale"||com=="US-CA Sunnyvale / 高雄"||com=="US-HOME MO;St.Louis Missouri"||com=="US-NC Cary") {
+                        $("#company").val("4");
+                    }else if (com=="萨摩亚") {
+                        $("#company").val("9");
+                    } else if (com=="corp") {
+                        $("#company").val("1");
+                    } else if (com=="矽望") {
+                        $("#company").val("21");
+                    }else if (com=="合肥") {
+                        $("#company").val("22");
+                    }else if (com=="澳门") {
+                        $("#company").val("23");
+                    }else{
+                        $("#company").val("0");
+                    }
+                    //财务总账赋值
+                    var company=$("#company").val();
+                    if (company=="5"){
+                        $("#fc").val("1");
+                    }else if (company=="7") {
+                        $("#fc").val("2");
+                    }else if (company=="17") {
+                        $("#fc").val("3");
+                    }else if (company=="4"||company=="9"||company=="16"||company=="13"||company=="15"||company=="3") {
+                        $("#fc").val("4");
+                    }else if (company=="12") {
+                        $("#fc").val("5");
+                    }else if (company=="6") {
+                        $("#fc").val("6");
+                    }else if (company=="1"||company=="21") {
+                        $("#fc").val("8");
+                    }else if (company=="19") {
+                        $("#fc").val("9");
+                    }else if (company=="14"||company=="20") {
+                        $("#fc").val("10");
+                    }else if (company=="22") {
+                        $("#fc").val("11");
+                    }
+                    //若选其他  暂由杭州负责
+                    else{
+                        $("#fc").val("1");
+                    }
+
+                    //印章类型显示
+                    if (company=="5") {
+                        $("#1").show();
+                        $("#2").show();
+                        $("#3").show();
+                        $("#4").show();
+                        $("#5").hide();
+                        $("#6").hide();
+                        $("#7").hide();
+                        $("#8").hide();
+                    }else if (company=="12") {
+                        $("#1").hide();
+                        $("#2").hide();
+                        $("#3").hide();
+                        $("#4").show();
+                        $("#5").show();
+                        $("#6").show();
+                        $("#7").hide();
+                        $("#8").hide();
+                    }else if (company=="6") {
+                        $("#1").show();
+                        $("#2").show();
+                        $("#3").show();
+                        $("#4").show();
+                        $("#5").hide();
+                        $("#6").hide();
+                        $("#7").hide();
+                        $("#8").hide();
+                    }else if (company=="20") {
+                        $("#1").hide();
+                        $("#2").show();
+                        $("#3").hide();
+                        $("#4").hide();
+                        $("#5").hide();
+                        $("#6").hide();
+                        $("#7").show();
+                        $("#8").show();
+                    }else if (company=="2") {
+                        $("#1").show();
+                        $("#2").show();
+                        $("#3").show();
+                        $("#4").hide();
+                        $("#5").hide();
+                        $("#6").hide();
+                        $("#7").hide();
+                        $("#8").hide();
+                    }else if (company=="17") {
+                        $("#1").show();
+                        $("#2").show();
+                        $("#3").show();
+                        $("#4").hide();
+                        $("#5").hide();
+                        $("#6").hide();
+                        $("#7").hide();
+                        $("#8").hide();
+                    } else if (company=="23") {
+                        $("#1").show();
+                        $("#2").hide();
+                        $("#3").hide();
+                        $("#4").hide();
+                        $("#5").hide();
+                        $("#6").hide();
+                        $("#7").hide();
+                        $("#8").hide();
+                    }else {
+                        $("#1").show();
+                        $("#2").show();
+                        $("#3").show();
+                        $("#4").show();
+                        $("#5").hide();
+                        $("#6").hide();
+                        $("#7").hide();
+                        $("#8").hide();
+                    }
+
+                    //抬头自动更换
+                    if (company=="5"){
+                        $(".my-h2").html("矽力杰半导体技术（杭州）有限公司")
+                    }else if (company=="7") {
+                        $(".my-h2").html("西安矽力杰半导体技术有限公司")
+                    }else if (company=="17") {
+                        $(".my-h2").html("成都矽力杰半导体技术有限公司")
+                    }else if (company=="19") {
+                        $(".my-h2").html("上海矽力杰半导体技术有限公司")
+                    }else if (company=="3") {
+                        $(".my-h2").html("Silergy Korea Limited")
+                    }else if (company=="16") {
+                        $(".my-h2").html("Silergy Technologies Private Limited")
+                    }else if (company=="15") {
+                        $(".my-h2").html("Silergy Semiconductor Samoa Limited")
+                    } else if (company=="12") {
+                        $(".my-h2").html("台湾矽力杰科技股份有限公司")
+                    }else if (company=="6") {
+                        $(".my-h2").html("南京矽力微电子技术有限公司")
+                    }else if (company=="13") {
+                        $(".my-h2").html("Silergy Semiconductor (Hong Kong) Limited 矽力杰半導體(香港)有限公司")
+                    }else if (company=="14") {
+                        $(".my-h2").html("上海矽力杰微电子技术有限公司")
+                    }else if (company=="20") {
+                        $(".my-h2").html("南京矽力微電子(香港)有限公司")
+                    }else if (company=="4") {
+                        $(".my-h2").html(" &nbsp &nbsp &nbsp &nbsp Silergy Technology")
+                    }else if (company=="9") {
+                        $(".my-h2").html("Silergy Semiconductor (Samoa) Limited")
+                    }else if (company=="1") {
+                        $(".my-h2").html(" &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Silergy Corp")
+                    }else if (company=="21") {
+                        $(".my-h2").html("Silicon Prospect Investment Limited")
+                    }else if (company=="22") {
+                        $(".my-h2").html("合肥矽力杰半导体技术有限公司")
+                    }else if (company=="23") {
+                        $(".my-h2").html("矽力杰半導體(澳門)一人有限公司")
+                    }else{
+                        $(".my-h2").html("南京矽力微电子技术有限公司")
+                    }
+                    $("#sid").val(result.data.sid);
+                    $("#deptmanager").val(result.data.deptmanager);
+                } else if(result.code == 404){
+                    $.modal.alertError("获取失败");
+                }else{
+                    $('.departmentCode').val("");
+                    $.modal.alertError("发送错误");
+                }
+            },
+            error: function(error) {
+                $.modal.alertWarning("");
+            }
+        });
+    })
+    //类型显示
+    $('#type').on('blur',function () {
+        var type=$(this).val();
+        if (type=="1"){
+            $("#hr").show();
+            $("#topic1").hide();
+            $("#topic2").hide();
+            $("#exp1").show();
+            $("#exp2").show();
+            $("#seal3").show();
+            $("#law1").show();
+            $("#law2").show();
+            $("#sealtype").show();
+            $("#monery").hide();
+            $("#curr").hide();
+            $("#fcManager").hide();
+            $("#cfcoManager").hide();
+            $("#gmSta").show();
+            $("#acoffer").hide();
+
+        }else if (type=="2"){
+            $("#hr").hide();
+            $("#seal3").hide();
+            $("#law1").hide();
+            $("#law2").hide();
+            $("#sealtype").hide();
+            $("#monery").show();
+            $("#curr").show();
+            $("#fcManager").show();
+            $("#cfcoManager").show();
+            $("#gmSta").show();
+            $("#acoffer").hide();
+
+        }else if (type=="3"){
+            $("#monery").hide();
+            $("#curr").hide();
+            $("#hr").hide();
+            $("#seal3").hide();
+            $("#law1").hide();
+            $("#law2").hide();
+            $("#sealtype").hide();
+            $("#fcManager").hide();
+            $("#cfcoManager").hide();
+            $("#gmSta").show();
+            $("#acoffer").show();
+        }else {
+            $("#monery").hide();
+            $("#curr").hide();
+            $("#hr").hide();
+            $("#seal3").hide();
+            $("#law1").hide();
+            $("#law2").hide();
+            $("#sealtype").hide();
+            $("#fcManager").hide();
+            $("#cfcoManager").hide();
+            $("#gmSta").hide();
+            $("#acoffer").hide();
+        }
+
+    });
+    $('#moneyM').keyup(function(){
+        var $this = $(this);
+        var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]{1,2}$)/;
+        var val = $this.val();
+        if(reg.test(val)){
+            console.log('true')
+        }else{
+            // $this.val('')
+            console.log('false')
+            return false
+        }
+    });
+
+    $('#moneyM').on('blur',function () {
+        debugger
+        var monery=$(this).val();
+        var reg = new RegExp("((^[1-9]\\d*)|^0)(\\.\\d{0,2}){0,1}$");
+        if(reg.test(monery)){
+            console.log('true')
+        }else{
+            layer.msg("请输入正常金额");
+            e.value = "";
+            e.focus();
+        }
+    });
+
+    //选择地区后带出对应保管人
+    $("#company").on('change',function () {
+        var company=$(this).val();
+        if (company=="5"){
+            $("#fc").val("1");
+        }else if (company=="7") {
+            $("#fc").val("2");
+        }else if (company=="17"||company=="19"||company=="3") {
+            $("#fc").val("3");
+        }else if (company=="4"||company=="9"||company=="16"||company=="15"||company=="13") {
+            $("#fc").val("4");
+        }else if (company=="12") {
+            $("#fc").val("5");
+        }else if (company=="6"||company=="14") {
+            $("#fc").val("6");
+        }else if (company=="20") {
+            $("#fc").val("8");
+        }else if (company=="1") {
+            $("#fc").val("9");
+        }else if (company=="21") {
+            $("#fc").val("1");
+        }
+    });
+    $("#company").on('change',function () {
+        var company=$(this).val();
+        if (company=="5"){
+            $(".my-h2").html("矽力杰半导体技术（杭州）有限公司")
+        }else if (company=="7") {
+            $(".my-h2").html("西安矽力杰半导体技术有限公司")
+        }else if (company=="17") {
+            $(".my-h2").html("成都矽力杰半导体技术有限公司")
+        }else if (company=="19") {
+            $(".my-h2").html("上海矽力杰半导体技术有限公司")
+        }else if (company=="3") {
+            $(".my-h2").html("Silergy Korea Limited")
+        }else if (company=="16") {
+            $(".my-h2").html("Silergy Technologies Private Limited")
+        }else if (company=="15") {
+            $(".my-h2").html("Silergy Semiconductor Samoa Limited")
+        } else if (company=="12") {
+            $(".my-h2").html("台湾矽力杰科技股份有限公司")
+        }else if (company=="6") {
+            $(".my-h2").html("南京矽力微电子技术有限公司")
+        }else if (company=="13") {
+            $(".my-h2").html("Silergy Semiconductor (Hong Kong) Limited 矽力杰半導體(香港)有限公司")
+        }else if (company=="14") {
+            $(".my-h2").html("上海矽力杰微电子技术有限公司")
+        }else if (company=="20") {
+            $(".my-h2").html("南京矽力微電子(香港)有限公司")
+        }else if (company=="4") {
+            $(".my-h2").html(" &nbsp &nbsp &nbsp &nbsp Silergy Technology")
+        }else if (company=="9") {
+            $(".my-h2").html("Silergy Semiconductor (Samoa) Limited")
+        }else if (company=="1") {
+            $(".my-h2").html(" &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Silergy Corp")
+        }else if (company=="21") {
+            $(".my-h2").html("Silicon Prospect Investment Limited")
+        }else if (company=="22") {
+            $(".my-h2").html("合肥矽力杰半导体技术有限公司")
+        }else if (company=="23") {
+            $(".my-h2").html("矽力杰半導體(澳門)一人有限公司")
+        }else{
+            $(".my-h2").html("南京矽力微电子技术有限公司")
+        }
+    });
+
+    //根据所选印章类型和地区自动带出印章保管人
+    $('input[name=sealType]').click(function () {
+        debugger
+        var seal=$(this).val();
+        var company=$('#company').val();
+        if (company=="5"&&seal=="1"){
+            $("#hr1").val("2");
+        }else if (company=="5"&&seal=="2") {
+            $("#hr1").val("1");
+        }else if (company=="5"&&seal=="3") {
+            $("#hr1").val("3");
+        }else if (company=="5"&&seal=="4") {
+            $("#hr1").val("2");
+        }else if (company=="12"&&seal=="4") {
+            $("#hr1").val("4");
+        }else if (company=="12"&&seal=="5") {
+            $("#hr1").val("2");
+        }else if (company=="12"&&seal=="6") {
+            $("#hr1").val("5");
+        }else if (company=="6"&&seal=="1") {
+            $("#hr1").val("6");
+        }else if (company=="6"&&seal=="4") {
+            $("#hr1").val("6");
+        }else if (company=="6"&&seal=="2") {
+            $("#hr1").val("8");
+        }else if (company=="6"&&seal=="3") {
+            $("#hr1").val("9");
+        }else if (company=="12"&&seal=="7") {
+            $("#hr1").val("6");
+        }else if (company=="20"&&seal=="8") {
+            $("#hr1").val("6");
+        }else if (company=="20"&&seal=="2") {
+            $("#hr1").val("8");
+        }else if (company=="7"&&seal=="3") {
+            $("#hr1").val("7");
+        }else if (company=="7"&&seal=="2") {
+            $("#hr1").val("10");
+        }else if (company=="7"&&seal=="1") {
+            $("#hr1").val("11");
+        }else if (company=="17"&&seal=="3") {
+            $("#hr1").val("7");
+        }else if (company=="17"&&seal=="2") {
+            $("#hr1").val("13");
+        }else if (company=="17"&&seal=="1") {
+            $("#hr1").val("14");
+        } else if (company=="1"&&seal=="1") {
+            $("#hr1").val("2");
+        }else if (company=="22"&&seal=="1") {
+            $("#hr1").val("20");
+        }else  if (company=="22"&&seal=="2") {
+            $("#hr1").val("20");
+        }else  if (company=="22"&&seal=="3") {
+            $("#hr1").val("21");
+        }else  if (company=="23"&&seal=="1") {
+            $("#hr1").val("22");
+        }else{
+            $("#hr1").val("");
+        }
+    });
+
+    $(function () {
+      var company=$('#company').val();
+        if (company=="5") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="12") {
+            $("#1").hide();
+            $("#2").hide();
+            $("#3").hide();
+            $("#4").show();
+            $("#5").show();
+            $("#6").show();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="6") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="20") {
+            $("#1").hide();
+            $("#2").show();
+            $("#3").hide();
+            $("#4").hide();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").show();
+            $("#8").show();
+        }else if (company=="7") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").hide();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="17") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").hide();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="22") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="23") {
+            $("#1").show();
+            $("#2").hide();
+            $("#3").hide();
+            $("#4").hide();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+            $("#5").show();
+            $("#6").show();
+            $("#7").show();
+            $("#8").show();
+        }
+    })
+    //印章类型显示
+    $('#company').on('change',function () {
+        debugger
+        var company=$(this).val();
+        if (company=="5") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="12") {
+            $("#1").hide();
+            $("#2").hide();
+            $("#3").hide();
+            $("#4").show();
+            $("#5").show();
+            $("#6").show();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="6") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="20") {
+            $("#1").hide();
+            $("#2").show();
+            $("#3").hide();
+            $("#4").hide();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").show();
+            $("#8").show();
+        }else if (company=="7") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").hide();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="17") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").hide();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="22") {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else if (company=="23") {
+            $("#1").show();
+            $("#2").hide();
+            $("#3").hide();
+            $("#4").hide();
+            $("#5").hide();
+            $("#6").hide();
+            $("#7").hide();
+            $("#8").hide();
+        }else {
+            $("#1").show();
+            $("#2").show();
+            $("#3").show();
+            $("#4").show();
+            $("#5").show();
+            $("#6").show();
+            $("#7").show();
+            $("#8").show();
+        }
+    })
+
+    function nameData(){
+        $.get(ctx + "system/petition/getAlluser", function(data){
+            debugger
+
+            $(".name-data").typeahead({
+                source: data.value
+            });
+        },'json');
+    }
+
+    var prefix = ctx + "system/petition";
+    $("#form-petition-add").validate({
+        rules:{
+            xxxx:{
+                required:true,
+            },
+        },
+        focusCleanup: true
+    });
+    function submitHandler() {
+        debugger
+        if ($.validate.form()) {
+            var Object = {};
+            var formObject = {};
+            var formArray = $("#form-petition-add").serializeArray();
+            $.each(formArray, function (i, item) {
+                formObject[item.name] = item.value;
+            });
+            if (formObject.explanation == "") {
+                $.modal.alertWarning("请输入说明");
+                return false;
+            }
+            ;
+
+            if (formObject.typeType == 1) {
+                if (formObject.explanation == "") {
+                    $.modal.alertWarning("请输入说明");
+                    return false;
+                };
+                if (formObject.sealType == "") {
+                    $.modal.alertWarning("请选择使用印鉴");
+                    return false;
+                };
+                if (formObject.law == "") {
+                    $.modal.alertWarning("请选择是否走法务");
+                    return false;
+                };
+                if (formObject.sealExplain=="2"&&formObject.sealDate=="") {
+                    $.modal.alertWarning("请选择外借日期");
+                    return false;
+                };
+                if (formObject.hr == "") {
+                    $.modal.alertWarning("请选择印鉴保管人");
+                    return false;
+                }
+            };
+            if (formObject.typeType == 2) {
+                if (formObject.topicObj == "") {
+                    $.modal.alertWarning("请输入主题内容");
+                    return false;
+                };
+                if (formObject.curr == "") {
+                    $.modal.alertWarning("请输入币别");
+                    return false;
+                };
+                if (formObject.moneyM == "") {
+                    $.modal.alertWarning("请输入金额");
+                    return false;
+                };
+                if (formObject.fcManager == "") {
+                    $.modal.alertWarning("请选择财务总账");
+                    return false;
+                };
+            }
+
+                console.log(formObject);
+                $.ajax({
+                    type: "POST",
+                    url: prefix + "/edit",
+                    data: JSON.stringify(formObject),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",//预期服务器返回的数据类型
+                    timeout: 20000,
+                    success: function (result) {
+                        debugger
+                        if (result.code == web_status.SUCCESS) {
+                            result.msg = "操作成功！";
+                            $.modal.alertSuccess(result.msg);
+                            $.operate.successTabCallback(result);
+                        } else {
+                            $.modal.closeLoading();
+                            $.modal.alertError(result.msg);
+                        }
+                    },
+                    error: function () {
+                        alert("error！");
+                    }
+                });
+            }
+
+    }
+
+
+
+
+</script>
+<style>
+    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
+        line-height: 1 !important;
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        padding: 3px 0 3px 4px !important;
+
+    }
+    .wrapper{
+        /*text-align: center; !*让div内部文字居中*!*/
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 1050px;
+        height: auto;
+        /*width: 1050px;*/
+
+        /*border:1px solid #000*/
+    }
+    .my-table{
+        margin-left: auto;
+        margin-right: auto;
+        /*margin-top: 1px;*/
+        /*margin-bottom: 1px;*/
+    }
+    .my-table1 tr td{
+        border:none;
+    }
+    .bottom{
+        margin-top: 10px;
+    }
+    .form-control {
+        border: 0;
+        webkit-box-shadow: none;
+        box-shadow: none;
+        background-color: #FFFFF4;
+    }
+    table td{
+        border: 1px solid #000;
+    }
+    .my-h2{
+        margin: auto;
+    }
+    .my-h3 {
+        margin-left: 80px;
+    }
+    #for-boder{
+         border:1px double #000;
+        width: 70%;
+        margin-left: 100px;
+    }
+    #for-boder1{
+        width: 70%;
+        margin-left: 100px;
+    }
+    .container{
+        margin-left: 10%;
+    }
+    input[type=checkbox], input[type=radio] {
+        margin: 0px 0 0;
+        margin-top: 1px\9;
+        line-height: normal;
+    }
+    body{
+        overflow: scroll;
+    }
+</style>
+</body>
+</html>

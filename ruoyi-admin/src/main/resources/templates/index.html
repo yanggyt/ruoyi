@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>若依系统首页</title>
+    <title>南京矽力微工作流审批系统</title>
     <!-- 避免IE使用兼容模式 -->
  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link th:href="@{favicon.ico}" rel="shortcut icon"/>
@@ -14,7 +14,7 @@
     <link th:href="@{/css/animate.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/style.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/skins.css}" rel="stylesheet"/>
-    <link th:href="@{/ruoyi/css/ry-ui.css?v=4.7.6}" rel="stylesheet"/>
+    <link th:href="@{/ruoyi/css/ry-ui.css?v=4.7.5}" rel="stylesheet"/>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" th:classappend="${isMobile} ? 'canvas-menu'" style="overflow: hidden">
 <div id="wrapper">
@@ -26,7 +26,7 @@
         </div>
         <a th:href="@{/index}">
             <li class="logo hidden-xs">
-                <span class="logo-lg">RuoYi</span>
+                <span class="logo-lg">Silergy</span>
             </li>
          </a>
         <div class="sidebar-collapse">
@@ -264,8 +264,8 @@
 <script th:src="@{/js/jquery.contextMenu.min.js}"></script>
 <script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
 <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
-<script th:src="@{/ruoyi/js/ry-ui.js?v=4.7.6}"></script>
-<script th:src="@{/ruoyi/js/common.js?v=4.7.6}"></script>
+<script th:src="@{/ruoyi/js/ry-ui.js?v=4.7.5}"></script>
+<script th:src="@{/ruoyi/js/common.js?v=4.7.5}"></script>
 <script th:src="@{/ruoyi/index.js?v=20201208}"></script>
 <script th:src="@{/ajax/libs/fullscreen/jquery.fullscreen.js}"></script>
 <script th:inline="javascript">
@@ -327,16 +327,25 @@ function applyPath(url) {
 
 $(function() {
 	var lockPath = storage.get('lockPath');
-	if($.common.equals("history", mode) && window.performance.navigation.type == 1) {
-		var url = storage.get('publicPath');
-	    if ($.common.isNotEmpty(url)) {
-	    	applyPath(url);
-	    }
+	if(($.common.equals("history", mode) && window.performance.navigation.type == 1) || (window.performance.navigation.type == 2)) {
+		// var url = storage.get('publicPath');
+	    // if ($.common.isNotEmpty(url)) {
+	    // 	applyPath(url);
+	    // }
+		if (localStorage.valueOf().length>0){
+			for (let i = 0; i < localStorage.valueOf().length; i++) {
+				if (localStorage.key(i) !== "publicPath" && localStorage.key(i) !== "首页"){
+					backCreateMenuItem(localStorage.getItem(localStorage.key(i)),localStorage.key(i))
+				}
+			}
+		}
 	} else if($.common.isNotEmpty(lockPath)) {
 	    applyPath(lockPath);
 	    storage.remove('lockPath');
+		storage.clear();
 	} else {
 		var hash = location.hash;
+
 	    if ($.common.isNotEmpty(hash)) {
 	        var url = hash.substring(1, hash.length);
 	        applyPath(url);
@@ -345,6 +354,38 @@ $(function() {
 	    		storage.set('publicPath', "");
 	    	}
 	    }
+		storage.clear();
+	}
+
+	if (getCookie("name") != null && getCookie("name") != "/") {
+		var url = getCookie("name");
+		var panelUrl;
+		var title;
+		if (url.search("system/paymentRequest/review") != -1) {
+			panelUrl = "/system/paymentRequest/todo";
+			title = "审核";
+		} else if (url.search("system/paymentRequest/detail") != -1) {
+			panelUrl = "/system/paymentRequest/create";
+			title = "详情";
+		} else if (url.search("system/requisition/review") != -1) {
+			panelUrl = "/system/requisition/todo";
+			title = "审核";
+		} else if (url.search("system/requisition/detail") != -1) {
+			panelUrl = "/system/requisition/create";
+			title = "详情";
+		} else if (url.search("/system/petition/audit") != -1) {
+			panelUrl = "/system/petition/todo";
+			title = "审核";
+		} else if (url.search("/system/petition/detail") != -1) {
+			panelUrl = "/system/petition/create";
+			title = "详情";
+		} else if (url.search("system/petition/addaudit") != -1) {
+			panelUrl = "/system/petition/todo";
+			title = "审核";
+		}
+		applyPath(panelUrl);
+		createMenuItem1(panelUrl, url, title);
+		delCookie("name");
 	}
 	
 	/* 初始密码提示 */
@@ -374,6 +415,28 @@ $(function() {
 	}
 	$("[data-toggle='tooltip']").tooltip();
 });
+/** 创建选项卡 */
+function backCreateMenuItem(dataUrl, menuName) {
+	var panelUrl = getCookie("name");
+	dataIndex = $.common.random(1,100);
+	if (dataUrl == undefined || $.trim(dataUrl).length == 0) return false;
+	var topWindow = $(window.parent.document);
+
+	// 选项卡菜单不存在
+	var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '" data-panel="' + panelUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
+	$('.menuTab', topWindow).removeClass('active');
+
+	// 添加选项卡对应的iframe
+	var str1 = '<iframe class="RuoYi_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" data-panel="' + panelUrl + '" seamless></iframe>';
+	$('.mainContent', topWindow).find('iframe.RuoYi_iframe').hide().parents('.mainContent').append(str1);
+
+	window.parent.$.modal.loading("数据加载中，请稍后...");
+	$('.mainContent iframe:visible', topWindow).on('load',(function () {
+		window.parent.$.modal.closeLoading();
+	}));
+	// 添加选项卡
+	$('.menuTabs .page-tabs-content', topWindow).append(str);
+}
 </script>
 </body>
 </html>

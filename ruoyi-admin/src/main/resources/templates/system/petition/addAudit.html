@@ -1,0 +1,875 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html ;charset=utf-8" />
+<head>
+    <th:block th:include="include :: header('加签审核')" />
+    <th:block th:include="include :: datetimepicker-css"/>
+    <th:block th:include="include :: bootstrap-select-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <img src="../static/img/silergy.jpg" th:src="@{/img/silergy.jpg}">
+            </div>
+            <div class="col-xs-5">
+                <h2 class="my-h2">
+                    矽力杰半导体技术（杭州）有限公司
+                </h2>
+
+                <ul class="list-inline">
+                    <li>
+                        <h2 class="my-h3">签   呈 Petition</h2>
+                        <br>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <form action="none" id="form-petition-add">
+        <input id="id" name="id" th:field="*{petition.id}"  type="hidden">
+        <div id="for-boder1">
+            <table class="my-table1" border="0" cellpadding="0" cellspacing="0"  width="111%">
+                <tr>
+                    <td colspan="6" class="text-left" >类别:
+                        <select style="border: black" name="typeType" id="type" required disabled="true">
+                            <option value="">请选择</option>
+                            <option th:selected="${petition.typeType==1}"  value="1">A: 用印签呈</option>
+                            <option th:selected="${petition.typeType==2}"  value="2">B: 请采购签呈</option>
+                            <option th:selected="${petition.typeType==3}"  value="3">C: 其他</option>
+                        </select>
+                    </td>
+                    <td  colspan="3" id="comNo"  class="text-right" hidden="hidden"> <h5>矽字第 No.<input type="text" name="comNo" th:field="*{petition.comNo}" style="border:none;background-color: #FFFFFF" disabled="true" hidden></h5></td>
+                </tr>
+            </table>
+        </div>
+        <div id="for-boder">
+            <table class="my-table" width="100%">
+                <tr id="topic1">
+                    <td class="text-left" colspan="9"><h4>主题  Topic：</h4></td>
+                </tr>
+                <tr id="topic2">
+                    <td class="text-left" colspan="9">
+                        <textarea  type="text" autoHeight="true" id="topic" style="resize:none;" class="form-control" th:field="*{petition.topicObj}" name="topicObj" placeholder="请输入250内的文字内容" disabled="true" ></textarea>
+                    </td>
+                </tr>
+                <tr id="exp1">
+                    <td class="text-left" colspan="9"><h4>说明  Explanation：</h4></td>
+                </tr>
+                <tr id="exp2">
+                    <td class="text-center" colspan="9">
+                        <textarea  style="resize:none; "type="text" autoHeight="true" name="explanation"disabled="true" class="form-control"th:field="*{petition.explanation}" placeholder="请输入一千字以内的文字内容" ></textarea>
+                    </td>
+                </tr>
+                <tr id="curr">
+<!--                    <td colspan="9" class="text-left"><h4>币别:-->
+<!--                        <input type="text" name="curr" disabled="true" th:field="*{petition.curr}" style="border:none; " placeholder="例:美元/人民币/台币" />-->
+<!--                    </h4></td>-->
+                    <td colspan="9" class="text-left" style="position: relative;"><b>币别: </b>
+                        <input th:checked="${petition.curr == '美元'}" name="curr" type="radio" value="美元" style="border:none;" disabled="true"/>美元
+                        <input th:checked="${petition.curr == '人民币'}" name="curr" type="radio" value="人民币"  style="border:none;" disabled="true"/>人民币
+                        <input th:checked="${petition.curr == '台币'}" name="curr" type="radio" value="台币"  style="border:none;" disabled="true"/>台币
+                    </td>
+                </tr>
+                <tr id="monery"  >
+                    <td  colspan="9" class="text-left"><b>金额:</b><label><input class="form-control" name="moneyM" disabled="true" th:field="*{petition.moneyM}"id="moneyM" type="text" style="border:none;border-bottom:1px solid #000;" placeholder="例如2000"></label>元</td>
+                </tr>
+                </tr>
+                <tr id="sealtype" >
+                    <td colspan="9" rowspan="1" class="text-left" width="100%" disabled="true"><h4>使用印鉴:
+                        <label class="checkbox-inline" id="1" th:if="${typeMaps.type1} eq 1">
+                            <input type="checkbox" checked disabled="true" name="sealType"/> 公章
+                        </label>
+                        <label class="checkbox-inline" id="1" th:if="${typeMaps.type1} eq 0">
+                            <input type="checkbox" disabled="true" name="sealType"/> 公章
+                        </label>
+                        <label class="checkbox-inline" id="2" th:if="${typeMaps.type2} eq 1">
+                            <input type="checkbox" checked  disabled="true" name="sealType"/> 法人章
+                        </label>
+                        <label class="checkbox-inline" id="2" th:if="${typeMaps.type2} eq 0">
+                            <input type="checkbox" disabled="true" name="sealType"/> 法人章
+                        </label>
+                        <label class="checkbox-inline" id="3" th:if="${typeMaps.type3} eq 1">
+                            <input type="checkbox" checked disabled="true" name="sealType"/> 财务章
+                        </label>
+                        <label class="checkbox-inline" id="3" th:if="${typeMaps.type3} eq 0">
+                            <input type="checkbox"  disabled="true" name="sealType"/> 财务章
+                        </label>
+                        <label class="checkbox-inline" id="4" th:if="${typeMaps.type4} eq 1">
+                            <input type="checkbox" checked  disabled="true"name="sealType"/> 合同章
+                        </label>
+                        <label class="checkbox-inline" id="4" th:if="${typeMaps.type4} eq 0">
+                            <input type="checkbox"  disabled="true"name="sealType"/> 合同章
+                        </label>
+                        <label class="checkbox-inline" id="5" th:if="${typeMaps.type5} eq 1">
+                            <input type="checkbox" checked disabled="true" name="sealType"/> 法人章(经济部小章)
+                        </label>
+                        <label class="checkbox-inline" id="5" th:if="${typeMaps.type5} eq 0">
+                            <input type="checkbox"  disabled="true" name="sealType"/> 法人章(经济部小章)
+                        </label>
+                        <label class="checkbox-inline" id="6" th:if="${typeMaps.type6} eq 1">
+                            <input type="checkbox" checked  disabled="true"name="sealType"/> 法人章(经济部大章)
+                        </label>
+                        <label class="checkbox-inline" id="6" th:if="${typeMaps.type6} eq 0">
+                            <input type="checkbox" disabled="true" name="sealType"/> 法人章(经济部大章)
+                        </label>
+                        <label class="checkbox-inline" id="7" th:if="${typeMaps.type7} eq 1">
+                            <input type="checkbox" checked disabled="true" name="sealType"/> 印鉴大章
+                        </label>
+                        <label class="checkbox-inline" id="7" th:if="${typeMaps.type7} eq 0">
+                            <input type="checkbox" disabled="true" name="sealType"/> 印鉴大章
+                        </label>
+                        <label class="checkbox-inline" id="8" th:if="${typeMaps.type8} eq 1">
+                            <input type="checkbox"  checked disabled="true" name="sealType"/> 印鉴小章
+                        </label>
+                        <label class="checkbox-inline" id="8" th:if="${typeMaps.type8} eq 0">
+                            <input type="checkbox"  disabled="true" name="sealType"/> 印鉴小章
+                        </label>
+                        <label class="checkbox-inline" id="9" th:if="${typeMaps.type9} eq 1">
+                            <input type="checkbox" checked  disabled="true"  name="sealType"/> 其他
+                            <input type="text" name="seal" th:field="*{petition.seal}"disabled="true" style="border:none;border-bottom:1px solid #000;"/>
+                        </label>
+                        <label class="checkbox-inline" id="9" th:if="${typeMaps.type9} eq 0">
+                            <input type="checkbox"  disabled="true"  name="sealType"/> 其他
+                            <input type="text" name="seal" th:field="*{petition.seal}" disabled="true" style="border:none;border-bottom:1px solid #000;"/>
+                        </label>
+                    </h4>
+                    </td>
+                </tr>
+                <tr id="seal3">
+                    <td colspan="9" class="text-left"  disabled="true"><h4>印鉴使用说明:
+                        <label class="checkbox-inline">
+                            <input type="radio" value="1" disabled="true" th:field="*{petition.sealExplain}"  name="sealExplain"/> 直接用印:
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" value="2" disabled="true" th:field="*{petition.sealExplain}"  name="sealExplain"/> 外借:
+                        </label>
+                        <input type="text"  name="sealDate"  disabled="true" th:value="${#dates.format(petition.sealDate,'yyyy-MM-dd')}"class="datetimepicker-yyyy-mm-dd"  style="border:none; " placeholder="选择日期" required="true">
+                    </h4></td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="text-left">
+                        <textarea type="text" name="moreExplain" autoHeight="true" class="form-control" disabled="true" th:field="*{petition.moreExplain}"  style="resize:none;" placeholder="补充内容"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"class="text-center">公司</td>
+                    <td class="text-center" colspan="3">
+                        <select style="border: black" name="company"class="form-control" id="company" th:field="*{petition.company}" disabled="true" required>
+                            <option value="">请选择</option>
+                            <option th:selected="${petition.typeType==5}" value="5">杭州</option>
+                            <option th:selected="${petition.typeType==7}" value="7">西安</option>
+                            <option th:selected="${petition.typeType==17}"  value="17">成都</option>
+                            <option th:selected="${petition.typeType==19}"  value="19">上海</option>
+                            <option th:selected="${petition.typeType==3}"  value="3">韩国</option>
+                            <option th:selected="${petition.typeType==16}"  value="16">印度</option>
+                            <option th:selected="${petition.typeType==15}"  value="15">日本</option>
+                            <option th:selected="${petition.typeType==12}"  value="12">台湾矽力杰</option>
+                            <option th:selected="${petition.typeType==6}"  value="6">南京</option>
+                            <option th:selected="${petition.typeType==13}"  value="13">香港</option>
+                            <option th:selected="${petition.typeType==14}"  value="14">上海矽力杰微电子</option>
+                            <option th:selected="${petition.typeType==20}"  value="20">南京香港</option>
+                            <option th:selected="${petition.typeType==4}"  value="4">美国</option>
+                            <option th:selected="${petition.typeType==9}"  value="9">萨摩亚</option>
+                            <option th:selected="${petition.typeType==1}"  value="1">corp</option>
+                            <option th:selected="${petition.typeType==21}"  value="21">矽望</option>
+                            <option th:selected="${petition.typeType==22}"  value="22">合肥</option>
+                            <option th:selected="${petition.typeType==23}"  value="23">澳门</option>
+                            <option th:selected="${petition.typeType==0}"  value="0">其他</option>
+                        </select>
+                    </td>
+                    <td  colspan="2" class="text-center">部门</td>
+                    <td colspan="2" class="text-center">
+                        <input id="dept" name="dept" class="form-control" th:field="*{petition.dept}" disabled="true" type="text" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2">工号</td>
+                    <td colspan="3">
+                        <input class="form-control" name="sid" id="sid" th:field="*{petition.sid}" disabled="true" type="text" required>
+                    </td>
+                    <td colspan="2"></td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2">申请人</td>
+                    <td colspan="3">
+                        <input id="applyname" name="applyname" class="form-control" disabled="true" th:field="*{petition.applyname}" type="text" required>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input   type="text" name="applydate" class="form-control  datetimepicker-yyyy-mm-dd" disabled="true" th:value="${#dates.format(petition.applydate,'yyyy-MM-dd')}" placeholder="申请日期" required="true">
+                  </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr id="law1">
+                    <td colspan="9" class="text-left">
+                        <h4>凡用印内容涉及到条款，请先请法务审核。</h4>
+                    </td>
+                </tr>
+                <tr id="law2">
+                    <td class="text-center" colspan="2" width="15%">法务审核</td>
+                    <td colspan="2">
+                        <select  class="form-control" name="law" id="lawv" disabled="true">
+                            <option value="">请选择是否法务审核</option>
+                            <option th:selected="${petition.law=='2'}" value="2">不需要</option>
+                            <option th:selected="${petition.law=='1'}" value="1">王颖</option>
+                            <option th:selected="${petition.law=='3'}" value="3">罗梅姣</option>
+                        </select>
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select  class="form-control" name="lawSta" disabled="true">
+                            <option value="">审核意见</option>
+                            <option th:selected="${petition.lawSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.lawSta==2}" value="2">撤回</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea autoHeight="true" class="form-control" id="lawIdea" name="lawIdea" th:field="*{petition.lawIdea}"  placeholder="备注" disabled="true"  type="text"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input  type="text" name="lawDate" th:value="${#dates.format(petition.lawDate,'yyyy-MM-dd')}"  class="form-control datetimepicker-yyyy-mm-dd" placeholder="审核日期" disabled="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2">部门主管</td>
+                    <td colspan="2">
+                        <input  class="form-control" name="deptmanager" th:field="*{petition.deptmanager}" disabled="true" >
+                    </td>
+                    <td colspan="1" class="text-center" width="20%">
+                        <select  class="form-control" name="deptmanagerSta" th:field="*{petition.deptmanagerSta}" disabled="true" >
+                            <option  value="">审核意见</option>
+                            <option th:selected="${petition.deptmanagerSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.deptmanagerSta==2}" value="2">撤回</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea autoHeight="true" class="form-control" id="deptmanagerIdea" name="deptmanagerIdea" th:field="*{petition.deptmanagerIdea}"  placeholder="备注" disabled="true"  type="text"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input  type="text" name="deptmanageDate" disabled="true" th:value="${#dates.format(petition.deptmanageDate,'yyyy-MM-dd')}" class="form-control " placeholder="审核日期" >
+                    </td>
+                </tr>
+                <tr id="acoffer" th:if="${not #strings.isEmpty(petition.acOfficer)}">
+                    <td  colspan="2"class="text-center">核准人:</td>
+                    <td colspan="2" class="text-center">
+                        <input class="form-control name-data" disabled="disabled" placeholder="请输入核准人姓名" th:field="*{petition.acOfficer}" name="acOfficer" id="acOfficer" onclick="nameData()">
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select name="acOfficerSta" class="form-control"  disabled="true">
+                            <option  value="">审核意见</option>
+                            <option th:selected="${petition.acOfficerSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.acOfficerSta==2}" value="2">撤回</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea autoHeight="true" class="form-control" id="acOfficerIdea" name="acOfficerIdea" th:field="*{petition.acOfficerIdea}"  placeholder="备注" disabled="true"  type="text"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="text" name="acOfficerDate"  th:value="${#dates.format(petition.acOfficerDate,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+<!--               <tr id="fcManager" >-->
+<!--                    <td colspan="2" class="text-center"  >核准人:财务总账</td>-->
+<!--                    <td colspan="2" class="text-center">-->
+<!--                        <select name="fcManager" class="form-control"  th:field="*{petition.fcManager}"  disabled="true" >-->
+<!--                            <option value="">请选择财务总账</option>-->
+<!--                            <option th:selected="${petition.fcManager==1}" value="1">王娜</option>-->
+<!--                            <option th:selected="${petition.fcManager==2}" value="2">畅佩华</option>-->
+<!--                            <option th:selected="${petition.fcManager==3}" value="3">马海云</option>-->
+<!--                            <option th:selected="${petition.fcManager==4}" value="4">林佳怡</option>-->
+<!--                            <option th:selected="${petition.fcManager==5}" value="5">韓詩蕙</option>-->
+<!--                            <option th:selected="${petition.fcManager==6}" value="6">张玲</option>-->
+<!--                            <option th:selected="${petition.fcManager==7}" value="7">夏晶</option>-->
+<!--                            <option th:selected="${petition.fcManager==8}" value="8">叶小仙</option>-->
+<!--                            <option th:selected="${petition.fcManager==9}" value="9">庞杭艳</option>-->
+<!--                            <option th:selected="${petition.fcManager==10}" value="10">王晶</option>-->
+<!--                            <option th:selected="${petition.fcManager==11}" value="11">高甜</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                   <td colspan="1" class="text-center">-->
+<!--                       <select  name="fcManagerSta" class="form-control"  disabled="true"  th:field="*{petition.fcManagerSta}" >-->
+<!--                           <option value="">审核意见</option>-->
+<!--                           <option th:selected="${petition.fcManagerSta==2}" value="1">同意</option>-->
+<!--                           <option th:selected="${petition.fcManagerSta==2}" value="2">撤回</option>-->
+<!--                       </select>-->
+<!--                   </td>-->
+<!--                   <td colspan="2">-->
+<!--                       <textarea autoHeight="true" class="form-control" id="fcManagerIdea" name="fcManagerIdea" th:field="*{petition.fcManagerIdea}"  placeholder="备注" disabled="true"  type="text"></textarea>-->
+<!--                   </td>-->
+<!--                    <td colspan="2">-->
+<!--                        <input type="text" name="fcManagerDate"th:value="${#dates.format(petition.fcManagerDate,'yyyy-MM-dd')}"  class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">-->
+<!--                    </td>-->
+
+<!--                </tr>-->
+
+<!--                <tr id="cfcoManager" >-->
+<!--                    <td  colspan="2" class="text-center">核准人:财务经理</td>-->
+<!--                    <td colspan="2" class="text-center" >-->
+<!--                        <select  name="cfcoManager" class="form-control"  id="cfco" th:field="*{petition.cfcoManager}"  disabled="true" >-->
+<!--                            <option  th:selected="${petition.cfcoManager==2}" value="2">Bight(庞杭艳)</option>-->
+<!--                            <option  th:selected="${petition.cfcoManager==3}" value="3">陈京晶</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                    <td colspan="1" class="text-center">-->
+<!--                        <select name="cfcoManagerSta" class="form-control"  th:field="*{petition.cfcoManagerSta}"  disabled="true">-->
+<!--                            <option value="">审核意见</option>-->
+<!--                            <option th:selected="${petition.cfcoManagerSta==2}" value="1">同意</option>-->
+<!--                            <option th:selected="${petition.cfcoManagerSta==2}" value="2">撤回</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                    <td colspan="2">-->
+<!--                        <textarea autoHeight="true" class="form-control" id="cfcoManagerIdea" name="cfcoManagerIdea" th:field="*{petition.cfcoManagerIdea}"  placeholder="备注" disabled="true"  type="text"></textarea>-->
+<!--                    </td>-->
+<!--                    <td colspan="2">-->
+<!--                        <input type="text" name="cfcoManagerDate" th:value="${#dates.format(petition.cfcoManagerDate,'yyyy-MM-dd')}"  class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期" disabled="true">-->
+<!--                    </td>-->
+
+<!--                </tr>-->
+
+                <tr id="gmSta" >
+                    <td  colspan="2"class="text-center">核准人:</td>
+                    <td colspan="2" class="text-center">
+                        <input class="form-control" name="gm" disabled="true" id="gm" th:field="*{petition.gm}">
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select name="gmSta" class="form-control"   th:field="*{petition.gmSta}"  disabled="true">
+                            <option value="">审核意见</option>
+                            <option th:selected="${petition.gmSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.gmSta==2}" value="2">撤回</option>
+                        </select>
+                    </td>
+
+                    <td colspan="2">
+                        <textarea autoHeight="true" class="form-control" id="gmIdea" name="gmIdea" th:field="*{petition.gmIdea}"  placeholder="备注" disabled="true"  type="text"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="text" name="gmDate"  th:value="${#dates.format(petition.gmDate,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+                </tr>
+                <tr th:each="petitionSign:${petitionSigns}" id="Signs">
+                    <td class="text-center"  colspan="2">核准人:</td>
+                    <td class="text-center" colspan="2" >
+                        <input class="form-control" name="addSignsName" id="addSignsname" disabled="true" th:value="${petitionSign.addName}" >
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select  class="form-control"  name="result" disabled="true">
+                            <option value="">审核意见</option>
+                            <option th:selected="${petitionSign.result==1}" value="1">同意</option>
+                            <option th:selected="${petitionSign.result==2}" value="2">撤回</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${petitionSign.remark}" name="remark" class="form-control" placeholder="备注" disabled="true"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="text" name="auditDate"  th:value="${#dates.format(petitionSign.addTime,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+                </tr>
+                <tr th:each="petitionTrialList:${petitionTrialList}" id="addtrial">
+                    <td class="text-center"  colspan="2" width="15%">会审人:</td>
+                    <td class="text-center" colspan="2" >
+                        <input class="form-control" name="addtrialName" id="addtrialname" disabled th:value="${petitionTrialList.addName}" >
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select  class="form-control"  name="result" disabled="true">
+                            <option value="">审核意见</option>
+                            <option th:selected="${petitionTrialList.result==1}" value="1">同意</option>
+                            <option th:selected="${petitionTrialList.result==2}" value="2">撤回</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea type="text" autoHeight="true" th:text="${petitionTrialList.remark}" name="remark" class="form-control" placeholder="备注" readonly="true"></textarea>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="text" name="auditDate"  th:value="${#dates.format(petitionTrialList.addTime,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+                </tr>
+                <tr id="hr">
+                    <td colspan="2" class="text-center" >印鉴保管人审核</td>
+                    <td colspan="2" class="text-center">
+                        <select  class="form-control" name="hr"  th:field="*{petition.hr}" disabled="true" >
+                            <option value="" >请选择保管人</option>
+                            <option th:selected="${petition.hr==1}" value="1">周婕</option>
+                            <option  th:selected="${petition.hr==2}" value="2">沈科如</option>
+                            <option  th:selected="${petition.hr==3}" value="3">王娜</option>
+                            <option  th:selected="${petition.hr==4}" value="4">黃奕晨</option>
+                            <option  th:selected="${petition.hr==5}" value="5">韓詩蕙</option>
+                            <option  th:selected="${petition.hr==6}" value="6">戎玲</option>
+                            <option  th:selected="${petition.hr==7}" value="7">畅佩华</option>
+                            <option  th:selected="${petition.hr==8}" value="8">陈京晶</option>
+                            <option th:selected="${petition.hr==9}"  value="9">张玲</option>
+                            <option  th:selected="${petition.hr==10}" value="10">白永江</option>
+                            <option  th:selected="${petition.hr==11}" value="11">王卓亚</option>
+                            <option  th:selected="${petition.hr==12}" value="12">马海云</option>
+                            <option  th:selected="${petition.hr==13}" value="13">陈君</option>
+                            <option  th:selected="${petition.hr==14}" value="14">宁卓</option>
+                            <option  th:selected="${petition.hr==15}" value="15">潘冠呈</option>
+                            <option  th:selected="${petition.hr==16}" value="16">陳紹偉</option>
+                            <option  th:selected="${petition.hr==19}" value="19">沈科如</option>
+                            <option  th:selected="${petition.hr==17}" value="17">付婷</option>
+                            <option  th:selected="${petition.hr==18}" value="18">王菲</option>
+                            <option  th:selected="${petition.hr==20}" value="20">周婕</option>
+                            <option  th:selected="${petition.hr==21}" value="21">高甜</option>
+                            <option  th:selected="${petition.hr==22}" value="22">李冬梅</option>
+                        </select>
+                    </td>
+                    <td colspan="1" class="text-center">
+                        <select name="hrSta" class="form-control"  disabled="true"  th:field="*{petition.hrSta}" >
+                            <option value="">审核意见</option>
+                            <option th:selected="${petition.hrSta==1}" value="1">同意</option>
+                            <option th:selected="${petition.hrSta==2}" value="2">撤回</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <textarea autoHeight="true" class="form-control" id="hrIdea" name="hrIdea" th:field="*{petition.hrIdea}"  placeholder="备注" disabled="true"  type="text"></textarea>
+                    </td>
+                    <td colspan="2">
+                        <input type="text" name="hrStaDate"th:value="${#dates.format(petition.hrStaDate,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期" disabled="true">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="for-boder2">
+            <table th:if="${not #lists.isEmpty(petitionAddaudits)}" class="my-table2" style="width: 100%">
+
+                <thead>
+                <tr style="height: 34px">
+                    <td width="15%" class="text-left" style="border: none">加签人员审核</td>
+                </tr>
+                </thead>
+                
+                <tr th:each="petitionAddaudit:${petitionAddaudits}" id="addColumn1" class="addaudit">
+                    <td class="text-center" width="15%">加签人员</td>
+                    <input  id="addId" name="id" th:value="${petitionAddaudit.id}"  type="hidden">
+                    <td class="text-center"  width="21.7%">
+                        <input class="form-control name-data" name="addName" disabled="true" id="addname" th:value="${petitionAddaudit.addName}" onclick="nameData()" >
+                    </td>
+                    <td class="text-center"  width="20%">
+                        <div th:if="${not #strings.isEmpty(petitionAddaudit.result)}">
+                            <select name="result" class="form-control" id="result" disabled="true">
+                                <option value="">审核意见</option>
+                                <option th:selected="${petitionAddaudit.result==1}" value="1" required>同意</option>
+                                <option th:selected="${petitionAddaudit.result==2}" value="2" required style="display: none">撤回</option>
+                                <option th:selected="${petitionAddaudit.result==4}" value="4" required>否决</option>
+                            </select>
+                        </div>
+                        <div th:if="${#strings.isEmpty(petitionAddaudit.result)}">
+                            <select name="result" class="form-control" id="result">
+                                <option value="">审核意见</option>
+                                <option th:selected="${petitionAddaudit.result==1}" value="1" required>同意</option>
+                                <option th:selected="${petitionAddaudit.result==2}" value="2" required style="display: none">撤回</option>
+                                <option th:selected="${petitionAddaudit.result==4}" value="4" required>否决</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td class="text-center"  width="21.5%">
+                        <div th:if="${not #strings.isEmpty(petitionAddaudit.result)}">
+                            <textarea autoHeight="true"  type="text" id="remark" disabled="true" class="form-control" placeholder="备注" th:text="*{petitionAddaudit.remark}" name="remark"></textarea>
+                        </div>
+                        <div th:if="${#strings.isEmpty(petitionAddaudit.result)}">
+                            <textarea autoHeight="true"  type="text" id="remark" class="form-control" placeholder="备注" th:text="*{petitionAddaudit.remark}" name="remark"></textarea>
+                        </div>
+                    </td>
+                    <td colspan="2" class="text-center"  width="21.8%">
+                        <input type="text" name="auditDate"  th:value="${#dates.format(petitionAddaudit.addTime,'yyyy-MM-dd')}" class="form-control datetimepicker-yyyy-mm-dd" placeholder="签核日期"  disabled="true">
+                    </td>
+                </tr>
+            </table>
+
+            <table th:if="${not #lists.isEmpty(petitionFiles)}" class="my-table" width="100%">
+                <thead>
+                <tr style="height: 34px">
+                    <td style="width: 0.1%">
+                    </td>
+                    <td class="text-center" style="width: 20%">
+                        附件上传日期:
+                    </td>
+                    <td class="text-center" style="width: 60%">
+                        附件档案名称:
+                    </td>
+                    <td class="text-center" style="width: 20%">
+                        下载:
+                    </td>
+                </tr>
+                </thead>
+                <tr th:each="file:${petitionFiles}">
+                    <td>
+                        <input id="filePath" th:value="${file.filePath}" class="form-control text-center" type="hidden" disabled="true"/>
+                    </td>
+                    <td>
+                        <input th:value="${#dates.format(file.createTime, 'yyyy-MM-dd')}" class="form-control text-center"  disabled="true"/>
+                    </td>
+                    <td class="text-center">
+                        <input id="fileName" th:value="${file.fileName}" class="form-control text-center" type="text" disabled="true"/>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-info btn-xs" th:onclick="'downloadFaReport(\''+${file.id}+'\',this)'">download</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="col-sm-offset-5 col-sm-10 bottom">
+            <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-send"></i>保存</button>
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关闭</button>
+        </div>
+
+    </form>
+
+</div>
+<div th:include="include::footer"></div>
+<div th:include="include::bootstrap-select-js"></div>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+<script th:src="@{/ajax/libs//datapicker/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+<script type="text/javascript">
+    var prefix = ctx + "system/petition";
+    var comprefix = ctx + "common/";
+    $(function(){
+        $.fn.autoHeight = function(){
+            function autoHeight(elem){
+                elem.style.height = 'auto';
+                elem.scrollTop = 0; //防抖动
+                elem.style.height = elem.scrollHeight + 'px';
+            }
+            this.each(function(){
+                autoHeight(this);
+                $(this).on('keyup', function(){
+                    autoHeight(this);
+                });
+            });
+        }
+        $('textarea[autoHeight]').autoHeight();
+    })
+    
+    function downloadFaReport(id,obj) {
+        var filePath = $(obj).parent().parent().children('td').eq(0).find("#filePath").val();
+        var fileName = $(obj).parent().parent().children('td').eq(2).find("#fileName").val();
+        window.location.href = comprefix + "/download/resources?resource=" + encodeURIComponent(filePath) + "&fileName=" + encodeURIComponent(fileName);
+    }
+
+    $(function(){
+        $(".datetimepicker-yyyy-mm-dd").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    });
+    //类型显示
+    $(function () {
+        var type=$('#type').val();
+        if (type=="1"){
+            $("#hr").show();
+            $("#topic1").hide();
+            $("#topic2").hide();
+            $("#exp1").show();
+            $("#exp2").show();
+            $("#seal3").show();
+            $("#law1").show();
+            $("#law2").show();
+            $("#sealtype").show();
+            $("#monery").hide();
+            $("#curr").hide();
+            $("#fcManager").hide();
+            $("#cfcoManager").hide();
+            $("#gmSta").show();
+            $("#acoffer").hide();
+
+        }else if (type=="2"){
+            $("#hr").hide();
+            $("#seal3").hide();
+            $("#law1").hide();
+            $("#law2").hide();
+            $("#sealtype").hide();
+            $("#monery").show();
+            $("#curr").show();
+            $("#fcManager").show();
+            $("#cfcoManager").show();
+            $("#gmSta").show();
+            $("#acoffer").hide();
+
+        }else if (type=="3"){
+            $("#monery").hide();
+            $("#curr").hide();
+            $("#hr").hide();
+            $("#seal3").hide();
+            $("#law1").show();
+            $("#law2").show();
+            $("#sealtype").hide();
+            $("#fcManager").hide();
+            $("#cfcoManager").hide();
+            $("#gmSta").show();
+            $("#acoffer").show();
+        }
+
+    });
+
+
+    function nameData(){
+        $.get(ctx + "system/petition/getAlluser", function(data){
+            debugger
+            $(".name-data").typeahead({
+                source: data.value
+            });
+        },'json');
+    }
+
+    $('#moneyM').keyup(function(){
+        var $this = $(this);
+        var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]{1,2}$)/;
+        var val = $this.val();
+        if(reg.test(val)){
+            console.log('true')
+        }else{
+            // $this.val('')
+            console.log('false')
+            return false
+        }
+    });
+
+    $(function () {
+        var a=$("#gm").val();
+        if (a==""){
+            $("#gmSta").hide();
+        }else{
+            $("#gmSta").show();
+        }
+    });
+    $(function () {
+        var company=$("#company").val();
+        //抬头自动更换
+        if (company=="5"){
+            $(".my-h2").html("矽力杰半导体技术（杭州）有限公司")
+        }else if (company=="7") {
+            $(".my-h2").html("西安矽力杰半导体技术有限公司")
+        }else if (company=="17") {
+            $(".my-h2").html("成都矽力杰半导体技术有限公司")
+        }else if (company=="19") {
+            $(".my-h2").html("上海矽力杰半导体技术有限公司")
+        }else if (company=="3") {
+            $(".my-h2").html("Silergy Korea Limited")
+        }else if (company=="16") {
+            $(".my-h2").html("Silergy Technologies Private Limited")
+        }else if (company=="15") {
+            $(".my-h2").html("Silergy Semiconductor Samoa Limited")
+        } else if (company=="12") {
+            $(".my-h2").html("台湾矽力杰科技股份有限公司")
+        }else if (company=="6") {
+            $(".my-h2").html("南京矽力微电子技术有限公司")
+        }else if (company=="13") {
+            $(".my-h2").html("Silergy Semiconductor (Hong Kong) Limited 矽力杰半導體(香港)有限公司")
+        }else if (company=="14") {
+            $(".my-h2").html("上海矽力杰微电子技术有限公司")
+        }else if (company=="20") {
+            $(".my-h2").html("南京矽力微電子(香港)有限公司")
+        }else if (company=="4") {
+            $(".my-h2").html(" &nbsp &nbsp &nbsp &nbsp Silergy Technology")
+        }else if (company=="9") {
+            $(".my-h2").html("Silergy Semiconductor (Samoa) Limited")
+        }else if (company=="1") {
+            $(".my-h2").html(" &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Silergy Corp")
+        }else if (company=="21") {
+            $(".my-h2").html("Silicon Prospect Investment Limited")
+        }else if (company=="22") {
+            $(".my-h2").html("合肥矽力杰半导体技术有限公司")
+        }else if (company=="23") {
+            $(".my-h2").html("矽力杰半導體(澳門)一人有限公司")
+        }else{
+            $(".my-h2").html("矽力杰半导体技术（杭州）有限公司")
+        }
+    });
+
+    //添加一行
+    function add(){
+        var $td = $("#addColumn1").clone(true,false);       //增加一行,克隆第一个对象
+        $(".my-table2").append($td);
+        $(".my-table2 tr:last").find(":input").val('');   //将尾行元素克隆来的保存的值清空
+        $(".my-table2 tr:first").find(":input").val(''); //将尾行元素克隆来的保存的值清空
+        if($(".my-table2 tr:last").find(":input[name='operate-tr1']:checked")){
+            $(".my-table2 tr:last").find(":input[name='operate-tr1']:checked").removeAttr("checked");
+        }
+
+    }
+
+    //删除行
+    $(document).on("click", ".operate-tr1", function(){
+        debugger
+        var n = $(this).parents("tr").index();  // 获取checkbox所在行的顺序
+        n = n + 1;
+        if(n == 1){
+            $.modal.alertError("必须保留一行");
+            return false;
+        }else{
+            $(".my-table2").find("tr:eq("+(n-1)+")").remove();
+        }
+    })
+
+
+
+
+
+
+
+
+    $("#form-petition-add").validate({
+        rules:{
+            xxxx:{
+                required:true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        debugger
+        if ($.validate.form()) {
+            var Object={};
+            var petition={};
+
+            petition.id=$("#id").val();
+
+            var petitionAddauditList=[];
+            var Flag=true;
+            $(".addaudit").each(function (i,li) {
+                i=i+1;
+                var aud={};
+                var  addName=$(li).find("input[id='addname']").val();
+                var  result=$(li).find("select[id='result']").val();
+                var  remark=$(li).find("textarea[id='remark']").val();
+                var  id=$(li).find("input[id='addId']").val();
+                if (addName==""){
+                    $.modal.alert("请输入第"+i+"行姓名");
+                    Flag=false;
+                }
+
+                aud.addName=addName;
+                aud.result=result;
+                aud.remark=remark;
+                aud.id=id;
+                petitionAddauditList.push(aud);
+            });
+
+            if (!Flag){
+                return false;
+            }
+
+            Object.petition=petition;
+            Object.petitionAddauditList=petitionAddauditList;
+                debugger
+            $.ajax({
+                type: "POST",
+                url: prefix + "/addaudit",
+                data: JSON.stringify(Object),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",//预期服务器返回的数据类型
+                beforeSend: function () {
+                    $.modal.loading("正在给相关人员发送邮件,请稍等......");
+                },
+                success: function (result) {
+                    $.operate.successTabCallback(result);
+                },
+                error: function () {
+                    alert("error！");
+                }
+            });
+            };
+
+    }
+
+
+
+
+</script>
+<style>
+    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
+        line-height: 1 !important;
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        padding: 3px 0 3px 4px !important;
+
+    }
+    .wrapper{
+        /*text-align: center; !*让div内部文字居中*!*/
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 1050px;
+        height: auto;
+        /*width: 1050px;*/
+
+        /*border:1px solid #000*/
+    }
+    .my-table{
+        margin-left: auto;
+        margin-right: auto;
+        /*margin-top: 1px;*/
+        /*margin-bottom: 1px;*/
+    }
+    .my-table2{
+        margin-left: auto;
+        margin-right: auto;
+        /*margin-top: 1px;*/
+        /*margin-bottom: 1px;*/
+    }
+    .my-table1 tr td{
+        border:none;
+    }
+    .bottom{
+        margin-top: 10px;
+    }
+    .form-control {
+        border: 0;
+        webkit-box-shadow: none;
+        box-shadow: none;
+        background-color: #FFFFF4;
+    }
+    table td{
+        border: 1px solid #000;
+    }
+    .my-h2{
+        margin: auto;
+    }
+    .my-h3 {
+        margin-left: 80px;
+    }
+    #for-boder{
+         border:1px double #000;
+        width: 70%;
+        margin-left: 100px;
+    }
+    #for-boder1{
+        width: 70%;
+        margin-left: 100px;
+    }
+    #for-boder2{
+        width: 70%;
+        margin-left: 100px;
+    }
+
+    .my-div{
+        margin: 1px auto;
+    }
+    .my-div2{
+        margin:10px auto;
+    }
+    .container{
+        margin-left: 10%;
+    }
+    input[type=checkbox], input[type=radio] {
+        margin: 0px 0 0;
+        margin-top: 1px;
+        line-height: normal;
+    }
+    body{
+        overflow: scroll;
+    }
+</style>
+</body>
+</html>

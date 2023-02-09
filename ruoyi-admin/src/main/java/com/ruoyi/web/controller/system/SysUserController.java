@@ -1,7 +1,13 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
+
+import com.ruoyi.common.utils.email.BootEmail;
+import com.ruoyi.system.component.UserComponent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +66,9 @@ public class SysUserController extends BaseController
 
     @Autowired
     private SysPasswordService passwordService;
+
+    @Autowired
+    private UserComponent userComponent;
 
     @RequiresPermissions("system:user:view")
     @GetMapping()
@@ -130,7 +139,7 @@ public class SysUserController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@Validated SysUser user)
     {
-        if (UserConstants.USER_NAME_NOT_UNIQUE.equals(userService.checkLoginNameUnique(user)))
+        if (UserConstants.USER_NAME_NOT_UNIQUE.equals(userService.checkLoginNameUnique(user.getLoginName())))
         {
             return error("新增用户'" + user.getLoginName() + "'失败，登录账号已存在");
         }
@@ -176,20 +185,16 @@ public class SysUserController extends BaseController
     {
         userService.checkUserAllowed(user);
         userService.checkUserDataScope(user.getUserId());
-        if (UserConstants.USER_NAME_NOT_UNIQUE.equals(userService.checkLoginNameUnique(user)))
-        {
-            return error("修改用户'" + user.getLoginName() + "'失败，登录账号已存在");
-        }
-        else if (StringUtils.isNotEmpty(user.getPhonenumber())
+        if (StringUtils.isNotEmpty(user.getPhonenumber())
                 && UserConstants.USER_PHONE_NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
             return error("修改用户'" + user.getLoginName() + "'失败，手机号码已存在");
         }
-        else if (StringUtils.isNotEmpty(user.getEmail())
+        /*else if (StringUtils.isNotEmpty(user.getEmail())
                 && UserConstants.USER_EMAIL_NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
         {
             return error("修改用户'" + user.getLoginName() + "'失败，邮箱账号已存在");
-        }
+        }*/
         user.setUpdateBy(getLoginName());
         AuthorizationUtils.clearAllCachedAuthorizationInfo();
         return toAjax(userService.updateUser(user));
@@ -273,7 +278,7 @@ public class SysUserController extends BaseController
     @ResponseBody
     public String checkLoginNameUnique(SysUser user)
     {
-        return userService.checkLoginNameUnique(user);
+        return userService.checkLoginNameUnique(user.getLoginName());
     }
 
     /**
@@ -334,4 +339,99 @@ public class SysUserController extends BaseController
         mmap.put("dept", deptService.selectDeptById(deptId));
         return prefix + "/deptTree";
     }
+
+    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
+    @GetMapping("/forgetPassword")
+    public String forgetPassword()
+    {
+        return "forgetPassword";
+    }
+
+    /**
+     * 重置密码
+     * @param userCode
+     * @param email
+     * @return
+     */
+    @PostMapping("/sendForgetPassword")
+    @Log(title = "忘记密码并重置", businessType = BusinessType.UPDATE)
+    @ResponseBody
+    public AjaxResult forgetPassword(String userCode, String email)
+    {
+        SysUser user = userService.selectUserByEmail(email);
+        if (user == null) {
+            return error("邮箱不正确！");
+        }
+        if (!userCode.equals(user.getUserCode())) {
+            return error("邮箱和工号不匹配！");
+        }
+        String newPassword = "";
+        Random random = new Random();
+        for (int i = 0; i < 8; i++) {
+            newPassword += String.valueOf(random.nextInt(10));
+        }
+        user.setPassword(newPassword);
+        int result = userService.resetUserPwd(user);
+        if (result == 1) {
+            try {
+                BootEmail.sendSimpleMail(user.getEmail(), "重置密码", "您的工单系统密码已经重置，新密码为："+newPassword);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return success("新的密码已发送至您的邮箱，请注意查收！");
+        } else {
+            return error("重置失败请与管理员联系！");
+        }
+
+    }
+
+    /**
+     * 查看用户信息
+     */
+    @GetMapping("/detail/{userId}")
+    public String detail(@PathVariable("userId") Long userId, ModelMap mmap)
+    {
+        SysUser user = userComponent.buildData(userService.selectUserById(userId));
+        mmap.put("user", user);
+        mmap.put("roles", roleService.selectRolesByUserId(userId));
+        mmap.put("posts", postService.selectPostsByUserId(userId));
+        return prefix + "/detail";
+    }
+
+    /**
+     * 查询在职员工
+     *
+     * @return
+     */
+    @RequiresPermissions("system:user:allUserList")
+    @PostMapping("/allUserList")
+    @ResponseBody
+    public TableDataInfo allUserList()
+    {
+        List<SysUser> list = userService.selectAllUserList();
+        return getDataTable(list);
+    }
+
+    /**
+     * 获取员工信息
+     * @param employeeNo
+     * @return
+     */
+    @PostMapping("/getEmployeeNo/{employeeNo}")
+    @ResponseBody
+    public AjaxResult getEmployeeNo(@PathVariable("employeeNo") String employeeNo) {
+        SysUser user = userService.selectUserByLoginName(employeeNo.trim());
+        if(user == null){
+            return error(AjaxResult.Type.ERROR,"无该用户");
+        }
+        Map<String,String> map = new HashMap<>();
+        map.put("departmentCode",user.getDepartmentCode());
+        map.put("userName",user.getUserName());
+        map.put("dept",user.getDept().getDeptName().trim());
+        map.put("office",user.getOffices());
+        map.put("bankName",user.getBankName());
+        map.put("accountNumber",user.getBankNumber());
+        return AjaxResult.success("",map);
+    }
+
 }

@@ -1,0 +1,1396 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html ;charset=utf-8"/>
+<head>
+    <th:block th:include="include :: header('日期和时间')" />
+    <th:block th:include="include :: layout-latest-css" />
+    <th:block th:include="include :: ztree-css" />
+</head>
+<link th:href="@{/ajax/libs/datapicker/bootstrap-datetimepicker.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/bootstrap-select/bootstrap-select.min.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <div class="container text-left">
+        <div class="row">
+            <div class="col-xs-3">
+                <img src="../static/img/silergy.jpg" th:src="@{/img/silergy.jpg}">
+            </div>
+            <div class="col-xs-9">
+                <h2 class="my-h2">
+                    南京矽力微电子技术有限公司
+                </h2>
+                <ul class="list-inline">
+                    <li>
+                        <h3 class="my-h3">请款单 Payment Request Form</h3>
+                    </li>
+                </ul>
+            </div>
+            <div style="float: right">
+                <p class="my-div">
+                    <button type="button" class="btn btn-sm btn-warning" onclick="downloadFaReport()">
+                        <i class="fa fa-edit"></i>填写指南</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <form action="none" id="form-nonSaleRequisitionAdd-add">
+        <div id="for-boder">
+            <table class="my-table">
+                <tbody style="text-align:right;">
+                <!--////////////////            表头-->
+
+                <tr>
+                    <td class="text-center is-required" style="width: 10%;">选择公司<br> Company</td>
+                    <td style="width: 15%;">
+                        <select class="form-control change-h2" name="company" required="true">
+                            <option value="6">南京</option>
+                            <option value="14">上海矽力杰微电子</option>
+                            <option value="20">南京香港</option>
+                        </select>
+                    </td>
+                    <td class="text-center is-required" style="width: 10%;">员工编号<br>Employee No</td>
+                    <td style="width: 15%;">
+                        <input id="employeeNo" name="employeeNo" th:value="${user.userCode}"
+                               class="form-control employeeNo" type="text" required="true" readonly>
+                    </td>
+                    <td class="text-center is-required" style="width: 10%;">请款人<br> Applicant</td>
+                    <td style="width: 15%;">
+                        <input id="applicant" name="applicant" th:value="${user.userName}"
+                               class="form-control applicant" type="text" required="true" readonly>
+                    </td>
+                    <td class="text-center is-required" style="width: 10%;">
+                        使用部门<br> Dept
+                    </td>
+                    <td style="width: 15%;">
+                        <input class="form-control dept" name="dept" th:value="${user.dept.deptName}" type="text"
+                               required="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center is-required">
+                        部门代码<br> Dept Code
+                    </td>
+                    <td>
+                        <input class="form-control is-required departmentCode deptCode" type="text" name="deptCode"
+                               th:value="${user.departmentCode}" autocomplete="off" required="true">
+                    </td>
+                    <td class="text-center is-required">
+                        申请日期<br>
+                        Application Date
+                    </td>
+                    <td>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" name="applicationDate" style="width: 95%;"
+                                   class="form-control datetimepicker-yyyy-mm-dd applicationDate" placeholder="yyyy-MM-dd"
+                                   th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd')}"
+                                   autocomplete="off" required="true">
+                        </div>
+                    </td>
+                    <td class="text-center is-required">
+                        付款日期<br>
+                        Payment Date
+                    </td>
+                    <td>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" name="paymentDate" style="width: 95%;"
+                                   class="form-control datetimepicker-yyyy-mm-dd paymentDate" placeholder="yyyy-MM-dd"
+                                   autocomplete="off" required="true">
+                        </div>
+                    </td>
+                    <td class="text-center is-required">
+                        是否代请款
+                    </td>
+                    <td>
+                        <select class="form-control insteadPayment" id="payment-on-behalf-of" name="insteadPayment" required="true">
+                            <option value="0">否/No</option>
+                            <option value="1">是/Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">
+                        实际使用人编号<br>Actual User No
+                    </td>
+                    <td>
+                        <input class="form-control payment-on-behalf-of-info actualUserNo" type="text"
+                               name="actualUserNo" required="true" disabled="true">
+                    </td>
+                    <td class="text-center">
+                        实际使用人<br>Actual User
+                    </td>
+                    <td>
+                        <input class="form-control payment-on-behalf-of-info actualUser" type="text" name="actualUser"
+                               required="true" disabled="true">
+                    </td>
+                    <td class="text-center">
+                        实际使用部门<br>
+                        Actual Dept
+                    </td>
+                    <td>
+                        <input class="form-control payment-on-behalf-of-info actualDept" type="text" id="actualDept"
+                               name="actualDept" required="true" disabled="true">
+                    </td>
+                    <td class="text-center">
+                        实际使用部门代码<br>
+                        Actual Dept Code
+                    </td>
+                    <td>
+                        <input class="form-control payment-on-behalf-of-info actualDeptCode deptCode" type="text"
+                               id="actualDeptCode" name="actualDeptCode" required="true" disabled="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center is-required">
+                        请款类别<br>
+                        Payment Type
+                    </td>
+                    <td>
+                        <select class="form-control payment-type" name="paymentType" required="true">
+                            <option value="">请选择</option>
+                            <option value="X">个人报销/Personal Reimbursement</option>
+                            <!--                            <option value="Y">生产性支出</option>-->
+                            <!--                            <option value="A">生产性支出-汇总请款</option>-->
+                            <option value="B">非生产性支出-持续性/Continuously Unproductive Expenditure</option>
+                            <option value="C">非生产性支出-非持续性/Discontinuously Unproductive Expenditure</option>
+                            <option value="E">交际费/Entertainment Expense</option>
+                        </select>
+                    </td>
+                    <td class="text-center is-required">
+                        是否预付 <br> Prepaid
+                    </td>
+                    <td>
+                        <select class="form-control prepaid" name="prepaid" required="true">
+                            <option value="1">否/No</option>
+                            <option value="2">是/Yes</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        档案上传 <br>Upload File
+                    </td>
+                    <td>
+                        <input class="form-control" type="file" id="file" name="file" multiple="multiple"
+                        >
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+           <!--     accept="image/bmp,image/gif,image/jpeg,image/png,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,text/html
+                ,text/plain,aplication/zip,audio/mp4, video/mp4,application/pdf"-->
+                <!--<tr>
+                    <td class="text-center">
+                        请购单编号<br> Requisition No
+                    </td>
+                    <td>
+                        <select class="form-control payment-type" name="paymentType" required="true">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        电子签呈编号 <br> Petition No
+                    </td>
+                    <td>
+                        <select class="form-control payment-type" name="paymentType" required="true">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        档案上传 <br>Upload File
+                    </td>
+                    <td>
+                        <input class="form-control" type="file" id="file" name="file" multiple="multiple">
+                    </td>
+                    <td colspan="2"></td>
+                </tr>-->
+                </tbody>
+            </table>
+            <div class="border" style="height: 34px;padding-top: 7px">
+                <div class="col-md-6 text-left"><strong class="text-danger">Tips：不完整的明细行将不会被保存 Incomplete rows will not be saved</strong></div>
+                <!--                <div class="col-md-4">-->
+                <!--                    <button id="summaryBtn" style="margin-top: -1%;margin-left: 13%" type="button" onclick="summary()" hidden>-->
+                <!--                        <i class="fa fa-upload"></i> 上传汇总表-->
+                <!--                    </button>-->
+                <!--                    <div hidden>-->
+                <!--                        <input type="file" id="summaryFile" name="summaryFile" >-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <div class="col-md-6 text-right" style="display: inline-block;">
+                    <button style="margin-top: -2%" type="button" onclick="uploadDetail()">
+                        <i class="fa fa-plus-square"></i> 上传明细表/Upload Details List</button>
+                    <div hidden>
+                        <input type="file" id="uploadDetailFile" name="uploadDetailFile" >
+                    </div>&nbsp;&nbsp;&nbsp;
+                    <button style="margin-top: -3%" type="button" onclick="add1()">
+                        <i class="fa fa-plus-square"></i> 添加一行/Add a Row</button>
+                </div>
+                <!--                <div class="col-md-4 text-right" style="display: inline-block;width: 23%;" >-->
+                <!--                    <button style="margin-top: -2%" type="button" onclick="uploadDetail()"><i class="fa fa-plus-square"></i> 上传明细表</button>-->
+                <!--                    <div hidden>-->
+                <!--                        <input type="file" id="uploadDetailFile" name="uploadDetailFile" >-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="col-md-4 text-right" style="display: inline-block;width: 10%;">-->
+                <!--                    <button style="margin-top: -3%" type="button" onclick="add1()"><i class="fa fa-plus-square"></i> 添加一行</button>-->
+                <!--                </div>-->
+            </div>
+            <table class="my-table operate-table1">
+                <thead>
+                <tr>
+                    <td style="width: 1%"></td>
+                    <td class="text-center projectCode1" style="width: 5%">
+                        项目编号<br> Project Code
+                    </td>
+                    <td class="text-center is-required" style="width: 11%">
+                        摘 要 说 明<br> Content
+                    </td>
+                    <td class="text-center is-required" style="width: 4%">
+                        单位<br> Unit
+                    </td>
+                    <td class="text-center is-required" style="width: 4%">
+                        数量<br> Quantity
+                    </td>
+                    <td class="text-center is-required" style="width: 5.23%">
+                        单价<br> Unit Price
+                    </td>
+                    <td class="text-center is-required" style="width: 6%">
+                        总金额<br> Total Amount
+                    </td>
+                    <td class="text-center is-required" style="width: 5%">
+                        币别<br> Currency
+                    </td>
+                    <td class="text-center" style="width: 4%">
+                        预付比例<br> Ratio
+                    </td>
+                    <td class="text-center" style="width: 11%">
+                        备注<br> Remarks
+                    </td>
+                </tr>
+                </thead>
+                <tbody style="text-align:right;" id="addColumn">
+
+                <tr id="addColumn1" class="material1">
+                    <td class="text-center">
+                        <a href="javascript:void(0)" class="operate-tr1"><i class="fa fa-minus-square-o"></i></a>
+                    </td>
+                    <td>
+                        <select id="projectCode" class="form-control selectpicker projectCode" name="projectCode"
+                                data-live-search="true">
+                            <option value="">请选择</option>
+                            <option th:each="code:${projectCode}" th:value="${code}" th:text="${code}"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <textarea class="form-control text-center content" id="content" type="text"></textarea>
+                    </td>
+                    <td>
+                        <input class="form-control text-center" id="unit" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control text-center calculate" id="quantity" type="text" onkeyup='checkInt(this)'>
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount text-center calculate" id="unitPrice" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount allTotalAmount text-center calculate" id="totalAmount" type="text">
+                    </td>
+                    <td>
+                        <select class="form-control text-center calculate" id="currency" name="currency">
+                            <option value="">请选择</option>
+                            <option value="1">RMB</option>
+                            <option value="2">USD</option>
+                            <option value="3">TWD</option>
+                            <option value="4">HKD</option>
+                            <option value="5">KRW</option>
+                            <option value="6">MOP</option>
+                            <option value="7">EUR</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div style="margin-right: 10%">
+                            <input class="allTotalAmount totalAmount text-center ratio calculate" id="ratio" type="text" disabled="true">%
+                        </div>
+                    </td>
+                    <td>
+                        <textarea class="form-control text-center" id="remark" type="text"></textarea>
+                    </td>
+                </tr>
+                <tr id="addColumn1" class="material1">
+                    <td class="text-center">
+                        <a href="javascript:void(0)" class="operate-tr1"><i class="fa fa-minus-square-o"></i></a>
+                    </td>
+                    <td>
+                        <select id="projectCode" class="form-control selectpicker projectCode" name="projectCode" data-live-search="true">
+                            <option value="">请选择</option>
+                            <option th:each="code:${projectCode}" th:value="${code}" th:text="${code}"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <textarea class="form-control text-center content" id="content" type="text"></textarea>
+                    </td>
+                    <td>
+                        <input class="form-control text-center" id="unit" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control text-center calculate" id="quantity" type="text" onkeyup='checkInt(this)'>
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount text-center calculate" id="unitPrice" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount allTotalAmount text-center calculate" id="totalAmount" type="text">
+                    </td>
+                    <td>
+                        <select class="form-control text-center calculate" id="currency" name="currency">
+                            <option value="">请选择</option>
+                            <option value="1">RMB</option>
+                            <option value="2">USD</option>
+                            <option value="3">TWD</option>
+                            <option value="4">HKD</option>
+                            <option value="5">KRW</option>
+                            <option value="6">MOP</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div style="margin-right: 10%">
+                            <input class="allTotalAmount totalAmount text-center ratio calculate" id="ratio" type="text" disabled="true">%
+                        </div>
+                    </td>
+                    <td>
+                        <textarea class="form-control text-center" id="remark" type="text"></textarea>
+                    </td>
+                </tr>
+                <tr id="addColumn1" class="material1">
+                    <td class="text-center">
+                        <a href="javascript:void(0)" class="operate-tr1"><i class="fa fa-minus-square-o"></i></a>
+                    </td>
+                    <td>
+                        <select id="projectCode" class="form-control selectpicker projectCode" name="projectCode" data-live-search="true">
+                            <option value="">请选择</option>
+                            <option th:each="code:${projectCode}" th:value="${code}" th:text="${code}"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <textarea class="form-control text-center content" id="content" type="text"></textarea>
+                    </td>
+                    <td>
+                        <input class="form-control text-center" id="unit" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control text-center calculate" id="quantity" type="text" onkeyup='checkInt(this)'>
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount text-center calculate" id="unitPrice" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount allTotalAmount text-center calculate" id="totalAmount" type="text">
+                    </td>
+                    <td>
+                        <select class="form-control text-center calculate" id="currency" name="currency">
+                            <option value="">请选择</option>
+                            <option value="1">RMB</option>
+                            <option value="2">USD</option>
+                            <option value="3">TWD</option>
+                            <option value="4">HKD</option>
+                            <option value="5">KRW</option>
+                            <option value="6">MOP</option>
+                            <option value="7">EUR</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div style="margin-right: 10%">
+                            <input class="allTotalAmount totalAmount text-center ratio calculate" id="ratio" type="text" disabled="true">%
+                        </div>
+                    </td>
+                    <td>
+                        <textarea class="form-control text-center" id="remark" type="text"></textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="my-table" style="width: 100%">
+                <tbody style="text-align:right;">
+                <tr style="width: 100%">
+                    <td style="width: 50%">
+                        <label class="is-required" style="margin-right: 25%;margin-top: 1%">合计应付金额 Payment Amount (小写)</label>
+                        <label id="rmb" class="text-right" hidden>RMB&nbsp;&nbsp;&nbsp;</label>
+                    </td>
+                    <td style="width: 50%">
+                        <input class="form-control totalAmount" id="paymentAmount" name="paymentAmount" required="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center is-required" colspan="6" style="width: 100%;height: 34px">
+                        付款方式 &nbsp; Payment Method
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="my-table" style="width: 100%">
+                <tbody style="text-align:right;">
+                <tr>
+                    <td class="text-center" style="width: 16.6%;height: 34px">
+                        <input type="radio" checked="" name="paymentMethod" class="check-require" value="1">
+                    </td>
+                    <td class="text-center" style="width: 16.6%">
+                        转帐汇款 Transfer
+                    </td>
+                    <td class="text-center" style="width: 16.6%;height: 34px">
+                        <input type="radio" name="paymentMethod" class="check-require" value="2">
+                    </td>
+                    <td class="text-center" style="width: 16.6%">
+                        其他 Others
+                    </td>
+                    <td colspan="2" style="width: 33.3%">
+                        <input type="text" class="form-control" name="others">
+                    </td>
+                </tr>
+                <tr class="ccc">
+                    <td class="text-center is-required" style="height: 34px">
+                        收款人 Payee <input type="button" onclick="getPaymentInfo()" value="历史付款帐号">
+                    </td>
+                    <td class="text-center">
+                        <input class="form-control payee" name="payee" type="text"
+                               placeholder="必填" required="true" autocomplete="off" >
+                        <!--<datalist id="greetings" style="display:none;">
+                            <option value="">&#45;&#45; 请选择 &#45;&#45;</option>
+                            <option th:each="paymentAccount:${payeeList}" th:value="${paymentAccount.payee}"
+                                    th:text="${paymentAccount.payee}"></option>
+                        </datalist>-->
+                    </td>
+                    <td class="text-center is-required">
+                        开户行 Bank Name
+                    </td>
+                    <td class="text-center">
+                        <input class="form-control bankName" type="text" name="bankName" placeholder="必填,若其他付款方式则填无"
+                               autocomplete="off" required="true">
+                    </td>
+                    <td class="text-center is-required">
+                        账号 Account Number
+                    </td>
+                    <td class="text-center">
+                        <input class="form-control accountNumber" type="text" name="accountNumber" placeholder="必填,若其他付款方式则填无"
+                               autocomplete="off" required="true">
+                    </td>
+                </tr>
+                <tr class="ccc">
+                    <td class="text-center" style="height: 34px">
+                        收款人地址 Address
+                    </td>
+                    <td class="text-center">
+                        <input class="form-control address" name="address" type="text" placeholder="外币付款需填写" autocomplete="off">
+                    </td>
+                    <td class="text-center">
+                        开户行代码 Swift Code
+                    </td>
+                    <td class="text-center">
+                        <input class="form-control swiftCode" type="text" name="swiftCode" placeholder="外币付款需填写" autocomplete="off">
+                    </td>
+                    <td class="text-center">
+                        开户行地址 Bank Address
+                    </td>
+                    <td class="text-center">
+                        <input class="form-control bankAddress" type="text" name="bankAddress" placeholder="外币付款需填写" autocomplete="off">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">
+                        提交说明 Special Explanations
+                    </td>
+                    <td colspan="5">
+                        <input class="form-control" type="text" name="specialExplanations" autocomplete="off">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-2 bottom">
+                <!--<button type="button" class="btn btn-sm btn-warning text-left" onclick="downloadFaReport()"><i
+                        class="fa fa-cloud-download"></i>使用说明
+                </button>-->
+            </div>
+            <div class="col-sm-3 bottom">
+
+            </div>
+            <div class="col-sm-5 bottom">
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler(1)"><i
+                        class="fa fa-save"></i>保存
+                </button>
+                <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i
+                        class="fa fa-reply-all"></i>关闭
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler(2)"><i
+                        class="fa fa-send"></i>提交
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+<script th:src="@{/ajax/libs//datapicker/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+<script th:src="@{/ajax/libs/typeahead/bootstrap-typeahead.min.js}"></script>
+<script th:src="@{/ajax/libs/bootstrap-select/bootstrap-select.min.js}"></script>
+<script type="text/javascript">
+
+    var prefix = ctx + "system/paymentRequest"
+    var comprefix = ctx + "common"
+    $(function () {
+        // 去掉所有input的autocomplete, 显示指定的除外
+        $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr('autocomplete', 'off');
+    });
+
+    $(document).ready(function () {
+        var topWindow = $(window.parent.document);
+        var activeName = $('.page-tabs-content', topWindow).find('.active').text();
+        var remark = "已上线预付申请单！ <br>" +
+            " <br>首次使用强烈建议仔细阅读页面右上方的<br> <a onclick='downloadFaReport()' style=\"color: rgb(255, 0, 0);text-decoration:underline;\">填写指南</a>！！！<br>" +
+            "<br>系统问题提交工单(工单类型：请购/款表单)<br>"
+        if ($.trim(activeName) === "添加请款" || $.trim(activeName) === "新建请款单"){
+            $.modal.alertWarning(remark);
+        }
+        projectCode($('.departmentCode').val())
+    });
+
+    $(".paymentDate").change(function () {
+        var applicationDate = $('.applicationDate').val();
+        var paymentDate = $('.paymentDate').val();
+        var start = new Date(applicationDate.replace("-", "/").replace("-", "/"))
+        var end = new Date(paymentDate.replace("-", "/").replace("-", "/"))
+        if (end < start) {
+            $('.paymentDate').val("");
+            $.modal.msgError("付款日期需大于申请日期。");
+        } else {
+            $.modal.msg("原则上一般对公/对私请款，请选择次周四/五为付款日(付款条件较长，或紧急不在此限)");
+        }
+    })
+
+    //下载文件
+    function downloadFaReport() {
+
+        window.open("/pdf/web/viewer.html?file=/system/paymentRequest/downloadFileDescription");
+    }
+
+    //根据部门代码判断项目编号是否可填
+    function projectCode(code){
+        var code = code.trim();
+        if ((code.substring(2,3) == "2" && code.substring(2,5) != "250" && code.substring(2,5) != "240" && code.substring(2,5) != "292")
+            || code.substring(2,5) == "400" || code.substring(2,5) == "420" || code.substring(2,5) == "430"){
+            // $(".projectCode").removeAttrs("disabled");
+            $(".projectCode").selectpicker('show');
+            // $(".projectCode").attr("required", "required");
+            $(".projectCode1").addClass("is-required");
+        }else {
+            // $(".projectCode").removeAttrs("required");
+            $(".projectCode").selectpicker('hide');
+            $(".projectCode").selectpicker('val','');
+            $(".projectCode1").removeClass("is-required");
+            // $(".projectCode").val('');
+        }
+    }
+
+    $(document).on("change", ".deptCode", function () {
+        var code = $(this).val();
+        projectCode(code);
+    })
+
+    $(document).on("change", "#payment-on-behalf-of", function () {
+        if ($(this).val() == "1") {
+            $(".payment-on-behalf-of-info").val("");
+            $(".payment-on-behalf-of-info").attr("disabled", false);
+        } else {
+            $(".payment-on-behalf-of-info").val("");
+            $(".payment-on-behalf-of-info").attr("disabled", true);
+        }
+        if($('.insteadPayment').val() == 1 && $(".actualUserNo").val() !== "" ){
+            projectCode($('.actualDeptCode').val());
+        } else {
+            projectCode($('.departmentCode ').val());
+        }
+    })
+
+/*
+    //数量变化检测
+    $(document).on("blur", "#quantity", function () {
+        var m = $(this).parent().index();//获取当前节点的序号
+        var n = $(this).parent().index() + 1;//获取下一个节点的序号
+        //数量
+        var quantity = $(this).parent().parent().children('td').eq(m).find("input").val();//数量
+        var unitPrice = $(this).parent().parent().children('td').eq(n).find("input").val();//单价
+        unitPrice = unitPrice.replace(/,/gi, "");
+        var total = quantity * unitPrice;
+        $(this).parent().parent().children('td').eq(n + 1).find("input").val(total);
+        $(this).parent().parent().children('td').eq(n + 1).find("input").trigger("blur");
+    })
+
+    //单价变化检测
+    $(document).on("blur", "#unitPrice", function () {
+        var m = $(this).parent().index() - 1;//获取前一个节点的序号
+        var n = $(this).parent().index() + 1;//获取下一个节点的序号
+        //数量
+        var quantity = $(this).parent().parent().children('td').eq(m).find("input").val();//数量
+        var unitPrice = $(this).val();//单价
+        unitPrice = unitPrice.replace(/,/gi, "");
+        var total = quantity * unitPrice;
+        $(this).parent().parent().children('td').eq(n).find("input").val(total);
+        $(this).parent().parent().children('td').eq(n).find("input").trigger("blur");
+    })*/
+
+
+    /*用户管理-新增-选择部门树*/
+    function selectDeptTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/dept/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: ctx + "system/dept/selectDeptTree/" + deptId,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+        }
+    }
+
+
+    $(document).on("change", ".change-h2", function () {
+     if ($(this).val() == "6") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp南京矽力微电子技术有限公司");
+        }  else if ($(this).val() == "14") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp上海矽力杰微电子技术有限公司");
+        }  else if ($(this).val() == "20") {
+            $(".my-h2").html("&nbsp &nbsp &nbsp南京矽力微電子(香港)有限公司");
+        }
+    })
+
+    $(document).on("change", ".prepaid", function () {
+        if ($(this).val() == 2) {
+            $(".my-h3").html("预付申请单 Prepayment Request Form");
+            $('.ratio').attr("disabled", false);
+            $('.ratio').val("100");
+            $('.ratio').trigger("blur");
+        }else if ($(this).val() == 1) {
+            $(".my-h3").html("请款单 Payment Request Form");
+            $('.ratio').attr("disabled", true);
+            $('.ratio').val("");
+            $('.ratio').trigger("blur");
+        }
+    })
+
+    //添加一行
+    function add1() {
+        $('.projectCode').selectpicker('destroy');
+        var $td = $("#addColumn1").clone();       //增加一行,克隆第一个对象
+        $(".operate-table1").append($td);
+        $(".operate-table1 tr:last").find(":input").val(''); //将尾行元素克隆来的保存的值清空
+        $(".operate-table1 tr:last").find("select").val(''); //将尾行元素克隆来的保存的值清空
+        if ($(".operate-table1 tr:last").find(":input[name='operate-tr1']:checked")) {
+            $(".operate-table1 tr:last").find(":input[name='operate-tr1']:checked").removeAttr("checked");
+        }
+        $('.projectCode').selectpicker();
+        if($('#payment-on-behalf-of').val() == 1){
+            projectCode($('.actualDeptCode').val());
+        } else {
+            projectCode($('.departmentCode ').val());
+        }
+    }
+
+    //删除一行
+    $(document).on("click", ".operate-tr1", function () {
+        var n = $(this).parents("tr").index();  // 获取checkbox所在行的顺序
+        var total = $("#addColumn").children("tr").length; //获取tr个数
+        n = n + 1;
+        if (total < 2) {
+            $.modal.alertError("必须保留一行！");
+            return false;
+        } else {
+            $(".operate-table1").find("tr:eq(" + n + ")").remove();
+        }
+        $('.calculate').change();
+    })
+
+
+    $(function () {
+        $(".datetimepicker-yyyy-mm-dd").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    });
+
+    //千分位格式化
+    $(document).on("blur", ".totalAmount", function () {
+    // $(".totalAmount").on("blur", function () {
+        // 预防页面复用(比方说新增/编辑的时候用一套页面)先将value的分隔号清除掉, 如果value值不是字符串必须先转字符串
+        var value = $(this).val().replace(/,/gi, "");
+        // 先判断输入框输入的是否是符合规格的数字(包括特殊符号,大小写字母,空格等),不符合则清空输入框
+        var reg = /^\d+(\.\d+)?$/;
+        if (reg.test(value) == true) {
+            //将输入的值进行四舍五入转换成整数
+            var vals = Math.round(value * 100) / 100;
+            //将输入的值转换为字符串
+            var valse = vals.toString();
+            //检索输入的值有没有输入小数位 比如 99.99
+            var valsex = valse.indexOf(".");
+            //如果没有输入小数位则自动补充".00"
+            if (valsex < 0) {
+                valse += ".00";
+            }
+            //如果只输入一位小数则进行补充后面的一位 比方说输入"99.8" 会转化成"99.80"
+            while (valse.length <= valsex + 2) {
+                valse += "0";
+            }
+            //上面的保留两位小数的过程  下面是给输入的值增加千位符
+            var re = /\d{1,3}(?=(\d{3})+$)/g;
+            //如果超过三位数增加千位符
+            var n1 = valse.replace(/^(\d+)((\.\d+)?)$/, function (s, s1, s2) {
+                return s1.replace(re, "$&,") + s2;
+            });
+            //这是我v-model的值
+            $(this).val(n1);
+        } else {
+            //不符合规格则清空输入框(这是我v-model的值)
+            $(this).val("");
+        }
+    })
+
+    $(document).on("change", ".calculate", function () {
+        var object = {};
+        //封装的明细行
+        var paymentRequestDt1 = [];
+        $(".material1").each(function (i, li) {
+            var sku1 = {};
+            var quantity = $(li).find("input[id='quantity']").val();//quantity
+            var unitPrice = StringCoventLong($(li).find("input[id='unitPrice']").val());//unitPrice
+            var totalAmount = StringCoventLong($(li).find("input[id='totalAmount']").val());//totalAmount
+            var currency = $(li).find("select[id='currency']").val();//currency
+            var ratio = StringCoventLong($(li).find("input[id='ratio']").val());//ratio
+            sku1.quantity = quantity;
+            sku1.unitPrice = unitPrice;
+            if (totalAmount != 'NaN'){
+                sku1.totalAmount = totalAmount;
+            }
+            sku1.currency = currency;
+            if (ratio != 'NaN'){
+                sku1.ratio = ratio;
+            }
+            if ($.common.isNotEmpty(quantity) && unitPrice != 'NaN'){
+                paymentRequestDt1.push(sku1);
+            }
+        });
+        var paymentRequest = {};
+        paymentRequest.prepaid = $('.prepaid').val()
+        object.paymentRequest = paymentRequest;
+        object.paymentRequest.paymentRequestDt1List = paymentRequestDt1;
+        if (paymentRequestDt1.length > 0) {
+            $.ajax({
+                type: "POST",//方法类型
+                url: prefix + "/calculateTheAmount",//url
+                data: JSON.stringify(object.paymentRequest),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",//预期服务器返回的数据类型
+                success: function (result) {
+                    var data = result.data;
+                    for (let i = 0; i < data.paymentRequestDt1List.length; i++) {
+                        $("#addColumn").find("tr:eq(" + i + ")").find("input[id='totalAmount']").val(data.paymentRequestDt1List[i].totalAmount / 100);
+                        $("#addColumn").find("tr:eq(" + i + ")").find("input[id='totalAmount']").trigger("blur");
+                    }
+                    $('#paymentAmount').val((data.paymentAmount / 100).toFixed(2));
+                    $('#paymentAmount').trigger("blur");
+                }
+            })
+        }
+    })
+
+    /*$(document).on("blur", ".allTotalAmount", function () {
+        //计算总金额
+        var allAmount = 0;
+        $(".material1").each(function (i, li) {
+            var am1 = $(li).find("#totalAmount").val();//字符串
+            var am = $(li).find("#ratio").val();//字符串
+            if (am1 == "") {
+                return true;
+            }
+            //预付比
+            var am3;
+            if ($.common.isNotEmpty(am)){
+                am3 = am
+            }else {
+                am3 = 100;
+            }
+            var am2 = StringCoventLong(am1)//转数字
+            allAmount = parseInt(allAmount) + (parseInt(am2) * parseInt(am3) / 100);
+        });
+        $('#paymentAmount').val((allAmount / 100).toFixed(2));
+        $('#paymentAmount').trigger("blur");
+    })*/
+
+    $('.employeeNo').on('blur', function () {
+        var employeeNo = $.common.trim($(this).val());
+        if (employeeNo == "") {
+            $.modal.alertError("请输入员工编号");
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            url: ctx + "system/user/getEmployeeNo/" + employeeNo,
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 0) {
+                    $('.departmentCode').val(result.data.departmentCode);
+                    $('.dept').val(result.data.dept);
+                    $('.applicant').val(result.data.userName);
+                    projectCode(result.data.departmentCode);
+                } else if (result.code == 404) {
+                    $.modal.alertError("请输入正确的员工编号");
+                } else {
+                    $('.departmentCode').val("");
+                    $('.actualDept').val("");
+                    $('.actualUser').val("");
+                    $.modal.alertError(result.msg);
+                }
+            },
+        });
+    });
+
+
+    $('.actualUserNo').on('blur', function () {
+        var employeeNo = $.common.trim($(this).val());
+        if (employeeNo == "") {
+            $.modal.alertError("请输入员工编号");
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            url: ctx+ "system/user/getEmployeeNo/" + employeeNo,
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 0) {
+                    $('.actualDeptCode').val(result.data.departmentCode);
+                    $('.actualDept').val(result.data.dept);
+                    $('.actualUser').val(result.data.userName);
+                    projectCode(result.data.departmentCode);
+                } else if (result.code == 404) {
+                    $.modal.alertError("请输入正确的员工编号");
+                } else {
+                    $('.departmentCode').val("");
+                    $('.actualDept').val("");
+                    $('.actualUser').val("");
+                    $.modal.alertError(result.msg);
+                }
+            },
+        });
+    });
+
+    $("#form-nonSaleRequisitionAdd-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    
+    function uploadDetail(){
+        layer.open({
+            type: 2,
+            area: [1100 + 'px', ($(window).height() - 50) + 'px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: "上传明细表",
+            content: prefix + "/uploadDetail",
+            btn: ['生成明细', '取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            yes: function(index, layero) {
+                var code = $('.deptCode').val();
+                if($('#payment-on-behalf-of').val() == 1){
+                    code = $('.actualDeptCode').val();
+                } else {
+                    code = $('.deptCode').val()
+                }
+
+                $('.projectCode').selectpicker('destroy');
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.submitHandler();
+                $('.totalAmount').trigger("blur");
+                $('.projectCode').selectpicker();
+                projectCode(code);
+                
+            },
+            btn2: function(index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.cancel();
+            },
+            cancel: function(index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.cancel();
+            }
+        })
+        
+    }
+    /* 替换逗号 */
+    function replaceComma(str){
+        return str.replace(/,/g, "");
+    }
+
+    function summary(){
+        if ($.common.isEmpty($('.paymentDate').val()) || $('.paymentDate').val() == undefined){
+            $.modal.msgWarning("请先填写“付款日期。");
+            return false;
+        }
+        layer.open({
+            type: 2,
+            area: [1100 + 'px', ($(window).height() - 50) + 'px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: "上传汇总表",
+            content: prefix + "/summary",
+            btn: ['生成汇总信息', '取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            yes: function(index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.submitHandler();
+                $('.totalAmount').trigger("blur");
+            },
+            btn2: function(index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.cancel();
+            },
+            cancel: function(index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.cancel();
+            }
+        })
+    }
+
+    function paymentType(val) {
+        if (val == "A") {
+            $('#rmb').show();
+            $('#summaryBtn').show();
+            $('.payee').removeAttrs("required");
+            $('.bankName').removeAttrs("required");
+            $('.accountNumber').removeAttrs("required");
+        } else {
+            $('#rmb').hide();
+            $('#summaryBtn').hide();
+            $('.payee').attr("required", "required");
+            $('.bankName').attr("required", "required");
+            $('.accountNumber').attr("required", "required");
+        }
+    }
+
+    //请款类别
+    $('.payment-type').on('change', function (){
+        paymentType($(this).val());
+        //个人报销自动带出付款信息
+        if ($(this).val() == "X"){
+            var employeeNo;
+            if($("#payment-on-behalf-of").val() == 1){
+                employeeNo = $(".actualUserNo").val();
+            }else {
+                employeeNo = $("#employeeNo").val();
+            }
+            $.ajax({
+                type: "POST",
+                url: ctx + "system/user/getEmployeeNo/" + employeeNo,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.code == 0) {
+                        $('.payee').val(result.data.userName);
+                        $('.bankName').val(result.data.bankName);
+                        $('.accountNumber').val(result.data.accountNumber);
+                    }
+                }
+            });
+        }
+    })
+
+    $('.content').focus(function () {
+        var code = $('.deptCode').val();
+        if ($(".projectCode1").hasClass("is-required") && ((code.substring(2,3) == "2" && code.substring(2,5) != "250"
+            && code.substring(2,5) != "240" && code.substring(2,5) != "292") || code.substring(2,5) == "400" || code.substring(2,5) == "420" || code.substring(2,5) == "430")){
+            $.modal.msgWarning("研发项目未填写，确定无法填写，请选R&D share")
+        }
+    })
+
+    //获取历史付款信息
+    function getPaymentInfo() {
+        var url = prefix + "/selectPaymentInfo/";
+        $.modal.openFileList("历史付款账号信息",url,960);
+    }
+
+    //type:1 = 保存 type:2 = 提交
+    function submitHandler(type) {
+        if ($.validate.form()) {
+            var formObject = {};
+            var formArray = $("#form-nonSaleRequisitionAdd-add").serializeArray();
+            $.each(formArray, function (i, item) {
+                formObject[item.name] = item.value;
+            });
+
+            //发送后台对象
+            var object = {};
+
+            //封装主表
+            var paymentRequest = {};
+            paymentRequest.company = formObject.company;//company
+            // paymentRequest.projectCode = formObject.projectCode;//projectCode
+            paymentRequest.applicant = formObject.applicant;//applicant
+            paymentRequest.employeeNo = $.common.trim(formObject.employeeNo);//employeeNo
+            paymentRequest.dept = formObject.dept;//dept
+            paymentRequest.deptCode = formObject.deptCode;//deptCode
+            paymentRequest.applicationDate = formObject.applicationDate;//applicationDate
+            paymentRequest.paymentDate = formObject.paymentDate;//paymentDate
+            paymentRequest.insteadPayment = formObject.insteadPayment;//insteadPayment
+            paymentRequest.actualUserNo = $.common.trim(formObject.actualUserNo);//actualUserNo
+            paymentRequest.actualUser = formObject.actualUser;//actualUser
+            paymentRequest.actualDept = formObject.actualDept;//actualDept
+            paymentRequest.actualDeptCode = formObject.actualDeptCode;//actualDeptCode
+            paymentRequest.paymentType = formObject.paymentType;//paymentType
+            paymentRequest.prepaid = formObject.prepaid;//prepaid
+            paymentRequest.paymentAmount = replaceComma(formObject.paymentAmount)//paymentAmount
+            paymentRequest.paymentMethod = formObject.paymentMethod;//paymentMethod
+            paymentRequest.others = formObject.others;//others
+            paymentRequest.remark = formObject.specialExplanations;//specialExplanations
+
+            //封装付款账号信息
+            // var paymentAccount = {};
+            paymentRequest.payee = $.common.trim(formObject.payee);//payee
+            paymentRequest.bankName = $.common.trim(formObject.bankName);//bankName
+            paymentRequest.accountNumber = $.common.trim(formObject.accountNumber);//accountNumber
+            paymentRequest.address = $.common.trim(formObject.address);//address
+            paymentRequest.swiftCode = $.common.trim(formObject.swiftCode);//swiftCode
+            paymentRequest.bankAddress = $.common.trim(formObject.bankAddress);//bankAddress
+
+            //封装的明细行
+            var paymentRequestDt1 = [];
+            var i = 0;
+            var errRow = "";
+            var c;
+            var cFlag = false;
+            $(".material1").each(function (i, li) {
+                i++;
+                var sku1 = {};
+                var projectCode = $(li).find("select[id='projectCode']").val();//projectCode
+                var content = $(li).find("textarea[id='content']").val();//content
+                var unit = $(li).find("input[id='unit']").val();//unit
+                var quantity = $(li).find("input[id='quantity']").val();//quantity
+                var unitPrice = replaceComma($(li).find("input[id='unitPrice']").val());//unitPrice
+                var totalAmount = replaceComma($(li).find("input[id='totalAmount']").val());//totalAmount
+                var currency = $(li).find("select[id='currency']").val();//currency
+                var ratio = replaceComma($(li).find("input[id='ratio']").val());//ratio
+                var remark = $(li).find("textarea[id='remark']").val();//remark
+                sku1.projectCode = projectCode;
+                sku1.content = content;
+                sku1.unit = unit;
+                sku1.quantity = quantity;
+                sku1.unitPrice = unitPrice;
+                sku1.totalAmount = totalAmount;
+                sku1.currency = currency;
+                if (ratio != 'NaN'){
+                    sku1.ratio = ratio;
+                }
+                sku1.remark = remark;
+                if ($.common.isNotEmpty(content) && $.common.isNotEmpty(quantity) && $.common.isNotEmpty(currency) &&
+                    unitPrice != 'NaN' && totalAmount !='NaN' &&
+                    ($(".projectCode1").hasClass("is-required") && $('.payment-type').val() != "A" ? $.common.isNotEmpty(projectCode) : true)) {
+                    paymentRequestDt1.push(sku1);
+                    if ($.common.isEmpty(c)){
+                        c = currency;
+                    }else {
+                        if (c != currency){
+                            cFlag = true;
+                        }
+                    }
+                }else {
+                    if ($.common.isNotEmpty(errRow)){
+                        errRow += "、" + i;
+                    }else {
+                        errRow += i;
+                    }
+                }
+            });
+            if ($('.payment-type').val() != "A"){
+                if (cFlag){
+                    $.modal.alertError("币别选择不一致，请核实后重试！");
+                    return false;
+                }
+                if (paymentRequestDt1.length < 1){
+                    $.modal.alertError("最少输入一行完整的摘要信息！");
+                    return false;
+                }
+                object.paymentRequest = paymentRequest;
+            }
+            //
+            object.paymentRequest = paymentRequest;
+            object.paymentRequest.paymentRequestDt1List = paymentRequestDt1;
+            if ($.common.isNotEmpty(errRow)){
+                var errMsg = "第" + errRow + "行明细未填写完整，将不会被保存，请确认。"
+                $.modal.loading("正在保存,请稍等......");
+                layer.confirm(errMsg, {
+                    icon: 3,
+                    title: "Tip",
+                    btn: ['OK', 'Cancel'],
+                    btnclass: ['btn btn-primary', 'btn btn-danger'],
+                    yes: function(index){
+                      save(object, type);
+                    },
+                    btn2: function (index) {
+                        $.modal.closeLoading();
+                        layer.close(index);
+                    },
+                    cancel: function(index){
+                        $.modal.closeLoading();
+                        layer.close(index);
+                    }
+                })
+            }else {
+                save(object, type);
+            }
+        }
+    }
+
+    //object:表单数据   type:1 = 保存 type:2 = 提交
+    function save(object, type) {
+        var paymentRequestId;
+        var results = {};
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            url: prefix + "/add",//url
+            data: JSON.stringify(object.paymentRequest),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",//预期服务器返回的数据类型
+            timeout: 30000,
+            async: false,//改成同步
+            beforeSend: function () {
+                $.modal.loading("正在保存,请稍等......");
+            },
+            success: function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    results.code = web_status.SUCCESS;
+                    paymentRequestId = result.data;
+                    results.msg = result.msg;
+                    if ($('#file')[0].files[0] != null || $('#summaryFile')[0].files[0] != null) {
+                        var formData = new FormData();
+                        formData.append('id', result.data); //id
+                        var file = document.getElementById("file").files;
+                        if(file.length > 0){
+                            for (var i = 0; i < file.length; i++) {
+                                formData.append("files", file[i]);
+                                formData.append("parentId", paymentRequestId);
+                                formData.append("type", 1);
+                            }
+                        }
+                        // var summaryFile = document.getElementById("summaryFile").files;
+                        // if (summaryFile.length > 0){
+                        //     formData.append("summaryFile", summaryFile[0]);
+                        // }
+                        $.ajax({
+                            url: comprefix + "/uploadFiles",
+                            type: 'post',
+                            cache: false,
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            dataType: "json",
+                            async: false,//改成同步
+                            success: function (result) {
+                                if (result.code == web_status.SUCCESS) {
+
+                                } else {
+                                    results.code = web_status.FAIL;
+                                    results.msg = result.msg;
+                                }
+                            }
+                        });
+                    }
+                }else {
+                    results.code = web_status.FAIL;
+                    results.msg = result.msg;
+                }
+            }
+        });
+        if (type == 2){
+            $.ajax({
+                //几个参数需要注意一下
+                type: "GET",//方法类型
+                url: prefix + "/start/submit?id=" + paymentRequestId,//url
+                dataType: "json",//预期服务器返回的数据类型
+                timeout: 20000,
+                success: function (result) {
+                    if (result.code == web_status.SUCCESS){
+                        $.operate.successTabCallback(result);
+                    }else {
+                        $.modal.closeLoading();
+                        $.modal.alertError(result.msg);
+                    }
+                }
+            });
+        }else {
+            if (results.code == web_status.SUCCESS){
+                $.operate.successTabCallback(results);
+            }else {
+                $.modal.closeLoading();
+                if ($.common.isNotEmpty(results.msg)){
+                    $.modal.alertError(results.msg);
+                } else {
+                    $.modal.alertError("发生未知错误，请联系IT人员。");
+                }
+            }
+        }
+    }
+
+    function StringCoventLong(aString) {
+        //将字符转换乘100
+        var a = aString.replace(/,/g, "");
+        var b = (parseFloat(a) * 100).toFixed(0);
+        return b;
+    }
+
+
+    function checkInt(e) {
+        var re = new RegExp("^[0-9]*[1-9][0-9]*$");
+        if (e.value != "") {
+            if (!re.test(e.value)) {
+                layer.msg("请输入整数");
+                e.value = "";
+                e.focus();
+            }
+        }
+    }
+
+
+</script>
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        line-height: 1 !important;
+    }
+
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        padding: 3px 0 3px 4px !important;
+
+    }
+
+    body{
+        overflow: scroll;
+    }
+
+    .wrapper {
+        /*text-align: center; !*让div内部文字居中*!*/
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 1250px;
+        /*border:1px solid #000*/
+    }
+
+    .my-table {
+        margin-left: auto;
+        margin-right: auto;
+        /*margin-top: 1px;*/
+        /*margin-bottom: 1px;*/
+    }
+
+    .bottom {
+        margin-top: 10px;
+    }
+
+    .form-control {
+        /*border: 0;*/
+        webkit-box-shadow: none;
+        box-shadow: none;
+        width: 96%;
+        margin-left: 2%;
+    }
+
+    .form-control:focus, .single-line:focus {
+        border-color: #3C8DBC !important;
+    }
+
+    table td {
+        border: 1px solid #000;
+        position: relative;
+    }
+
+    .my-h2 {
+        margin-left: 60px;
+        padding-top: 10px;
+        margin-bottom: 1px;
+    }
+
+    .my-h3 {
+        margin-left: 120px;
+    }
+
+    #for-boder {
+        border: 1px solid #000
+    }
+
+    .checkbox {
+        display: inline;
+    }
+
+    .my-div {
+        margin-left: 215px;
+        font-weight: bold;
+    }
+
+    textarea.form-control {
+        height: 45px;
+    }
+
+    .border{
+        border: 1px solid #1a2226;
+    }
+    .ratio{
+        width: 60%;
+        border: none;
+        border-bottom: 2px solid #e5e6e7;
+    }
+
+    .bs-placeholder{
+        color: #676a6c;
+    }
+
+    .btn-default, .btn-default:hover{
+        color: #676a6c;
+        background-color: #ffffff;
+        border-color: #e5e6e7;
+    }
+
+    .is-required:after {
+         content: '   *';
+         color: red;
+     }
+    /*input,.form-control{border:none;background-color:transparent;}*/
+</style>
+</body>
+</html>

@@ -83,6 +83,36 @@ public class Constants
     public static final String SYS_DICT_KEY = "sys_dict:";
 
     /**
+     * 项目编号 cache name
+     */
+    public static final String ZT_WGCPRORELEASE_CACHE = "zt-wgcprorelease";
+
+    /**
+     * 项目编号 cache key
+     */
+    public static final String ZT_WGCPRORELEASE_KEY = "zt-wgcprorelease:";
+
+    /**
+     * 供应商 cache name
+     */
+    public static final String SYS_SUPPLIER_CACHE = "sys-supplier";
+
+    /**
+     * 供应商 cache key
+     */
+    public static final String SYS_SUPPLIER_KEY = "sys_supplier:";
+
+    /**
+     * 汇率 cache name
+     */
+    public static final String SYS_EXCHANGE_RATE_CACHE = "sys-exchange-rate";
+
+    /**
+     * 汇率 cache key
+     */
+    public static final String SYS_EXCHANGE_RATE_KEY = "sys_exchange_rate:";
+
+    /**
      * 资源映射路径 前缀
      */
     public static final String RESOURCE_PREFIX = "/profile";
@@ -111,5 +141,5 @@ public class Constants
      * 定时任务违规的字符
      */
     public static final String[] JOB_ERROR_STR = { "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
-            "org.springframework", "org.apache", "com.ruoyi.common.utils.file", "com.ruoyi.common.config" };
+            "org.springframework", "org.apache", "com.ruoyi.common.utils.file" };
 }

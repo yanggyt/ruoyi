@@ -1,9 +1,16 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.enums.PetitionStatus;
+import com.ruoyi.system.domain.paymentRequest.PaymentRequest;
+import com.ruoyi.system.domain.petition.Petition;
+import com.ruoyi.system.domain.requisition.Requisition;
+import com.ruoyi.system.service.paymentRequest.IPaymentRequestService;
+import com.ruoyi.system.service.petition.IPetitionService;
+import com.ruoyi.system.service.requisition.IRequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,6 +49,15 @@ public class SysIndexController extends BaseController
 
     @Autowired
     private SysPasswordService passwordService;
+
+    @Autowired
+    private IPaymentRequestService paymentRequestService;
+
+    @Autowired
+    private IRequisitionService requisitionService;
+
+    @Autowired
+    private IPetitionService petitionService;
 
     // 系统首页
     @GetMapping("/index")
@@ -130,7 +146,96 @@ public class SysIndexController extends BaseController
     @GetMapping("/system/main")
     public String main(ModelMap mmap)
     {
+        // 取身份信息
+        SysUser user = getSysUser();
+        String userCode = user.getUserCode();
+        if (Objects.equals(userCode, "S00001")){
+            user.setUserName("陈总");
+        }else if (Objects.equals(userCode, "S00002")){
+            user.setUserName("游总");
+        }
+        PaymentRequest paymentRequest = new PaymentRequest();
+        Requisition requisition = new Requisition();
+        Petition petition = new Petition();
+//        Order order = new Order();
+//        Mrpfrom mrpfrom = new Mrpfrom();
+//        ItUserAuthorizationFrom itUserAuthorizationFrom = new ItUserAuthorizationFrom();
+//        Function function = new Function();
+//        TravelExpenseReimbursement travelExpenseReimbursement = new TravelExpenseReimbursement();
+        //获取请款单我的待办
+        paymentRequest.setSendToCode(userCode);
+        List<PaymentRequest> paymentRequestList = paymentRequestService.selectPaymentRequestList(paymentRequest);
+        //获取请购单我的待办
+        requisition.setSendToCode(userCode);
+        List<Requisition> requisitionList = requisitionService.selectRequisitionList(requisition);
+        //获取电子签呈我的待办
+        petition.setFormSta(PetitionStatus.TODO.value());
+        petition.setFromSendto(userCode);
+        List<Petition> petitionList = petitionService.selectPetitionList(petition);
+        //获取出差报销单我的待办
+//        travelExpenseReimbursement.setSendToCode(userCode);
+//        List<TravelExpenseReimbursement> travelExpenseReimbursementList = travelExpenseReimbursementService.selectTravelExpenseReimbursementList(travelExpenseReimbursement);
+        //获取我的工单
+       /* List<Long> orderTypeIds = orderTypeService.selectOrderTypeIdsByEmail(user.getEmail());
+        if(user.getDepartmentCode() != null && user.getDepartmentCode().contains("240")){
+            //如果是cad部门的人，那么就可以看到所有的cad的单子
+            OrderType orderType = new OrderType();
+            orderType.setParentId(41L);
+            List<OrderType> orderTypes = orderTypeService.selectOrderTypeList(orderType);
+            List<Long> collect = orderTypes.stream().map(OrderType::getOrderTypeId).collect(Collectors.toList());
+            orderTypeIds.addAll(collect);
+            List<Long> orderTypeIds1 = new ArrayList<>();
+            for (Long l:orderTypeIds) {
+                if (!orderTypeIds1.contains(l)) {
+                    orderTypeIds1.add(l);
+                }
+            }
+            orderTypeIds = orderTypeIds1;
+        }
+        order.setOrderStatus(0);
+        List<Order> orderList = orderService.selectOrderListByDefUser(user, order, orderTypeIds);
+        //过滤已关闭的单子
+        long orderCount = orderList.stream().filter(o -> o.getOrderStatus() != -1).count();
+        //获取MRB表单我的待办
+        List<Mrpfrom> mrpfromList = mrpfromService.selectMyTodoMrpfrom(ShiroUtils.getSysUser().getUserName());
+        Iterator<Mrpfrom> iterator = mrpfromList.iterator();
+        List<Long> idArr = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Long id = iterator.next().getId();
+            idArr.add(id);
+        }
+        if (idArr.size() != 0) {
+            if (getSysUser().isAdmin()){
+                mrpfromList = mrpfromService.selectMrpfromList(mrpfrom);
+            }else {
+                mrpfromList = mrpfromService.selectMyTodoMrpfromByIds(idArr);
+            }
+        } else {
+            startPage();
+            List<Long> list = new ArrayList<>();
+            list.add(Long.MAX_VALUE);
+            if (getSysUser().isAdmin()) {
+                mrpfromList = mrpfromService.selectMrpfromList(mrpfrom);
+            } else {
+                mrpfromList = mrpfromService.selectMyTodoMrpfromByIds(list);
+            }
+        }
+        //获取用户账号权限申请单我的待办
+        itUserAuthorizationFrom.setSendToCode(userCode);
+        List<ItUserAuthorizationFrom> itUserAuthorizationFromList = iItUserAuthorizationFromService.selectItUserAuthorizationFromList(itUserAuthorizationFrom);
+        //获取系统功能需求单我的待办
+        function.setSendToCode(userCode);
+        List<Function> functionList = functionService.selectFunctionList(function);*/
+        mmap.put("user", user);
         mmap.put("version", RuoYiConfig.getVersion());
+        mmap.put("paymentRequest", paymentRequestList.size());
+        mmap.put("requisition", requisitionList.size());
+        mmap.put("petition", petitionList.size());
+        /*mmap.put("travelExpenseReimbursement", travelExpenseReimbursementList.size());
+        mmap.put("order", orderCount);
+        mmap.put("mrpfrom", mrpfromList.size());
+        mmap.put("itUserAuthorizationFrom", itUserAuthorizationFromList.size());
+        mmap.put("function", functionList.size());*/
         return "main";
     }
 

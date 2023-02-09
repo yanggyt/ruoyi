@@ -1,0 +1,960 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html ;charset=utf-8"/>
+<head >
+    <th:block th:include="include :: header('日期和时间')"/>
+<!--    <th:block th:include="include :: layout-latest-css" />-->
+    <th:block th:include="include :: datetimepicker-css"/>
+    <th:block th:include="include :: bootstrap-select-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <div class="container text-left">
+        <div class="row">
+            <div class="col-xs-3">
+                <img src="../static/img/silergy.jpg" th:src="@{/img/silergy.jpg}">
+            </div>
+            <div class="col-xs-9">
+                <h2 class="my-h2">
+                    南京矽力微电子技术有限公司
+                </h2>
+                <ul class="list-inline">
+                    <li>
+                        <h3 class="my-h3">请款单 Payment Request Form</h3>
+                    </li>
+                    <li>
+                    </li>
+                </ul>
+            </div>
+            <div style="float: right">
+                <label class="my-div">
+                    单据编号No：
+                </label>
+                <input class="receiptNumber" style="border:none;background-color:transparent;"
+                       name="receiptNumber" th:field="*{paymentRequest.paymentRequestNo}" disabled/>
+            </div>
+        </div>
+    </div>
+
+    <form action="none" id="form-nonSaleRequisitionAdd-add">
+        <div id="for-boder">
+            <input type="hidden" class="paymentRequestId" id="paymentRequestId" th:value="${paymentRequest.id}" >
+            <input type="hidden" id="status" th:value="${paymentRequest.status}" >
+
+            <table class="my-table">
+                <tbody style="text-align:right;" class="backgroundE" >
+                <!--////////////////            表头-->
+
+                <tr>
+                    <td class="text-center" style="width: 10%;">选择公司<br> Company</td>
+                    <td style="width: 15%;">
+                        <select class="form-control change-h2 noselect2" name="company" required="true" disabled>
+                            <option th:selected="${paymentRequest.company == 6}" value="6">南京</option>
+                            <option th:selected="${paymentRequest.company == 14}" value="14">上海矽力杰微电子</option>
+                            <option th:selected="${paymentRequest.company == 20}" value="20">南京香港</option>
+                        </select>
+                    </td>
+                    <td class="text-center" style="width: 10%;">员工编号<br>Employee No</td>
+                    <td style="width: 15%;">
+                        <input id="employeeNo" name="employeeNo" th:value="${paymentRequest.employeeNo}"
+                               class="form-control employeeNo" type="text" required="true" disabled>
+                    </td>
+                    <td class="text-center" style="width: 10%;">请款人<br> Applicant</td>
+                    <td style="width: 15%;">
+                        <input id="applicant" name="applicant" th:value="${paymentRequest.applicant}"
+                               class="form-control applicant" type="text" required="true" disabled>
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        使用部门<br> Dept:
+                    </td>
+                    <td style="width: 15%;">
+                        <input class="form-control dept" name="dept" th:value="${paymentRequest.dept}" type="text"
+                               required="true" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">
+                        部门代码<br> Dept Code
+                    </td>
+                    <td>
+                        <input class="form-control departmentCode" type="text" name="deptCode"
+                               th:value="${paymentRequest.deptCode}" required="true" disabled>
+                    </td>
+                    <td class="text-center">
+                        申请日期<br>
+                        Application Date
+                    </td>
+                    <td>
+                        <div class="input-group date">
+                            <span class="input-group-addon backgroundE"><i class="fa fa-calendar"></i></span>
+                            <input type="text" name="applicationDate" style="width: 95%;"
+                                   th:value="${#dates.format(paymentRequest.applicationDate, 'yyyy-MM-dd')}"
+                                   class="form-control datetimepicker-yyyy-mm-dd" placeholder="yyyy-MM-dd"
+                                   required="true" disabled>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        付款日期<br>
+                        Payment Date
+                    </td>
+                    <td>
+                        <div class="input-group date">
+                            <span class="input-group-addon backgroundE"><i class="fa fa-calendar"></i></span>
+                            <input type="text" name="paymentDate" style="width: 95%;"
+                                   th:value="${#dates.format(paymentRequest.paymentDate, 'yyyy-MM-dd')}"
+                                   class="form-control datetimepicker-yyyy-mm-dd paymentDate" placeholder="yyyy-MM-dd"
+                                   required="true" disabled>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        是否代请款
+                    </td>
+                    <td>
+                        <select class="form-control noselect2" id="payment-on-behalf-of" name="insteadPayment" required="true"
+                                disabled>
+                            <option value="">请选择</option>
+                            <option th:selected="${paymentRequest.insteadPayment == 0}" value="0">否/No</option>
+                            <option th:selected="${paymentRequest.insteadPayment == 1}" value="1">是/Yes</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">
+                        实际使用人编号<br>Actual User No
+                    </td>
+                    <td>
+                        <input class="form-control payment-on-behalf-of-info actualUserNo" type="text"
+                               th:value="${paymentRequest.actualUserNo}" name="actualUserNo" required="true" disabled>
+                    </td>
+                    <td class="text-center">
+                        实际使用人<br>Actual User
+                    </td>
+                    <td>
+                        <input class="form-control payment-on-behalf-of-info actualUser" type="text" name="actualUser"
+                               th:value="${paymentRequest.actualUser}" required="true" disabled>
+                    </td>
+                    <td class="text-center">
+                        实际使用部门<br>
+                        Actual Dept
+                    </td>
+                    <td>
+                        <input class="form-control payment-on-behalf-of-info actualDept" type="text" id="actualDept"
+                               th:value="${paymentRequest.actualDept}" name="actualDept" required="true" disabled>
+                    </td>
+                    <td class="text-center">
+                        实际使用部门代码<br>
+                        Actual Dept Code
+                    </td>
+                    <td>
+                        <input class="form-control payment-on-behalf-of-info actualDeptCode" type="text"
+                               th:value="${paymentRequest.actualDeptCode}" id="actualDeptCode" name="actualDeptCode"
+                               required="true" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">
+                        请款类别<br>
+                        Payment Type
+                    </td>
+                    <td>
+                        <select class="form-control payment-type noselect2" name="paymentType" required="true" disabled>
+                            <option value="">请选择</option>
+                            <option th:selected="${paymentRequest.paymentType == 'X' }" value="X">个人报销/Personal Reimbursement</option>
+                            <option th:selected="${paymentRequest.paymentType == 'Y' }" value="Y">生产性支出</option>
+                            <option th:selected="${paymentRequest.paymentType == 'A' }" value="A">生产性支出-汇总请款</option>
+                            <option th:selected="${paymentRequest.paymentType == 'B' }" value="B">非生产性支出-持续性/Continuously Unproductive Expenditure</option>
+                            <option th:selected="${paymentRequest.paymentType == 'C' }" value="C">非生产性支出-非持续性/Discontinuously Unproductive Expenditure</option>
+                            <option th:selected="${paymentRequest.paymentType == 'E' }" value="E">交际费/Entertainment Expense</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        是否预付 <br> Prepaid
+                    </td>
+                    <td>
+                        <select class="form-control prepaid noselect2" name="prepaid" disabled>
+                            <option th:field="${paymentRequest.prepaid}" value="1">否/No</option>
+                            <option th:field="${paymentRequest.prepaid}" value="2">是/Yes</option>
+                        </select>
+                    </td>
+                    <td colspan="4" style="background-color: #eeeeee">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--<div class="row" style="height: 34px;padding-top: 7px">
+                <div class="col-md-12 text-right">
+                    <button type="button" onclick="add1()"><i class="fa fa-plus-square"></i>添加一行</button>
+                </div>
+            </div>-->
+            <table class="my-table operate-table1" >
+                <thead class="backgroundE" >
+                <tr>
+                    <td class="text-center projectCode1" style="width: 8%">
+                        项目编号<br> Project Code
+                    </td>
+                    <td class="text-center" style="width: 23%">
+                        摘 要 说 明<br> Content
+                    </td>
+                    <td class="text-center" style="width: 6%">
+                        单位<br> Unit
+                    </td>
+                    <td class="text-center" style="width: 6%">
+                        数量<br> Quantity
+                    </td>
+                    <td class="text-center" style="width: 10%">
+                        单价<br> Unit Price
+                    </td>
+                    <td class="text-center" style="width: 13%">
+                        总金额<br> Total Amount
+                    </td>
+                    <td class="text-center" style="width: 5%">
+                        币别<br> Currency
+                    </td>
+                    <td class="text-center" style="width: 6%">
+                        预付比例<br> Ratio
+                    </td>
+                    <td class="text-center" style="width: 23%">
+                        备注<br> Remarks
+                    </td>
+                </tr>
+                </thead>
+                <tbody style="text-align:right;" class="backgroundE">
+
+                <tr id="addColumn1" class="material1" th:each="paymentRequestDt1:${paymentRequestDt1List}">
+                    <td class="text-center">
+                        <span type="text" name="projectCode" th:text="${paymentRequestDt1.projectCode}" disabled></span>
+                    </td>
+                    <td>
+                        <input type="hidden" id="dt1Id" th:value="${paymentRequestDt1.id}">
+                        <textarea class="form-control text-center" id="content" type="text"
+                                  th:text="${paymentRequestDt1.content}" disabled></textarea>
+                    </td>
+                    <td>
+                        <input class="form-control text-center" id="unit" type="text"
+                               th:value="${paymentRequestDt1.unit}" disabled>
+                    </td>
+                    <td>
+                        <input class="form-control text-center" id="quantity" type="text" onkeyup='checkInt(this)'
+                               th:value="${paymentRequestDt1.quantity}" disabled>
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount text-center amount" id="unitPrice" type="text"
+                               th:value="${paymentRequestDt1.unitPrice}" disabled>
+                    </td>
+                    <td>
+                        <input class="form-control totalAmount text-center amount" id="totalAmount" type="text"
+                               th:value="${paymentRequestDt1.totalAmount}" disabled>
+                    </td>
+                    <td>
+                        <select class="form-control text-center noselect2" id="currency" disabled>
+                            <option value="">请选择</option>
+                            <option th:selected="${paymentRequestDt1.currency == 1}" value="1">RMB</option>
+                            <option th:selected="${paymentRequestDt1.currency == 2}" value="2">USD</option>
+                            <option th:selected="${paymentRequestDt1.currency == 3}" value="3">TWD</option>
+                            <option th:selected="${paymentRequestDt1.currency == 4}" value="4">HKD</option>
+                            <option th:selected="${paymentRequestDt1.currency == 5}" value="5">KRW</option>
+                            <option th:selected="${paymentRequestDt1.currency == 6}" value="6">MOP</option>
+                            <option th:selected="${paymentRequestDt1.currency == 7}" value="7">EUR</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div style="margin-right: 15%" th:if="${paymentRequestDt1.ratio != null}">
+                            <input class="text-center amount" style="width: 60%" type="text" th:value="${paymentRequestDt1.ratio}" disabled>%
+                        </div>
+                        <div style="margin-right: 15%" th:if="${paymentRequestDt1.ratio == null}">
+                        </div>
+                    </td>
+                    <td>
+                        <textarea class="form-control text-center" id="remark" type="text"
+                                  th:text="${paymentRequestDt1.remark}" disabled></textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="my-table" style="width: 100%">
+                <tbody style="text-align:right;" class="backgroundE">
+                <tr style="width: 100%">
+                    <td style="width: 50%">
+                        <label style="margin-right: 25%;margin-top: 1%">合计应付金额 Payment Amount (小写)</label>
+                        <label id="rmb" class="text-right" hidden>RMB&nbsp;&nbsp;&nbsp;</label>
+                    </td>
+                    <td style="width: 50%">
+                        <input class="form-control totalAmount amount calculate" id="paymentAmount" name="paymentAmount"
+                               th:value="${paymentRequest.paymentAmount}" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="6" style="width: 100%;height: 34px">
+                        付款方式 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; Payment Method
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="my-table" style="width: 100%">
+                <tbody style="text-align:right;" class="backgroundE">
+                <tr>
+                    <td class="text-center" style="width: 16.6%;height: 34px">
+                        <input type="radio" th:checked="${paymentRequest.paymentMethod == 1}" name="paymentMethod"
+                               class="check-require" value="1" disabled>
+                    </td>
+                    <td class="text-center" style="width: 16.6%">
+                        转帐汇款 Transfer
+                    </td>
+                    <td class="text-center" style="width: 16.6%;height: 34px">
+                        <input type="radio" th:checked="${paymentRequest.paymentMethod == 2}" name="paymentMethod"
+                               class="check-require" value="2" disabled>
+                    </td>
+                    <td class="text-center" style="width: 16.6%">
+                        其他 Others
+                    </td>
+                    <td colspan="3" style="width: 33.3%">
+                        <input type="text" class="form-control" name="others" th:value="${paymentRequest.others}"
+                               disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="height: 34px">
+                        收款人 Payee
+                    </td>
+                    <td class="text-center">
+                        <span th:text="${paymentRequest.payee}" disabled></span>
+                    </td>
+                    <td class="text-center">
+                        开户行 Bank Name
+                    </td>
+                    <td class="text-center">
+                        <span th:text="${paymentRequest.bankName}" disabled></span>
+                    </td>
+                    <td class="text-center" style="width: 16.6%;">
+                        账号 Account Number
+                    </td>
+                    <td class="text-center" colspan="2">
+                        <span th:text="${paymentRequest.accountNumber}" disabled></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="height: 34px">
+                        收款人地址 Address
+                    </td>
+                    <td class="text-center">
+                        <span th:text="${paymentRequest.address}" disabled></span>
+                    </td>
+                    <td class="text-center">
+                        开户行代码 Swift Code
+                    </td>
+                    <td class="text-center">
+                        <span th:text="${paymentRequest.swiftCode}" disabled></span>
+                    </td>
+                    <td class="text-center">
+                        开户行地址 Bank Address
+                    </td>
+                    <td class="text-center">
+                        <span th:text="${paymentRequest.bankAddress}" disabled></span>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            <table class="my-table operate-table" style="width: 100%">
+
+                <tr>
+                    <td class="text-center" style="width: 10%">
+                        <p class="text-success">审核</p>
+                    </td>
+                    <td style="width: 10%">
+                        <select class="form-control text-center noselect2" id="auditResult" name="auditResult" required="true">
+                            <option value="">请选择</option>
+                            <option value="1">同意/Approve</option>
+                            <option value="2">否决/Veto</option>
+                            <option value="3">退回重送/Return and Resubmit</option>
+                            <option value="4">保留/Reserve</option>
+                            <option value="5">加签/Countersign</option>
+                        </select>
+                    </td>
+                    <td class="text-center" style="width: 10%">
+                        <p class="text-success">备注</p>
+                    </td>
+                    <td style="width: 30%">
+                        <textarea class="form-control" type="text" id="auditRemark"></textarea>
+                    </td>
+                    <td class="text-center" style="width: 10%">
+                        <p class="text-success">加签类型:</p>
+                    </td>
+                    <td style="width: 10%">
+                        <div class="input-group" style="width: 96%">
+                            <select class="form-control text-center noselect2" id="endorsementType" name="endorsementType" required="true"
+                                    disabled="disabled">
+                                <option value="">请选择</option>
+                                <option value="1">前加签/Front Countersignature</option>
+                                <option value="2">后加签/Rear Countersignature</option>
+                                <!--                            <option value="3">平行加签</option>-->
+                            </select>
+                        </div>
+                    </td>
+                    <td class="text-center" style="width: 10%">
+                        <p class="text-success">加签人员</p>
+                    </td>
+                    <td style="width: 10%">
+                        <select id="endorsement" name="endorsement" class="form-control endorsement"
+                                data-live-search="true"  disabled="disabled" required="true">
+                            <option value="">请选择</option>
+                        </select>
+<!--                        <div class="input-group" style="width: 98%;margin-left: 1%">-->
+<!--                &lt;!&ndash; 多选    <select id="endorsement" name="endorsement" class="form-control select2-multiple" disabled="disabled" multiple>&ndash;&gt;-->
+<!--                        </div>-->
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+        <div th:if="${not #lists.isEmpty(lists)}" style="width: 1208px;height: 34px;padding-top: 7px;margin-left: 0%">
+            <div class="col-md-4">
+                <strong>审批进度</strong>
+            </div>
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-1" th:if="${not #strings.isEmpty(paymentRequest.closeFile)}">
+                <td class="text-center">
+                    <input type="hidden" id="requistion-close-file-name" th:field="*{paymentRequest.closeFile}">
+                    <button type="button" class="btn btn-primary btn-xs download-file-paymentRequest-close">
+                        线下签核截图下载
+                    </button>
+                </td>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="100"
+                 style="width: 1%;">
+                [[${paymentRequest.progressRate}]]%
+            </div>
+        </div>
+        <table class="my-table" id="backgroundE">
+            <thead>
+            <tr style="height: 34px">
+                <td class="text-center" style="width: 4%">
+                    角色<br>Role
+                </td>
+                <td class="text-center" style="width: 4%">
+                    处理人<br>Processors
+                </td>
+                <td class="text-center" style="width: 4%">
+                    处理结果<br>Processing Result
+                </td>
+                <td class="text-center" style="width: 23%">
+                    备注<br>Remarks
+                </td>
+                <td class="text-center" style="width: 4%">
+                    加签人员<br>Countersignatory
+                </td>
+                <td class="text-center" style="width: 6.5%">
+                    处理时间<br>Processing Time
+                </td>
+            </tr>
+            </thead>
+            <tr th:each="processFlow:${lists}">
+                <td class="text-center">
+                    <p th:switch="${processFlow.status}" class="text-center">
+                        <span th:case="'1'">创建者<br>Applicant</span>
+                        <span th:case="'2'">主管<br>Supervisor</span>
+                        <span th:case="'3'">经理<br>Manager</span>
+                        <span th:case="'4'">总监<br>Director</span>
+                        <span th:case="'6'">执行总监<br>Executive Director</span>
+                        <span th:case="'8'">总经理<br>CEO</span>
+                        <span th:case="'5'">会计<br>Accountant</span>
+                        <span th:case="'7'">总账<br>GL Accountant</span>
+                        <span th:case="'18'">前加签<br>Front Countersignature</span>
+                        <span th:case="'23'">后加签<br>Rear Countersignature</span>
+                    </p>
+                </td>
+                <td>
+                    <input th:value="${processFlow.createBy}" class="form-control text-center" type="text"
+                           readonly="true"/>
+                </td>
+                <td class="text-center">
+                    <p class="text-center" th:switch="${processFlow.auditResult}">
+                        <span class="text-center title_content" th:case="'0'">用户提交<br>Submit</span>
+                        <span class="text-center title_content" th:case="'1'">同意<br>Approve</span>
+                        <span class="text-center title_content" th:case="'2'">否决<br>Veto</span>
+                        <span class="text-center title_content" th:case="'3'">退回重送<br>Return and Resubmit</span>
+                        <span class="text-center title_content" th:case="'4'">保留<br>Reserve</span>
+                        <span class="text-center title_content" th:case="'5'">加签<br>Countersign</span>
+                    </p>
+                </td>
+                <td>
+                    <textarea type="text" autoHeight="true" th:text="${processFlow.remark}"
+                              class="form-control text-center show-dateil" readonly="true"
+                              style="overflow:hidden"> </textarea>
+                </td>
+                <td>
+                    <input th:if="${not #strings.isEmpty(processFlow.endorsementName)}"
+                           th:value="${processFlow.endorsementName}" class="form-control text-center" type="text"
+                           readonly="true"/>
+                    <input th:if="${#strings.isEmpty(processFlow.endorsementName) && not #strings.isEmpty(processFlow.auditResult)}" value="无"
+                           class="form-control text-center" type="text" readonly="true"/>
+                    <input th:if="${#strings.isEmpty(processFlow.endorsementName) && #strings.isEmpty(processFlow.auditResult)}"
+                           value="" class="form-control text-center" type="text" disabled="true"/>
+                </td>
+                <td>
+                    <input th:value="${#dates.format(processFlow.createTime, 'yyyy-MM-dd HH:mm')}"
+                           class="form-control text-center" type="text" readonly="true"/>
+                </td>
+            </tr>
+        </table>
+
+   <!--     <div th:if="${paymentRequest.summaryFile != null}" class="row" style="height: 34px;padding-left: 5px;padding-top: 7px">
+            <div class="col-md-4">
+                <strong>生产性支出汇总附件 Summary attachments</strong>
+            </div>
+        </div>
+        <table th:if="${paymentRequest.summaryFile != null}" class="my-table" style="width: 100%">
+            <thead>
+            <tr style="height: 34px">
+                <td class="text-center" style="width: 80%">
+                    文件名 File Name
+                </td>
+                <td class="text-center" style="width: 20%">
+                    操作 Operate
+                </td>
+            </tr>
+            </thead>
+            <tr>
+                <td class="text-center">
+                    <input id="fileName" th:value="${paymentRequest.summaryFileName}" class="form-control text-center"
+                           type="text" readonly="true"/>
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-info btn-sm"
+                            th:onclick="downloadFaReport([[${paymentRequest.summaryFile}]],[[${paymentRequest.summaryFileName}]])">download
+                    </button>
+                </td>
+            </tr>
+        </table>-->
+
+        <div th:if="${not #lists.isEmpty(listFile)}" class="row" style="height: 34px;padding-left: 5px;padding-top: 7px">
+            <div class="col-md-4">
+                <strong>附件 attachment</strong>
+            </div>
+        </div>
+        <table th:if="${not #lists.isEmpty(listFile)}" class="my-table" style="width: 100%">
+            <thead>
+            <tr style="height: 34px">
+                <td class="text-center" style="width: 80%">
+                    文件名 File Name
+                </td>
+                <td class="text-center" style="width: 20%">
+                    操作 Operate
+                </td>
+            </tr>
+            </thead>
+            <tr th:each="paymentRequestFile:${listFile}">
+                <td class="text-center">
+                    <input id="fileName" th:value="${paymentRequestFile.fileName}" class="form-control text-center"
+                           type="text" readonly="true"/>
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-info btn-sm"
+                            th:onclick="downloadFaReport([[${paymentRequestFile.filePath}]],[[${paymentRequestFile.fileName}]])">download
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+        <div class="col-sm-12">
+            <div class="col-sm-2 bottom">
+                <button type="button" class="btn btn-sm btn-warning text-left" onclick="downloadFaReport()"><i class="fa fa-cloud-download"></i>使用说明</button>
+            </div>
+            <div class="col-sm-3 bottom">
+
+            </div>
+            <div class="col-sm-5 bottom">
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-send"></i>提交</button>
+                <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关闭</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div th:include="include::footer"></div>
+<div th:include="include::bootstrap-select-js"></div>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+<script th:src="@{/ajax/libs//datapicker/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/ajax/libs/beautifyhtml/beautifyhtml.js}"></script>
+<script type="text/javascript">
+
+    var prefix = ctx + "system/paymentRequest"
+    var comprefix = ctx + "common";
+    $(function () {
+        // 去掉所有input的autocomplete, 显示指定的除外
+        $('input:not([autocomplete]),textarea:not([autocomplete]),select:not([autocomplete])').attr('autocomplete', 'off');
+    });
+
+    //下载文件
+    function downloadFaReport() {
+        window.open("/pdf/web/viewer.html?file=/system/paymentRequest/downloadFileDescription");
+    }
+
+    //选择加签时,才能选择加签类型
+    $(document).on("change", "#auditResult", function () {
+        if ($(this).val() == "5") {
+            $("#endorsementType").attr("disabled", false);
+            $("#endorsement").attr("disabled", false);
+            //获取员工
+            getUser();
+        } else {
+            $("#endorsement").val("").trigger("change");
+            $("#endorsement").attr("disabled", true);
+            $("#endorsement").selectpicker("destroy");
+            $("#endorsementType").val("");
+            // $("#afterStatus").val("");
+            $("#endorsementType").attr("disabled", true);
+            // $("#afterStatus").attr("disabled", true);
+        }
+        var status = $("#status").val();
+        if (status == 18 || status == 23 || status == 24) {
+            $("#endorsementType ").val("");
+            $("#endorsement").val("").trigger("change");
+            $("#endorsementType").attr("disabled", true);
+            $("#endorsement").attr("disabled", true);
+            $("#endorsement").selectpicker("destroy");
+        }
+    })
+
+    //选择后加签时,才能选择加签位置
+    $(document).on("change", "#endorsementType", function () {
+        $("#endorsement").val("").trigger("change")
+        if ($(this).val() == "2") {
+
+            // $("#afterStatus").attr("disabled", false);
+            $.modal.alert("选择后加签默认同意此次请求，<br>请谨慎选择！","warning");
+        } else {
+            // $("#afterStatus").val("");
+            // $("#afterStatus").attr("disabled", true);
+            if ($("#auditResult").val() != 5){
+                $("#endorsement").attr("disabled", true);
+            }
+        }
+        // debugger
+        //删除前加签后加签选项
+        var result = document.getElementById("afterStatus");
+        $("#afterStatus option[value='主管']").remove();
+        $("#afterStatus option[value='前加签']").remove();
+        $("#afterStatus option[value='后加签']").remove();
+
+    })
+
+    $(document).ready(function () {
+        //金额初始化（数据库保存的是原金额的100倍）
+        $(".amount").each(function () {
+            this.value = this.value.replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,');
+        });
+        //判断是不是加签状态,加签状态下删除加签选项
+        var status = $("#status").val();
+        if (status == 18 || status == 23 || status == 24){
+            document.getElementById("auditResult").remove(5);
+        }
+
+        if ($('.payment-type').val() == "A" && $('.receiptNumber').val().indexOf('-') < 0) {
+            $('#rmb').show();
+        } else {
+            $('#rmb').hide();
+        }
+
+        //审批进度
+        $('.progress-bar').attr("aria-valuenow", [[${paymentRequest.progressRate}]] == 0 ? 1 : [[${paymentRequest.progressRate}]]);
+        $('.progress-bar').attr("style", "width:" + ([[${paymentRequest.progressRate}]] == 0 ? 2 : [[${paymentRequest.progressRate}]]) + "%");
+    });
+
+    // 下载文件
+    function downloadFaReport(path, name) {
+        $.modal.loading("正在下载,请稍等......");
+        window.location.href = comprefix + "/download/resources?fileName=" + encodeURIComponent(name) + "&resource=" + encodeURIComponent(path);
+        setTimeout(closeLoading, 3000);
+    }
+
+    //关闭遮罩层
+    function closeLoading() {
+        $.modal.closeLoading()
+    }
+
+    $(document).ready(function(){
+        var value = $(".change-h2").val();
+      if(value == "6"){
+            $(".my-h2").html("&nbsp &nbsp &nbsp南京矽力微电子技术有限公司");
+        }else if(value == "14"){
+            $(".my-h2").html("&nbsp &nbsp &nbsp上海矽力杰微电子技术有限公司");
+        }else if(value == "20"){
+            $(".my-h2").html("&nbsp &nbsp &nbsp南京矽力微電子(香港)有限公司");
+        }
+        //是否预付款
+        var prepaid = $(".prepaid").val();
+        if (prepaid == 2) {
+            $(".my-h3").html("预付申请单 Prepayment Request Form");
+        }else if (prepaid == 1) {
+            $(".my-h3").html("请款单 Payment Request Form");
+        }
+    })
+    
+    $(function () {
+        $(".datetimepicker-yyyy-mm-dd").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    });
+    
+    $("#form-nonSaleRequisitionAdd-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    $(document).ready(function () {
+        $(".download-file-paymentRequest-close").bind("click", function () {
+            var paymentRequestId = $("#paymentRequestId").val();
+            var value = $("#requistion-close-file-name").val();
+            if (value == "") {
+                $.modal.alertWarning("还没上传");
+                return false
+            }
+            $.modal.loading("正在下载,请稍等......");
+            window.location.href = prefix + "/download/ClosePaymentRequestFile?resource=" + value + "&id=" + paymentRequestId;
+            setTimeout(closeLoading, 3000);
+        });
+    });
+
+    function getUser(){
+        var url = ctx + "system/user/allUserList";
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            url: url,//url
+            data: null,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",//预期服务器返回的数据类型
+            // timeout: 60000,
+            success: function (result) {
+                if (result.code == web_status.SUCCESS){
+                    var rows = result.rows;
+                    rows.forEach(user=> {
+                        $("#endorsement").append($("<option></option>").html(user.userName).val(user.userCode));
+                    });
+                    //刷新
+                    $("#endorsement").selectpicker("refresh");
+                }
+            }
+        });
+    }
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            // debugger
+            //发送后台对象
+            var auditResults = {};
+            auditResults.paymentRequestId = $(".paymentRequestId").val();//id
+            auditResults.result = $("#auditResult").val();//auditResult
+            auditResults.remark = $("#auditRemark").val();//auditRemark
+            auditResults.endorsementType = $("#endorsementType").val();//endorsementType
+            // var afterStatus = $("#afterStatus").val();//afterStatus
+            // switch (afterStatus) {
+            //     case '主管':
+            //         afterStatus = 2;
+            //         break;
+            //     case '经理':
+            //         afterStatus = 3;
+            //         break;
+            //     case '总监':
+            //         afterStatus = 4;
+            //         break;
+            //     case '执行总监':
+            //         afterStatus = 6;
+            //         break;
+            //     case '总经理':
+            //         afterStatus = 8;
+            //         break;
+            //     case '会计':
+            //         afterStatus = 5;
+            //         break;
+            //     case '总账':
+            //         afterStatus = 7;
+            //         break;
+            // }
+            // auditResults.afterStatus = afterStatus;
+            var endorsement = $("#endorsement").val();//endorsement
+            if ($("#endorsementType").val() != ""){
+                /*if (endorsement.length > 2) {
+                    $.modal.alertWarning("加签最多选择两个人员!");
+                    return false;
+                }*/
+                auditResults.endorsement = endorsement.toString();
+            }
+            console.log(auditResults);
+            $.ajax({
+                //几个参数需要注意一下
+                type: "POST",//方法类型
+                url: prefix + "/supervisor/auditSubmit",//url
+                data: JSON.stringify(auditResults),
+                dataType: "json",//预期服务器返回的数据类型
+                contentType: "application/json; charset=utf-8",
+                timeout: 30000,
+                beforeSend: function () {
+                    $.modal.loading("正在提交,请稍等......");
+                },
+                success: function (result) {
+                    $.operate.successTabCallback(result);
+                },
+                error: function (result) {
+                    $.modal.alertError(result.msg);
+                }
+            });
+        }
+    }
+    
+</script>
+<style>
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        line-height: 1 !important;
+    }
+
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        padding: 3px 0 3px 4px !important;
+
+    }
+
+    body{
+        overflow: scroll;
+    }
+
+    p {
+        margin: 0 0 0px;
+    }
+
+    .wrapper {
+        /*text-align: center; !*让div内部文字居中*!*/
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 1250px;
+        /*border:1px solid #000*/
+    }
+
+    .my-table {
+        margin-left: auto;
+        margin-right: auto;
+        /*margin-top: 1px;*/
+        /*margin-bottom: 1px;*/
+    }
+
+    .bottom {
+        margin-top: 10px;
+    }
+
+    .form-control {
+        /*border: 0;*/
+        webkit-box-shadow: none;
+        box-shadow: none;
+        width: 96%;
+        margin-left: 2%;
+    }
+
+    .form-control:focus, .single-line:focus {
+        border-color: #3C8DBC !important;
+    }
+
+    table td {
+        border: 1px solid #000;
+    }
+
+    .my-h2 {
+        margin-left: 60px;
+        padding-top: 10px;
+        margin-bottom: 1px;
+    }
+
+    .my-h3 {
+        margin-left: 120px;
+    }
+
+    #for-boder {
+        border: 1px solid #000
+    }
+
+    .checkbox {
+        display: inline;
+    }
+
+    .my-div {
+        margin-left: 400px;
+    }
+
+    p {
+        margin: 0 0 0px;
+    }
+
+    input[readonly], .form-control[readonly] {
+        background-color: #FFFFFF;
+    }
+
+    textarea.form-control {
+        height: 45px;
+    }
+
+    .my-table1 tr td {
+        border: none;
+    }
+
+    .c {
+        width: 16.6%;
+    }
+
+    /*去掉下拉框小箭头*/
+    select {
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+    }
+
+    input[readonly], .form-control[readonly] {
+        background-color: #FFFFFF;
+    }
+
+    input[disabled], .form-control[disabled] {
+        border: none;
+        background-color: transparent;
+    }
+
+    .select2-container--default .select2-selection--single{
+        border-radius: 0px!important;
+        background-color: #fff !important;
+    }
+    .backgroundE{
+        background-color: #EEEEEE;
+    }
+    #backgroundE tr{
+        background-color: #EEEEEE;
+    }
+    #backgroundE input{
+        background-color: #EEEEEE;
+    }
+     #backgroundE textarea{
+         background-color: #EEEEEE;
+     }
+
+    .border{
+        border: 1px solid #1a2226;
+    }
+    .not-select{
+        pointer-events: none;
+    }
+
+</style>
+</body>
+</html>

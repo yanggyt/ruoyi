@@ -76,6 +76,22 @@
            overflowToDisk="true"
            statistics="false">
     </cache>
+
+    <!-- 项目编号信息缓存 -->
+    <cache name="zt-wgcprorelease"
+           maxEntriesLocalHeap="1000"
+           eternal="true"
+           overflowToDisk="true"
+           statistics="false">
+    </cache>
+
+    <!-- 供应商信息缓存 -->
+    <cache name="sys-supplier"
+           maxEntriesLocalHeap="1000"
+           eternal="true"
+           overflowToDisk="true"
+           statistics="false">
+    </cache>
     
     <!-- 系统会话缓存 -->
     <cache name="shiro-activeSessionCache"
