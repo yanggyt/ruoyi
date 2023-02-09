@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head >
+    <th:block th:include="include :: header('日期和时间')" />
+    <th:block th:include="include :: layout-latest-css" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            收款人：<input type="text" name="payee"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;全库搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+
+    var prefix = ctx + "system/paymentRequest";
+    $(function() {
+        var options = {
+            url: prefix + "/selectPaymentInfoList",
+            removeUrl: prefix + "/remove/paymentAccount",
+            clickToSelect: true,
+            mobileResponsive: true,
+            sortName: "id",
+            sortOrder: "desc",
+            modalName: "付款账号",
+            columns: [
+                {
+                    field : 'id',
+                    title : 'Id',
+                    width: '6%',
+                    align: 'left',
+                    visible: false
+                },
+                {
+                    field : 'payee',
+                    title : '收款人',
+                    width: '25%',
+                    align: 'left',
+                },
+                {
+                    field : 'bankName',
+                    title : '开户行',
+                    width: '25%',
+                    align: 'left',
+                },
+                {
+                    field : 'accountNumber',
+                    title : '账号',
+                    width: '25%',
+                    align: 'left',
+                },
+                {
+                    field : '',
+                    title : '其他信息',
+                    width: '5%',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var val = "<strong>收款人地址：</strong>" + row.address + "<br><strong>开户行代码：</strong>" + row.swiftCode + "<br><strong>开户行地址：</strong>" + row.bankAddress
+                        return '<a href="javascript:void(0)" onclick="clickToView(\'' + escape(val) + '\')">点击查看</a>';
+                    }
+                },
+                {
+                    title: '操作',
+                    width: '15%',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<ul class="list-inline" style="margin: 3px">');
+                        actions.push('<li><a class="btn btn-info btn-xs" href="#" ' +
+                            'onclick="checked(\'' + escape(row.payee) + '\',\'' + escape(row.bankName) + '\',\'' + escape(row.accountNumber) + '\',\'' + escape(row.address) + '\',\'' + escape(row.swiftCode) + '\',\'' + escape(row.bankAddress) + '\')">' +
+                            '<i class="fa fa fa-send"></i>选中</a></li>');
+                        actions.push('<li><a class="btn btn-danger btn-xs" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a></li>');
+                        return actions.join('');
+                    }
+                }
+                ]
+        };
+        $.table.init(options);
+    });
+
+    function clickToView(value) {
+        $.modal.alertWarning(unescape(value));
+    }
+
+    function checked(payee,bankName,accountNumber,address,swiftCode,bankAddress) {
+        var find = $(window.parent.document.getElementById("form-nonSaleRequisitionAdd-add")).find(".ccc");
+        find.find("input[name=payee]").val(unescape(payee));
+        find.find("input[name=bankName]").val(unescape(bankName));
+        find.find("input[name=accountNumber]").val(unescape(accountNumber));
+        find.find("input[name=address]").val(unescape(address));
+        find.find("input[name=swiftCode]").val(unescape(swiftCode));
+        find.find("input[name=bankAddress]").val(unescape(bankAddress));
+        $.modal.close();
+    }
+
+    // 删除文件
+    function deleteFaReport(id,value,fileName) {
+        $.modal.confirm("确定删除该文件吗？", function() {
+            $.ajax({
+                //几个参数需要注意一下
+                type: "GET",//方法类型
+                url: prefix + "/remove/templateFile?id=" + id + "&fileName=" + fileName,//url
+                dataType: "json",//预期服务器返回的数据类型
+                timeout:20000,
+                success: function (result) {
+                    $.operate.successCallback(result);
+                },
+                error : function() {
+                    alert("error！");
+                }
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

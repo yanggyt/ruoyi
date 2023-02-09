@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>南京矽力微工作流审批系统</title>
+    <meta name="description" content="南京矽力微工作流审批系统">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/style.min.css" th:href="@{/css/style.min.css}" rel="stylesheet"/>
+    <link href="../static/css/login.min.css" th:href="@{/css/login.min.css}" rel="stylesheet"/>
+    <link href="../static/ruoyi/css/ry-ui.css" th:href="@{/ruoyi/css/ry-ui.css?v=4.7.5}" rel="stylesheet"/>
+    <!-- 360浏览器急速模式 -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="../static/favicon.ico" th:href="@{favicon.ico}"/>
+    <style type="text/css">label.error { position:inherit;  } #signupForm { background: rgba(220,220,220,2); } .login{ width: 41.66666667%;margin: 0 auto } </style>
+    <script>
+        if(window.top!==window.self){alert('未登录或登录超时。请重新登录');window.top.location=window.location};
+    </script>
+</head>
+<body class="signin">
+    <div class="signinpanel">
+        <div class="row">
+<!--            <div class="col-sm-7">-->
+<!--            </div>-->
+            <div class="login">
+                <ul class="list-inline login-tab" style="width: 100%">
+<!--                    <li class="login-tab-l current" style="width: 47%;text-align: center"><a href="#">扫码登录</a></li>-->
+<!--                    <li class="login-tab-r load-page" style="width: 47%;text-align: center"><a href="#">账号登录</a></li>-->
+                </ul>
+                <!--<div class="mc">
+                    <form id="signupForm1">
+                        <p class="m-t-md">矽力杰工作流审批系统</p>
+                        <br>
+                        <div id="qrcode" class="text-center qrcode"></div>
+                        <p class="text-center switch-word">打开<span style="color: #e4393c;">手机APP</span> 扫描二维码</p>
+                        <ul class="list-inline text-center">
+                            <li><i></i><em>免输入</em></li>
+                            <li><i class="coagent-second"></i><em>更快</em></li>
+                            <li><i class="coagent-last"></i><em>更安全</em></li>
+                        </ul>
+                    </form>
+                </div>-->
+                <div class="mc">
+                    <form id="signupForm" autocomplete="off">
+<!--                        <div class="col-sm-12">-->
+                            <div class="tb img">
+                                <img alt="Silergy" src="../static/logo.png" th:src="@{/logo.png}" width="100%">
+                            </div>
+                            <div class="tb" style="margin-top: 10%">
+                                <h3 style="color: #385891;">南京矽力微工作流审批系统</h3>
+                            </div>
+                            <br>
+<!--                            <h4 class="no-margins">login：</h4>-->
+                            <div>
+                                <input type="text" name="username" class="form-control uname" placeholder="用户名：员工编号"/>
+                                <input type="password" name="password" class="form-control pword" placeholder="密码："/>
+                                <div class="row m-t" th:if="${captchaEnabled==true}">
+                                    <div class="col-xs-6">
+                                        <input type="text" name="validateCode" class="form-control code" placeholder="验证码" maxlength="5" />
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <a href="javascript:void(0);" title="点击更换验证码">
+                                            <img th:src="@{/captcha/captchaImage(type=${captchaType})}" class="imgcode" width="85%"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="checkbox-custom" th:if="${isRemembered}" th:classappend="${captchaEnabled==false} ? 'm-t'">
+                                    <input type="checkbox" id="rememberme" name="rememberme"> <label for="rememberme">记住我</label>
+                                </div><a href="/system/user/forgetPassword" target="_Blank">forgetPasswor?</a>
+                                <button class="btn btn-success btn-block" id="btnSubmit" data-loading="正在验证登录，请稍候...">登录</button>
+                            </div>
+
+<!--                        </div>-->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--<div class="signup-footer">
+            <div class="pull-left">
+                Copyright © 2018-2022 Silergy All Rights Reserved. <br>
+            </div>
+        </div>-->
+    </div>
+<script th:inline="javascript"> var ctx = [[@{/}]]; var captchaType = [[${captchaType}]]; </script>
+<!--[if lte IE 8]><script>window.location.href=ctx+'html/ie.html';</script><![endif]-->
+<!-- 全局js -->
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/ajax/libs/validate/jquery.validate.min.js" th:src="@{/ajax/libs/validate/jquery.validate.min.js}"></script>
+<script src="../static/ajax/libs/layer/layer.min.js" th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script src="../static/ajax/libs/blockUI/jquery.blockUI.js" th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+<script src="../static/ruoyi/js/ry-ui.js" th:src="@{/ruoyi/js/ry-ui.js?v=4.7.5}"></script>
+<script src="../static/ruoyi/js/ry-ui.js" th:src="@{/ruoyi/js/common.js?v=4.7.5}"></script>
+<script src="../static/ruoyi/login.js" th:src="@{/ruoyi/login.js}"></script>
+<style>
+    .login-tab {
+        overflow: hidden;
+    }
+    .login-tab-l,
+    .login-tab-r {
+        float: left;
+    }
+    .login-tab a {
+        display: inline-block;
+        font-size: 18px;
+        margin-top: 18px;
+        color: #333;
+    }
+    .login-tab-l a {
+
+    }
+    .login-tab .current a,
+    .login-tab a:hover {
+        color: #e4393c;
+        font-weight: 700;
+    }
+    .qrcode{
+        margin: 8px 8px;
+        border: 1px solid #ccc;
+    }
+    .m-t-md {
+        margin-top: 20px;
+        font-size: 15px;
+        font-weight: 400;
+        color: #000;
+    }
+</style>
+</body>
+</html>

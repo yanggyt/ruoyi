@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('请购单列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>唯一编号：</label>
+                                <input type="text" name="requisitionNo"/>
+                            </li>
+                            <li>
+                                <label>老将要处理者的code：</label>
+                                <input type="text" name="oldSendToCode"/>
+                            </li>
+                            <li>
+                                <label>员工编号：</label>
+                                <input type="text" name="employeeNo"/>
+                            </li>
+                            <li>
+                                <label>新员工入职hr签字：</label>
+                                <input type="text" name="hrSign"/>
+                            </li>
+                            <li>
+                                <label>是否新员工：</label>
+                                <input type="text" name="newStaff"/>
+                            </li>
+                            <li>
+                                <label>产品线：</label>
+                                <input type="text" name="productLine"/>
+                            </li>
+                            <li>
+                                <label>产品线详细：</label>
+                                <input type="text" name="productLine1"/>
+                            </li>
+                            <li>
+                                <label>产品线其他：</label>
+                                <input type="text" name="productLineOther"/>
+                            </li>
+                            <li>
+                                <label>部门编号：</label>
+                                <input type="text" name="userDepartment"/>
+                            </li>
+                            <li>
+                                <label>公司：</label>
+                                <input type="text" name="company"/>
+                            </li>
+                            <li>
+                                <label>申购单号：</label>
+                                <input type="text" name="purchaseCode"/>
+                            </li>
+                            <li>
+                                <label>地区部门编号：</label>
+                                <input type="text" name="departmentCode"/>
+                            </li>
+                            <li>
+                                <label>地区：</label>
+                                <input type="text" name="office"/>
+                            </li>
+                            <li>
+                                <label>员工姓名：</label>
+                                <input type="text" name="userName"/>
+                            </li>
+                            <li>
+                                <label>需求日期：</label>
+                                <input type="text" class="time-input" placeholder="请选择需求日期" name="userDate"/>
+                            </li>
+                            <li>
+                                <label>申请类别：</label>
+                                <input type="text" name="typeOfApplication"/>
+                            </li>
+                            <li>
+                                <label>资产管理人员，可填可不填，如果填1，则是桌面，如果填2则是测试，需要转到相应的人员进行审核：</label>
+                                <input type="text" name="assetManagement"/>
+                            </li>
+                            <li>
+                                <label>所属类别：</label>
+                                <input type="text" name="category"/>
+                            </li>
+                            <li>
+                                <label>是否须比议价：</label>
+                                <input type="text" name="priceComparison"/>
+                            </li>
+                            <li>
+                                <label>dt1合计金额：</label>
+                                <input type="text" name="totalAmount"/>
+                            </li>
+                            <li>
+                                <label>提交时间，用来保存提交流程的时刻：</label>
+                                <input type="text" class="time-input" placeholder="请选择提交时间，用来保存提交流程的时刻" name="submitTime"/>
+                            </li>
+                            <li>
+                                <label>创建人code：</label>
+                                <input type="text" name="createByCode"/>
+                            </li>
+                            <li>
+                                <label>将要处理者的code，如果是发起人提交，里面将保存自己：</label>
+                                <input type="text" name="sendToCode"/>
+                            </li>
+                            <li>
+                                <label>已经处理完的code，存储处理历史相关人员的code：</label>
+                                <input type="text" name="handlesCode"/>
+                            </li>
+                            <li>
+                                <label>上传文件导致关闭文件名：</label>
+                                <input type="text" name="closeFileName"/>
+                            </li>
+                            <li>
+                                <label>用来前加签保存上一个的send code：</label>
+                                <input type="text" name="beforeSendToCode"/>
+                            </li>
+                            <li>
+                                <label>用来后加签保存下一个的send code：</label>
+                                <input type="text" name="afterSendToCode"/>
+                            </li>
+                            <li>
+                                <label>用来保留保存下一个的send code：</label>
+                                <input type="text" name="reserveSendToCode"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:requisition:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:requisition:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:requisition:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:requisition:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:requisition:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:requisition:remove')}]];
+        var prefix = ctx + "system/requisition";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "请购单",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '',
+                    visible: false
+                },
+                {
+                    field: 'requisitionNo',
+                    title: '唯一编号'
+                },
+                {
+                    field: 'status',
+                    title: '状态'
+                },
+                {
+                    field: 'oldStatus',
+                    title: '老状态'
+                },
+                {
+                    field: 'oldRetainStatus',
+                    title: '保留状态'
+                },
+                {
+                    field: 'oldSendToCode',
+                    title: '老将要处理者的code'
+                },
+                {
+                    field: 'employeeNo',
+                    title: '员工编号'
+                },
+                {
+                    field: 'hrSign',
+                    title: '新员工入职hr签字'
+                },
+                {
+                    field: 'newStaff',
+                    title: '是否新员工'
+                },
+                {
+                    field: 'productLine',
+                    title: '产品线'
+                },
+                {
+                    field: 'productLine1',
+                    title: '产品线详细'
+                },
+                {
+                    field: 'productLineOther',
+                    title: '产品线其他'
+                },
+                {
+                    field: 'userDepartment',
+                    title: '部门编号'
+                },
+                {
+                    field: 'company',
+                    title: '公司'
+                },
+                {
+                    field: 'purchaseCode',
+                    title: '申购单号'
+                },
+                {
+                    field: 'departmentCode',
+                    title: '地区部门编号'
+                },
+                {
+                    field: 'office',
+                    title: '地区'
+                },
+                {
+                    field: 'userName',
+                    title: '员工姓名'
+                },
+                {
+                    field: 'userDate',
+                    title: '需求日期'
+                },
+                {
+                    field: 'typeOfApplication',
+                    title: '申请类别'
+                },
+                {
+                    field: 'assetManagement',
+                    title: '资产管理人员，可填可不填，如果填1，则是桌面，如果填2则是测试，需要转到相应的人员进行审核'
+                },
+                {
+                    field: 'category',
+                    title: '所属类别'
+                },
+                {
+                    field: 'reasonForPurchase',
+                    title: '请购原因'
+                },
+                {
+                    field: 'priceComparison',
+                    title: '是否须比议价'
+                },
+                {
+                    field: 'specialReason',
+                    title: '特殊原因说明'
+                },
+                {
+                    field: 'totalAmount',
+                    title: 'dt1合计金额'
+                },
+                {
+                    field: 'submitTime',
+                    title: '提交时间，用来保存提交流程的时刻'
+                },
+                {
+                    field: 'createByCode',
+                    title: '创建人code'
+                },
+                {
+                    field: 'sendToCode',
+                    title: '将要处理者的code，如果是发起人提交，里面将保存自己'
+                },
+                {
+                    field: 'handlesCode',
+                    title: '已经处理完的code，存储处理历史相关人员的code'
+                },
+                {
+                    field: 'closeFile',
+                    title: '上传文件导致关闭文件地址'
+                },
+                {
+                    field: 'closeFileName',
+                    title: '上传文件导致关闭文件名'
+                },
+                {
+                    field: 'beforeSendToCode',
+                    title: '用来前加签保存上一个的send code'
+                },
+                {
+                    field: 'beforeStatus',
+                    title: '用来前加签保存上一个状态'
+                },
+                {
+                    field: 'afterSendToCode',
+                    title: '用来后加签保存下一个的send code'
+                },
+                {
+                    field: 'afterStatus',
+                    title: '用来后加签保存上一个状态'
+                },
+                {
+                    field: 'reserveSendToCode',
+                    title: '用来保留保存下一个的send code'
+                },
+                {
+                    field: 'reserveStatus',
+                    title: '用来保留保存上一个状态'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

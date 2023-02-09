@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+    <title>矽力杰工作流审批系统介绍</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/style.min.css" th:href="@{/css/style.min.css}" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg">
+<div class="row border-bottom white-bg dashboard-header">
+    <div class="col-sm-5">
+        <h3>南京矽力微工作流审批系统</h3>
+    </div>
+</div>
+<div class="nav">
+    <div class="nav_left">
+        <div>[[${user.userName}]]，<p style="display: inline-block" id="txt_time"></p>
+        </div>
+        <div class="new_list">
+            <ol>
+<!--                <li><a onclick="$.modal.openTab('新建工单','system/order/add',false)">新建工单<br>Create order</a></li>-->
+                <li><a onclick="$.modal.openTab('新建请款单','system/paymentRequest/add',true)">新建请款单<br>Create payment request</a></li>
+                <li><a onclick="$.modal.openTab('新建请购单','system/requisition/add',true)">新建请购单<br>Create purchase requisition</a></li>
+<!--                <li><a onclick="$.modal.openTab('新建出差报销单','system/travelExpenseReimbursement/add',false)">新建出差报销单<br>Create travel expense reimbursement</a></li>-->
+                <li><a onclick="$.modal.openTab('新建电子签呈','system/petition/add',true)">新建电子签呈<br>Create petition</a></li>
+<!--                <li><a onclick="$.modal.openTab('新建系统功能单','system/function/add',false)">新建系统功能需求单<br>Create function request</a></li>-->
+<!--                <li><a onclick="$.modal.openTab('新建用户账号权限申请单','system/itUserAuthorizationFrom/add',false)">新建用户账号权限申请单<br>Create user-authorization application</a></li>-->
+<!--                <li><a onclick="$.modal.openTab('新建原材料异常处理单MRB','system/mrpfrom/add',false)">新建原材料异常处理单MRB<br>Create MRB form</a></li>-->
+            </ol>
+        </div>
+    </div>
+    <div class="nav_right">
+        <div class="nav_right_top">
+            <div class="top_time" ID="top_time"></div>
+            <p class="top_time" style="font-weight: 700;"> 今天剩余工作统计/Today's remaining work statistics</p>
+        </div>
+        <div class="nav_right_bottom">
+            <div class="bottom_one">
+                <p>请款单<br>Payment Request</p>
+                <a onclick="paymentRequest()">[[${paymentRequest}]]</a>
+            </div>
+            <div class="bottom_one">
+                <p>请购单<br>Requisition</p>
+                <a onclick="requisition()">[[${requisition}]]</a>
+            </div>
+            <div class="bottom_one">
+                <p>电子签呈<br>Petition</p>
+                <a onclick="petition()">[[${petition}]]</a>
+            </div>
+            <div class="bottom_one">
+                <p>工单<br>Order</p>
+                <a onclick="order()">0</a>
+            </div>
+            <!--<div class="bottom_one">
+                <p>原材料异常处理单<br>MRB Form</p>
+                <a onclick="mrpfrom()">[[${mrpfrom}]]</a>
+            </div>
+            <div class="bottom_one">
+                <p>系统功能需求单<br>Function</p>
+                <a onclick="functions()">[[${function}]]</a>
+            </div>
+            <div class="bottom_one">
+                <p>用户账号权限申请单<br>UserAuthorizationForm</p>
+                <a onclick="itUserAuthorizationFrom()">[[${itUserAuthorizationFrom}]]</a>
+            </div>
+            <div class="bottom_one">
+                <p>出差报销单<br>Travel Expense Reimbursement</p>
+                <a onclick="travelExpenseReimbursement()">[[${travelExpenseReimbursement}]]</a>
+            </div>-->
+        </div>
+    </div>
+</div>
+<div class="logo">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>更新日志</h5>
+            </div>
+            <div class="ibox-content no-padding">
+                <div class="panel-body">
+                    <div class="panel-group" id="version">
+                        <!--<div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#version" href="#v474">v4.7.4</a><code class="pull-right">2022.06.01</code>
+                                </h5>
+                            </div>
+                            <div id="v474" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <ol>
+                                        <li>用户头像上传图片格式限制</li>
+                                        <li>Excel注解支持color属性设置字体颜色</li>
+                                        <li>其他细节优化</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#version" href="#v474">v4.7.4</a><code class="pull-right">2022.06.01</code>
+                                </h5>
+                            </div>
+                            <div id="v474" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <ol>
+                                        <li>用户头像上传图片格式限制</li>
+                                        <li>Excel注解支持color属性设置字体颜色</li>
+                                        <li>其他细节优化</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+<!--                                    <a data-toggle="collapse" data-parent="#version" href="#v00">v1.0.0</a><code class="pull-right">2018.03.01</code>-->
+                                </h4>
+                            </div>
+                            <div id="v00" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <ol>
+                                        <li>系统发布。</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content">
+</div>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script th:src="@{/ruoyi/js/ry-ui.js?v=4.7.5}"></script>
+<script th:src="@{/ruoyi/js/common.js?v=4.7.5}"></script>
+<script th:inline="javascript">
+    var ctx = [[@{/}]];
+    var prefix = ctx + "system";
+
+    function paymentRequest() {
+        var url = prefix + "/paymentRequest/todo";
+        $.modal.openTab("请款单-我的待办", url);
+    }
+
+    function requisition() {
+        var url = prefix + "/requisition/todo";
+        $.modal.openTab("请购单-我的待办", url);
+    }
+
+    function travelExpenseReimbursement() {
+        var url = prefix + "/travelExpenseReimbursement/todo";
+        $.modal.openTab("出差报销单-我的待办", url);
+    }
+
+    function order() {
+        var url = prefix + "/order";
+        $.modal.openTab("工单", url);
+    }
+
+    function petition() {
+        var url = prefix + "/petition/todo";
+        $.modal.openTab("电子签呈-我的待办", url);
+    }
+
+    function mrpfrom() {
+        var url = prefix + "/mrpfrom/todo";
+        $.modal.openTab("MRB-我的待办", url);
+    }
+
+    function itUserAuthorizationFrom() {
+        var url = prefix + "/itUserAuthorizationFrom/todo";
+        $.modal.openTab("用户账号权限-我的待办", url);
+    }
+
+    function functions() {
+        var url = prefix + "/function/todo";
+        $.modal.openTab("系统功能需求单-我的待办", url);
+    }
+
+    var now = new Date();
+    var hour = now.getHours();
+    if (hour < 6) {
+        $("#txt_time").text("Good morning！");
+    } else if (hour < 9) {
+        $("#txt_time").text("Good morning！");
+    } else if (hour < 12) {
+        $("#txt_time").text("Good morning！");
+    } else if (hour < 14) {
+        $("#txt_time").text("Good afternoon！");
+    } else if (hour < 17) {
+        $("#txt_time").text("Good afternoon！");
+    } else if (hour < 19) {
+        $("#txt_time").text("Good evening！");
+    } else if (hour < 22) {
+        $("#txt_time").text("Good evening！");
+    } else {
+        $("#txt_time").text("Good evening！");
+    }
+    //获取当前时间
+    var date = new Date();
+    //格式化为本地时间格式
+    var date1 = date.toLocaleString();
+    //获取div
+    var div1 = document.getElementById('top_time');
+    //将时间写入div
+    div1.innerHTML = date1;
+
+    //得到时间并写入div
+    function getDate() {
+        //获取当前时间
+        var date = new Date();
+        //格式化为本地时间格式
+        var date1 = date.toLocaleString();
+        //获取div
+        var div1 = document.getElementById('top_time');
+        //将时间写入div
+        div1.innerHTML = date1;
+    }
+
+    //使用定时器每秒向div写入当前时间
+    setInterval("getDate()", 1000);
+</script>
+<style>
+    html {
+        min-width: 1400px;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .nav {
+        font-size: 16px;
+        width: 1150px;
+        height: 580px;
+        background-color: white;
+        margin: 40px 0px 0px 40px;
+        border: 2px solid;
+        border-radius: 10px;
+        border-color: white;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .logo {
+        width: 400px;
+        background-color: white;
+        border: 2px solid;
+        border-radius: 10px;
+        border-color: white;
+        display: inline-block;
+        vertical-align: top;
+        margin: 40px 0px 0px 40px;
+    }
+
+    .nav_left {
+        width: 25%;
+        height: 80%;
+        display: inline-block;
+        margin: 30px 10px 10px 30px;
+        vertical-align: top;
+        font-weight: 700;
+    }
+
+    .nav_right {
+        width: 70%;
+        height: 80%;
+        display: inline-block;
+        margin: 20px 10px 10px 0px;
+    }
+
+    .nav_right_top {
+        width: 100%;
+        height: 30%;
+
+    }
+
+    .nav_right_bottom {
+        width: 100%;
+        height: 65%;
+        border-left: 1px solid #f3f3f4;
+    }
+
+    .top_time {
+        margin-top: 10px;
+        margin-left: 40px;
+        display: inline-block;
+    }
+
+    .bottom_one {
+        width: 22%;
+        height: 55%;
+        display: inline-block;
+        margin-left: 20px;
+        text-align: center;
+    }
+
+    .bottom_one > p {
+        margin-top: 10px;
+        font-size: 18px;
+    }
+
+    .bottom_one > a {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 56px;
+    }
+
+    .new_list > ol > li {
+        margin-top: 10px;
+    }
+
+
+</style>
+</body>
+</html>

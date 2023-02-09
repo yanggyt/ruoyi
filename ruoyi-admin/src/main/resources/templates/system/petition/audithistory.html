@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head>
+	<th:block th:include="include :: header('')" />
+</head>
+<body class="gray-bg">
+    
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<input type="hidden" id="orderId" name="orderId" th:value="${id}">
+					<div class="select-list">
+						<ul>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var prefix = ctx + "system/petition";
+
+        $(function() {
+            var options = {
+                url: prefix + "/auditHistoryList",
+				queryParams:queryParams,
+                modalName: "流程流转中间",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'createBy',
+					title : '处理人',
+				},
+                {
+					field : 'status',
+					title : '处理结果',
+                    formatter:function (value,row,index) {
+                        return statusTools2(row)
+                    }
+                },
+				{
+					field : 'auditResult', 
+					title : '状态',
+					formatter:function (value,row,index) {
+						return statusTools(row)
+                    }
+				},
+                 {
+                     field : 'remark',
+                     title : '审核意见',
+                 },
+                {
+					field : 'createTime',
+					title : '处理时间',
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function queryParams(params) {
+            var search = $.table.queryParams(params);
+            search.orderId = $("#orderId").val();
+            return search;
+        }
+
+        function statusTools(row) {
+        	debugger
+			if (row.auditResult==1) {
+			    return '保存未提交'
+			}else if(row.auditResult==2){
+                return '待主管审核'
+			}else if(row.auditResult==3){
+                return '待印鉴保管人审核'
+            } else if(row.auditResult==4){
+                return '待财务总账审核'
+            }else if(row.auditResult==5){
+                return '待财务经理审核'
+            }else if(row.auditResult==6){
+                return '待核准人审核'
+            }else if(row.auditResult==7){
+                return '撤回'
+            }else if(row.auditResult==8){
+                return '完成'
+            }else if(row.auditResult==9){
+                return '待法务审核'
+            }else if(row.auditResult==0){
+                return '加签状态'
+            }else if(row.auditResult==11){
+                return '待新增核准人审核'
+            }else if(row.auditResult==12){
+                return '待核准人审核'
+            } else if(row.auditResult==13){
+				return '待新增会审人审核'
+			}else if(row.auditResult==14){
+				return '否决'
+			}
+        }
+        function statusTools2(row) {
+            if (row.status==1) {
+                return '同意'
+            }else if (row.status==2) {
+                return '撤回'
+			}else if (row.status==3){
+				return '待加签'
+			}else if (row.status==4) {
+				return '否决'
+			}
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head >
+    <th:block th:include="include :: header('')"/>
+    <th:block th:include="include :: layout-latest-css" />
+</head>
+<link th:href="@{/ajax/libs/jasny/jasny-bootstrap.min.css?v=3.1.3}" rel="stylesheet"/>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 btn btn-primary fileinput-exists">
+            <div class="text-center" style="margin-top: 3px">
+                <b>内容预览如下表格</b>
+            </div>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <div id="file" class="fileinput fileinput-new" data-provides="fileinput">
+                <span class="btn btn-white btn-file">
+                    <span class="fileinput-new fileinput-no">
+                        <i class="fa fa-upload"></i> 选择文件
+                    </span>
+                    <span class="fileinput-exists">更改</span>
+<!--                    <input id="files" type="file" name="...">-->
+                </span>
+                <span class="fileinput-filename"></span>
+            </div>
+            <a href="#" class="close fileinput-exists" hidden data-dismiss="fileinput" style="float: none">&times;</a>
+            <a onclick="importTemplate()" class="btn btn-default btn-xs fileinput-no">
+                <i class="fa fa-file-excel-o"></i> 下载模板
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <p class="fileinput-exists" style="color: red;display: inline-block" id="ps">PS：标红位置代表数据有误，请核实后重新上传文件</p>
+        </div>
+        <input type="hidden" id="flag">
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:src="@{/ajax/libs/jasny/jasny-bootstrap.min.js?v=3.1.3}"></script>
+<script th:inline="javascript">
+
+    var prefix = ctx + "system/paymentRequest"
+
+    function query(data) {
+        var options = {
+            data, data,
+            importTemplateUrl: prefix + "/importSummaryTemplate",
+            pageSize: 50,
+            showSearch: false,
+            showRefresh: false,
+            showToggle: false,
+            // showColumns: false,
+            sidePagination: "client",
+            columns: [{
+                field: 'id',
+                title: '编号',
+                align: 'center',
+                sortable: true,
+            },
+                {
+                    field: 'userCode',
+                    title: '请款人工号',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (!row.userCodeFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'paymentDate',
+                    title: '付款日期',
+                    align: 'center',
+                    width: '9%',
+                    formatter: function (value, row, index) {
+                        if (!row.paymentDateFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'company',
+                    title: '公司别',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (!row.companyFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + company(value) + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return company(value);
+                    }
+                },
+                {
+                    field: 'type',
+                    title: '请款种类',
+                    align: 'center',
+                    /*formatter: function(value, row, index) {
+                        return $.table.tooltip(value,5);
+                    }*/
+                },
+                {
+                    field: 'supplierCode',
+                    title: '供应商编号',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (!row.supplierCodeFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'supplierName',
+                    title: '供应商名称',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (!row.supplierNameFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'currency',
+                    title: '请款币别',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (!row.currencyFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + currency(value) + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return currency(value);
+                    }
+                },
+                {
+                    field: 'amount',
+                    title: '请款金额',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (!row.amountFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'quantity',
+                    title: '请款数量',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (!row.quantityFlag){
+                            var actions = [];
+                            if ($.common.isEmpty(value)){
+                                actions.push('<span class="error">' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + '</span>');
+                            }else {
+                                actions.push('<span class="error">' + value + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'deliveryTimeRange',
+                    title: '进货期间',
+                    align: 'center',
+                },
+                {
+                    field: 'remark',
+                    title: '备注',
+                    align: 'center',
+                }]
+        };
+        $.table.init(options);
+    }
+
+    function company(val) {
+        if (val == 1) {
+            return "Corp";
+        } else if (val == 5) {
+            return "HZ";
+        } else if (val == 6) {
+            return "NJ";
+        } else if (val == 20) {
+            return "NJHK";
+        } else if (val == 14) {
+            return "NJSH";
+        } else if (val == 7) {
+            return "XA";
+        } else if (val == 17) {
+            return "CD";
+        } else if (val == 23) {
+            return "HF";
+        } else if (val == 19) {
+            return "SH";
+        } else if (val == 12) {
+            return "TW";
+        } else {
+            return val;
+        }
+    }
+
+    function currency(val) {
+        if (val == 1) {
+            return "RMB";
+        } else if (val == 2) {
+            return "USD";
+        } else if (val == 3) {
+            return "TWD";
+        } else if (val == 4) {
+            return "HKD";
+        } else if (val == 5) {
+            return "KRW";
+        } else if (val == 6) {
+            return "MOP";
+        } else {
+            return val;
+        }
+    }
+
+    var $parent = $(window.parent.document.getElementById("form-nonSaleRequisitionAdd-add"));
+
+    var data;
+    var totalAmount;
+
+    function submitHandler() {
+        if ($('#flag').val() == 'false'){
+            $.modal.alertError("数据有误，请核实后再试。");
+            return false;
+        }
+        $.modal.close();
+        var operate = $parent.find(".operate-tr1");
+        for (let i = 1; i < operate.length; i++) {
+            operate.parent().parent()[i].remove();
+        }
+        // var table = $parent.find(".operate-table1");
+        var table = $parent.find("#addColumn");
+        for (let i = 1; i < data.length; i++) {
+            var tr = table.find("#addColumn1").clone();
+            $(tr).find("input").val('');//将元素克隆来的保存的值清空
+            $(tr).find("textarea").text('');//将元素克隆来的保存的值清空
+            $(tr).find("select").val('');//将元素克隆来的保存的值清空
+            table.append(tr);
+        }
+        $parent.find(".material1").each(function (i, li) {
+            $(li).find("textarea[id='content']").text(data[i].content);
+            $(li).find("input[id='quantity']").val(data[i].quantity);
+            $(li).find("input[id='unitPrice']").val(data[i].unitPrice / 100);
+            $(li).find("input[id='totalAmount']").val(data[i].totalAmount / 100);
+            $(li).find("select[id='currency']").val(data[i].currency);
+            $(li).find("textarea[id='remark']").text(data[i].remark);
+        })
+        $parent.find("#paymentAmount").val(totalAmount);
+    }
+
+    function cancel() {
+        $parent.find("#summaryFile").val("");
+    }
+
+    //调用文件框
+    $('#file').on("click", function () {
+        $parent.find("#summaryFile").click();
+    });
+
+    //取消选择文件
+    $(".close").on("click", function () {
+        closeFile();
+    });
+
+    function closeFile(){
+        $parent.find("#summaryFile").val("");
+        $parent.find("#summaryFile").change();
+    }
+
+    $parent.find("#summaryFile").on('change', function () {
+        // 处理自己的业务
+        var file = this.files[0];
+        if ($.common.isNotEmpty(this) && file != undefined) {
+            $('.fileinput-exists').show();
+            $('.fileinput-no').hide();
+            $('.fileinput-filename').text(file.name)
+            analyseFile(file);
+        } else {
+            $('.fileinput-no').show();
+            $('.fileinput-exists').hide();
+            $('.fileinput-filename').text("");
+            $.table.destroy()
+            query();
+        }
+    })
+
+    function analyseFile(file) {
+        var formData = new FormData;
+        formData.append("file", file);
+        formData.append("paymentDate", $parent.find('.paymentDate').val());
+        $.ajax({
+            data: formData,
+            url: prefix + "/summaryTable",
+            type: 'post',
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    $('#flag').val(result.flag);
+                    if (result.flag != false){
+                        $('#ps').hide();
+                    }else {
+                        $parent.find("#summaryFile").val("");
+                    }
+                    data = result.dt1s;
+                    totalAmount = result.totalAmount;
+                    $.table.destroy();
+                    query(result.data);
+                } else {
+                    $.modal.alertError(result.msg);
+                    closeFile();
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $parent.find("#summaryFile").change();
+    })
+
+    //下载模版
+    function importTemplate(){
+        $.get(prefix + "/importSummaryTemplate", function (result) {
+            debugger
+            if (result.code == web_status.SUCCESS) {
+                window.location.href = prefix + "/downloadFile?fileName=" + result.fileName + "&filePath=" + result.filePath;
+            } else {
+                $.modal.alertError(result.msg);
+            }
+        });
+    }
+</script>
+<style>
+    .error{
+        width: 100%;
+        height: 100%;
+        display: inline-table;
+        background-color: #ec4758;
+        border-color: #ec4758;
+        color: #FFFFFF;
+    }
+</style>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.petition.PetitionSignMapper">
+    
+    <resultMap type="PetitionSign" id="PetitionSignResult">
+        <result property="id"    column="id"    />
+        <result property="signType"    column="sign_type"    />
+        <result property="addName"    column="add_name"    />
+        <result property="sid"    column="sid"    />
+        <result property="result"    column="result"    />
+        <result property="remark"    column="remark"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="tosend"    column="tosend"    />
+        <result property="petitionId"    column="petition_id"    />
+        <result property="fromsend"    column="fromsend"    />
+        <result property="oldStatus"    column="old_status"    />
+        <result property="newStatus"    column="new_status"    />
+        <result property="lastAdd"    column="last_add"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        
+    </resultMap>
+	
+	<sql id="selectPetitionSignVo">
+        select id, sign_type, add_name, sid, result, remark, create_by, create_time, tosend, petition_id, fromsend, old_status, new_status, last_add, add_time, del_flag from sys_petition_sign
+    </sql>
+	
+    <select id="selectPetitionSignList" parameterType="PetitionSign" resultMap="PetitionSignResult">
+        <include refid="selectPetitionSignVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="signType != null  and signType != '' "> and sign_type = #{signType}</if>
+            <if test="addName != null  and addName != '' "> and add_name = #{addName}</if>
+             <if test="sid != null  and sid != '' "> and sid = #{sid}</if>
+             <if test="result != null "> and result = #{result}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="tosend != null  and tosend != '' "> and tosend = #{tosend}</if>
+             <if test="petitionId != null "> and petition_id = #{petitionId}</if>
+             <if test="fromsend != null  and fromsend != '' "> and fromsend = #{fromsend}</if>
+            <if test="oldStatus != null  and oldStatus != '' "> and old_status = #{oldStatus}</if>
+            <if test="newStatus != null  and newStatus != '' "> and new_status = #{newStatus}</if>
+            <if test="lastAdd != null  and lastAdd != '' "> and last_add = #{lastAdd}</if>
+            <if test="addTime != null  and addTime != '' "> and add_time = #{addTime}</if>
+            <if test="delFlag != null  and delFlag != '' "> and del_flag = #{delFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectPetitionSignById" parameterType="Long" resultMap="PetitionSignResult">
+        <include refid="selectPetitionSignVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPetitionSign" parameterType="PetitionSign" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_petition_sign
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="signType != null  and signType != '' ">sign_type,</if>
+            <if test="addName != null  and addName != ''  ">add_name,</if>
+			<if test="sid != null  and sid != ''  ">sid,</if>
+			<if test="result != null  ">result,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="tosend != null  and tosend != ''  ">tosend,</if>
+			<if test="petitionId != null  ">petition_id,</if>
+			<if test="fromsend != null  and fromsend != ''  ">fromsend,</if>
+            <if test="oldStatus != null  and oldStatus != '' ">old_status,</if>
+            <if test="newStatus != null  and newStatus != '' ">new_status,</if>
+            <if test="lastAdd != null  and lastAdd != '' ">last_add,</if>
+            <if test="addTime != null  and addTime != ''  ">add_time,</if>
+            <if test="delFlag != null  and delFlag != '' ">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="signType != null  and signType != '' ">#{signType},</if>
+            <if test="addName != null  and addName != ''  ">#{addName},</if>
+			<if test="sid != null  and sid != ''  ">#{sid},</if>
+			<if test="result != null  ">#{result},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="tosend != null  and tosend != ''  ">#{tosend},</if>
+			<if test="petitionId != null  ">#{petitionId},</if>
+			<if test="fromsend != null  and fromsend != ''  ">#{fromsend},</if>
+            <if test="oldStatus != null  and oldStatus != '' ">#{oldStatus},</if>
+            <if test="newStatus != null  and newStatus != '' ">#{newStatus},</if>
+            <if test="lastAdd != null  and lastAdd != '' ">#{lastAdd},</if>
+            <if test="addTime != null  and addTime != ''  ">#{addTime},</if>
+            <if test="delFlag != null  and delFlag != '' ">#{delFlag},</if>
+        </trim>
+    </insert>
+	 
+    <update id="updatePetitionSign" parameterType="PetitionSign">
+        update sys_petition_sign
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="signType != null  and signType != '' ">sign_type = #{signType},</if>
+            <if test="addName != null  and addName != ''  ">add_name = #{addName},</if>
+            <if test="sid != null  and sid != ''  ">sid = #{sid},</if>
+            <if test="result != null  ">result = #{result},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="tosend != null  and tosend != ''  ">tosend = #{tosend},</if>
+            <if test="petitionId != null  ">petition_id = #{petitionId},</if>
+            <if test="fromsend != null  and fromsend != ''  ">fromsend = #{fromsend},</if>
+            <if test="oldStatus != null  and oldStatus != '' ">old_status = #{oldStatus},</if>
+            <if test="newStatus != null  and newStatus != '' ">new_status = #{newStatus},</if>
+            <if test="lastAdd != null  and lastAdd != '' ">last_add = #{lastAdd},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+            <if test="delFlag != null  and delFlag != '' ">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deletePetitionSignById" parameterType="Long">
+        delete from sys_petition_sign where id = #{id}
+    </delete>
+	
+    <delete id="deletePetitionSignByIds" parameterType="String">
+        delete from sys_petition_sign where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updatePeSign" parameterType="PetitionSign">
+        update sys_petition_sign set result = null,
+        remark = null,
+        audit_date = null
+        where id = #{id}
+    </update>
+</mapper>

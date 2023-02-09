@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.requisition.RequisitionMapper">
+    
+    <resultMap type="Requisition" id="RequisitionResult">
+        <result property="id"    column="id"    />
+        <result property="requisitionNo"    column="requisition_no"    />
+        <result property="status"    column="status"    />
+        <result property="employeeNo"    column="employee_no"    />
+        <result property="hrSign"    column="hr_sign"    />
+        <result property="newStaff"    column="new_staff"    />
+        <result property="productLine"    column="product_line"    />
+        <result property="productLine1"    column="product_line1"    />
+        <result property="productLineOther"    column="product_line_other"    />
+        <result property="userDepartment"    column="user_department"    />
+        <result property="company"    column="company"    />
+        <result property="purchaseCode"    column="purchase_code"    />
+        <result property="departmentCode"    column="department_code"    />
+        <result property="office"    column="office"    />
+        <result property="userName"    column="user_name"    />
+        <result property="userDate"    column="user_date"    />
+        <result property="typeOfApplication"    column="type_of_application"    />
+        <result property="assetManagement"    column="asset_management"    />
+        <result property="category"    column="category"    />
+        <result property="reasonForPurchase"    column="reason_for_purchase"    />
+        <result property="priceComparison"    column="price_comparison"    />
+        <result property="specialReason"    column="special_reason"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="createByCode"    column="create_by_code"    />
+        <result property="sendToCode"    column="send_to_code"    />
+        <result property="sendToName"    column="send_to_name"    />
+        <result property="handlesCode"    column="handles_code"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="closeFile"    column="close_file"    />
+        <result property="closeFileName"    column="close_file_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="progressRate"    column="progress_rate"    />
+    </resultMap>
+
+    <resultMap id="RequisitionRequisitionResult" type="Requisition" extends="RequisitionResult">
+        <collection property="requisitionDt1List" notNullColumn="sub_id" javaType="java.util.List" resultMap="RequisitionDt1Result" />
+        <collection property="requisitionDt2List" notNullColumn="son_id" javaType="java.util.List" resultMap="RequisitionDt2Result" />
+    </resultMap>
+
+    <resultMap type="RequisitionDt1" id="RequisitionDt1Result">
+        <result property="id"    column="sub_id"    />
+        <result property="requisitionId"    column="sub_requisition_id"    />
+        <result property="projectCode"    column="sub_project_code"    />
+        <result property="projectName"    column="sub_project_name"    />
+        <result property="specifications"    column="sub_specifications"    />
+        <result property="quantity"    column="sub_quantity"    />
+        <result property="unitPrice"    column="sub_unit_price"    />
+        <result property="amount"    column="sub_amount"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateTime"    column="sub_update_time"    />
+    </resultMap>
+
+    <resultMap type="RequisitionDt2" id="RequisitionDt2Result">
+        <result property="id"    column="id"    />
+        <result property="requisitionId"    column="son_requisition_id"    />
+        <result property="suppliers"    column="son_suppliers"    />
+        <result property="suppliersName"    column="son_suppliers_name"    />
+        <result property="suppliersCode"    column="son_suppliers_code"    />
+        <result property="taxRate"    column="son_tax_rate"    />
+        <result property="coin"    column="son_coin"    />
+        <result property="totalAmount"    column="son_total_amount"    />
+        <result property="untaxedUnitPrice"    column="son_untaxed_unit_price"    />
+        <result property="remark"    column="son_remark"    />
+        <result property="createTime"    column="son_create_time"    />
+        <result property="updateTime"    column="son_update_time"    />
+    </resultMap>
+
+    <sql id="selectRequisitionVo">
+        select id, requisition_no, status, employee_no, hr_sign, new_staff, product_line, product_line1, product_line_other, user_department, company, purchase_code, department_code, office, user_name, user_date, type_of_application, asset_management, category, reason_for_purchase, price_comparison, special_reason, total_amount, submit_time, create_by_code, send_to_code, send_to_name, handles_code, create_by, create_time, update_time, close_file, close_file_name, del_flag, progress_rate from sys_requisition
+    </sql>
+
+    <sql id="selectRequisitionDt1Vo">
+        select id, requisition_id, project_code, project_name, specifications, quantity, unit_price, amount, create_time, update_time from sys_requisition_dt1
+    </sql>
+
+    <sql id="selectRequisitionDt2Vo">
+        select id, requisition_id, suppliers, suppliers_name, suppliers_code, tax_rate, coin, total_amount, untaxed_unit_price, remark, create_time, update_time from sys_requisition_dt2
+    </sql>
+
+    <select id="selectRequisitionList" parameterType="Requisition" resultMap="RequisitionResult">
+        <include refid="selectRequisitionVo"/>
+        <where>  
+            <if test="requisitionNo != null  and requisitionNo != ''"> and requisition_no = #{requisitionNo}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="employeeNo != null  and employeeNo != ''"> and employee_no = #{employeeNo}</if>
+            <if test="hrSign != null  and hrSign != ''"> and hr_sign = #{hrSign}</if>
+            <if test="newStaff != null "> and new_staff = #{newStaff}</if>
+            <if test="productLine != null  and productLine != ''"> and product_line = #{productLine}</if>
+            <if test="productLine1 != null  and productLine1 != ''"> and product_line1 = #{productLine1}</if>
+            <if test="productLineOther != null  and productLineOther != ''"> and product_line_other = #{productLineOther}</if>
+            <if test="userDepartment != null  and userDepartment != ''"> and user_department = #{userDepartment}</if>
+            <if test="company != null "> and company = #{company}</if>
+            <if test="purchaseCode != null  and purchaseCode != ''"> and purchase_code = #{purchaseCode}</if>
+            <if test="departmentCode != null  and departmentCode != ''"> and department_code = #{departmentCode}</if>
+            <if test="office != null  and office != ''"> and office = #{office}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="userDate != null "> and user_date = #{userDate}</if>
+            <if test="typeOfApplication != null "> and type_of_application = #{typeOfApplication}</if>
+            <if test="assetManagement != null "> and asset_management = #{assetManagement}</if>
+            <if test="category != null "> and category = #{category}</if>
+            <if test="reasonForPurchase != null  and reasonForPurchase != ''"> and reason_for_purchase = #{reasonForPurchase}</if>
+            <if test="priceComparison != null "> and price_comparison = #{priceComparison}</if>
+            <if test="specialReason != null  and specialReason != ''"> and special_reason = #{specialReason}</if>
+            <if test="totalAmount != null  and totalAmount != ''"> and total_amount = #{totalAmount}</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="createByCode != null  and createByCode != ''"> and create_by_code = #{createByCode}</if>
+            <if test="sendToCode != null  and sendToCode != ''"> and send_to_code = #{sendToCode}</if>
+            <if test="sendToName != null  and sendToName != ''"> and send_to_name = #{sendToName}</if>
+            <if test="handlesCode != null  and handlesCode != ''"> and handles_code like concat('%', #{handlesCode}, '%')</if>
+            <if test="closeFile != null  and closeFile != ''"> and close_file = #{closeFile}</if>
+            <if test="closeFileName != null  and closeFileName != ''"> and close_file_name like concat('%', #{closeFileName}, '%')</if>
+            <if test="delFlag != null "> and del_flag = #{delFlag}</if>
+            <if test="progressRate != null "> and progress_rate = #{progressRate}</if>
+            and del_flag != 1
+        </where>
+    </select>
+    
+    <select id="selectRequisitionById" parameterType="Long" resultMap="RequisitionRequisitionResult">
+        select a.id, a.requisition_no, a.status, a.employee_no, a.hr_sign, a.new_staff, a.product_line, a.product_line1,
+        a.product_line_other, a.user_department, a.company, a.purchase_code, a.department_code, a.office, a.user_name,
+        a.user_date, a.type_of_application, a.asset_management, a.category, a.reason_for_purchase, a.price_comparison,
+        a.special_reason, a.total_amount, a.submit_time, a.create_by_code, a.send_to_code, a.send_to_name, a.handles_code,
+        a.create_by, a.create_time, a.update_time, a.close_file, a.close_file_name, a.del_flag, a.progress_rate,
+        b.id as sub_id, b.requisition_id as sub_requisition_id, b.project_code as sub_project_code,
+        b.project_name as sub_project_name, b.specifications as sub_specifications, b.quantity as sub_quantity,
+        b.unit_price as sub_unit_price, b.amount as sub_amount, b.create_time as sub_create_time, b.update_time as sub_update_time,
+        c.id as son_id, c.requisition_id as son_requisition_id, c.suppliers as son_suppliers, c.suppliers_name as son_suppliers_name,
+        c.suppliers_code as son_suppliers_code, c.tax_rate as son_tax_rate, c.coin as son_coin, c.total_amount as son_total_amount,
+        c.untaxed_unit_price as son_untaxed_unit_price, c.remark as son_remark,
+        c.create_time as son_create_time, c.update_time as son_update_time
+        from sys_requisition a
+        left join sys_requisition_dt1 b on b.requisition_id = a.id
+        left join sys_requisition_dt2 c on c.requisition_id = a.id
+        where a.id = #{id}
+    </select>
+
+    <select id="selectRequisitionListByStatus" parameterType="Requisition" resultMap="RequisitionResult">
+        <include refid="selectRequisitionVo"/>
+        <where>
+            status in (1,7)
+            <if test="requisitionNo != null  and requisitionNo != ''"> and requisition_no = #{requisitionNo}</if>
+            <if test="employeeNo != null  and employeeNo != ''"> and employee_no = #{employeeNo}</if>
+            <if test="hrSign != null  and hrSign != ''"> and hr_sign = #{hrSign}</if>
+            <if test="newStaff != null "> and new_staff = #{newStaff}</if>
+            <if test="productLine != null  and productLine != ''"> and product_line = #{productLine}</if>
+            <if test="productLine1 != null  and productLine1 != ''"> and product_line1 = #{productLine1}</if>
+            <if test="productLineOther != null  and productLineOther != ''"> and product_line_other = #{productLineOther}</if>
+            <if test="userDepartment != null  and userDepartment != ''"> and user_department = #{userDepartment}</if>
+            <if test="company != null "> and company = #{company}</if>
+            <if test="purchaseCode != null  and purchaseCode != ''"> and purchase_code = #{purchaseCode}</if>
+            <if test="departmentCode != null  and departmentCode != ''"> and department_code = #{departmentCode}</if>
+            <if test="office != null  and office != ''"> and office = #{office}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="userDate != null "> and user_date = #{userDate}</if>
+            <if test="typeOfApplication != null "> and type_of_application = #{typeOfApplication}</if>
+            <if test="assetManagement != null "> and asset_management = #{assetManagement}</if>
+            <if test="category != null "> and category = #{category}</if>
+            <if test="reasonForPurchase != null  and reasonForPurchase != ''"> and reason_for_purchase = #{reasonForPurchase}</if>
+            <if test="priceComparison != null "> and price_comparison = #{priceComparison}</if>
+            <if test="specialReason != null  and specialReason != ''"> and special_reason = #{specialReason}</if>
+            <if test="totalAmount != null  and totalAmount != ''"> and total_amount = #{totalAmount}</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="createByCode != null  and createByCode != ''"> and create_by_code = #{createByCode}</if>
+            <if test="sendToCode != null  and sendToCode != ''"> and send_to_code = #{sendToCode}</if>
+            <if test="handlesCode != null  and handlesCode != ''"> and handles_code = #{handlesCode}</if>
+            <if test="closeFile != null  and closeFile != ''"> and close_file = #{closeFile}</if>
+            <if test="closeFileName != null  and closeFileName != ''"> and close_file_name like concat('%', #{closeFileName}, '%')</if>
+            <if test="progressRate != null "> and progress_rate = #{progressRate}</if>
+            <if test="delFlag != null "> and del_flag = #{delFlag}</if>
+             and del_flag != 1
+        </where>
+    </select>
+
+    <select id="selectRequisitionDt1List" parameterType="RequisitionDt1" resultMap="RequisitionDt1Result">
+        <include refid="selectRequisitionDt1Vo"/>
+        <where>
+            <if test="requisitionId != null "> and requisition_id = #{requisitionId}</if>
+            <if test="projectCode != null  and projectCode != ''"> and project_code = #{projectCode}</if>
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="specifications != null  and specifications != ''"> and specifications = #{specifications}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="unitPrice != null  and unitPrice != ''"> and unit_price = #{unitPrice}</if>
+            <if test="amount != null  and amount != ''"> and amount = #{amount}</if>
+        </where>
+    </select>
+
+    <select id="selectRequisitionDt2List" parameterType="RequisitionDt2" resultMap="RequisitionDt2Result">
+        <include refid="selectRequisitionDt2Vo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="requisitionId != null "> and requisition_id = #{requisitionId}</if>
+            <if test="suppliers != null "> and suppliers = #{suppliers}</if>
+            <if test="suppliersName != null  and suppliersName != '' "> and suppliers_name = #{suppliersName}</if>
+            <if test="suppliersCode != null  and suppliersCode != '' "> and suppliers_code = #{suppliersCode}</if>
+            <if test="coin != null "> and coin = #{coin}</if>
+            <if test="untaxedUnitPrice != null "> and untaxed_unit_price = #{untaxedUnitPrice}</if>
+            <if test="taxRate != null "> and tax_rate = #{taxRate}</if>
+            <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+            <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+        
+    <insert id="insertRequisition" parameterType="Requisition" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_requisition
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="requisitionNo != null">requisition_no,</if>
+            <if test="status != null">status,</if>
+            <if test="employeeNo != null">employee_no,</if>
+            <if test="hrSign != null">hr_sign,</if>
+            <if test="newStaff != null">new_staff,</if>
+            <if test="productLine != null">product_line,</if>
+            <if test="productLine1 != null">product_line1,</if>
+            <if test="productLineOther != null">product_line_other,</if>
+            <if test="userDepartment != null">user_department,</if>
+            <if test="company != null">company,</if>
+            <if test="purchaseCode != null">purchase_code,</if>
+            <if test="departmentCode != null">department_code,</if>
+            <if test="office != null">office,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="userDate != null">user_date,</if>
+            <if test="typeOfApplication != null">type_of_application,</if>
+            <if test="assetManagement != null">asset_management,</if>
+            <if test="category != null">category,</if>
+            <if test="reasonForPurchase != null">reason_for_purchase,</if>
+            <if test="priceComparison != null">price_comparison,</if>
+            <if test="specialReason != null">special_reason,</if>
+            <if test="totalAmount != null">total_amount,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="createByCode != null">create_by_code,</if>
+            <if test="sendToCode != null">send_to_code,</if>
+            <if test="sendToName != null">send_to_name,</if>
+            <if test="handlesCode != null">handles_code,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="closeFile != null">close_file,</if>
+            <if test="closeFileName != null">close_file_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="progressRate != null">progress_rate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="requisitionNo != null">#{requisitionNo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="employeeNo != null">#{employeeNo},</if>
+            <if test="hrSign != null">#{hrSign},</if>
+            <if test="newStaff != null">#{newStaff},</if>
+            <if test="productLine != null">#{productLine},</if>
+            <if test="productLine1 != null">#{productLine1},</if>
+            <if test="productLineOther != null">#{productLineOther},</if>
+            <if test="userDepartment != null">#{userDepartment},</if>
+            <if test="company != null">#{company},</if>
+            <if test="purchaseCode != null">#{purchaseCode},</if>
+            <if test="departmentCode != null">#{departmentCode},</if>
+            <if test="office != null">#{office},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="userDate != null">#{userDate},</if>
+            <if test="typeOfApplication != null">#{typeOfApplication},</if>
+            <if test="assetManagement != null">#{assetManagement},</if>
+            <if test="category != null">#{category},</if>
+            <if test="reasonForPurchase != null">#{reasonForPurchase},</if>
+            <if test="priceComparison != null">#{priceComparison},</if>
+            <if test="specialReason != null">#{specialReason},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="createByCode != null">#{createByCode},</if>
+            <if test="sendToCode != null">#{sendToCode},</if>
+            <if test="sendToName != null">#{sendToName},</if>
+            <if test="handlesCode != null">#{handlesCode},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="closeFile != null">#{closeFile},</if>
+            <if test="closeFileName != null">#{closeFileName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="progressRate != null">#{progressRate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRequisition" parameterType="Requisition" useGeneratedKeys="true" keyProperty="id">
+        update sys_requisition
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="requisitionNo != null">requisition_no = #{requisitionNo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="employeeNo != null">employee_no = #{employeeNo},</if>
+            <if test="hrSign != null">hr_sign = #{hrSign},</if>
+            <if test="newStaff != null">new_staff = #{newStaff},</if>
+            <if test="productLine != null">product_line = #{productLine},</if>
+            <if test="productLine1 != null">product_line1 = #{productLine1},</if>
+            <if test="productLineOther != null">product_line_other = #{productLineOther},</if>
+            <if test="userDepartment != null">user_department = #{userDepartment},</if>
+            <if test="company != null">company = #{company},</if>
+            <if test="purchaseCode != null">purchase_code = #{purchaseCode},</if>
+            <if test="departmentCode != null">department_code = #{departmentCode},</if>
+            <if test="office != null">office = #{office},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="userDate != null">user_date = #{userDate},</if>
+            <if test="typeOfApplication != null">type_of_application = #{typeOfApplication},</if>
+            <if test="assetManagement != null">asset_management = #{assetManagement},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="reasonForPurchase != null">reason_for_purchase = #{reasonForPurchase},</if>
+            <if test="priceComparison != null">price_comparison = #{priceComparison},</if>
+            <if test="specialReason != null">special_reason = #{specialReason},</if>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="createByCode != null">create_by_code = #{createByCode},</if>
+            <if test="sendToCode != null">send_to_code = #{sendToCode},</if>
+            <if test="sendToName != null">send_to_name = #{sendToName},</if>
+            <if test="handlesCode != null">handles_code = #{handlesCode},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="closeFile != null">close_file = #{closeFile},</if>
+            <if test="closeFileName != null">close_file_name = #{closeFileName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="progressRate != null">progress_rate = #{progressRate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRequisitionById" parameterType="Long">
+        delete from sys_requisition where id = #{id}
+    </delete>
+
+    <update id="deleteRequisitionByIds" parameterType="String">
+        update sys_requisition set del_flag = 1 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteRequisitionByIds1" parameterType="String">
+        delete from sys_requisition where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteRequisitionDt1ByRequisitionIds" parameterType="String">
+        delete from sys_requisition_dt1 where requisition_id in 
+        <foreach item="requisitionId" collection="array" open="(" separator="," close=")">
+            #{requisitionId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteRequisitionDt2ByRequisitionIds" parameterType="String">
+        delete from sys_requisition_dt2 where requisition_id in
+        <foreach item="requisitionId" collection="array" open="(" separator="," close=")">
+            #{requisitionId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteRequisitionDt1ByRequisitionId" parameterType="Long">
+        delete from sys_requisition_dt1 where requisition_id = #{requisitionId}
+    </delete>
+
+    <delete id="deleteRequisitionDt2ByRequisitionId" parameterType="Long">
+        delete from sys_requisition_dt2 where requisition_id = #{requisitionId}
+    </delete>
+
+    <insert id="batchRequisitionDt1">
+        insert into sys_requisition_dt1( id, requisition_id, project_code, project_name, specifications, quantity, unit_price, amount, create_time, update_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.requisitionId}, #{item.projectCode}, #{item.projectName}, #{item.specifications}, #{item.quantity}, #{item.unitPrice}, #{item.amount}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="batchRequisitionDt2">
+        insert into sys_requisition_dt2( id, requisition_id, suppliers, suppliers_name, suppliers_code, tax_rate, coin, total_amount, untaxed_unit_price, remark, create_time, update_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.requisitionId}, #{item.suppliers}, #{item.suppliersName}, #{item.suppliersCode}, #{item.taxRate}, #{item.coin}, #{item.totalAmount}, #{item.untaxedUnitPrice}, #{item.remark}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <select id="selectTheLastLine" resultMap="RequisitionResult">
+        select requisition_no from sys_requisition where requisition_no like CONCAT (#{args},'%')
+    </select>
+
+
+
+</mapper>

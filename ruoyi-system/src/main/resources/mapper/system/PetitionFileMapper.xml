@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.petition.PetitionFileMapper">
+    
+    <resultMap type="PetitionFile" id="PetitionFileResult">
+        <result property="id"    column="id"    />
+        <result property="associationId"    column="association_id"    />
+        <result property="type"    column="type"    />
+        <result property="file"    column="file"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+	
+	<sql id="selectPetitionFileVo">
+        select id, association_id, type, file, file_name, create_time from sys_petition_file
+    </sql>
+	
+    <select id="selectPetitionFileList" parameterType="PetitionFile" resultMap="PetitionFileResult">
+        <include refid="selectPetitionFileVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="associationId != null "> and association_id = #{associationId}</if>
+             <if test="type != null "> and type = #{type}</if>
+             <if test="file != null  and file != '' "> and file = #{file}</if>
+             <if test="fileName != null  and fileName != '' "> and file_name = #{fileName}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectPetitionFileById" parameterType="Long" resultMap="PetitionFileResult">
+        <include refid="selectPetitionFileVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPetitionFile" parameterType="PetitionFile" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_petition_file
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="associationId != null  ">association_id,</if>
+			<if test="type != null  ">type,</if>
+			<if test="file != null  and file != ''  ">file,</if>
+			<if test="fileName != null  and fileName != ''  ">file_name,</if>
+			<if test="createTime != null  ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="associationId != null  ">#{associationId},</if>
+			<if test="type != null  ">#{type},</if>
+			<if test="file != null  and file != ''  ">#{file},</if>
+			<if test="fileName != null  and fileName != ''  ">#{fileName},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updatePetitionFile" parameterType="PetitionFile">
+        update sys_petition_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="associationId != null  ">association_id = #{associationId},</if>
+            <if test="type != null  ">type = #{type},</if>
+            <if test="file != null  and file != ''  ">file = #{file},</if>
+            <if test="fileName != null  and fileName != ''  ">file_name = #{fileName},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deletePetitionFileById" parameterType="Long">
+        delete from sys_petition_file where id = #{id}
+    </delete>
+	
+    <delete id="deletePetitionFileByIds" parameterType="String">
+        delete from sys_petition_file where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletePetitionFileByOrderIds" parameterType="String">
+        delete from sys_petition_file where association_id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ProcessFlowMapper">
+
+    <resultMap type="ProcessFlow" id="ProcessFlowResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="createById"    column="create_by_id"    />
+        <result property="createByCode"    column="create_by_code"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="sendToId"    column="send_to_id"    />
+        <result property="status"    column="status"    />
+        <result property="endorsementName"    column="endorsement_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="auditResult"    column="audit_result"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="orderNodeType"    column="order_node_type"    />
+        <result property="reviewOrder"    column="review_order"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectProcessFlowVo">
+        select id, order_id, create_by_id, create_by_code, create_by, send_to_id, status, endorsement_name, remark, order_type, audit_result, create_time, update_time, order_node_type, review_order, del_flag from sys_process_flow
+    </sql>
+
+    <select id="selectProcessFlowList" parameterType="ProcessFlow" resultMap="ProcessFlowResult">
+        <include refid="selectProcessFlowVo"/>
+        <where>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="createById != null "> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="createByCode != null  and createByCode != ''"> and create_by_code = #{createByCode}</if>
+            <if test="sendToId != null  and sendToId != ''"> and send_to_id = #{sendToId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="endorsementName != null  and endorsementName != ''"> and endorsement_name = #{endorsementName}</if>
+            <if test="orderType != null "> and order_type = #{orderType}</if>
+            <if test="auditResult != null "> and audit_result = #{auditResult}</if>
+            <if test="orderNodeType != null "> and order_node_type = #{orderNodeType}</if>
+            <if test="reviewOrder != null  and reviewOrder != ''"> and review_order = #{reviewOrder}</if>
+        </where>
+    </select>
+
+    <select id="selectProcessFlowById" parameterType="Long" resultMap="ProcessFlowResult">
+        <include refid="selectProcessFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectProcessFlowListByOrderId" resultMap="ProcessFlowResult">
+        <include refid="selectProcessFlowVo"/>
+        where order_id = #{orderId} and order_type = #{type} order by review_order asc
+    </select>
+
+    <insert id="insertProcessFlow" parameterType="ProcessFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_process_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="createById != null">create_by_id,</if>
+            <if test="createByCode != null">create_by_code,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="sendToId != null">send_to_id,</if>
+            <if test="status != null">status,</if>
+            <if test="endorsementName != null">endorsement_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="auditResult != null">audit_result,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="orderNodeType != null">order_node_type,</if>
+            <if test="reviewOrder != null">review_order,</if>
+            <if test="delFlag != null">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="createById != null">#{createById},</if>
+            <if test="createByCode != null">#{createByCode},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="sendToId != null">#{sendToId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="endorsementName != null">#{endorsementName},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="auditResult != null">#{auditResult},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="orderNodeType != null">#{orderNodeType},</if>
+            <if test="reviewOrder != null">#{reviewOrder},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateProcessFlow" parameterType="ProcessFlow">
+        update sys_process_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="createById != null">create_by_id = #{createById},</if>
+            <if test="createByCode != null">create_by_code = #{createByCode},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="sendToId != null">send_to_id = #{sendToId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="endorsementName != null">endorsement_name = #{endorsementName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="auditResult != null">audit_result = #{auditResult},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="orderNodeType != null">order_node_type = #{orderNodeType},</if>
+            <if test="reviewOrder != null">review_order = #{reviewOrder},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProcessFlowById" parameterType="Long">
+        delete from sys_process_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteProcessFlowByIds" parameterType="String">
+        delete from sys_process_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="batchInsertProcessFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_process_flow(order_id, create_by, create_by_id, create_by_code, send_to_id, endorsement_name, status,
+        create_time, update_time, remark, order_type, order_node_type, audit_result, review_order, del_flag) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.orderId}, #{item.createBy}, #{item.createById}, #{item.createByCode}, #{item.sendToId},
+            #{item.endorsementName}, #{item.status}, #{item.createTime}, #{item.updateTime}, #{item.remark}, #{item.orderType},
+            #{item.orderNodeType}, #{item.auditResult}, #{item.reviewOrder}, #{item.delFlag})
+        </foreach>
+    </insert>
+
+
+</mapper>

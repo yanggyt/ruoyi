@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head >
+    <th:block th:include="include :: header('日期和时间')" />
+    <th:block th:include="include :: layout-latest-css" />
+</head>
+<body class="gray-bg">
+<form id="form-customer-case-cancel">
+    <div class="col-md-12" style="margin-top: 10%">
+        <div class="form-group">
+            <p class="text-center">请选择文件：</p>
+            <input type="hidden" id="paymentRequestId" th:value="*{paymentRequestId}">
+            <div class="col-sm-9">
+                <input type="file" id="file" class="form-control" placeholder="请选择相关文件" required="true">
+            </div>
+        </div>
+    </div>
+</form>
+<th:block th:include="include :: footer" />
+<script type="text/javascript">
+    var prefix = ctx + "system/paymentRequest";
+
+    $("#form-customer-case-cancel").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            submitForm();
+        }
+    }
+
+    function submitForm() {
+        var formData = new FormData();
+        formData.append('file', $('#file')[0].files[0]);
+        formData.append('fileName', $('#file')[0].files[0].name);
+        formData.append('paymentRequestId', $('#paymentRequestId').val());
+        formData.append('type', 1);
+        $.ajax({
+            url: prefix + "/addClosePaymentRequestFile/save",
+            type: 'post',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function () {
+                $.modal.loading("正在提交,请稍等......");
+            },
+            success: function(result) {
+                if (result.code == 0) {
+                    $.modal.reload();
+                }else {
+                    $.modal.closeLoading();
+                    $.modal.alertError(result.msg);
+                };
+            }
+        });
+    }
+</script>
+</body>
+</html>

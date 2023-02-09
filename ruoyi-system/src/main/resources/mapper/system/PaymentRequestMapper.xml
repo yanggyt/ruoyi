@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.paymentRequest.PaymentRequestMapper">
+    
+    <resultMap type="PaymentRequest" id="PaymentRequestResult">
+        <result property="id"    column="id"    />
+        <result property="paymentRequestNo"    column="payment_request_no"    />
+        <result property="status"    column="status"    />
+        <result property="company"    column="company"    />
+        <result property="projectCode"    column="project_code"    />
+        <result property="applicant"    column="applicant"    />
+        <result property="employeeNo"    column="employee_no"    />
+        <result property="dept"    column="dept"    />
+        <result property="deptCode"    column="dept_code"    />
+        <result property="offices"    column="offices"    />
+        <result property="applicationDate"    column="application_date"    />
+        <result property="paymentDate"    column="payment_date"    />
+        <result property="insteadPayment"    column="instead_payment"    />
+        <result property="actualUserNo"    column="actual_user_no"    />
+        <result property="actualUser"    column="actual_user"    />
+        <result property="actualDept"    column="actual_dept"    />
+        <result property="actualDeptCode"    column="actual_dept_code"    />
+        <result property="paymentType"    column="payment_type"    />
+        <result property="summaryFile"    column="summary_file"    />
+        <result property="summaryFileName"    column="summary_file_name"    />
+        <result property="prepaid"    column="prepaid"    />
+        <result property="entertainmentExpense"    column="entertainment_expense"    />
+        <result property="paymentAmount"    column="payment_amount"    />
+        <result property="paymentMethod"    column="payment_method"    />
+        <result property="others"    column="others"    />
+        <result property="payee"    column="payee"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="accountNumber"    column="account_number"    />
+        <result property="address"    column="address"    />
+        <result property="swiftCode"    column="swift_code"    />
+        <result property="bankAddress"    column="bank_address"    />
+        <result property="acctSupervisor"    column="acct_supervisor"    />
+        <result property="cashier"    column="cashier"    />
+        <result property="approvedBy"    column="approved_by"    />
+        <result property="recheckedBy"    column="rechecked_by"    />
+        <result property="checkedBy"    column="checked_by"    />
+        <result property="createByCode"    column="create_by_code"    />
+        <result property="sendToCode"    column="send_to_code"    />
+        <result property="handlesCode"    column="handles_code"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="oldSendToCode"    column="old_send_to_code"    />
+        <result property="oldStatus"    column="old_status"    />
+        <result property="closeFile"    column="close_file"    />
+        <result property="closeFileName"    column="close_file_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="beforeSendToCode"    column="before_send_to_code"    />
+        <result property="beforeStatus"    column="before_status"    />
+        <result property="afterSendToCode"    column="after_send_to_code"    />
+        <result property="afterStatus"    column="after_status"    />
+        <result property="reserveSendToCode"    column="reserve_send_to_code"    />
+        <result property="reserveStatus"    column="reserve_status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="sendToName"    column="send_to_name"    />
+        <result property="progressRate"    column="progress_rate"    />
+    </resultMap>
+
+    <resultMap id="PaymentRequestPaymentRequestDt1Result" type="PaymentRequest" extends="PaymentRequestResult">
+        <collection property="paymentRequestDt1List" notNullColumn="sub_id" javaType="java.util.List" resultMap="PaymentRequestDt1Result" />
+    </resultMap>
+
+    <resultMap type="PaymentRequestDt1" id="PaymentRequestDt1Result">
+        <result property="id"    column="sub_id"    />
+        <result property="requestId"    column="sub_request_id"    />
+        <result property="projectCode"    column="sub_project_code"    />
+        <result property="content"    column="sub_content"    />
+        <result property="unit"    column="sub_unit"    />
+        <result property="quantity"    column="sub_quantity"    />
+        <result property="unitPrice"    column="sub_unit_price"    />
+        <result property="totalAmount"    column="sub_total_amount"    />
+        <result property="ratio"    column="sub_ratio"    />
+        <result property="currency"    column="sub_currency"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="delFlag"    column="sub_del_flag"    />
+    </resultMap>
+
+    <sql id="selectPaymentRequestVo">
+        select id, payment_request_no, status, company, project_code, applicant, employee_no, dept, dept_code, offices, application_date, payment_date, instead_payment, actual_user_no, actual_user, actual_dept, actual_dept_code, payment_type, summary_file, summary_file_name, prepaid, entertainment_expense, payment_amount, payment_method, others, payee, bank_name, account_number, address, swift_code, bank_address, acct_supervisor, cashier, approved_by, rechecked_by, checked_by, create_by_code, send_to_code, handles_code, submit_time, old_send_to_code, old_status, close_file, close_file_name, del_flag, before_send_to_code, before_status, after_send_to_code, after_status, reserve_send_to_code, reserve_status, create_by, create_time, update_time, remark,progress_rate from sys_payment_request
+    </sql>
+
+
+    <select id="selectPaymentRequestList" parameterType="PaymentRequest" resultMap="PaymentRequestResult">
+        <include refid="selectPaymentRequestVo"/>
+        <where>  
+            <if test="paymentRequestNo != null  and paymentRequestNo != ''"> and payment_request_no = #{paymentRequestNo}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="company != null "> and company = #{company}</if>
+            <if test="projectCode != null  and projectCode != ''"> and project_code = #{projectCode}</if>
+            <if test="applicant != null  and applicant != ''"> and applicant = #{applicant}</if>
+            <if test="employeeNo != null  and employeeNo != ''"> and employee_no = #{employeeNo}</if>
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="deptCode != null  and deptCode != ''"> and dept_code = #{deptCode}</if>
+            <if test="offices != null  and offices != ''"> and offices = #{offices}</if>
+            <if test="applicationDate != null "> and application_date = #{applicationDate}</if>
+            <if test="paymentDate != null "> and payment_date = #{paymentDate}</if>
+            <if test="insteadPayment != null "> and instead_payment = #{insteadPayment}</if>
+            <if test="actualUserNo != null  and actualUserNo != ''"> and actual_user_no = #{actualUserNo}</if>
+            <if test="actualUser != null  and actualUser != ''"> and actual_user = #{actualUser}</if>
+            <if test="actualDept != null  and actualDept != ''"> and actual_dept = #{actualDept}</if>
+            <if test="actualDeptCode != null  and actualDeptCode != ''"> and actual_dept_code = #{actualDeptCode}</if>
+            <if test="paymentType != null  and paymentType != ''"> and payment_type = #{paymentType}</if>
+            <if test="summaryFile != null  and summaryFile != ''"> and summary_file = #{summaryFile}</if>
+            <if test="summaryFileName != null  and summaryFileName != ''"> and summary_file_name like concat('%', #{summaryFileName}, '%')</if>
+            <if test="prepaid != null "> and prepaid = #{prepaid}</if>
+            <if test="entertainmentExpense != null "> and entertainment_expense = #{entertainmentExpense}</if>
+            <if test="paymentAmount != null  and paymentAmount != ''"> and payment_amount = #{paymentAmount}</if>
+            <if test="paymentMethod != null "> and payment_method = #{paymentMethod}</if>
+            <if test="others != null  and others != ''"> and others = #{others}</if>
+            <if test="payee != null  and payee != ''"> and payee = #{payee}</if>
+            <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
+            <if test="accountNumber != null  and accountNumber != ''"> and account_number = #{accountNumber}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="swiftCode != null  and swiftCode != ''"> and swift_code = #{swiftCode}</if>
+            <if test="bankAddress != null  and bankAddress != ''"> and bank_address = #{bankAddress}</if>
+            <if test="acctSupervisor != null  and acctSupervisor != ''"> and acct_supervisor = #{acctSupervisor}</if>
+            <if test="cashier != null  and cashier != ''"> and cashier = #{cashier}</if>
+            <if test="approvedBy != null  and approvedBy != ''"> and approved_by = #{approvedBy}</if>
+            <if test="recheckedBy != null  and recheckedBy != ''"> and rechecked_by = #{recheckedBy}</if>
+            <if test="checkedBy != null  and checkedBy != ''"> and checked_by = #{checkedBy}</if>
+            <if test="createByCode != null  and createByCode != ''"> and create_by_code = #{createByCode}</if>
+            <if test="sendToCode != null  and sendToCode != ''"> and send_to_code = #{sendToCode}</if>
+            <if test="handlesCode != null  and handlesCode != ''"> and handles_code like concat('%', #{handlesCode}, '%')</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="oldSendToCode != null  and oldSendToCode != ''"> and old_send_to_code = #{oldSendToCode}</if>
+            <if test="oldStatus != null "> and old_status = #{oldStatus}</if>
+            <if test="closeFile != null  and closeFile != ''"> and close_file = #{closeFile}</if>
+            <if test="closeFileName != null  and closeFileName != ''"> and close_file_name like concat('%', #{closeFileName}, '%')</if>
+            <if test="beforeSendToCode != null  and beforeSendToCode != ''"> and before_send_to_code = #{beforeSendToCode}</if>
+            <if test="beforeStatus != null "> and before_status = #{beforeStatus}</if>
+            <if test="afterSendToCode != null  and afterSendToCode != ''"> and after_send_to_code = #{afterSendToCode}</if>
+            <if test="afterStatus != null "> and after_status = #{afterStatus}</if>
+            <if test="reserveSendToCode != null  and reserveSendToCode != ''"> and reserve_send_to_code = #{reserveSendToCode}</if>
+            <if test="reserveStatus != null "> and reserve_status = #{reserveStatus}</if>
+            <if test="progressRate != null "> and progress_rate = #{progressRate}</if>
+            and del_flag != 1
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectPaymentRequestListDraft" parameterType="PaymentRequest" resultMap="PaymentRequestResult">
+        <include refid="selectPaymentRequestVo"/>
+        <where>
+            status in
+            <foreach item="status" collection="statusList" open="(" separator="," close=")">
+                #{status}
+            </foreach>
+            <if test="paymentRequestNo != null  and paymentRequestNo != ''"> and payment_request_no = #{paymentRequestNo}</if>
+            <if test="company != null "> and company = #{company}</if>
+            <if test="projectCode != null  and projectCode != ''"> and project_code = #{projectCode}</if>
+            <if test="applicant != null  and applicant != ''"> and applicant = #{applicant}</if>
+            <if test="employeeNo != null  and employeeNo != ''"> and employee_no = #{employeeNo}</if>
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="deptCode != null  and deptCode != ''"> and dept_code = #{deptCode}</if>
+            <if test="offices != null  and offices != ''"> and offices = #{offices}</if>
+            <if test="applicationDate != null "> and application_date = #{applicationDate}</if>
+            <if test="paymentDate != null "> and payment_date = #{paymentDate}</if>
+            <if test="insteadPayment != null "> and instead_payment = #{insteadPayment}</if>
+            <if test="actualUserNo != null  and actualUserNo != ''"> and actual_user_no = #{actualUserNo}</if>
+            <if test="actualUser != null  and actualUser != ''"> and actual_user = #{actualUser}</if>
+            <if test="actualDept != null  and actualDept != ''"> and actual_dept = #{actualDept}</if>
+            <if test="actualDeptCode != null  and actualDeptCode != ''"> and actual_dept_code = #{actualDeptCode}</if>
+            <if test="paymentType != null  and paymentType != ''"> and payment_type = #{paymentType}</if>
+            <if test="summaryFile != null  and summaryFile != ''"> and summary_file = #{summaryFile}</if>
+            <if test="summaryFileName != null  and summaryFileName != ''"> and summary_file_name like concat('%', #{summaryFileName}, '%')</if>
+            <if test="prepaid != null "> and prepaid = #{prepaid}</if>
+            <if test="entertainmentExpense != null "> and entertainment_expense = #{entertainmentExpense}</if>
+            <if test="paymentAmount != null  and paymentAmount != ''"> and payment_amount = #{paymentAmount}</if>
+            <if test="paymentMethod != null "> and payment_method = #{paymentMethod}</if>
+            <if test="others != null  and others != ''"> and others = #{others}</if>
+            <if test="payee != null  and payee != ''"> and payee = #{payee}</if>
+            <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
+            <if test="accountNumber != null  and accountNumber != ''"> and account_number = #{accountNumber}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="swiftCode != null  and swiftCode != ''"> and swift_code = #{swiftCode}</if>
+            <if test="bankAddress != null  and bankAddress != ''"> and bank_address = #{bankAddress}</if>
+            <if test="acctSupervisor != null  and acctSupervisor != ''"> and acct_supervisor = #{acctSupervisor}</if>
+            <if test="cashier != null  and cashier != ''"> and cashier = #{cashier}</if>
+            <if test="approvedBy != null  and approvedBy != ''"> and approved_by = #{approvedBy}</if>
+            <if test="recheckedBy != null  and recheckedBy != ''"> and rechecked_by = #{recheckedBy}</if>
+            <if test="checkedBy != null  and checkedBy != ''"> and checked_by = #{checkedBy}</if>
+            <if test="createByCode != null  and createByCode != ''"> and create_by_code = #{createByCode}</if>
+            <if test="sendToCode != null  and sendToCode != ''"> and send_to_code = #{sendToCode}</if>
+            <if test="handlesCode != null  and handlesCode != ''"> and handles_code = #{handlesCode}</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="oldSendToCode != null  and oldSendToCode != ''"> and old_send_to_code = #{oldSendToCode}</if>
+            <if test="oldStatus != null "> and old_status = #{oldStatus}</if>
+            <if test="closeFile != null  and closeFile != ''"> and close_file = #{closeFile}</if>
+            <if test="closeFileName != null  and closeFileName != ''"> and close_file_name like concat('%', #{closeFileName}, '%')</if>
+            <if test="beforeSendToCode != null  and beforeSendToCode != ''"> and before_send_to_code = #{beforeSendToCode}</if>
+            <if test="beforeStatus != null "> and before_status = #{beforeStatus}</if>
+            <if test="afterSendToCode != null  and afterSendToCode != ''"> and after_send_to_code = #{afterSendToCode}</if>
+            <if test="afterStatus != null "> and after_status = #{afterStatus}</if>
+            <if test="reserveSendToCode != null  and reserveSendToCode != ''"> and reserve_send_to_code = #{reserveSendToCode}</if>
+            <if test="reserveStatus != null "> and reserve_status = #{reserveStatus}</if>
+            <if test="progressRate != null "> and progress_rate = #{progressRate}</if>
+            and del_flag != 1
+        </where>
+    </select>
+
+    <select id="selectPaymentRequestById" parameterType="Long" resultMap="PaymentRequestPaymentRequestDt1Result">
+        select a.id, a.payment_request_no, a.status, a.company, a.project_code, a.applicant, a.employee_no, a.dept, a.dept_code, a.offices, a.application_date, a.payment_date, a.instead_payment, a.actual_user_no, a.actual_user, a.actual_dept, a.actual_dept_code, a.payment_type, a.summary_file, a.summary_file_name, a.prepaid, a.entertainment_expense, a.payment_amount, a.payment_method, a.others, a.payee, a.bank_name, a.account_number, a.address, a.swift_code, a.bank_address, a.acct_supervisor, a.cashier, a.approved_by, a.rechecked_by, a.checked_by, a.create_by_code, a.send_to_code, a.handles_code, a.submit_time, a.old_send_to_code, a.old_status, a.close_file, a.close_file_name, a.del_flag, a.before_send_to_code, a.before_status, a.after_send_to_code, a.after_status, a.reserve_send_to_code, a.reserve_status, a.create_by, a.create_time, a.update_time, a.remark,
+        a.progress_rate,b.id as sub_id, b.request_id as sub_request_id, b.project_code as sub_project_code, b.content as sub_content, b.unit as sub_unit, b.quantity as sub_quantity, b.unit_price as sub_unit_price, b.total_amount as sub_total_amount, b.ratio as sub_ratio, b.currency as sub_currency, b.remark as sub_remark, b.create_time as sub_create_time, b.update_time as sub_update_time, b.del_flag as sub_del_flag
+        from sys_payment_request a
+        left join sys_payment_request_dt1 b on b.request_id = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertPaymentRequest" parameterType="PaymentRequest" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_payment_request
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="paymentRequestNo != null">payment_request_no,</if>
+            <if test="status != null">status,</if>
+            <if test="company != null">company,</if>
+            <if test="projectCode != null">project_code,</if>
+            <if test="applicant != null">applicant,</if>
+            <if test="employeeNo != null">employee_no,</if>
+            <if test="dept != null">dept,</if>
+            <if test="deptCode != null">dept_code,</if>
+            <if test="offices != null">offices,</if>
+            <if test="applicationDate != null">application_date,</if>
+            <if test="paymentDate != null">payment_date,</if>
+            <if test="insteadPayment != null">instead_payment,</if>
+            <if test="actualUserNo != null">actual_user_no,</if>
+            <if test="actualUser != null">actual_user,</if>
+            <if test="actualDept != null">actual_dept,</if>
+            <if test="actualDeptCode != null">actual_dept_code,</if>
+            <if test="paymentType != null">payment_type,</if>
+            <if test="summaryFile != null">summary_file,</if>
+            <if test="summaryFileName != null">summary_file_name,</if>
+            <if test="prepaid != null">prepaid,</if>
+            <if test="entertainmentExpense != null">entertainment_expense,</if>
+            <if test="paymentAmount != null">payment_amount,</if>
+            <if test="paymentMethod != null">payment_method,</if>
+            <if test="others != null">others,</if>
+            <if test="payee != null">payee,</if>
+            <if test="bankName != null">bank_name,</if>
+            <if test="accountNumber != null">account_number,</if>
+            <if test="address != null">address,</if>
+            <if test="swiftCode != null">swift_code,</if>
+            <if test="bankAddress != null">bank_address,</if>
+            <if test="acctSupervisor != null">acct_supervisor,</if>
+            <if test="cashier != null">cashier,</if>
+            <if test="approvedBy != null">approved_by,</if>
+            <if test="recheckedBy != null">rechecked_by,</if>
+            <if test="checkedBy != null">checked_by,</if>
+            <if test="createByCode != null">create_by_code,</if>
+            <if test="sendToCode != null">send_to_code,</if>
+            <if test="handlesCode != null">handles_code,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="oldSendToCode != null">old_send_to_code,</if>
+            <if test="oldStatus != null">old_status,</if>
+            <if test="closeFile != null">close_file,</if>
+            <if test="closeFileName != null">close_file_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="beforeSendToCode != null">before_send_to_code,</if>
+            <if test="beforeStatus != null">before_status,</if>
+            <if test="afterSendToCode != null">after_send_to_code,</if>
+            <if test="afterStatus != null">after_status,</if>
+            <if test="reserveSendToCode != null">reserve_send_to_code,</if>
+            <if test="reserveStatus != null">reserve_status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="progressRate != null">progress_rate,</if>
+<!--            <if test="sendToName != null">send_to_name,</if>-->
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="paymentRequestNo != null">#{paymentRequestNo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="company != null">#{company},</if>
+            <if test="projectCode != null">#{projectCode},</if>
+            <if test="applicant != null">#{applicant},</if>
+            <if test="employeeNo != null">#{employeeNo},</if>
+            <if test="dept != null">#{dept},</if>
+            <if test="deptCode != null">#{deptCode},</if>
+            <if test="offices != null">#{offices},</if>
+            <if test="applicationDate != null">#{applicationDate},</if>
+            <if test="paymentDate != null">#{paymentDate},</if>
+            <if test="insteadPayment != null">#{insteadPayment},</if>
+            <if test="actualUserNo != null">#{actualUserNo},</if>
+            <if test="actualUser != null">#{actualUser},</if>
+            <if test="actualDept != null">#{actualDept},</if>
+            <if test="actualDeptCode != null">#{actualDeptCode},</if>
+            <if test="paymentType != null">#{paymentType},</if>
+            <if test="summaryFile != null">#{summaryFile},</if>
+            <if test="summaryFileName != null">#{summaryFileName},</if>
+            <if test="prepaid != null">#{prepaid},</if>
+            <if test="entertainmentExpense != null">#{entertainmentExpense},</if>
+            <if test="paymentAmount != null">#{paymentAmount},</if>
+            <if test="paymentMethod != null">#{paymentMethod},</if>
+            <if test="others != null">#{others},</if>
+            <if test="payee != null">#{payee},</if>
+            <if test="bankName != null">#{bankName},</if>
+            <if test="accountNumber != null">#{accountNumber},</if>
+            <if test="address != null">#{address},</if>
+            <if test="swiftCode != null">#{swiftCode},</if>
+            <if test="bankAddress != null">#{bankAddress},</if>
+            <if test="acctSupervisor != null">#{acctSupervisor},</if>
+            <if test="cashier != null">#{cashier},</if>
+            <if test="approvedBy != null">#{approvedBy},</if>
+            <if test="recheckedBy != null">#{recheckedBy},</if>
+            <if test="checkedBy != null">#{checkedBy},</if>
+            <if test="createByCode != null">#{createByCode},</if>
+            <if test="sendToCode != null">#{sendToCode},</if>
+            <if test="handlesCode != null">#{handlesCode},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="oldSendToCode != null">#{oldSendToCode},</if>
+            <if test="oldStatus != null">#{oldStatus},</if>
+            <if test="closeFile != null">#{closeFile},</if>
+            <if test="closeFileName != null">#{closeFileName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="beforeSendToCode != null">#{beforeSendToCode},</if>
+            <if test="beforeStatus != null">#{beforeStatus},</if>
+            <if test="afterSendToCode != null">#{afterSendToCode},</if>
+            <if test="afterStatus != null">#{afterStatus},</if>
+            <if test="reserveSendToCode != null">#{reserveSendToCode},</if>
+            <if test="reserveStatus != null">#{reserveStatus},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="progressRate != null">#{progressRate},</if>
+<!--            <if test="sendToName != null">#{sendToName},</if>-->
+         </trim>
+    </insert>
+
+    <update id="updatePaymentRequest" parameterType="PaymentRequest">
+        update sys_payment_request
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="paymentRequestNo != null">payment_request_no = #{paymentRequestNo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="company != null">company = #{company},</if>
+            <if test="projectCode != null">project_code = #{projectCode},</if>
+            <if test="applicant != null">applicant = #{applicant},</if>
+            <if test="employeeNo != null">employee_no = #{employeeNo},</if>
+            <if test="dept != null">dept = #{dept},</if>
+            <if test="deptCode != null">dept_code = #{deptCode},</if>
+            <if test="offices != null">offices = #{offices},</if>
+            <if test="applicationDate != null">application_date = #{applicationDate},</if>
+            <if test="paymentDate != null">payment_date = #{paymentDate},</if>
+            <if test="insteadPayment != null">instead_payment = #{insteadPayment},</if>
+            <if test="actualUserNo != null">actual_user_no = #{actualUserNo},</if>
+            <if test="actualUser != null">actual_user = #{actualUser},</if>
+            <if test="actualDept != null">actual_dept = #{actualDept},</if>
+            <if test="actualDeptCode != null">actual_dept_code = #{actualDeptCode},</if>
+            <if test="paymentType != null">payment_type = #{paymentType},</if>
+            <if test="summaryFile != null">summary_file = #{summaryFile},</if>
+            <if test="summaryFileName != null">summary_file_name = #{summaryFileName},</if>
+            <if test="prepaid != null">prepaid = #{prepaid},</if>
+            <if test="entertainmentExpense != null">entertainment_expense = #{entertainmentExpense},</if>
+            <if test="paymentAmount != null">payment_amount = #{paymentAmount},</if>
+            <if test="paymentMethod != null">payment_method = #{paymentMethod},</if>
+            <if test="others != null">others = #{others},</if>
+            <if test="payee != null">payee = #{payee},</if>
+            <if test="bankName != null">bank_name = #{bankName},</if>
+            <if test="accountNumber != null">account_number = #{accountNumber},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="swiftCode != null">swift_code = #{swiftCode},</if>
+            <if test="bankAddress != null">bank_address = #{bankAddress},</if>
+            <if test="acctSupervisor != null">acct_supervisor = #{acctSupervisor},</if>
+            <if test="cashier != null">cashier = #{cashier},</if>
+            <if test="approvedBy != null">approved_by = #{approvedBy},</if>
+            <if test="recheckedBy != null">rechecked_by = #{recheckedBy},</if>
+            <if test="checkedBy != null">checked_by = #{checkedBy},</if>
+            <if test="createByCode != null">create_by_code = #{createByCode},</if>
+            <if test="sendToCode != null">send_to_code = #{sendToCode},</if>
+            <if test="handlesCode != null">handles_code = #{handlesCode},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="oldSendToCode != null">old_send_to_code = #{oldSendToCode},</if>
+            <if test="oldStatus != null">old_status = #{oldStatus},</if>
+            <if test="closeFile != null">close_file = #{closeFile},</if>
+            <if test="closeFileName != null">close_file_name = #{closeFileName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="beforeSendToCode != null">before_send_to_code = #{beforeSendToCode},</if>
+            <if test="beforeStatus != null">before_status = #{beforeStatus},</if>
+            <if test="afterSendToCode != null">after_send_to_code = #{afterSendToCode},</if>
+            <if test="afterStatus != null">after_status = #{afterStatus},</if>
+            <if test="reserveSendToCode != null">reserve_send_to_code = #{reserveSendToCode},</if>
+            <if test="reserveStatus != null">reserve_status = #{reserveStatus},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="progressRate != null">progress_rate = #{progressRate},</if>
+<!--            <if test="sendToName != null">send_to_name = #{sendToName},</if>-->
+        </trim>
+        where id = #{id}
+    </update>
+
+<!--    <delete id="deletePaymentRequestById" parameterType="Long">-->
+<!--        delete from sys_payment_request where id = #{id}-->
+<!--    </delete>-->
+
+    <!--  逻辑删除  -->
+    <update id="deletePaymentRequestById" parameterType="Long">
+        update sys_payment_request set del_flag = 1 where id = #{id}
+    </update>
+
+<!--    <delete id="deletePaymentRequestByIds" parameterType="String">-->
+<!--        delete from sys_payment_request where id in -->
+<!--        <foreach item="id" collection="array" open="(" separator="," close=")">-->
+<!--            #{id}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+
+    <!--  逻辑删除  -->
+    <update id="deletePaymentRequestByIds" parameterType="String">
+        update sys_payment_request set del_flag = 1 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="deletePaymentRequestDt1ByRequestIds" parameterType="String">
+        update  sys_payment_request_dt1 set del_flag = 1 where request_id in
+        <foreach item="requestId" collection="array" open="(" separator="," close=")">
+            #{requestId}
+        </foreach>
+    </update>
+
+<!--    <delete id="deletePaymentRequestDt1ByRequestIds" parameterType="String">-->
+<!--        delete from sys_payment_request_dt1 where request_id in -->
+<!--        <foreach item="requestId" collection="array" open="(" separator="," close=")">-->
+<!--            #{requestId}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+
+    <delete id="deletePaymentRequestDt1ByRequestId" parameterType="Long">
+        delete from sys_payment_request_dt1 where request_id = #{requestId}
+    </delete>
+
+<!--    <update id="deletePaymentRequestDt1ByRequestId" parameterType="Long">-->
+<!--        update sys_payment_request_dt1 set del_flag = 1 where request_id = #{requestId}-->
+<!--    </update>-->
+
+    <insert id="batchPaymentRequestDt1">
+        insert into sys_payment_request_dt1( id, request_id, project_code, content, unit, quantity, unit_price, total_amount, ratio, currency, remark, create_time, update_time, del_flag) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.requestId}, #{item.projectCode}, #{item.content}, #{item.unit}, #{item.quantity}, #{item.unitPrice}, #{item.totalAmount}, #{item.ratio}, #{item.currency}, #{item.remark}, #{item.createTime}, #{item.updateTime}, #{item.delFlag})
+        </foreach>
+    </insert>
+
+    <update id="updateBeforeForNull" parameterType="Long">
+        update sys_payment_request set before_send_to_code = null, before_status = null where id = #{id}
+    </update>
+
+    <update id="updateAfterForNull" parameterType="Long">
+        update sys_payment_request set after_send_to_code = null, after_status = null where id = #{id}
+    </update>
+
+    <update id="updateReserveForNull" parameterType="Long">
+        update sys_payment_request set reserve_send_to_code = null, reserve_status = null where id = #{id}
+    </update>
+
+    <update id="updateForRetainNull" parameterType="Long">
+        update sys_payment_request set before_send_to_code = null where id = #{id}
+    </update>
+
+
+    <select id="selectTheLastLine" resultMap="PaymentRequestResult">
+        select payment_request_no from sys_payment_request where payment_request_no like CONCAT (#{args},'%')
+    </select>
+
+
+
+</mapper>

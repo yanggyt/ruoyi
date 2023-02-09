@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.petition.PetitionMapper">
+
+    <resultMap type="Petition" id="PetitionResult">
+        <result property="id"    column="id"    />
+        <result property="typeType"    column="type_type"    />
+        <result property="comNo"    column="com_no"    />
+        <result property="topicObj"    column="topic_obj"    />
+        <result property="explanation"    column="explanation"    />
+        <result property="sealType"    column="seal_type"    />
+        <result property="curr"    column="curr"    />
+        <result property="moneyM"    column="money_m"    />
+        <result property="fileId"    column="file_id"    />
+        <result property="seal"    column="seal"    />
+        <result property="sealExplain"    column="seal_explain"    />
+        <result property="sealDate"    column="seal_date"    />
+        <result property="moreExplain"    column="more_explain"    />
+        <result property="company"    column="company"    />
+        <result property="dept"    column="dept"    />
+        <result property="sid"    column="sid"    />
+        <result property="applyname"    column="applyname"    />
+        <result property="applydate"    column="applydate"    />
+        <result property="deptmanager"    column="deptmanager"    />
+        <result property="deptmanagerSid"    column="deptmanager_sid"    />
+        <result property="deptmanagerSta"    column="deptmanager_sta"    />
+        <result property="deptmanagerIdea"    column="deptmanager_idea"    />
+        <result property="deptmanageDate"    column="deptmanage_date"    />
+        <result property="hr"    column="hr"    />
+        <result property="hrSta"    column="hr_sta"    />
+        <result property="hrIdea"    column="hr_idea"    />
+        <result property="hrStaDate"    column="hr_sta_date"    />
+        <result property="law"    column="law"    />
+        <result property="lawSta"    column="law_sta"    />
+        <result property="lawIdea"    column="law_idea"    />
+        <result property="lawDate"    column="law_date"    />
+        <result property="acOfficer"    column="ac_officer"    />
+        <result property="acOfficerSid"    column="ac_officer_sid"    />
+        <result property="acOfficerDate"    column="ac_officer_date"    />
+        <result property="acOfficerIdea"    column="ac_officer_idea"    />
+        <result property="acOfficerSta"    column="ac_officer_sta"    />
+        <result property="fcManager"    column="fc_manager"    />
+        <result property="fcManagerSta"    column="fc_manager_sta"    />
+        <result property="fcManagerIdea"    column="fc_manager_idea"    />
+        <result property="fcManagerDate"    column="fc_manager_date"    />
+        <result property="cfcoManager"    column="cfco_manager"    />
+        <result property="cfcoManagerSta"    column="cfco_manager_sta"    />
+        <result property="cfcoManagerIdea"    column="cfco_manager_idea"    />
+        <result property="cfcoManagerDate"    column="cfco_manager_date"    />
+        <result property="gm"    column="gm"    />
+        <result property="gmSid"    column="gm_sid"    />
+        <result property="gmSta"    column="gm_sta"    />
+        <result property="gmIdea"    column="gm_idea"    />
+        <result property="gmDate"    column="gm_date"    />
+        <result property="creatBy"    column="creat_by"    />
+        <result property="creatDate"    column="creat_date"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="status"    column="status"    />
+        <result property="fromSendto"    column="from_sendto"    />
+        <result property="handlesCode"    column="handles_code"    />
+        <result property="formSta"    column="form_sta"    />
+        <result property="oldSta"    column="old_sta"    />
+        <result property="addauditSta"    column="addaudit_sta"    />
+        <result property="beforeSendToCode"    column="before_send_to_code"    />
+        <result property="beforeStatus"    column="before_status"    />
+        <result property="afterSendToCode"    column="after_send_to_code"    />
+        <result property="afterStatus"    column="after_status"    />
+        <result property="flag"    column="flag"    />
+        <result property="recallDate"    column="recall_date"    />
+        <result property="recallReason"    column="recall_reason"    />
+        <result property="closeFile"    column="close_file"    />
+        <result property="closeFileName"    column="close_file_name"    />
+    </resultMap>
+
+    <sql id="selectPetitionVo">
+        select id, type_type, com_no, topic_obj, explanation, seal_type, curr, money_m, file_id, seal, seal_explain, seal_date, more_explain, company, dept, sid, applyname, applydate, deptmanager, deptmanager_sid, deptmanager_sta, deptmanager_idea, deptmanage_date, hr, hr_sta, hr_idea, hr_sta_date, law, law_sta, law_idea, law_date, ac_officer, ac_officer_sid, ac_officer_date, ac_officer_idea, ac_officer_sta, fc_manager, fc_manager_sta, fc_manager_idea, fc_manager_date, cfco_manager, cfco_manager_sta, cfco_manager_idea, cfco_manager_date, gm, gm_sid, gm_sta, gm_idea, gm_date, creat_by, creat_date, update_by, update_date, status, from_sendto, handles_code, form_sta ,old_sta ,addaudit_sta ,before_send_to_code ,before_status ,after_send_to_code ,after_status ,flag ,recall_date,recall_reason,close_file,close_file_name from sys_petition
+    </sql>
+
+    <select id="selectPetitionList" parameterType="Petition" resultMap="PetitionResult">
+        <include refid="selectPetitionVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="typeType != null "> and type_type = #{typeType}</if>
+            <if test="comNo != null  and comNo != '' "> and com_no = #{comNo}</if>
+            <if test="topicObj != null  and topicObj != '' "> and topic_obj = #{topicObj}</if>
+            <if test="explanation != null  and explanation != '' "> and explanation = #{explanation}</if>
+            <if test="sealType != null "> and seal_type = #{sealType}</if>
+            <if test="curr != null  and curr != '' "> and curr = #{curr}</if>
+            <if test="moneyM != null "> and money_m = #{moneyM}</if>
+            <if test="fileId != null  and fileId != '' "> and file_id = #{fileId}</if>
+            <if test="seal != null  and seal != '' "> and seal = #{seal}</if>
+            <if test="sealExplain != null  and sealExplain != '' "> and seal_explain = #{sealExplain}</if>
+            <if test="sealDate != null "> and seal_date = #{sealDate}</if>
+            <if test="moreExplain != null  and moreExplain != '' "> and more_explain = #{moreExplain}</if>
+            <if test="company != null  and company != '' "> and company = #{company}</if>
+            <if test="dept != null  and dept != '' "> and dept = #{dept}</if>
+            <if test="sid != null  and sid != '' "> and sid = #{sid}</if>
+            <if test="applyname != null  and applyname != '' "> and applyname = #{applyname}</if>
+<!--            <if test="applydate != null "> and applydate = #{applydate}</if>-->
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(applydate,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(applydate,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <if test="deptmanager != null  and deptmanager != '' "> and deptmanager = #{deptmanager}</if>
+            <if test="deptmanagerSid != null  and deptmanagerSid != '' "> and deptmanager_sid = #{deptmanagerSid}</if>
+            <if test="deptmanagerSta != null "> and deptmanager_sta = #{deptmanagerSta}</if>
+            <if test="deptmanagerIdea != null  and deptmanagerIdea != '' "> and deptmanager_idea = #{deptmanagerIdea}</if>
+            <if test="deptmanageDate != null "> and deptmanage_date = #{deptmanageDate}</if>
+            <if test="hr != null  and hr != '' "> and hr = #{hr}</if>
+            <if test="hrSta != null "> and hr_sta = #{hrSta}</if>
+            <if test="hrIdea != null  and hrIdea != '' "> and hr_idea = #{hrIdea}</if>
+            <if test="hrStaDate != null "> and hr_sta_date = #{hrStaDate}</if>
+            <if test="law != null  and law != '' "> and law = #{law}</if>
+            <if test="lawSta != null "> and law_sta = #{lawSta}</if>
+            <if test="lawIdea != null  and lawIdea != '' "> and law_idea = #{lawIdea}</if>
+            <if test="lawDate != null "> and law_date = #{lawDate}</if>
+            <if test="acOfficer != null  and acOfficer != '' "> and ac_officer = #{acOfficer}</if>
+            <if test="acOfficerSid != null  and acOfficerSid != '' "> and ac_officer_sid = #{acOfficerSid}</if>
+            <if test="acOfficerDate != null "> and ac_officer_date = #{acOfficerDate}</if>
+            <if test="acOfficerIdea != null  and acOfficerIdea != '' "> and ac_officer_idea = #{acOfficerIdea}</if>
+            <if test="acOfficerSta != null "> and ac_officer_sta = #{acOfficerSta}</if>
+            <if test="fcManager != null  and fcManager != '' "> and fc_manager = #{fcManager}</if>
+            <if test="fcManagerSta != null "> and fc_manager_sta = #{fcManagerSta}</if>
+            <if test="fcManagerIdea != null  and fcManagerIdea != '' "> and fc_manager_idea = #{fcManagerIdea}</if>
+            <if test="fcManagerDate != null "> and fc_manager_date = #{fcManagerDate}</if>
+            <if test="cfcoManager != null  and cfcoManager != '' "> and cfco_manager = #{cfcoManager}</if>
+            <if test="cfcoManagerSta != null "> and cfco_manager_sta = #{cfcoManagerSta}</if>
+            <if test="cfcoManagerIdea != null  and cfcoManagerIdea != '' "> and cfco_manager_idea = #{cfcoManagerIdea}</if>
+            <if test="cfcoManagerDate != null "> and cfco_manager_date = #{cfcoManagerDate}</if>
+            <if test="gm != null  and gm != '' "> and gm = #{gm}</if>
+            <if test="gmSid != null  and gmSid != '' "> and gm_sid = #{gmSid}</if>
+            <if test="gmSta != null "> and gm_sta = #{gmSta}</if>
+            <if test="gmIdea != null  and gmIdea != '' "> and gm_idea = #{gmIdea}</if>
+            <if test="gmDate != null "> and gm_date = #{gmDate}</if>
+            <if test="creatBy != null  and creatBy != '' "> and creat_by = #{creatBy}</if>
+            <if test="creatDate != null "> and creat_date = #{creatDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="fromSendto != null  and fromSendto != '' "> and from_sendto = #{fromSendto}</if>
+            <if test="handlesCode != null  and handlesCode != ''">and handles_code like concat('%', #{handlesCode},
+                '%')
+            </if>
+            <if test="formSta != null "> and form_sta = #{formSta}</if>
+            <if test="oldSta != null "> and old_sta = #{oldSta}</if>
+            <if test="addauditSta != null "> and addaudit_sta = #{addauditSta}</if>
+            <if test="beforeSendToCode != null "> and before_send_to_code = #{beforeSendToCode}</if>
+            <if test="beforeStatus != null "> and before_status = #{beforeStatus}</if>
+            <if test="afterSendToCode != null "> and after_send_to_code = #{afterSendToCode}</if>
+            <if test="afterStatus != null "> and after_status = #{afterStatus}</if>
+            and flag != 0
+            <if test="closeFile != null "> and close_file = #{closeFile}</if>
+            <if test="closeFileName != null "> and close_file_name = #{closeFileName}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectPetitionById" parameterType="Long" resultMap="PetitionResult">
+        <include refid="selectPetitionVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPetition" parameterType="Petition" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_petition
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeType != null  ">type_type,</if>
+            <if test="comNo != null  and comNo != ''  ">com_no,</if>
+            <if test="topicObj != null  and topicObj != ''  ">topic_obj,</if>
+            <if test="explanation != null  and explanation != ''  ">explanation,</if>
+            <if test="sealType != null  ">seal_type,</if>
+            <if test="curr != null  and curr != ''  ">curr,</if>
+            <if test="moneyM != null  ">money_m,</if>
+            <if test="fileId != null  and fileId != ''  ">file_id,</if>
+            <if test="seal != null  and seal != ''  ">seal,</if>
+            <if test="sealExplain != null  and sealExplain != ''  ">seal_explain,</if>
+            <if test="sealDate != null  ">seal_date,</if>
+            <if test="moreExplain != null  and moreExplain != ''  ">more_explain,</if>
+            <if test="company != null  and company != ''  ">company,</if>
+            <if test="dept != null  and dept != ''  ">dept,</if>
+            <if test="sid != null  and sid != ''  ">sid,</if>
+            <if test="applyname != null  and applyname != ''  ">applyname,</if>
+            <if test="applydate != null  ">applydate,</if>
+            <if test="deptmanager != null  and deptmanager != ''  ">deptmanager,</if>
+            <if test="deptmanagerSid != null  and deptmanagerSid != '' ">deptmanager_sid,</if>
+            <if test="deptmanagerSta != null  ">deptmanager_sta,</if>
+            <if test="deptmanagerIdea != null  and deptmanagerIdea != ''  ">deptmanager_idea,</if>
+            <if test="deptmanageDate != null  ">deptmanage_date,</if>
+            <if test="hr != null  and hr != ''  ">hr,</if>
+            <if test="hrSta != null  ">hr_sta,</if>
+            <if test="hrIdea != null  and hrIdea != ''  ">hr_idea,</if>
+            <if test="hrStaDate != null  ">hr_sta_date,</if>
+            <if test="law != null  and law != ''  ">law,</if>
+            <if test="lawSta != null  ">law_sta,</if>
+            <if test="lawIdea != null  and lawIdea != ''  ">law_idea,</if>
+            <if test="lawDate != null  ">law_date,</if>
+            <if test="acOfficer != null  and acOfficer != ''  ">ac_officer,</if>
+            <if test="acOfficerSid != null  and acOfficerSid != '' ">ac_officer_sid,</if>
+            <if test="acOfficerDate != null  ">ac_officer_date,</if>
+            <if test="acOfficerIdea != null  and acOfficerIdea != ''  ">ac_officer_idea,</if>
+            <if test="acOfficerSta != null  ">ac_officer_sta,</if>
+            <if test="fcManager != null  and fcManager != ''  ">fc_manager,</if>
+            <if test="fcManagerSta != null  ">fc_manager_sta,</if>
+            <if test="fcManagerIdea != null  and fcManagerIdea != ''  ">fc_manager_idea,</if>
+            <if test="fcManagerDate != null  ">fc_manager_date,</if>
+            <if test="cfcoManager != null  and cfcoManager != ''  ">cfco_manager,</if>
+            <if test="cfcoManagerSta != null  ">cfco_manager_sta,</if>
+            <if test="cfcoManagerIdea != null  and cfcoManagerIdea != ''  ">cfco_manager_idea,</if>
+            <if test="cfcoManagerDate != null  ">cfco_manager_date,</if>
+            <if test="gm != null  and gm != ''  ">gm,</if>
+            <if test="gmSid != null  and gmSid != '' ">gm_sid,</if>
+            <if test="gmSta != null  ">gm_sta,</if>
+            <if test="gmIdea != null  and gmIdea != ''  ">gm_idea,</if>
+            <if test="gmDate != null  ">gm_date,</if>
+            <if test="creatBy != null  and creatBy != ''  ">creat_by,</if>
+            <if test="creatDate != null  ">creat_date,</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+            <if test="updateDate != null  ">update_date,</if>
+            <if test="status != null  ">status,</if>
+            <if test="fromSendto != null  and fromSendto != ''  ">from_sendto,</if>
+            <if test="handlesCode != null  and handlesCode != ''  ">handles_code,</if>
+            <if test="formSta != null  ">form_sta,</if>
+            <if test="oldSta != null  ">old_sta,</if>
+            <if test="addauditSta != null ">addaudit_sta,</if>
+            <if test="beforeSendToCode != null ">before_send_to_code,</if>
+            <if test="beforeStatus != null ">before_status,</if>
+            <if test="afterSendToCode != null ">after_send_to_code,</if>
+            <if test="afterStatus != null ">after_status,</if>
+            <if test="flag != null  ">flag,</if>
+            <if test="closeFile != null ">close_file,</if>
+            <if test="closeFileName != null ">close_file_name,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeType != null  ">#{typeType},</if>
+            <if test="comNo != null  and comNo != ''  ">#{comNo},</if>
+            <if test="topicObj != null  and topicObj != ''  ">#{topicObj},</if>
+            <if test="explanation != null  and explanation != ''  ">#{explanation},</if>
+            <if test="sealType != null  ">#{sealType},</if>
+            <if test="curr != null  and curr != ''  ">#{curr},</if>
+            <if test="moneyM != null  ">#{moneyM},</if>
+            <if test="fileId != null  and fileId != ''  ">#{fileId},</if>
+            <if test="seal != null  and seal != ''  ">#{seal},</if>
+            <if test="sealExplain != null  and sealExplain != ''  ">#{sealExplain},</if>
+            <if test="sealDate != null  ">#{sealDate},</if>
+            <if test="moreExplain != null  and moreExplain != ''  ">#{moreExplain},</if>
+            <if test="company != null  and company != ''  ">#{company},</if>
+            <if test="dept != null  and dept != ''  ">#{dept},</if>
+            <if test="sid != null  and sid != ''  ">#{sid},</if>
+            <if test="applyname != null  and applyname != ''  ">#{applyname},</if>
+            <if test="applydate != null  ">#{applydate},</if>
+            <if test="deptmanager != null  and deptmanager != ''  ">#{deptmanager},</if>
+            <if test="deptmanagerSid != null  and deptmanagerSid != '' ">#{deptmanagerSid},</if>
+            <if test="deptmanagerSta != null  ">#{deptmanagerSta},</if>
+            <if test="deptmanagerIdea != null  and deptmanagerIdea != ''  ">#{deptmanagerIdea},</if>
+            <if test="deptmanageDate != null  ">#{deptmanageDate},</if>
+            <if test="hr != null  and hr != ''  ">#{hr},</if>
+            <if test="hrSta != null  ">#{hrSta},</if>
+            <if test="hrIdea != null  and hrIdea != ''  ">#{hrIdea},</if>
+            <if test="hrStaDate != null  ">#{hrStaDate},</if>
+            <if test="law != null  and law != ''  ">#{law},</if>
+            <if test="lawSta != null  ">#{lawSta},</if>
+            <if test="lawIdea != null  and lawIdea != ''  ">#{lawIdea},</if>
+            <if test="lawDate != null  ">#{lawDate},</if>
+            <if test="acOfficer != null  and acOfficer != ''  ">#{acOfficer},</if>
+            <if test="acOfficerSid != null  and acOfficerSid != '' ">#{acOfficerSid},</if>
+            <if test="acOfficerDate != null  ">#{acOfficerDate},</if>
+            <if test="acOfficerIdea != null  and acOfficerIdea != ''  ">#{acOfficerIdea},</if>
+            <if test="acOfficerSta != null  ">#{acOfficerSta},</if>
+            <if test="fcManager != null  and fcManager != ''  ">#{fcManager},</if>
+            <if test="fcManagerSta != null  ">#{fcManagerSta},</if>
+            <if test="fcManagerIdea != null  and fcManagerIdea != ''  ">#{fcManagerIdea},</if>
+            <if test="fcManagerDate != null  ">#{fcManagerDate},</if>
+            <if test="cfcoManager != null  and cfcoManager != ''  ">#{cfcoManager},</if>
+            <if test="cfcoManagerSta != null  ">#{cfcoManagerSta},</if>
+            <if test="cfcoManagerIdea != null  and cfcoManagerIdea != ''  ">#{cfcoManagerIdea},</if>
+            <if test="cfcoManagerDate != null  ">#{cfcoManagerDate},</if>
+            <if test="gm != null  and gm != ''  ">#{gm},</if>
+            <if test="gmSid != null  and gmSid != '' ">#{gmSid},</if>
+            <if test="gmSta != null  ">#{gmSta},</if>
+            <if test="gmIdea != null  and gmIdea != ''  ">#{gmIdea},</if>
+            <if test="gmDate != null  ">#{gmDate},</if>
+            <if test="creatBy != null  and creatBy != ''  ">#{creatBy},</if>
+            <if test="creatDate != null  ">#{creatDate},</if>
+            <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+            <if test="updateDate != null  ">#{updateDate},</if>
+            <if test="status != null  ">#{status},</if>
+            <if test="fromSendto != null  and fromSendto != ''  ">#{fromSendto},</if>
+            <if test="handlesCode != null  and handlesCode != ''  ">#{handlesCode},</if>
+            <if test="formSta != null  ">#{formSta},</if>
+            <if test="oldSta != null  ">#{oldSta},</if>
+            <if test="addauditSta != null ">#{addauditSta},</if>
+            <if test="beforeSendToCode != null ">#{beforeSendToCode},</if>
+            <if test="beforeStatus != null ">#{beforeStatus},</if>
+            <if test="afterSendToCode != null ">#{afterSendToCode},</if>
+            <if test="afterStatus != null ">#{afterStatus},</if>
+            <if test="flag != null  ">#{flag},</if>
+            <if test="closeFile != null ">#{closeFile},</if>
+            <if test="closeFileName != null "> #{closeFileName},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePetition" parameterType="Petition">
+        update sys_petition
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typeType != null  ">type_type = #{typeType},</if>
+            <if test="comNo != null  and comNo != ''  ">com_no = #{comNo},</if>
+            <if test="topicObj != null  and topicObj != ''  ">topic_obj = #{topicObj},</if>
+            <if test="explanation != null  and explanation != ''  ">explanation = #{explanation},</if>
+            <if test="sealType != null  ">seal_type = #{sealType},</if>
+            <if test="curr != null  and curr != ''  ">curr = #{curr},</if>
+            <if test="moneyM != null  ">money_m = #{moneyM},</if>
+            <if test="fileId != null  and fileId != ''  ">file_id = #{fileId},</if>
+            <if test="seal != null  and seal != ''  ">seal = #{seal},</if>
+            <if test="sealExplain != null  and sealExplain != ''  ">seal_explain = #{sealExplain},</if>
+            <if test="sealDate != null  ">seal_date = #{sealDate},</if>
+            <if test="moreExplain != null  and moreExplain != ''  ">more_explain = #{moreExplain},</if>
+            <if test="company != null  and company != ''  ">company = #{company},</if>
+            <if test="dept != null  and dept != ''  ">dept = #{dept},</if>
+            <if test="sid != null  and sid != ''  ">sid = #{sid},</if>
+            <if test="applyname != null  and applyname != ''  ">applyname = #{applyname},</if>
+            <if test="applydate != null  ">applydate = #{applydate},</if>
+            <if test="deptmanager != null  and deptmanager != ''  ">deptmanager = #{deptmanager},</if>
+            <if test="deptmanagerSid != null  and deptmanagerSid != '' ">deptmanager_sid = #{deptmanagerSid},</if>
+            <if test="deptmanagerSta != null  ">deptmanager_sta = #{deptmanagerSta},</if>
+            <if test="deptmanagerIdea != null  and deptmanagerIdea != ''  ">deptmanager_idea = #{deptmanagerIdea},</if>
+            <if test="deptmanageDate != null  ">deptmanage_date = #{deptmanageDate},</if>
+            <if test="hr != null  and hr != ''  ">hr = #{hr},</if>
+            <if test="hrSta != null  ">hr_sta = #{hrSta},</if>
+            <if test="hrIdea != null  and hrIdea != ''  ">hr_idea = #{hrIdea},</if>
+            <if test="hrStaDate != null  ">hr_sta_date = #{hrStaDate},</if>
+            <if test="law != null  and law != ''  ">law = #{law},</if>
+            <if test="lawSta != null  ">law_sta = #{lawSta},</if>
+            <if test="lawIdea != null  and lawIdea != ''  ">law_idea = #{lawIdea},</if>
+            <if test="lawDate != null  ">law_date = #{lawDate},</if>
+            <if test="acOfficer != null  and acOfficer != ''  ">ac_officer = #{acOfficer},</if>
+            <if test="acOfficerSid != null  and acOfficerSid != '' ">ac_officer_sid = #{acOfficerSid},</if>
+            <if test="acOfficerDate != null  ">ac_officer_date = #{acOfficerDate},</if>
+            <if test="acOfficerIdea != null  and acOfficerIdea != ''  ">ac_officer_idea = #{acOfficerIdea},</if>
+            <if test="acOfficerSta != null  ">ac_officer_sta = #{acOfficerSta},</if>
+            <if test="fcManager != null  and fcManager != ''  ">fc_manager = #{fcManager},</if>
+            <if test="fcManagerSta != null  ">fc_manager_sta = #{fcManagerSta},</if>
+            <if test="fcManagerIdea != null  and fcManagerIdea != ''  ">fc_manager_idea = #{fcManagerIdea},</if>
+            <if test="fcManagerDate != null  ">fc_manager_date = #{fcManagerDate},</if>
+            <if test="cfcoManager != null  and cfcoManager != ''  ">cfco_manager = #{cfcoManager},</if>
+            <if test="cfcoManagerSta != null  ">cfco_manager_sta = #{cfcoManagerSta},</if>
+            <if test="cfcoManagerIdea != null  and cfcoManagerIdea != ''  ">cfco_manager_idea = #{cfcoManagerIdea},</if>
+            <if test="cfcoManagerDate != null  ">cfco_manager_date = #{cfcoManagerDate},</if>
+            <if test="gm != null  and gm != ''  ">gm = #{gm},</if>
+            <if test="gmSid != null  and gmSid != '' ">gm_sid = #{gmSid},</if>
+            <if test="gmSta != null  ">gm_sta = #{gmSta},</if>
+            <if test="gmIdea != null  and gmIdea != ''  ">gm_idea = #{gmIdea},</if>
+            <if test="gmDate != null  ">gm_date = #{gmDate},</if>
+            <if test="creatBy != null  and creatBy != ''  ">creat_by = #{creatBy},</if>
+            <if test="creatDate != null  ">creat_date = #{creatDate},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateDate != null  ">update_date = #{updateDate},</if>
+            <if test="status != null  ">status = #{status},</if>
+            <if test="fromSendto != null ">from_sendto = #{fromSendto},</if>
+            <if test="handlesCode != null">handles_code = #{handlesCode},</if>
+            <if test="formSta != null  ">form_sta = #{formSta},</if>
+            <if test="oldSta != null  ">old_sta = #{oldSta},</if>
+            <if test="addauditSta != null ">addaudit_sta = #{addauditSta},</if>
+            <if test="beforeSendToCode != null ">before_send_to_code = #{beforeSendToCode},</if>
+            <if test="beforeStatus != null ">before_status = #{beforeStatus},</if>
+            <if test="afterSendToCode != null ">after_send_to_code = #{afterSendToCode},</if>
+            <if test="afterStatus != null ">after_status = #{afterStatus},</if>
+            <if test="flag != null  ">flag = #{flag},</if>
+            <if test="recallDate != null  ">recall_date = #{recallDate},</if>
+            <if test="recallReason != null and recallReason != ''  ">recall_reason = #{recallReason},</if>
+            <if test="closeFile != null ">close_file = #{closeFile},</if>
+            <if test="closeFileName != null ">close_file_name = #{closeFileName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePetitionById" parameterType="Long">
+        delete from sys_petition where id = #{id}
+    </delete>
+
+    <delete id="deletePetitionByIds" parameterType="String">
+        delete from sys_petition where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+    <select id="selectTodoPetitionList" parameterType="Petition" resultMap="PetitionResult">
+        <include refid="selectPetitionVo"/>
+        <where>
+            and status != 7
+            <if test="typeType != null "> and type_type = #{typeType}</if>
+            <if test="comNo != null  and comNo != '' "> and com_no = #{comNo}</if>
+            <if test="topicObj != null  and topicObj != '' "> and topic_obj = #{topicObj}</if>
+            <if test="explanation != null  and explanation != '' "> and explanation = #{explanation}</if>
+            <if test="sealType != null "> and seal_type = #{sealType}</if>
+            <if test="curr != null  and curr != '' "> and curr = #{curr}</if>
+            <if test="moneyM != null "> and money_m = #{moneyM}</if>
+            <if test="fileId != null  and fileId != '' "> and file_id = #{fileId}</if>
+            <if test="seal != null  and seal != '' "> and seal = #{seal}</if>
+            <if test="sealExplain != null  and sealExplain != '' "> and seal_explain = #{sealExplain}</if>
+            <if test="sealDate != null "> and seal_date = #{sealDate}</if>
+            <if test="moreExplain != null  and moreExplain != '' "> and more_explain = #{moreExplain}</if>
+            <if test="company != null  and company != '' "> and company = #{company}</if>
+            <if test="dept != null  and dept != '' "> and dept = #{dept}</if>
+<!--            <if test="applydate != null "> and applydate = #{applydate}</if>-->
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(applydate,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(applydate,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <if test="deptmanager != null  and deptmanager != '' "> and deptmanager = #{deptmanager}</if>
+            <if test="deptmanagerSid != null  and deptmanagerSid != '' "> and deptmanager_sid = #{deptmanagerSid}</if>
+            <if test="deptmanagerSta != null "> and deptmanager_sta = #{deptmanagerSta}</if>
+            <if test="deptmanagerIdea != null  and deptmanagerIdea != '' "> and deptmanager_idea = #{deptmanagerIdea}</if>
+            <if test="deptmanageDate != null "> and deptmanage_date = #{deptmanageDate}</if>
+            <if test="hr != null  and hr != '' "> and hr = #{hr}</if>
+            <if test="hrSta != null "> and hr_sta = #{hrSta}</if>
+            <if test="hrIdea != null  and hrIdea != '' "> and hr_idea = #{hrIdea}</if>
+            <if test="hrStaDate != null "> and hr_sta_date = #{hrStaDate}</if>
+            <if test="law != null  and law != '' "> and law = #{law}</if>
+            <if test="lawSta != null "> and law_sta = #{lawSta}</if>
+            <if test="lawIdea != null  and lawIdea != '' "> and law_idea = #{lawIdea}</if>
+            <if test="lawDate != null "> and law_date = #{lawDate}</if>
+            <if test="acOfficer != null  and acOfficer != '' "> and ac_officer = #{acOfficer}</if>
+            <if test="acOfficerSid != null  and acOfficerSid != '' "> and ac_officer_sid = #{acOfficerSid}</if>
+            <if test="acOfficerDate != null "> and ac_officer_date = #{acOfficerDate}</if>
+            <if test="acOfficerIdea != null  and acOfficerIdea != '' "> and ac_officer_idea = #{acOfficerIdea}</if>
+            <if test="acOfficerSta != null "> and ac_officer_sta = #{acOfficerSta}</if>
+            <if test="fcManager != null  and fcManager != '' "> and fc_manager = #{fcManager}</if>
+            <if test="fcManagerSta != null "> and fc_manager_sta = #{fcManagerSta}</if>
+            <if test="fcManagerIdea != null  and fcManagerIdea != '' "> and fc_manager_idea = #{fcManagerIdea}</if>
+            <if test="fcManagerDate != null "> and fc_manager_date = #{fcManagerDate}</if>
+            <if test="cfcoManager != null  and cfcoManager != '' "> and cfco_manager = #{cfcoManager}</if>
+            <if test="cfcoManagerSta != null "> and cfco_manager_sta = #{cfcoManagerSta}</if>
+            <if test="cfcoManagerIdea != null  and cfcoManagerIdea != '' "> and cfco_manager_idea = #{cfcoManagerIdea}</if>
+            <if test="cfcoManagerDate != null "> and cfco_manager_date = #{cfcoManagerDate}</if>
+            <if test="gm != null  and gm != '' "> and gm = #{gm}</if>
+            <if test="gmSid != null  and gmSid != '' "> and gm_sid = #{gmSid}</if>
+            <if test="gmSta != null "> and gm_sta = #{gmSta}</if>
+            <if test="gmIdea != null  and gmIdea != '' "> and gm_idea = #{gmIdea}</if>
+            <if test="gmDate != null "> and gm_date = #{gmDate}</if>
+            <if test="oldSta != null "> and old_sta = #{oldSta}</if>
+            <if test="creatDate != null "> and creat_date = #{creatDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="status != null "> and status != #{status}</if>
+            <if test="formSta != null "> and form_sta = #{formSta}</if>
+            <if test="applyname != null  and applyname != '' "> and applyname = #{applyname}</if>
+            <if test="flag != null  and flag != '' "> and flag = #{flag}</if>
+            <if test="sid != null  and sid != '' "> and (sid = #{sid}</if>
+            <if test="fromSendto != null  and fromSendto != '' "> or from_sendto = #{fromSendto}</if>
+            <if test="handlesCode != null  and handlesCode != ''">and handles_code like concat('%', #{handlesCode},
+                '%')
+            </if>
+            <if test="creatBy != null  and creatBy != '' "> or creat_by = #{creatBy}</if>
+            <if test="sid != null  and sid != '' ">or id in
+                (SELECT petition_id FROM sys_petition_addaudit WHERE sid=#{fromSendto})
+                or id in
+                (SELECT petition_id FROM sys_petition_sign WHERE sid=#{fromSendto})</if>
+             )
+        </where>
+        order by id desc 
+    </select>
+    
+    <select id="selectTodoApiPetitionList" parameterType="Petition" resultMap="PetitionResult">
+        <include refid="selectPetitionVo"/>
+        <where>
+            and status != 7
+            <if test="typeType != null "> and type_type = #{typeType}</if>
+            <if test="comNo != null  and comNo != '' "> and com_no = #{comNo}</if>
+            <if test="topicObj != null  and topicObj != '' "> and topic_obj = #{topicObj}</if>
+            <if test="explanation != null  and explanation != '' "> and explanation = #{explanation}</if>
+            <if test="sealType != null "> and seal_type = #{sealType}</if>
+            <if test="curr != null  and curr != '' "> and curr = #{curr}</if>
+            <if test="moneyM != null "> and money_m = #{moneyM}</if>
+            <if test="fileId != null  and fileId != '' "> and file_id = #{fileId}</if>
+            <if test="seal != null  and seal != '' "> and seal = #{seal}</if>
+            <if test="sealExplain != null  and sealExplain != '' "> and seal_explain = #{sealExplain}</if>
+            <if test="sealDate != null "> and seal_date = #{sealDate}</if>
+            <if test="moreExplain != null  and moreExplain != '' "> and more_explain = #{moreExplain}</if>
+            <if test="company != null  and company != '' "> and company = #{company}</if>
+            <if test="dept != null  and dept != '' "> and dept = #{dept}</if>
+            <!--            <if test="applydate != null "> and applydate = #{applydate}</if>-->
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(applydate,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(applydate,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <if test="deptmanager != null  and deptmanager != '' "> and deptmanager = #{deptmanager}</if>
+            <if test="deptmanagerSid != null  and deptmanagerSid != '' "> and deptmanager_sid = #{deptmanagerSid}</if>
+            <if test="deptmanagerSta != null "> and deptmanager_sta = #{deptmanagerSta}</if>
+            <if test="deptmanagerIdea != null  and deptmanagerIdea != '' "> and deptmanager_idea = #{deptmanagerIdea}</if>
+            <if test="deptmanageDate != null "> and deptmanage_date = #{deptmanageDate}</if>
+            <if test="hr != null  and hr != '' "> and hr = #{hr}</if>
+            <if test="hrSta != null "> and hr_sta = #{hrSta}</if>
+            <if test="hrIdea != null  and hrIdea != '' "> and hr_idea = #{hrIdea}</if>
+            <if test="hrStaDate != null "> and hr_sta_date = #{hrStaDate}</if>
+            <if test="law != null  and law != '' "> and law = #{law}</if>
+            <if test="lawSta != null "> and law_sta = #{lawSta}</if>
+            <if test="lawIdea != null  and lawIdea != '' "> and law_idea = #{lawIdea}</if>
+            <if test="lawDate != null "> and law_date = #{lawDate}</if>
+            <if test="acOfficer != null  and acOfficer != '' "> and ac_officer = #{acOfficer}</if>
+            <if test="acOfficerSid != null  and acOfficerSid != '' "> and ac_officer_sid = #{acOfficerSid}</if>
+            <if test="acOfficerDate != null "> and ac_officer_date = #{acOfficerDate}</if>
+            <if test="acOfficerIdea != null  and acOfficerIdea != '' "> and ac_officer_idea = #{acOfficerIdea}</if>
+            <if test="acOfficerSta != null "> and ac_officer_sta = #{acOfficerSta}</if>
+            <if test="fcManager != null  and fcManager != '' "> and fc_manager = #{fcManager}</if>
+            <if test="fcManagerSta != null "> and fc_manager_sta = #{fcManagerSta}</if>
+            <if test="fcManagerIdea != null  and fcManagerIdea != '' "> and fc_manager_idea = #{fcManagerIdea}</if>
+            <if test="fcManagerDate != null "> and fc_manager_date = #{fcManagerDate}</if>
+            <if test="cfcoManager != null  and cfcoManager != '' "> and cfco_manager = #{cfcoManager}</if>
+            <if test="cfcoManagerSta != null "> and cfco_manager_sta = #{cfcoManagerSta}</if>
+            <if test="cfcoManagerIdea != null  and cfcoManagerIdea != '' "> and cfco_manager_idea = #{cfcoManagerIdea}</if>
+            <if test="cfcoManagerDate != null "> and cfco_manager_date = #{cfcoManagerDate}</if>
+            <if test="gm != null  and gm != '' "> and gm = #{gm}</if>
+            <if test="gmSid != null  and gmSid != '' "> and gm_sid = #{gmSid}</if>
+            <if test="gmSta != null "> and gm_sta = #{gmSta}</if>
+            <if test="gmIdea != null  and gmIdea != '' "> and gm_idea = #{gmIdea}</if>
+            <if test="gmDate != null "> and gm_date = #{gmDate}</if>
+            <if test="oldSta != null "> and old_sta = #{oldSta}</if>
+            <if test="creatDate != null "> and creat_date = #{creatDate}</if>
+            <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+            <if test="status != null "> and status != #{status}</if>
+            <if test="formSta != null "> and form_sta = #{formSta}</if>
+            <if test="applyname != null  and applyname != '' "> and applyname = #{applyname}</if>
+            <if test="flag != null  and flag != '' "> and flag = #{flag}</if>
+            <if test="fromSendto != null  and fromSendto != '' "> and from_sendto = #{fromSendto}</if>
+            <if test="handlesCode != null  and handlesCode != ''">and handles_code like concat('%', #{handlesCode},
+                '%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectDidPetitionByOrderIds" resultMap="PetitionResult">
+        select * from sys_petition  where id in
+         <foreach item="orderId" collection="ids" open="(" separator="," close=")">
+        #{orderId}
+    </foreach>
+        and
+        flag='1'
+        order by id desc
+
+    </select>
+
+    <select id="selectPetitionByNow" resultType="String">
+        select com_no from
+        sys_petition
+         where
+          date_format(creat_date,'%Y-%m')=date_format(now(),'%Y-%m')
+          and
+          type_type=#{typeType,jdbcType=INTEGER}
+          and
+          company=#{com,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updatePeById" parameterType="Petition">
+        update sys_petition set deptmanager_sta = null,
+        deptmanager_idea = null,
+        deptmanage_date = null,
+        hr_sta = null,
+        hr_idea = null,
+        hr_sta_date = null,
+        law_sta = null,
+        law_idea = null,
+        law_date = null,
+        ac_officer_date = null,
+        ac_officer_idea = null,
+        ac_officer_sta = null,
+        fc_manager_sta = null,
+        fc_manager_idea = null,
+        fc_manager_date = null,
+        cfco_manager_sta = null,
+        cfco_manager_idea = null,
+        cfco_manager_date = null,
+        gm_sta = null,
+        gm_idea = null,
+        gm_date = null
+        where id = #{id}
+    </update>
+</mapper>

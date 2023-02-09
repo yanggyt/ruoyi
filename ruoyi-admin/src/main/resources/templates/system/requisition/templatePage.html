@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('日期和时间')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            文件名：<input type="text" name="fileName"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+    <div class="btn-group-sm" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="addTemplate()" shiro:hasPermission="system:requisition:templateOperation">
+            <i class="fa fa-plus"></i> 添加
+        </a>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var operationFlag = [[${@permission.hasPermi('system:requisition:templateOperation')}]];
+    
+    var prefix = ctx + "system/requisition";
+    $(function() {
+        var options = {
+            url: prefix + "/templateList",
+            columns: [
+                {
+                    field : 'id',
+                    title : 'Id',
+                    visible: true
+                },
+                {
+                    field : 'fileName',
+                    title : '文件名'
+                },
+                {
+                    title : '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs" href="javascript:void(0)" onclick="downloadFaReport(\'' + row.id + '\',\'' + row.file + '\',\'' + row.fileName + '\')"><i class="fa fa-download"></i>下载</a>');
+                        actions.push('<a class="btn btn-danger btn-xs ' + operationFlag + '" href="javascript:void(0)" onclick="deleteFaReport(\'' + row.id + '\',\'' + row.file + '\',\'' + row.fileName + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+    
+    // 下载文件
+    function downloadFaReport(id,value,fileName) {
+        window.location.href = prefix + "/downloadFile?resource=" + value + "&id=" + id + "&fileName=" + fileName;
+    }
+
+    // 删除文件
+    function deleteFaReport(id,value,fileName) {
+        $.modal.confirm("确定删除该文件吗？", function() {
+            $.ajax({
+                //几个参数需要注意一下
+                type: "GET",//方法类型
+                url: prefix + "/remove/templateFile?id=" + id + "&fileName=" + fileName,//url
+                dataType: "json",//预期服务器返回的数据类型
+                timeout:60000,
+                success: function (result) {
+                    $.operate.successCallback(result);
+                },
+                error : function() {
+                    alert("error！");
+                }
+            });
+        });
+    }
+
+    // 上传文件
+    function addTemplate() {
+        var url = prefix + '/addTemplate';
+        $.modal.open("上传文件", url,500,200);
+    }
+</script>
+</body>
+</html>
