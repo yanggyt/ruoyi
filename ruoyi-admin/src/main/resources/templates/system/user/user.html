@@ -90,9 +90,11 @@
 	<th:block th:include="include :: layout-latest-js" />
 	<th:block th:include="include :: ztree-js" />
 	<script th:inline="javascript">
+		// 验证是否具有相应权限
 		var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
 		var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
+		// 前缀
 		var prefix = ctx + "system/user";
 
 		$(function() {
