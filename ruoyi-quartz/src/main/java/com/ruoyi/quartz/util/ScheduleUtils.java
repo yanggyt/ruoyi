@@ -138,7 +138,8 @@ public class ScheduleUtils
             return StringUtils.containsAnyIgnoreCase(invokeTarget, whiteList);
         }
         Object obj = SpringUtils.getBean(StringUtils.split(invokeTarget, ".")[0]);
-        return StringUtils.containsAnyIgnoreCase(obj.getClass().getPackage().getName(), whiteList);
-	}
-    
+        String beanPackageName = obj.getClass().getPackage().getName();
+        return StringUtils.containsAnyIgnoreCase(beanPackageName, whiteList)
+                && !StringUtils.containsAnyIgnoreCase(beanPackageName, Constants.JOB_ERROR_STR);
+    }
 }

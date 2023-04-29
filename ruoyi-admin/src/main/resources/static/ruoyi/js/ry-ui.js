@@ -704,14 +704,7 @@ var table = {
                 } else if (table.options.type == table_type.bootstrapTreeTable) {
                     $("#" + tableId).bootstrapTreeTable('refresh', table.options.ajaxParams);
                 }
-                if ($.common.isNotEmpty(startLayDate) && $.common.isNotEmpty(endLayDate)) {
-                    endLayDate.config.min.year = '';
-                    endLayDate.config.min.month = '';
-                    endLayDate.config.min.date = '';
-                    startLayDate.config.max.year = '2099';
-                    startLayDate.config.max.month = '12';
-                    startLayDate.config.max.date = '31';
-                 }
+                resetDate();
             },
             // 获取选中复选框项
             selectCheckeds: function(name) {
@@ -1347,13 +1340,6 @@ var table = {
         },
         // 校验封装处理
         validate: {
-            // 判断返回标识是否唯一 false 为存在 true 为不存在
-            unique: function (value) {
-                if (value == "0") {
-                    return true;
-                }
-                return false;
-            },
             // 表单验证
             form: function (formId) {
                 var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
@@ -1562,6 +1548,10 @@ var table = {
             // 判断一个字符串是否为非空串
             isNotEmpty: function (value) {
                 return !$.common.isEmpty(value);
+            },
+            // 如果值是空，则返回指定默认字符串，否则返回字符串本身
+            nullToDefault: function (value, defaultValue) {
+                return $.common.isEmpty(value) ? defaultValue : value;
             },
             // 空对象转字符串
             nullToStr: function(value) {

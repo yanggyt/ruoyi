@@ -45,7 +45,7 @@ public interface ISysDeptService
     public List<Ztree> roleDeptTreeData(SysRole role);
 
     /**
-     * 查询部门人数
+     * 根据父部门ID查询下级部门数量
      * 
      * @param parentId 父部门ID
      * @return 结果
@@ -106,7 +106,7 @@ public interface ISysDeptService
      * @param dept 部门信息
      * @return 结果
      */
-    public String checkDeptNameUnique(SysDept dept);
+    public boolean checkDeptNameUnique(SysDept dept);
 
     /**
      * 校验部门是否有数据权限
