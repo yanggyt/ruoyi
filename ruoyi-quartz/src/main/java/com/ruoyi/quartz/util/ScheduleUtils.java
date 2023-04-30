@@ -11,6 +11,8 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.springframework.aop.support.AopUtils;
+
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.exception.job.TaskException;
@@ -138,8 +140,12 @@ public class ScheduleUtils
             return StringUtils.containsAnyIgnoreCase(invokeTarget, whiteList);
         }
         Object obj = SpringUtils.getBean(StringUtils.split(invokeTarget, ".")[0]);
+        if (AopUtils.isAopProxy(obj)) {
+        	obj = AopUtils.getTargetClass(obj);
+        }
         String beanPackageName = obj.getClass().getPackage().getName();
         return StringUtils.containsAnyIgnoreCase(beanPackageName, whiteList)
                 && !StringUtils.containsAnyIgnoreCase(beanPackageName, Constants.JOB_ERROR_STR);
     }
+    
 }
