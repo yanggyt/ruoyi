@@ -72,6 +72,9 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 # MyBatis
 mybatis:
