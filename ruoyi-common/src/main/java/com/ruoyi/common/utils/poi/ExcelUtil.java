@@ -728,15 +728,14 @@ public class ExcelUtil<T>
                                 subField.setAccessible(true);
                                 Excel attr = subField.getAnnotation(Excel.class);
                                 this.addCell(attr, row, (T) obj, subField, column + subIndex);
+                                subIndex++;
                             }
-                            subIndex++;
                         }
                         subFirst = true;
                     }
                     this.subMergedFirstRowNum = this.subMergedFirstRowNum + subList.size();
-                }
-                else
-                {
+                } else if (!Collection.class.isAssignableFrom(field.getType())) {
+                    //子类对象可能被隐藏
                     this.addCell(excel, row, vo, field, column++);
                 }
             }
