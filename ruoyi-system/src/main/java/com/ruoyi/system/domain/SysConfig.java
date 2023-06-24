@@ -8,7 +8,7 @@ import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 参数配置表 sys_config
+ * 参数配置表 sys_configsds
  * 
  * @author ruoyi
  */
