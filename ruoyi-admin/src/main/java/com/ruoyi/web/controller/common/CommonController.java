@@ -21,7 +21,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
-
+import org.springframework.web.multipart.MultipartFile;
 /**
  * 通用请求处理
  * 
@@ -68,6 +68,13 @@ public class CommonController
         {
             log.error("下载文件失败", e);
         }
+    }
+        
+    @RequestMapping(value="saveImpExcel")
+    @ResponseBody
+    publicMap<String, Object> importData(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+        Map<String, Object> map = null;
+        return map;
     }
 
     /**
