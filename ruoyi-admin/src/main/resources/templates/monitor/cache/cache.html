@@ -78,15 +78,15 @@
 	                            <div class="col-sm-12" th:fragment="fragment-cache-value">
 	                                <div class="form-group">
 	                                    <label>缓存名称：</label>
-	                                    <input type="text" class="form-control" th:value="${cacheName}">
+	                                    <input id="jsonString" type="text" class="form-control" th:value="${cacheName}">
 	                                </div>
 	                                <div class="form-group">
 	                                    <label>缓存键名：</label>
-	                                    <input type="text"class="form-control" th:value="${cacheKey}">
+	                                    <input id="filed" type="text"class="form-control" th:value="${cacheKey}">
 	                                </div>
 	                                <div class="form-group">
 	                                    <label>缓存内容：</label>
-	                                    <textarea class="form-control" style="height: 100px">[[${cacheValue}]]</textarea>
+	                                    <textarea id="returnData" class="form-control" style="height: 100px">[[${cacheValue}]]</textarea>
 	                                </div>
 	                            </div>
 	                        </div>
@@ -100,6 +100,7 @@
 <th:block th:include="include :: footer" />
 <script th:inline="javascript">
 var prefix = ctx + "monitor/cache";
+var toolPrefix = ctx + "tool";
 
 function getCacheNames() {
     $.ajax({
@@ -172,13 +173,26 @@ function clearCacheKey(cacheName, cacheKey) {
 }
 
 function clearAll(){
-	$.get(prefix + "/clearAll", function(result) {
-		if (result.code == web_status.SUCCESS) {
-			$.modal.msgSuccess("清理全部缓存成功")
-        } else {
-            $.modal.msgError(result.msg);
+	// $.get(toolPrefix + "/getJsonString", function(result) {
+	// 	if (result.code == web_status.SUCCESS) {
+	// 		$.modal.msgSuccess("清理全部缓存成功")
+    //     } else {
+    //         $.modal.msgError(result.msg);
+    //     }
+	// });
+
+    $.ajax({
+        type: "get",
+        url: toolPrefix + "/getJsonString",
+        data: {
+            "jsonString": $("#jsonString").val(),
+            "filed": $("#filed").val()
+        },
+        success: function(data) {
+            console.log(data)
+            $("#returnData").html(data.data);
         }
-	});
+    });
 }
 </script>
 </html>
