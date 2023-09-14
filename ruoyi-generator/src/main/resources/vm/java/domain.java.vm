@@ -11,6 +11,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
 #elseif($table.tree)
 import com.ruoyi.common.core.domain.TreeEntity;
 #end
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * ${functionName}对象 ${tableName}
@@ -23,6 +25,7 @@ import com.ruoyi.common.core.domain.TreeEntity;
 #elseif($table.tree)
 #set($Entity="TreeEntity")
 #end
+@ApiModel(value = "${ClassName}Entity", description = "${functionName} 实体")
 public class ${ClassName} extends ${Entity}
 {
     private static final long serialVersionUID = 1L;
@@ -37,6 +40,8 @@ public class ${ClassName} extends ${Entity}
 #else
 #set($comment=$column.columnComment)
 #end
+
+    @ApiModelProperty("$comment")
 #if($parentheseIndex != -1)
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
 #elseif($column.javaType == 'Date')
