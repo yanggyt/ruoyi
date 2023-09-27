@@ -43,7 +43,7 @@ public class SysMenu extends BaseEntity
     /** 菜单状态（0显示 1隐藏） */
     private String visible;
 
-    /** 是否刷新（0刷新 1不刷新） */
+    /** 是否刷新（0不刷新 1全页面刷新 2仅列表刷新） */
     private String isRefresh;
 
     /** 权限字符串 */
