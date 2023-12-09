@@ -20,24 +20,33 @@ function login() {
     var password = $.common.trim($("input[name='password']").val());
     var validateCode = $("input[name='validateCode']").val();
     var rememberMe = $("input[name='rememberme']").is(':checked');
+    var encrypt = new JSEncrypt();
     $.ajax({
-        type: "post",
-        url: ctx + "login",
-        data: {
-            "username": username,
-            "password": password,
-            "validateCode": validateCode,
-            "rememberMe": rememberMe
-        },
-        success: function(r) {
-            if (r.code == web_status.SUCCESS) {
-                location.href = ctx + 'index';
-            } else {
-            	$('.imgcode').click();
-            	$(".code").val("");
-            	$.modal.msg(r.msg);
-            }
-            $.modal.closeLoading();
+        url: ctx + "getPublicKey",
+        type: "get",
+        success: function(data) {
+            encrypt.setPublicKey(data.key);
+            var encryptPwd = encrypt.encrypt(password);
+            $.ajax({
+                type: "post",
+                url: ctx + "login",
+                data: {
+                    "username": username,
+                    "password": encryptPwd,
+                    "validateCode": validateCode,
+                    "rememberMe": rememberMe
+                },
+                success: function (r) {
+                    if (r.code == web_status.SUCCESS) {
+                        location.href = ctx + 'index';
+                    } else {
+                        $('.imgcode').click();
+                        $(".code").val("");
+                        $.modal.msg(r.msg);
+                    }
+                    $.modal.closeLoading();
+                }
+            });
         }
     });
 }
