@@ -297,6 +297,9 @@ public class ShiroConfig
         // 系统权限列表
         // filterChainDefinitionMap.putAll(SpringUtils.getBean(IMenuService.class).selectPermsAll());
 
+        // 获取公钥
+        filterChainDefinitionMap.put("/getPublicKey", "anon,captchaValidate");
+
         Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
         filters.put("onlineSession", onlineSessionFilter());
         filters.put("syncOnlineSession", syncOnlineSessionFilter());
