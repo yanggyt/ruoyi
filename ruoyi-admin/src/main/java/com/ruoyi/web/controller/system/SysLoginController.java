@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.security.RSAUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,6 +21,9 @@ import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.service.ConfigService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 登录验证
@@ -56,7 +61,7 @@ public class SysLoginController extends BaseController
     @ResponseBody
     public AjaxResult ajaxLogin(String username, String password, Boolean rememberMe)
     {
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, RSAUtils.decryptBase64(password), rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try
         {
@@ -78,5 +83,13 @@ public class SysLoginController extends BaseController
     public String unauth()
     {
         return "error/unauth";
+    }
+
+    @GetMapping("/getPublicKey")
+    @ResponseBody
+    public Map<String, String> getPublicKey() {
+        Map<String, String> map = new HashMap<>();
+        map.put("key", RSAUtils.generateBase64PublicKey());
+        return map;
     }
 }
