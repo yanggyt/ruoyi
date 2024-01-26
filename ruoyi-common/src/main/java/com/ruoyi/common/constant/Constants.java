@@ -1,5 +1,7 @@
 package com.ruoyi.common.constant;
 
+import java.util.Locale;
+
 /**
  * 通用常量信息
  * 
@@ -56,6 +58,11 @@ public class Constants
      * 登录失败
      */
     public static final String LOGIN_FAIL = "Error";
+
+    /**
+     * 系统统一Locale
+     */
+    public static final Locale SYS_LOCALE = Locale.SIMPLIFIED_CHINESE;
 
     /**
      * 系统用户授权缓存
