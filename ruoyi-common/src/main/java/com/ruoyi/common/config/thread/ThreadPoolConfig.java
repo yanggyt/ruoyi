@@ -17,13 +17,13 @@ import com.ruoyi.common.utils.Threads;
 @Configuration
 public class ThreadPoolConfig
 {
-    // 核心线程池大小
+    // 核心线程池大小设置
     private int corePoolSize = 50;
 
-    // 最大可创建的线程数
+    // 最大可创建的线程数设置
     private int maxPoolSize = 200;
 
-    // 队列最大长度
+    // 队列最大长度设置
     private int queueCapacity = 1000;
 
     // 线程池维护线程所允许的空闲时间
