@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 数据源切换处理
+ * 数据源切换处理相关
  * 
  * @author ruoyi
  */
